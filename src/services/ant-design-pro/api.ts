@@ -6,6 +6,10 @@ export async function getInfo() {
   return axios.get(`${ip3}/user/me`);
 }
 
+export async function getInfoSinhVien() {
+  return axios.get(`${ip3}/odoo-user/sinh-vien/me`);
+}
+
 export async function adminlogin(payload: { username?: string; password?: string }) {
   return axios.post(`${ip3}/auth/login`, { ...payload, platform: 'Web' });
 }

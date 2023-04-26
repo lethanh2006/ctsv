@@ -4,7 +4,12 @@ export default {
   'menu.account.center': 'Cá nhân',
   'menu.Dashboard': 'Trang chủ',
   'menu.News': 'Tin tức',
-
+  'menu.DichVuMotCua': 'Dịch vụ một cửa',
+  'menu.DichVuMotCua.ThongTinTongHop': 'Thông tin tổng hợp',
+  'menu.DichVuMotCua.QuanLyBieuMau': 'Quản lý biểu mẫu',
+  'menu.DichVuMotCua.QuanLyDon': 'Quản lý đơn',
+  'menu.DichVuMotCua.ChuyenVienDieuPhoiQuanLyDon': 'Điều phối',
+  'menu.DichVuMotCua.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
   'menu.DanhMuc': 'Danh mục',
   'menu.DanhMuc.ChucVu': 'Chức vụ',
 };

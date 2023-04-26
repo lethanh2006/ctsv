@@ -269,8 +269,8 @@ export const uploadMultiFile = async (
     ?.map(async (file: { originFileObj: any; type: string; name: string }) => {
       const response = await uploadFile({
         file: file?.originFileObj,
-        filename: parse(file?.name).name,
-        public: true,
+        // filename: parse(file?.name).name,
+        public: '1',
       });
       if (returnFileType) return { url: response?.data?.data?.url, type: file.type };
       else if (returnAllResponse) return response?.data?.data;
