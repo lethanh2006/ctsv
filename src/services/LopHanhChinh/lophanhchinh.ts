@@ -1,12 +1,12 @@
 import axios from '@/utils/axios';
-import { ip3 } from '@/utils/ip';
+import { ip3, ipQldt } from '@/utils/ip';
 
 export async function getDataLopHanhChinh(role: string, idHinhThuc?: number) {
   return axios.get(`${ip3}/odoo-lop-hanh-chinh/${role}/me`, { params: { idHinhThuc } });
 }
 
 export async function getAllHinhThucDaoTao() {
-  return axios.get(`${ip3}/odoo-hinh-thuc-dao-tao/all`);
+  return axios.get(`${ipQldt}/hinh-thuc-dao-tao/many`);
 }
 
 export async function getThongBaoLopHanhChinhById(payload: {

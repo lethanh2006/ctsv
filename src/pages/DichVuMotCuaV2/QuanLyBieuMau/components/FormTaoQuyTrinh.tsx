@@ -44,8 +44,7 @@ const FormTaoQuyTrinh = () => {
               ...thaoTac,
               nguoiDieuPhoiMacDinh: thaoTac?.idNguoiDieuPhoiMacDinh ? true : false,
               idDonVi: thaoTac?.idDonVi?.toString(),
-              tenDonVi:
-                danhSach?.find((item) => item.id.toString() === thaoTac?.idDonVi)?.ten_don_vi ?? '',
+              tenDonVi: danhSach?.find((item) => item._id === thaoTac?.idDonVi)?.ten ?? '',
             }),
           ),
         };

@@ -1,14 +1,14 @@
 import axios from '@/utils/axios';
-import { ip3 } from '@/utils/ip';
+import { ip3, ipCore } from '@/utils/ip';
 
 export async function getTinhS() {
-  return axios.get(`${ip3}/don-vi-hanh-chinh/tinh`);
+  return axios.get(`${ipCore}/don-vi-hanh-chinh/tinh`);
 }
 
 export async function getQuanHuyenS(payload: { maTinh: string }) {
-  return axios.get(`${ip3}/don-vi-hanh-chinh/quan-huyen/maTinh/${payload?.maTinh}`);
+  return axios.get(`${ipCore}/don-vi-hanh-chinh/quan-huyen/maTinh/${payload?.maTinh}`);
 }
 
 export async function getXaPhuongS(payload: { maQH: string }) {
-  return axios.get(`${ip3}/don-vi-hanh-chinh/xa-phuong/ma-quan-huyen/${payload?.maQH}`);
+  return axios.get(`${ipCore}/don-vi-hanh-chinh/xa-phuong/ma-quan-huyen/${payload?.maQH}`);
 }

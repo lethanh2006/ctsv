@@ -29,14 +29,27 @@ export declare module APILopHanhChinh {
   }
 
   export interface HinhThucDaoTao {
-    id: number;
-    ten_hinh_thuc_dao_tao: string;
-    ten_hinh_thuc_dao_tao_viet_tat: string;
-    thoi_gian_dao_tao: number;
-    mo_ta: string;
-    nganh_id: number[];
-    color: number;
-    display_name: string;
+    canCu: {
+      createdAt: string;
+      ma: string;
+      noiDung: string;
+      ten: string;
+      updatedAt: string;
+      url: string;
+      _id: string;
+    };
+    canCuId: string;
+    createdAt: string;
+    danhMucHTDT: {
+      createdAt: string;
+      ma: string;
+      ten: string;
+      updatedAt: string;
+      _id: string;
+    };
+    danhMucHTDTId: string;
+    ma: string;
+    _id: string;
   }
 
   export interface RecordAdmin {

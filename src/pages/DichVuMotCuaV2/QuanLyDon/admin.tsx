@@ -21,9 +21,9 @@ const QuanLyDonAdmin = () => {
   const { pathname } = window.location;
   const isDVMC = pathname?.includes('dichvumotcua') ?? false;
 
-  useEffect(() => {
-    adminGetTongSoDonDVMCModel(isDVMC);
-  }, [idDichVu]);
+  // useEffect(() => {
+  //   adminGetTongSoDonDVMCModel(isDVMC);
+  // }, [idDichVu]);
 
   useEffect(() => {
     return () => {
@@ -47,7 +47,7 @@ const QuanLyDonAdmin = () => {
           } else {
             setTypeTraKetQua('');
           }
-          adminGetTongSoDonDVMCModel(isDVMC);
+          // adminGetTongSoDonDVMCModel(isDVMC);
         }}
         activeKey={trangThaiQuanLyDon}
         defaultActiveKey="PROCESSING"

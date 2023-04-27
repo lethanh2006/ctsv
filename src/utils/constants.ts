@@ -59,13 +59,13 @@ export enum ElementTemplateType {
   MY_CREDIT = 'Môn học của sinh viên',
   // CREDIT = 'Môn học',
   MY_COURSE = 'Lớp tín chỉ của sinh viên',
-  _OTO = 'Dịch vụ Ô-tô',
+  // _OTO = 'Dịch vụ Ô-tô',
   TEXT_BLOCK = 'Đoạn văn bản',
   DAN_TOC = 'Dân tộc',
   TON_GIAO = 'Tôn giáo',
   HOC_PHAN_CO_DIEM = 'Học phần có điểm',
   // CMT_CCCD = 'CMT/CCCD',
-  BUTTON_SEARCH_PHONG = 'Button tìm phòng VPS',
+  // BUTTON_SEARCH_PHONG = 'Button tìm phòng VPS',
 }
 
 export enum EFileType {

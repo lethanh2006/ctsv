@@ -1,8 +1,8 @@
 import axios from '@/utils/axios';
-import { ip3 } from '@/utils/ip';
+import { ip3, ipTcns } from '@/utils/ip';
 
 export async function getAllDonVi(params?: any) {
-  return axios.get(`${ip3}/odoo-don-vi/all`, { params });
+  return axios.get(`${ipTcns}/don-vi/many`, { params });
 }
 
 export async function postDonVi(payload: DonVi.Record) {

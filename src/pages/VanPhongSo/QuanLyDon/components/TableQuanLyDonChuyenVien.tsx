@@ -29,7 +29,7 @@ import {
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 import FormQuyTrinh from '@/pages/DichVuMotCuaV2/components/FormQuyTrinh';
 import TableLichSuTraKetQua from '@/pages/DichVuMotCuaV2/components/TableLichSuTraKetQua';
 

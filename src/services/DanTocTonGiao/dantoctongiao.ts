@@ -1,10 +1,10 @@
 import axios from '@/utils/axios';
-import { ip3 } from '@/utils/ip';
+import { ipCore } from '@/utils/ip';
 
 export async function getDanToc() {
-  return axios.get(`${ip3}/dan-toc-ton-giao/dan-toc`);
+  return axios.get(`${ipCore}/dm-dan-toc/many`);
 }
 
 export async function getTonGiao() {
-  return axios.get(`${ip3}/dan-toc-ton-giao/ton-giao`);
+  return axios.get(`${ipCore}/dm-ton-giao/many`);
 }

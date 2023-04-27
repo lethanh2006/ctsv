@@ -86,7 +86,7 @@ const BieuMauThaoTac = (props: {
               filterOption={(value, option) => includes(option?.props.children, value)}
               showSearch
               placeholder="Chọn đơn vị"
-              onChange={(val) => {
+              onChange={(val: string) => {
                 setIdDonVi(val);
                 const recordTemp = props.form.getFieldsValue(true);
                 const path = `quyTrinh.danhSachBuoc[${props.step}].danhSachThaoTac[${props.field.name}].idNguoiDieuPhoiMacDinh`;
@@ -94,8 +94,8 @@ const BieuMauThaoTac = (props: {
               }}
             >
               {danhSach?.map((item) => (
-                <Select.Option key={item.id} value={item.id.toString()}>
-                  {item.ten_don_vi} ({item.ma_don_vi})
+                <Select.Option key={item._id} value={item._id}>
+                  {item.ten} ({item.maDonVi})
                 </Select.Option>
               ))}
             </Select>
@@ -121,9 +121,9 @@ const BieuMauThaoTac = (props: {
             filterOption={(value, option) => includes(option?.props.children, value)}
             showSearch
             placeholder="Chọn người xử lý"
-            onMouseEnter={() => {
-              getChuyenVienXuLyDonModel(idDonVi);
-            }}
+            // onMouseEnter={() => {
+            //   getChuyenVienXuLyDonModel(idDonVi);
+            // }}
           >
             {danhSachChuyenVienXuLy?.map((item) => (
               <Select.Option key={item.id} value={item.id.toString()}>

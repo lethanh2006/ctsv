@@ -776,7 +776,7 @@ const FormBieuMau = (props: {
             </div>
           }
           name={item.type === 'DON_VI_HANH_CHINH' ? undefined : `${name}.${item?.label}`}
-          rules={item?.isRequired ? ruleElement : []}
+          rules={item?.isRequired ? [...ruleElement, ...rules.required] : []}
           initialValue={initialValue}
         >
           {element}
@@ -860,10 +860,7 @@ const FormBieuMau = (props: {
   };
 
   return (
-    <Card
-      title={props?.title}
-      bodyStyle={{ padding: window.screen.width > 600 ? '30px 50px' : 12 }}
-    >
+    <Card title={props?.title} bodyStyle={{ padding: window.screen.width > 600 ? '30px' : 12 }}>
       {!props.hideTitle && <TieuDeBieuMau title={props?.record?.thongTinDichVu?.ten ?? ''} />}
 
       <br />

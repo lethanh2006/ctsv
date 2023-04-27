@@ -303,10 +303,12 @@ const FormQuyTrinh = (props: {
               );
             })
           : 'Chưa tạo thông tin đơn'}
-        {record?.soNgayHen && trangThaiDon === 'OK' && (
+        {record?.soNgayHen && trangThaiDon === 'OK' ? (
           <p
             style={{ marginTop: '20px', marginBottom: '0', color: 'red' }}
           >{`Lưu ý: Đơn này được xử lý trong ${record?.soNgayHen} ngày, sinh viên vui lòng đến lấy sau thời gian xử lý!`}</p>
+        ) : (
+          ''
         )}
         {access.nhanVien && (
           <Modal

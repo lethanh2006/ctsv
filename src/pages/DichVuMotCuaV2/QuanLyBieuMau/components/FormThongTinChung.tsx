@@ -198,8 +198,8 @@ const FormThongTinChung = () => {
                   >
                     <Select placeholder="Hình thức đào tạo">
                       {danhSachHinhThucDaoTao?.map((item) => (
-                        <Select.Option key={item.id} value={item.id}>
-                          {item.ten_hinh_thuc_dao_tao}
+                        <Select.Option key={item._id} value={item._id}>
+                          {item.danhMucHTDT.ten}
                         </Select.Option>
                       ))}
                     </Select>
@@ -267,8 +267,8 @@ const FormThongTinChung = () => {
             >
               <Select placeholder="Cơ quan có thẩm quyền" allowClear showSearch mode="multiple">
                 {danhSach?.map((item: DonVi.Record) => (
-                  <Select.Option key={item?.ten_don_vi} value={item?.ten_don_vi}>
-                    {item?.ten_don_vi}
+                  <Select.Option key={item._id} value={item.ten}>
+                    {item?.ten}
                   </Select.Option>
                 ))}
               </Select>

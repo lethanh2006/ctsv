@@ -190,77 +190,11 @@ const TableQuanLyDonAdmin = (props: {
       render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
       onCell,
     },
-    {
-      title: 'Thời gian mượn',
-      dataIndex: 'thongTinMuonXe',
-      align: 'center',
-      width: 150,
-      render: (val) => <>{val ? moment(val?.thoiGianBd).format('DD/MM/YYYY') : ''}</>,
-    },
-    {
-      title: 'Thời gian trả',
-      dataIndex: 'thongTinMuonXe',
-      align: 'center',
-      width: 150,
-      render: (val) => <>{val ? moment(val?.thoiGianKt).format('DD/MM/YYYY') : ''}</>,
-    },
-    {
-      title: 'Biển số xe',
-      dataIndex: 'thongTinMuonXe',
-      align: 'center',
-      width: 150,
-      render: (val) => <>{val ? val?.bienSoXe : ''}</>,
-    },
-    {
-      title: 'Lái xe',
-      dataIndex: ['thongTinMuonXe', 'thongTinlaiXe'],
-      align: 'center',
-      width: 300,
-      render: (val) => (
-        <>
-          {val?.[0]?.hoTen} - {val?.[0]?.sdt}
-        </>
-      ),
-    },
-    {
-      title: 'Trạng thái mượn xe',
-      dataIndex: 'thongTinMuonXe',
-      align: 'center',
-      width: 150,
-      render: (val) => (
-        <>
-          {val ? (
-            <Tag
-              color={
-                val?.trangThai === ETrangThaiDonVps.DA_DUYET
-                  ? 'green'
-                  : val?.trangThai === ETrangThaiDonVps.DA_TRA_XE
-                  ? '#299b8c'
-                  : val?.trangThai === ETrangThaiDonVps.DANG_MUON
-                  ? '#72c9f1'
-                  : 'red'
-              }
-            >
-              {val?.trangThai ?? ''}
-            </Tag>
-          ) : (
-            ''
-          )}
-        </>
-      ),
-    },
-    {
-      title: 'Thời gian thao tác',
-      dataIndex: 'thongTinMuonXe',
-      align: 'center',
-      width: 150,
-      render: (val) => <>{val ? moment(val?.updatedAt).format('HH:m DD/MM/YYYY') : ''}</>,
-    },
 
     {
       title: 'Thao tác',
       align: 'center',
-      width: props?.type === 'xeCong' && trangThaiQuanLyDon === 'OK' ? 230 : 170,
+      width: 170,
       fixed: 'right',
       render: (recordDon: DichVuMotCuaV2.Don) => {
         return (

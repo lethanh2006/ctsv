@@ -72,13 +72,13 @@
     path: '/dichvumotcua',
     // access: 'adminVaQuanTri',
     routes: [
-      {
-        name: 'ThongTinTongHop',
-        path: './thongtintonghop',
-        component: './DichVuMotCuaV2/ThongTinTongHop/Admin.tsx',
-        // access: 'adminAccessFilter',
-        maChucNang: 'don-dvmc-thao-tac:read-all',
-      },
+      // {
+      //   name: 'ThongTinTongHop',
+      //   path: './thongtintonghop',
+      //   component: './DichVuMotCuaV2/ThongTinTongHop/Admin.tsx',
+      //   // access: 'adminAccessFilter',
+      //   maChucNang: 'don-dvmc-thao-tac:read-all',
+      // },
       {
         name: 'QuanLyBieuMau',
         path: './quanlybieumau',

@@ -156,9 +156,9 @@ const QuanLyBieuMau = () => {
               <Button
                 disabled={!isUpdate}
                 onClick={() => {
-                  if (record?.thongTinThuTuc?.maLePhi) {
-                    getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
-                  }
+                  // if (record?.thongTinThuTuc?.maLePhi) {
+                  //   getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
+                  // }
                   setRecord(record);
                   setEdit(true);
                   setVisibleForm(true);
