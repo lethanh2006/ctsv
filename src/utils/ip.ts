@@ -7,8 +7,6 @@ const ipQldt = 'https://ais.aisenote.com/qldt';
 const ipTcns = 'https://ais.aisenote.com/tcns';
 const ipCore = 'https://ais.aisenote.com/core';
 
-const keycloakLogoutEndpoint =
-  'https://ais.aisenote.com/keycloak/realms/vwa/protocol/openid-connect/logout';
 const keycloakUrl = 'https://ais.aisenote.com/keycloak';
 const keycloakClientID = 'web-ctsv';
 const keycloakAuthority = 'https://ais.aisenote.com/keycloak/realms/vwa';
@@ -23,7 +21,6 @@ export {
   ipCore,
   ip3,
   ipGlobal,
-  keycloakLogoutEndpoint,
   keycloakUrl,
   keycloakClientID,
   keycloakSecret,
