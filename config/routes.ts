@@ -116,7 +116,7 @@
         maChucNang: 'dvmc-thao-tac:read',
       },
       {
-        name: 'ChuyenVienDieuPhoiQuanLyDon',
+        name: 'QuanLyDon',
         path: './quanlydondieuphoi',
         component: './DichVuMotCuaV2/QuanLyDon',
         // access: 'accessFilter',
