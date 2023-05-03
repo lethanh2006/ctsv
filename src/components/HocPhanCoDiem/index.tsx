@@ -1,10 +1,10 @@
-import { Col, Form, Input, Row, Select } from 'antd';
+import type { IRecordHocPhan } from '@/services/HocPhanCoDiem/typing';
 import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
-import { useEffect, useState } from 'react';
-import { FormInstance } from 'antd/es/form/Form';
 import { useModel } from '@@/plugin-model/useModel';
-import { IRecordHocPhan, record } from '@/services/HocPhanCoDiem/typing';
+import { Col, Form, Row, Select } from 'antd';
+import type { FormInstance } from 'antd/es/form/Form';
+import { useEffect, useState } from 'react';
 type Props = {
   disabled?: boolean;
   form: FormInstance<any>;
@@ -44,7 +44,7 @@ const HocPhanCoDiem = (props: Props) => {
               const newValue = {};
               newValue[`${props?.fields?.idHocKy?.[0]}`] = {
                 idDiem: undefined,
-                tenHocKy:option?.key
+                tenHocKy: option?.key,
               };
               props.form.setFieldsValue(newValue);
             }}
@@ -70,11 +70,13 @@ const HocPhanCoDiem = (props: Props) => {
           rules={[...rules.required]}
         >
           <Select
-            notFoundContent={`${idKy?'Không có học phần nào thuộc học kỳ này':'Bạn chưa chọn Kỳ học'}`}
+            notFoundContent={`${
+              idKy ? 'Không có học phần nào thuộc học kỳ này' : 'Bạn chưa chọn Kỳ học'
+            }`}
             disabled={props?.disabled}
             loading={loading}
             onChange={(val: string, option: any) => {
-              console.log('option',option)
+              console.log('option', option);
               // const record = {};
               // record[`${props?.fields?.tinh?.join('.')}`] = option?.key;
               // setTenTinh({ ...tenTinh, ...record });
@@ -98,7 +100,7 @@ const HocPhanCoDiem = (props: Props) => {
             filterOption={(value, option) => includes(option?.props.children, value)}
           >
             {dsDiemTheoKy?.map((item) => (
-              <Select.Option value={item.id??1} key={item.hoc_phan_id?.[1]??''}>
+              <Select.Option value={item.id ?? 1} key={item.hoc_phan_id?.[1] ?? ''}>
                 {item.ten_hoc_phan}
               </Select.Option>
             ))}
