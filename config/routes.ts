@@ -117,6 +117,43 @@
       // },
     ],
   },
+
+  // SINH VIEN
+  {
+    name: 'SinhVien',
+    path: '/sinh-vien',
+    icon: 'contacts',
+    routes: [
+      {
+        name: 'DanhSachSinhVien',
+        path: 'danh-sach-sinh-vien',
+        component: './SinhVien',
+      },
+      // {
+      //   name: 'LopHanhChinh',
+      //   path: 'lop-hanh-chinh',
+      //   component: './NamHoc/LopHanhChinh',
+      // },
+      // {
+      //   name: 'DotNhapHoc',
+      //   path: 'dot-nhap-hoc',
+      //   component: './NamHoc/DotNhapHoc',
+      // },
+      // {
+      //   name: 'ChuyenTruong',
+      //   path: 'chuyen-truong',
+      // },
+      // {
+      //   name: 'KhenThuong',
+      //   path: 'khen-thuong',
+      // },
+      // {
+      //   name: 'KyLuat',
+      //   path: 'ky-luat',
+      // },
+    ],
+  },
+
   // DANH MUC HE THONG
   {
     name: 'DanhMuc',

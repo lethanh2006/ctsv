@@ -2,7 +2,6 @@ import { uploadFile } from '@/services/uploadFile';
 import { message } from 'antd';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import { parse } from 'path';
 import { useModel } from 'umi';
 
 const reg =
@@ -488,3 +487,12 @@ export const chuanHoaObject = (obj: any) => {
   Object.keys(obj).forEach((key) => (obj[key] = chuanHoaObject(obj[key])));
   return obj;
 };
+
+export function formatPhoneNumber(num: any) {
+  let phone = num.replace(/\D/g, '');
+  const match = phone.match(/^(\d{1,3})(\d{0,3})(\d{0,4})$/);
+  if (match) {
+    phone = `${match[1]}${match[2] ? ' ' : ''}${match[2]}${match[3] ? '-' : ''}${match[3]}`;
+  }
+  return phone;
+}

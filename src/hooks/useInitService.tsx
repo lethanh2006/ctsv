@@ -1,42 +1,42 @@
 import axios from '@/utils/axios';
-import { ip3 } from '@/utils/ip';
+import { ipQldt } from '@/utils/ip';
 
 const useInitService = (url: string, ip?: string) => {
   const getService = (payload: { page: number; limit: number; condition?: any }, path?: string) => {
-    const finalPath = path ? `${ip ?? ip3}/${url}/${path}` : `${ip ?? ip3}/${url}`;
+    const finalPath = path ? `${ip ?? ipQldt}/${url}/${path}` : `${ip ?? ipQldt}/${url}`;
     return axios.get(finalPath, { params: payload });
   };
 
   const postService = (payload: any) => {
-    return axios.post(`${ip ?? ip3}/${url}`, payload);
+    return axios.post(`${ip ?? ipQldt}/${url}`, payload);
   };
 
   const putService = (id: string | number, payload: any) => {
-    return axios.put(`${ip ?? ip3}/${url}/${id}`, payload);
+    return axios.put(`${ip ?? ipQldt}/${url}/${id}`, payload);
   };
 
   const deleteService = (id: string | number) => {
-    return axios.delete(`${ip ?? ip3}/${url}/${id}`);
+    return axios.delete(`${ip ?? ipQldt}/${url}/${id}`);
   };
 
   const getAllService = (payload?: { condition?: any; sort?: any }) => {
-    return axios.get(`${ip ?? ip3}/${url}/many`, { params: payload });
+    return axios.get(`${ip ?? ipQldt}/${url}/many`, { params: payload });
   };
 
   const getByIdService = (id: string | number) => {
-    return axios.get(`${ip ?? ip3}/${url}/${id}`);
+    return axios.get(`${ip ?? ipQldt}/${url}/${id}`);
   };
 
   const getImportHeaders = () => {
-    return axios.get(`${ip ?? ip3}/${url}/import-header`);
+    return axios.get(`${ip ?? ipQldt}/${url}/import-header`);
   };
 
   const postValidateImport = (payload: any) => {
-    return axios.post(`${ip ?? ip3}/${url}/validate-import`, payload);
+    return axios.post(`${ip ?? ipQldt}/${url}/validate-import`, payload);
   };
 
   const postExecuteImport = (payload: any) => {
-    return axios.post(`${ip ?? ip3}/${url}/execute-import`, payload);
+    return axios.post(`${ip ?? ipQldt}/${url}/execute-import`, payload);
   };
 
   return {
