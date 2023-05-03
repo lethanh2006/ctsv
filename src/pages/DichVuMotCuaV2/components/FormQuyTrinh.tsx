@@ -63,7 +63,6 @@ const FormQuyTrinh = (props: {
   type?: string;
   thoiGianTaoDon?: string;
 }) => {
-  const access = useAccess();
   const {
     sinhVienGetTrangThaiDonModel,
     chuyenVienDieuPhoiGetTrangThaiDonModel,
@@ -92,14 +91,8 @@ const FormQuyTrinh = (props: {
 
   useEffect(() => {
     if (props.idDon) {
-      if (access.adminVaQuanTri) {
-        adminGetTrangThaiDonModel(props.idDon);
-      } else if (access.sinhVien) sinhVienGetTrangThaiDonModel(props.idDon);
-      else {
-        if (arrPathName?.includes('quanlydondieuphoi'))
-          chuyenVienDieuPhoiGetTrangThaiDonModel(props.idDon);
-        else chuyenVienTiepNhanGetTrangThaiDonModel(props.idDon);
-      }
+      // adminGetTrangThaiDonModel(props.idDon);
+      chuyenVienDieuPhoiGetTrangThaiDonModel(props.idDon);
     }
   }, [props.idDon]);
 
@@ -127,9 +120,9 @@ const FormQuyTrinh = (props: {
     isDonThaoTacOBuocCuoi: boolean,
     isDuocPhepXuLyDonThaoTac: boolean,
   ): any => {
-    if (arrPathName?.includes('quanlydondieuphoi')) {
-      getChuyenVienXuLyDonModel(recordDonThaoTac?.idDonVi);
-    }
+    // if (arrPathName?.includes('quanlydondieuphoi')) {
+    //   getChuyenVienXuLyDonModel(recordDonThaoTac?.idDonVi);
+    // }
     setType('handle');
     setRecordDonThaoTac(recordDonThaoTac);
     setVisibleFormBieuMau(true);
@@ -207,7 +200,8 @@ const FormQuyTrinh = (props: {
                       const recordThaoTac = recordBuoc?.danhSachThongKeThaoTac?.find(
                         (item) => item.idThaoTac === thaoTac._id,
                       );
-                      const isDuocPhepXuLy = recordDonThaoTac?.phanQuyen ?? false;
+                      // const isDuocPhepXuLy = recordDonThaoTac?.phanQuyen ?? false;
+                      const isDuocPhepXuLy = true;
                       const IconThaoTac = IconTrangThai?.[recordThaoTac?.trangThai ?? 'ANY'];
                       return (
                         <Timeline.Item key={recordThaoTac?._id} dot={IconThaoTac}>
@@ -310,28 +304,25 @@ const FormQuyTrinh = (props: {
         ) : (
           ''
         )}
-        {access.nhanVien && (
-          <Modal
-            destroyOnClose
-            width="850px"
-            footer={false}
-            visible={visibleFormBieuMau}
-            onCancel={() => {
-              setVisibleFormBieuMau(false);
-            }}
-          >
-            <FormBieuMau
-              hideCamKet
-              infoNguoiTaoDon={recordDonThaoTacModel?.nguoiTao}
-              type={type}
-              record={
-                arrPathName?.includes('vanphongso') ? recordDon : recordDonThaoTacModel?.idDon
-              }
-              traKetQua={checkLastStep}
-              duocPhepSuaKetQua={checkDuocPhepXuLy}
-            />
-          </Modal>
-        )}{' '}
+
+        <Modal
+          destroyOnClose
+          width="850px"
+          footer={false}
+          visible={visibleFormBieuMau}
+          onCancel={() => {
+            setVisibleFormBieuMau(false);
+          }}
+        >
+          <FormBieuMau
+            hideCamKet
+            infoNguoiTaoDon={recordDonThaoTacModel?.nguoiTao}
+            type={type}
+            record={arrPathName?.includes('vanphongso') ? recordDon : recordDonThaoTacModel?.idDon}
+            traKetQua={checkLastStep}
+            duocPhepSuaKetQua={checkDuocPhepXuLy}
+          />
+        </Modal>
       </Spin>
     </Card>
   );

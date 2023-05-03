@@ -48,20 +48,6 @@
     icon: 'HomeOutlined',
   },
 
-  // DANH MUC HE THONG
-  // {
-  //   name: 'DanhMuc',
-  //   path: '/danh-muc',
-  //   icon: 'copy',
-  //   routes: [
-  //     {
-  //       name: 'ChucVu',
-  //       path: 'chuc-vu',
-  //       component: './DanhMuc/ChucVu',
-  //     },
-  //   ],
-  // },
-
   // DICH VU MOT CUA
 
   /////////////////////////////
@@ -131,7 +117,24 @@
       // },
     ],
   },
-
+  // DANH MUC HE THONG
+  {
+    name: 'DanhMuc',
+    path: '/danh-muc',
+    icon: 'copy',
+    routes: [
+      {
+        name: 'LoaiDanhHieu',
+        path: 'loai-danh-hieu',
+        component: './DanhMuc/LoaiDanhHieu',
+      },
+      {
+        name: 'DanhHieu',
+        path: 'danh-hieu',
+        component: './DanhMuc/DanhHieu',
+      },
+    ],
+  },
   {
     path: '/',
     redirect: '/user/login',

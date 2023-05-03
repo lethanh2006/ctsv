@@ -251,8 +251,7 @@ export default () => {
         idDichVu: record?._id || danhSach?.map((item) => item._id),
       },
     });
-    console.log(response?.data?.data?.result, 'response?.data?.data?.result');
-    setDanhSachDonThaoTac(response?.data?.data?.result ?? []);
+    setDanhSachDonThaoTac(response?.data?.data ?? []);
     // setTotal(response?.data?.data?.total);
     setLoading(false);
   };

@@ -12,5 +12,7 @@ export default {
   'menu.DichVuMotCua.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
   'menu.DanhMuc': 'Danh mục',
   'menu.DanhMuc.ChucVu': 'Chức vụ',
+  'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
+  'menu.DanhMuc.DanhHieu': 'Khen thưởng/kỷ luật',
   'menu.DanhMuc.LoaiPhongBan': 'Loại phòng ban',
 };

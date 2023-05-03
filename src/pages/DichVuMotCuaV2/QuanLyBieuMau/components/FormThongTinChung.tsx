@@ -42,12 +42,12 @@ const FormThongTinChung = () => {
     if (values?.[name]?.fileList?.[0]?.originFileObj) {
       const response = await uploadFile({
         file: values?.[name]?.fileList?.[0]?.originFileObj,
-        filename: values?.[name]?.fileList?.[0]?.name?.split('.')?.[0] ?? 'fileName',
-        public: true,
+        // filename: values?.[name]?.fileList?.[0]?.name?.split('.')?.[0] ?? 'fileName',
+        public: '1',
       });
       return {
         ...response?.data?.data?.file,
-        _id: response?.data?.data?.file?.id,
+        // _id: response?.data?.data?.file?.id,
       };
     } else return values?.[name]?.fileList?.[0]?.url ? recordDichVu?.[name] : {};
   };

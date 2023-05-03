@@ -51,6 +51,7 @@ import Table from './TableElement';
 import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import FormBieuMauChonPhong from '@/pages/VanPhongSo/DonMuonPhongHop/components/FormBieuMauChonPhong';
+import type { Login } from '@/services/ant-design-pro/typings';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -252,25 +253,6 @@ const FormBieuMau = (props: {
     );
     setValuesForm(valuesTemp);
 
-    // phần văn phòng số
-    if (props?.record?.thongTinDichVu?.maDichVu === MaDichVuVps.MUON_PHONG_HOC) {
-      if (['handle'].includes(props?.type ?? '')) {
-        getAllPhongKhaDungModel({
-          thoiGianBd: props?.record?.thongTinDichVu?.cauHinhBieuMau[0].value,
-          thoiGianKt: props?.record?.thongTinDichVu?.cauHinhBieuMau[1].value,
-        });
-        getAllDonMuonPhongByIdDonModel(props?.record?._id ?? '');
-      }
-      if (['create', 'muonCsvc'].includes(props?.type ?? '')) {
-        getAllPhongModel();
-      }
-    }
-    if (props?.record?.thongTinDichVu?.maDichVu === MaDichVuVps.MUON_OTO) {
-      getAllLaiXeModel();
-    }
-    if (props?.record?.thongTinDichVu?.cauHinhBieuMau?.find((item) => item?.type == '_OTO')) {
-      getQuanLyOtoAllModel();
-    }
     return () => {
       if (!props?.handleAdd) setDanhSachDataTable({});
       setTenTinh({});
@@ -990,12 +972,12 @@ const FormBieuMau = (props: {
         <div>
           <b>{props.record?.thongTinDichVu?.ghiChu}</b>
         </div>
-        {!['handle', 'view', 'muonCsvc'].includes(props?.type ?? '') && !props.hideCamKet && (
+        {/* {!['handle', 'view', 'muonCsvc'].includes(props?.type ?? '') && !props.hideCamKet && (
           <Checkbox style={{ marginBottom: 8 }} onChange={(e) => setCheck(e.target.checked)}>
             Tôi xin cam đoan những thông tin trên là hoàn toàn chính xác, nếu sai sự thật tôi sẽ
             chịu mọi hình thức kỷ luật.
           </Checkbox>
-        )}
+        )} */}
 
         {(recordDonThaoTac?.urlFileDinhKem?.length || recordDonThaoTac?.info?.ghiChuXuLy) && (
           <>
@@ -1046,7 +1028,7 @@ const FormBieuMau = (props: {
         <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
           {!['view', 'handle', 'edit'].includes(props?.type ?? '') && (
             <Button
-              disabled={props?.hideCamKet || props.type === 'muonCsvc' ? false : !check}
+              // disabled={props?.hideCamKet || props.type === 'muonCsvc' ? false : !check}
               loading={loading}
               style={{ marginRight: 8 }}
               htmlType="submit"
@@ -1057,7 +1039,7 @@ const FormBieuMau = (props: {
           )}
           {['edit'].includes(props?.type ?? '') && (
             <Button
-              disabled={props?.hideCamKet || props.type === 'muonCsvc' ? false : !check}
+              // disabled={props?.hideCamKet || props.type === 'muonCsvc' ? false : !check}
               loading={loading}
               style={{ marginRight: 8 }}
               htmlType="submit"
@@ -1088,8 +1070,8 @@ const FormBieuMau = (props: {
                   onClick={() => setVisibleChonPhong(true)}
                   style={{
                     marginRight: 8,
-                    backgroundColor: '#007F3E',
-                    border: '1px solid #007F3E',
+                    backgroundColor: '#28a745',
+                    border: '1px solid #28a745',
                     color: 'white',
                   }}
                 >
@@ -1107,8 +1089,8 @@ const FormBieuMau = (props: {
                   }}
                   style={{
                     marginRight: 8,
-                    backgroundColor: '#007F3E',
-                    border: '1px solid #007F3E',
+                    backgroundColor: '#28a745',
+                    border: '1px solid #28a745',
                     color: 'white',
                   }}
                 >
@@ -1127,10 +1109,8 @@ const FormBieuMau = (props: {
                 type="primary"
                 style={{
                   marginRight: 8,
-                  backgroundColor: '#007EB9',
-                  border: '1px solid #007EB9',
-                  color: 'white',
                 }}
+                danger
               >
                 {props.record?.thongTinDichVu?.maDichVu !== MaDichVuVps.BAO_CAO_SU_CO
                   ? 'Không duyệt'

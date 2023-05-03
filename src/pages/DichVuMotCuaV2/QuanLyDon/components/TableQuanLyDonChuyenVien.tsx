@@ -96,18 +96,18 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   }, []);
 
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
-    if (pathname?.includes('quanlydondieuphoi'))
-      getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
-    else getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
+    // if (pathname?.includes('quanlydondieuphoi'))
+    getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
+    // else getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
     setRecordDon(recordDonColumn);
     setVisibleFormDon(true);
     setType('view');
   };
 
   const getData = () => {
-    if (arrPathName?.includes('quanlydondieuphoi'))
-      chuyenVienDieuPhoiGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-    else chuyenVienXuLyGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+    // if (arrPathName?.includes('quanlydondieuphoi'))
+    chuyenVienDieuPhoiGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+    // else chuyenVienXuLyGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
   };
 
   const onCell = (recordDonColumn: DichVuMotCuaV2.Don) => ({
