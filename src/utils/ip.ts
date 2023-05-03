@@ -8,7 +8,7 @@ const ipTcns = 'https://ais.aisenote.com/tcns';
 const ipCore = 'https://ais.aisenote.com/core';
 
 const keycloakUrl = 'https://ais.aisenote.com/keycloak';
-const keycloakClientID = 'web-ctsv';
+const keycloakClientID = 'vwa-auth';
 const keycloakAuthority = 'https://ais.aisenote.com/keycloak/realms/vwa';
 // const keycloakClientID = 'vwa-auth';
 const keycloakSecret = '7NlhgTsTHE37DWZa5IarN2nVE7qHniwC';

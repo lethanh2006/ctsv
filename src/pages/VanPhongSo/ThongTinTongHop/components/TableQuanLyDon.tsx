@@ -92,14 +92,6 @@ const TableQuanLyDonAdmin = (props: {
       render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
       onCell,
     },
-    // {
-    //   title: 'Mã đơn',
-    //   dataIndex: 'maDon',
-    //   width: 100,
-    //   align: 'center',
-    //   search: 'search',
-    //   onCell,
-    // },
     {
       title: 'Trạng thái',
       dataIndex: 'trangThai',

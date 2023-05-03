@@ -47,17 +47,17 @@ const QuanLyDon = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (pathname?.includes('quanlydondieuphoi')) {
-      if (isDVMC)
-        chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy, isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-      else getAllBieuMauVPSModel();
-    } else {
-      if (isDVMC)
-        chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy, isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-      else getAllBieuMauVPSModel();
-    }
-  }, [idDichVu]);
+  // useEffect(() => {
+  //   if (pathname?.includes('quanlydondieuphoi')) {
+  //     if (isDVMC)
+  //       chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy, isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+  //     else getAllBieuMauVPSModel();
+  //   } else {
+  //     if (isDVMC)
+  //       chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy, isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+  //     else getAllBieuMauVPSModel();
+  //   }
+  // }, [idDichVu]);
 
   return (
     <Card bodyStyle={{ padding: '8px 24px 24px 24px' }} title="Quản lý đơn">
@@ -69,11 +69,11 @@ const QuanLyDon = () => {
           } else {
             setTypeTraKetQua('');
           }
-          if (pathname?.includes('quanlydondieuphoi')) {
-            chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
-          } else {
-            chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
-          }
+          // if (pathname?.includes('quanlydondieuphoi')) {
+          //   chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
+          // } else {
+          //   chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
+          // }
           setTrangThaiQuanLyDon(key);
         }}
         activeKey={trangThaiQuanLyDon}

@@ -416,11 +416,11 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
         <Select
           onChange={(val) => {
             setIsDonCanXuLy(val);
-            if (pathname?.includes('quanlydondieuphoi')) {
-              chuyenVienDieuPhoiGetTongSoDonDVMCModel(val);
-            } else {
-              chuyenVienXuLyGetTongSoDonDVMCModel(val);
-            }
+            // if (pathname?.includes('quanlydondieuphoi')) {
+            //   chuyenVienDieuPhoiGetTongSoDonDVMCModel(val);
+            // } else {
+            //   chuyenVienXuLyGetTongSoDonDVMCModel(val);
+            // }
           }}
           style={{ marginRight: 8, width: 150 }}
           value={isDonCanXuLy}

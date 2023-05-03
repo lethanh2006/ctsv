@@ -595,7 +595,7 @@ const FormBieuMau = (props: {
         break;
       }
       case 'TEXT_BLOCK': {
-        element = <p>{item?.label ?? ''}</p>;
+        element = <p style={{ marginLeft: 12 }}>{item?.label ?? ''}</p>;
         break;
       }
 
@@ -1042,29 +1042,6 @@ const FormBieuMau = (props: {
             )}
           </>
         )}
-
-        {recordDon?.maDon && loaiDichVu !== 'VAN_PHONG_SO' ? (
-          <Form.Item label={'Mã đơn'} style={{ marginLeft: '10px' }}>
-            <>
-              {recordDon?.maDon && (
-                <>
-                  {recordDon?.maDon ?? ''}{' '}
-                  <CopyOutlined
-                    onClick={() => {
-                      const textField = document.createElement('textarea');
-                      textField.innerText = recordDon?.maDon;
-                      document.body.appendChild(textField);
-                      textField.select();
-                      document.execCommand('copy');
-                      textField.remove();
-                      message.success('Copy thành công');
-                    }}
-                  />{' '}
-                </>
-              )}
-            </>
-          </Form.Item>
-        ) : null}
 
         <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
           {!['view', 'handle', 'edit'].includes(props?.type ?? '') && (

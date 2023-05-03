@@ -142,7 +142,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       // notRegex: true,
     },
     {
-      title: 'Mã nhân viên',
+      title: 'Mã sinh viên',
       dataIndex: ['thongTinNguoiTao', 'maSinhVien'],
       width: 150,
       align: 'center',

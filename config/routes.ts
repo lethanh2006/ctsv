@@ -66,71 +66,71 @@
 
   /////////////////////////////
   // DICH VU MOT CUA
+  // {
+  //   name: 'DichVuMotCua',
+  //   icon: 'AuditOutlined',
+  //   path: '/dichvumotcua',
+  //   // access: 'adminVaQuanTri',
+  //   routes: [
+  //     // {
+  //     //   name: 'ThongTinTongHop',
+  //     //   path: './thongtintonghop',
+  //     //   component: './DichVuMotCuaV2/ThongTinTongHop/Admin.tsx',
+  //     //   // access: 'adminAccessFilter',
+  //     //   maChucNang: 'don-dvmc-thao-tac:read-all',
+  //     // },
+  //     {
+  //       name: 'QuanLyBieuMau',
+  //       path: './quanlybieumau',
+  //       component: './DichVuMotCuaV2/QuanLyBieuMau',
+  //       // access: 'adminAccessFilter',
+  //       maChucNang: 'dvmc-thao-tac:read',
+  //     },
+  //     {
+  //       name: 'QuanLyDon',
+  //       path: './quanlydonadmin',
+  //       component: './DichVuMotCuaV2/QuanLyDon/admin',
+  //       // access: 'adminAccessFilter',
+  //       maChucNang: 'don-dvmc-thao-tac:read-all',
+  //     },
+  //   ],
+  // },
   {
     name: 'DichVuMotCua',
     icon: 'AuditOutlined',
     path: '/dichvumotcua',
-    // access: 'adminVaQuanTri',
+    // access: 'nhanVien',
     routes: [
       // {
       //   name: 'ThongTinTongHop',
-      //   path: './thongtintonghop',
-      //   component: './DichVuMotCuaV2/ThongTinTongHop/Admin.tsx',
-      //   // access: 'adminAccessFilter',
+      //   path: './thongtintonghop/quanlydondieuphoi',
+      //   // component: './DichVuMotCuaV2/ThongTinTongHop',
+      //   // access: 'accessFilter',
       //   maChucNang: 'don-dvmc-thao-tac:read-all',
       // },
       {
         name: 'QuanLyBieuMau',
         path: './quanlybieumau',
         component: './DichVuMotCuaV2/QuanLyBieuMau',
-        // access: 'adminAccessFilter',
+        // access: 'accessFilter',
         maChucNang: 'dvmc-thao-tac:read',
       },
       {
-        name: 'QuanLyDon',
-        path: './quanlydonadmin',
-        component: './DichVuMotCuaV2/QuanLyDon/admin',
-        // access: 'adminAccessFilter',
+        name: 'ChuyenVienDieuPhoiQuanLyDon',
+        path: './quanlydondieuphoi',
+        component: './DichVuMotCuaV2/QuanLyDon',
+        // access: 'accessFilter',
         maChucNang: 'don-dvmc-thao-tac:read-all',
       },
+      // {
+      //   name: 'ChuyenVienTiepNhanQuanLyDon',
+      //   path: './quanlydonchuyenvien',
+      //   // component: './DichVuMotCuaV2/QuanLyDon',
+      //   // access: 'accessFilter',
+      //   maChucNang: 'don-dvmc-thao-tac:read-my',
+      // },
     ],
   },
-  // {
-  //   name: 'DichVuMotCua',
-  //   icon: 'AuditOutlined',
-  //   path: '/dichvumotcuacanbo',
-  //   // access: 'nhanVien',
-  //   routes: [
-  //     {
-  //       name: 'ThongTinTongHop',
-  //       path: './thongtintonghop/quanlydondieuphoi',
-  //       // component: './DichVuMotCuaV2/ThongTinTongHop',
-  //       // access: 'accessFilter',
-  //       maChucNang: 'don-dvmc-thao-tac:read-all',
-  //     },
-  //     {
-  //       name: 'QuanLyBieuMau',
-  //       path: './quanlybieumau',
-  //       // component: './DichVuMotCuaV2/QuanLyBieuMau',
-  //       // access: 'accessFilter',
-  //       maChucNang: 'dvmc-thao-tac:read',
-  //     },
-  //     {
-  //       name: 'ChuyenVienDieuPhoiQuanLyDon',
-  //       path: './quanlydondieuphoi',
-  //       // component: './DichVuMotCuaV2/QuanLyDon',
-  //       // access: 'accessFilter',
-  //       maChucNang: 'don-dvmc-thao-tac:read-all',
-  //     },
-  //     {
-  //       name: 'ChuyenVienTiepNhanQuanLyDon',
-  //       path: './quanlydonchuyenvien',
-  //       // component: './DichVuMotCuaV2/QuanLyDon',
-  //       // access: 'accessFilter',
-  //       maChucNang: 'don-dvmc-thao-tac:read-my',
-  //     },
-  //   ],
-  // },
 
   {
     path: '/',

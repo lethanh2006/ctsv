@@ -180,7 +180,13 @@ const QuanLyBieuMau = () => {
                 }}
                 title="Bạn có chắc chắn muốn xóa?"
               >
-                <Button disabled={!isDelete} icon={<DeleteOutlined />} shape="circle" />
+                <Button
+                  type="primary"
+                  danger
+                  disabled={!isDelete}
+                  icon={<DeleteOutlined />}
+                  shape="circle"
+                />
               </Popconfirm>
             </Tooltip>
           </>
@@ -199,7 +205,7 @@ const QuanLyBieuMau = () => {
         widthDrawer={!isLargeScreen ? '80%' : '60%'}
         formType="Drawer"
         otherProps={{ scroll: { x: 1100 } }}
-        title="Quản lý dịch vụ"
+        title="Quản lý biểu mẫu"
         modelName="dichvumotcuav2"
         columns={columns}
         loading={loading}
