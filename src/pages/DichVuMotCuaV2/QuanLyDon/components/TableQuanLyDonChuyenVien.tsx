@@ -13,6 +13,7 @@ import {
   DeleteOutlined,
   FileDoneOutlined,
   FileTextOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import {
   Button,
@@ -32,6 +33,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
+import FormTraLoiPhanHoi from './FormTraLoiPhanHoi';
 
 const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   const {
@@ -68,6 +70,8 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     chuyenVienDieuPhoiGetTongSoDonDVMCModel,
     chuyenVienXuLyGetTongSoDonDVMCModel,
   } = useModel('dashboard');
+
+  const { setVisibleForm, visibleForm } = useModel('phanhoi');
 
   const [type, setType] = useState<'handle' | 'view' | 'create' | 'edit'>('handle');
 
@@ -325,6 +329,17 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                 icon={<EyeOutlined />}
               />
             </Tooltip> */}
+            <Divider type="vertical" />
+            <Tooltip title="Trả lời phản hồi">
+              <Button
+                onClick={() => {
+                  setRecordDon(recordDonColumn);
+                  setVisibleForm(true);
+                }}
+                icon={<QuestionCircleOutlined />}
+                shape="circle"
+              />
+            </Tooltip>
             {trangThaiQuanLyDon === 'PROCESSING' && (
               <>
                 <Divider type="vertical" />
@@ -403,13 +418,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       scroll={{ x: 1350 }}
       loading={loading}
       getData={() => {
-        if (pathname?.includes('quanlydondieuphoi')) {
-          if (isDVMC) chuyenVienDieuPhoiGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-          else chuyenVienDieuPhoiGetDonVpsModel();
-        } else {
-          if (isDVMC) chuyenVienXuLyGetDonModel('DVMC');
-          else chuyenVienXuLyGetDonVpsModel();
-        }
+        chuyenVienDieuPhoiGetDonModel('DVMC');
       }}
     >
       {trangThaiQuanLyDon === 'PROCESSING' && (
@@ -507,6 +516,15 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
             <TableLichSuTraKetQua data={recordDon?.lichSuChinhSua ?? []} />
           </Tabs.TabPane>
         </Tabs>
+      </Modal>
+      <Modal
+        footer={false}
+        visible={visibleForm}
+        onCancel={() => setVisibleForm(false)}
+        bodyStyle={{ padding: 0 }}
+        width={600}
+      >
+        <FormTraLoiPhanHoi />
       </Modal>
     </TableBase>
   );

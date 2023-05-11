@@ -106,8 +106,8 @@ const TableBase = (props: Props) => {
   useEffect(() => {
     return () => {
       if (noCleanUp !== true) {
-        setCondition({});
-        setFilterInfo({});
+        if (setCondition) setCondition({});
+        if (setFilterInfo) setFilterInfo({});
       }
     };
   }, []);
@@ -169,8 +169,8 @@ const TableBase = (props: Props) => {
             const cond = { ...condition };
             filter[type === 'string' ? dataIndex : dataIndex?.join('.')] = [];
             cond[type === 'string' ? dataIndex : dataIndex?.join('.')] = undefined;
-            setFilterInfo(filter);
-            setCondition(cond);
+            if (setFilterInfo) setFilterInfo(filter);
+            if (setCondition) setCondition(cond);
             if (setQuery)
               setQuery({
                 ...query,
@@ -315,7 +315,8 @@ const TableBase = (props: Props) => {
 
     const tmpCond = _.clone(condition || {});
     const tmpSort = _.clone(sort || {});
-    setFilterInfo({ ...filterInfo, ...filters, sort: columnKey || field, order: orderValue });
+    if (setFilterInfo)
+      setFilterInfo({ ...filterInfo, ...filters, sort: columnKey || field, order: orderValue });
     Object.keys(filters).forEach((key) => {
       // if (!filters?.[key]?.length) {
       //   return;

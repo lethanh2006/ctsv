@@ -1,9 +1,9 @@
 import axios from '@/utils/axios';
-import { ip3, keycloakClientID, keycloakTokenEndpoint } from '@/utils/ip';
+import { ip3, ipQldt, keycloakClientID, keycloakTokenEndpoint } from '@/utils/ip';
 import queryString from 'query-string';
 
 export async function getInfo() {
-  return axios.get(`${ip3}/user/me`);
+  return axios.get(`${ipQldt}/user/me`);
 }
 
 export async function getInfoSinhVien() {

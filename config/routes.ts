@@ -115,7 +115,18 @@
       //   // access: 'accessFilter',
       //   maChucNang: 'don-dvmc-thao-tac:read-my',
       // },
+      {
+        name: 'CauHoiThuongGap',
+        path: './cauhoithuonggap',
+        component: './CauHoiThuongGap',
+      },
     ],
+  },
+  {
+    name: 'VanBanHuongDan',
+    path: '/van-ban-huong-dan',
+    component: './VanBanHuongDan',
+    icon: 'FileOutlined',
   },
 
   // SINH VIEN
