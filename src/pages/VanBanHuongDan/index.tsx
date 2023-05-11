@@ -133,37 +133,35 @@ const VanBanHuongDanComponent = () => {
               key={item._id}
               onMouseOut={(e) => handleOnMouseOut(e.target)}
               onMouseOver={(e) => handleOnMouseOver(e.target)}
-              actions={
-                access.adminVaQuanTri || access.nhanVien
-                  ? [
-                      <Tooltip key={item._id} title="Chỉnh sửa">
-                        <Button
-                          // disabled={!canUpdate}
-                          shape="circle"
-                          icon={<EditOutlined />}
-                          title="Sửa"
-                          onClick={() => handleEdit(item)}
-                        />
-                      </Tooltip>,
-                      <Tooltip key={item._id} title="Xóa">
-                        <Popconfirm
-                          // disabled={!canDelete}
-                          title="Bạn có chắc muốn xóa?"
-                          // eslint-disable-next-line no-underscore-dangle
-                          onConfirm={() => handleDel(item._id)}
-                        >
-                          <Button
-                            // disabled={!canDelete}
-                            type="primary"
-                            shape="circle"
-                            icon={<DeleteOutlined />}
-                            title="Xóa"
-                          />
-                        </Popconfirm>
-                      </Tooltip>,
-                    ]
-                  : []
-              }
+              actions={[
+                <Tooltip key={item._id} title="Chỉnh sửa">
+                  <Button
+                    type="primary"
+                    // disabled={!canUpdate}
+                    shape="circle"
+                    icon={<EditOutlined />}
+                    title="Sửa"
+                    onClick={() => handleEdit(item)}
+                  />
+                </Tooltip>,
+                <Tooltip key={item._id} title="Xóa">
+                  <Popconfirm
+                    // disabled={!canDelete}
+                    title="Bạn có chắc muốn xóa?"
+                    // eslint-disable-next-line no-underscore-dangle
+                    onConfirm={() => handleDel(item._id)}
+                  >
+                    <Button
+                      danger
+                      // disabled={!canDelete}
+                      type="primary"
+                      shape="circle"
+                      icon={<DeleteOutlined />}
+                      title="Xóa"
+                    />
+                  </Popconfirm>
+                </Tooltip>,
+              ]}
             >
               <List.Item.Meta
                 avatar={

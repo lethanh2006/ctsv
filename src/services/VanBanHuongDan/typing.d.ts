@@ -16,7 +16,7 @@ declare module VanBanHuongDan {
     ten: string;
     moTa: string;
     doiTuong: EDoiTuong;
-    vaiTro: string;
+    vaiTro: string[];
     danhSachTep: IFile[];
     phamVi: EPhamVi;
     hinhThucDaoTaoId: number;

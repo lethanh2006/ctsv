@@ -34,6 +34,7 @@ const FormFile = () => {
             if (record) record.danhSachTep.push(values);
           }
           if (record) putModel(record?._id ?? '', record);
+          setVisibleFormFile(false);
         }}
         form={form}
       >

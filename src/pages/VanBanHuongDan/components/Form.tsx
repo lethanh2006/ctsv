@@ -23,8 +23,17 @@ const FormBaiHoc = () => {
       <Form
         labelCol={{ span: 24 }}
         onFinish={async (values: VanBanHuongDan.IRecord) => {
-          if (edit) putModel(record?._id ?? '', { ...values, doiTuong: EDoiTuong.TAT_CA }, getData);
-          else postModel({ ...values, doiTuong: EDoiTuong.TAT_CA }, getData);
+          if (edit)
+            putModel(
+              record?._id ?? '',
+              { ...values, doiTuong: EDoiTuong.TAT_CA, vaiTro: ['Admin', 'User'] },
+              getData,
+            );
+          else
+            postModel(
+              { ...values, doiTuong: EDoiTuong.TAT_CA, vaiTro: ['Admin', 'User'] },
+              getData,
+            );
         }}
         form={form}
       >
