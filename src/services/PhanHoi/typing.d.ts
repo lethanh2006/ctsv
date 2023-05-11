@@ -1,3 +1,4 @@
+import type { DichVuMotCuaV2 } from '../DichVuMotCuaV2/typing';
 import type { ELoaiPhanHoi } from './constant';
 
 declare module PhanHoi {
@@ -5,7 +6,7 @@ declare module PhanHoi {
     _id: string;
     createdAt: string;
     updatedAt: string;
-    idDonDVMC: string;
+    idDonDVMC: DichVuMotCuaV2.Don;
     noiDungPhanHoi: string;
     noiDungTraLoiPhanHoi: string;
     daTraLoiPhanHoi: boolean;

@@ -3,11 +3,14 @@ import { traLoiPhanHoiDvmc } from '@/services/PhanHoi';
 import type { PhanHoi } from '@/services/PhanHoi/typing';
 import { ip3 } from '@/utils/ip';
 import { message } from 'antd';
+import { useState } from 'react';
 
 export default () => {
   const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi', 'condition', undefined, ip3);
 
   const { setLoading, setVisibleForm } = objInit;
+
+  const [filterInfo, setFilterInfo] = useState<any>({});
 
   const traLoiPhanHoiDvmcModel = async (
     idDonDVMC: string,
@@ -23,6 +26,8 @@ export default () => {
   };
 
   return {
+    filterInfo,
+    setFilterInfo,
     traLoiPhanHoiDvmcModel,
     ...objInit,
   };

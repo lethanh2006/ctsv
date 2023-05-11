@@ -11,6 +11,7 @@ import {
   CloseOutlined,
   CopyOutlined,
   DeleteOutlined,
+  EditOutlined,
   FileDoneOutlined,
   FileTextOutlined,
   QuestionCircleOutlined,
@@ -22,6 +23,7 @@ import {
   Menu,
   Modal,
   Popconfirm,
+  Popover,
   Select,
   Tabs,
   Tag,
@@ -109,9 +111,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   };
 
   const getData = () => {
-    // if (arrPathName?.includes('quanlydondieuphoi'))
-    chuyenVienDieuPhoiGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-    // else chuyenVienXuLyGetDonModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+    chuyenVienDieuPhoiGetDonModel('DVMC');
   };
 
   const onCell = (recordDonColumn: DichVuMotCuaV2.Don) => ({
@@ -262,140 +262,148 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     {
       title: 'Thao tác',
       align: 'center',
-      width: 170,
+      width: 100,
       fixed: 'right',
       render: (recordDonColumn: DichVuMotCuaV2.Don) => {
         return (
-          <>
-            <Tooltip title="Xuất mẫu đơn">
-              <Dropdown
-                overlay={
-                  <Menu
-                    onClick={(item: any) =>
-                      onClickMenuExport(
-                        recordDonColumn?._id ?? '',
-                        item,
-                        'MAU_DON',
-                        `BieuMau_${recordDonColumn?.thongTinDichVu?.ten}_${recordDonColumn?.thongTinNguoiTao?.maSinhVien}_${recordDonColumn?.thongTinNguoiTao?.hoTen}`,
-                      )
-                    }
-                  >
-                    <Menu.Item key="word">Tải về</Menu.Item>
-                    <Menu.Item key="pdf">In mẫu</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button
-                  shape="circle"
-                  loading={loading}
-                  icon={<FileTextOutlined />}
-                  type="primary"
-                />
-              </Dropdown>
-            </Tooltip>
-            <Divider type="vertical" />
-            <Tooltip title="Xuất mẫu trả kết quả">
-              <Dropdown
-                overlay={
-                  <Menu
-                    onClick={(item: any) =>
-                      onClickMenuExport(
-                        recordDonColumn?._id ?? '',
-                        item,
-                        'TRA_LOI',
-                        `KetQua_${recordDonColumn?.thongTinDichVu?.ten}_${recordDonColumn?.thongTinNguoiTao?.maSinhVien}_${recordDonColumn?.thongTinNguoiTao?.hoTen}`,
-                      )
-                    }
-                  >
-                    <Menu.Item key="word">Tải về</Menu.Item>
-                    <Menu.Item key="pdf">In mẫu</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button
-                  shape="circle"
-                  loading={loading}
-                  icon={<FileDoneOutlined />}
-                  type="primary"
-                />
-              </Dropdown>
-            </Tooltip>
-            {/* <Tooltip title="Chi tiết">
-              <Button
-                onClick={() => {
-                  handleDon(recordDonColumn);
-                }}
-                shape="circle"
-                icon={<EyeOutlined />}
-              />
-            </Tooltip> */}
-            <Divider type="vertical" />
-            <Tooltip title="Trả lời phản hồi">
-              <Button
-                onClick={() => {
-                  setRecordDon(recordDonColumn);
-                  setVisibleForm(true);
-                }}
-                icon={<QuestionCircleOutlined />}
-                shape="circle"
-              />
-            </Tooltip>
-            {trangThaiQuanLyDon === 'PROCESSING' && (
+          <Popover
+            content={
               <>
+                {' '}
+                <Tooltip title="Xuất mẫu đơn">
+                  <Dropdown
+                    overlay={
+                      <Menu
+                        onClick={(item: any) =>
+                          onClickMenuExport(
+                            recordDonColumn?._id ?? '',
+                            item,
+                            'MAU_DON',
+                            `BieuMau_${recordDonColumn?.thongTinDichVu?.ten}_${recordDonColumn?.thongTinNguoiTao?.maSinhVien}_${recordDonColumn?.thongTinNguoiTao?.hoTen}`,
+                          )
+                        }
+                      >
+                        <Menu.Item key="word">Tải về</Menu.Item>
+                        <Menu.Item key="pdf">In mẫu</Menu.Item>
+                      </Menu>
+                    }
+                  >
+                    <Button
+                      shape="circle"
+                      loading={loading}
+                      icon={<FileTextOutlined />}
+                      type="primary"
+                    />
+                  </Dropdown>
+                </Tooltip>
                 <Divider type="vertical" />
-                <Tooltip title="Xóa đơn" placement="bottom">
-                  <Popconfirm
-                    onConfirm={async () => {
-                      await adminDeleteDonModel(
-                        recordDonColumn?._id ?? '',
-                        pathname?.includes('quanlydondieuphoi') ? 'dieuphoi' : 'tiepnhan',
-                      );
-                      if (pathname?.includes('quanlydondieuphoi')) {
-                        chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
-                      } else {
-                        chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
-                      }
+                <Tooltip title="Xuất mẫu trả kết quả">
+                  <Dropdown
+                    overlay={
+                      <Menu
+                        onClick={(item: any) =>
+                          onClickMenuExport(
+                            recordDonColumn?._id ?? '',
+                            item,
+                            'TRA_LOI',
+                            `KetQua_${recordDonColumn?.thongTinDichVu?.ten}_${recordDonColumn?.thongTinNguoiTao?.maSinhVien}_${recordDonColumn?.thongTinNguoiTao?.hoTen}`,
+                          )
+                        }
+                      >
+                        <Menu.Item key="word">Tải về</Menu.Item>
+                        <Menu.Item key="pdf">In mẫu</Menu.Item>
+                      </Menu>
+                    }
+                  >
+                    <Button
+                      shape="circle"
+                      loading={loading}
+                      icon={<FileDoneOutlined />}
+                      type="primary"
+                    />
+                  </Dropdown>
+                </Tooltip>
+                {/* <Tooltip title="Chi tiết">
+          <Button
+            onClick={() => {
+              handleDon(recordDonColumn);
+            }}
+            shape="circle"
+            icon={<EyeOutlined />}
+          />
+        </Tooltip> */}
+                <Divider type="vertical" />
+                <Tooltip title="Trả lời phản hồi">
+                  <Button
+                    disabled={!recordDonColumn?.noiDungPhanHoi || recordDonColumn.daTraLoiPhanHoi}
+                    onClick={() => {
+                      setRecordDon(recordDonColumn);
+                      setVisibleForm(true);
                     }}
-                    title="Bạn có chắc chắn xóa đơn này?"
-                  >
-                    <Button shape="circle">
-                      <DeleteOutlined />
-                    </Button>
-                  </Popconfirm>
+                    icon={<QuestionCircleOutlined />}
+                    shape="circle"
+                  />
                 </Tooltip>
+                {trangThaiQuanLyDon === 'PROCESSING' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xóa đơn" placement="bottom">
+                      <Popconfirm
+                        onConfirm={async () => {
+                          await adminDeleteDonModel(
+                            recordDonColumn?._id ?? '',
+                            pathname?.includes('quanlydondieuphoi') ? 'dieuphoi' : 'tiepnhan',
+                          );
+                          if (pathname?.includes('quanlydondieuphoi')) {
+                            chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
+                          } else {
+                            chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
+                          }
+                        }}
+                        title="Bạn có chắc chắn xóa đơn này?"
+                      >
+                        <Button type="primary" danger shape="circle">
+                          <DeleteOutlined />
+                        </Button>
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+                {typeTraKetQua === 'CHUA_TRA_KQ' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xác nhận đã trả đơn">
+                      <Popconfirm
+                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
+                        onConfirm={() =>
+                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
+                        }
+                      >
+                        <Button icon={<CheckOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+                {typeTraKetQua === 'DA_TRA_KQ' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xác nhận lại chưa trả đơn">
+                      <Popconfirm
+                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
+                        onConfirm={() =>
+                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
+                        }
+                      >
+                        <Button icon={<CloseOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
               </>
-            )}
-            {typeTraKetQua === 'CHUA_TRA_KQ' && (
-              <>
-                <Divider type="vertical" />
-                <Tooltip title="Xác nhận đã trả đơn">
-                  <Popconfirm
-                    title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
-                    onConfirm={() =>
-                      updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
-                    }
-                  >
-                    <Button icon={<CheckOutlined />} shape="circle" />
-                  </Popconfirm>
-                </Tooltip>
-              </>
-            )}
-            {typeTraKetQua === 'DA_TRA_KQ' && (
-              <>
-                <Divider type="vertical" />
-                <Tooltip title="Xác nhận lại chưa trả đơn">
-                  <Popconfirm
-                    title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
-                    onConfirm={() =>
-                      updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
-                    }
-                  >
-                    <Button icon={<CloseOutlined />} shape="circle" />
-                  </Popconfirm>
-                </Tooltip>
-              </>
-            )}
-          </>
+            }
+          >
+            <Button icon={<EditOutlined />} type="primary" />
+          </Popover>
         );
       },
     },
@@ -417,9 +425,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       dataState="danhSachDon"
       scroll={{ x: 1350 }}
       loading={loading}
-      getData={() => {
-        chuyenVienDieuPhoiGetDonModel('DVMC');
-      }}
+      getData={getData}
     >
       {trangThaiQuanLyDon === 'PROCESSING' && (
         <Select
@@ -524,7 +530,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
         bodyStyle={{ padding: 0 }}
         width={600}
       >
-        <FormTraLoiPhanHoi />
+        <FormTraLoiPhanHoi getData={getData} />
       </Modal>
     </TableBase>
   );

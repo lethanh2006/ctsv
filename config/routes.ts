@@ -109,12 +109,19 @@
       //   // access: 'accessFilter',
       //   maChucNang: 'don-dvmc-thao-tac:read-my',
       // },
+
       {
-        name: 'CauHoiThuongGap',
-        path: './cauhoithuonggap',
-        component: './CauHoiThuongGap',
+        name: 'PhanHoi',
+        path: './phanhoi',
+        component: './PhanHoi',
       },
     ],
+  },
+  {
+    icon: 'QuestionOutlined',
+    name: 'CauHoiThuongGap',
+    path: '/cau-hoi-thuong-gap',
+    component: './CauHoiThuongGap',
   },
   {
     name: 'VanBanHuongDan',

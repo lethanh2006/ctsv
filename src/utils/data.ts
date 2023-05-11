@@ -1,6 +1,11 @@
 const data: any = {
   gioiTinh: ['Nam', 'Nữ'],
 
+  daTraLoiPhanHoi: [
+    { value: false, text: 'Chưa trả lời' },
+    { value: true, text: 'Đã trả lời' },
+  ],
+
   error: {
     BAD_REQUEST_DEVICE_IDENDIFIED: 'BAD_REQUEST_DEVICE_IDENDIFIED',
     BAD_REQUEST_WRONG_PASSWORD: 'Sai mật khẩu',

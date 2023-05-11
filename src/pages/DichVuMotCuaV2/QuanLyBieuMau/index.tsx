@@ -3,7 +3,7 @@ import TableBase from '@/components/OldTable';
 import FormView from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 import type { IColumn } from '@/utils/interfaces';
-import { useCheckAccess } from '@/utils/utils';
+// import { useCheckAccess } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
@@ -36,9 +36,9 @@ const QuanLyBieuMau = () => {
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [visible, setVisible] = useState<boolean>(false);
 
-  const isCreate = useCheckAccess('dvmc-thao-tac:create');
-  const isUpdate = useCheckAccess('dvmc-thao-tac:update');
-  const isDelete = useCheckAccess('dvmc-thao-tac:delete');
+  // const isCreate = useCheckAccess('dvmc-thao-tac:create');
+  // const isUpdate = useCheckAccess('dvmc-thao-tac:update');
+  // const isDelete = useCheckAccess('dvmc-thao-tac:delete');
   const { pathname } = window.location;
   const isDVMC = pathname?.includes('dichvumotcua') ?? false;
 
@@ -154,7 +154,7 @@ const QuanLyBieuMau = () => {
             <Divider type="vertical" />
             <Tooltip title="Chỉnh sửa">
               <Button
-                disabled={!isUpdate}
+                // disabled={!isUpdate}
                 onClick={() => {
                   // if (record?.thongTinThuTuc?.maLePhi) {
                   //   getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
@@ -174,7 +174,7 @@ const QuanLyBieuMau = () => {
             <Divider type="vertical" />
             <Tooltip title="Xóa">
               <Popconfirm
-                disabled={!isDelete}
+                // disabled={!isDelete}
                 onConfirm={() => {
                   deleteBieuMauAdminModel(record._id);
                 }}
@@ -183,7 +183,7 @@ const QuanLyBieuMau = () => {
                 <Button
                   type="primary"
                   danger
-                  disabled={!isDelete}
+                  // disabled={!isDelete}
                   icon={<DeleteOutlined />}
                   shape="circle"
                 />
@@ -213,20 +213,18 @@ const QuanLyBieuMau = () => {
         getData={() => getBieuMauAdminModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO')}
         Form={Form}
       >
-        {isCreate && (
-          <Button
-            onClick={() => {
-              setVisibleForm(true);
-              setEdit(false);
-              setRecord({} as DichVuMotCuaV2.BieuMau);
-              setCurrent(isDVMC ? 0 : 1);
-            }}
-            type="primary"
-            icon={<PlusOutlined />}
-          >
-            Thêm mới
-          </Button>
-        )}
+        <Button
+          onClick={() => {
+            setVisibleForm(true);
+            setEdit(false);
+            setRecord({} as DichVuMotCuaV2.BieuMau);
+            setCurrent(isDVMC ? 0 : 1);
+          }}
+          type="primary"
+          icon={<PlusOutlined />}
+        >
+          Thêm mới
+        </Button>
       </TableBase>
 
       <Modal

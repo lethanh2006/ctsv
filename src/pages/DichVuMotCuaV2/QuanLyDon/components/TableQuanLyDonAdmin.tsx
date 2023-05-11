@@ -2,15 +2,16 @@
 import TableBase from '@/components/OldTable';
 import ThanhToan from '@/components/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import { ColorTrangThaiDonMotCua, ETrangThaiDonVps, TrangThaiDonDVMC } from '@/utils/constants';
+import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
 import type { IColumn } from '@/utils/interfaces';
-import { includes, useCheckAccess } from '@/utils/utils';
+import { includes } from '@/utils/utils';
 import {
+  CheckOutlined,
+  CloseOutlined,
   DeleteOutlined,
   FileDoneOutlined,
   FileTextOutlined,
-  CheckOutlined,
-  CloseOutlined,
 } from '@ant-design/icons';
 import {
   Button,
@@ -29,7 +30,6 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 
 const TableQuanLyDonAdmin = (props: {
   hideFilter?: boolean;
@@ -93,7 +93,7 @@ const TableQuanLyDonAdmin = (props: {
     style: { cursor: 'pointer' },
   });
 
-  const canDelete = useCheckAccess('don_dvmc_thao-tac:delete');
+  // const canDelete = useCheckAccess('don_dvmc_thao-tac:delete');
 
   const columns: IColumn<DichVuMotCuaV2.Don>[] = [
     {
@@ -260,7 +260,7 @@ const TableQuanLyDonAdmin = (props: {
                 <Divider type="vertical" />
                 <Tooltip title="Xóa đơn" placement="bottom">
                   <Popconfirm
-                    disabled={!canDelete}
+                    // disabled={!canDelete}
                     onConfirm={async () => {
                       await adminDeleteDonModel(recordDon?._id ?? '');
                       adminGetTongSoDonDVMCModel();
@@ -270,7 +270,7 @@ const TableQuanLyDonAdmin = (props: {
                     }}
                     title="Bạn có chắc chắn xóa đơn này?"
                   >
-                    <Button disabled={!canDelete} shape="circle">
+                    <Button shape="circle">
                       <DeleteOutlined />
                     </Button>
                   </Popconfirm>

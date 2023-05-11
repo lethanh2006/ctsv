@@ -18,7 +18,7 @@ import {
   includes,
   renderFileList,
   uploadMultiFile,
-  useCheckAccess,
+  // useCheckAccess,
 } from '@/utils/utils';
 import { CopyOutlined } from '@ant-design/icons';
 import {
@@ -73,11 +73,11 @@ const FormBieuMau = (props: {
   isMuonPhongHop?: boolean;
   isBaoCaoSuCo?: boolean;
 }) => {
-  const chuyenVienDieuPhoiDuyetDon = useCheckAccess('don-dvmc-thao-tac:duyet-all');
-  const chuyenVienXuLyDuyetDon = useCheckAccess('don-dvmc-thao-tac:duyet-my');
-  const canDieuPhoiDon = useCheckAccess('don-dvmc-thao-tac:dieu-phoi');
-  const isCVDieuPhoi = useCheckAccess('don-dvmc-thao-tac:read-all');
-  const isQuanTriVps = useCheckAccess('quan-tri-vps');
+  // const chuyenVienDieuPhoiDuyetDon = useCheckAccess('don-dvmc-thao-tac:duyet-all');
+  // const chuyenVienXuLyDuyetDon = useCheckAccess('don-dvmc-thao-tac:duyet-my');
+  // const canDieuPhoiDon = useCheckAccess('don-dvmc-thao-tac:dieu-phoi');
+  // const isCVDieuPhoi = useCheckAccess('don-dvmc-thao-tac:read-all');
+  // const isQuanTriVps = useCheckAccess('quan-tri-vps');
 
   const [form] = Form.useForm();
   const access = useAccess();
@@ -610,12 +610,10 @@ const FormBieuMau = (props: {
       case 'MY_YEAR': {
         initialValue = item?.value;
         ruleElement = [...rules.text];
-        const namHoc = access.sinhVien
-          ? danhSachNamHoc
-          : [
-              // { id: 1, ten_nam_hoc: '2021-2022' },
-              // { id: 2, ten_nam_hoc: '2022-2023' },
-            ];
+        const namHoc = [
+          // { id: 1, ten_nam_hoc: '2021-2022' },
+          // { id: 2, ten_nam_hoc: '2022-2023' },
+        ];
         element = access.sinhVien ? (
           <Select allowClear placeholder={item?.label ?? ''}>
             {namHoc?.map((nam: any) => (
@@ -815,28 +813,7 @@ const FormBieuMau = (props: {
           traKetQua: props?.record?.thongTinDichVu?.traKetQua,
           daTraKetQua: false,
           idCoSoVatChat: props?.isMuonPhongHop ? selectedRow?._id : null,
-        }).then(() => {
-          if (props?.type === 'muonCsvc') {
-            if (isQuanTriVps) {
-              adminGetDonVpsModel(
-                props?.isMuonPhongHop
-                  ? MaDichVuVps.MUON_PHONG_HOC
-                  : props?.isBaoCaoSuCo
-                  ? MaDichVuVps.BAO_CAO_SU_CO
-                  : MaDichVuVps.MUON_OTO,
-              );
-            } else {
-              getDonSinhVienModel(
-                props?.isMuonPhongHop
-                  ? MaDichVuVps.MUON_PHONG_HOC
-                  : props?.isBaoCaoSuCo
-                  ? MaDichVuVps.BAO_CAO_SU_CO
-                  : MaDichVuVps.MUON_OTO,
-              );
-            }
-            setVisibleForm(false);
-          }
-        });
+        }).then(() => {});
       }
     }
   };
@@ -1053,7 +1030,7 @@ const FormBieuMau = (props: {
             <>
               {props.record?.thongTinDichVu?.maDichVu === MaDichVuVps.MUON_OTO ? (
                 <Button
-                  disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
+                  // disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
                   onClick={() => handleChonXe(props.record?.thongTinDichVu)}
                   style={{
                     marginRight: 8,
@@ -1066,7 +1043,7 @@ const FormBieuMau = (props: {
                 </Button>
               ) : props.record?.thongTinDichVu?.maDichVu === MaDichVuVps.MUON_PHONG_HOC ? (
                 <Button
-                  disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
+                  // disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
                   onClick={() => setVisibleChonPhong(true)}
                   style={{
                     marginRight: 8,
@@ -1079,7 +1056,7 @@ const FormBieuMau = (props: {
                 </Button>
               ) : (
                 <Button
-                  disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
+                  // disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
                   onClick={async () => {
                     const values = form.getFieldsValue();
                     const { duLieuBieuMau } = await onSubmitForm(values);
@@ -1101,7 +1078,7 @@ const FormBieuMau = (props: {
               )}
 
               <Button
-                disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
+                // disabled={!chuyenVienDieuPhoiDuyetDon && !chuyenVienXuLyDuyetDon}
                 onClick={() => {
                   setVisibleFormXuLy(true);
                   setTypeXuLy('not-ok');
@@ -1119,7 +1096,7 @@ const FormBieuMau = (props: {
 
               {arrPathName?.includes('quanlydondieuphoi') && (
                 <Button
-                  disabled={!canDieuPhoiDon}
+                  // disabled={!canDieuPhoiDon}
                   style={{
                     marginRight: 8,
                     backgroundColor: '#1890ff',
