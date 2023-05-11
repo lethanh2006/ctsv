@@ -82,14 +82,17 @@ const PhanHoiComponent = () => {
       render: (val) => (
         <Tag color={!val ? '#dc3545' : '#28a745'}>{val ? 'Đã trả lời' : 'Chưa trả lời'}</Tag>
       ),
+      onCell,
     },
     {
       title: 'Nội dung phản hồi',
       dataIndex: 'noiDungPhanHoi',
+      onCell,
     },
     {
       title: 'Nội dung trả lời phản hồi',
       dataIndex: 'noiDungTraLoiPhanHoi',
+      onCell,
     },
     {
       title: 'Thao tác',

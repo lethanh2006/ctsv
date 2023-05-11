@@ -169,6 +169,7 @@ declare module DichVuMotCuaV2 {
       traKetQua: boolean;
       cauTraLoiMacDinh: string;
       maDichVu: MaDichVuVps;
+      thongTinThuTuc?: ThongTinThuTuc;
     };
     maDon: string;
     idCoSoVatChat?: {
