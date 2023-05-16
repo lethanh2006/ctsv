@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { type TableStaticProps } from './typing';
 import './style.less';
-import _ from '@umijs/deps/compiled/lodash';
+import _ from 'lodash';
 
 const TableStaticData = (props: TableStaticProps) => {
   const { Form, showEdit, setShowEdit, addStt, data, children, hasCreate, hasTotal } = props;
@@ -89,13 +89,13 @@ const TableStaticData = (props: TableStaticProps) => {
   });
 
   const columns = props.columns
-    ?.filter((item: any) => !item.hide)
-    ?.map((item: any) => ({
+    ?.filter((item) => !item.hide)
+    ?.map((item) => ({
       ...item,
-      ...(item?.search === 'search'
+      ...(item?.filterType === 'string'
         ? getColumnSearchProps(item.dataIndex)
-        : item?.search === 'sort'
-        ? { sorter: (a: any, b: any) => a[item.dataIndex] - b[item.dataIndex] }
+        : item?.sortable
+        ? { sorter: (a: any, b: any) => a[item.dataIndex as string] - b[item.dataIndex as string] }
         : {}),
     }));
 
@@ -149,7 +149,7 @@ const TableStaticData = (props: TableStaticProps) => {
         }}
         loading={props?.loading}
         size={props.size}
-        scroll={scroll ?? { x: _.sum(columns.map((item) => item.width ?? 80)) }}
+        scroll={{ x: _.sum(columns.map((item) => item.width ?? 80)) }}
         {...props?.otherProps}
       />
       {Form && (

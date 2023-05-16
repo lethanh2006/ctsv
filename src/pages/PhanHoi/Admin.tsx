@@ -9,6 +9,7 @@ import Form from './components/Form';
 import { type IColumn } from '@/components/Table/typing';
 
 const PhanHoi = () => {
+  const access = useAccess();
   const { setVisibleForm, setRecord, setDaTraLoi, daTraLoi, setCondition, page, limit } =
     useModel('phanhoi');
   // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('lophanhchinh');
@@ -19,6 +20,7 @@ const PhanHoi = () => {
 
   useEffect(() => {
     setCondition({ daTraLoiPhanHoi: false });
+    // getAllHinhThucDaoTaoModel();
   }, []);
 
   const columns: IColumn<PhanHoi.IRecord>[] = [

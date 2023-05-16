@@ -1,15 +1,16 @@
 import UploadFile from '@/components/Upload/UploadFile';
 import rules from '@/utils/rules';
-import { ArrowRightOutlined, CloseOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, CloseOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Form, InputNumber, Row, Select, Space, message } from 'antd';
 import { pick } from 'lodash';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import * as XLSX from 'xlsx';
+import fileDownload from 'js-file-download';
 
-const ChooseFileImport = (props: { onChange: () => void; onCancel: any }) => {
-  const { onChange, onCancel } = props;
-  const { setHeadLine, setFileData } = useModel('import');
+const ChooseFileImport = (props: { onChange: () => void; onCancel: any; getTemplate: any }) => {
+  const { onChange, onCancel, getTemplate } = props;
+  const { setHeadLine, setFileData, setStartLine } = useModel('import');
   const [workbook, setWorkbook] = useState<XLSX.WorkBook>();
   const [sheetNames, setSheetNames] = useState<string[]>();
   const [form] = Form.useForm();
@@ -29,7 +30,7 @@ const ChooseFileImport = (props: { onChange: () => void; onCancel: any }) => {
     setWorkbook(wb);
     const sheets = wb.SheetNames;
     setSheetNames(sheets);
-    form.setFieldsValue({ sheet: sheets[0] });
+    form.setFieldsValue({ sheet: sheets[0], line: 1 });
   };
 
   const onChangeUpload = (value: { fileList: any[] }) => {
@@ -69,6 +70,7 @@ const ChooseFileImport = (props: { onChange: () => void; onCancel: any }) => {
         .map((item) => pick(item, cols)); // Chỉ lấy từ data những trường cần lấy
 
       if (data.length > 0 && cols.length > 0) {
+        setStartLine(line + 1);
         setHeadLine(hline);
         setFileData(data);
         onChange();
@@ -76,6 +78,14 @@ const ChooseFileImport = (props: { onChange: () => void; onCancel: any }) => {
       }
     }
     message.error('Không lấy được dữ liệu');
+  };
+
+  const onDownloadTemplate = () => {
+    try {
+      getTemplate().then((blob: any) => fileDownload(blob, 'File biểu mẫu.xlsx'));
+    } catch (er) {
+      console.log('🚀 er:', er);
+    }
   };
 
   return (
@@ -114,6 +124,16 @@ const ChooseFileImport = (props: { onChange: () => void; onCancel: any }) => {
             />
           </Form.Item>
         </Col>
+
+        {getTemplate ? (
+          <Col span={24} style={{ textAlign: 'center', marginTop: 8 }}>
+            <i>Sử dụng tập dữ liệu mẫu để việc xử lý được thực hiện nhanh chóng và chính xác</i>
+            <br />
+            <Button icon={<DownloadOutlined />} type="link" onClick={onDownloadTemplate}>
+              Tải tập tin mẫu
+            </Button>
+          </Col>
+        ) : null}
 
         <Col span={24}>
           <Space style={{ marginTop: 12, justifyContent: 'space-between', width: '100%' }}>

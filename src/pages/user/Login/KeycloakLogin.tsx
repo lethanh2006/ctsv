@@ -1,44 +1,37 @@
-import { useKeycloak } from '@react-keycloak/web';
+import { DeleteOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import * as React from 'react';
-import { useCallback, useEffect } from 'react';
+import { useAuth } from 'react-oidc-context';
 
-interface LoginWithKeycloakProps {
-  title: string;
-  oneSignalId: any;
-  onLoginSuccess: (
-    token: string,
-    refreshToken: string,
-    idToken: string,
-    oneSignalId: string,
-  ) => void;
-}
+const LoginWithKeycloak = () => {
+  const auth = useAuth();
 
-const LoginWithKeycloak: React.FC<LoginWithKeycloakProps> = ({
-  title,
-  oneSignalId,
-  onLoginSuccess,
-}) => {
-  const { keycloak } = useKeycloak();
+  const onClearCache = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    auth.removeUser();
+    window.location.href = '/';
+    window.location.reload();
+  };
 
-  const login = useCallback(() => {
-    keycloak?.login();
-  }, [keycloak]);
+  if (auth.isLoading) {
+    return <div>Đang chuyển tới trang đăng nhập...</div>;
+  }
 
-  useEffect(() => {
-    if (keycloak.authenticated)
-      onLoginSuccess(
-        keycloak?.token ?? '',
-        keycloak?.refreshToken ?? '',
-        keycloak?.idToken ?? '',
-        oneSignalId,
-      );
-  }, [keycloak.authenticated]);
+  if (auth.error) {
+    return (
+      <div>
+        Có lỗi xảy ra... <pre>{auth.error.message}</pre>
+        <Button icon={<DeleteOutlined />} onClick={onClearCache} type="link">
+          Xóa bộ nhớ đệm
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Button
-        onClick={login}
+        onClick={() => void auth.signinRedirect()}
         type="primary"
         style={{
           marginTop: 8,
@@ -46,7 +39,7 @@ const LoginWithKeycloak: React.FC<LoginWithKeycloakProps> = ({
         }}
         size="large"
       >
-        {title}
+        Đăng nhập bằng VWA Connect
       </Button>
     </div>
   );

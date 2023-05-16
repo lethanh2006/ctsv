@@ -1,5 +1,6 @@
 import {
   CloseOutlined,
+  ExportOutlined,
   FilterOutlined,
   FilterTwoTone,
   ImportOutlined,
@@ -42,7 +43,6 @@ const TableBase = (props: TableBaseProps) => {
     scroll,
     destroyModal,
     addStt,
-    fullScreen,
   } = props;
   let { columns } = props;
   const { visibleForm, setVisibleForm, setEdit, setRecord } = useModel(modelName);
@@ -248,6 +248,8 @@ const TableBase = (props: TableBaseProps) => {
 
   const mainContent = (
     <div className="table-base">
+      {children}
+
       <div className="header">
         <div className="action">
           {buttonOptions?.create !== false ? (
@@ -266,14 +268,15 @@ const TableBase = (props: TableBaseProps) => {
               </Button>
             </Tooltip>
           ) : null}
+
           {buttonOptions?.import ? (
             <Button icon={<ImportOutlined />} onClick={() => setVisibleImport(true)}>
               Nhập dữ liệu
             </Button>
           ) : null}
-          {props.otherButtons}
+          {buttonOptions?.export ? <Button icon={<ExportOutlined />}>Xuất dữ liệu</Button> : null}
 
-          {children}
+          {props.otherButtons}
         </div>
 
         <div className="extra">
@@ -367,8 +370,9 @@ const TableBase = (props: TableBaseProps) => {
         <>
           {formType === 'Drawer' ? (
             <Drawer
+              className={widthDrawer === 'full' ? 'drawer-full' : ''}
               maskClosable={maskCloseableForm || false}
-              width={widthDrawer}
+              width={widthDrawer !== 'full' ? widthDrawer : undefined}
               footer={false}
               bodyStyle={{ padding: 0 }}
               visible={visibleForm}
@@ -382,9 +386,9 @@ const TableBase = (props: TableBaseProps) => {
             </Drawer>
           ) : (
             <Modal
-              className={fullScreen ? 'modal-ho-so-nhan-su' : ''}
+              className={widthDrawer === 'full' ? 'modal-full' : ''}
               maskClosable={maskCloseableForm || false}
-              width={widthDrawer}
+              width={widthDrawer !== 'full' ? widthDrawer : undefined}
               onCancel={() => setVisibleForm(false)}
               footer={false}
               bodyStyle={{ padding: 0 }}
@@ -408,7 +412,15 @@ const TableBase = (props: TableBaseProps) => {
       ) : null}
 
       {buttonOptions?.import ? (
-        <ModalImport visible={visibleImport} setVisible={setVisibleImport} tableOption={props} />
+        <ModalImport
+          visible={visibleImport}
+          modelName={modelName}
+          onCancel={() => setVisibleImport(false)}
+          onOk={() => {
+            getData(params);
+            setVisibleImport(false);
+          }}
+        />
       ) : null}
     </>
   );

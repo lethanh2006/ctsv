@@ -1,12 +1,16 @@
-import { Row } from 'antd';
-import { useAccess } from 'umi';
+import { Card } from 'antd';
+import './components/style.less';
 
 const TrangChu = () => {
-  const access = useAccess();
   return (
-    <>
-      <Row gutter={[20, 20]}>HOME</Row>
-    </>
+    <Card bodyStyle={{ height: '100%' }}>
+      <div className="home-welcome">
+        <h1 className="title">PHÂN HỆ CÔNG TÁC SINH VIÊN</h1>
+        <h2 className="sub-title">
+          HỆ THỐNG PHẦN MỀM CHỈ ĐẠO, ĐIỀU HÀNH - HỌC VIỆN PHỤ NỮ VIỆT NAM
+        </h2>
+      </div>
+    </Card>
   );
 };
 

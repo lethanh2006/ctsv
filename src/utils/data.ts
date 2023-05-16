@@ -1,19 +1,10 @@
 const data: any = {
-  path: {
-    sinh_vien: '/dashboard',
-    nhan_vien: '/dashboard',
-    Admin: '/dashboard',
-    quan_tri: '/dashboard',
-    can_bo_qlkh: '/dashboard',
-    guest: '/dashboard',
-    ke_toan: '/dashboard',
-  },
-  doiTuong: ['Vai trò', 'Tất cả'],
-  vaiTro: [
-    { value: 'sinh_vien', text: 'Sinh viên' },
-    { value: 'nhan_vien', text: 'Cán bộ, giảng viên' },
-  ],
   gioiTinh: ['Nam', 'Nữ'],
+
+  daTraLoiPhanHoi: [
+    { value: false, text: 'Chưa trả lời' },
+    { value: true, text: 'Đã trả lời' },
+  ],
 
   error: {
     BAD_REQUEST_DEVICE_IDENDIFIED: 'BAD_REQUEST_DEVICE_IDENDIFIED',

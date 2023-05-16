@@ -21,7 +21,7 @@ const FormPhanHoi = () => {
             id: record?._id ?? '',
             data: {
               noiDungTraLoiPhanHoi: values.noiDungTraLoiPhanHoi,
-              maChuyenVien: currentUser?.username,
+              maChuyenVien: currentUser?.username ?? '',
               noiDungPhanHoi: record?.noiDungPhanHoi ?? '',
             },
           });

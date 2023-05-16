@@ -1,6 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { chuanHoa, removeHtmlTags } from '@/utils/utils';
+import { trim, removeHtmlTags } from '@/utils/utils';
 
 const allCharacters =
   'a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹýếẾ';
@@ -124,7 +124,8 @@ const rules = {
   sauHomNay: [
     {
       validator: (_, value, callback) => {
-        if (moment(value).isBefore(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
+        if (value && moment(value).isBefore(moment().set({ hour: 0, minute: 0, second: 0 })))
+          callback('');
         callback();
       },
       message: 'Không được trước thời điểm hiện tại',
@@ -133,7 +134,8 @@ const rules = {
   sauNgay: (mo, label) => [
     {
       validator: (_, value, callback) => {
-        if (moment(value).isBefore(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
+        if (value && moment(value).isBefore(moment(mo).set({ hour: 0, minute: 0, second: 0 })))
+          callback('');
         callback();
       },
       message: 'Không được trước ' + label,
@@ -142,7 +144,8 @@ const rules = {
   truocHomNay: [
     {
       validator: (_, value, callback) => {
-        if (moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
+        if (value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 })))
+          callback('');
         callback();
       },
       message: 'Không được sau thời điểm hiện tại',
@@ -151,7 +154,8 @@ const rules = {
   truocNgay: (mo, label) => [
     {
       validator: (_, value, callback) => {
-        if (moment(value).isAfter(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
+        if (value && moment(value).isAfter(moment(mo).set({ hour: 0, minute: 0, second: 0 })))
+          callback('');
         callback();
       },
       message: 'Không được sau ' + label,
@@ -222,7 +226,7 @@ const rules = {
     {
       validator: (_, value, callback) => {
         const { text } = value;
-        if (!text || !text.length || !text[0] || !chuanHoa(text).length) callback('');
+        if (!text || !text.length || !text[0] || !trim(text).length) callback('');
         callback();
       },
       message: 'Hãy nhập nội dung',

@@ -1,82 +1,75 @@
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
-import keycloak from '@/keycloak';
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
-import PageLoading from '@ant-design/pro-layout/es/PageLoading';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { notification } from 'antd';
 import 'moment/locale/vi';
+import { AuthProvider } from 'react-oidc-context';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { getIntl, getLocale, history } from 'umi';
 import type { RequestOptionsInit, ResponseError } from 'umi-request';
 import ErrorBoundary from './components/ErrorBoundary';
+import LoadingPage from './components/Loading';
 import TechnicalSupportBounder from './components/TechnicalSupportBounder';
 import NotAccessible from './pages/exception/403';
 import NotFoundContent from './pages/exception/404';
-import { getInfo } from './services/ant-design-pro/api';
-import data from './utils/data';
 import './styles/global.less';
+import { currentRole } from './utils/ip';
+import { oidcConfig } from './utils/oidcConfig';
+import { type IInitialState } from './utils/typing';
 
-const loginPath = '/user/login';
-const pathAuth = ['/admin/login'];
+// const loginPath = '/user/login';
+// const pathAuth = ['/admin/login'];
+
 /**  loading */
 export const initialStateConfig = {
-  loading: <PageLoading />,
+  loading: <LoadingPage />,
 };
-
-export interface IInitialState {
-  settings?: Partial<LayoutSettings>;
-  currentUser?: (Login.Profile & Login.ProfileAdmin) | any;
-  partner_id?: number;
-  fetchUserInfo?: () => Promise<{ data: { data: Login.Profile & Login.ProfileAdmin } } | undefined>;
-  authorizedRoles?: any[];
-  phanNhom?: any;
-}
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
+ * // Tobe removed
  * */
 export async function getInitialState(): Promise<IInitialState> {
-  const fetchUserInfo: () => Promise<any> = async () => {
-    try {
-      const auth = localStorage.getItem('vaiTro');
-      const token = localStorage.getItem('token');
-      let currentUser;
-      if (auth && token) currentUser = (await getInfo())?.data?.data;
-      return currentUser;
-    } catch (error) {
-      const { location } = history;
-      if (!pathAuth.includes(location.pathname)) history.push(loginPath);
-    }
-    return undefined;
-  };
+  // const fetchUserInfo: () => Promise<Login.User> = async () => {
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     let currentUser;
+  //     if (token) {
+  //       const decoded = jwt_decode(token) as any;
+  //       currentUser = (await getInfo())?.data?.data;
+  //       currentUser.permissions = decoded?.authorization?.permissions;
+  //     }
+  //     return currentUser;
+  //   } catch (error) {
+  //     const { location } = history;
+  //     if (!pathAuth.includes(location.pathname)) history.push(loginPath);
+  //   }
+  //   return undefined;
+  // };
 
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
+  // if (history.location.pathname !== loginPath) {
+  //   const currentUser = await fetchUserInfo();
 
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: {
-        primaryColor: 'daybreak',
-      },
-      authorizedRoles: [],
-    };
-  }
+  //   return {
+  //     fetchUserInfo,
+  //     currentUser,
+  //   };
+  // }
 
-  return {
-    fetchUserInfo,
-    settings: { primaryColor: 'daybreak' },
-  };
+  // return {
+  //   fetchUserInfo,
+  // };
+  return {};
 }
 
+// Tobe removed
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
-  const token = localStorage.getItem('token');
-  const authHeader = { ...(token && { Authorization: `Bearer ${token}` }) };
-  return {
-    url: `${url}`,
-    options: { ...options, interceptors: true, headers: authHeader },
-  };
+  // const token = localStorage.getItem('token');
+  // const authHeader = { ...(token && { Authorization: `Bearer ${token}` }) };
+  // return {
+  //   url: `${url}`,
+  //   options: { ...options, interceptors: true, headers: authHeader },
+  // };
+  return {};
 };
 
 /**
@@ -114,27 +107,36 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     unAccessible: <NotAccessible />,
     noFound: <NotFoundContent />,
-    rightContentRender: () => <RightContent />,
+    rightContentRender: () => (
+      // OIDC Auth Provider for user Logout
+      <AuthProvider
+        {...oidcConfig}
+        redirect_uri={window.location.href}
+        automaticSilentRenew={false}
+      >
+        <RightContent />
+      </AuthProvider>
+    ),
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.fullname,
     },
 
     footerRender: () => <Footer />,
+
     onPageChange: () => {
       const { location } = history;
-      const token = localStorage.getItem('token');
-      const vaiTro = localStorage.getItem('vaiTro');
-      let checkPathAuth = false;
-      pathAuth.map((item) => {
-        if (location.pathname.includes(item)) checkPathAuth = true;
-      });
-      if (!token && location.pathname !== loginPath && !checkPathAuth) {
-        history.push(loginPath);
-      } else if (initialState?.currentUser && token && location.pathname === loginPath) {
-        history.push(data.path[`${vaiTro || initialState?.currentUser?.systemRole}`]);
-      }
+      if (initialState?.currentUser)
+        if (location.pathname === '/') {
+          history.replace('/dashboard');
+        } else if (
+          currentRole &&
+          initialState?.authorizedPermissions?.length &&
+          !initialState?.authorizedPermissions?.find((item) => item.rsname === currentRole)
+        )
+          history.replace('/403');
     },
+
     menuItemRender: (item: any, dom: any) => {
       return (
         <div
@@ -147,13 +149,20 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         </div>
       );
     },
+
     childrenRender: (dom) => {
       return (
-        <ErrorBoundary>
-          <TechnicalSupportBounder>
-            <ReactKeycloakProvider authClient={keycloak}>{dom}</ReactKeycloakProvider>
-          </TechnicalSupportBounder>
-        </ErrorBoundary>
+        <AuthProvider
+          {...oidcConfig}
+          redirect_uri={window.location.origin + window.location.pathname}
+        >
+          <ErrorBoundary>
+            <TechnicalSupportBounder>
+              {dom}
+              {/* <ReactKeycloakProvider authClient={keycloak}>{dom}</ReactKeycloakProvider> */}
+            </TechnicalSupportBounder>
+          </ErrorBoundary>
+        </AuthProvider>
       );
     },
     menuHeaderRender: undefined,

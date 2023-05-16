@@ -2,7 +2,7 @@ import { chuanHoaObject } from '@/utils/utils';
 import { message } from 'antd';
 import { useState } from 'react';
 import useInitService from './useInitService';
-import { type TFilter } from '@/components/Table/typing';
+import { type TImportHeader, type TFilter, type TImportResponse } from '@/components/Table/typing';
 
 /**
  *
@@ -32,8 +32,18 @@ const useInitModel = <T,>(
   const [visibleForm, setVisibleForm] = useState<boolean>(false);
   const [total, setTotal] = useState<number>(0);
 
-  const { getAllService, postService, putService, deleteService, getService, getByIdService } =
-    useInitService(url, ipService);
+  const {
+    getAllService,
+    postService,
+    putService,
+    deleteService,
+    getService,
+    getByIdService,
+    getImportHeaders,
+    getImportTemplate,
+    postExecuteImport,
+    postValidateImport,
+  } = useInitService(url, ipService);
 
   /**
    * Get Pageable Model
@@ -193,6 +203,68 @@ const useInitModel = <T,>(
     }
   };
 
+  /**
+   * Lấy header cho chức năng import
+   * @returns {any}
+   */
+  const getImportHeaderModel = async (): Promise<TImportHeader[]> => {
+    try {
+      const res = await getImportHeaders();
+      return res.data?.data ?? [];
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+
+  /**
+   * Lấy file excel mẫu cho chức năng import
+   * @returns {any}
+   */
+  const getImportTemplateModel = async (): Promise<any> => {
+    try {
+      const res = await getImportTemplate();
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+
+  /**
+   * Lấy header cho chức năng import
+   * @returns {any}
+   */
+  const postValidateModel = async (payload: any[]): Promise<TImportResponse> => {
+    if (formSubmiting) return Promise.reject('form submiting');
+    setFormSubmiting(true);
+    try {
+      const res = await postValidateImport({ rows: payload });
+      message.success('Đã kiểm tra dữ liệu');
+      return res.data?.data ?? [];
+    } catch (err) {
+      return Promise.reject(err);
+    } finally {
+      setFormSubmiting(false);
+    }
+  };
+
+  /**
+   * Lấy header cho chức năng import
+   * @returns {any}
+   */
+  const postExecuteImpotModel = async (payload: any[]): Promise<TImportResponse> => {
+    if (formSubmiting) return Promise.reject('form submiting');
+    setFormSubmiting(true);
+    try {
+      const res = await postExecuteImport({ rows: payload });
+      message.success('Đã nhập dữ liệu');
+      return res.data?.data ?? [];
+    } catch (err) {
+      return Promise.reject(err);
+    } finally {
+      setFormSubmiting(false);
+    }
+  };
+
   return {
     sort,
     setSort,
@@ -224,6 +296,10 @@ const useInitModel = <T,>(
     setDanhSach,
     record,
     setRecord,
+    getImportHeaderModel,
+    getImportTemplateModel,
+    postExecuteImpotModel,
+    postValidateModel,
   };
 };
 
