@@ -63,6 +63,25 @@
   },
 
   {
+    name: 'QuanTriPhanHoi',
+    path: './quan-ly-phan-hoi/hoi-dap',
+    // maChucNang: 'phan-hoi:read',
+    // access: 'routeFilter',
+    routes: [
+      {
+        name: 'TatCaPhanHoi',
+        path: './all',
+        component: './PhanHoi/Admin.tsx',
+      },
+      {
+        name: 'PhanHoiDonVi',
+        path: './gui-den-toi',
+        component: './PhanHoi/GuiDenToi.tsx',
+      },
+    ],
+  },
+
+  {
     path: '/',
     redirect: '/user/login',
   },

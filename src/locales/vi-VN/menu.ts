@@ -7,4 +7,8 @@ export default {
 
   'menu.DanhMuc': 'Danh mục',
   'menu.DanhMuc.ChucVu': 'Chức vụ',
+
+  'menu.QuanTriPhanHoi': 'Quản lý phản hồi',
+  'menu.QuanTriPhanHoi.TatCaPhanHoi': 'Tất cả',
+  'menu.QuanTriPhanHoi.PhanHoiDonVi': 'Phản hồi đơn vị',
 };
