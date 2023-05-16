@@ -202,6 +202,26 @@
       // },
     ],
   },
+  {
+    name: 'TinTuc',
+    path: 'quantritintuc',
+    routes: [
+      {
+        name: 'ChuDeChung',
+        path: './chude',
+        component: './ChuDeVaTinTuc/ChuDe',
+        // access: 'adminAccessFilter',
+        // maChucNang: 'chu-de-chung:read',
+      },
+      {
+        name: 'TinTuc',
+        path: './tintuc',
+        component: './ChuDeVaTinTuc/TinTuc',
+        // access: 'adminAccessFilter',
+        // maChucNang: 'tin-tuc:read',
+      },
+    ],
+  },
 
   {
     path: '/',

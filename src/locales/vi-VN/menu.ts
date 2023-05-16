@@ -28,4 +28,7 @@ export default {
   'menu.QuanTriPhanHoi': 'Quản lý phản hồi',
   'menu.QuanTriPhanHoi.TatCaPhanHoi': 'Tất cả',
   'menu.QuanTriPhanHoi.PhanHoiDonVi': 'Phản hồi đơn vị',
+  'menu.TinTuc': 'Tin tức',
+  'menu.TinTuc.ChuDeChung': 'Chủ đề chung',
+  'menu.TinTuc.TinTuc': 'Tin tức',
 };
