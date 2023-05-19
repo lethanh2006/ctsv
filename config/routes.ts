@@ -185,6 +185,45 @@
     ],
   },
   {
+    name: 'QuanTriPhanHoi',
+    path: './quan-ly-phan-hoi/hoi-dap',
+    // maChucNang: 'phan-hoi:read',
+    // access: 'routeFilter',
+    routes: [
+      {
+        name: 'TatCaPhanHoi',
+        path: './all',
+        component: './PhanHoi/Admin.tsx',
+      },
+      // {
+      //   name: 'PhanHoiDonVi',
+      //   path: './gui-den-toi',
+      //   component: './PhanHoi/GuiDenToi.tsx',
+      // },
+    ],
+  },
+  {
+    name: 'TinTuc',
+    path: 'quantritintuc',
+    routes: [
+      {
+        name: 'ChuDeChung',
+        path: './chude',
+        component: './ChuDeVaTinTuc/ChuDe',
+        // access: 'adminAccessFilter',
+        // maChucNang: 'chu-de-chung:read',
+      },
+      {
+        name: 'TinTuc',
+        path: './tintuc',
+        component: './ChuDeVaTinTuc/TinTuc',
+        // access: 'adminAccessFilter',
+        // maChucNang: 'tin-tuc:read',
+      },
+    ],
+  },
+
+  {
     path: '/',
   },
   {
