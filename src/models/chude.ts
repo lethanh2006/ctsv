@@ -1,3 +1,4 @@
+import useInitModel from '@/hooks/useInitModel';
 import {
   addChuDe,
   delChuDe,
@@ -10,19 +11,24 @@ import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<ChuDe.Record[]>([]);
-  const [filterInfo, setFilterInfo] = useState<any>({});
-  const [condition, setCondition] = useState<any>({});
+  const objInit = useInitModel<ChuDe.Record>('common-topic');
+  const {
+    sort,
+    filters,
+    setTotal,
+    page,
+    limit,
+    condition,
+    setVisibleForm,
+    setPage,
+    total,
+    setDanhSach,
+    setLoading,
+  } = objInit;
   const [danhSachLoaiChuDe, setDanhSachLoaiChuDe] = useState<string[]>([]);
   const [loaiChuDe, setLoaiChuDe] = useState<string>();
-  const [record, setRecord] = useState<ChuDe.Record>({} as ChuDe.Record);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [visibleForm, setVisibleForm] = useState<boolean>(false);
-  const [total, setTotal] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
   const [phamVi, setPhamVi] = useState<'Tất cả' | 'Hình thức đào tạo'>();
+
   const getAllLoaiChuDeModel = async () => {
     setLoading(true);
     const response = await getAllLoaiChuDe();
@@ -40,6 +46,8 @@ export default () => {
         hinhThucDaoTaoId: undefined,
         phamVi,
       },
+      sort,
+      filters: filters?.filter((item) => item.active)?.map(({ active, ...item }) => item),
       idHinhThuc:
         idHinhThuc ||
         (condition?.hinhThucDaoTaoId === -1 ? undefined : condition?.hinhThucDaoTaoId),
@@ -54,6 +62,8 @@ export default () => {
     const response = await getAllChuDe({
       condition: { ...condition, ...(cond ?? {}) },
       idHinhThuc: condition?.hinhThucDaoTaoId,
+      sort,
+      filters: filters?.filter((item) => item.active)?.map(({ active, ...item }) => item),
     });
     setDanhSach(response?.data?.data ?? []);
     setTotal(response?.data?.data?.total ?? 0);
@@ -100,32 +110,15 @@ export default () => {
   };
 
   return {
-    setDanhSach,
+    ...objInit,
     phamVi,
     setPhamVi,
-    filterInfo,
-    setFilterInfo,
-    condition,
-    setCondition,
     getAllChuDeModel,
-    setRecord,
     addChuDeModel,
     putChuDeModel,
     delChuDeModel,
-    edit,
-    setEdit,
-    visibleForm,
-    setVisibleForm,
     setLoaiChuDe,
-    setPage,
-    setLimit,
-    danhSach,
-    record,
-    loading,
-    total,
-    page,
     loaiChuDe,
-    limit,
     getAllLoaiChuDeModel,
     danhSachLoaiChuDe,
     getChuDeModel,

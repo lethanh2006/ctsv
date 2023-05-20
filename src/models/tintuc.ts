@@ -1,21 +1,23 @@
+import useInitModel from '@/hooks/useInitModel';
 import { addTinTuc, delTinTuc, getTinTuc, putTinTuc } from '@/services/TinTuc/tintuc';
 import { message } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<TinTuc.Record[]>([]);
-  const [filterInfo, setFilterInfo] = useState<any>({});
-  const [condition, setCondition] = useState<any>({});
-  const [record, setRecord] = useState<TinTuc.Record>({} as TinTuc.Record);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [visibleForm, setVisibleForm] = useState<boolean>(false);
-  const [total, setTotal] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
+  const objInit = useInitModel<TinTuc.IRecord>('tin-tuc');
+  const {
+    setLoading,
+    page,
+    limit,
+    condition,
+    setDanhSach,
+    setTotal,
+    setVisibleForm,
+    sort,
+    filters,
+  } = objInit;
   const [phamVi, setPhamVi] = useState<'Tất cả' | 'Hình thức đào tạo'>('Tất cả');
-  const { initialState } = useModel('@@initialState');
+
   const getTinTucModel = async (idHinhThuc?: number) => {
     setLoading(true);
     const response = await getTinTuc({
@@ -24,8 +26,10 @@ export default () => {
       condition: {
         ...condition,
         hinhThucDaoTaoId: undefined,
-        phamVi: initialState?.currentUser?.vai_tro === 'quan_tri' ? undefined : phamVi,
+        phamVi: phamVi,
       },
+      sort,
+      filters: filters?.filter((item) => item.active)?.map(({ active, ...item }) => item),
       idHinhThuc:
         idHinhThuc ||
         (condition?.hinhThucDaoTaoId !== -1 ? condition?.hinhThucDaoTaoId : undefined),
@@ -35,7 +39,7 @@ export default () => {
     setLoading(false);
   };
 
-  const addTinTucModel = async (payload: TinTuc.Record) => {
+  const addTinTucModel = async (payload: TinTuc.IRecord) => {
     setLoading(true);
     try {
       await addTinTuc(payload);
@@ -47,7 +51,7 @@ export default () => {
       setLoading(false);
     }
   };
-  const putTinTucModel = async (payload: { id: string; data: TinTuc.Record }) => {
+  const putTinTucModel = async (payload: { id: string; data: TinTuc.IRecord }) => {
     setLoading(true);
     try {
       await putTinTuc(payload);
@@ -73,28 +77,12 @@ export default () => {
   };
 
   return {
+    ...objInit,
     phamVi,
     setPhamVi,
-    filterInfo,
-    setFilterInfo,
-    condition,
-    setCondition,
-    setRecord,
     addTinTucModel,
     putTinTucModel,
     delTinTucModel,
-    edit,
-    setEdit,
-    visibleForm,
-    setVisibleForm,
-    setPage,
-    setLimit,
-    danhSach,
-    record,
-    loading,
-    total,
-    page,
-    limit,
     getTinTucModel,
   };
 };

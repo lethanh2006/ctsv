@@ -1,9 +1,11 @@
+import useInitModel from '@/hooks/useInitModel';
 import type { APILopHanhChinh } from '@/services/LopHanhChinh';
 import { getAllHinhThucDaoTao, getLopHanhChinhAdmin } from '@/services/LopHanhChinh/lophanhchinh';
 import { useState } from 'react';
 import { useModel } from 'umi';
 
 export default () => {
+  const objInit = useInitModel<APILopHanhChinh.RecordAdmin>('odoo-lop-hanh-chinh');
   const [danhSach, setDanhSach] = useState<APILopHanhChinh.RecordAdmin[]>([]);
   const [filterInfo, setFilterInfo] = useState<any>({});
   const [condition, setCondition] = useState<any>({});
@@ -46,6 +48,7 @@ export default () => {
   };
 
   return {
+    ...objInit,
     getAllHinhThucDaoTaoModel,
     getLopHanhChinhAdminModel,
     record,

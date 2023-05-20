@@ -1,6 +1,6 @@
 import { Avatar, Card } from 'antd';
 
-const ViewTinTuc = (props: { record: TinTuc.Record }) => {
+const ViewTinTuc = (props: { record: TinTuc.IRecord }) => {
   const { record } = props;
   return (
     <Card>

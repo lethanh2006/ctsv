@@ -1,6 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { trim, removeHtmlTags } from '@/utils/utils';
+import { trim, removeHtmlTags, chuanHoaTen } from '@/utils/utils';
 
 const allCharacters =
   'a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹýếẾ';
@@ -226,7 +226,7 @@ const rules = {
     {
       validator: (_, value, callback) => {
         const { text } = value;
-        if (!text || !text.length || !text[0] || !trim(text).length) callback('');
+        if (!text || !text.length || !text[0] || !chuanHoaTen(text).length) callback('');
         callback();
       },
       message: 'Hãy nhập nội dung',

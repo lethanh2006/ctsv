@@ -34,7 +34,7 @@ export async function getURLImg(payload: any) {
   Object.keys(payload).map((key) => {
     form.set(key, payload[key]);
   });
-  return axios.post(`${ip3}/file/image/single`, form);
+  return axios.post(`${ip3}/file`, form);
 }
 
 export async function addThongBao(payload: { idLop: any; newValues: any }) {
