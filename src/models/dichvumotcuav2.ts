@@ -217,7 +217,6 @@ export default () => {
     dichVuId: string;
     traKetQua?: boolean;
     daTraKetQua?: boolean;
-    idCoSoVatChat?: any;
   }) => {
     try {
       setLoading(true);
