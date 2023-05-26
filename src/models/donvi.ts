@@ -1,22 +1,21 @@
+import useInitModel from '@/hooks/useInitModel';
 import { delDonVi, getAllDonVi, postDonVi, putDonVi } from '@/services/DonVi/donvi';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<DonVi.Record[]>([]);
-  const [record, setRecord] = useState<DonVi.Record | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
+  const objInit = useInitModel<DonVi.Record>('don-vi');
+  const { record, setLoading, setDanhSach, setRecord, setVisibleForm } = objInit;
   const [position, setPosition] = useState<number>(0);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [visibleForm, setVisibleForm] = useState<boolean>(false);
   const [expandedKeys, setExpandedKeys] = useState<string[]>([]);
+
   const getAllDonViModel = async () => {
     setLoading(true);
     const response = await getAllDonVi();
     setDanhSach(response?.data?.data ?? []);
     setLoading(false);
-    if (record?.id) {
-      setRecord(response?.data?.data?.find((item: DonVi.Record) => item.id === record.id));
+    if (record?._id) {
+      setRecord(response?.data?.data?.find((item: DonVi.Record) => item._id === record._id));
     }
   };
 
@@ -25,8 +24,8 @@ export default () => {
     const response = await getAllDonVi({ condition: { don_vi_cap_duoi_ids: false } });
     setDanhSach(response?.data?.data ?? []);
     setLoading(false);
-    if (record?.id) {
-      setRecord(response?.data?.data?.find((item: DonVi.Record) => item.id === record.id));
+    if (record?._id) {
+      setRecord(response?.data?.data?.find((item: DonVi.Record) => item._id === record._id));
     }
   };
 
@@ -56,21 +55,12 @@ export default () => {
   };
 
   return {
+    ...objInit,
     position,
     setPosition,
     delDonViModel,
     postDonViModel,
     putDonViModel,
-    edit,
-    setEdit,
-    visibleForm,
-    setVisibleForm,
-    danhSach,
-    setDanhSach,
-    record,
-    setRecord,
-    loading,
-    setLoading,
     getAllDonViModel,
     expandedKeys,
     setExpandedKeys,
