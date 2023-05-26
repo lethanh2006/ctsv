@@ -23,8 +23,8 @@ const QuanLyDon = () => {
     getAllBieuMauVPSModel,
   } = useModel('dichvumotcuav2');
 
-  const { chuyenVienDieuPhoiGetTongSoDonDVMCModel, chuyenVienXuLyGetTongSoDonDVMCModel, idDichVu } =
-    useModel('dashboard');
+  // const { chuyenVienDieuPhoiGetTongSoDonDVMCModel, chuyenVienXuLyGetTongSoDonDVMCModel, idDichVu } =
+  //   useModel('dashboard');
 
   const { pathname } = window.location;
   const isDVMC = pathname?.includes('dichvumotcua') ?? false;

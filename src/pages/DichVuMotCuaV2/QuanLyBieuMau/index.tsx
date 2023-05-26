@@ -5,7 +5,7 @@ import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 import type { IColumn } from '@/utils/interfaces';
 // import { useCheckAccess } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
+import { Button, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useAccess, useModel } from 'umi';
@@ -134,7 +134,7 @@ const QuanLyBieuMau = () => {
     {
       title: 'Thao tác',
       align: 'center',
-      width: 160,
+      width: 150,
       fixed: 'right',
       render: (record: DichVuMotCuaV2.BieuMau) => {
         return (
@@ -146,12 +146,11 @@ const QuanLyBieuMau = () => {
                   setRecordView({ thongTinDichVu: { ...record } } as any);
                   setVisible(true);
                 }}
-                shape="circle"
+                type="link"
                 icon={<EyeOutlined />}
               />
             </Tooltip>
 
-            <Divider type="vertical" />
             <Tooltip title="Chỉnh sửa">
               <Button
                 // disabled={!isUpdate}
@@ -165,13 +164,11 @@ const QuanLyBieuMau = () => {
 
                   setCurrent(isDVMC ? 0 : 1);
                 }}
-                shape="circle"
-                type="primary"
+                type="link"
                 icon={<EditOutlined />}
               />
             </Tooltip>
 
-            <Divider type="vertical" />
             <Tooltip title="Xóa">
               <Popconfirm
                 // disabled={!isDelete}
@@ -181,11 +178,10 @@ const QuanLyBieuMau = () => {
                 title="Bạn có chắc chắn muốn xóa?"
               >
                 <Button
-                  type="primary"
+                  type="link"
                   danger
                   // disabled={!isDelete}
                   icon={<DeleteOutlined />}
-                  shape="circle"
                 />
               </Popconfirm>
             </Tooltip>
