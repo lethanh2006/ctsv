@@ -710,6 +710,7 @@ export default () => {
   };
 
   return {
+    ...objInit,
     putTrangThaiBieuMauModel,
     adminPutDonModel,
     visibleFormChinhSuaDon,
