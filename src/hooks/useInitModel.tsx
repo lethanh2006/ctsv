@@ -31,6 +31,7 @@ const useInitModel = <T,>(
   const [edit, setEdit] = useState<boolean>(false);
   const [visibleForm, setVisibleForm] = useState<boolean>(false);
   const [total, setTotal] = useState<number>(0);
+  const [filterInfo, setFilterInfo] = useState<any>({});
 
   const {
     getAllService,
@@ -296,6 +297,8 @@ const useInitModel = <T,>(
     setDanhSach,
     record,
     setRecord,
+    filterInfo,
+    setFilterInfo,
     getImportHeaderModel,
     getImportTemplateModel,
     postExecuteImpotModel,
