@@ -23,7 +23,7 @@ const ChuDeChung = () => {
     setPhamVi,
     setPage,
   } = useModel('chude');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
 
   const handleEdit = (record: ChuDe.Record) => {
     setRecord(record);

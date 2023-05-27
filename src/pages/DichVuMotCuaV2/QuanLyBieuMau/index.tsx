@@ -31,7 +31,7 @@ const QuanLyBieuMau = () => {
   } = useModel('dichvumotcuav2');
   const { getAllDonViModel } = useModel('donvi');
   const { getProductByCodeModel } = useModel('thanhtoan');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   const access = useAccess();
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [visible, setVisible] = useState<boolean>(false);

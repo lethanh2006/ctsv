@@ -12,7 +12,7 @@ const PhanHoi = () => {
   const access = useAccess();
   const { setVisibleForm, setRecord, setDaTraLoi, daTraLoi, setCondition, page, limit } =
     useModel('phanhoi');
-  // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   const handleEdit = (record: PhanHoi.IRecord) => {
     setRecord(record);
     setVisibleForm(true);

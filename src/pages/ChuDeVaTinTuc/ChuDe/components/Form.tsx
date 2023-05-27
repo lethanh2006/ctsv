@@ -8,7 +8,7 @@ const FormChuDe = () => {
   const [form] = Form.useForm();
   const { loading, record, setVisibleForm, edit, putChuDeModel, addChuDeModel, visibleForm } =
     useModel('chude');
-  const { danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   const [phamVi, setPhamVi] = useState<string>(record?.phamVi ?? '');
   const typeNews = 'Tin tức';
 

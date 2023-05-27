@@ -7,7 +7,7 @@ export async function getAllLoaiChuDe() {
 
 export async function getAllChuDe(payload: {
   condition: any;
-  idHinhThuc?: number;
+  idHinhThuc?: string;
   sort: any;
   filters: any;
 }) {

@@ -38,7 +38,7 @@ const FormSuKien = () => {
   } = useModel('sukien');
 
   const { danhSach: danhSachDonVi } = useModel('donvi');
-  const { danhSach: danhSachLopHanhChinh } = useModel('lophanhchinh');
+  const { danhSach: danhSachLopHanhChinh } = useModel('namhoc.lophanhchinh');
   const { danhSach: danhSachNganh } = useModel('nganh');
   const { danhSachNguoiDungCuThe, setConditionNguoiDungCuThe, conditionNguoiDungCuThe } =
     useModel('user');

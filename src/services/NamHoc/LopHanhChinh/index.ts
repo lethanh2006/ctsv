@@ -1,14 +1,39 @@
-import { ip3 } from '@/utils/ip';
 import axios from '@/utils/axios';
+import { ip3, ipQldt } from '@/utils/ip';
 
-// export async function getNguonThu(payload: { page: number; limit: number }) {
-//   return axios.get(`${ip3}/nguon-thu/page?page=${payload.page}&limit=${payload.limit}`);
-// }
+export async function getDataLopHanhChinh(role: string, idHinhThuc?: number) {
+  return axios.get(`${ip3}/odoo-lop-hanh-chinh/${role}/me`, { params: { idHinhThuc } });
+}
 
-// export async function kichHoatNguonThu(id: string) {
-//   return axios.put(`${ip3}/nguon-thu/${id}/activate`);
-// }
+export async function getAllHinhThucDaoTao() {
+  return axios.get(`${ipQldt}/hinh-thuc-dao-tao/many`);
+}
 
-// export async function tatKichHoatNguonThu(id: string) {
-//   return axios.put(`${ip3}/nguon-thu/${id}/inactivate`);
-// }
+export async function getThongBaoLopHanhChinhById(payload: {
+  idLop: number;
+  role: string;
+  data: { page: number; limit: number; cond?: any };
+}) {
+  return axios.get(
+    `${ip3}/odoo-lop-hanh-chinh/${payload.idLop}/${payload.role}/notification/pageable`,
+    { params: payload.data },
+  );
+}
+
+export async function getLopHanhChinhAdmin(payload: {
+  page: number;
+  limit: number;
+  condition?: any;
+}) {
+  return axios.get(`${ip3}/odoo-lop-hanh-chinh/pageable`, { params: payload });
+}
+
+/**
+ *
+ * @param idLop id lớp hành chính
+ * @returns anh sách sinh viên lớp hành chính theo idLop
+ */
+
+export async function getDSSVLopHanhChinh(idLop: number) {
+  return axios.get(`${ip3}/odoo-lop-hanh-chinh/${idLop}/can-bo/sv`);
+}

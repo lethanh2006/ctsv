@@ -35,7 +35,7 @@ const TinTuc = () => {
     setPhamVi: setPhamViChuDe,
     setDanhSach,
   } = useModel('chude');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
 
   const handleEdit = (rec: TinTuc.IRecord) => {
     setRecord(rec);
@@ -54,7 +54,7 @@ const TinTuc = () => {
   // const canUpdate = useCheckAccess('tin-tuc:update');
   // const canDelete = useCheckAccess('tin-tuc:delete');
   // const canCreate = useCheckAccess('tin-tuc:create');
-
+  console.log(danhSachHinhThucDaoTao, 'danhSachHinhThucDaoTao');
   const columns: IColumn<TinTuc.IRecord>[] = [
     {
       title: 'Tiêu đề',
@@ -209,7 +209,7 @@ const TinTuc = () => {
           allowClear
           placeholder="Lọc theo hình thức đào tạo"
           value={condition?.hinhThucDaoTaoId}
-          onChange={(val: number) => {
+          onChange={(val: string) => {
             setCondition({ ...condition, hinhThucDaoTaoId: val, idTopic: undefined });
             setCondChuDe({ ...condChuDe, hinhThucDaoTaoId: val });
             setPage(1);
