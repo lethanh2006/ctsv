@@ -73,7 +73,7 @@ export async function getLopTinChiById(idLop: number) {
   return axios.get(`${ip3}/odoo-lop-tin-chi/${idLop}`);
 }
 
-export async function getNhomLopTinChiById(idLop: number) {
+export async function getNhomLopTinChiById(idLop: string) {
   return axios.get(`${ip3}/odoo-nhom-lop-tin-chi/user/lop-tin-chi/${idLop}`);
 }
 

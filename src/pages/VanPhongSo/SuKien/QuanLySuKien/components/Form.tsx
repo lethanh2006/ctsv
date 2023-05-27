@@ -346,7 +346,7 @@ const FormSuKien = () => {
                 });
               }}
             >
-              {danhSachLopTinChi.map((item: LopTinChi.Record) => (
+              {danhSachLopTinChi.map((item: LopTinChi.IRecord) => (
                 <Select.Option key={item.id} value={item.id}>
                   {item.ten_lop_tin_chi}
                 </Select.Option>
