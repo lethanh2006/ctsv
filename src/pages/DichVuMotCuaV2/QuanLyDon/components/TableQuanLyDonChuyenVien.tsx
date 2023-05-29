@@ -235,7 +235,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       width: 120,
       // search: 'filterString',
       notRegex: true,
-      render: (val) => (
+      render: (val: 'OK' | 'NOT_OK' | 'PROCESSING') => (
         <Tag
           color={
             TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.PROCESSING
@@ -288,15 +288,9 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                       </Menu>
                     }
                   >
-                    <Button
-                      shape="circle"
-                      loading={loading}
-                      icon={<FileTextOutlined />}
-                      type="primary"
-                    />
+                    <Button loading={loading} icon={<FileTextOutlined />} type="link" />
                   </Dropdown>
                 </Tooltip>
-                <Divider type="vertical" />
                 <Tooltip title="Xuất mẫu trả kết quả">
                   <Dropdown
                     overlay={
@@ -315,12 +309,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                       </Menu>
                     }
                   >
-                    <Button
-                      shape="circle"
-                      loading={loading}
-                      icon={<FileDoneOutlined />}
-                      type="primary"
-                    />
+                    <Button loading={loading} icon={<FileDoneOutlined />} type="link" />
                   </Dropdown>
                 </Tooltip>
                 {/* <Tooltip title="Chi tiết">
@@ -332,7 +321,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
             icon={<EyeOutlined />}
           />
         </Tooltip> */}
-                <Divider type="vertical" />
                 <Tooltip title="Trả lời phản hồi">
                   <Button
                     disabled={!recordDonColumn?.noiDungPhanHoi || recordDonColumn.daTraLoiPhanHoi}
@@ -341,12 +329,11 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                       setVisibleForm(true);
                     }}
                     icon={<QuestionCircleOutlined />}
-                    shape="circle"
+                    type="link"
                   />
                 </Tooltip>
                 {trangThaiQuanLyDon === 'PROCESSING' && (
                   <>
-                    <Divider type="vertical" />
                     <Tooltip title="Xóa đơn" placement="bottom">
                       <Popconfirm
                         onConfirm={async () => {
@@ -362,7 +349,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                         }}
                         title="Bạn có chắc chắn xóa đơn này?"
                       >
-                        <Button type="primary" danger shape="circle">
+                        <Button danger type="link">
                           <DeleteOutlined />
                         </Button>
                       </Popconfirm>
@@ -371,7 +358,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                 )}
                 {typeTraKetQua === 'CHUA_TRA_KQ' && (
                   <>
-                    <Divider type="vertical" />
                     <Tooltip title="Xác nhận đã trả đơn">
                       <Popconfirm
                         title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
@@ -379,14 +365,13 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                           updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
                         }
                       >
-                        <Button icon={<CheckOutlined />} shape="circle" />
+                        <Button icon={<CheckOutlined />} type="link" />
                       </Popconfirm>
                     </Tooltip>
                   </>
                 )}
                 {typeTraKetQua === 'DA_TRA_KQ' && (
                   <>
-                    <Divider type="vertical" />
                     <Tooltip title="Xác nhận lại chưa trả đơn">
                       <Popconfirm
                         title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
@@ -394,7 +379,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                           updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
                         }
                       >
-                        <Button icon={<CloseOutlined />} shape="circle" />
+                        <Button icon={<CloseOutlined />} type="link" />
                       </Popconfirm>
                     </Tooltip>
                   </>

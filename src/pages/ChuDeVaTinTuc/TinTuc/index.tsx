@@ -1,20 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/Table';
-// import { PhamVi } from '@/utils/constants';
-// import { useCheckAccess } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Divider, Modal, Popconfirm, Popover, Select, Tooltip, Typography } from 'antd';
+import { Button, Modal, Popconfirm, Popover, Select, Tooltip, Typography } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useModel, useAccess } from 'umi';
+import { useModel } from 'umi';
 import Form from './components/Form';
 import ViewTinTuc from './components/ViewTinTuc';
 import { type IColumn } from '@/components/Table/typing';
+import { PhamVi } from '@/utils/constants';
 
 const TinTuc = () => {
-  // const access = useAccess();
   const {
-    loading,
     getTinTucModel,
     setEdit,
     setVisibleForm,
@@ -29,7 +26,7 @@ const TinTuc = () => {
     setPhamVi,
   } = useModel('tintuc');
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
-  const [recordTT, setRecordTT] = useState<TinTuc.Record>({} as TinTuc.Record);
+  const [recordTT, setRecordTT] = useState<TinTuc.IRecord>({} as TinTuc.IRecord);
   const {
     getAllChuDeModel,
     danhSach,
@@ -38,15 +35,15 @@ const TinTuc = () => {
     setPhamVi: setPhamViChuDe,
     setDanhSach,
   } = useModel('chude');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
 
-  const handleEdit = (record: TinTuc.Record) => {
-    setRecord(record);
-    setVisibleForm(true);
+  const handleEdit = (rec: TinTuc.IRecord) => {
+    setRecord(rec);
     setEdit(true);
+    setVisibleForm(true);
   };
 
-  const onCell = (record: TinTuc.Record) => ({
+  const onCell = (record: TinTuc.IRecord) => ({
     onClick: () => {
       setVisibleModal(true);
       setRecordTT(record);
@@ -57,8 +54,8 @@ const TinTuc = () => {
   // const canUpdate = useCheckAccess('tin-tuc:update');
   // const canDelete = useCheckAccess('tin-tuc:delete');
   // const canCreate = useCheckAccess('tin-tuc:create');
-
-  const columns: IColumn<TinTuc.Record>[] = [
+  console.log(danhSachHinhThucDaoTao, 'danhSachHinhThucDaoTao');
+  const columns: IColumn<TinTuc.IRecord>[] = [
     {
       title: 'Tiêu đề',
       dataIndex: 'tieuDe',
@@ -89,7 +86,6 @@ const TinTuc = () => {
     {
       title: 'Chủ đề',
       dataIndex: ['chuDe', 'name'],
-      align: 'center',
       onCell,
       width: 200,
     },
@@ -122,24 +118,22 @@ const TinTuc = () => {
                     setVisibleModal(true);
                     setRecordTT(record);
                   }}
-                  type="primary"
+                  type="link"
                   shape="circle"
                 >
                   <EyeOutlined />
                 </Button>
               </Tooltip>{' '}
-              <Divider type="vertical" />
               <Tooltip title="Chỉnh sửa">
                 <Button
                   // disabled={!canUpdate}
                   onClick={() => handleEdit(record)}
-                  type="default"
+                  type="link"
                   shape="circle"
                 >
                   <EditOutlined />
                 </Button>
               </Tooltip>{' '}
-              <Divider type="vertical" />
               <Tooltip title="Xóa">
                 <Popconfirm
                   // disabled={!canDelete}
@@ -148,7 +142,7 @@ const TinTuc = () => {
                 >
                   <Button
                     // disabled={!canDelete}
-                    type="primary"
+                    type="link"
                     shape="circle"
                   >
                     <DeleteOutlined />
@@ -169,7 +163,7 @@ const TinTuc = () => {
   }, [condChuDe]);
 
   useEffect(() => {
-    // getAllHinhThucDaoTaoModel();
+    getAllHinhThucDaoTaoModel();
     return () => {
       setDanhSach([]);
     };
@@ -181,77 +175,75 @@ const TinTuc = () => {
   };
 
   return (
-    <TableBase
-      columns={columns}
-      getData={getTinTucModel}
-      dependencies={[page, limit, phamVi]}
-      modelName="tintuc"
-      formType="Drawer"
-      widthDrawer={700}
-      scroll={{ x: 1000 }}
-      title="Quản lý tin tức"
-      Form={Form}
-    >
-      {/* {(access.admin || access.nhanVien) && (
-        <>
-          <Select
-            onChange={(val) => {
-              setCondition({ ...condition, hinhThucDaoTaoId: undefined });
-              setPhamVi(val);
-              setPhamViChuDe(val);
-              setPage(1);
-            }}
-            style={{ width: 170, marginRight: 8 }}
-            value={phamVi}
-          >
-            {PhamVi.map((item) => (
-              <Select.Option value={item} key={item}>
-                {item}
-              </Select.Option>
-            ))}
-          </Select>
-          <Select
-            disabled={phamVi === 'Tất cả'}
-            notFoundContent="Không có hình thức đào tạo nào"
-            allowClear
-            placeholder="Lọc theo hình thức đào tạo"
-            value={condition?.hinhThucDaoTaoId}
-            onChange={(val: number) => {
-              setCondition({ ...condition, hinhThucDaoTaoId: val, idTopic: undefined });
-              setCondChuDe({ ...condChuDe, hinhThucDaoTaoId: val });
-              setPage(1);
-            }}
-            style={{ marginBottom: 8, width: 200, marginRight: 8 }}
-          >
-            {danhSachHinhThucDaoTao?.map((item) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.ten_hinh_thuc_dao_tao}
-              </Select.Option>
-            ))}
-          </Select>
-        </>
-      )} */}
-
-      <Select
-        notFoundContent="Không có chủ đề nào"
-        allowClear
-        placeholder="Lọc theo chủ đề"
-        onChange={onChangeChuDe}
-        value={condition?.idTopic}
-        style={{ width: 200, marginBottom: 8, marginRight: 8 }}
+    <>
+      <TableBase
+        columns={columns}
+        getData={getTinTucModel}
+        dependencies={[page, limit, phamVi]}
+        modelName="tintuc"
+        formType="Drawer"
+        widthDrawer={700}
+        scroll={{ x: 1000 }}
+        title="Quản lý tin tức"
+        Form={Form}
       >
-        {danhSach?.map((item: ChuDe.Record) => (
-          <Select.Option key={item._id} value={item._id}>
-            {item?.name}
-          </Select.Option>
-        ))}
-      </Select>
+        <Select
+          onChange={(val) => {
+            setCondition({ ...condition, hinhThucDaoTaoId: undefined });
+            setPhamVi(val);
+            setPhamViChuDe(val);
+            setPage(1);
+          }}
+          style={{ width: 170, marginRight: 8 }}
+          value={phamVi}
+        >
+          {PhamVi.map((item) => (
+            <Select.Option value={item} key={item}>
+              {item}
+            </Select.Option>
+          ))}
+        </Select>
+        <Select
+          disabled={phamVi === 'Tất cả'}
+          notFoundContent="Không có hình thức đào tạo nào"
+          allowClear
+          placeholder="Lọc theo hình thức đào tạo"
+          value={condition?.hinhThucDaoTaoId}
+          onChange={(val: string) => {
+            setCondition({ ...condition, hinhThucDaoTaoId: val, idTopic: undefined });
+            setCondChuDe({ ...condChuDe, hinhThucDaoTaoId: val });
+            setPage(1);
+          }}
+          style={{ marginBottom: 8, width: 200, marginRight: 8 }}
+        >
+          {danhSachHinhThucDaoTao?.map((item) => (
+            <Select.Option key={item._id} value={item._id}>
+              {item.danhMucHTDT?.ten}
+            </Select.Option>
+          ))}
+        </Select>
+
+        <Select
+          notFoundContent="Không có chủ đề nào"
+          allowClear
+          placeholder="Lọc theo chủ đề"
+          onChange={onChangeChuDe}
+          value={condition?.idTopic}
+          style={{ width: 200, marginBottom: 8, marginRight: 8 }}
+        >
+          {danhSach?.map((item: ChuDe.Record) => (
+            <Select.Option key={item._id} value={item._id}>
+              {item?.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </TableBase>
       <Modal
-        width="80%"
+        width={800}
         bodyStyle={{ padding: 0 }}
         destroyOnClose
         footer={
-          <Button onClick={() => setVisibleModal(false)} type="primary">
+          <Button onClick={() => setVisibleModal(false)} type="default">
             Đóng
           </Button>
         }
@@ -260,7 +252,7 @@ const TinTuc = () => {
       >
         <ViewTinTuc record={recordTT} />
       </Modal>
-    </TableBase>
+    </>
   );
 };
 

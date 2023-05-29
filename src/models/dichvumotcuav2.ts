@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import useInitModel from '@/hooks/useInitModel';
 import {
   adminDeleteDon,
   adminGetAllBieuMau,
@@ -43,29 +44,34 @@ import { useState } from 'react';
 import { useModel } from 'umi';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<DichVuMotCuaV2.BieuMau[]>([]);
+  const objInit = useInitModel<DichVuMotCuaV2.BieuMau>('dvmc');
+  const {
+    setTotal,
+    page,
+    limit,
+    condition,
+    setVisibleForm,
+    setPage,
+    total,
+    setDanhSach,
+    setLoading,
+    setRecord,
+    record,
+    danhSach,
+  } = objInit;
   const [danhSachDon, setDanhSachDon] = useState<DichVuMotCuaV2.Don[]>([]);
   const [danhSachDonThaoTac, setDanhSachDonThaoTac] = useState<DichVuMotCuaV2.DonThaoTac[]>([]);
   const [danhSachDataTable, setDanhSachDataTable] = useState<
     Record<string, { cauHinhBieuMau: DichVuMotCuaV2.CauHinhBieuMau[] }[]>
   >({});
-  const [filterInfo, setFilterInfo] = useState<any>({});
-  const [condition, setCondition] = useState<any>({});
-  const [record, setRecord] = useState<DichVuMotCuaV2.BieuMau>();
   const [recordDon, setRecordDon] = useState<DichVuMotCuaV2.Don>();
   const [loaiDichVu, setLoaiDichVu] = useState<'DVMC' | 'VAN_PHONG_SO'>('DVMC');
   const [recordDonThaoTac, setRecordDonThaoTac] = useState<DichVuMotCuaV2.DonThaoTac>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [edit, setEdit] = useState<boolean>(false);
   const [thuTuc, setThuTuc] = useState<DichVuMotCuaV2.ThuTuc>();
-  const [visibleForm, setVisibleForm] = useState<boolean>(false);
   const [visibleFormBieuMau, setVisibleFormBieuMau] = useState<boolean>(false);
   const [visibleFormDon, setVisibleFormDon] = useState<boolean>(false);
   const [visibleFormChinhSuaDon, setVisibleFormChinhSuaDon] = useState<boolean>(false);
-  const [total, setTotal] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
   const [current, setCurrent] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
   const [typeForm, setTypeForm] = useState<string>('add');
   const [trangThaiQuanLyDonThaoTac, setTrangThaiQuanLyDonThaoTac] = useState<string>('PENDING');
   const [trangThaiQuanLyDon, setTrangThaiQuanLyDon] = useState<string | undefined>('PROCESSING');
@@ -73,13 +79,13 @@ export default () => {
     [],
   );
   const [idDichVu, setIdDichVu] = useState<string>();
-
   const [recordTrangThaiDon, setRecordTrangThaiDon] = useState<DichVuMotCuaV2.TrangThaiBuoc[]>([]);
   const [phamVi, setPhamVi] = useState<'Tất cả' | 'Hình thức đào tạo'>('Tất cả');
   const { setVisibleForm: setVisibleFormThanhToan } = useModel('thanhtoan');
   const [isDonCanXuLy, setIsDonCanXuLy] = useState<number>(1);
   const [typeTraKetQua, setTypeTraKetQua] = useState<string>('');
   const { initialState } = useModel('@@initialState');
+
   const getBieuMauAdminModel = async (loaiDichVuParam?: string) => {
     setLoading(true);
     const response = await getBieuMauAdmin({
@@ -211,7 +217,6 @@ export default () => {
     dichVuId: string;
     traKetQua?: boolean;
     daTraKetQua?: boolean;
-    idCoSoVatChat?: any;
   }) => {
     try {
       setLoading(true);
@@ -704,6 +709,7 @@ export default () => {
   };
 
   return {
+    ...objInit,
     putTrangThaiBieuMauModel,
     adminPutDonModel,
     visibleFormChinhSuaDon,
@@ -777,26 +783,6 @@ export default () => {
     putBieuMauAdminModel,
     postBieuMauAdminModel,
     getBieuMauAdminModel,
-    danhSach,
-    setDanhSach,
-    filterInfo,
-    setFilterInfo,
-    condition,
-    setCondition,
-    record,
-    setRecord,
-    loading,
-    setLoading,
-    edit,
-    setEdit,
-    visibleForm,
-    setVisibleForm,
-    total,
-    setTotal,
-    page,
-    limit,
-    setPage,
-    setLimit,
     typeTraKetQua,
     setTypeTraKetQua,
     getAllBieuMauVPSModel,

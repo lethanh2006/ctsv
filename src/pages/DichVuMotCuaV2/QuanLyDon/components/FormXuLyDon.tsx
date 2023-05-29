@@ -18,10 +18,6 @@ const FormXuLyDon = (props: {
   onCancel: any;
   traKetQua?: boolean;
   recordEdit?: { duLieuBieuMau: DichVuMotCuaV2.CauHinhBieuMau[] };
-  idCoSoVatChat?: string; // trong trường hợp duyệt đơn mượn xe công
-  laiXe?: { hoTen: string; sdt: number };
-  xeChon?: { bienSoXe: string };
-  idCsvcPhong?: string; // trong trường hợp duyệt đơn mượn phòng họp
 }) => {
   const [form] = Form.useForm();
   const {
@@ -30,15 +26,9 @@ const FormXuLyDon = (props: {
     recordDon,
     setLoading,
     chuyenVienDieuPhoiDuyetDonModel,
-    chuyenVienXuLyDuyetDonModel,
     traKetQuaModel,
     adminPutDonModel,
-    loaiDichVu,
   } = useModel('dichvumotcuav2');
-  // const { chuyenVienDieuPhoiGetTongSoDonDVMCModel, chuyenVienXuLyGetTongSoDonDVMCModel } =
-  //   useModel('dashboard');
-  const { pathname } = window.location;
-  const arrPathName = pathname?.split('/') ?? [];
 
   return (
     <Card title={titleByType?.[props?.type]}>
@@ -51,52 +41,20 @@ const FormXuLyDon = (props: {
             checkFileSize(values?.ketQuaDinhKem?.fileList ?? []);
           if (!checkSize) return;
           setLoading(true);
-          if (props?.recordEdit && !arrPathName?.includes('vanphongso'))
-            await adminPutDonModel(recordDon?._id ?? '', props?.recordEdit);
+          if (props?.recordEdit) await adminPutDonModel(recordDon?._id ?? '', props?.recordEdit);
           if (props.type !== 'edit-result') {
             const urlFileDinhKem = await uploadMultiFile(values?.urlFileDinhKem?.fileList);
-            let payload: any;
-            if (props.idCoSoVatChat) {
-              payload = {
-                type: props.type,
-                idDonThaoTac: recordDonThaoTac?._id,
-                data: {
-                  urlFileDinhKem,
-                  info: {
-                    ghiChuXuLy: values?.ghiChuXuLy ?? '',
-                  },
-                  idCoSoVatChat: props?.idCoSoVatChat ?? '',
-                  hoTen: props?.laiXe?.hoTen,
-                  sdt: props?.laiXe?.sdt,
-                  bienSoXe: props?.xeChon?.bienSoXe,
+            const payload = {
+              type: props.type,
+              idDonThaoTac: recordDonThaoTac?._id,
+              data: {
+                urlFileDinhKem,
+                info: {
+                  ghiChuXuLy: values?.ghiChuXuLy ?? '',
                 },
-              };
-            } else if (props?.idCsvcPhong) {
-              payload = {
-                type: props.type,
-                idDonThaoTac: recordDonThaoTac?._id,
-                data: {
-                  urlFileDinhKem,
-                  info: {
-                    ghiChuXuLy: values?.ghiChuXuLy ?? '',
-                  },
-                  idCoSoVatChat: props?.idCsvcPhong ?? '',
-                },
-              };
-            } else {
-              payload = {
-                type: props.type,
-                idDonThaoTac: recordDonThaoTac?._id,
-                data: {
-                  urlFileDinhKem,
-                  info: {
-                    ghiChuXuLy: values?.ghiChuXuLy ?? '',
-                  },
-                },
-              };
-            }
-
-            chuyenVienDieuPhoiDuyetDonModel(payload); // vps mặc định là chuyên viên điều phối
+              },
+            };
+            chuyenVienDieuPhoiDuyetDonModel(payload);
           }
           if (
             props?.traKetQua === true ||

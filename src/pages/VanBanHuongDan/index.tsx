@@ -136,9 +136,8 @@ const VanBanHuongDanComponent = () => {
               actions={[
                 <Tooltip key={item._id} title="Chỉnh sửa">
                   <Button
-                    type="primary"
+                    type="link"
                     // disabled={!canUpdate}
-                    shape="circle"
                     icon={<EditOutlined />}
                     title="Sửa"
                     onClick={() => handleEdit(item)}
@@ -154,8 +153,7 @@ const VanBanHuongDanComponent = () => {
                     <Button
                       danger
                       // disabled={!canDelete}
-                      type="primary"
-                      shape="circle"
+                      type="link"
                       icon={<DeleteOutlined />}
                       title="Xóa"
                     />

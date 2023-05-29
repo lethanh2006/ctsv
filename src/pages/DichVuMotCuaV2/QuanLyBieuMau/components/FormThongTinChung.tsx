@@ -15,7 +15,7 @@ const FormThongTinChung = () => {
   const [phamVi, setPhamVi] = useState<string>(recordDichVu?.phamVi ?? '');
   const { record } = useModel('thanhtoan');
   const { danhSach } = useModel('donvi');
-  const { danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   // set kiểm tra xem đơn có được tạo lịch hẹn hay không
   const [taoLichHen, setTaoLichHen] = useState<boolean>(recordDichVu?.traKetQua ?? false);
 

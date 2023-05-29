@@ -187,6 +187,7 @@
   {
     name: 'QuanTriPhanHoi',
     path: './quan-ly-phan-hoi/hoi-dap',
+    icon: 'QuestionCircleOutlined',
     // maChucNang: 'phan-hoi:read',
     // access: 'routeFilter',
     routes: [
@@ -204,18 +205,19 @@
   },
   {
     name: 'TinTuc',
-    path: 'quantritintuc',
+    path: 'quan-tri-tin-tuc',
+    icon: 'InfoOutlined',
     routes: [
       {
         name: 'ChuDeChung',
-        path: './chude',
+        path: './chu-de',
         component: './ChuDeVaTinTuc/ChuDe',
         // access: 'adminAccessFilter',
         // maChucNang: 'chu-de-chung:read',
       },
       {
         name: 'TinTuc',
-        path: './tintuc',
+        path: './tin-tuc',
         component: './ChuDeVaTinTuc/TinTuc',
         // access: 'adminAccessFilter',
         // maChucNang: 'tin-tuc:read',

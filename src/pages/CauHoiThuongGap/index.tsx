@@ -2,7 +2,7 @@ import TableBase from '@/components/OldTable';
 import type { CauHoiThuongGap } from '@/services/CauHoiThuongGap/typing';
 import type { IColumn } from '@/utils/interfaces';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Divider, Popconfirm, Tooltip } from 'antd';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormCauHoiThuongGap from './components/Form';
 
@@ -40,6 +40,7 @@ const CauHoiThuongGapComponent = () => {
     {
       title: 'Thao tác',
       width: 120,
+      align: 'center',
       render: (val: CauHoiThuongGap.IRecord) => (
         <>
           <Tooltip title="Chỉnh sửa">
@@ -50,11 +51,9 @@ const CauHoiThuongGapComponent = () => {
                 setVisibleForm(true);
               }}
               icon={<EditOutlined />}
-              shape="circle"
-              type="primary"
+              type="link"
             />
           </Tooltip>
-          <Divider type="vertical" />
           <Tooltip title="Xóa">
             <Popconfirm
               onConfirm={() => {
@@ -62,7 +61,7 @@ const CauHoiThuongGapComponent = () => {
               }}
               title="Bạn có chắc chắn xóa?"
             >
-              <Button icon={<DeleteOutlined />} shape="circle" type="primary" danger />
+              <Button icon={<DeleteOutlined />} type="link" danger />
             </Popconfirm>
           </Tooltip>
         </>

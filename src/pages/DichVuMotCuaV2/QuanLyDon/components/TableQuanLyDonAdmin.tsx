@@ -13,18 +13,7 @@ import {
   FileDoneOutlined,
   FileTextOutlined,
 } from '@ant-design/icons';
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Menu,
-  Modal,
-  Popconfirm,
-  Select,
-  Tabs,
-  Tag,
-  Tooltip,
-} from 'antd';
+import { Button, Dropdown, Menu, Modal, Popconfirm, Select, Tabs, Tag, Tooltip } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -150,7 +139,7 @@ const TableQuanLyDonAdmin = (props: {
       width: 120,
       // search: 'filterString',
       notRegex: true,
-      render: (val) => (
+      render: (val: 'OK' | 'NOT_OK' | 'PROCESSING') => (
         <Tag
           color={
             TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.PROCESSING
@@ -208,15 +197,10 @@ const TableQuanLyDonAdmin = (props: {
                   </Menu>
                 }
               >
-                <Button
-                  shape="circle"
-                  loading={loading}
-                  icon={<FileTextOutlined />}
-                  type="primary"
-                />
+                <Button loading={loading} icon={<FileTextOutlined />} type="link" />
               </Dropdown>
             </Tooltip>
-            <Divider type="vertical" />
+
             <Tooltip title="Xuất mẫu trả kết quả">
               <Dropdown
                 overlay={
@@ -235,12 +219,7 @@ const TableQuanLyDonAdmin = (props: {
                   </Menu>
                 }
               >
-                <Button
-                  shape="circle"
-                  loading={loading}
-                  icon={<FileDoneOutlined />}
-                  type="primary"
-                />
+                <Button loading={loading} icon={<FileDoneOutlined />} type="link" />
               </Dropdown>
             </Tooltip>
 
@@ -257,7 +236,6 @@ const TableQuanLyDonAdmin = (props: {
             </Tooltip> */}
             {trangThaiQuanLyDon === 'PROCESSING' && (
               <>
-                <Divider type="vertical" />
                 <Tooltip title="Xóa đơn" placement="bottom">
                   <Popconfirm
                     // disabled={!canDelete}
@@ -270,7 +248,7 @@ const TableQuanLyDonAdmin = (props: {
                     }}
                     title="Bạn có chắc chắn xóa đơn này?"
                   >
-                    <Button shape="circle">
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Popconfirm>
@@ -280,26 +258,24 @@ const TableQuanLyDonAdmin = (props: {
 
             {typeTraKetQua === 'CHUA_TRA_KQ' && (
               <>
-                <Divider type="vertical" />
                 <Tooltip title="Xác nhận đã trả đơn">
                   <Popconfirm
                     title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
                     onConfirm={() => updateTrangThaiNhanKetQuaModel(recordDon?._id ?? '', true)}
                   >
-                    <Button icon={<CheckOutlined />} shape="circle" />
+                    <Button icon={<CheckOutlined />} type="link" />
                   </Popconfirm>
                 </Tooltip>
               </>
             )}
             {typeTraKetQua === 'DA_TRA_KQ' && (
               <>
-                <Divider type="vertical" />
                 <Tooltip title="Xác nhận lại chưa trả đơn">
                   <Popconfirm
                     title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
                     onConfirm={() => updateTrangThaiNhanKetQuaModel(recordDon?._id ?? '', false)}
                   >
-                    <Button icon={<CloseOutlined />} shape="circle" />
+                    <Button icon={<CloseOutlined />} type="link" />
                   </Popconfirm>
                 </Tooltip>
               </>

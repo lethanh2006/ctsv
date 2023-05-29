@@ -1,3 +1,4 @@
+import useInitModel from '@/hooks/useInitModel';
 import {
   deleteThongBao,
   getThongBao,
@@ -12,19 +13,11 @@ import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<ThongBao.Record[]>([]);
+  const objInit = useInitModel<ThongBao.Record>('notification');
+  const { setDanhSach, setLoading, page, limit, condition, setVisibleForm, setTotal } = objInit;
   const [danhSachNoticeIcon, setDanhSachNoticeIcon] = useState<ThongBao.Record[]>([]);
-  const [filterInfo, setFilterInfo] = useState<any>({});
-  const [condition, setCondition] = useState<any>({});
   const [loaiThongBao, setLoaiThongBao] = useState<string>('TAT_CA');
-  const [record, setRecord] = useState<ThongBao.Record>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [visibleForm, setVisibleForm] = useState<boolean>(false);
-  const [total, setTotal] = useState<number>(0);
   const [totalNoticeIcon, setTotalNoticeIcon] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
   const [pageNoticeIcon, setPageNoticeIcon] = useState<number>(1);
   const [limitNoticeIcon, setLimitNoticeIcon] = useState<number>(10);
   const [phamVi, setPhamVi] = useState<'Tất cả' | 'Hình thức đào tạo'>('Tất cả');
@@ -117,6 +110,7 @@ export default () => {
   };
 
   return {
+    ...objInit,
     putThongBaoModel,
     deleteThongBaoModel,
     phamVi,
@@ -137,25 +131,5 @@ export default () => {
     postThongBaoAllModel,
     postThongBaoByVaiTroModel,
     getThongBaoAdminModel,
-    danhSach,
-    setDanhSach,
-    filterInfo,
-    setFilterInfo,
-    condition,
-    setCondition,
-    record,
-    setRecord,
-    loading,
-    setLoading,
-    edit,
-    setEdit,
-    visibleForm,
-    setVisibleForm,
-    total,
-    setTotal,
-    page,
-    limit,
-    setPage,
-    setLimit,
   };
 };

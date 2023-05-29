@@ -1,14 +1,18 @@
 import type { ELoaiDauDiemHocPhan } from '@/utils/constants';
 
 export declare module LopTinChi {
-  export interface Record {
-    ten_hoc_phan: string;
-    ten_lop_tin_chi: string;
-    id: number;
-    ky_nam_hoc_id: [number, string];
-    ma_hoc_phan: string;
-    ma_lop: string;
-    mon_hoc_ids: [number, string];
+  export interface IRecord {
+    _id: string;
+    ten: string;
+    hocKyId: string;
+    hocKy?: HocKy.IRecord;
+    hocPhanId: string;
+    hocPhan?: HocPhan.IRecord;
+    siSoToiDa: number;
+    parentId?: string;
+    parent?: IRecord;
+    sinhVienList: LopTinChi.ThongTinSinhVien[];
+    nhanSuList: NhanSu.IRecord[];
   }
 
   export interface DotDanhGia {
@@ -54,7 +58,7 @@ export declare module LopTinChi {
     loai_dau_diem_hoc_phan: ELoaiDauDiemHocPhan;
     is_danh_gia: boolean;
     diemCong?: { lichSuDiem: IDiemCong[] }[];
-    lop_tin_chi_id: [number, string]
+    lop_tin_chi_id: [number, string];
   }
 
   export interface IGiaLapDiem {
@@ -82,7 +86,7 @@ export declare module LopTinChi {
     is_danh_gia: boolean;
   }
 
-    export interface DiemTheoKy {
+  export interface DiemTheoKy {
     ctk_nganh_id: [number, string];
     diem_tb_chung_hoc_ky: number;
     diem_tb_chung_hoc_ky_thang_4: number;
@@ -101,7 +105,7 @@ export declare module LopTinChi {
     tong_so_tin_chi_trong_hoc_ky: number;
     tong_so_tin_chi_truot: number;
     trang_thai: boolean;
-    xep_loai_hoc_luc_hoc_ky: boolean
+    xep_loai_hoc_luc_hoc_ky: boolean;
   }
 
   export interface DiemTongKet {

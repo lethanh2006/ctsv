@@ -1,6 +1,6 @@
-
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import useInitModel from '@/hooks/useInitModel';
 import {
   giangVienGetDiemThanhPhanSinhVienByIdSinhVienIdHocKy,
   giangVienGetDiemTongKetSinhVienByIdSinhVien,
@@ -36,27 +36,21 @@ import axios from 'axios';
 import { useState } from 'react';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<LopTinChi.Record[]>([]);
+  const objInit = useInitModel<LopTinChi.IRecord>('odoo-lop-tin-chi');
+  const { setLoading, condition, setDanhSach, setTotal, page, limit, setRecord, record } = objInit;
   const [danhSachNhomLop, setDanhSachNhomLop] = useState<LopTinChi.NhomLopTinChi[]>();
   const [danhSachDiemThanhPhanTheoKy, setDanhSachDiemThanhPhanTheoKy] = useState<
     LopTinChi.DiemThanhPhan[]
   >([]);
   const [idNhomLop, setIdNhomLop] = useState<number>(-1);
-  const [filterInfo, setFilterInfo] = useState<any>({});
-  const [condition, setCondition] = useState<any>({});
   const [infoMonHoc, setInfoMonHoc] = useState<LopTinChi.InfoMonHoc>();
   const [danhSachMonHoc, setDanhSachMonHoc] = useState<LopTinChi.InfoMonHoc[]>([]);
   const [ketQuaHocTap, setKetQuaHocTap] = useState<LopTinChi.KetQuaHocTap>(
     {} as LopTinChi.KetQuaHocTap,
   );
   const [danhSachKetQuaHocTap, setDanhSachKetQuaHocTap] = useState<LopTinChi.KetQuaHocTap[]>([]);
-  const [record, setRecord] = useState<LopTinChi.Record>({} as any);
   const [recordDiemTongKet, setRecordDiemTongKet] = useState<LopTinChi.DiemTongKet>();
   const [danhSachDiemTongKet, setDanhSachDiemTongKet] = useState<LopTinChi.DiemTongKet[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
   const [hinhThucDaoTao, setHinhThucDaoTao] = useState<number>();
   const [dataDotDanhGia, setDataDotDanhGia] = useState<LopTinChi.DotDanhGia>();
   const [flagDaDanhGia, setFlagDaDanhGia] = useState(false);
@@ -70,7 +64,6 @@ export default () => {
   );
   const [thongBao, setThongBao] = useState<IResThongBaoLopTinChi.Result[]>({} as any);
 
-
   const getBieuMauByIdModel = async (id: any) => {
     setLoading(true);
     const response = await getBieuMauById({ id });
@@ -79,13 +72,16 @@ export default () => {
   };
 
   const verifyAccessDanhGiaModel = async (idDot?: string, idLop?: number, idBieuMau?: string) => {
-      setLoading(true);
-      return verifyAccessDanhGia(idDot, idLop).then(() => {
+    setLoading(true);
+    return verifyAccessDanhGia(idDot, idLop)
+      .then(() => {
         setFlagDaDanhGia(false);
         getBieuMauByIdModel(idBieuMau);
-      }).catch(() => {
+      })
+      .catch(() => {
         setFlagDaDanhGia(true);
-      }).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -94,7 +90,7 @@ export default () => {
     setLoading(true);
     const response = await getDotDanhGia(kyHoc);
     // if (response?.data?.data !== null) {
-    //   await verifyAccessDanhGiaModel(response?.data?.data?._id, record?.id);
+    //   await verifyAccessDanhGiaModel(response?.data?.data?._id, record?._id);
     //   if (!flagDaDanhGia) {
     //     getBieuMauByIdModel(response?.data?.data?.idBieuMau);
     //   }
@@ -114,11 +110,9 @@ export default () => {
     try {
       await sinhVienThucHienBieuMau(payload);
     } catch (error) {
-      if(axios.isAxiosError(error))
-      throw new Error(error?.response?.data?.errorCode);
+      if (axios.isAxiosError(error)) throw new Error(error?.response?.data?.errorCode);
     }
-    
-    
+
     setLoading(false);
   };
 
@@ -197,9 +191,9 @@ export default () => {
   };
 
   const getNhomLopTinChiByIdModel = async () => {
-    if (!record.id) return;
+    if (!record?._id) return;
     setLoading(true);
-    const response = await getNhomLopTinChiById(record.id);
+    const response = await getNhomLopTinChiById(record?._id);
     setDanhSachNhomLop(response?.data?.data ?? []);
     setLoading(false);
   };
@@ -298,6 +292,7 @@ export default () => {
   };
 
   return {
+    ...objInit,
     giangVienNhapDiemModel,
     getBangDiemModel,
     getAllLopTinChiSinhVienModel,
@@ -326,10 +321,6 @@ export default () => {
     sinhVienGetKetQuaHocTapByIdLopTinChiModel,
     ketQuaHocTap,
     setKetQuaHocTap,
-    condition,
-    setCondition,
-    filterInfo,
-    setFilterInfo,
     infoMonHoc,
     setInfoMonHoc,
     getInfoMonHocModel,
@@ -345,16 +336,6 @@ export default () => {
     thongTinChung,
     setThongTinChung,
     thongBao,
-    danhSach,
-    page,
-    limit,
-    setLimit,
-    setPage,
-    record,
-    setRecord,
-    loading,
-    setLoading,
-    total,
     getLopTinChiByHocKyModel,
     getDotDanhGiaModel,
     dataDotDanhGia,
@@ -363,6 +344,6 @@ export default () => {
     flagDaDanhGia,
     dataBieuMau,
     thongTinNhomLop,
-    getBieuMauByIdModel
+    getBieuMauByIdModel,
   };
 };

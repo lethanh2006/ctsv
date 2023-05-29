@@ -1,5 +1,5 @@
 declare module TinTuc {
-  export interface Record {
+  export interface IRecord {
     hinhThucDaoTaoId: number;
     danhSachVaiTro: string[];
     doiTuong: 'Tất cả' | 'Vai trò';

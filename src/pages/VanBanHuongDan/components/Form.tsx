@@ -10,7 +10,7 @@ const FormBaiHoc = () => {
 
   const { loading, record, setVisibleForm, edit, postModel, putModel, getModel } =
     useModel('vanbanhuongdan');
-  // const { danhSachHinhThucDaoTao } = useModel('lophanhchinh');
+  // const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   // const [phamVi, setPhamVi] = useState<string>(record?.phamVi ?? '');
   // const [doiTuong, setDoiTuong] = useState<string>(record?.doiTuong ?? 'Tất cả');
 

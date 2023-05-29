@@ -1,22 +1,16 @@
+import useInitModel from '@/hooks/useInitModel';
 import { adminChangePassword, getUser, getUserMetaDataFilter, putUser } from '@/services/User/user';
+import { type Login } from '@/services/ant-design-pro/typings';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const [danhSach, setDanhSach] = useState<Login.Profile[]>([]);
+  const objInit = useInitModel<Login.Profile>('odoo-user');
+  const { setLoading, page, limit, condition, setDanhSach, setTotal, setVisibleForm } = objInit;
   const [danhSachNguoiDungCuThe, setDanhSachNguoiDungCuThe] = useState<User.NguoiDungCuThe[]>([]);
-  const [filterInfo, setFilterInfo] = useState<any>({});
-  const [condition, setCondition] = useState<any>({});
   const [vaiTro, setVaiTro] = useState<string>('sinh_vien');
   const [conditionNguoiDungCuThe, setConditionNguoiDungCuThe] = useState<any>({});
-  const [record, setRecord] = useState<Login.Profile>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [visibleForm, setVisibleForm] = useState<boolean>(false);
   const [visibleFormCapLaiMatKhau, setVisibleFormCapLaiMatKhau] = useState<boolean>(false);
-  const [total, setTotal] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
 
   const getUserModel = async (payload?: {
     pageParam?: number;
@@ -64,6 +58,7 @@ export default () => {
   };
 
   return {
+    ...objInit,
     vaiTro,
     setVaiTro,
     danhSachNguoiDungCuThe,
@@ -76,25 +71,5 @@ export default () => {
     adminPutProfileUserModel,
     adminChangePasswordModel,
     getUserModel,
-    danhSach,
-    setDanhSach,
-    filterInfo,
-    setFilterInfo,
-    condition,
-    setCondition,
-    record,
-    setRecord,
-    loading,
-    setLoading,
-    edit,
-    setEdit,
-    visibleForm,
-    setVisibleForm,
-    total,
-    setTotal,
-    page,
-    setPage,
-    limit,
-    setLimit,
   };
 };

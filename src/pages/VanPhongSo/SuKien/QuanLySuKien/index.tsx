@@ -44,7 +44,7 @@ const index = () => {
     getLopHanhChinhAdminModel,
     condition: condLopHanhChinh,
     getAllHinhThucDaoTaoModel,
-  } = useModel('lophanhchinh');
+  } = useModel('namhoc.lophanhchinh');
   const { getAllNganhModel } = useModel('nganh');
   const { adminGetLopTinChi, condition: condLopTinChi } = useModel('loptinchi');
   const { getKhoaHocModel } = useModel('khoahoc');

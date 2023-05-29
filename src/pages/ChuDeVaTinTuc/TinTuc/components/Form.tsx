@@ -7,23 +7,34 @@ import { Button, Card, Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import moment from 'moment';
 import mm from 'moment-timezone';
 import { useEffect, useState } from 'react';
-import { useAccess, useModel } from 'umi';
+import { useModel } from 'umi';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
 const FormTinTuc = () => {
-  const access = useAccess();
   const [form] = Form.useForm();
-  const { loading, record, setVisibleForm, edit, putTinTucModel, addTinTucModel } =
-    useModel('tintuc');
+  const { record, setVisibleForm, edit, putTinTucModel, addTinTucModel } = useModel('tintuc');
   const { danhSach: danhSachChuDe } = useModel('chude');
   const [chuDeSelected, setChuDeSelected] = useState<ChuDe.Record>();
   const { initialState } = useModel('@@initialState');
   const [formSubmitting, setFormSubmitting] = useState(false);
 
   useEffect(() => {
-    setChuDeSelected(danhSachChuDe.find((item) => item._id === record.idTopic));
-  }, [record._id]);
+    setChuDeSelected(danhSachChuDe.find((item) => item._id === record?.idTopic));
+    if (record?._id) {
+      if (edit)
+        form.setFieldsValue({
+          ...record,
+          danhSachVaiTro:
+            record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
+          urlAnhDaiDien: renderFileListUrl(record?.urlAnhDaiDien ?? ''),
+          ngayDang: moment(record?.ngayDang),
+          noiDung: record?.noiDung || '',
+        });
+    } else form.resetFields();
+  }, [record?._id]);
+
+  console.log(record, 'record');
 
   const onFinish = async (values: any) => {
     if (formSubmitting) return;
@@ -32,7 +43,7 @@ const FormTinTuc = () => {
     if (values.urlAnhDaiDien.fileList?.[0]?.originFileObj) {
       const response = await getURLImg({
         filename: 'url1',
-        public: true,
+        public: '1',
         file: values?.urlAnhDaiDien.fileList?.[0].originFileObj,
       });
       values.urlAnhDaiDien = response?.data?.data?.url;
@@ -40,43 +51,36 @@ const FormTinTuc = () => {
 
     if (edit)
       putTinTucModel({
-        id: record._id,
+        id: record?._id ?? '',
         data: {
           ...values,
           doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
+          phamVi: record?.phamVi ?? 'Tất cả',
         },
       });
     else {
       addTinTucModel({
         ...values,
-        hinhThucDaoTaoId:
-          access?.quanTri === true
-            ? initialState?.currentUser?.hinh_thuc_dao_tao_id ?? 0
-            : values?.hinhThucDaoTaoId,
+        hinhThucDaoTaoId: initialState?.currentUser?.hinhThucDaoTaoId ?? 0,
         doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
         phamVi: chuDeSelected?.phamVi ?? 'Tất cả',
       });
     }
+    setFormSubmitting(false);
   };
 
   return (
     <Card title={edit ? 'Chỉnh sửa' : 'Thêm mới'}>
-      <Form labelCol={{ span: 24 }} onFinish={onFinish} scrollToFirstError form={form}>
+      <Form labelCol={{ span: 24 }} onFinish={onFinish} form={form}>
         <Form.Item
           name="tieuDe"
           label="Tiêu đề"
-          initialValue={record?.tieuDe}
           rules={[...rules.required, ...rules.text, ...rules.length(100)]}
         >
           <Input placeholder="Tiêu đề" />
         </Form.Item>
 
-        <Form.Item
-          name="idTopic"
-          label="Chủ đề"
-          rules={[...rules.required]}
-          initialValue={record?.idTopic}
-        >
+        <Form.Item name="idTopic" label="Chủ đề" rules={[...rules.required]}>
           <Select
             placeholder="Chọn chủ đề"
             onChange={(value) => setChuDeSelected(danhSachChuDe.find((item) => item._id === value))}
@@ -88,20 +92,11 @@ const FormTinTuc = () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item
-          name="moTa"
-          label="Mô tả"
-          initialValue={record?.moTa}
-          rules={[...rules.text, ...rules.length(300)]}
-        >
+        <Form.Item name="moTa" label="Mô tả" rules={[...rules.text, ...rules.length(300)]}>
           <Input placeholder="Mô tả" />
         </Form.Item>
 
-        <Form.Item
-          name="urlAnhDaiDien"
-          label="Ảnh đại diện"
-          initialValue={renderFileListUrl(record?.urlAnhDaiDien)}
-        >
+        <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
           <UploadAvatar
             style={{
               width: 102,
@@ -114,15 +109,7 @@ const FormTinTuc = () => {
         <Row gutter={[20, 0]}>
           {chuDeSelected?.phamVi === 'Tất cả' && (
             <Col xs={24} md={12}>
-              <Form.Item
-                name="danhSachVaiTro"
-                label="Đối tượng"
-                initialValue={
-                  record?.doiTuong !== 'Tất cả'
-                    ? record?.danhSachVaiTro
-                    : ['sinh_vien', 'nhan_vien']
-                }
-              >
+              <Form.Item name="danhSachVaiTro" label="Đối tượng">
                 <Select
                   mode="multiple"
                   placeholder="Chọn vai trò"
@@ -148,7 +135,7 @@ const FormTinTuc = () => {
             </Col>
           )}
           <Col xs={24} md={12}>
-            <Form.Item name="ngayDang" label="Ngày đăng" initialValue={moment(record?.ngayDang)}>
+            <Form.Item name="ngayDang" label="Ngày đăng">
               <DatePicker
                 style={{ width: '100%' }}
                 format="DD/MM/YYYY"
@@ -163,7 +150,6 @@ const FormTinTuc = () => {
           name="noiDung"
           label="Nội dung"
           // rules={[...rules.textEditor]}
-          initialValue={{ text: record?.noiDung || '' }}
         >
           <TinyEditor height={350} />
         </Form.Item>
