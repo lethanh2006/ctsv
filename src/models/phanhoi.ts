@@ -1,10 +1,11 @@
 import useInitModel from '@/hooks/useInitModel';
 import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/PhanHoi/phanhoi';
+import { ip3 } from '@/utils/ip';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi');
+  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi', undefined, undefined, ip3);
   const { setLoading, setVisibleForm, getModel, setDanhSach, setTotal, page, limit } = objInit;
   const [daTraLoi, setDaTraLoi] = useState<boolean>(false);
   const [vaiTro, setVaiTro] = useState<string>('sinh_vien');

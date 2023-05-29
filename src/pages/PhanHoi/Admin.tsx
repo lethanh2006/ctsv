@@ -10,7 +10,7 @@ import { type IColumn } from '@/components/Table/typing';
 
 const PhanHoi = () => {
   const access = useAccess();
-  const { setVisibleForm, setRecord, setDaTraLoi, daTraLoi, setCondition, page, limit } =
+  const { setVisibleForm, setRecord, setDaTraLoi, daTraLoi, setCondition, page, limit, getModel } =
     useModel('phanhoi');
   // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   const handleEdit = (record: PhanHoi.IRecord) => {
@@ -92,15 +92,14 @@ const PhanHoi = () => {
     {
       title: 'Thao tác',
       align: 'center',
-      width: 100,
+      width: 80,
       render: (record) => (
         <>
           <Tooltip title={daTraLoi ? 'Xem nội dung trả lời' : 'Trả lời'}>
             <Button
               // disabled={!canAnswer}
               onClick={() => handleEdit(record)}
-              type="primary"
-              shape="circle"
+              type="link"
             >
               {daTraLoi ? <EyeOutlined /> : <EditOutlined />}
             </Button>
@@ -121,6 +120,7 @@ const PhanHoi = () => {
   return (
     <TableBase
       scroll={{ x: 900 }}
+      getData={() => getModel()}
       columns={columns}
       modelName="phanhoi"
       dependencies={[daTraLoi, page, limit]}
