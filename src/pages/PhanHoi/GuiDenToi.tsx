@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/Table';
-import { useCheckAccess } from '@/utils/utils';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Select, Tooltip, Typography } from 'antd';
 import moment from 'moment';
@@ -144,7 +143,7 @@ const PhanHoi = () => {
       title="Quản lý phản hồi"
       Form={Form}
     >
-      {(access.adminVaQuanTri || access.nhanVien) && (
+      {/* {(access.adminVaQuanTri || access.nhanVien) && (
         <Select
           placeholder="Lọc theo vai trò người gửi"
           onChange={onChangeVaiTro}
@@ -160,7 +159,7 @@ const PhanHoi = () => {
             </Select.Option>
           ))}
         </Select>
-      )}
+      )} */}
       <Select
         placeholder="Lọc theo trạng thái"
         onChange={onChangeTrangThai}

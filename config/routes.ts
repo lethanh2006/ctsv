@@ -224,6 +224,28 @@
       },
     ],
   },
+  {
+    name: 'BieuMau',
+    icon: 'form',
+    path: '/bieumau',
+    routes: [
+      {
+        name: 'KhaoSat',
+        path: './khaosat',
+        component: './BieuMau/KhaoSat',
+      },
+      // {
+      //   name: 'TracNghiem',
+      //   path: './tracnghiem',
+      //   component: './BieuMau/TracNghiem',
+      // },
+      // {
+      //   name: 'KhaiBaoSucKhoe',
+      //   path: './khaibaosuckhoe',
+      //   component: './BieuMau/KhaiBaoSucKhoe',
+      // },
+    ],
+  },
 
   {
     path: '/',
