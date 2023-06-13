@@ -5,7 +5,7 @@ import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi', undefined, undefined, ip3);
+  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi', 'condition', undefined, ip3);
   const { setLoading, setVisibleForm, getModel, setDanhSach, setTotal, page, limit } = objInit;
   const [daTraLoi, setDaTraLoi] = useState<boolean>(false);
   const [vaiTro, setVaiTro] = useState<string>('sinh_vien');
