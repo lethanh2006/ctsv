@@ -141,6 +141,7 @@ const TinTuc = () => {
                   title="Bạn có chắc chắn muốn xóa chủ đề này"
                 >
                   <Button
+                    danger
                     // disabled={!canDelete}
                     type="link"
                     shape="circle"

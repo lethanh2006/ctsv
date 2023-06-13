@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/Table';
-import { PhamVi } from '@/utils/constants';
 import type { IColumn } from '@/utils/interfaces';
-import { useCheckAccess } from '@/utils/utils';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -10,7 +8,7 @@ import {
   EyeOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, Popconfirm, Popover, Select, Switch, Tooltip } from 'antd';
+import { Button, Divider, Popconfirm, Popover, Switch, Tooltip } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useAccess, useModel } from 'umi';
@@ -106,13 +104,6 @@ const KhaoSat = () => {
 
   const columns: IColumn<BieuMau.Record>[] = [
     {
-      title: 'STT',
-      dataIndex: 'index',
-      align: 'center',
-      width: 80,
-      onCell,
-    },
-    {
       title: 'Tiêu đề',
       dataIndex: 'tieuDe',
       align: 'center',
@@ -151,20 +142,20 @@ const KhaoSat = () => {
       onCell,
       render: (val) => <div>{val?.length === 0 ? 'Tất cả' : val}</div>,
     },
-    {
-      title: 'Hình thức đào tạo',
-      dataIndex: 'hinhThucDaoTaoId',
-      align: 'center',
-      width: 170,
-      // hide: !access.admin,
-      render: (val, record) => (
-        <div>
-          {record?.phamVi === 'Tất cả'
-            ? 'Tất cả'
-            : danhSachHinhThucDaoTao?.find((item) => item.id === val)?.display_name}
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Hình thức đào tạo',
+    //   dataIndex: 'hinhThucDaoTaoId',
+    //   align: 'center',
+    //   width: 170,
+    //   // hide: !access.admin,
+    //   render: (val, record) => (
+    //     <div>
+    //       {record?.phamVi === 'Tất cả'
+    //         ? 'Tất cả'
+    //         : danhSachHinhThucDaoTao?.find((item) => item.id === val)?.display_name}
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Trạng thái',
       dataIndex: 'kichHoat',

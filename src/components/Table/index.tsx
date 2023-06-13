@@ -74,7 +74,7 @@ const TableBase = (props: TableBaseProps) => {
     return () => {
       if (noCleanUp !== true) {
         // setCondition(undefined);
-        setFilters(undefined);
+        if (setFilters) setFilters(undefined);
         // setSort(undefined);
       }
     };
@@ -115,7 +115,7 @@ const TableBase = (props: TableBaseProps) => {
     if (!value) {
       // Remove filter of this column
       const tempFilters = filters?.filter((item) => item.field !== dataIndex);
-      setFilters(tempFilters);
+      if (setFilters) setFilters(tempFilters);
     } else {
       const filter = getFilterColumn(dataIndex);
       let tempFilters: TFilter<any>[] = [...(filters ?? [])];
@@ -134,7 +134,7 @@ const TableBase = (props: TableBaseProps) => {
           operator: EOperatorType.CONTAIN,
           values: [value],
         });
-      setFilters(tempFilters);
+      if (setFilters) setFilters(tempFilters);
     }
   };
 
@@ -169,7 +169,7 @@ const TableBase = (props: TableBaseProps) => {
     if (!values || !values.length) {
       // Remove filter of this column
       const tempFilters = filters?.filter((item) => item.field !== dataIndex);
-      setFilters(tempFilters);
+      if (setFilters) setFilters(tempFilters);
     } else {
       const filter = getFilterColumn(dataIndex);
       let tempFilters: TFilter<any>[] = [...(filters ?? [])];

@@ -31,4 +31,6 @@ export default {
   'menu.TinTuc': 'Tin tức',
   'menu.TinTuc.ChuDeChung': 'Chủ đề chung',
   'menu.TinTuc.TinTuc': 'Tin tức',
+  'menu.BieuMau': 'Biểu mẫu',
+  'menu.BieuMau.KhaoSat': 'Khảo sát',
 };

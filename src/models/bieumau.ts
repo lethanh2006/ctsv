@@ -82,11 +82,8 @@ export default () => {
       await addBieuMau(payload);
       message.success('Thêm thành công');
       setLoading(false);
-      if (initialState?.currentUser?.vai_tro === 'quan_tri') {
-        getBieuMauAdminHeModel();
-      } else {
-        getBieuMauAdminModel();
-      }
+
+      getBieuMauAdminHeModel();
 
       setVisibleForm(false);
     } catch (error) {
@@ -99,11 +96,9 @@ export default () => {
       await putBieuMau(payload);
       message.success('Sửa thành công');
       setLoading(false);
-      if (initialState?.currentUser?.vai_tro === 'quan_tri') {
-        getBieuMauAdminHeModel();
-      } else {
-        getBieuMauAdminModel();
-      }
+
+      getBieuMauAdminHeModel();
+
       setVisibleForm(false);
     } catch (error) {
       setLoading(false);
@@ -115,18 +110,14 @@ export default () => {
     await kichHoatBieuMau(payload);
     message.success('Xử lý thành công');
     setLoading(false);
-    getBieuMauAdminModel();
+    getBieuMauAdminHeModel();
   };
 
   const delBieuMauModel = async (payload: { id: string }) => {
     setLoading(true);
     await delBieuMau(payload);
     message.success('Xóa thành công');
-    if (initialState?.currentUser?.vai_tro === 'quan_tri') {
-      getBieuMauAdminHeModel();
-    } else {
-      getBieuMauAdminModel();
-    }
+    getBieuMauAdminHeModel();
     setLoading(false);
   };
 

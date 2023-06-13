@@ -6,7 +6,7 @@ export async function getBieuMauAdminHe(payload: { condition: any }) {
 }
 
 export async function getBieuMauAdmin(payload: { page: number; limit: number; condition: any }) {
-  return axios.get(`${ip3}/khao-sat/pageable`, { params: payload });
+  return axios.get(`${ip3}/khao-sat/all`, { params: payload });
 }
 
 export async function getBieuMauUser(payload: {

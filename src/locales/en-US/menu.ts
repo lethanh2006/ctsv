@@ -25,4 +25,6 @@ export default {
   'menu.SinhVien.ChuyenTruong': 'Chuyển trường',
   'menu.SinhVien.KhenThuong': 'Khen thưởng',
   'menu.SinhVien.KyLuat': 'Kỷ luật',
+  'menu.BieuMau': 'Biểu mẫu',
+  'menu.BieuMau.KhaoSat': 'Khảo sát',
 };

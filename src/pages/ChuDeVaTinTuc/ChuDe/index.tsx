@@ -39,20 +39,20 @@ const ChuDeChung = () => {
       filterType: 'string',
       sortable: true,
     },
-    {
-      title: 'Hình thức đào tạo',
-      dataIndex: 'hinhThucDaoTaoId',
-      width: 100,
-      sortable: true,
-      render: (val, record) =>
-        record?.phamVi === 'Tất cả' ? (
-          <div>Tất cả</div>
-        ) : (
-          <div>
-            {danhSachHinhThucDaoTao?.find((item) => item?._id === val)?.danhMucHTDT?.ten ?? ''}
-          </div>
-        ),
-    },
+    // {
+    //   title: 'Hình thức đào tạo',
+    //   dataIndex: 'hinhThucDaoTaoId',
+    //   width: 100,
+    //   sortable: true,
+    //   render: (val, record) =>
+    //     record?.phamVi === 'Tất cả' ? (
+    //       <div>Tất cả</div>
+    //     ) : (
+    //       <div>
+    //         {danhSachHinhThucDaoTao?.find((item) => item?._id === val)?.danhMucHTDT?.ten ?? ''}
+    //       </div>
+    //     ),
+    // },
     {
       title: 'Thứ tự hiển thị',
       dataIndex: 'order',
@@ -83,6 +83,7 @@ const ChuDeChung = () => {
               title="Bạn có chắc chắn muốn xóa chủ đề này"
             >
               <Button
+                danger
                 // disabled={!canDelete}
                 type="link"
                 shape="circle"
