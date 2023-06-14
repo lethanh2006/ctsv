@@ -34,9 +34,8 @@ import {
   updateTrangThaiNhanKetQua,
   userGetAllBieuMau,
   nhanVienDeleteDon,
-} from '@/services/DichVuMotCuaV2/dichvumotcuav2';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
-import { getAllDonVPS } from '@/services/VanPhongSo/vanphongso';
+} from '@/services/DVMC/DichVuMotCuaV2/dichvumotcuav2';
+import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import type { MaDichVuVps } from '@/utils/constants';
 import { message } from 'antd';
 import FileDownload from 'js-file-download';

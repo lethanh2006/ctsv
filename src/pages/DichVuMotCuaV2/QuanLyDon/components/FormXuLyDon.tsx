@@ -1,7 +1,5 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
-import Upload from '@/components/Upload/UploadMultiFile';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import UploadFile from '@/components/Upload/UploadFile';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import rules from '@/utils/rules';
 import { checkFileSize, renderFileList, uploadMultiFile } from '@/utils/utils';
 import { Button, Card, Form, Input } from 'antd';
@@ -28,7 +26,7 @@ const FormXuLyDon = (props: {
     chuyenVienDieuPhoiDuyetDonModel,
     traKetQuaModel,
     adminPutDonModel,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
 
   return (
     <Card title={titleByType?.[props?.type]}>
@@ -96,7 +94,7 @@ const FormXuLyDon = (props: {
               // initialValue={renderFileList(recordDonThaoTac?.urlFileDinhKem ?? [])}
               label="Kết quả xử lý (nếu có)"
             >
-              <Upload
+              <UploadFile
                 otherProps={{
                   accept: '.pdf, .doc,.docx',
                   multiple: true,
@@ -129,7 +127,7 @@ const FormXuLyDon = (props: {
               initialValue={renderFileList(recordDon?.ketQuaDinhKem ?? [])}
               label="Tệp đính kèm (nếu có)"
             >
-              <Upload
+              <UploadFile
                 otherProps={{
                   accept: '.pdf, .doc,.docx',
                   multiple: true,

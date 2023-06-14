@@ -1,5 +1,4 @@
 import MyDatePicker from '@/components/MyDatePicker';
-import TableDiemHocPhan from '@/pages/KetQuaHocTap/DiemHocPhan/components/TableDiemHocPhan';
 import { Col, Collapse, Form, Input, Row } from 'antd';
 import { useModel } from 'umi';
 import HocBongSinhVienPage from '../HocBongSinhVien';
@@ -49,9 +48,9 @@ const FormQuaTrinhHocTap = () => {
           <HocBongSinhVienPage />
         </Collapse.Panel>
 
-        <Collapse.Panel header="Kết quả học tập" key={'4'}>
+        {/* <Collapse.Panel header="Kết quả học tập" key={'4'}>
           <TableDiemHocPhan sinhVienSsoId={record?.ssoId ?? ''} />
-        </Collapse.Panel>
+        </Collapse.Panel> */}
       </Collapse>
     </Form>
   );

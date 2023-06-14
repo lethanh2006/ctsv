@@ -1,65 +1,46 @@
-import TableBase from '@/components/OldTable';
-import type { CauHoiThuongGap } from '@/services/CauHoiThuongGap/typing';
-import type { IColumn } from '@/utils/interfaces';
+import { type IColumn } from '@/components/Table/typing';
+import { type CauHoiThuongGap } from '@/services/TienIch/CauHoiThuongGap/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormCauHoiThuongGap from './components/Form';
+import TableBase from '@/components/Table';
+import ExpandText from '@/components/ExpandText';
 
-const CauHoiThuongGapComponent = () => {
-  const {
-    getModel,
-    loading,
-    condition,
-    page,
-    limit,
-    setRecord,
-    setVisibleForm,
-    setEdit,
-    deleteModel,
-  } = useModel('cauhoithuonggap');
-
-  const getData = () => getModel(undefined, undefined, undefined, undefined, undefined, 'page');
+const CauHoiThuongGapPage = () => {
+  const { getModel, page, limit, deleteModel, handleEdit } = useModel('tienich.cauhoithuonggap');
 
   const columns: IColumn<CauHoiThuongGap.IRecord>[] = [
     {
-      title: 'STT',
-      dataIndex: 'index',
-      width: 80,
-      align: 'center',
-    },
-    {
       title: 'Câu hỏi',
       dataIndex: 'cauHoi',
+      width: 200,
+      filterType: 'string',
     },
     {
       title: 'Trả lời',
       dataIndex: 'cauTraLoi',
-      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }} />,
+      render: (val) => (
+        <ExpandText>
+          <div dangerouslySetInnerHTML={{ __html: val }} />
+        </ExpandText>
+      ),
+      width: 300,
+      filterType: 'string',
     },
     {
       title: 'Thao tác',
-      width: 120,
+      width: 90,
       align: 'center',
-      render: (val: CauHoiThuongGap.IRecord) => (
+      render: (rec: CauHoiThuongGap.IRecord) => (
         <>
           <Tooltip title="Chỉnh sửa">
-            <Button
-              onClick={() => {
-                setRecord(val);
-                setEdit(true);
-                setVisibleForm(true);
-              }}
-              icon={<EditOutlined />}
-              type="link"
-            />
+            <Button onClick={() => handleEdit(rec)} icon={<EditOutlined />} type="link" />
           </Tooltip>
           <Tooltip title="Xóa">
             <Popconfirm
-              onConfirm={() => {
-                deleteModel(val._id, getData);
-              }}
-              title="Bạn có chắc chắn xóa?"
+              title="Bạn có chắc chắn xóa câu hỏi này?"
+              onConfirm={() => deleteModel(rec._id, getModel)}
             >
               <Button icon={<DeleteOutlined />} type="link" danger />
             </Popconfirm>
@@ -71,17 +52,14 @@ const CauHoiThuongGapComponent = () => {
 
   return (
     <TableBase
-      widthDrawer={700}
+      widthDrawer={800}
       Form={FormCauHoiThuongGap}
-      hascreate
-      loading={loading}
-      getData={getData}
-      modelName={'cauhoithuonggap'}
+      modelName="tienich.cauhoithuonggap"
       columns={columns}
-      dependencies={[condition, page, limit]}
+      dependencies={[page, limit]}
       title="Câu hỏi thường gặp"
     />
   );
 };
 
-export default CauHoiThuongGapComponent;
+export default CauHoiThuongGapPage;

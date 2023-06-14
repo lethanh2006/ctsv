@@ -1,26 +1,27 @@
-/* eslint-disable no-underscore-dangle */
-import Table from '@/components/Table/Table';
-import type { VanBanHuongDan } from '@/services/VanBanHuongDan/typing';
-import type { IColumn } from '@/utils/interfaces';
-import { DeleteOutlined, EditOutlined, PaperClipOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Modal, Popconfirm, Tooltip } from 'antd';
+import ExpandText from '@/components/ExpandText';
+import TableStaticData from '@/components/Table/TableStaticData';
+import { type IColumn } from '@/components/Table/typing';
+import { type VanBanHuongDan } from '@/services/TienIch/VanBanHuongDan/typing';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PaperClipOutlined,
+  PlusCircleOutlined,
+} from '@ant-design/icons';
+import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
-import Form from './FormFile';
+import FormFile from './FormFile';
 
-const FileList = (props: { type: 'Admin' | 'User' }) => {
+const FileList = () => {
   const {
-    visibleFormFile,
-    setVisibleFormFile,
     record,
     putModel,
     setRecordFile,
     setEditFile,
     getModel,
-  } = useModel('vanbanhuongdan');
-
-  const getData = () => {
-    getModel(undefined, undefined, undefined, undefined, undefined, 'page');
-  };
+    setVisibleFormFile,
+    visibleFormFile,
+  } = useModel('tienich.vanbanhuongdan');
 
   const delFile = (id: string) => {
     const payload: any = {
@@ -28,7 +29,7 @@ const FileList = (props: { type: 'Admin' | 'User' }) => {
       danhSachTep: record?.danhSachTep?.filter((item) => item._id !== id) ?? [],
     };
 
-    putModel(record?._id ?? '', payload, getData);
+    putModel(record?._id ?? '', payload, getModel);
   };
 
   const handleEdit = (recordFile: VanBanHuongDan.IFile) => {
@@ -45,99 +46,69 @@ const FileList = (props: { type: 'Admin' | 'User' }) => {
 
   const columns: IColumn<VanBanHuongDan.IFile>[] = [
     {
-      title: 'STT',
-      dataIndex: 'index',
-      width: 80,
-      align: 'center',
-    },
-    {
       title: 'Tên văn bản',
       dataIndex: 'ten',
-      search: 'search',
-      align: 'center',
-      width: 250,
-    },
-    {
-      title: 'Tệp đính kèm',
-      align: 'center',
-      dataIndex: 'url',
-      render: (val, recordFile) => (
-        <>
-          <PaperClipOutlined />{' '}
-          <a href={val} target="_blank" rel="noreferrer">
-            {recordFile.ten}
-          </a>
-        </>
-      ),
+      width: 150,
     },
     {
       title: 'Mô tả',
       dataIndex: 'moTa',
-      align: 'center',
-      width: 300,
+      width: 250,
+      render: (val) => <ExpandText>{val}</ExpandText>,
     },
-  ];
-
-  if (props.type === 'Admin')
-    columns.push({
+    {
+      title: 'Tệp đính kèm',
+      dataIndex: 'url',
+      width: 120,
+      render: (val, recordFile) =>
+        val ? (
+          <>
+            <PaperClipOutlined />{' '}
+            <a href={val} target="_blank" rel="noreferrer">
+              Xem tập tin
+            </a>
+          </>
+        ) : null,
+    },
+    {
       title: 'Thao tác',
       align: 'center',
-      width: 130,
+      width: 90,
       fixed: 'right',
       render: (recordFile: VanBanHuongDan.IFile) => (
         <>
           <Tooltip title="Chỉnh sửa">
-            <Button
-              // disabled={!canUpdate}
-              onClick={() => handleEdit(recordFile)}
-              type="default"
-              shape="circle"
-            >
-              <EditOutlined />
-            </Button>
+            <Button onClick={() => handleEdit(recordFile)} type="link" icon={<EditOutlined />} />
           </Tooltip>
-
-          <Divider type="vertical" />
           <Tooltip title="Xóa">
             <Popconfirm
-              // disabled={!canDelete}
               onConfirm={() => delFile(recordFile._id)}
-              title="Bạn có chắc chắn muốn xóa văn bản này"
+              title="Bạn có chắc chắn muốn xóa văn bản này?"
             >
-              <Button
-                //  disabled={!canDelete}
-                type="primary"
-                shape="circle"
-              >
-                <DeleteOutlined />
-              </Button>
+              <Button type="link" danger icon={<DeleteOutlined />} />
             </Popconfirm>
           </Tooltip>
         </>
       ),
-    });
+    },
+  ];
 
   return (
     <>
-      {props.type === 'Admin' && (
-        <Button
-          // disabled={!canCreate}
-          type="primary"
-          style={{ marginBottom: 8, marginRight: 8 }}
-          onClick={handleAdd}
-        >
-          <PlusOutlined />
-          Thêm mới
-        </Button>
-      )}
+      <Button type="primary" style={{ marginBottom: 8, marginRight: 8 }} onClick={handleAdd}>
+        <PlusCircleOutlined />
+        Thêm mới
+      </Button>
 
-      <Table
+      <TableStaticData
         otherProps={{
           pagination: false,
         }}
         columns={columns}
-        data={record?.danhSachTep?.map((item, index) => ({ ...item, index: index + 1 }))}
+        data={record?.danhSachTep ?? []}
+        addStt
       />
+
       <Modal
         maskClosable={false}
         destroyOnClose
@@ -146,7 +117,7 @@ const FileList = (props: { type: 'Admin' | 'User' }) => {
         bodyStyle={{ padding: 0 }}
         visible={visibleFormFile}
       >
-        <Form />
+        <FormFile />
       </Modal>
     </>
   );

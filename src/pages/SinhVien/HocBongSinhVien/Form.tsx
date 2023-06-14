@@ -1,5 +1,5 @@
 import MyDatePicker from '@/components/MyDatePicker';
-import SelectLoaiHocBong from '@/pages/DanhMucHeThong/LoaiHocBong/components/Select';
+import SelectLoaiHocBong from '@/pages/DanhMuc/LoaiHocBong/components/Select';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import rules from '@/utils/rules';
 import { Button, Card, Col, Form, Input, InputNumber, Row } from 'antd';

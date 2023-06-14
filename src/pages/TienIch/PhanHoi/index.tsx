@@ -1,21 +1,20 @@
 import TableBase from '@/components/OldTable';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
-import type { PhanHoi } from '@/services/PhanHoi/typing';
 import type { IColumn } from '@/utils/interfaces';
 import { Button, Modal, Tabs, Tag, Tooltip } from 'antd';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import FormTraLoiPhanHoi from '../DichVuMotCuaV2/QuanLyDon/components/FormTraLoiPhanHoi';
-import FormQuyTrinh from '../DichVuMotCuaV2/components/FormQuyTrinh';
-import TableLichSuTraKetQua from '../DichVuMotCuaV2/components/TableLichSuTraKetQua';
 import ThanhToan from '@/pages/ThanhToan';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import FormQuyTrinh from '@/pages/DichVuMotCuaV2/components/FormQuyTrinh';
+import TableLichSuTraKetQua from '@/pages/DichVuMotCuaV2/components/TableLichSuTraKetQua';
+import FormTraLoiPhanHoi from '@/pages/DichVuMotCuaV2/QuanLyDon/components/FormTraLoiPhanHoi';
 
 const PhanHoiComponent = () => {
   const { getModel, loading, setRecord, visibleForm, setVisibleForm, page, limit, condition } =
-    useModel('phanhoi');
+    useModel('tienich.phanhoi');
 
   const {
     getDonThaoTacChuyenVienDieuPhoiModel,
@@ -24,7 +23,7 @@ const PhanHoiComponent = () => {
     recordDon,
     visibleFormDon,
     setRecordDonThaoTac,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
 
   const [type, setType] = useState<'handle' | 'view' | 'create' | 'edit'>('handle');
 

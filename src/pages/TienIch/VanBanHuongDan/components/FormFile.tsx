@@ -1,43 +1,42 @@
 import UploadOne from '@/components/Upload/UploadFile';
-import { uploadFile } from '@/services/uploadFile';
+import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { renderFileListUrlWithName } from '@/utils/utils';
 import { Button, Card, Form, Input } from 'antd';
 import { useModel } from 'umi';
 
 const FormFile = () => {
+  const {
+    formSubmiting,
+    record,
+    setVisibleFormFile,
+    editFile,
+    putModel,
+    recordFile,
+    setFormSubmiting,
+  } = useModel('tienich.vanbanhuongdan');
   const [form] = Form.useForm();
 
-  const { loading, record, setVisibleFormFile, editFile, putModel, recordFile, setLoading } =
-    useModel('vanbanhuongdan');
+  const onFinish = async (values: any) => {
+    setFormSubmiting(true);
+    const taiLieu = await buildUpLoadFile(values, 'taiLieu');
+    values.url = taiLieu;
+    delete values.taiLieu;
+    setFormSubmiting(false);
+
+    if (editFile) {
+      const index = recordFile?.index ? recordFile.index - 1 : 0;
+      if (record) record.danhSachTep[index] = values;
+    } else {
+      if (record) record.danhSachTep.push(values);
+    }
+    if (record) putModel(record?._id ?? '', record);
+    setVisibleFormFile(false);
+  };
+
   return (
     <Card title={editFile ? 'Chỉnh sửa' : 'Thêm mới'}>
-      <Form
-        labelCol={{ span: 24 }}
-        onFinish={async (values) => {
-          setLoading(true);
-          if (values?.taiLieu?.fileList?.[0]?.url) {
-            values.url = values?.taiLieu?.fileList?.[0]?.url;
-          } else {
-            const response = await uploadFile({
-              file: values?.taiLieu?.fileList?.[0]?.originFileObj,
-              // filename: 'fileName',
-              public: '1',
-            });
-            values.url = response?.data?.data?.url;
-          }
-          delete values.taiLieu;
-          if (editFile) {
-            const index = recordFile?.index ? recordFile.index - 1 : 0;
-            if (record) record.danhSachTep[index] = values;
-          } else {
-            if (record) record.danhSachTep.push(values);
-          }
-          if (record) putModel(record?._id ?? '', record);
-          setVisibleFormFile(false);
-        }}
-        form={form}
-      >
+      <Form layout="vertical" onFinish={onFinish} form={form}>
         <Form.Item
           name="ten"
           label="Tên văn bản"
@@ -62,12 +61,13 @@ const FormFile = () => {
         >
           <UploadOne maxCount={1} />
         </Form.Item>
-        <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-          <Button loading={loading} style={{ marginRight: 8 }} htmlType="submit" type="primary">
-            {!editFile ? 'Thêm mới' : 'Lưu'}
+
+        <div className="form-footer">
+          <Button loading={formSubmiting} htmlType="submit" type="primary">
+            {!editFile ? 'Thêm mới ' : 'Lưu lại'}
           </Button>
           <Button onClick={() => setVisibleFormFile(false)}>Đóng</Button>
-        </Form.Item>
+        </div>
       </Form>
     </Card>
   );

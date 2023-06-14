@@ -3,14 +3,13 @@ import { AppModules, EModuleKey } from '@/services/ant-design-pro/constant';
 // const ip3 = 'https://dhs.ptit.edu.vn/odoo-user-service'; // ip prod
 // const ip = 'https://dhs.ptit.edu.vn'; // ip prod
 
-// const ip3 = 'https://ais.aisenote.com/tcns'; // ip dev
 const ip3 = 'https://ais.aisenote.com/slink'; // ip dev
 const ipGlobal = 'https://ais2.aisenote.com/qldt-internal-api'; // ip dev
-const ipQldt = 'https://ais.aisenote.com/qldt';
-const ipTcns = 'https://ais.aisenote.com/tcns';
+const ipDaoTao = 'https://ais.aisenote.com/qldt';
+const ipNhanSu = 'https://ais.aisenote.com/tcns';
 const ipCore = 'https://ais.aisenote.com/core';
 
-const currentRole = EModuleKey.CTSV;
+const currentRole = EModuleKey.QLDT;
 
 const keycloakClientID = AppModules[currentRole].clientId;
 const keycloakAuthority = 'https://ais.aisenote.com/keycloak/realms/vwa';
@@ -19,8 +18,8 @@ const keycloakTokenEndpoint =
   'https://ais.aisenote.com/keycloak/realms/vwa/protocol/openid-connect/token';
 
 export {
-  ipTcns,
-  ipQldt,
+  ipNhanSu,
+  ipDaoTao,
   ipCore,
   ip3,
   ipGlobal,

@@ -1,8 +1,3 @@
-import DiaChi from '@/components/DiaChi';
-import HocPhanCoDiem from '@/components/HocPhanCoDiem';
-import Upload from '@/components/Upload/UploadMultiFile';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
-import type { QuanLyOto } from '@/services/QuanLyOto/typings';
 import { accessFileUpload, MaDichVuVps } from '@/utils/constants';
 import rules from '@/utils/rules';
 import {
@@ -41,6 +36,7 @@ import Table from './TableElement';
 import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import type { Login } from '@/services/ant-design-pro/typings';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -84,7 +80,7 @@ const FormBieuMau = (props: {
     getDonSinhVienModel,
     loaiDichVu,
     adminGetDonVpsModel,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const { danhSach: danhSachKyHoc } = useModel('kyhoc');
   const { danhSach: danhSachNamHoc } = useModel('namhoc');
   const { danhSach: danhSachLopTinChi, danhSachMonHoc } = useModel('loptinchi');
@@ -100,7 +96,6 @@ const FormBieuMau = (props: {
     setObjDanhSachXaPhuong,
     setObjDanhSachQuanHuyen,
   } = useModel('donvihanhchinh');
-  const { danhSach: danhSachOto } = useModel('quanlyoto');
   const [recordEdit, setRecordEdit] = useState<{ duLieuBieuMau: DichVuMotCuaV2.CauHinhBieuMau[] }>({
     duLieuBieuMau: [],
   });
@@ -253,20 +248,6 @@ const FormBieuMau = (props: {
       case 'TEXT_AREA': {
         ruleElement = [...rules.text];
         element = <Input.TextArea rows={3} placeholder={item?.label ?? ''} />;
-        break;
-      }
-      case '_OTO': {
-        initialValue = item?.value;
-        element = (
-          <Select allowClear placeholder={item?.label ?? ''}>
-            {danhSachOto &&
-              danhSachOto.map((oto: QuanLyOto.Record, index: number) => (
-                <Select.Option key={oto._id} value={oto?.hoTen}>
-                  {oto?.hoTen} - {oto?.bienSoXe}
-                </Select.Option>
-              ))}
-          </Select>
-        );
         break;
       }
       case 'INPUT_NUMBER': {

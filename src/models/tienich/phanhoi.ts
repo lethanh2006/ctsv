@@ -1,5 +1,5 @@
 import useInitModel from '@/hooks/useInitModel';
-import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/PhanHoi/phanhoi';
+import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/TienIch/PhanHoi/phanhoi';
 import { ip3 } from '@/utils/ip';
 import { message } from 'antd';
 import { useState } from 'react';

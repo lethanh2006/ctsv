@@ -1,5 +1,4 @@
 import TinyEditor from '@/components/TinyEditor';
-import Upload from '@/components/Upload/UploadMultiFile';
 import { uploadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { renderFileListUrlWithName } from '@/utils/utils';
@@ -11,7 +10,13 @@ import { useAccess, useModel } from 'umi';
 const FormThongTinChung = () => {
   const access = useAccess();
   const [form] = Form.useForm();
-  const { loading, edit, setCurrent, record: recordDichVu, setRecord } = useModel('dichvumotcuav2');
+  const {
+    loading,
+    edit,
+    setCurrent,
+    record: recordDichVu,
+    setRecord,
+  } = useModel('dvmc.dichvumotcuav2');
   const [phamVi, setPhamVi] = useState<string>(recordDichVu?.phamVi ?? '');
   const { record } = useModel('thanhtoan');
   const { danhSach } = useModel('donvi');

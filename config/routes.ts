@@ -113,21 +113,9 @@
       {
         name: 'PhanHoi',
         path: './phanhoi',
-        component: './PhanHoi',
+        component: './TienIch/PhanHoi',
       },
     ],
-  },
-  {
-    icon: 'QuestionOutlined',
-    name: 'CauHoiThuongGap',
-    path: '/cau-hoi-thuong-gap',
-    component: './CauHoiThuongGap',
-  },
-  {
-    name: 'VanBanHuongDan',
-    path: '/van-ban-huong-dan',
-    component: './VanBanHuongDan',
-    icon: 'FileOutlined',
   },
 
   // SINH VIEN
@@ -184,9 +172,11 @@
       },
     ],
   },
+
+  // PHAN HOI
   {
-    name: 'QuanTriPhanHoi',
-    path: './quan-ly-phan-hoi/hoi-dap',
+    name: 'PhanHoi',
+    path: './phan-hoi',
     icon: 'QuestionCircleOutlined',
     // maChucNang: 'phan-hoi:read',
     // access: 'routeFilter',
@@ -194,7 +184,7 @@
       {
         name: 'TatCaPhanHoi',
         path: './all',
-        component: './PhanHoi/Admin.tsx',
+        component: './TienIch/PhanHoi/Admin.tsx',
       },
       // {
       //   name: 'PhanHoiDonVi',
@@ -203,36 +193,40 @@
       // },
     ],
   },
+
+  // TIN TUC
   {
     name: 'TinTuc',
-    path: 'quan-tri-tin-tuc',
-    icon: 'InfoOutlined',
+    path: 'tin-tuc',
+    icon: 'global',
     routes: [
       {
-        name: 'ChuDeChung',
+        name: 'ChuDe',
         path: './chu-de',
-        component: './ChuDeVaTinTuc/ChuDe',
+        component: './TinTuc/ChuDe',
         // access: 'adminAccessFilter',
         // maChucNang: 'chu-de-chung:read',
       },
       {
         name: 'TinTuc',
         path: './tin-tuc',
-        component: './ChuDeVaTinTuc/TinTuc',
+        component: './TinTuc/TinTuc',
         // access: 'adminAccessFilter',
         // maChucNang: 'tin-tuc:read',
       },
     ],
   },
+
+  // TIEN ICH
   {
-    name: 'BieuMau',
+    name: 'TienIch',
     icon: 'form',
-    path: '/bieumau',
+    path: '/tien-ich',
     routes: [
       {
         name: 'KhaoSat',
-        path: './khaosat',
-        component: './BieuMau/KhaoSat',
+        path: 'khao-sat',
+        component: './TienIch/KhaoSat',
       },
       // {
       //   name: 'TracNghiem',
@@ -244,6 +238,17 @@
       //   path: './khaibaosuckhoe',
       //   component: './BieuMau/KhaiBaoSucKhoe',
       // },
+      {
+        name: 'CauHoiThuongGap',
+        path: 'cau-hoi-thuong-gap',
+        component: './TienIch/CauHoiThuongGap',
+      },
+
+      {
+        name: 'VanBanHuongDan',
+        path: 'van-ban-huong-dan',
+        component: './TienIch/VanBanHuongDan',
+      },
     ],
   },
 

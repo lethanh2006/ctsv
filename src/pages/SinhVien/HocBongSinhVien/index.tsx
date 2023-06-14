@@ -1,6 +1,5 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import SelectLoaiHocBong from '@/pages/DanhMucHeThong/LoaiHocBong/components/Select';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import { tienVietNam } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -8,6 +7,7 @@ import { Button, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import Form from './Form';
+import SelectLoaiHocBong from '@/pages/DanhMuc/LoaiHocBong/components/Select';
 
 const HocBongSinhVienPage = () => {
   const { setEdit, setVisibleForm, setRecord, getModel, page, limit, deleteModel } =

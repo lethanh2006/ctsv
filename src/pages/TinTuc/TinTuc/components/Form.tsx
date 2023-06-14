@@ -1,6 +1,4 @@
 import TinyEditor from '@/components/TinyEditor';
-import UploadAvatar from '@/components/Upload/UploadAvatar';
-import { getURLImg } from '@/services/LopTinChi/loptinchi';
 import rules from '@/utils/rules';
 import { renderFileListUrl } from '@/utils/utils';
 import { Button, Card, Col, DatePicker, Form, Input, Row, Select } from 'antd';
@@ -13,9 +11,10 @@ mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
 const FormTinTuc = () => {
   const [form] = Form.useForm();
-  const { record, setVisibleForm, edit, putTinTucModel, addTinTucModel } = useModel('tintuc');
-  const { danhSach: danhSachChuDe } = useModel('chude');
-  const [chuDeSelected, setChuDeSelected] = useState<ChuDe.Record>();
+  const { record, setVisibleForm, edit, putTinTucModel, addTinTucModel } =
+    useModel('tintuc.tintuc');
+  const { danhSach: danhSachChuDe } = useModel('tintuc.chude');
+  const [chuDeSelected, setChuDeSelected] = useState<TinTuc.IChuDe>();
   const { initialState } = useModel('@@initialState');
   const [formSubmitting, setFormSubmitting] = useState(false);
 
@@ -34,20 +33,18 @@ const FormTinTuc = () => {
     } else form.resetFields();
   }, [record?._id]);
 
-  console.log(record, 'record');
-
   const onFinish = async (values: any) => {
     if (formSubmitting) return;
     setFormSubmitting(true);
 
-    if (values.urlAnhDaiDien.fileList?.[0]?.originFileObj) {
-      const response = await getURLImg({
-        filename: 'url1',
-        public: '1',
-        file: values?.urlAnhDaiDien.fileList?.[0].originFileObj,
-      });
-      values.urlAnhDaiDien = response?.data?.data?.url;
-    } else values.urlAnhDaiDien = values.urlAnhDaiDien.fileList?.[0]?.url;
+    // if (values.urlAnhDaiDien.fileList?.[0]?.originFileObj) {
+    //   const response = await getURLImg({
+    //     filename: 'url1',
+    //     public: '1',
+    //     file: values?.urlAnhDaiDien.fileList?.[0].originFileObj,
+    //   });
+    //   values.urlAnhDaiDien = response?.data?.data?.url;
+    // } else values.urlAnhDaiDien = values.urlAnhDaiDien.fileList?.[0]?.url;
 
     if (edit)
       putTinTucModel({
@@ -61,7 +58,7 @@ const FormTinTuc = () => {
     else {
       addTinTucModel({
         ...values,
-        hinhThucDaoTaoId: initialState?.currentUser?.hinhThucDaoTaoId ?? 0,
+        // hinhThucDaoTaoId: initialState?.currentUser?.hinhThucDaoTaoId ?? 0,
         doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
         phamVi: chuDeSelected?.phamVi ?? 'Tất cả',
       });
@@ -96,7 +93,7 @@ const FormTinTuc = () => {
           <Input placeholder="Mô tả" />
         </Form.Item>
 
-        <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
+        {/* <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
           <UploadAvatar
             style={{
               width: 102,
@@ -105,7 +102,7 @@ const FormTinTuc = () => {
               maxHeight: 102,
             }}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Row gutter={[20, 0]}>
           {chuDeSelected?.phamVi === 'Tất cả' && (
             <Col xs={24} md={12}>
