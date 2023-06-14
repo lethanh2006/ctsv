@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import PDFViewer from '@/components/PDFViewer';
 import TableBase from '@/components/OldTable';
-import ThanhToan from '@/components/ThanhToan';
+import ThanhToan from '@/pages/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import { TrangThaiDonDVMC } from '@/utils/constants';
 import type { IColumn } from '@/utils/interfaces';

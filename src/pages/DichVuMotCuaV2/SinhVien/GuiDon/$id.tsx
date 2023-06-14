@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import ThanhToan from '@/components/ThanhToan';
+import ThanhToan from '@/pages/ThanhToan';
 import DanhMuc from '@/pages/DichVuMotCuaV2/components/DanhMuc';
 import FormBieuMau from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';

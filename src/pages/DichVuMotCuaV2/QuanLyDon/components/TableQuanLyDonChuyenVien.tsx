@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/OldTable';
-import ThanhToan from '@/components/ThanhToan';
+import ThanhToan from '@/pages/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';

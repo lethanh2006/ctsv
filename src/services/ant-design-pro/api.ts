@@ -1,5 +1,5 @@
 import axios from '@/utils/axios';
-import { ip3, ipQldt, keycloakClientID, keycloakTokenEndpoint } from '@/utils/ip';
+import { ip3, ipQldt, keycloakClientID, keycloakTokenEndpoint, resourceServerClientId } from '@/utils/ip';
 import queryString from 'query-string';
 
 export async function getInfo() {
@@ -29,10 +29,11 @@ export async function refreshAccesssToken(payload: { refreshToken: string }) {
   });
 }
 
-export async function swapToken() {
+export async function getPermission() {
   const data = {
-    audience: keycloakClientID,
+    audience: resourceServerClientId,
     grant_type: 'urn:ietf:params:oauth:grant-type:uma-ticket',
+    response_mode: 'permissions',
   };
 
   return axios({

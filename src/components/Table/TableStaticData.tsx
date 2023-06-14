@@ -1,10 +1,10 @@
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Drawer, Input, Modal, Table } from 'antd';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { type TableStaticProps } from './typing';
 import './style.less';
-import _ from 'lodash';
+import { type TDataOption, type TableStaticProps } from './typing';
 
 const TableStaticData = (props: TableStaticProps) => {
   const { Form, showEdit, setShowEdit, addStt, data, children, hasCreate, hasTotal } = props;
@@ -88,15 +88,38 @@ const TableStaticData = (props: TableStaticProps) => {
       ),
   });
 
+  const getFilterColumnProps = (dataIndex: any, filterData?: any[]) => {
+    return {
+      filters: filterData?.map((item: string | TDataOption) =>
+        typeof item === 'string'
+          ? { key: item, value: item, text: item }
+          : { key: item.value, value: item.value, text: item.label },
+      ),
+      onFilter: (value: string, record: any) => record[dataIndex]?.indexOf(value) === 0,
+    };
+  };
+
   const columns = props.columns
     ?.filter((item) => !item.hide)
     ?.map((item) => ({
       ...item,
       ...(item?.filterType === 'string'
         ? getColumnSearchProps(item.dataIndex)
-        : item?.sortable
-        ? { sorter: (a: any, b: any) => a[item.dataIndex as string] - b[item.dataIndex as string] }
-        : {}),
+        : item?.filterType === 'select'
+        ? getFilterColumnProps(item.dataIndex, item.filterData)
+        : undefined),
+      ...(item?.sortable && {
+        sorter: (a: any, b: any) =>
+          a[item.dataIndex as string] > b[item.dataIndex as string] ? 1 : -1,
+      }),
+      children: item.children?.map((child) => ({
+        ...child,
+        ...(child?.filterType === 'string' && getColumnSearchProps(child.dataIndex)),
+        ...(child?.sortable && {
+          sorter: (a: any, b: any) =>
+            a[child.dataIndex as string] > b[child.dataIndex as string] ? 1 : -1,
+        }),
+      })),
     }));
 
   if (addStt)
@@ -105,6 +128,7 @@ const TableStaticData = (props: TableStaticProps) => {
       render: (s: any, r: any, index: any) => index + 1 + (page - 1) * limit,
       align: 'center',
       width: 60,
+      children: undefined,
     });
 
   return (
@@ -150,6 +174,7 @@ const TableStaticData = (props: TableStaticProps) => {
         loading={props?.loading}
         size={props.size}
         scroll={{ x: _.sum(columns.map((item) => item.width ?? 80)) }}
+        bordered
         {...props?.otherProps}
       />
       {Form && (
@@ -168,6 +193,7 @@ const TableStaticData = (props: TableStaticProps) => {
                 onCancel={() => {
                   if (setShowEdit) setShowEdit(false);
                 }}
+                {...props.formProps}
               />
             </Drawer>
           ) : (
@@ -185,6 +211,7 @@ const TableStaticData = (props: TableStaticProps) => {
                 onCancel={() => {
                   if (setShowEdit) setShowEdit(false);
                 }}
+                {...props.formProps}
               />
             </Modal>
           )}

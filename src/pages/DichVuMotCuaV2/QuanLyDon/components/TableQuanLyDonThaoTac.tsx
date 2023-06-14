@@ -6,7 +6,7 @@ import { Button, Divider, Dropdown, Menu, Modal, Select, Tabs, Tooltip } from 'a
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import ThanhToan from '@/components/ThanhToan';
+import ThanhToan from '@/pages/ThanhToan';
 import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
 import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 
