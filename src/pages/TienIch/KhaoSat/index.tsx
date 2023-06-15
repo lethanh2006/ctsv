@@ -1,60 +1,45 @@
-/* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/Table';
-import type { IColumn } from '@/utils/interfaces';
+import { type IColumn } from '@/components/Table/typing';
+import { exportKetQuaKhaoSat } from '@/services/TienIch/BieuMau';
 import {
   DeleteOutlined,
   EditOutlined,
   ExportOutlined,
   EyeOutlined,
+  MenuOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
 import { Button, Divider, Popconfirm, Popover, Switch, Tooltip } from 'antd';
+import fileDownload from 'js-file-download';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useAccess, useModel } from 'umi';
+import { useModel } from 'umi';
 import Form from './components/Form';
 import FormViewDetail from './components/FormViewDetail';
 import ThongKe from './components/ThongKe';
 
-const KhaoSat = () => {
-  const access = useAccess();
+const KhaoSatPage = () => {
   const {
-    getBieuMauAdminModel,
-    delBieuMauModel,
     setLoaiBieuMau,
-    loading,
     page,
     limit,
-    setEdit,
-    setRecord,
-    setVisibleForm,
     kichHoatBieuMauModel,
-    condition,
     edit,
-    setCondition,
     getBieuMauThongKeModel,
-    setPage,
     phamVi,
-    setPhamVi,
-    exportKetQuaKhaoSatModel,
-    getBieuMauAdminHeModel,
-    setDanhSach,
-  } = useModel('bieumau');
-  const { getLopHanhChinhAdminModel, condition: condLopHanhChinh } =
-    useModel('namhoc.lophanhchinh');
-  // const { getAllNganhModel } = useModel('namhoc.khoanganh');
-  const { danhSachHinhThucDaoTao, getAllHinhThucDaoTaoModel } = useModel('namhoc.lophanhchinh');
-  const { adminGetLopTinChi, condition: condLopTinChi } = useModel('loptinchi');
-  // const { getKhoaHocModel } = useModel('khoahoc');
-  const { getUserMetaDataFilterModel, conditionNguoiDungCuThe, setConditionNguoiDungCuThe } =
-    useModel('user');
+    getModel,
+    deleteModel,
+    handleEdit,
+  } = useModel('tienich.bieumau');
   const [form, setForm] = useState<string>('edit');
-
   // const canUpdate = useCheckAccess('khao-sat:update');
   // const canDelete = useCheckAccess('khao-sat:delete');
   // const canCreate = useCheckAccess('khao-sat:create');
   // const canViewStats = useCheckAccess('khao-sat:view-stats');
   // const canExportStats = useCheckAccess('khao-sat:export-stats');
+
+  const getData = () =>
+    getModel({ loai: 'Khảo sát' }, undefined, undefined, undefined, undefined, 'pageable');
 
   // useEffect(() => {
   //   getUserMetaDataFilterModel(1, 100);
@@ -74,18 +59,9 @@ const KhaoSat = () => {
     setLoaiBieuMau('Khảo sát');
     // getAllHinhThucDaoTaoModel();
     return () => {
-      setConditionNguoiDungCuThe({});
-      setDanhSach([]);
       setLoaiBieuMau(undefined);
     };
   }, []);
-
-  const handleEdit = (record: BieuMau.Record) => {
-    setForm('edit');
-    setEdit(true);
-    setRecord(record);
-    setVisibleForm(true);
-  };
 
   const handleChangeStatus = (record: BieuMau.Record) => {
     kichHoatBieuMauModel({ id: record._id, data: { kichHoat: !record.kichHoat } });
@@ -94,10 +70,8 @@ const KhaoSat = () => {
   const onCell = (record: BieuMau.Record) => ({
     onClick: () => {
       setForm('statistic');
-      setVisibleForm(true);
-      setEdit(true);
-      setRecord(record);
       getBieuMauThongKeModel(record._id);
+      handleEdit(record);
     },
     style: { cursor: 'pointer' },
   });
@@ -106,23 +80,24 @@ const KhaoSat = () => {
     {
       title: 'Tiêu đề',
       dataIndex: 'tieuDe',
-      align: 'center',
-      search: 'search',
       width: 200,
+      filterType: 'string',
       onCell,
     },
     {
       title: 'Mô tả',
       dataIndex: 'moTa',
-      align: 'center',
-      width: 200,
+      width: 250,
+      filterType: 'string',
       onCell,
     },
     {
       title: 'Thời gian bắt đầu',
       dataIndex: 'thoiGianBatDau',
       align: 'center',
-      render: (val) => <div>{val ? moment(val).format('HH:mm DD/MM/YYYY') : ''}</div>,
+      render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+      sortable: true,
+      filterType: 'datetime',
       width: 120,
       onCell,
     },
@@ -130,17 +105,18 @@ const KhaoSat = () => {
       title: 'Thời gian kết thúc',
       dataIndex: 'thoiGianKetThuc',
       align: 'center',
-      render: (val) => <div>{val ? moment(val).format('HH:mm DD/MM/YYYY') : ''}</div>,
+      render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+      sortable: true,
+      filterType: 'datetime',
       width: 120,
       onCell,
     },
     {
       title: 'Đối tượng',
       dataIndex: 'loaiDoiTuongSuDung',
-      align: 'center',
-      width: 200,
+      render: (val) => (val?.length === 0 ? 'Tất cả' : val),
+      width: 120,
       onCell,
-      render: (val) => <div>{val?.length === 0 ? 'Tất cả' : val}</div>,
     },
     // {
     //   title: 'Hình thức đào tạo',
@@ -160,23 +136,16 @@ const KhaoSat = () => {
       title: 'Trạng thái',
       dataIndex: 'kichHoat',
       align: 'center',
-      width: '100px',
+      width: 60,
       fixed: 'right',
       render: (val: boolean, record: BieuMau.Record) => (
-        <Switch
-          checkedChildren="Mở"
-          unCheckedChildren="Mở"
-          checked={val}
-          onChange={() => {
-            handleChangeStatus(record);
-          }}
-        />
+        <Switch checked={val} onChange={() => handleChangeStatus(record)} size="small" />
       ),
     },
     {
       title: 'Thao tác',
       align: 'center',
-      width: 100,
+      width: 60,
       fixed: 'right',
       render: (record: BieuMau.Record) => (
         <Popover
@@ -185,97 +154,85 @@ const KhaoSat = () => {
             <>
               <Tooltip title="Xuất kết quả">
                 <Button
-                  // disabled={!canExportStats}
-                  type="primary"
-                  onClick={() => {
-                    exportKetQuaKhaoSatModel({ idKhaoSat: record._id });
-                  }}
                   shape="circle"
-                >
-                  <ExportOutlined />
-                </Button>
+                  onClick={() => {
+                    exportKetQuaKhaoSat({ idKhaoSat: record._id }).then((res) =>
+                      fileDownload(res.data, 'Kết quả khảo sát.xlsx'),
+                    );
+                  }}
+                  icon={<ExportOutlined />}
+                />
               </Tooltip>
               <Divider type="vertical" />
+
               <Tooltip title="Thống kê">
                 <Button
-                  // disabled={!canViewStats}
                   onClick={() => {
                     setForm('statistic');
-                    setVisibleForm(true);
-                    setEdit(true);
-                    setRecord(record);
                     getBieuMauThongKeModel(record._id);
+                    handleEdit(record);
                   }}
                   shape="circle"
-                >
-                  <PieChartOutlined />
-                </Button>
+                  icon={<PieChartOutlined />}
+                />
               </Tooltip>
               <Divider type="vertical" />
+
               <Tooltip title="Xem trước">
                 <Button
                   onClick={() => {
                     setForm('view');
-                    setVisibleForm(true);
-                    setEdit(true);
-                    setRecord(record);
+                    handleEdit(record);
+                  }}
+                  shape="circle"
+                  icon={<EyeOutlined />}
+                />
+              </Tooltip>
+              <Divider type="vertical" />
+
+              <Tooltip title="Chỉnh sửa">
+                <Button
+                  onClick={() => {
+                    setForm('edit');
+                    handleEdit(record);
                   }}
                   type="primary"
                   shape="circle"
-                >
-                  <EyeOutlined />
-                </Button>
+                  icon={<EditOutlined />}
+                />
               </Tooltip>
-
               <Divider type="vertical" />
-              <Tooltip title="Chỉnh sửa">
-                <Button
-                  // disabled={!canUpdate}
-                  onClick={() => handleEdit(record)}
-                  type="default"
-                  shape="circle"
-                >
-                  <EditOutlined />
-                </Button>
-              </Tooltip>
 
-              <Divider type="vertical" />
               <Tooltip title="Xóa">
                 <Popconfirm
                   // disabled={!canDelete}
-                  onConfirm={() => delBieuMauModel({ id: record._id })}
-                  title="Bạn có chắc chắn muốn xóa khảo sát này"
+                  onConfirm={() => deleteModel(record._id, getData)}
+                  title="Bạn có chắc chắn muốn xóa khảo sát này?"
+                  placement="topLeft"
                 >
-                  <Button
-                    // disabled={!canDelete}
-                    type="primary"
-                    shape="circle"
-                  >
-                    <DeleteOutlined />
-                  </Button>
+                  <Button shape="circle" danger icon={<DeleteOutlined />} />
                 </Popconfirm>
               </Tooltip>
             </>
           }
         >
-          <Button type="primary" icon={<EditOutlined />} />
+          <Button type="link" icon={<MenuOutlined />} />
         </Popover>
       ),
     },
   ];
+
   let formTable = Form;
   if (form === 'view' && edit) formTable = FormViewDetail;
   else if (form === 'statistic' && edit) formTable = ThongKe;
+
   return (
     <TableBase
       columns={columns}
-      getData={() => getBieuMauAdminHeModel('Khảo sát')}
-      loading={loading}
-      dependencies={[page, limit, condition, phamVi]}
-      modelName="bieumau"
+      getData={getData}
+      dependencies={[page, limit, phamVi]}
+      modelName="tienich.bieumau"
       title="Khảo sát"
-      // hascreate={canCreate}
-      formType="Drawer"
       widthDrawer={800}
       Form={formTable}
     >
@@ -318,4 +275,4 @@ const KhaoSat = () => {
   );
 };
 
-export default KhaoSat;
+export default KhaoSatPage;

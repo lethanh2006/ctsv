@@ -5,23 +5,20 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, Card, Col, DatePicker, Form, Input, Modal, Radio, Row, Select } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
-import mm from 'moment-timezone';
 import { useState } from 'react';
 import { useAccess, useModel } from 'umi';
-
-mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
 const FormThongTinChungKhaoSat = () => {
   const access = useAccess();
   const [form] = Form.useForm();
-  const { loading, record, edit, setCurrent, setRecord, loaiBieuMau } = useModel('bieumau');
+  const { loading, record, edit, setCurrent, setRecord, loaiBieuMau } = useModel('tienich.bieumau');
   const { danhSachNguoiDungCuThe, setConditionNguoiDungCuThe, conditionNguoiDungCuThe } =
     useModel('user');
   const {
     danhSach,
     setCondition: setCondLopHanhChinh,
     danhSachHinhThucDaoTao,
-  } = useModel('namhoc.lophanhchinh');
+  } = useModel('daotao.lophanhchinh');
   // const { danhSach: danhSachNganh } = useModel('nganh');
   const { danhSach: danhSachLopTinChi, setCondition } = useModel('loptinchi');
   // const { danhSach: danhSachKhoaHoc } = useModel('khoahoc');

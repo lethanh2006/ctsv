@@ -1,21 +1,12 @@
-import { useModel } from 'umi';
+import { useEffect, useState } from 'react';
 import FormCauHinhBieuMau from './FormCauHinhBieuMau';
 import FormThongTinChung from './FormThongTinChung';
-import { useEffect } from 'react';
 
 const Form = () => {
-  const { current, setCurrent } = useModel('bieumau');
-  const { setConditionNguoiDungCuThe } = useModel('user');
-  const { setCondition: setCondLopHanhChinh } = useModel('namhoc.lophanhchinh');
-  const { setCondition } = useModel('loptinchi');
+  const [current, setCurrent] = useState<number>(0);
 
   useEffect(() => {
     setCurrent(0);
-    return () => {
-      setConditionNguoiDungCuThe({});
-      setCondLopHanhChinh({});
-      setCondition({});
-    };
   }, []);
 
   return (

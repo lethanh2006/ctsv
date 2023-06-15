@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-param-reassign */
 import {
   ArrowDownOutlined,
   ArrowLeftOutlined,
@@ -8,20 +6,14 @@ import {
   PlusOutlined,
   SaveOutlined,
 } from '@ant-design/icons';
-
 import { Button, Card, Form, Tooltip } from 'antd';
-import mm from 'moment-timezone';
 import { useModel } from 'umi';
 import Block from './Block';
 import styles from './block.css';
 
-mm.tz.setDefault('Asia/Ho_Chi_Minh');
-
 const FormCauHinhBieuMau = () => {
+  const { loading, record, edit, postModel, putModel, setRecord } = useModel('tienich.bieumau');
   const [form] = Form.useForm();
-
-  const { loading, record, edit, putBieuMauModel, addBieuMauModel, setCurrent, setRecord } =
-    useModel('bieumau');
 
   return (
     <Card title={edit ? 'Chỉnh sửa' : 'Thêm mới'}>
