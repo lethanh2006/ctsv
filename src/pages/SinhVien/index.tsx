@@ -9,14 +9,7 @@ import { useModel } from 'umi';
 import ModalSinhVien from './component/ModalSinhVien';
 
 const ViewSinhVien = () => {
-  const { setEdit, setVisibleForm, setRecord, getModel, page, limit, deleteModel } =
-    useModel('sinhvien.sinhvien');
-
-  const handleEdit = (record: SinhVien.IRecord) => {
-    setRecord(record);
-    setVisibleForm(true);
-    setEdit(true);
-  };
+  const { getModel, page, limit, deleteModel, handleEdit } = useModel('sinhvien.sinhvien');
 
   const onCell = (rec: SinhVien.IRecord) => ({
     onClick: () => handleEdit(rec),
@@ -71,28 +64,28 @@ const ViewSinhVien = () => {
       filterType: 'string',
       onCell,
     },
-    {
-      title: 'Thao tác',
-      align: 'center',
-      width: 90,
-      fixed: 'right',
-      render: (record: SinhVien.IRecord) => (
-        <>
-          <Tooltip title="Chỉnh sửa">
-            <Button onClick={() => handleEdit(record)} type="link" icon={<EditOutlined />} />
-          </Tooltip>
-          <Tooltip title="Xóa">
-            <Popconfirm
-              onConfirm={() => deleteModel(record._id, getModel)}
-              title="Bạn có chắc chắn muốn xóa sinh viên này?"
-              placement="topLeft"
-            >
-              <Button danger type="link" icon={<DeleteOutlined />} />
-            </Popconfirm>
-          </Tooltip>
-        </>
-      ),
-    },
+    // {
+    //   title: 'Thao tác',
+    //   align: 'center',
+    //   width: 90,
+    //   fixed: 'right',
+    //   render: (record: SinhVien.IRecord) => (
+    //     <>
+    //       <Tooltip title="Chỉnh sửa">
+    //         <Button onClick={() => handleEdit(record)} type="link" icon={<EditOutlined />} />
+    //       </Tooltip>
+    //       <Tooltip title="Xóa">
+    //         <Popconfirm
+    //           onConfirm={() => deleteModel(record._id, getModel)}
+    //           title="Bạn có chắc chắn muốn xóa sinh viên này?"
+    //           placement="topLeft"
+    //         >
+    //           <Button danger type="link" icon={<DeleteOutlined />} />
+    //         </Popconfirm>
+    //       </Tooltip>
+    //     </>
+    //   ),
+    // },
   ];
 
   return (
@@ -104,7 +97,7 @@ const ViewSinhVien = () => {
       Form={ModalSinhVien}
       formType="Modal"
       widthDrawer={1100}
-      buttons={{ import: true }}
+      buttons={{ create: false }}
     />
   );
 };
