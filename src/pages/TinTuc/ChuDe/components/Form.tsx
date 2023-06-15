@@ -1,32 +1,49 @@
-/* eslint-disable no-param-reassign */
+import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
+import { EPhamViChuDe } from '@/services/TinTuc/constant';
+import { type TinTuc } from '@/services/TinTuc/typing';
 import rules from '@/utils/rules';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
-const FormChuDe = () => {
+const FormChuDe = (props: any) => {
   const [form] = Form.useForm();
-  const { loading, record, setVisibleForm, edit, putChuDeModel, addChuDeModel, visibleForm } =
-    useModel('chude');
-  const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
-  const [phamVi, setPhamVi] = useState<string>(record?.phamVi ?? '');
+  const {
+    record,
+    setVisibleForm,
+    edit,
+    visibleForm,
+    putModel,
+    postModel,
+    formSubmiting,
+    getModel,
+  } = useModel('tintuc.chude');
+  const [phamVi, setPhamVi] = useState<EPhamViChuDe | undefined>(record?.phamVi);
   const typeNews = 'Tin tức';
+  const { title } = props;
 
   useEffect(() => {
-    if (edit) form.setFieldsValue(record);
-    else form.resetFields();
+    form.resetFields();
+    form.setFieldsValue({ phamVi: EPhamViChuDe.TAT_CA });
+    if (record?._id) form.setFieldsValue(record);
+    setPhamVi(record?.phamVi ?? EPhamViChuDe.TAT_CA);
   }, [record?._id, visibleForm]);
 
+  const onFinish = async (values: TinTuc.IChuDe) => {
+    const payload = { ...values, type: typeNews };
+    if (edit) {
+      putModel(record?._id ?? '', payload, getModel)
+        .then()
+        .catch((er) => console.log(er));
+    } else
+      postModel(payload, getModel)
+        .then(() => form.resetFields())
+        .catch((er) => console.log(er));
+  };
+
   return (
-    <Card title={edit ? 'Chỉnh sửa' : 'Thêm mới'}>
-      <Form
-        labelCol={{ span: 24 }}
-        onFinish={async (values: ChuDe.Record) => {
-          if (edit) putChuDeModel({ id: record?._id ?? '', data: { ...values, type: typeNews } });
-          else addChuDeModel({ ...values, type: typeNews });
-        }}
-        form={form}
-      >
+    <Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+      <Form layout="vertical" onFinish={onFinish} form={form}>
         <Row gutter={[12, 0]}>
           <Col xs={24}>
             <Form.Item
@@ -38,35 +55,32 @@ const FormChuDe = () => {
             </Form.Item>
           </Col>
           <Col xs={24}>
-            <>
-              <Form.Item rules={[...rules.required]} name="phamVi" label="Phạm vi">
-                <Select onChange={(val: string) => setPhamVi(val)} placeholder="Phạm vi">
-                  {['Tất cả', 'Hình thức đào tạo'].map((item) => (
-                    <Select.Option key={item} value={item}>
-                      {item}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              {phamVi === 'Hình thức đào tạo' ? (
-                <Form.Item
-                  rules={[...rules.required]}
-                  name="hinhThucDaoTaoId"
-                  label="Hình thức đào tạo"
-                >
-                  <Select placeholder="Hình thức đào tạo">
-                    {danhSachHinhThucDaoTao?.map((item) => (
-                      <Select.Option key={item._id} value={item._id}>
-                        {item.danhMucHTDT?.ten ?? ''}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-            </>
+            <Form.Item rules={[...rules.required]} name="phamVi" label="Phạm vi">
+              <Select
+                onChange={(val: EPhamViChuDe) => setPhamVi(val)}
+                placeholder="Phạm vi"
+                options={Object.values(EPhamViChuDe).map((item) => ({
+                  key: item,
+                  value: item,
+                  label: item,
+                }))}
+              />
+            </Form.Item>
           </Col>
-          <Col xs={24} lg={12}>
+
+          {phamVi === EPhamViChuDe.HINH_THUC_DAO_TAO ? (
+            <Col span={24}>
+              <Form.Item
+                rules={[...rules.required]}
+                name="hinhThucDaoTaoId"
+                label="Hình thức đào tạo"
+              >
+                <SelectHinhThuc />
+              </Form.Item>
+            </Col>
+          ) : null}
+
+          <Col xs={24}>
             <Form.Item name="order" label="Thứ tự hiển thị" rules={[...rules.required]}>
               <InputNumber
                 style={{ width: '100%' }}
@@ -78,12 +92,12 @@ const FormChuDe = () => {
           </Col>
         </Row>
 
-        <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-          <Button loading={loading} style={{ marginRight: 8 }} htmlType="submit" type="primary">
-            {!edit ? 'Thêm mới' : 'Lưu'}
+        <div className="form-footer">
+          <Button loading={formSubmiting} htmlType="submit" type="primary">
+            {!edit ? 'Thêm mới ' : 'Lưu lại'}
           </Button>
           <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
-        </Form.Item>
+        </div>
       </Form>
     </Card>
   );

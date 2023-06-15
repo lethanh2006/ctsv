@@ -1,93 +1,74 @@
-/* eslint-disable no-underscore-dangle */
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
+import { type IColumn } from '@/components/Table/typing';
+import { EPhamViChuDe } from '@/services/TinTuc/constant';
+import { type TinTuc } from '@/services/TinTuc/typing';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Popover, Select, Tooltip, Typography } from 'antd';
+import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useModel } from 'umi';
+import FilterPhamVi from '../ChuDe/components/Filter';
+import SelectChuDe from '../ChuDe/components/Select';
 import Form from './components/Form';
 import ViewTinTuc from './components/ViewTinTuc';
-import { type IColumn } from '@/components/Table/typing';
-import { PhamVi } from '@/utils/constants';
 
-const TinTuc = () => {
-  const {
-    getTinTucModel,
-    setEdit,
-    setVisibleForm,
-    delTinTucModel,
-    setRecord,
-    page,
-    limit,
-    setCondition,
-    condition,
-    setPage,
-    phamVi,
-    setPhamVi,
-  } = useModel('tintuc');
+const TinTucPage = () => {
+  const { getModel, deleteModel, setRecord, page, limit, handleEdit } = useModel('tintuc.tintuc');
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
-  const [recordTT, setRecordTT] = useState<TinTuc.IRecord>({} as TinTuc.IRecord);
-  const {
-    getAllChuDeModel,
-    danhSach,
-    condition: condChuDe,
-    setCondition: setCondChuDe,
-    setPhamVi: setPhamViChuDe,
-    setDanhSach,
-  } = useModel('chude');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
-
-  const handleEdit = (rec: TinTuc.IRecord) => {
-    setRecord(rec);
-    setEdit(true);
-    setVisibleForm(true);
-  };
+  // const canUpdate = useCheckAccess('tin-tuc:update');
+  // const canDelete = useCheckAccess('tin-tuc:delete');
+  // const canCreate = useCheckAccess('tin-tuc:create');
 
   const onCell = (record: TinTuc.IRecord) => ({
     onClick: () => {
+      setRecord(record);
       setVisibleModal(true);
-      setRecordTT(record);
     },
     style: { cursor: 'pointer' },
   });
 
-  // const canUpdate = useCheckAccess('tin-tuc:update');
-  // const canDelete = useCheckAccess('tin-tuc:delete');
-  // const canCreate = useCheckAccess('tin-tuc:create');
-  console.log(danhSachHinhThucDaoTao, 'danhSachHinhThucDaoTao');
   const columns: IColumn<TinTuc.IRecord>[] = [
     {
       title: 'Tiêu đề',
       dataIndex: 'tieuDe',
-      width: 220,
+      width: 200,
       filterType: 'string',
       onCell,
     },
     {
       title: 'Mô tả',
       dataIndex: 'moTa',
-      onCell,
-      render: (val) => (
-        <Typography.Paragraph
-          ellipsis={{ rows: 3, expandable: true, symbol: <span>Xem tiếp</span> }}
-        >
-          {val}
-        </Typography.Paragraph>
-      ),
-      width: 220,
+      width: 250,
+      filterType: 'string',
+      render: (val) => <ExpandText>{val}</ExpandText>,
     },
     {
       title: 'Phạm vi',
       dataIndex: 'phamVi',
       width: 100,
-      // hide: access.quanTri || false,
+      filterType: 'select',
+      filterData: Object.values(EPhamViChuDe),
       onCell,
     },
     {
       title: 'Chủ đề',
-      dataIndex: ['chuDe', 'name'],
+      dataIndex: 'idTopic',
+      width: 150,
+      filterType: 'customselect',
+      filterCustomSelect: <SelectChuDe multiple />,
+      render: (val, rec) => rec.chuDe?.name ?? '--',
       onCell,
-      width: 200,
+    },
+    {
+      title: 'Ngày đăng',
+      dataIndex: 'ngayDang',
+      width: 100,
+      align: 'center',
+      filterType: 'date',
+      sortable: true,
+      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+      onCell,
     },
     {
       title: 'Người đăng',
@@ -96,165 +77,69 @@ const TinTuc = () => {
       onCell,
     },
     {
-      title: 'Ngày đăng',
-      dataIndex: 'ngayDang',
-      render: (val) => <div>{moment(val).format('DD/MM/YYYY')}</div>,
-      width: 120,
-      onCell,
-    },
-    {
       title: 'Thao tác',
       align: 'center',
-      width: 70,
+      width: 120,
       fixed: 'right',
       render: (record) => (
-        <Popover
-          placement="left"
-          content={
-            <>
-              <Tooltip title="Xem chi tiết">
-                <Button
-                  onClick={() => {
-                    setVisibleModal(true);
-                    setRecordTT(record);
-                  }}
-                  type="link"
-                  shape="circle"
-                >
-                  <EyeOutlined />
-                </Button>
-              </Tooltip>{' '}
-              <Tooltip title="Chỉnh sửa">
-                <Button
-                  // disabled={!canUpdate}
-                  onClick={() => handleEdit(record)}
-                  type="link"
-                  shape="circle"
-                >
-                  <EditOutlined />
-                </Button>
-              </Tooltip>{' '}
-              <Tooltip title="Xóa">
-                <Popconfirm
-                  // disabled={!canDelete}
-                  onConfirm={() => delTinTucModel({ id: record._id })}
-                  title="Bạn có chắc chắn muốn xóa chủ đề này"
-                >
-                  <Button
-                    danger
-                    // disabled={!canDelete}
-                    type="link"
-                    shape="circle"
-                  >
-                    <DeleteOutlined />
-                  </Button>
-                </Popconfirm>
-              </Tooltip>
-            </>
-          }
-        >
-          <Button type="primary" icon={<EditOutlined />} />
-        </Popover>
+        <>
+          <Tooltip title="Xem chi tiết">
+            <Button
+              onClick={() => {
+                setRecord(record);
+                setVisibleModal(true);
+              }}
+              type="link"
+              icon={<EyeOutlined />}
+            />
+          </Tooltip>
+          <Tooltip title="Chỉnh sửa">
+            <Button
+              // disabled={!canUpdate}
+              onClick={() => handleEdit(record)}
+              type="link"
+              icon={<EditOutlined />}
+            />
+          </Tooltip>
+          <Tooltip title="Xóa">
+            <Popconfirm
+              onConfirm={() => deleteModel(record._id, getModel)}
+              title="Bạn có chắc chắn muốn xóa tin này?"
+            >
+              <Button danger type="link" icon={<DeleteOutlined />} />
+            </Popconfirm>
+          </Tooltip>
+        </>
       ),
     },
   ];
-
-  useEffect(() => {
-    getAllChuDeModel();
-  }, [condChuDe]);
-
-  useEffect(() => {
-    getAllHinhThucDaoTaoModel();
-    return () => {
-      setDanhSach([]);
-    };
-  }, []);
-
-  const onChangeChuDe = (value: string) => {
-    setCondition({ ...condition, idTopic: value });
-    setPage(1);
-  };
 
   return (
     <>
       <TableBase
         columns={columns}
-        getData={getTinTucModel}
-        dependencies={[page, limit, phamVi]}
-        modelName="tintuc"
-        formType="Drawer"
-        widthDrawer={700}
-        scroll={{ x: 1000 }}
-        title="Quản lý tin tức"
+        dependencies={[page, limit]}
+        modelName="tintuc.tintuc"
+        widthDrawer={800}
+        title="Tin tức"
         Form={Form}
       >
-        <Select
-          onChange={(val) => {
-            setCondition({ ...condition, hinhThucDaoTaoId: undefined });
-            setPhamVi(val);
-            setPhamViChuDe(val);
-            setPage(1);
-          }}
-          style={{ width: 170, marginRight: 8 }}
-          value={phamVi}
-        >
-          {PhamVi.map((item) => (
-            <Select.Option value={item} key={item}>
-              {item}
-            </Select.Option>
-          ))}
-        </Select>
-        <Select
-          disabled={phamVi === 'Tất cả'}
-          notFoundContent="Không có hình thức đào tạo nào"
-          allowClear
-          placeholder="Lọc theo hình thức đào tạo"
-          value={condition?.hinhThucDaoTaoId}
-          onChange={(val: string) => {
-            setCondition({ ...condition, hinhThucDaoTaoId: val, idTopic: undefined });
-            setCondChuDe({ ...condChuDe, hinhThucDaoTaoId: val });
-            setPage(1);
-          }}
-          style={{ marginBottom: 8, width: 200, marginRight: 8 }}
-        >
-          {danhSachHinhThucDaoTao?.map((item) => (
-            <Select.Option key={item._id} value={item._id}>
-              {item.danhMucHTDT?.ten}
-            </Select.Option>
-          ))}
-        </Select>
-
-        <Select
-          notFoundContent="Không có chủ đề nào"
-          allowClear
-          placeholder="Lọc theo chủ đề"
-          onChange={onChangeChuDe}
-          value={condition?.idTopic}
-          style={{ width: 200, marginBottom: 8, marginRight: 8 }}
-        >
-          {danhSach?.map((item: ChuDe.Record) => (
-            <Select.Option key={item._id} value={item._id}>
-              {item?.name}
-            </Select.Option>
-          ))}
-        </Select>
+        <FilterPhamVi modelName="tintuc.tintuc" />
       </TableBase>
+
       <Modal
         width={800}
         bodyStyle={{ padding: 0 }}
         destroyOnClose
-        footer={
-          <Button onClick={() => setVisibleModal(false)} type="default">
-            Đóng
-          </Button>
-        }
+        okButtonProps={{ hidden: true }}
+        cancelText="Đóng"
         onCancel={() => setVisibleModal(false)}
         visible={visibleModal}
       >
-        <ViewTinTuc record={recordTT} />
+        <ViewTinTuc />
       </Modal>
     </>
   );
 };
 
-export default TinTuc;
+export default TinTucPage;

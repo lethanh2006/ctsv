@@ -1,111 +1,91 @@
+import MyDatePicker from '@/components/MyDatePicker';
 import TinyEditor from '@/components/TinyEditor';
+import UploadFile from '@/components/Upload/UploadFile';
+import { type TinTuc } from '@/services/TinTuc/typing';
 import rules from '@/utils/rules';
-import { renderFileListUrl } from '@/utils/utils';
-import { Button, Card, Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import moment from 'moment';
-import mm from 'moment-timezone';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import SelectChuDe from '../../ChuDe/components/Select';
+import { buildUpLoadFile } from '@/services/uploadFile';
+import { EPhamViChuDe } from '@/services/TinTuc/constant';
 
-mm.tz.setDefault('Asia/Ho_Chi_Minh');
-
-const FormTinTuc = () => {
+const FormTinTuc = (props: any) => {
   const [form] = Form.useForm();
-  const { record, setVisibleForm, edit, putTinTucModel, addTinTucModel } =
+  const { record, setVisibleForm, edit, putModel, postModel, formSubmiting, getModel } =
     useModel('tintuc.tintuc');
   const { danhSach: danhSachChuDe } = useModel('tintuc.chude');
   const [chuDeSelected, setChuDeSelected] = useState<TinTuc.IChuDe>();
-  const { initialState } = useModel('@@initialState');
-  const [formSubmitting, setFormSubmitting] = useState(false);
+  const { title } = props;
+
+  const onChangeChuDe = (val?: string) =>
+    setChuDeSelected(danhSachChuDe.find((item) => item._id === val));
 
   useEffect(() => {
-    setChuDeSelected(danhSachChuDe.find((item) => item._id === record?.idTopic));
-    if (record?._id) {
-      if (edit)
-        form.setFieldsValue({
-          ...record,
-          danhSachVaiTro:
-            record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
-          urlAnhDaiDien: renderFileListUrl(record?.urlAnhDaiDien ?? ''),
-          ngayDang: moment(record?.ngayDang),
-          noiDung: record?.noiDung || '',
-        });
-    } else form.resetFields();
+    onChangeChuDe(record?.idTopic);
+  }, [danhSachChuDe.length]);
+
+  useEffect(() => {
+    onChangeChuDe(record?.idTopic);
+    form.resetFields();
+    if (record?._id)
+      form.setFieldsValue({
+        ...record,
+        danhSachVaiTro:
+          record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
+      });
   }, [record?._id]);
 
   const onFinish = async (values: any) => {
-    if (formSubmitting) return;
-    setFormSubmitting(true);
+    if (formSubmiting) return;
+    setVisibleForm(true);
+    const urlAnhDaiDien = await buildUpLoadFile(values, 'urlAnhDaiDien');
+    values.urlAnhDaiDien = urlAnhDaiDien;
+    setVisibleForm(false);
 
-    // if (values.urlAnhDaiDien.fileList?.[0]?.originFileObj) {
-    //   const response = await getURLImg({
-    //     filename: 'url1',
-    //     public: '1',
-    //     file: values?.urlAnhDaiDien.fileList?.[0].originFileObj,
-    //   });
-    //   values.urlAnhDaiDien = response?.data?.data?.url;
-    // } else values.urlAnhDaiDien = values.urlAnhDaiDien.fileList?.[0]?.url;
+    const payload = {
+      ...values,
+      doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
+      phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
+    };
 
-    if (edit)
-      putTinTucModel({
-        id: record?._id ?? '',
-        data: {
-          ...values,
-          doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
-          phamVi: record?.phamVi ?? 'Tất cả',
-        },
-      });
-    else {
-      addTinTucModel({
-        ...values,
-        // hinhThucDaoTaoId: initialState?.currentUser?.hinhThucDaoTaoId ?? 0,
-        doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
-        phamVi: chuDeSelected?.phamVi ?? 'Tất cả',
-      });
-    }
-    setFormSubmitting(false);
+    if (edit) {
+      putModel(record?._id ?? '', payload, getModel)
+        .then()
+        .catch((er) => console.log(er));
+    } else
+      postModel(payload, getModel)
+        .then(() => form.resetFields())
+        .catch((er) => console.log(er));
   };
 
   return (
-    <Card title={edit ? 'Chỉnh sửa' : 'Thêm mới'}>
-      <Form labelCol={{ span: 24 }} onFinish={onFinish} form={form}>
+    <Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+      <Form layout="vertical" onFinish={onFinish} form={form}>
         <Form.Item
           name="tieuDe"
           label="Tiêu đề"
-          rules={[...rules.required, ...rules.text, ...rules.length(100)]}
+          rules={[...rules.required, ...rules.text, ...rules.length(250)]}
         >
-          <Input placeholder="Tiêu đề" />
+          <Input placeholder="Nhập tiêu đề" />
         </Form.Item>
-
         <Form.Item name="idTopic" label="Chủ đề" rules={[...rules.required]}>
-          <Select
-            placeholder="Chọn chủ đề"
-            onChange={(value) => setChuDeSelected(danhSachChuDe.find((item) => item._id === value))}
-          >
-            {danhSachChuDe.map((item) => (
-              <Select.Option key={item._id} value={item._id}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
+          <SelectChuDe onChange={(val) => onChangeChuDe(val)} />
         </Form.Item>
-        <Form.Item name="moTa" label="Mô tả" rules={[...rules.text, ...rules.length(300)]}>
+        <Form.Item name="moTa" label="Mô tả" rules={[...rules.text, ...rules.length(2000)]}>
           <Input placeholder="Mô tả" />
         </Form.Item>
 
-        {/* <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
-          <UploadAvatar
-            style={{
-              width: 102,
-              maxWidth: 102,
-              height: 102,
-              maxHeight: 102,
-            }}
-          />
-        </Form.Item> */}
-        <Row gutter={[20, 0]}>
+        <Row gutter={[12, 0]}>
+          <Col span={24} md={8}>
+            <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
+              <UploadFile isAvatar />
+            </Form.Item>
+          </Col>
+
           {chuDeSelected?.phamVi === 'Tất cả' && (
-            <Col xs={24} md={12}>
+            <Col xs={24} md={8}>
               <Form.Item name="danhSachVaiTro" label="Đối tượng">
                 <Select
                   mode="multiple"
@@ -117,50 +97,43 @@ const FormTinTuc = () => {
                         danhSachVaiTro: ['sinh_vien', 'nhan_vien'],
                       });
                   }}
-                >
-                  {[
-                    { value: 'tat_ca', name: 'Tất cả' },
-                    { value: 'sinh_vien', name: 'Sinh viên' },
-                    { value: 'nhan_vien', name: 'Cán bộ, giảng viên' },
-                  ].map((item) => (
-                    <Select.Option key={item.value} value={item.value}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
+                  options={[
+                    { value: 'tat_ca', label: 'Tất cả' },
+                    { value: 'sinh_vien', label: 'Sinh viên' },
+                    { value: 'nhan_vien', label: 'Cán bộ, giảng viên' },
+                  ]}
+                />
               </Form.Item>
             </Col>
           )}
-          <Col xs={24} md={12}>
-            <Form.Item name="ngayDang" label="Ngày đăng">
-              <DatePicker
-                style={{ width: '100%' }}
-                format="DD/MM/YYYY"
-                disabledDate={(cur) => moment(cur).isAfter(moment())}
-                placeholder="Ngày đăng"
-                clearIcon={false}
+
+          <Col xs={24} md={8}>
+            <Form.Item
+              name="ngayDang"
+              label="Ngày đăng"
+              rules={[...rules.required, ...rules.sauHomNay]}
+            >
+              <MyDatePicker
+                format="HH:mm DD/MM/YYYY"
+                disabledDate={(cur) => moment(cur).isBefore(moment())}
+                placeholder="Chọn ngày đăng"
+                allowClear={false}
+                showTime={{ showHour: true, showMinute: true }}
               />
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item
-          name="noiDung"
-          label="Nội dung"
-          // rules={[...rules.textEditor]}
-        >
-          <TinyEditor height={350} />
+
+        <Form.Item name="noiDung" label="Nội dung" rules={[...rules.requiredHtml]}>
+          <TinyEditor />
         </Form.Item>
-        <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-          <Button
-            loading={formSubmitting}
-            style={{ marginRight: 8 }}
-            htmlType="submit"
-            type="primary"
-          >
-            {!edit ? 'Thêm mới' : 'Lưu'}
+
+        <div className="form-footer">
+          <Button loading={formSubmiting} htmlType="submit" type="primary">
+            {!edit ? 'Thêm mới ' : 'Lưu lại'}
           </Button>
           <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
-        </Form.Item>
+        </div>
       </Form>
     </Card>
   );

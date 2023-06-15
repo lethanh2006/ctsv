@@ -1,37 +1,17 @@
-/* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/Table';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Select, Tooltip } from 'antd';
-import { useEffect } from 'react';
-import { useModel } from 'umi';
-import Form from './components/Form';
 import { type IColumn } from '@/components/Table/typing';
-import { PhamVi } from '@/utils/constants';
+import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
+import { type TinTuc } from '@/services/TinTuc/typing';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Tooltip } from 'antd';
+import { useModel } from 'umi';
+import FilterPhamVi from './components/Filter';
+import Form from './components/Form';
 
 const ChuDeChung = () => {
-  const {
-    getChuDeModel,
-    setEdit,
-    setVisibleForm,
-    delChuDeModel,
-    setRecord,
-    page,
-    limit,
-    condition,
-    setCondition,
-    phamVi,
-    setPhamVi,
-    setPage,
-  } = useModel('chude');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
+  const { page, limit, handleEdit, deleteModel, getModel } = useModel('tintuc.chude');
 
-  const handleEdit = (record: ChuDe.Record) => {
-    setRecord(record);
-    setEdit(true);
-    setVisibleForm(true);
-  };
-
-  const columns: IColumn<ChuDe.Record>[] = [
+  const columns: IColumn<TinTuc.IChuDe>[] = [
     {
       title: 'Tên chủ đề',
       dataIndex: 'name',
@@ -39,20 +19,17 @@ const ChuDeChung = () => {
       filterType: 'string',
       sortable: true,
     },
-    // {
-    //   title: 'Hình thức đào tạo',
-    //   dataIndex: 'hinhThucDaoTaoId',
-    //   width: 100,
-    //   sortable: true,
-    //   render: (val, record) =>
-    //     record?.phamVi === 'Tất cả' ? (
-    //       <div>Tất cả</div>
-    //     ) : (
-    //       <div>
-    //         {danhSachHinhThucDaoTao?.find((item) => item?._id === val)?.danhMucHTDT?.ten ?? ''}
-    //       </div>
-    //     ),
-    // },
+    {
+      title: 'Hình thức đào tạo',
+      dataIndex: 'hinhThucDaoTaoId',
+      width: 120,
+      filterType: 'customselect',
+      filterCustomSelect: <SelectHinhThuc multiple />,
+      render: (val, record) =>
+        record?.phamVi === 'Tất cả'
+          ? record?.phamVi
+          : record.hinhThucDaoTao?.danhMucHTDT?.ten ?? '--',
+    },
     {
       title: 'Thứ tự hiển thị',
       dataIndex: 'order',
@@ -61,35 +38,21 @@ const ChuDeChung = () => {
     },
     {
       title: 'Thao tác',
-      width: 80,
+      width: 90,
       fixed: 'right',
       align: 'center',
-      render: (record: ChuDe.Record) => (
+      render: (record: TinTuc.IChuDe) => (
         <>
           <Tooltip title="Chỉnh sửa">
-            <Button
-              // disabled={!canUpdate}
-              onClick={() => handleEdit(record)}
-              type="link"
-              shape="circle"
-            >
-              <EditOutlined />
-            </Button>
+            <Button onClick={() => handleEdit(record)} type="link" icon={<EditOutlined />} />
           </Tooltip>
           <Tooltip title="Xóa">
             <Popconfirm
-              // disabled={!canDelete}
-              onConfirm={() => delChuDeModel({ id: record._id })}
-              title="Bạn có chắc chắn muốn xóa chủ đề này"
+              onConfirm={() => deleteModel(record._id, getModel)}
+              title="Bạn có chắc chắn muốn xóa chủ đề này?"
+              placement="topLeft"
             >
-              <Button
-                danger
-                // disabled={!canDelete}
-                type="link"
-                shape="circle"
-              >
-                <DeleteOutlined />
-              </Button>
+              <Button danger type="link" icon={<DeleteOutlined />} />
             </Popconfirm>
           </Tooltip>
         </>
@@ -97,53 +60,15 @@ const ChuDeChung = () => {
     },
   ];
 
-  useEffect(() => {
-    getAllHinhThucDaoTaoModel();
-    // getAllLoaiChuDeModel();
-  }, []);
-
   return (
     <TableBase
       columns={columns}
-      getData={getChuDeModel}
-      dependencies={[page, limit, phamVi]}
-      modelName="chude"
-      title="Chủ đề chung"
+      dependencies={[page, limit]}
+      modelName="tintuc.chude"
+      title="Chủ đề"
       Form={Form}
     >
-      <Select
-        onChange={(val) => {
-          setCondition({ ...condition, hinhThucDaoTaoId: undefined });
-          setPhamVi(val);
-          setPage(1);
-        }}
-        style={{ width: 170, marginRight: 8 }}
-        value={phamVi}
-        allowClear
-        placeholder="Chọn phạm vi"
-      >
-        {PhamVi.map((item) => (
-          <Select.Option value={item} key={item}>
-            {item}
-          </Select.Option>
-        ))}
-      </Select>
-      <Select
-        disabled={phamVi !== 'Hình thức đào tạo'}
-        allowClear
-        placeholder="Lọc theo hình thức đào tạo"
-        value={condition?.hinhThucDaoTaoId}
-        onChange={(val: number) => {
-          setCondition({ ...condition, hinhThucDaoTaoId: val });
-        }}
-        style={{ marginBottom: 8, width: 200, marginRight: 8 }}
-      >
-        {danhSachHinhThucDaoTao?.map((item) => (
-          <Select.Option key={item?._id} value={item?._id}>
-            {item?.danhMucHTDT?.ten}
-          </Select.Option>
-        ))}
-      </Select>
+      <FilterPhamVi modelName="tintuc.chude" />
     </TableBase>
   );
 };

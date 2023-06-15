@@ -143,12 +143,6 @@ export enum ExportType {
   XLSX = 'excel',
 }
 
-export const PhamVi = ['Tất cả', 'Hình thức đào tạo'];
-export enum EPhamVi {
-  TAT_CA = 'Tất cả',
-  HINH_THUC_DAO_TAO = 'Hình thức đào tạo',
-}
-
 export const Setting = {
   navTheme: 'dark',
   primaryColor: '#007EB9',
