@@ -1,27 +1,23 @@
-import { LoaiDanhHieuThiDuaKhenThuongGiaiThuong } from '@/utils/constants';
-import { Card, Table } from 'antd';
+import TableStaticData from '@/components/Table/TableStaticData';
+import { LoaiDanhHieuThiDuaKhenThuongGiaiThuong } from '@/services/DanhMuc/constant';
+import { Card } from 'antd';
 
 const LoaiDanhHieu = () => {
   return (
     <Card title="Loại danh hiệu thi đua khen thưởng">
-      <Table
+      <TableStaticData
         columns={[
-          {
-            title: 'STT',
-            dataIndex: 'index',
-            align: 'center',
-            width: 200,
-          },
           {
             title: 'Loại danh hiệu',
             dataIndex: 'ten',
-            align: 'center',
+            width: 250,
+            filterType: 'string',
           },
         ]}
-        dataSource={Object.values(LoaiDanhHieuThiDuaKhenThuongGiaiThuong).map((item, index) => ({
-          index: index + 1,
+        data={Object.values(LoaiDanhHieuThiDuaKhenThuongGiaiThuong).map((item) => ({
           ten: item,
         }))}
+        addStt
       />
     </Card>
   );

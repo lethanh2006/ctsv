@@ -1,5 +1,4 @@
-import LoaiDanhHieu from '@/pages/DanhMuc/LoaiDanhHieu';
-import { LoaiDanhHieuThiDuaKhenThuongGiaiThuong } from '@/utils/constants';
+import { LoaiDanhHieuThiDuaKhenThuongGiaiThuong } from '@/services/DanhMuc/constant';
 import rules from '@/utils/rules';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useEffect } from 'react';
