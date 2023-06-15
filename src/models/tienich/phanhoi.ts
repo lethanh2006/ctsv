@@ -1,13 +1,11 @@
 import useInitModel from '@/hooks/useInitModel';
 import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/TienIch/PhanHoi/phanhoi';
-import { ip3 } from '@/utils/ip';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi', 'condition', undefined, ip3);
+  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi');
   const { setLoading, setVisibleForm, getModel, setDanhSach, setTotal, page, limit } = objInit;
-  const [daTraLoi, setDaTraLoi] = useState<boolean>(false);
   const [vaiTro, setVaiTro] = useState<string>('sinh_vien');
 
   const traLoiPhanHoiModel = async (payload: {
@@ -31,7 +29,6 @@ export default () => {
     const response = await getPhanHoiFromOther({
       page,
       limit,
-      daTraLoi,
     });
     setDanhSach(response?.data?.data?.result ?? []);
     setTotal(response?.data?.data?.total ?? 0);
@@ -40,8 +37,6 @@ export default () => {
 
   return {
     ...objInit,
-    daTraLoi,
-    setDaTraLoi,
     traLoiPhanHoiModel,
     getPhanHoiFromOtherModel,
     vaiTro,

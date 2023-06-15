@@ -1,195 +1,172 @@
-import TableBase from '@/components/OldTable';
-import type { IColumn } from '@/utils/interfaces';
-import { Button, Modal, Tabs, Tag, Tooltip } from 'antd';
-import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
+import ExpandText from '@/components/ExpandText';
+import TableBase from '@/components/Table';
+import { type IColumn } from '@/components/Table/typing';
+import { EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Select, Tooltip } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import ThanhToan from '@/pages/ThanhToan';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import FormQuyTrinh from '@/pages/DichVuMotCuaV2/components/FormQuyTrinh';
-import TableLichSuTraKetQua from '@/pages/DichVuMotCuaV2/components/TableLichSuTraKetQua';
-import FormTraLoiPhanHoi from '@/pages/DichVuMotCuaV2/QuanLyDon/components/FormTraLoiPhanHoi';
+import Form from './components/Form';
 
-const PhanHoiComponent = () => {
-  const { getModel, loading, setRecord, visibleForm, setVisibleForm, page, limit, condition } =
-    useModel('tienich.phanhoi');
-
-  const {
-    getDonThaoTacChuyenVienDieuPhoiModel,
-    setVisibleFormDon,
-    setRecordDon,
-    recordDon,
-    visibleFormDon,
-    setRecordDonThaoTac,
-  } = useModel('dvmc.dichvumotcuav2');
-
-  const [type, setType] = useState<'handle' | 'view' | 'create' | 'edit'>('handle');
-
-  const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
-    // if (pathname?.includes('quanlydondieuphoi'))
-    getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
-    // else getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
-    setRecordDon(recordDonColumn);
-    setVisibleFormDon(true);
-    setType('view');
-  };
-
-  const onCell = (recordPhanHoi: PhanHoi.IRecord) => ({
-    onClick: () => {
-      setRecord(recordPhanHoi);
-      // getCsvcByIdModel(recordDonColumn?.idCoSoVatChat ?? '');
-      handleDon(recordPhanHoi.idDonDVMC);
-    },
-    style: { cursor: 'pointer' },
-  });
+const PhanHoiPage = () => {
+  const { setCondition, page, limit, handleEdit } = useModel('tienich.phanhoi');
+  const [daTraLoi, setDaTraLoi] = useState<boolean | undefined>();
+  // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
 
   const columns: IColumn<PhanHoi.IRecord>[] = [
     {
-      title: 'STT',
-      dataIndex: 'index',
+      title: 'Mã định danh',
+      dataIndex: 'maSv',
       align: 'center',
-      width: 80,
-      onCell,
+      filterType: 'string',
+      width: 120,
+    },
+    // {
+    //   title: 'Người gửi',
+    //   dataIndex: 'hoTenNguoiPhanHoi',
+    //   align: 'center',
+    //   search: 'search',
+    //   width: 130,
+    // },
+    // {
+    //   title: 'Người trả lời',
+    //   dataIndex: 'hoTenNguoiTraLoi',
+    //   align: 'center',
+    //   width: 150,
+    //   hide: !daTraLoi,
+    // },
+    {
+      title: 'Câu hỏi',
+      dataIndex: 'noiDungPhanHoi',
+      filterType: 'string',
+      width: 200,
+      render: (val) => <ExpandText>{val}</ExpandText>,
     },
     {
-      title: 'Ngày tạo',
+      title: 'File đính kèm',
+      dataIndex: 'urlPhanAnh',
+      align: 'center',
+      render: (val) =>
+        val ? (
+          <a href={val} target="_blank" rel="noreferrer">
+            File đính kèm
+          </a>
+        ) : null,
+      width: 100,
+    },
+    {
+      title: 'Thời gian hỏi',
       dataIndex: 'createdAt',
       align: 'center',
+      render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+      sortable: true,
+      filterType: 'date',
       width: 120,
-      render: (val) => (
-        <span title={moment(val).format('DD/MM/YYYY HH:mm:ss')}>{moment(val).fromNow()}</span>
-      ),
-      onCell,
     },
     {
-      title: 'Loại đơn',
-      dataIndex: ['idDonDVMC', 'thongTinDichVu', 'ten'],
-      align: 'center',
-      width: 200,
-      onCell,
-    },
-    {
-      title: 'Trạng thái',
-      width: 120,
-      align: 'center',
-      dataIndex: ['daTraLoiPhanHoi'],
-      search: 'filterString',
-      notRegex: true,
-      key: 'daTraLoiPhanHoi',
-      render: (val) => (
-        <Tag color={!val ? '#dc3545' : '#28a745'}>{val ? 'Đã trả lời' : 'Chưa trả lời'}</Tag>
-      ),
-      onCell,
-    },
-    {
-      title: 'Nội dung phản hồi',
-      dataIndex: 'noiDungPhanHoi',
-      onCell,
-    },
-    {
-      title: 'Nội dung trả lời phản hồi',
+      title: 'Câu trả lời',
       dataIndex: 'noiDungTraLoiPhanHoi',
-      onCell,
+      filterType: 'string',
+      hide: daTraLoi === false,
+      width: 200,
+      render: (val) => <ExpandText>{val}</ExpandText>,
+    },
+    {
+      title: 'Thời gian trả lời',
+      dataIndex: 'thoiGianTraLoi',
+      align: 'center',
+      hide: daTraLoi === false,
+      render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+      sortable: true,
+      filterType: 'date',
+      width: 120,
+    },
+    {
+      title: 'Người trả lời',
+      dataIndex: 'maChuyenVien',
+      hide: daTraLoi === false,
+      filterType: 'string',
+      width: 120,
     },
     {
       title: 'Thao tác',
       align: 'center',
-      width: 100,
+      width: 70,
       fixed: 'right',
-      render: (recordPhanHoiColumn: PhanHoi.IRecord) => {
-        return (
-          <>
-            <Tooltip title="Trả lời phản hồi">
-              <Button
-                disabled={recordPhanHoiColumn.daTraLoiPhanHoi}
-                onClick={() => {
-                  setRecord(recordPhanHoiColumn);
-                  setRecordDon(recordPhanHoiColumn.idDonDVMC);
-                  setVisibleForm(true);
-                }}
-                icon={<QuestionCircleOutlined />}
-                shape="circle"
-              />
-            </Tooltip>
-          </>
-        );
-      },
+      render: (val, rec) => (
+        <Tooltip title={rec.daTraLoiPhanHoi ? 'Xem nội dung trả lời' : 'Trả lời'}>
+          <Button onClick={() => handleEdit(rec)} type="link">
+            {rec.daTraLoiPhanHoi ? <EyeOutlined /> : <EditOutlined />}
+          </Button>
+        </Tooltip>
+      ),
     },
   ];
 
-  const getData = () => {
-    getModel(undefined, undefined, undefined, undefined, undefined, 'page');
+  const onChangeTrangThai = (value?: string) => {
+    const isAnswer = value === 'Đã trả lời';
+    setCondition({ daTraLoiPhanHoi: value ? isAnswer : undefined });
+    setDaTraLoi(value ? isAnswer : undefined);
   };
 
   return (
-    <>
-      <TableBase
-        dependencies={[page, limit, condition]}
-        title="Phản hồi"
-        columns={columns}
-        modelName={'phanhoi'}
-        loading={loading}
-        getData={getData}
-      />
-      <Modal
-        destroyOnClose
-        width="900px"
-        footer={false}
-        visible={visibleFormDon}
-        onCancel={() => {
-          setVisibleFormDon(false);
-        }}
-      >
-        <Tabs
-          onChange={() => {
-            setRecordDonThaoTac(undefined);
+    <TableBase
+      columns={columns}
+      modelName="tienich.phanhoi"
+      dependencies={[page, limit]}
+      title="Phản hồi"
+      Form={Form}
+      buttons={{ create: false }}
+    >
+      {/* {(access.admin || access.nhanVien) && (
+        <Select
+          value={condition?.hinhThucDaoTaoId ?? -1}
+          onChange={(val: number) => {
+            setCondition({ ...condition, hinhThucDaoTaoId: val });
           }}
+          style={{ marginBottom: 8, width: 250, marginRight: 8 }}
         >
-          <Tabs.TabPane tab="Quy trình" key={0}>
-            <FormQuyTrinh
-              type="view"
-              idDon={recordDon?._id}
-              record={recordDon?.thongTinDichVu?.quyTrinh}
-              thoiGianTaoDon={recordDon?.createdAt}
-            />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Biểu mẫu" key={1}>
-            <Form
-              hideCamKet
-              infoNguoiTaoDon={recordDon?.thongTinNguoiTao}
-              type={type}
-              onCancel={() => {
-                setVisibleFormDon(false);
-              }}
-              record={recordDon}
-            />
-          </Tabs.TabPane>
-          {recordDon?.identityCode && (
-            <Tabs.TabPane tab="Thông tin thanh toán" key={2}>
-              <ThanhToan
-                identityCode={recordDon?.identityCode}
-                trangThaiThanhToan={recordDon?.trangThaiThanhToan}
-              />
-            </Tabs.TabPane>
-          )}
-          <Tabs.TabPane tab="Lịch sử trả kết quả" key={3}>
-            <TableLichSuTraKetQua data={recordDon?.lichSuChinhSua ?? []} />
-          </Tabs.TabPane>
-        </Tabs>
-      </Modal>
-      <Modal
-        footer={false}
-        visible={visibleForm}
-        onCancel={() => setVisibleForm(false)}
-        bodyStyle={{ padding: 0 }}
-        width={600}
+          <Select.Option value={-1} key={-1}>
+            Tất cả hình thức đào tạo
+          </Select.Option>
+          {danhSachHinhThucDaoTao?.map((item) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.ten_hinh_thuc_dao_tao}
+            </Select.Option>
+          ))}
+        </Select>
+      )}
+      {(access.adminVaQuanTri || access.nhanVien) && (
+        <Select
+          placeholder="Lọc theo vai trò người gửi"
+          onChange={onChangeVaiTro}
+          value={vaiTro}
+          style={{ width: 220, marginBottom: 8, marginRight: 8 }}
+        >
+          {[
+            { value: 'sinh_vien', name: 'Sinh viên' },
+            { value: 'nhan_vien', name: 'Cán bộ, giảng viên' },
+          ]?.map((item) => (
+            <Select.Option key={item.value} value={item.value}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
+      )} */}
+      <Select
+        placeholder="Lọc theo trạng thái"
+        onChange={onChangeTrangThai}
+        style={{ width: 200, marginBottom: 8, marginRight: 8 }}
+        allowClear
       >
-        <FormTraLoiPhanHoi getData={getData} />
-      </Modal>
-    </>
+        {['Đã trả lời', 'Chưa trả lời']?.map((item) => (
+          <Select.Option key={item} value={item}>
+            {item}
+          </Select.Option>
+        ))}
+      </Select>
+    </TableBase>
   );
 };
 
-export default PhanHoiComponent;
+export default PhanHoiPage;

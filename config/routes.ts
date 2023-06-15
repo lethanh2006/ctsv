@@ -184,7 +184,7 @@
       {
         name: 'TatCaPhanHoi',
         path: './all',
-        component: './TienIch/PhanHoi/Admin.tsx',
+        component: './TienIch/PhanHoi',
       },
       // {
       //   name: 'PhanHoiDonVi',
