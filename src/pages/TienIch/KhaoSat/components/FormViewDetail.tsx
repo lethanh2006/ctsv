@@ -1,15 +1,14 @@
-import { Button, Card, Form } from 'antd';
-import { useModel } from 'umi';
-import NumericChoice from './QuestionView/NumericChoice';
 import UploadFile from '@/components/Upload/UploadFile';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
-import SingleChoice from './QuestionView/SingleChoice';
-import Text from './QuestionView/Text';
+import { Button, Card } from 'antd';
+import { useModel } from 'umi';
 import GridChoice from './QuestionView/GridChoice';
 import MultipleChoice from './QuestionView/MultipleChoice';
+import NumericChoice from './QuestionView/NumericChoice';
+import SingleChoice from './QuestionView/SingleChoice';
+import Text from './QuestionView/Text';
 
 const ViewDetailKhaoSat = () => {
-  const [form] = Form.useForm();
   const { loading, record, setVisibleForm } = useModel('tienich.bieumau');
 
   const renderQuestion = (question: BieuMau.CauHoi) => {
@@ -39,6 +38,7 @@ const ViewDetailKhaoSat = () => {
         />
       );
     }
+
     return (
       <div key={question._id}>
         <div className="ant-form-item-label fw500">
@@ -55,24 +55,22 @@ const ViewDetailKhaoSat = () => {
 
   return (
     <Card loading={loading} title="Chi tiết khảo sát">
-      <Form layout="vertical" form={form}>
-        <h3>{record?.tieuDe}</h3>
-        <p>{record?.moTa}</p>
+      <h3>{record?.tieuDe}</h3>
+      <p>{record?.moTa}</p>
 
-        {record?.danhSachKhoi?.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index}>
-            <div className="fw500">{item.tieuDe}</div>
-            <p>{item.moTa}</p>
+      {record?.danhSachKhoi?.map((item, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={index}>
+          <div className="fw500">{item.tieuDe}</div>
+          <p>{item.moTa}</p>
 
-            {item.danhSachCauHoi?.map((cauHoi) => renderQuestion(cauHoi))}
-          </div>
-        ))}
-
-        <div className="form-footer">
-          <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+          {item.danhSachCauHoi?.map((cauHoi) => renderQuestion(cauHoi))}
         </div>
-      </Form>
+      ))}
+
+      <div className="form-footer">
+        <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+      </div>
     </Card>
   );
 };

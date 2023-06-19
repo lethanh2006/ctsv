@@ -1,74 +1,65 @@
-/* eslint-disable no-underscore-dangle */
-import { Button, Card, Divider, Form } from 'antd';
+import { Button, Card } from 'antd';
 import { useModel } from 'umi';
 import GridChoice from './ThongKeType/GridChoice';
-import MultipleChoice from './ThongKeType/MultipleChoice';
 import NumericChoice from './ThongKeType/NumericChoice';
 import SingleChoice from './ThongKeType/SingleChoice';
+import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 
-const ThongKe = () => {
-  const { loading, thongKe, setVisibleForm } = useModel('bieumau');
-  const renderThongKe = (question: any, index: number) => {
+const ModalThongKe = () => {
+  const { loading, thongKe, setVisibleForm } = useModel('tienich.bieumau');
+
+  const renderThongKe = (question: BieuMau.ThongKeCauHoi) => {
     let questionEleMent = <div />;
-    // const recordDapAn = record?.danhSachTraLoi?.find((item) => item.idCauHoi === question._id);
-    if (question.loai === 'SingleChoice' && question?.soLuongTraLoi > 0)
-      questionEleMent = (
-        <SingleChoice ketQua={question.ketQua} tong={question?.soLuongTraLoi ?? 0} />
-      );
-    else if (question.loai === 'MultipleChoice' || question.loai === 'DropdownMenu')
-      questionEleMent = <MultipleChoice ketQua={question.ketQua} />;
-    // else if (question.loai === 'Text') questionEleMent = <Text />;
+    if (
+      (question.loai === 'SingleChoice' ||
+        question.loai === 'MultipleChoice' ||
+        question.loai === 'DropdownMenu') &&
+      question.soLuongTraLoi
+    )
+      questionEleMent = <SingleChoice ketQua={question.ketQua as BieuMau.ThongKeLuaChon[]} />;
     else if (question.loai === 'GridMultipleChoice' || question.loai === 'GridSingleChoice')
-      questionEleMent = <GridChoice ketQua={question.ketQua} />;
+      questionEleMent = <GridChoice ketQua={question.ketQua as BieuMau.ThongKeLuaChonGrid[]} />;
     else if (question.loai === 'NumericRange')
-      questionEleMent = <NumericChoice ketQua={question.ketQua} />;
+      questionEleMent = (
+        <NumericChoice ketQua={question.ketQua as BieuMau.ThongKeLuaChonNumeric[]} />
+      );
+
     return (
       <div key={question?._id}>
-        <div>
-          <b>
-            {question.batBuoc && <span style={{ color: '#dc3545' }}>*</span>} Câu hỏi {index + 1}:{' '}
+        <div className="ant-form-item-label fw500">
+          <label className={question.batBuoc ? 'ant-form-item-required' : ''}>
             {question.noiDungCauHoi}
-          </b>
+          </label>
         </div>
-        <div>
-          <b>Số lượt trả lời: {question.soLuongTraLoi}</b>
-        </div>
-        <div>{questionEleMent}</div>
         <br />
-        <Divider type="horizontal" />
+        <div className="fw500" style={{ marginBottom: 8 }}>
+          Số lượt trả lời: {question.soLuongTraLoi}
+        </div>
+        {questionEleMent}
       </div>
     );
   };
+
   return (
     <Card loading={loading} title="Thống kê kết quả">
-      <h3>
-        <b>{thongKe?.tieuDe}</b>
-      </h3>
-
+      <h3>{thongKe?.tieuDe}</h3>
       <p>{thongKe?.moTa}</p>
-      <div>
-        {thongKe?.thongKeKhoi?.map((item: BieuMau.ThongKeKhoi) => (
-          <>
-            <Card key={item._id} hoverable>
-              <div>{item.tieuDe}</div>
-              <div>{item.moTa}</div>
-              <div>
-                {item.thongKeCauHoi?.map((cauHoi: BieuMau.ThongKeCauHoi, index) =>
-                  renderThongKe(cauHoi, index),
-                )}
-              </div>
-            </Card>
-            <br />
-          </>
-        ))}
+
+      {thongKe?.thongKeKhoi?.map((item, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={index}>
+          <div className="fw500">{item.tieuDe}</div>
+          <p>{item.moTa}</p>
+
+          {item.thongKeCauHoi?.map((cauHoi) => renderThongKe(cauHoi))}
+        </div>
+      ))}
+
+      <div className="form-footer">
+        <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
       </div>
-      <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-        <Button type="primary" onClick={() => setVisibleForm(false)}>
-          Đóng
-        </Button>
-      </Form.Item>
     </Card>
   );
 };
 
-export default ThongKe;
+export default ModalThongKe;

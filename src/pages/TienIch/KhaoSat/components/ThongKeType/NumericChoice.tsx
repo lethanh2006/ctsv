@@ -1,26 +1,16 @@
-const ThongKeNumericChoice = (props: { ketQua: any }) => {
-  return <></>;
-  // const config = {
-  //   data: props.ketQua,
-  //   xField: 'soLuong',
-  //   yField: 'giaTriTuyenTinh',
-  //   colorField: 'giaTriTuyenTinh',
-  //   meta: {
-  //     soLuong: {
-  //       alias: 'Số lượng',
-  //       formatter: (v: number) => {
-  //         return `${v} lựa chọn`;
-  //       },
-  //     },
-  //     giaTriTuyenTinh: {
-  //       alias: 'Giá trị',
-  //       formatter: (v: string) => {
-  //         return `Giá trị ${v}`;
-  //       },
-  //     },
-  //   },
-  // };
-  // return <Bar {...config} />;
+import ColumnChart from '@/components/Chart/ColumnChart';
+import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
+
+const ThongKeNumericChoice = (props: { ketQua: BieuMau.ThongKeLuaChonNumeric[] }) => {
+  const { ketQua } = props;
+
+  return (
+    <ColumnChart
+      yLabel={['Số lượng']}
+      xAxis={ketQua.map((i) => i.giaTriTuyenTinh + '')}
+      yAxis={[ketQua.map((i) => i.soLuong)]}
+    />
+  );
 };
 
 export default ThongKeNumericChoice;

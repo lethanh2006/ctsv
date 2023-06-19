@@ -1,52 +1,39 @@
-const Groupedcolumn = (props: { ketQua: BieuMau.ThongKeLuaChonGrid[] }) => {
-  return <></>;
-  // const data = props.ketQua?.map((item) => {
-  //   const record = {
-  //     name: item.noiDungHang,
-  //   };
-  //   item.thongKeCot.forEach((cot) => {
-  //     record[`${cot.noiDungCot}`] = cot?.soLuong ?? 0;
-  //   });
-  //   return record;
-  // });
+import ColumnChart from '@/components/Chart/ColumnChart';
+import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 
-  // const fields = props.ketQua?.[0]?.thongKeCot?.map((item) => {
-  //   return item.noiDungCot;
-  // });
-  // const ds = new DataSet();
-  // const dv = ds.createView().source(data);
-  // dv.transform({
-  //   type: 'fold',
-  //   fields,
-  //   // 展开字段集
-  //   key: '月份',
-  //   // key字段
-  //   value: '月均降雨量', // value字段
-  // });
-  // return (
-  //   <div>
-  //     <Chart height={400} data={dv} forceFit>
-  //       <Axis name="月份" />
-  //       <Axis name="月均降雨量" />
-  //       <Legend />
-  //       <Tooltip
-  //         crosshairs={{
-  //           type: 'y',
-  //         }}
-  //       />
-  //       <Geom
-  //         type="interval"
-  //         position="月份*月均降雨量"
-  //         color={'name'}
-  //         adjust={[
-  //           {
-  //             type: 'dodge',
-  //             marginRatio: 1 / 32,
-  //           },
-  //         ]}
-  //       />
-  //     </Chart>
-  //   </div>
-  // );
+const ThongKeGrid = (props: { ketQua: BieuMau.ThongKeLuaChonGrid[] }) => {
+  const { ketQua } = props;
+
+  const xaxis = ketQua.map((item, index) => `Câu ${index + 1}`);
+  const data = ketQua.map((item) => {
+    const tmp: Record<string, number> = {};
+    item.thongKeCot.map((cot) => (tmp[cot.noiDungCot] = cot.soLuong));
+    return tmp;
+  });
+  const ylabels = Object.keys(data[0]);
+  const yaxis: number[][] = [];
+  data.map((item, row) => (yaxis[row] = []));
+  data.map((item, row) => Object.values(item).map((j, col) => (yaxis[col][row] = j)));
+
+  return (
+    <>
+      <ColumnChart
+        xAxis={xaxis}
+        yAxis={yaxis}
+        yLabel={ylabels}
+        formatY={(val) => val + ''}
+        colors={['#007EB9', '#00b95c', '#dda50b', '#c207c2']}
+      />
+
+      <ol>
+        {ketQua.map((item, index) => (
+          <li key={item.idHang}>
+            <b>Câu {index + 1}:</b> {item.noiDungHang}
+          </li>
+        ))}
+      </ol>
+    </>
+  );
 };
-export default Groupedcolumn;
+
+export default ThongKeGrid;
