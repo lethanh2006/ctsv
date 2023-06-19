@@ -1,6 +1,8 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
+import FilterPhamVi from '@/pages/TinTuc/ChuDe/components/Filter';
 import { exportKetQuaKhaoSat } from '@/services/TienIch/BieuMau';
+import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -12,21 +14,19 @@ import {
 import { Button, Divider, Popconfirm, Popover, Switch, Tooltip } from 'antd';
 import fileDownload from 'js-file-download';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useModel } from 'umi';
-import Form from './components/Form';
+import Form from './components/Modal';
 import FormViewDetail from './components/FormViewDetail';
 import ThongKe from './components/ThongKe';
 
 const KhaoSatPage = () => {
   const {
-    setLoaiBieuMau,
     page,
     limit,
     kichHoatBieuMauModel,
     edit,
     getBieuMauThongKeModel,
-    phamVi,
     getModel,
     deleteModel,
     handleEdit,
@@ -38,30 +38,7 @@ const KhaoSatPage = () => {
   // const canViewStats = useCheckAccess('khao-sat:view-stats');
   // const canExportStats = useCheckAccess('khao-sat:export-stats');
 
-  const getData = () =>
-    getModel({ loai: 'Khảo sát' }, undefined, undefined, undefined, undefined, 'pageable');
-
-  // useEffect(() => {
-  //   getUserMetaDataFilterModel(1, 100);
-  // }, [conditionNguoiDungCuThe]);
-
-  // useEffect(() => {
-  //   adminGetLopTinChi(100);
-  // }, [condLopTinChi]);
-
-  // useEffect(() => {
-  //   getLopHanhChinhAdminModel({ page: 1, limit: 100 });
-  // }, [condLopHanhChinh]);
-
-  useEffect(() => {
-    // getAllNganhModel();
-    // getKhoaHocModel({ pageParam: 1, limitParam: 1000 });
-    setLoaiBieuMau('Khảo sát');
-    // getAllHinhThucDaoTaoModel();
-    return () => {
-      setLoaiBieuMau(undefined);
-    };
-  }, []);
+  const getData = () => getModel(undefined, undefined, undefined, undefined, undefined, 'pageable');
 
   const handleChangeStatus = (record: BieuMau.Record) => {
     kichHoatBieuMauModel({ id: record._id, data: { kichHoat: !record.kichHoat } });
@@ -138,8 +115,8 @@ const KhaoSatPage = () => {
       align: 'center',
       width: 60,
       fixed: 'right',
-      render: (val: boolean, record: BieuMau.Record) => (
-        <Switch checked={val} onChange={() => handleChangeStatus(record)} size="small" />
+      render: (val, rec) => (
+        <Switch checked={val} onChange={() => handleChangeStatus(rec)} size="small" />
       ),
     },
     {
@@ -230,47 +207,13 @@ const KhaoSatPage = () => {
     <TableBase
       columns={columns}
       getData={getData}
-      dependencies={[page, limit, phamVi]}
+      dependencies={[page, limit]}
       modelName="tienich.bieumau"
       title="Khảo sát"
       widthDrawer={800}
       Form={formTable}
     >
-      {/* {(access.admin || access.nhanVien) && (
-        <>
-          <Select
-            onChange={(val) => {
-              setCondition({ ...condition, hinhThucDaoTaoId: undefined });
-              setPhamVi(val);
-              setPage(1);
-            }}
-            style={{ width: 170, marginRight: 8 }}
-            value={phamVi}
-          >
-            {PhamVi.map((item) => (
-              <Select.Option value={item} key={item}>
-                {item}
-              </Select.Option>
-            ))}
-          </Select>
-          <Select
-            disabled={phamVi === 'Tất cả'}
-            allowClear
-            placeholder="Lọc theo hình thức đào tạo"
-            value={condition?.hinhThucDaoTaoId}
-            onChange={(val: number) => {
-              setCondition({ ...condition, hinhThucDaoTaoId: val });
-            }}
-            style={{ marginBottom: 8, width: 250, marginRight: 8 }}
-          >
-            {danhSachHinhThucDaoTao?.map((item) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.ten_hinh_thuc_dao_tao}
-              </Select.Option>
-            ))}
-          </Select>
-        </>
-      )} */}
+      <FilterPhamVi modelName="tienich.bieumau" />
     </TableBase>
   );
 };

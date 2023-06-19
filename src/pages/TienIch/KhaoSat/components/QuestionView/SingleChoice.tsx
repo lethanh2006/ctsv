@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Radio } from 'antd';
 
 const SingleChoice = (props: {
@@ -8,9 +7,11 @@ const SingleChoice = (props: {
   return (
     <Radio.Group value={props?.luaChon.find((o) => o.dung)?._id}>
       {props.luaChon?.map((item) => (
-        <Radio checked={item.dung} key={item._id} value={item._id}>
-          {item.noiDung}
-        </Radio>
+        <div key={item._id}>
+          <Radio checked={item.dung} value={item._id}>
+            {item.noiDung}
+          </Radio>
+        </div>
       ))}
     </Radio.Group>
   );

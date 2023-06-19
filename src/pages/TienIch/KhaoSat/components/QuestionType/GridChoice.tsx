@@ -4,7 +4,7 @@ import SingleChoice from './SingleChoice';
 
 const GridChoice = (props: { name: number }) => {
   return (
-    <Row gutter={[40, 0]}>
+    <Row gutter={[12, 0]}>
       <Col span={12}>
         <Form.List
           name={[props.name, 'luaChonHang']}
@@ -23,27 +23,24 @@ const GridChoice = (props: { name: number }) => {
             return (
               <>
                 {fields.map((field, index) => (
-                  <div key={field.key}>
-                    <SingleChoice
-                      key={field.key}
-                      type="grid"
-                      index={index}
-                      remove={remove}
-                      fieldName={field.name}
-                    />
-                  </div>
+                  <SingleChoice
+                    key={field.key}
+                    type="grid"
+                    index={index}
+                    remove={remove}
+                    fieldName={field.name}
+                  />
                 ))}
-                <Form.Item>
-                  <Form.ErrorList errors={errors} />
-                  <Button type="primary" onClick={() => add()} icon={<PlusOutlined />}>
-                    Thêm hàng
-                  </Button>
-                </Form.Item>
+                <Form.ErrorList errors={errors} />
+                <Button size="small" type="primary" onClick={() => add()} icon={<PlusOutlined />}>
+                  Thêm hàng
+                </Button>
               </>
             );
           }}
         </Form.List>
       </Col>
+
       <Col span={12}>
         <Form.List
           name={[props.name, 'luaChonCot']}
@@ -62,22 +59,18 @@ const GridChoice = (props: { name: number }) => {
             return (
               <>
                 {fields.map((field, index) => (
-                  <div key={field.key}>
-                    <SingleChoice
-                      key={field.key}
-                      type="grid"
-                      index={index}
-                      remove={remove}
-                      fieldName={field.name}
-                    />
-                  </div>
+                  <SingleChoice
+                    key={field.key}
+                    type="grid"
+                    index={index}
+                    remove={remove}
+                    fieldName={field.name}
+                  />
                 ))}
-                <Form.Item>
-                  <Form.ErrorList errors={errors} />
-                  <Button type="primary" onClick={() => add()} icon={<PlusOutlined />}>
-                    Thêm cột
-                  </Button>
-                </Form.Item>
+                <Form.ErrorList errors={errors} />
+                <Button size="small" type="primary" onClick={() => add()} icon={<PlusOutlined />}>
+                  Thêm cột
+                </Button>
               </>
             );
           }}

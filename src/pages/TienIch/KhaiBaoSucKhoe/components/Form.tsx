@@ -2,11 +2,11 @@
 /* eslint-disable no-param-reassign */
 import { Button, Card, Form } from 'antd';
 import { useModel } from 'umi';
-import GridChoice from './Question/GridChoice';
-import MultipleChoice from './Question/MultipleChoice';
-import NumericChoice from './Question/NumericChoice';
-import SingleChoice from './Question/SingleChoice';
-import Text from './Question/Text';
+import GridChoice from '../../KhaoSat/components/QuestionView/GridChoice';
+import MultipleChoice from '../../KhaoSat/components/QuestionView/MultipleChoice';
+import NumericChoice from '../../KhaoSat/components/QuestionView/NumericChoice';
+import SingleChoice from '../../KhaoSat/components/QuestionView/SingleChoice';
+import Text from '../../KhaoSat/components/QuestionView/Text';
 
 const FormBaiHoc = () => {
   const [form] = Form.useForm();

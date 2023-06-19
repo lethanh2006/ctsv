@@ -1,3 +1,6 @@
+import { type EPhamViChuDe } from '@/services/TinTuc/constant';
+import { type ELoaiDoiTuong } from '../constant';
+
 declare module BieuMau {
   export interface LuaChon {
     noiDung: string;
@@ -38,7 +41,7 @@ declare module BieuMau {
   }
 
   export interface Record {
-    phamVi: string;
+    phamVi: EPhamViChuDe;
     hinhThucDaoTaoId?: number;
     isTatCaHe?: boolean;
     danhSachLopTinChi: GeneralInfo[];
@@ -46,7 +49,7 @@ declare module BieuMau {
     danhSachNguoiDung: GeneralInfo[];
     danhSachKhoaHoc: GeneralInfo[];
     danhSachNganhHoc: GeneralInfo[];
-    loaiDoiTuongSuDung: string[];
+    loaiDoiTuongSuDung: ELoaiDoiTuong[];
     coCamKet: boolean;
     soPhutThucHien?: number;
     soLuotTraLoiToiDa?: number;
@@ -106,5 +109,11 @@ declare module BieuMau {
     moTa: string;
     loai: string;
     thongKeKhoi: ThongKeKhoi[];
+  }
+
+  export interface LuaChonBangRecord {
+    _id?: string;
+    idCot: string;
+    idHang: string;
   }
 }
