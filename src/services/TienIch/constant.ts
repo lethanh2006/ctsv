@@ -18,3 +18,20 @@ export enum ELoaiCauHoi {
   Text = 'Câu trả lời Text',
   UploadFile = 'Tải lên file',
 }
+
+export enum EVaiTroBieuMau {
+  SINH_VIEN = 'sinh_vien',
+  NHAN_VIEN = 'nhan_vien',
+}
+
+export const TenVaiTroBieuMau = {
+  [EVaiTroBieuMau.SINH_VIEN]: 'Sinh viên',
+  [EVaiTroBieuMau.NHAN_VIEN]: 'Cán bộ, giảng viên',
+};
+
+export enum ELoaiBieuMau {
+  KHAO_SAT = 'Khảo sát',
+  TRAC_NGHIEM = 'Trắc nghiệm',
+  KHAI_BAO_Y_TE = 'Khai báo y tế',
+  DANH_GIA_GIANG_VIEN = 'Đánh giá giảng viên',
+}

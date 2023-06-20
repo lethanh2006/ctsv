@@ -9,18 +9,6 @@ export enum Role {
   quan_tri = 'Quản trị viên đơn vị',
 }
 
-export enum EVaiTroBieuMau {
-  SINH_VIEN = 'sinh_vien',
-  NHAN_VIEN = 'nhan_vien',
-}
-
-export enum ELoaiBieuMau {
-  KHAO_SAT = 'Khảo sát',
-  TRAC_NGHIEM = 'Trắc nghiệm',
-  KHAI_BAO_Y_TE = 'Khai báo y tế',
-  DANH_GIA_GIANG_VIEN = 'Đánh giá giảng viên',
-}
-
 export enum EChucNangSuDung {
   KET_QUA_HOC_TAP = 'KET_QUA_HOC_TAP',
 }

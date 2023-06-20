@@ -54,7 +54,7 @@ const ViewDetailKhaoSat = () => {
   };
 
   return (
-    <Card loading={loading} title="Chi tiết khảo sát">
+    <Card loading={loading} title="Chi tiết biểu mẫu khảo sát">
       <h3>{record?.tieuDe}</h3>
       <p>{record?.moTa}</p>
 

@@ -1,12 +1,13 @@
 import useInitModel from '@/hooks/useInitModel';
 import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/TienIch/PhanHoi/phanhoi';
+import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
   const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi');
   const { setLoading, setVisibleForm, getModel, setDanhSach, setTotal, page, limit } = objInit;
-  const [vaiTro, setVaiTro] = useState<string>('sinh_vien');
+  const [vaiTro, setVaiTro] = useState<EVaiTroBieuMau>(EVaiTroBieuMau.SINH_VIEN);
 
   const traLoiPhanHoiModel = async (payload: {
     id: string;

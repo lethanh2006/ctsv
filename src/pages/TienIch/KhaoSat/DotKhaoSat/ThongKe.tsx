@@ -6,7 +6,7 @@ import SingleChoice from './ThongKeType/SingleChoice';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 
 const ModalThongKe = () => {
-  const { loading, thongKe, setVisibleForm } = useModel('tienich.bieumau');
+  const { loading, thongKe, setVisibleForm } = useModel('tienich.dotkhaosat');
 
   const renderThongKe = (question: BieuMau.ThongKeCauHoi) => {
     let questionEleMent = <div />;
