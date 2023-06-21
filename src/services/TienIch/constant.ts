@@ -35,3 +35,7 @@ export enum ELoaiBieuMau {
   KHAI_BAO_Y_TE = 'Khai báo y tế',
   DANH_GIA_GIANG_VIEN = 'Đánh giá giảng viên',
 }
+
+export enum ELoaiDot {
+  BIEU_MAU = 'BIEU_MAU',
+}

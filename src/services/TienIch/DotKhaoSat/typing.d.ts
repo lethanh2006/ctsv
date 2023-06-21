@@ -1,6 +1,6 @@
 import { type EPhamViChuDe } from '@/services/TinTuc/constant';
 import { type BieuMau } from '../BieuMau/typings';
-import { type ELoaiDoiTuong, type EVaiTroBieuMau } from '../constant';
+import { type ELoaiDot, type ELoaiDoiTuong, type EVaiTroBieuMau } from '../constant';
 
 declare module DotKhaoSat {
   export interface IRecord {
@@ -13,8 +13,8 @@ declare module DotKhaoSat {
     thoiGianBatDau: string;
     thoiGianKetThuc: string;
     kichHoat: boolean;
-    idBieuMau: string;
-    bieuMau?: BieuMau.Record;
+    idKhaoSat: string;
+    khaoSat?: BieuMau.Record;
     danhSachLopTinChi: BieuMau.GeneralInfo[];
     danhSachLopHanhChinh: BieuMau.GeneralInfo[];
     danhSachNguoiDung: BieuMau.GeneralInfo[];

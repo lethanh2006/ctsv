@@ -13,25 +13,19 @@ import Block from './Block';
 import styles from './block.css';
 
 const FormCauHinhBieuMau = (props: { onBack: () => void }) => {
-  const { loading, record, edit, postModel, putModel, setRecord, getModel } =
-    useModel('tienich.bieumau');
+  const { loading, record, edit, postModel, putModel, setRecord } = useModel('tienich.bieumau');
   const [form] = Form.useForm();
-
-  const getData = () => getModel(undefined, undefined, undefined, undefined, undefined, 'pageable');
 
   const onFinish = async (values: any) => {
     if (edit)
-      putModel(record?._id ?? '', { ...record, ...values }, getData)
+      putModel(record?._id ?? '', { ...record, ...values })
         .then()
         .catch((er) => console.log(er));
     else
-      postModel(
-        {
-          ...record,
-          ...values,
-        },
-        getData,
-      )
+      postModel({
+        ...record,
+        ...values,
+      })
         .then()
         .catch((er) => console.log(er));
   };

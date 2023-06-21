@@ -10,13 +10,11 @@ import FormViewDetail from './components/FormViewDetail';
 import Form from './components/Modal';
 
 const KhaoSatPage = () => {
-  const { page, limit, edit, getModel, deleteModel, handleEdit } = useModel('tienich.bieumau');
+  const { page, limit, edit, deleteModel, handleEdit } = useModel('tienich.bieumau');
   const [form, setForm] = useState<string>('edit');
   // const canUpdate = useCheckAccess('khao-sat:update');
   // const canDelete = useCheckAccess('khao-sat:delete');
   // const canCreate = useCheckAccess('khao-sat:create');
-
-  const getData = () => getModel(undefined, undefined, undefined, undefined, undefined, 'pageable');
 
   const onCell = (record: BieuMau.Record) => ({
     onClick: () => {
@@ -74,7 +72,7 @@ const KhaoSatPage = () => {
           <Tooltip title="Xóa">
             <Popconfirm
               // disabled={!canDelete}
-              onConfirm={() => deleteModel(record._id, getData)}
+              onConfirm={() => deleteModel(record._id)}
               title="Bạn có chắc chắn muốn xóa khảo sát này?"
               placement="topLeft"
             >
@@ -92,7 +90,6 @@ const KhaoSatPage = () => {
   return (
     <TableBase
       columns={columns}
-      getData={getData}
       dependencies={[page, limit]}
       modelName="tienich.bieumau"
       title="Biểu mẫu khảo sát"

@@ -13,10 +13,6 @@ export enum EChucNangSuDung {
   KET_QUA_HOC_TAP = 'KET_QUA_HOC_TAP',
 }
 
-export enum ELoaiDot {
-  BIEU_MAU = 'BIEU_MAU',
-}
-
 export enum EThoiGianDot {
   CHUA_DIEN_RA = 'CHUA_DIEN_RA',
   DANG_DIEN_RA = 'DANG_DIEN_RA',

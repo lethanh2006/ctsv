@@ -27,7 +27,6 @@ const DotKhaoSatPage = () => {
     kichHoatBieuMauModel,
     edit,
     getBieuMauThongKeModel,
-    getModel,
     deleteModel,
     handleEdit,
   } = useModel('tienich.dotkhaosat');
@@ -42,8 +41,6 @@ const DotKhaoSatPage = () => {
   // const canCreate = useCheckAccess('khao-sat:create');
   // const canViewStats = useCheckAccess('khao-sat:view-stats');
   // const canExportStats = useCheckAccess('khao-sat:export-stats');
-
-  const getData = () => getModel(undefined, undefined, undefined, undefined, undefined, 'pageable');
 
   const handleChangeStatus = (record: DotKhaoSat.IRecord) => {
     kichHoatBieuMauModel({ id: record._id, data: { kichHoat: !record.kichHoat } });
@@ -116,81 +113,88 @@ const DotKhaoSatPage = () => {
     //   ),
     // },
     {
+      title: 'Trạng thái',
+      dataIndex: 'kichHoat',
+      width: 60,
+      fixed: 'right',
+      align: 'center',
+      render: (val, record) => (
+        <Switch
+          checked={record.kichHoat}
+          onChange={() => handleChangeStatus(record)}
+          size="small"
+        />
+      ),
+    },
+    {
       title: 'Thao tác',
       align: 'center',
-      width: 90,
+      width: 60,
       fixed: 'right',
       render: (record: DotKhaoSat.IRecord) => (
-        <>
-          <Switch
-            checked={record.kichHoat}
-            onChange={() => handleChangeStatus(record)}
-            size="small"
-          />
-          <Popover
-            placement="left"
-            content={
-              <>
-                <Tooltip title="Xuất kết quả">
-                  <Button
-                    shape="circle"
-                    onClick={() => {
-                      exportKetQuaKhaoSat({ idKhaoSat: record._id }).then((res) =>
-                        fileDownload(res.data, 'Kết quả khảo sát.xlsx'),
-                      );
-                    }}
-                    icon={<ExportOutlined />}
-                  />
-                </Tooltip>
-                <Divider type="vertical" />
+        <Popover
+          placement="left"
+          content={
+            <>
+              <Tooltip title="Xuất kết quả">
+                <Button
+                  shape="circle"
+                  onClick={() => {
+                    exportKetQuaKhaoSat({ idKhaoSat: record._id }).then((res) =>
+                      fileDownload(res.data, 'Kết quả khảo sát.xlsx'),
+                    );
+                  }}
+                  icon={<ExportOutlined />}
+                />
+              </Tooltip>
+              <Divider type="vertical" />
 
-                <Tooltip title="Thống kê">
-                  <Button
-                    onClick={() => onStatistic(record)}
-                    shape="circle"
-                    icon={<PieChartOutlined />}
-                  />
-                </Tooltip>
-                <Divider type="vertical" />
+              <Tooltip title="Thống kê">
+                <Button
+                  onClick={() => onStatistic(record)}
+                  shape="circle"
+                  icon={<PieChartOutlined />}
+                />
+              </Tooltip>
+              <Divider type="vertical" />
 
-                <Tooltip title="Xem trước">
-                  <Button
-                    onClick={() => getBieuMau(record.idBieuMau).then(() => setVisibleBieuMau(true))}
-                    shape="circle"
-                    icon={<EyeOutlined />}
-                  />
-                </Tooltip>
-                <Divider type="vertical" />
+              <Tooltip title="Xem trước">
+                <Button
+                  onClick={() => getBieuMau(record.idKhaoSat).then(() => setVisibleBieuMau(true))}
+                  shape="circle"
+                  icon={<EyeOutlined />}
+                />
+              </Tooltip>
+              <Divider type="vertical" />
 
-                <Tooltip title="Chỉnh sửa">
-                  <Button
-                    onClick={() => {
-                      setForm('edit');
-                      handleEdit(record);
-                    }}
-                    type="primary"
-                    shape="circle"
-                    icon={<EditOutlined />}
-                  />
-                </Tooltip>
-                <Divider type="vertical" />
+              <Tooltip title="Chỉnh sửa">
+                <Button
+                  onClick={() => {
+                    setForm('edit');
+                    handleEdit(record);
+                  }}
+                  type="primary"
+                  shape="circle"
+                  icon={<EditOutlined />}
+                />
+              </Tooltip>
+              <Divider type="vertical" />
 
-                <Tooltip title="Xóa">
-                  <Popconfirm
-                    // disabled={!canDelete}
-                    onConfirm={() => deleteModel(record._id, getData)}
-                    title="Bạn có chắc chắn muốn xóa khảo sát này?"
-                    placement="topLeft"
-                  >
-                    <Button shape="circle" danger icon={<DeleteOutlined />} />
-                  </Popconfirm>
-                </Tooltip>
-              </>
-            }
-          >
-            <Button type="link" icon={<MenuOutlined />} />
-          </Popover>
-        </>
+              <Tooltip title="Xóa">
+                <Popconfirm
+                  // disabled={!canDelete}
+                  onConfirm={() => deleteModel(record._id)}
+                  title="Bạn có chắc chắn muốn xóa khảo sát này?"
+                  placement="topLeft"
+                >
+                  <Button shape="circle" danger icon={<DeleteOutlined />} />
+                </Popconfirm>
+              </Tooltip>
+            </>
+          }
+        >
+          <Button type="link" icon={<MenuOutlined />} />
+        </Popover>
       ),
     },
   ];
@@ -202,7 +206,6 @@ const DotKhaoSatPage = () => {
     <>
       <TableBase
         columns={columns}
-        getData={getData}
         dependencies={[page, limit]}
         modelName="tienich.dotkhaosat"
         title="Đợt khảo sát"
@@ -217,6 +220,7 @@ const DotKhaoSatPage = () => {
         onCancel={() => setVisibleBieuMau(false)}
         bodyStyle={{ padding: 0 }}
         footer={null}
+        width={800}
       >
         <FormViewDetail />
       </Modal>

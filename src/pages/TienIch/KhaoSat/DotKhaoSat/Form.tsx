@@ -1,7 +1,7 @@
 import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 import { type DotKhaoSat } from '@/services/TienIch/DotKhaoSat/typing';
-import { ELoaiBieuMau, ELoaiDoiTuong, TenVaiTroBieuMau } from '@/services/TienIch/constant';
+import { ELoaiDoiTuong, ELoaiDot, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import { EPhamViChuDe } from '@/services/TinTuc/constant';
 import rules from '@/utils/rules';
 import { includes, resetFieldsForm } from '@/utils/utils';
@@ -25,12 +25,16 @@ const FormDotKhaoSat = (props: any) => {
 
   useEffect(() => {
     if (!visibleForm) resetFieldsForm(form);
-    form.setFieldsValue({
-      ...record,
-      thoiGian: [record?.thoiGianBatDau, record?.thoiGianKetThuc],
-      phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
-      loaiDoiTuongSuDung: record?.loaiDoiTuongSuDung?.[0] ?? ELoaiDoiTuong.TAT_CA,
-    });
+    else
+      form.setFieldsValue({
+        ...record,
+        thoiGian: [
+          record?.thoiGianBatDau ? moment(record.thoiGianBatDau) : undefined,
+          record?.thoiGianKetThuc ? moment(record.thoiGianKetThuc) : undefined,
+        ],
+        phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
+        loaiDoiTuongSuDung: record?.loaiDoiTuongSuDung?.[0] ?? ELoaiDoiTuong.TAT_CA,
+      });
   }, [record?._id, visibleForm]);
 
   const buildListDoiTuongSuDung = (value: string[], arrName: string) => {
@@ -101,7 +105,7 @@ const FormDotKhaoSat = (props: any) => {
     const payload = {
       ...record,
       ...values,
-      loai: ELoaiBieuMau.KHAO_SAT,
+      loai: ELoaiDot.BIEU_MAU,
       thoiGianBatDau,
       thoiGianKetThuc,
       doiTuong: ELoaiDoiTuong.TAT_CA,
@@ -130,7 +134,7 @@ const FormDotKhaoSat = (props: any) => {
           <Input.TextArea rows={3} placeholder="Nhập mô tả" />
         </Form.Item>
 
-        <Form.Item name="idBieuMau" label="Biểu mẫu khảo sát" rules={[...rules.required]}>
+        <Form.Item name="idKhaoSat" label="Biểu mẫu khảo sát" rules={[...rules.required]}>
           <SelectMauKhaoSat />
         </Form.Item>
 
