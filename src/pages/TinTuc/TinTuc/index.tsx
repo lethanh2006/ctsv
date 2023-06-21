@@ -120,7 +120,7 @@ const TinTucPage = () => {
         columns={columns}
         dependencies={[page, limit]}
         modelName="tintuc.tintuc"
-        widthDrawer={800}
+        widthDrawer={900}
         title="Tin tức"
         Form={Form}
       >
@@ -128,7 +128,7 @@ const TinTucPage = () => {
       </TableBase>
 
       <Modal
-        width={800}
+        width={900}
         bodyStyle={{ padding: 0 }}
         destroyOnClose
         okButtonProps={{ hidden: true }}

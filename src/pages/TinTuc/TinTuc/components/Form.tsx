@@ -111,11 +111,11 @@ const FormTinTuc = (props: any) => {
             <Form.Item
               name="ngayDang"
               label="Ngày đăng"
-              rules={[...rules.required, ...rules.sauHomNay]}
+              rules={[...rules.required, ...(!edit ? rules.sauHomNay : [])]}
             >
               <MyDatePicker
                 format="HH:mm DD/MM/YYYY"
-                disabledDate={(cur) => moment(cur).isBefore(moment())}
+                disabledDate={(cur) => (!edit ? moment(cur).isBefore(moment()) : false)}
                 placeholder="Chọn ngày đăng"
                 allowClear={false}
                 showTime={{ showHour: true, showMinute: true }}
@@ -125,7 +125,7 @@ const FormTinTuc = (props: any) => {
         </Row>
 
         <Form.Item name="noiDung" label="Nội dung" rules={[...rules.requiredHtml]}>
-          <TinyEditor />
+          <TinyEditor height={700} />
         </Form.Item>
 
         <div className="form-footer">
