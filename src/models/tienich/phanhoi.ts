@@ -6,22 +6,36 @@ import { useState } from 'react';
 
 export default () => {
   const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi');
-  const { setLoading, setVisibleForm, getModel, setDanhSach, setTotal, page, limit } = objInit;
+  const {
+    formSubmiting,
+    setFormSubmiting,
+    setVisibleForm,
+    getModel,
+    setDanhSach,
+    setTotal,
+    page,
+    limit,
+    setLoading,
+  } = objInit;
   const [vaiTro, setVaiTro] = useState<EVaiTroBieuMau>(EVaiTroBieuMau.SINH_VIEN);
 
   const traLoiPhanHoiModel = async (payload: {
     id: string;
     data: { noiDungTraLoiPhanHoi: string; maChuyenVien: string; noiDungPhanHoi: string };
   }) => {
+    if (formSubmiting) return Promise.reject('Form submiting');
+    setFormSubmiting(true);
+
     try {
-      setLoading(true);
-      await traLoiPhanHoi(payload);
+      const res = await traLoiPhanHoi(payload);
       message.success('Trả lời thành công');
-      setLoading(false);
       setVisibleForm(false);
       getModel();
+      return res.data?.data;
     } catch (err) {
-      setLoading(false);
+      return Promise.reject(err);
+    } finally {
+      setFormSubmiting(false);
     }
   };
 

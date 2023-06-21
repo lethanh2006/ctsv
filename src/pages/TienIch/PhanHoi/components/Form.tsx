@@ -1,9 +1,10 @@
 import rules from '@/utils/rules';
-import { Button, Card, Form, Input } from 'antd';
+import { Button, Card, Descriptions, Form, Input } from 'antd';
+import moment from 'moment';
 import { useModel } from 'umi';
 
 const FormPhanHoi = () => {
-  const { loading, record, setVisibleForm, traLoiPhanHoiModel } = useModel('tienich.phanhoi');
+  const { formSubmiting, record, setVisibleForm, traLoiPhanHoiModel } = useModel('tienich.phanhoi');
   const [form] = Form.useForm();
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
@@ -20,25 +21,42 @@ const FormPhanHoi = () => {
   };
 
   return (
-    <Card loading={loading} title="Trả lời phản hồi">
+    <Card title="Trả lời phản hồi">
+      <Descriptions column={1}>
+        <Descriptions.Item label="Người hỏi">{record?.maSv}</Descriptions.Item>
+        <Descriptions.Item label="Câu hỏi">{record?.noiDungPhanHoi}</Descriptions.Item>
+      </Descriptions>
+
       <Form layout="vertical" onFinish={onFinish} form={form}>
-        <p>Câu hỏi: {record?.noiDungPhanHoi}</p>
         {record?.daTraLoiPhanHoi ? (
-          <p>Nội dung trả lời: {record?.noiDungTraLoiPhanHoi}</p>
+          <Descriptions column={1}>
+            <Descriptions.Item label="Nội dung trả lời">
+              {record?.noiDungTraLoiPhanHoi}
+            </Descriptions.Item>
+            <Descriptions.Item label="Thời gian trả lời">
+              {' '}
+              {record?.thoiGianTraLoi
+                ? moment(record.thoiGianTraLoi).format('HH:mm DD/MM/YYYY')
+                : '--'}
+            </Descriptions.Item>
+            <Descriptions.Item label="Người trả lời">
+              {record?.maChuyenVien ?? '--'}
+            </Descriptions.Item>
+          </Descriptions>
         ) : (
           <Form.Item
             name="noiDungTraLoiPhanHoi"
-            label="Nội dung trả lời"
+            label="Trả lời"
             initialValue={record?.noiDungTraLoiPhanHoi}
             rules={[...rules.required, ...rules.text, ...rules.length(2000)]}
           >
-            <Input.TextArea rows={4} placeholder="Nhập nội dung" />
+            <Input.TextArea rows={4} placeholder="Nhập nội dung trả lời" />
           </Form.Item>
         )}
 
         <div className="form-footer">
           {!record?.daTraLoiPhanHoi && (
-            <Button loading={loading} style={{ marginRight: 8 }} htmlType="submit" type="primary">
+            <Button loading={formSubmiting} htmlType="submit" type="primary">
               Gửi
             </Button>
           )}
