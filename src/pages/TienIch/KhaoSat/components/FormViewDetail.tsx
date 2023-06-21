@@ -11,7 +11,7 @@ import Text from './QuestionView/Text';
 const ViewDetailKhaoSat = () => {
   const { loading, record, setVisibleForm } = useModel('tienich.bieumau');
 
-  const renderQuestion = (question: BieuMau.CauHoi) => {
+  const renderQuestion = (question: BieuMau.CauHoi, index: number) => {
     let questionEleMent = <div />;
     if (question.loai === 'SingleChoice')
       questionEleMent = <SingleChoice luaChon={question.luaChon} />;
@@ -42,8 +42,11 @@ const ViewDetailKhaoSat = () => {
     return (
       <div key={question._id}>
         <div className="ant-form-item-label fw500">
-          <label className={question.batBuoc ? 'ant-form-item-required' : ''}>
-            {question.noiDungCauHoi}
+          <label
+            className={question.batBuoc ? 'ant-form-item-required' : ''}
+            style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}
+          >
+            Câu {index + 1}: {question.noiDungCauHoi}
           </label>
         </div>
         <br />
@@ -64,7 +67,7 @@ const ViewDetailKhaoSat = () => {
           <div className="fw500">{item.tieuDe}</div>
           <p>{item.moTa}</p>
 
-          {item.danhSachCauHoi?.map((cauHoi) => renderQuestion(cauHoi))}
+          {item.danhSachCauHoi?.map((cauHoi, i) => renderQuestion(cauHoi, i))}
         </div>
       ))}
 

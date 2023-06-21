@@ -28,9 +28,10 @@ const FileList = () => {
       ...record,
       danhSachTep: record?.danhSachTep?.filter((item) => item._id !== id) ?? [],
     };
-    setRecord(payload);
 
-    putModel(record?._id ?? '', payload, undefined, undefined, false);
+    putModel(record?._id ?? '', payload, undefined, undefined, false).then(() =>
+      setRecord(payload),
+    );
   };
 
   const handleEdit = (recordFile: VanBanHuongDan.IFile) => {
