@@ -30,7 +30,7 @@ const FormFile = () => {
     } else {
       if (record) record.danhSachTep.push(values);
     }
-    if (record) putModel(record?._id ?? '', record);
+    if (record) putModel(record?._id ?? '', record, undefined, undefined, false);
     setVisibleFormFile(false);
   };
 
@@ -66,7 +66,7 @@ const FormFile = () => {
           <Button loading={formSubmiting} htmlType="submit" type="primary">
             {!editFile ? 'Thêm mới ' : 'Lưu lại'}
           </Button>
-          <Button onClick={() => setVisibleFormFile(false)}>Đóng</Button>
+          <Button onClick={() => setVisibleFormFile(false)}>Hủy</Button>
         </div>
       </Form>
     </Card>

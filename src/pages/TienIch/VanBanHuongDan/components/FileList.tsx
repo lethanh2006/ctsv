@@ -8,7 +8,7 @@ import {
   PaperClipOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormFile from './FormFile';
 
@@ -16,9 +16,9 @@ const FileList = () => {
   const {
     record,
     putModel,
+    setRecord,
     setRecordFile,
     setEditFile,
-    getModel,
     setVisibleFormFile,
     visibleFormFile,
   } = useModel('tienich.vanbanhuongdan');
@@ -28,8 +28,9 @@ const FileList = () => {
       ...record,
       danhSachTep: record?.danhSachTep?.filter((item) => item._id !== id) ?? [],
     };
+    setRecord(payload);
 
-    putModel(record?._id ?? '', payload, getModel);
+    putModel(record?._id ?? '', payload, undefined, undefined, false);
   };
 
   const handleEdit = (recordFile: VanBanHuongDan.IFile) => {
@@ -48,7 +49,8 @@ const FileList = () => {
     {
       title: 'Tên văn bản',
       dataIndex: 'ten',
-      width: 150,
+      width: 200,
+      filterType: 'string',
     },
     {
       title: 'Mô tả',
@@ -95,30 +97,20 @@ const FileList = () => {
 
   return (
     <>
-      <Button type="primary" style={{ marginBottom: 8, marginRight: 8 }} onClick={handleAdd}>
-        <PlusCircleOutlined />
-        Thêm mới
-      </Button>
-
       <TableStaticData
-        otherProps={{
-          pagination: false,
-        }}
         columns={columns}
-        data={record?.danhSachTep ?? []}
+        data={[...(record?.danhSachTep ?? [])]}
         addStt
-      />
-
-      <Modal
-        maskClosable={false}
-        destroyOnClose
-        footer={false}
-        onCancel={() => setVisibleFormFile(false)}
-        bodyStyle={{ padding: 0 }}
-        visible={visibleFormFile}
+        Form={FormFile}
+        showEdit={visibleFormFile}
+        setShowEdit={setVisibleFormFile}
+        hasTotal
       >
-        <FormFile />
-      </Modal>
+        <Button type="primary" onClick={handleAdd}>
+          <PlusCircleOutlined />
+          Thêm mới
+        </Button>
+      </TableStaticData>
     </>
   );
 };
