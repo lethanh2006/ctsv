@@ -19,6 +19,7 @@ import FormViewDetail from '../components/FormViewDetail';
 import ThongKe from './ThongKe';
 import Form from './Form';
 import { exportKetQuaKhaoSat } from '@/services/TienIch/DotKhaoSat';
+import SelectMauKhaoSat from '../components/Select';
 
 const DotKhaoSatPage = () => {
   const {
@@ -63,6 +64,15 @@ const DotKhaoSatPage = () => {
       dataIndex: 'ten',
       width: 200,
       filterType: 'string',
+      onCell,
+    },
+    {
+      title: 'Biểu mẫu khảo sát',
+      dataIndex: 'idKhaoSat',
+      width: 200,
+      filterType: 'customselect',
+      filterCustomSelect: <SelectMauKhaoSat multiple />,
+      render: (val, rec) => rec.khaoSat?.tieuDe ?? '--',
       onCell,
     },
     {

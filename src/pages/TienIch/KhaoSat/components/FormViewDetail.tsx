@@ -63,9 +63,9 @@ const ViewDetailKhaoSat = () => {
 
       {record?.danhSachKhoi?.map((item, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={index}>
+        <div key={index} style={{ marginBottom: 24 }}>
           <div className="fw500">{item.tieuDe}</div>
-          <p>{item.moTa}</p>
+          <div>{item.moTa}</div>
 
           {item.danhSachCauHoi?.map((cauHoi, i) => renderQuestion(cauHoi, i))}
         </div>

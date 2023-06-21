@@ -34,8 +34,8 @@ const ModalThongKe = () => {
           </label>
         </div>
         <br />
-        <div className="fw500" style={{ marginBottom: 8 }}>
-          Số lượt trả lời: {question.soLuongTraLoi}
+        <div className="text-primary" style={{ marginBottom: 8 }}>
+          Số lượt trả lời: <b>{question.soLuongTraLoi}</b>
         </div>
         {question.soLuongTraLoi ? questionEleMent : null}
       </div>
@@ -49,9 +49,9 @@ const ModalThongKe = () => {
 
       {thongKe?.thongKeKhoi?.map((item, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={index}>
+        <div key={index} style={{ marginBottom: 24 }}>
           <div className="fw500">{item.tieuDe}</div>
-          <p>{item.moTa}</p>
+          <div>{item.moTa}</div>
 
           {item.thongKeCauHoi?.map((cauHoi, i) => renderThongKe(cauHoi, i))}
         </div>
