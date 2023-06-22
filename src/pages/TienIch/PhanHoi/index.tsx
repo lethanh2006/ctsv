@@ -117,6 +117,21 @@ const PhanHoiPage = () => {
       title="Phản hồi"
       Form={Form}
       buttons={{ create: false }}
+      otherButtons={[
+        <Select
+          key="1"
+          placeholder="Lọc theo trạng thái"
+          onChange={onChangeTrangThai}
+          style={{ width: 200 }}
+          allowClear
+        >
+          {['Đã trả lời', 'Chưa trả lời']?.map((item) => (
+            <Select.Option key={item} value={item}>
+              {item}
+            </Select.Option>
+          ))}
+        </Select>,
+      ]}
     >
       {/* {(access.admin || access.nhanVien) && (
         <Select
@@ -153,18 +168,6 @@ const PhanHoiPage = () => {
           ))}
         </Select>
       )} */}
-      <Select
-        placeholder="Lọc theo trạng thái"
-        onChange={onChangeTrangThai}
-        style={{ width: 200, marginBottom: 8, marginRight: 8 }}
-        allowClear
-      >
-        {['Đã trả lời', 'Chưa trả lời']?.map((item) => (
-          <Select.Option key={item} value={item}>
-            {item}
-          </Select.Option>
-        ))}
-      </Select>
     </TableBase>
   );
 };

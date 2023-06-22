@@ -1,6 +1,5 @@
-import Table from '@/components/Table/Table';
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-
+import Table from '@/components/OldTable/Table';
+import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 import type { IColumn } from '@/utils/interfaces';
 import moment from 'moment';
 
@@ -15,7 +14,7 @@ const TableLichSuTraKetQua = (props: { data: DichVuMotCuaV2.LichSuChinhSua[] }) 
     {
       title: 'Người chỉnh sửa',
       dataIndex: 'tenNguoiSua',
-      width: 200,
+      width: 200,    
       align: 'center',
     },
     {

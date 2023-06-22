@@ -9,7 +9,11 @@ import FilterPhamVi from './components/Filter';
 import Form from './components/Form';
 
 const ChuDeChung = () => {
-  const { page, limit, handleEdit, deleteModel, getModel } = useModel('tintuc.chude');
+  const { page, limit, handleEdit, deleteModel, getModel, putModel } = useModel('tintuc.chude');
+
+  const onSortEnd = (record: TinTuc.IChuDe, order: number) => {
+    putModel(record._id, { ...record, order });
+  };
 
   const columns: IColumn<TinTuc.IChuDe>[] = [
     {
@@ -67,6 +71,8 @@ const ChuDeChung = () => {
       modelName="tintuc.chude"
       title="Chủ đề"
       Form={Form}
+      rowSortable
+      onSortEnd={onSortEnd}
     >
       <FilterPhamVi modelName="tintuc.chude" />
     </TableBase>

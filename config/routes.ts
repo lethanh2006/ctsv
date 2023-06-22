@@ -226,7 +226,18 @@
       {
         name: 'KhaoSat',
         path: 'khao-sat',
-        component: './TienIch/KhaoSat',
+        routes: [
+          {
+            name: 'BieuMauKhaoSat',
+            path: 'bieu-mau-khao-sat',
+            component: './TienIch/KhaoSat',
+          },
+          {
+            name: 'DotKhaoSat',
+            path: 'dot-khao-sat',
+            component: './TienIch/KhaoSat/DotKhaoSat',
+          },
+        ],
       },
       // {
       //   name: 'TracNghiem',

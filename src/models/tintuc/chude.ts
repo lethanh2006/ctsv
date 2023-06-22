@@ -4,7 +4,9 @@ import { type TinTuc } from '@/services/TinTuc/typing';
 import { useState } from 'react';
 
 export default () => {
-  const objInit = useInitModel<TinTuc.IChuDe>('common-topic');
+  const objInit = useInitModel<TinTuc.IChuDe>('common-topic', undefined, undefined, undefined, {
+    order: 1,
+  });
   const { setLoading } = objInit;
   const [danhSachLoaiChuDe, setDanhSachLoaiChuDe] = useState<string[]>([]);
   const [loaiChuDe, setLoaiChuDe] = useState<string>();

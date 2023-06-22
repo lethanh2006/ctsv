@@ -1,11 +1,11 @@
+import ExpandText from '@/components/ExpandText';
+import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type CauHoiThuongGap } from '@/services/TienIch/CauHoiThuongGap/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormCauHoiThuongGap from './components/Form';
-import TableBase from '@/components/Table';
-import ExpandText from '@/components/ExpandText';
 
 const CauHoiThuongGapPage = () => {
   const { getModel, page, limit, deleteModel, handleEdit } = useModel('tienich.cauhoithuonggap');
@@ -25,8 +25,7 @@ const CauHoiThuongGapPage = () => {
           <div dangerouslySetInnerHTML={{ __html: val }} />
         </ExpandText>
       ),
-      width: 300,
-      filterType: 'string',
+      width: 350,
     },
     {
       title: 'Thao tác',

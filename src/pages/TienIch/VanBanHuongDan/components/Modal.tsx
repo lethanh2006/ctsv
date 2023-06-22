@@ -25,7 +25,7 @@ const ModalVanBanHuongDan = () => {
         onChange={record?._id ? onChangeStep : undefined}
       >
         <Steps.Step title="Thông tin thư mục" />
-        <Steps.Step title="DS văn bản" disabled={!record?._id} />
+        <Steps.Step title="Danh sách văn bản" disabled={!record?._id} />
       </Steps>
 
       {currentStep === 0 ? <Form afterAddNew={() => setCurrentStep(1)} /> : <FileList />}

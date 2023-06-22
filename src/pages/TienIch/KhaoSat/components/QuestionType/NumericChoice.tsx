@@ -1,26 +1,13 @@
 import rules from '@/utils/rules';
 import { Col, Form, Row, Select } from 'antd';
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 4 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 20 },
-  },
-};
-
 const NumericRange = (props: { index: number }) => {
   return (
-    <Row>
+    <Row gutter={[12, 0]}>
       <Col span={12}>
         <Form.Item
-          {...formItemLayout}
           name={[props.index, 'gioiHanDuoiTuyenTinh']}
           rules={[...rules.required]}
-          style={{ marginBottom: 0 }}
           label="Từ"
         >
           <Select>
@@ -34,11 +21,9 @@ const NumericRange = (props: { index: number }) => {
       </Col>
       <Col span={12}>
         <Form.Item
-          {...formItemLayout}
           label="đến"
           rules={[...rules.required]}
           name={[props.index, 'gioiHanTrenTuyenTinh']}
-          style={{ marginBottom: 0 }}
         >
           <Select>
             {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (

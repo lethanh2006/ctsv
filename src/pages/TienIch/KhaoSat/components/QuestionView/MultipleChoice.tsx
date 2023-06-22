@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { Checkbox } from 'antd';
 
 const MultipleChoice = (props: {
@@ -8,12 +7,9 @@ const MultipleChoice = (props: {
   return (
     <Checkbox.Group value={props?.dapAn}>
       {props.luaChon?.map((item) => (
-        <>
-          <Checkbox key={item._id} value={item._id}>
-            {item.noiDung}
-          </Checkbox>
-          <br />
-        </>
+        <div key={item._id}>
+          <Checkbox value={item._id}>{item.noiDung}</Checkbox>
+        </div>
       ))}
     </Checkbox.Group>
   );

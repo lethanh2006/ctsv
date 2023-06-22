@@ -1,12 +1,6 @@
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  CloseCircleOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, Tooltip } from 'antd';
 import BlockQuestion from './BlockQuestion';
-import styles from './block.css';
 
 const Block = (props: { field: { name: number; key: number; isListField?: boolean } }) => {
   return (
@@ -37,15 +31,14 @@ const Block = (props: { field: { name: number; key: number; isListField?: boolea
                 <div key={field.key}>
                   <Card
                     size="small"
-                    headStyle={{ padding: '0px 24px' }}
-                    bodyStyle={{ padding: '8px 24px' }}
+                    headStyle={{ padding: '0px 12px' }}
+                    bodyStyle={{ padding: '8px 12px' }}
                     key={field.key}
-                    className={styles.block}
                     title={
                       <>
                         <div style={{ float: 'left' }}>Câu hỏi {index + 1}</div>
                         <Tooltip title="Xóa">
-                          <CloseCircleOutlined
+                          <CloseOutlined
                             style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
                             onClick={() => remove(field.name)}
                           />
@@ -70,12 +63,14 @@ const Block = (props: { field: { name: number; key: number; isListField?: boolea
                   <br />
                 </div>
               ))}
+
               <Form.Item>
                 <Button
                   type="dashed"
                   onClick={() => add()}
                   style={{ width: '100%' }}
                   icon={<PlusOutlined />}
+                  size="small"
                 >
                   Thêm câu hỏi
                 </Button>

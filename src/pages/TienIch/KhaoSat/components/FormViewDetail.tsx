@@ -1,17 +1,18 @@
-import { Button, Card, Form } from 'antd';
-import { useModel } from 'umi';
-import SingleChoice from './QuestionType/SingleChoice';
-import MultipleChoice from './QuestionType/MultipleChoice';
-import NumericChoice from '../../KhaiBaoSucKhoe/components/Question/NumericChoice';
-import GridChoice from './QuestionType/GridChoice';
 import UploadFile from '@/components/Upload/UploadFile';
+import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
+import { Button, Card } from 'antd';
+import { useModel } from 'umi';
+import GridChoice from './QuestionView/GridChoice';
+import MultipleChoice from './QuestionView/MultipleChoice';
+import NumericChoice from './QuestionView/NumericChoice';
+import SingleChoice from './QuestionView/SingleChoice';
+import Text from './QuestionView/Text';
 
-const FormBaiHoc = () => {
-  const [form] = Form.useForm();
+const ViewDetailKhaoSat = () => {
   const { loading, record, setVisibleForm } = useModel('tienich.bieumau');
-  const renderQuestion = (question: BieuMau.CauHoi) => {
+
+  const renderQuestion = (question: BieuMau.CauHoi, index: number) => {
     let questionEleMent = <div />;
-    // const recordDapAn = record?.danhSachTraLoi?.find((item) => item.idCauHoi === question._id);
     if (question.loai === 'SingleChoice')
       questionEleMent = <SingleChoice luaChon={question.luaChon} />;
     else if (question.loai === 'MultipleChoice')
@@ -37,45 +38,44 @@ const FormBaiHoc = () => {
         />
       );
     }
+
     return (
       <div key={question._id}>
-        <div>
-          <b>
-            {question.batBuoc && <span style={{ color: '#dc3545' }}>*</span>}{' '}
-            {question.noiDungCauHoi}
-          </b>
+        <div className="ant-form-item-label fw500">
+          <label
+            className={question.batBuoc ? 'ant-form-item-required' : ''}
+            style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}
+          >
+            Câu {index + 1}: {question.noiDungCauHoi}
+          </label>
         </div>
-        <div>{questionEleMent}</div>
+        <br />
+        {questionEleMent}
         <br />
       </div>
     );
   };
-  return (
-    <Card loading={loading} title="Chi tiết khảo sát">
-      <Form labelCol={{ span: 24 }} form={form}>
-        <h3>{record.tieuDe}</h3>
 
-        <p>{record.moTa}</p>
-        <div>
-          {record.danhSachKhoi?.map((item: BieuMau.Khoi, index) => (
-            <div key={index}>
-              <div>{item.tieuDe}</div>
-              <div>{item.moTa}</div>
-              <div>
-                {item.danhSachCauHoi?.map((cauHoi: BieuMau.CauHoi) => renderQuestion(cauHoi))}
-              </div>
-            </div>
-          ))}
+  return (
+    <Card loading={loading} title="Chi tiết biểu mẫu khảo sát">
+      <h3>{record?.tieuDe}</h3>
+      <p>{record?.moTa}</p>
+
+      {record?.danhSachKhoi?.map((item, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={index} style={{ marginBottom: 24 }}>
+          <div className="fw500">{item.tieuDe}</div>
+          <div>{item.moTa}</div>
+
+          {item.danhSachCauHoi?.map((cauHoi, i) => renderQuestion(cauHoi, i))}
         </div>
-        <br />
-        <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-          <Button type="primary" onClick={() => setVisibleForm(false)}>
-            Đóng
-          </Button>
-        </Form.Item>
-      </Form>
+      ))}
+
+      <div className="form-footer">
+        <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+      </div>
     </Card>
   );
 };
 
-export default FormBaiHoc;
+export default ViewDetailKhaoSat;

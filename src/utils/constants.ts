@@ -9,24 +9,8 @@ export enum Role {
   quan_tri = 'Quản trị viên đơn vị',
 }
 
-export enum EVaiTroBieuMau {
-  SINH_VIEN = 'sinh_vien',
-  NHAN_VIEN = 'nhan_vien',
-}
-
-export enum ELoaiBieuMau {
-  KHAO_SAT = 'Khảo sát',
-  TRAC_NGHIEM = 'Trắc nghiệm',
-  KHAI_BAO_Y_TE = 'Khai báo y tế',
-  DANH_GIA_GIANG_VIEN = 'Đánh giá giảng viên',
-}
-
 export enum EChucNangSuDung {
   KET_QUA_HOC_TAP = 'KET_QUA_HOC_TAP',
-}
-
-export enum ELoaiDot {
-  BIEU_MAU = 'BIEU_MAU',
 }
 
 export enum EThoiGianDot {
@@ -818,17 +802,6 @@ export enum ETrangThaiHuongDanNCS {
 export enum EDoiTuongHuongDanNCS {
   NCS = 'Nghiên cứu sinh',
   HVCH = 'Học viên cao học',
-}
-
-export enum ELoaiDoiTuong {
-  TAT_CA = 'Tất cả',
-  VAI_TRO = 'Vai trò',
-  LOP_TIN_CHI = 'Lớp tín chỉ',
-  LOP_HANH_CHINH = 'Lớp hành chính',
-  NGANH = 'Ngành',
-  // DON_VI = 'Đơn vị',
-  KHOA = 'Khóa',
-  NGUOI_DUNG_CU_THE = 'Người dùng cụ thể',
 }
 
 export enum ELoaiDoiTuongSuKien {

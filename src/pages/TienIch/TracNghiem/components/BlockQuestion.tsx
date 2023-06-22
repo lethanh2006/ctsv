@@ -4,7 +4,6 @@ import { Button, Col, Form, Input, Row, Select } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import GridChoice from './QuestionType/GridChoice';
-import MultipleChoice from './QuestionType/MultipleChoice';
 import NumericRange from './QuestionType/NumericChoice';
 import SingleChoice from './QuestionType/SingleChoice';
 
@@ -94,9 +93,9 @@ const BlockQuestion = (props: { index: number; block: number }) => {
                       );
                     }
                     case 'MultipleChoice': {
-                      return (
-                        <MultipleChoice index={index} remove={remove} fieldName={field.name} />
-                      );
+                      // return (
+                      //   <MultipleChoice index={index} remove={remove} fieldName={field.name} />
+                      // );
                     }
                     default: {
                       return <div />;

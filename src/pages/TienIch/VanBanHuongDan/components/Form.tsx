@@ -1,6 +1,7 @@
 import { EDoiTuong } from '@/services/TienIch/VanBanHuongDan/constant';
 import { type VanBanHuongDan } from '@/services/TienIch/VanBanHuongDan/typing';
 import rules from '@/utils/rules';
+import { resetFieldsForm } from '@/utils/utils';
 import { Button, Form, Input } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -16,6 +17,7 @@ const FormBaiHoc = (props: { afterAddNew?: (rec: VanBanHuongDan.IRecord) => void
     setRecord,
     setEdit,
     formSubmiting,
+    visibleForm,
   } = useModel('tienich.vanbanhuongdan');
   const [form] = Form.useForm();
   const { afterAddNew } = props;
@@ -24,9 +26,9 @@ const FormBaiHoc = (props: { afterAddNew?: (rec: VanBanHuongDan.IRecord) => void
   // const [doiTuong, setDoiTuong] = useState<string>(record?.doiTuong ?? 'Tất cả');
 
   useEffect(() => {
-    form.resetFields();
-    if (record?._id) form.setFieldsValue(record);
-  }, [record?._id]);
+    if (!visibleForm) resetFieldsForm(form);
+    else form.setFieldsValue(record);
+  }, [record?._id, visibleForm]);
 
   const onFinish = async (values: VanBanHuongDan.IRecord) => {
     const payload = { ...values, doiTuong: EDoiTuong.TAT_CA, vaiTro: ['Admin', 'User'] };
@@ -99,7 +101,7 @@ const FormBaiHoc = (props: { afterAddNew?: (rec: VanBanHuongDan.IRecord) => void
         <Button loading={formSubmiting} htmlType="submit" type="primary">
           {!edit ? 'Thêm mới ' : 'Lưu lại'}
         </Button>
-        <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+        <Button onClick={() => setVisibleForm(false)}>Hủy</Button>
       </div>
     </Form>
   );

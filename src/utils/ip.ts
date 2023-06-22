@@ -9,7 +9,7 @@ const ipDaoTao = 'https://ais.aisenote.com/qldt';
 const ipNhanSu = 'https://ais.aisenote.com/tcns';
 const ipCore = 'https://ais.aisenote.com/core';
 
-const currentRole = EModuleKey.QLDT;
+const currentRole = EModuleKey.CTSV;
 
 const keycloakClientID = AppModules[currentRole].clientId;
 const keycloakAuthority = 'https://ais.aisenote.com/keycloak/realms/vwa';
