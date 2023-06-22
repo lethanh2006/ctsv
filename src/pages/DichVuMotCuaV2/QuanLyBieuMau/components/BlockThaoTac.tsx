@@ -16,8 +16,8 @@ const BieuMauThaoTac = (props: {
   step: number;
   form: FormInstance;
 }) => {
-  const { danhSach } = useModel('donvi');
-  const { record } = useModel('dichvumotcuav2');
+  // const { danhSach } = useModel('donvi');
+  const { record } = useModel('dvmc.dichvumotcuav2');
   const { getChuyenVienXuLyDonModel, danhSachChuyenVienXuLy, loading, setDanhSachChuyenVienXuLy } =
     useModel('phanquyen');
   const [loaiDoiTuong, setLoaiDoiTuong] = useState<string>(
@@ -93,11 +93,11 @@ const BieuMauThaoTac = (props: {
                 props.form.setFieldsValue(_.set(recordTemp, path, undefined));
               }}
             >
-              {danhSach?.map((item) => (
-                <Select.Option key={item._id} value={item._id}>
-                  {item.ten} ({item.maDonVi})
-                </Select.Option>
-              ))}
+              {/*{danhSach?.map((item) => (*/}
+              {/*  <Select.Option key={item._id} value={item._id}>*/}
+              {/*    {item.ten} ({item.maDonVi})*/}
+              {/*  </Select.Option>*/}
+              {/*))}*/}
             </Select>
           </Form.Item>
         </Col>

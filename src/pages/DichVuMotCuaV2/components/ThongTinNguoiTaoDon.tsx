@@ -7,7 +7,7 @@ const ThongTinNguoiTaoDon = (props: {
   record?: Login.Profile;
   thongTinNguoiTaoAdmin?: { hoTen: string; maDonVi: string; maSinhVien: string };
 }) => {
-  const { loaiDichVu, recordDon } = useModel('dichvumotcuav2');
+  const { loaiDichVu, recordDon } = useModel('dvmc.dichvumotcuav2');
   const access = useAccess();
 
   return (

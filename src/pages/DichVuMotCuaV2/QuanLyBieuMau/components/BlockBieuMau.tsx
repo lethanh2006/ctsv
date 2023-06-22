@@ -15,7 +15,7 @@ import { useModel } from 'umi';
 import styles from './block.css';
 import ElementDescription from './ElementDescription';
 import { useMediaQuery } from 'react-responsive';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 const Block = (props: {
   field: { name: number; key: number; isListField?: boolean };
@@ -23,7 +23,7 @@ const Block = (props: {
   fieldName: string;
   index?: number;
 }) => {
-  const { record } = useModel('dichvumotcuav2');
+  const { record } = useModel('dvmc.dichvumotcuav2');
   const recordBlock: DichVuMotCuaV2.CauHinhBieuMau = lodash.get(record, props.fieldName, undefined);
   const [type, setType] = useState<string>(recordBlock?.type ?? '');
   const [objectRelate, setObjectRelate] = useState<any>({});

@@ -66,14 +66,14 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     updateTrangThaiNhanKetQuaModel,
     chuyenVienDieuPhoiGetDonVpsModel,
     chuyenVienXuLyGetDonVpsModel,
-  } = useModel('dichvumotcuav2');
-  const {
-    setIdDichVu,
-    chuyenVienDieuPhoiGetTongSoDonDVMCModel,
-    chuyenVienXuLyGetTongSoDonDVMCModel,
-  } = useModel('dashboard');
+  } = useModel('dvmc.dichvumotcuav2');
+  // const {
+  //   setIdDichVu,
+  //   chuyenVienDieuPhoiGetTongSoDonDVMCModel,
+  //   chuyenVienXuLyGetTongSoDonDVMCModel,
+  // } = useModel('dashboard');
 
-  const { setVisibleForm, visibleForm } = useModel('phanhoi');
+  // const { setVisibleForm, visibleForm } = useModel('phanhoi');
 
   const [type, setType] = useState<'handle' | 'view' | 'create' | 'edit'>('handle');
 
@@ -326,7 +326,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                     disabled={!recordDonColumn?.noiDungPhanHoi || recordDonColumn.daTraLoiPhanHoi}
                     onClick={() => {
                       setRecordDon(recordDonColumn);
-                      setVisibleForm(true);
+                      // setVisibleForm(true);
                     }}
                     icon={<QuestionCircleOutlined />}
                     type="link"
@@ -341,11 +341,11 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                             recordDonColumn?._id ?? '',
                             pathname?.includes('quanlydondieuphoi') ? 'dieuphoi' : 'tiepnhan',
                           );
-                          if (pathname?.includes('quanlydondieuphoi')) {
-                            chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
-                          } else {
-                            chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
-                          }
+                          // if (pathname?.includes('quanlydondieuphoi')) {
+                          //   chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
+                          // } else {
+                          //   chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
+                          // }
                         }}
                         title="Bạn có chắc chắn xóa đơn này?"
                       >
@@ -406,7 +406,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
         danhSach,
         isDonCanXuLy,
       ]}
-      modelName="dichvumotcuav2"
+      modelName="dvmc.dichvumotcuav2"
       dataState="danhSachDon"
       scroll={{ x: 1350 }}
       loading={loading}
@@ -438,7 +438,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
           allowClear
           placeholder="Lọc theo loại dịch vụ"
           onChange={(val: string | undefined) => {
-            setIdDichVu(val);
+            // setIdDichVu(val);
             setRecord(
               val
                 ? danhSach?.find((item) => item._id === val)
@@ -495,28 +495,28 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
               record={recordDon}
             />
           </Tabs.TabPane>
-          {recordDon?.identityCode && (
-            <Tabs.TabPane tab="Thông tin thanh toán" key={2}>
-              <ThanhToan
-                identityCode={recordDon?.identityCode}
-                trangThaiThanhToan={recordDon?.trangThaiThanhToan}
-              />
-            </Tabs.TabPane>
-          )}
+          {/*{recordDon?.identityCode && (*/}
+          {/*  <Tabs.TabPane tab="Thông tin thanh toán" key={2}>*/}
+          {/*    <ThanhToan*/}
+          {/*      identityCode={recordDon?.identityCode}*/}
+          {/*      trangThaiThanhToan={recordDon?.trangThaiThanhToan}*/}
+          {/*    />*/}
+          {/*  </Tabs.TabPane>*/}
+          {/*)}*/}
           <Tabs.TabPane tab="Lịch sử trả kết quả" key={3}>
             <TableLichSuTraKetQua data={recordDon?.lichSuChinhSua ?? []} />
           </Tabs.TabPane>
         </Tabs>
       </Modal>
-      <Modal
-        footer={false}
-        visible={visibleForm}
-        onCancel={() => setVisibleForm(false)}
-        bodyStyle={{ padding: 0 }}
-        width={600}
-      >
-        <FormTraLoiPhanHoi getData={getData} />
-      </Modal>
+      {/*<Modal*/}
+      {/*  footer={false}*/}
+      {/*  visible={visibleForm}*/}
+      {/*  onCancel={() => setVisibleForm(false)}*/}
+      {/*  bodyStyle={{ padding: 0 }}*/}
+      {/*  width={600}*/}
+      {/*>*/}
+      {/*  <FormTraLoiPhanHoi getData={getData} />*/}
+      {/*</Modal>*/}
     </TableBase>
   );
 };

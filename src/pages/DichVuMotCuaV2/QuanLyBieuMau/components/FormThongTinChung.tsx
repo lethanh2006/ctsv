@@ -1,11 +1,13 @@
 import TinyEditor from '@/components/TinyEditor';
 import { uploadFile } from '@/services/uploadFile';
+import Upload from '@/components/Upload/UploadMultiFile';
 import rules from '@/utils/rules';
 import { renderFileListUrlWithName } from '@/utils/utils';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAccess, useModel } from 'umi';
+import SelectHinhThuc from "@/pages/DaoTao/HinhThucDaoTao/Select";
 
 const FormThongTinChung = () => {
   const access = useAccess();
@@ -19,8 +21,8 @@ const FormThongTinChung = () => {
   } = useModel('dvmc.dichvumotcuav2');
   const [phamVi, setPhamVi] = useState<string>(recordDichVu?.phamVi ?? '');
   const { record } = useModel('thanhtoan');
-  const { danhSach } = useModel('donvi');
-  const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
+  // const { danhSach } = useModel('donvi');
+  // const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   // set kiểm tra xem đơn có được tạo lịch hẹn hay không
   const [taoLichHen, setTaoLichHen] = useState<boolean>(recordDichVu?.traKetQua ?? false);
 
@@ -174,7 +176,7 @@ const FormThongTinChung = () => {
               />
             </Form.Item>
           </Col>
-          {access.admin && (
+
             <>
               <Col md={12}>
                 <Form.Item
@@ -201,18 +203,19 @@ const FormThongTinChung = () => {
                     name="hinhThucDaoTaoId"
                     label="Hình thức đào tạo"
                   >
-                    <Select placeholder="Hình thức đào tạo">
-                      {danhSachHinhThucDaoTao?.map((item) => (
-                        <Select.Option key={item._id} value={item._id}>
-                          {item.danhMucHTDT.ten}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                    {/*<Select placeholder="Hình thức đào tạo">*/}
+                    {/*  /!*{danhSachHinhThucDaoTao?.map((item) => (*!/*/}
+                    {/*  /!*  <Select.Option key={item._id} value={item._id}>*!/*/}
+                    {/*  /!*    {item.danhMucHTDT.ten}*!/*/}
+                    {/*  /!*  </Select.Option>*!/*/}
+                    {/*  /!*))}*!/*/}
+                    {/*</Select>*/}
+                    <SelectHinhThuc/>
                   </Form.Item>
                 </Col>
               )}
             </>
-          )}
+
           <Col md={12}>
             <Form.Item
               name={['thongTinThuTuc', 'maThuTuc']}
@@ -271,11 +274,11 @@ const FormThongTinChung = () => {
               initialValue={recordDichVu?.thongTinThuTuc?.coQuanCoThamQuyen?.split(', ')}
             >
               <Select placeholder="Cơ quan có thẩm quyền" allowClear showSearch mode="multiple">
-                {danhSach?.map((item: DonVi.Record) => (
-                  <Select.Option key={item._id} value={item.ten}>
-                    {item?.ten}
-                  </Select.Option>
-                ))}
+                {/*{danhSach?.map((item: DonVi.Record) => (*/}
+                {/*  <Select.Option key={item._id} value={item.ten}>*/}
+                {/*    {item?.ten}*/}
+                {/*  </Select.Option>*/}
+                {/*))}*/}
               </Select>
             </Form.Item>
           </Col>

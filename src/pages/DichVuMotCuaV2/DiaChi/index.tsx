@@ -5,6 +5,9 @@ import { Col, Form, Input, Row, Select } from 'antd';
 import type { FormInstance } from 'antd/es/form/Form';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import SelectDonViHanhChinh from "@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh";
+import {DonViHanhChinh} from "@/services/Core/DonViHanhChinh/typing";
+import {getTinhThanhPho} from "@/services/Core/DonViHanhChinh";
 
 type Props = {
   disabled?: boolean;
@@ -55,7 +58,13 @@ const DiaChi = (props: Props) => {
 
   const [maQuanHuyen, setMaQuanHuyen] = useState<string>(props?.initialValue?.maQuanHuyen ?? '');
   const [maTinh, setMaTinh] = useState<string>(props?.initialValue?.maTinh ?? '');
+  const [listTinh, setListTinh] = useState<DonViHanhChinh.IRecord[]>();
 
+  useEffect(() => {
+    getTinhThanhPho().then((data) => {
+      setListTinh(data.data.data);
+    });
+  }, []);
   useEffect(() => {
     getDanhSachTinhModel();
   }, []);
@@ -86,6 +95,7 @@ const DiaChi = (props: Props) => {
             name={props?.fields?.tinh ?? []}
             rules={props.notRequiredTinh ? [] : [...rules.required]}
           >
+            {/*<SelectDonViHanhChinh form={props.form} listTinh={listTinh} suffix="NoiSinh" />*/}
             <Select
               disabled={props?.disabled}
               loading={loading}

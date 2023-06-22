@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import {
   ArrowDownOutlined,
   ArrowLeftOutlined,
@@ -14,7 +15,6 @@ import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import styles from './block.css';
 import Block from './BlockQuyTrinh';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 
 const FormTaoQuyTrinh = () => {
   const [form] = Form.useForm();
@@ -26,13 +26,13 @@ const FormTaoQuyTrinh = () => {
     putBieuMauAdminModel,
     postBieuMauAdminModel,
     setCurrent,
-  } = useModel('dichvumotcuav2');
-  const { getAllDonViModel, danhSach } = useModel('donvi');
+  } = useModel('dvmc.dichvumotcuav2');
+  // const { getAllDonViModel, danhSach } = useModel('donvi');
   const [visibleQuyTrinh, setVisibleQuyTrinh] = useState<boolean>(false);
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.QuyTrinh>();
-  useEffect(() => {
-    getAllDonViModel();
-  }, []);
+  // useEffect(() => {
+  //   getAllDonViModel();
+  // }, []);
 
   const buildPostQuyTrinh = (values: { quyTrinh: DichVuMotCuaV2.QuyTrinh }) => {
     const quyTrinh: DichVuMotCuaV2.QuyTrinh = {
@@ -44,7 +44,7 @@ const FormTaoQuyTrinh = () => {
               ...thaoTac,
               nguoiDieuPhoiMacDinh: thaoTac?.idNguoiDieuPhoiMacDinh ? true : false,
               idDonVi: thaoTac?.idDonVi?.toString(),
-              tenDonVi: danhSach?.find((item) => item._id === thaoTac?.idDonVi)?.ten ?? '',
+              // tenDonVi: danhSach?.find((item) => item._id === thaoTac?.idDonVi)?.ten ?? '',
             }),
           ),
         };

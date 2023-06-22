@@ -7,6 +7,7 @@ import {
   uploadMultiFile,
   // useCheckAccess,
 } from '@/utils/utils';
+import Upload from '@/components/Upload/UploadMultiFile';
 import { CopyOutlined } from '@ant-design/icons';
 import {
   AutoComplete,
@@ -37,6 +38,9 @@ import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import type { Login } from '@/services/ant-design-pro/typings';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import HocPhanCoDiem from "@/pages/DichVuMotCuaV2/HocPhanCoDiem";
+import DiaChi from "@/pages/DichVuMotCuaV2/DiaChi";
+import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -81,21 +85,12 @@ const FormBieuMau = (props: {
     loaiDichVu,
     adminGetDonVpsModel,
   } = useModel('dvmc.dichvumotcuav2');
-  const { danhSach: danhSachKyHoc } = useModel('kyhoc');
-  const { danhSach: danhSachNamHoc } = useModel('namhoc');
-  const { danhSach: danhSachLopTinChi, danhSachMonHoc } = useModel('loptinchi');
-  const { danhSachDanToc, danhSachTonGiao, getAllTonGiao, getAllDanToc } =
-    useModel('dantoctongiao');
-  const {
-    tenTinh,
-    tenPhuongXa,
-    tenQuanHuyen,
-    setTenTinh,
-    setTenXaPhuong,
-    setTenQuanHuyen,
-    setObjDanhSachXaPhuong,
-    setObjDanhSachQuanHuyen,
-  } = useModel('donvihanhchinh');
+  // const { danhSach: danhSachKyHoc } = useModel('kyhoc');
+  // const { danhSach: danhSachNamHoc } = useModel('namhoc');
+  // const { danhSach: danhSachLopTinChi, danhSachMonHoc } = useModel('loptinchi');
+  // const { danhSachDanToc, danhSachTonGiao, getAllTonGiao, getAllDanToc } =
+  //   useModel('dantoctongiao');
+
   const [recordEdit, setRecordEdit] = useState<{ duLieuBieuMau: DichVuMotCuaV2.CauHinhBieuMau[] }>({
     duLieuBieuMau: [],
   });
@@ -157,9 +152,9 @@ const FormBieuMau = (props: {
         if (item?.type === 'DON_VI_HANH_CHINH') {
           value = {
             ...values?.[`${name}[${index}].${item?.label}`],
-            tenTinh: tenTinh?.[`${name}[${index}].${item?.label}.maTinh`],
-            tenQuanHuyen: tenQuanHuyen?.[`${name}[${index}].${item?.label}.maQuanHuyen`],
-            tenPhuongXa: tenPhuongXa?.[`${name}[${index}].${item?.label}.maPhuongXa`],
+            // tenTinh: tenTinh?.[`${name}[${index}].${item?.label}.maTinh`],
+            // tenQuanHuyen: tenQuanHuyen?.[`${name}[${index}].${item?.label}.maQuanHuyen`],
+            // tenPhuongXa: tenPhuongXa?.[`${name}[${index}].${item?.label}.maPhuongXa`],
           };
         } else if (item?.type === 'TABLE') {
           value = danhSachDataTable?.[`${name}[${index}].${item?.label}`]?.map(
@@ -205,8 +200,8 @@ const FormBieuMau = (props: {
 
   useEffect(() => {
     const valuesTemp = {};
-    getAllDanToc();
-    getAllTonGiao();
+    // getAllDanToc();
+    // getAllTonGiao();
     buildValuesForm(
       valuesTemp,
       'cauHinhBieuMau',
@@ -216,11 +211,11 @@ const FormBieuMau = (props: {
 
     return () => {
       if (!props?.handleAdd) setDanhSachDataTable({});
-      setTenTinh({});
-      setTenQuanHuyen({});
-      setTenXaPhuong({});
-      setObjDanhSachQuanHuyen({});
-      setObjDanhSachXaPhuong({});
+      // setTenTinh({});
+      // setTenQuanHuyen({});
+      // setTenXaPhuong({});
+      // setObjDanhSachQuanHuyen({});
+      // setObjDanhSachXaPhuong({});
     };
   }, []);
 
@@ -343,23 +338,34 @@ const FormBieuMau = (props: {
         initialValue = item?.value;
         ruleElement = [];
         element = (
-          <DiaChi
-            hideDiaChiCuThe={item?.level !== 4}
-            hideQuanHuyen={item?.level === 1}
-            hideXaPhuong={[1, 2].includes(item?.level)}
-            notRequiredDiaChiCuThe={!item?.isRequired}
-            notRequiredQuanHuyen={!item?.isRequired}
-            notRequiredTinh={!item?.isRequired}
-            notRequiredXaPhuong={!item?.isRequired}
-            initialValue={item?.value}
-            form={form}
-            fields={{
-              tinh: [`${name}.${item?.label ?? ''}`, 'maTinh'],
-              quanHuyen: [`${name}.${item?.label ?? ''}`, 'maQuanHuyen'],
-              xaPhuong: [`${name}.${item?.label ?? ''}`, 'maPhuongXa'],
-              diaChiCuThe: [`${name}.${item?.label ?? ''}`, 'soNhaTenDuong'],
-            }}
-          />
+          // <DiaChi
+          //   hideDiaChiCuThe={item?.level !== 4}
+          //   hideQuanHuyen={item?.level === 1}
+          //   hideXaPhuong={[1, 2].includes(item?.level)}
+          //   notRequiredDiaChiCuThe={!item?.isRequired}
+          //   notRequiredQuanHuyen={!item?.isRequired}
+          //   notRequiredTinh={!item?.isRequired}
+          //   notRequiredXaPhuong={!item?.isRequired}
+          //   initialValue={item?.value}
+          //   form={form}
+          //   fields={{
+          //     tinh: [`${name}.${item?.label ?? ''}`, 'maTinh'],
+          //     quanHuyen: [`${name}.${item?.label ?? ''}`, 'maQuanHuyen'],
+          //     xaPhuong: [`${name}.${item?.label ?? ''}`, 'maPhuongXa'],
+          //     diaChiCuThe: [`${name}.${item?.label ?? ''}`, 'soNhaTenDuong'],
+          //   }}
+          // />
+        <SelectDonViHanhChinh
+          form={form}
+          // listTinh={danhSachTinh}
+          hideQuanHuyen={item?.level === 1}
+          hideXaPhuong={[1, 2].includes(item?.level)}
+          notRequiredDiaChiCuThe={!item?.isRequired}
+          notRequiredQuanHuyen={!item?.isRequired}
+          notRequiredTinh={!item?.isRequired}
+          notRequiredXaPhuong={!item?.isRequired}
+          initialValue={item?.value}
+        />
         );
         break;
       }
@@ -483,12 +489,13 @@ const FormBieuMau = (props: {
       case 'MY_SEMESTER': {
         initialValue = item?.value;
         ruleElement = [...rules.text];
-        const kyHoc = access.sinhVien
-          ? danhSachKyHoc
-          : [
-              // { id: 1, ten_ky_nam_hoc: '1', nam_hoc_id: [1, '2022-2023'] },
-              // { id: 2, ten_ky_nam_hoc: '2', nam_hoc_id: [2, '2022-2023'] },
-            ];
+        const kyHoc=[]
+        // const kyHoc = access.sinhVien
+        //   ? danhSachKyHoc
+        //   : [
+        //       // { id: 1, ten_ky_nam_hoc: '1', nam_hoc_id: [1, '2022-2023'] },
+        //       // { id: 2, ten_ky_nam_hoc: '2', nam_hoc_id: [2, '2022-2023'] },
+        //     ];
         ruleElement = [...rules.text];
         element = access.sinhVien ? (
           <Select allowClear placeholder={item?.label ?? ''}>
@@ -513,22 +520,25 @@ const FormBieuMau = (props: {
           // { id: 1, ten_nam_hoc: '2021-2022' },
           // { id: 2, ten_nam_hoc: '2022-2023' },
         ];
-        element = access.sinhVien ? (
-          <Select allowClear placeholder={item?.label ?? ''}>
-            {namHoc?.map((nam: any) => (
-              <Select.Option key={nam.id} value={`Năm học ${nam.ten_nam_hoc}`}>
-                Năm học {nam.ten_nam_hoc}
-              </Select.Option>
-            ))}
-          </Select>
-        ) : (
+        // element = access.sinhVien ? (
+        //   <Select allowClear placeholder={item?.label ?? ''}>
+        //     {namHoc?.map((nam: any) => (
+        //       <Select.Option key={nam.id} value={`Năm học ${nam.ten_nam_hoc}`}>
+        //         Năm học {nam.ten_nam_hoc}
+        //       </Select.Option>
+        //     ))}
+        //   </Select>
+        // ) : (
+        //   <Input placeholder="Nhập năm học" />
+        // );
+        element =
           <Input placeholder="Nhập năm học" />
-        );
+
         break;
       }
       case 'MY_CREDIT': {
         initialValue = item?.value;
-        const monHoc = access.sinhVien ? danhSachMonHoc : [];
+        const monHoc = [];
         element = (
           <AutoComplete
             filterOption={(value, option) => includes(option?.props.children, value)}
@@ -547,34 +557,19 @@ const FormBieuMau = (props: {
       }
       case 'MY_COURSE': {
         initialValue = item?.value;
-        const lopHoc = access.sinhVien ? danhSachLopTinChi : [];
-        element = access.sinhVien ? (
-          <Select
-            filterOption={(value, option) => includes(option?.props.children, value)}
-            showSearch
-            allowClear
-            placeholder={item?.label ?? ''}
-          >
-            {lopHoc?.map((lop: any) => (
-              <Select.Option key={lop.id} value={`${lop.ten_hoc_phan} (${lop.ma_lop})`}>
-                {lop.ten_hoc_phan} ({lop.ma_lop})
-              </Select.Option>
-            ))}
-          </Select>
-        ) : (
-          <Input placeholder="Chọn lớp tín chỉ" />
-        );
+        const lopHoc = [];
+        element = <Input placeholder="Chọn lớp tín chỉ" />
         break;
       }
       case 'DAN_TOC': {
         initialValue = item?.value;
         element = (
           <Select showSearch allowClear placeholder={item?.label ?? ''}>
-            {danhSachDanToc?.map((dantoc: any) => (
-              <Select.Option key={dantoc._id} value={dantoc.tenDanToc}>
-                {dantoc.tenDanToc}
-              </Select.Option>
-            ))}
+            {/*{danhSachDanToc?.map((dantoc: any) => (*/}
+            {/*  <Select.Option key={dantoc._id} value={dantoc.tenDanToc}>*/}
+            {/*    {dantoc.tenDanToc}*/}
+            {/*  </Select.Option>*/}
+            {/*))}*/}
           </Select>
         );
         break;
@@ -584,11 +579,11 @@ const FormBieuMau = (props: {
         initialValue = item?.value;
         element = (
           <Select showSearch allowClear placeholder={item?.label ?? ''}>
-            {danhSachTonGiao?.map((tongiao: any) => (
-              <Select.Option key={tongiao._id} value={tongiao.tenTonGiao}>
-                {tongiao.tenTonGiao}
-              </Select.Option>
-            ))}
+            {/*{danhSachTonGiao?.map((tongiao: any) => (*/}
+            {/*  <Select.Option key={tongiao._id} value={tongiao.tenTonGiao}>*/}
+            {/*    {tongiao.tenTonGiao}*/}
+            {/*  </Select.Option>*/}
+            {/*))}*/}
           </Select>
         );
         break;
@@ -632,7 +627,7 @@ const FormBieuMau = (props: {
                 </span>
               )}{' '}
               {item?.label ?? 'Chưa có tiêu đề'}
-              {item.type === 'DON_VI_HANH_CHINH' && !access.sinhVien && (
+              {item.type === 'DON_VI_HANH_CHINH'  && (
                 <Tooltip title="Sao chép địa chỉ">
                   <CopyOutlined
                     onClick={() => {

@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import Upload from '@/components/Upload/UploadMultiFile';
 import FormView from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { uploadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { renderFileListUrlWithName } from '@/utils/utils';
@@ -19,7 +20,6 @@ import { useState } from 'react';
 import { useModel } from 'umi';
 import styles from './block.css';
 import Block from './BlockBieuMau';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 
 const FormBieuMau = () => {
   const [form] = Form.useForm();
@@ -32,7 +32,7 @@ const FormBieuMau = () => {
     setRecord,
     setCurrent,
     loaiDichVu,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [choPhepGuiNhieuLan, setChoPhepGuiNhieuLan] = useState<boolean>(
     record?.thongTinThuTuc?.choPhepGuiNhieuLan ?? false,

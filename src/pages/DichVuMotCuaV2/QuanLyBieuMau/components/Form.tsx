@@ -5,7 +5,7 @@ import FormThongTinChung from './FormThongTinChung';
 import { useEffect } from 'react';
 
 const Form = () => {
-  const { current, loaiDichVu } = useModel('dichvumotcuav2');
+  const { current, loaiDichVu } = useModel('dvmc.dichvumotcuav2');
   const { setRecord } = useModel('thanhtoan');
 
   useEffect(() => {

@@ -79,7 +79,7 @@ const FormQuyTrinh = (props: {
     setDanhSachDonThaoTac,
     record,
     recordDon,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
   const arrPathName = pathname?.split('/') ?? [];
