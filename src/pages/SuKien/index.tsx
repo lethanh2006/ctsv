@@ -1,8 +1,8 @@
 import { messagesCalendar } from '@/services/Calendar/constant';
-import { ColorSuKien, ELoaiSuKien } from '@/services/SuKien/constant';
+import { ColorSuKien, type ELoaiSuKien } from '@/services/SuKien/constant';
 import { type SuKien } from '@/services/SuKien/typings';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Modal, Row } from 'antd';
+import { Button, Card, Col, Modal, Row, Spin } from 'antd';
 import moment, { type Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import type { DateRange, View } from 'react-big-calendar';
@@ -21,6 +21,7 @@ const SuKienPage = () => {
     setEdit,
     selectSuKiens,
     getSuKienTrongKhoangModel,
+    loading,
   } = useModel('sukien');
   const [date, setDate] = useState(new Date());
   const [dateRange, setDateRange] = useState<Moment[]>([
@@ -44,7 +45,6 @@ const SuKienPage = () => {
       const temp = data.map((item) => ({
         ...item,
         title: item?.tenSuKien ?? '',
-        loaiSuKien: item.loaiSuKien === ELoaiSuKien.TAT_CA ? ELoaiSuKien.CHUNG : item.loaiSuKien,
         start: moment(item?.thoiGianBatDau).toDate(),
         end: moment(item?.thoiGianKetThuc).toDate(),
       }));
@@ -103,48 +103,50 @@ const SuKienPage = () => {
         </Col>
 
         <Col span={24}>
-          <Calendar
-            formats={{
-              dayHeaderFormat: 'dddd DD/MM/YYYY',
-              dayRangeHeaderFormat: (range: DateRange) => {
-                return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format(
-                  'DD/MM',
-                )}`;
-              },
-            }}
-            localizer={localizer}
-            events={dataCalendar}
-            defaultView={calendarView}
-            onView={(view) => setCalendarView(view)}
-            onRangeChange={(val) => {
-              if (Array.isArray(val))
-                setDateRange([moment(val[0]).startOf('d'), moment(val[1]).endOf('d')]);
-              else setDateRange([moment(val.start).startOf('d'), moment(val.end).endOf('d')]);
-            }}
-            onNavigate={(newDate) => setDate(newDate)}
-            selectable
-            scrollToTime={new Date(1970, 1, 1, 6)}
-            defaultDate={new Date()}
-            date={date}
-            messages={messagesCalendar}
-            views={['month', 'week', 'day']}
-            style={{ height: 700, overflow: 'auto' }}
-            min={moment('0000', 'HHmm').toDate()}
-            max={moment('2359', 'HHmm').toDate()}
-            eventPropGetter={eventPropGetter}
-            onSelectSlot={handleSelect}
-            onSelectEvent={(rec: any) => {
-              setSelectEvent(rec);
-              setVisibleDetail(true);
-            }}
-            components={{ event: (event: any) => eventCustom(event) }}
-            popup
-            onShowMore={(events: any[], d) => {
-              setEventRecord(events);
-              setDateXemThem(d);
-              setVisibleXemThem(true);
-            }}
-          />
+          <Spin spinning={loading}>
+            <Calendar
+              formats={{
+                dayHeaderFormat: 'dddd DD/MM/YYYY',
+                dayRangeHeaderFormat: (range: DateRange) => {
+                  return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format(
+                    'DD/MM',
+                  )}`;
+                },
+              }}
+              localizer={localizer}
+              events={dataCalendar}
+              defaultView={calendarView}
+              onView={(view) => setCalendarView(view)}
+              onRangeChange={(val) => {
+                if (Array.isArray(val))
+                  setDateRange([moment(val[0]).startOf('d'), moment(val[1]).endOf('d')]);
+                else setDateRange([moment(val.start).startOf('d'), moment(val.end).endOf('d')]);
+              }}
+              onNavigate={(newDate) => setDate(newDate)}
+              selectable
+              scrollToTime={new Date(1970, 1, 1, 6)}
+              defaultDate={new Date()}
+              date={date}
+              messages={messagesCalendar}
+              views={['month', 'week', 'day']}
+              style={{ height: 700, overflow: 'auto' }}
+              min={moment('0000', 'HHmm').toDate()}
+              max={moment('2359', 'HHmm').toDate()}
+              eventPropGetter={eventPropGetter}
+              onSelectSlot={handleSelect}
+              onSelectEvent={(rec: any) => {
+                setSelectEvent(rec);
+                setVisibleDetail(true);
+              }}
+              components={{ event: (event: any) => eventCustom(event) }}
+              popup
+              onShowMore={(events: any[], d) => {
+                setEventRecord(events);
+                setDateXemThem(d);
+                setVisibleXemThem(true);
+              }}
+            />
+          </Spin>
         </Col>
       </Row>
 

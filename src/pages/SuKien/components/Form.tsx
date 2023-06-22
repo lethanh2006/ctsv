@@ -29,7 +29,7 @@ const FormSuKien = (props: { getData: () => void }) => {
         .then()
         .catch((er) => console.log(er));
     } else
-      postModel({ ...values, loaiSuKien: ELoaiSuKien.TAT_CA }, getData)
+      postModel({ ...values, loaiSuKien: ELoaiSuKien.CHUNG }, getData)
         .then()
         .catch((er) => console.log(er));
   };
