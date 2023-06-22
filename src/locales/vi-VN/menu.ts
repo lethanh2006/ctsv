@@ -16,6 +16,9 @@ export default {
   'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
   'menu.DanhMuc.DanhHieu': 'Khen thưởng/kỷ luật',
   'menu.DanhMuc.LoaiPhongBan': 'Loại phòng ban',
+
+  'menu.SuKien': 'Sự kiện',
+
   'menu.SinhVien': 'Hồ sơ sinh viên',
   'menu.SinhVien.DanhSachSinhVien': 'Danh sách sinh viên',
   'menu.SinhVien.DotNhapHoc': 'Đợt nhập học',
