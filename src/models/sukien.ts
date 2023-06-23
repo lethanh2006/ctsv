@@ -6,12 +6,7 @@ import { useState } from 'react';
 
 export default () => {
   const objInit = useInitModel<SuKien.IRecord>('su-kien/admin');
-  const [selectSuKiens, setSelectSuKiens] = useState<ELoaiSuKien[]>([
-    ELoaiSuKien.LICH_HOC,
-    ELoaiSuKien.LICH_THI,
-    ELoaiSuKien.CA_NHAN,
-    ELoaiSuKien.CHUNG,
-  ]);
+  const [selectSuKiens, setSelectSuKiens] = useState<ELoaiSuKien[]>([ELoaiSuKien.CHUNG]);
   const { setLoading, setDanhSach } = objInit;
 
   /**
@@ -22,6 +17,7 @@ export default () => {
   const getSuKienTrongKhoangModel = async (payload: {
     fromDate: string;
     toDate: string;
+    types?: ELoaiSuKien[];
   }): Promise<SuKien.IRecord[]> => {
     setLoading(true);
     try {
