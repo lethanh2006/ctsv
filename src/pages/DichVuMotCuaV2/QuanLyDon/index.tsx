@@ -1,4 +1,4 @@
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { Card, Tabs } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -21,7 +21,7 @@ const QuanLyDon = () => {
     setPage,
     setTypeTraKetQua,
     getAllBieuMauVPSModel,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
 
   // const { chuyenVienDieuPhoiGetTongSoDonDVMCModel, chuyenVienXuLyGetTongSoDonDVMCModel, idDichVu } =
   //   useModel('dashboard');

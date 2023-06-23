@@ -65,6 +65,8 @@ declare module ThanhToan {
       cmtCccd: string;
       address: string;
     };
+    currentPrice: any;
+    unitLabel: any;
     identityCode: string;
     items: Item[];
     paidHistory: any[];

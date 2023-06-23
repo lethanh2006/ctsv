@@ -1,14 +1,14 @@
 import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/OldTable';
 import FormView from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+
 import type { IColumn } from '@/utils/interfaces';
 // import { useCheckAccess } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { useAccess, useModel } from 'umi';
+import {  useModel } from 'umi';
 import FormQuyTrinh from '../components/FormQuyTrinh';
 import Form from './components/Form';
 
@@ -28,11 +28,11 @@ const QuanLyBieuMau = () => {
     setDanhSach,
     phamVi,
     putTrangThaiBieuMauModel,
-  } = useModel('dichvumotcuav2');
-  const { getAllDonViModel } = useModel('donvi');
+  } = useModel('dvmc.dichvumotcuav2');
+  // const { getAllDonViModel } = useModel('donvi');
   const { getProductByCodeModel } = useModel('thanhtoan');
-  const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
-  const access = useAccess();
+  // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
+  // const access = useAccess();
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -44,8 +44,8 @@ const QuanLyBieuMau = () => {
 
   useEffect(() => {
     setLoaiDichVu(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-    getAllHinhThucDaoTaoModel();
-    getAllDonViModel();
+    // getAllHinhThucDaoTaoModel();
+    // getAllDonViModel();
     return () => {
       setRecord({} as DichVuMotCuaV2.BieuMau);
       setDanhSach([]);
@@ -105,12 +105,12 @@ const QuanLyBieuMau = () => {
       width: 120,
       dataIndex: 'hinhThucDaoTaoId',
       align: 'center',
-      hide: !access.admin,
+      // hide: !access.admin,
       render: (val, record) => (
         <div>
-          {record?.phamVi === 'Tất cả'
-            ? 'Tất cả'
-            : danhSachHinhThucDaoTao?.find((item) => item.id === val)?.display_name}
+          {/*{record?.phamVi === 'Tất cả'*/}
+          {/*  ? 'Tất cả'*/}
+          {/*  : danhSachHinhThucDaoTao?.find((item) => item.id === val)?.display_name}*/}
         </div>
       ),
     },
@@ -155,9 +155,9 @@ const QuanLyBieuMau = () => {
               <Button
                 // disabled={!isUpdate}
                 onClick={() => {
-                  // if (record?.thongTinThuTuc?.maLePhi) {
-                  //   getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
-                  // }
+                  if (record?.thongTinThuTuc?.maLePhi) {
+                    getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
+                  }
                   setRecord(record);
                   setEdit(true);
                   setVisibleForm(true);
@@ -191,22 +191,17 @@ const QuanLyBieuMau = () => {
     },
   ];
 
-  const isLargeScreen = useMediaQuery({
-    query: '(min-width: 992px)',
-  });
 
   return (
     <>
       <TableBase
-        widthDrawer={!isLargeScreen ? '80%' : '60%'}
-        formType="Drawer"
-        otherProps={{ scroll: { x: 1100 } }}
+        widthDrawer={1000}
         title="Quản lý biểu mẫu"
-        modelName="dichvumotcuav2"
+        modelName="dvmc.dichvumotcuav2"
         columns={columns}
         loading={loading}
         dependencies={[page, limit, condition, phamVi]}
-        getData={() => getBieuMauAdminModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO')}
+        getData={() => getBieuMauAdminModel('DVMC' )}
         Form={Form}
       >
         <Button

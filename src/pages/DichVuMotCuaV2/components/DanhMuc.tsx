@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { currencyFormat } from '@/utils/utils';
 
 const DanhMuc = (props: { button: any }) => {
-  const { record } = useModel('dichvumotcuav2');
+  const { record } = useModel('dvmc.dichvumotcuav2');
   const { record: recordProduct, getProductByCodeModel } = useModel('thanhtoan');
   useEffect(() => {
     if (record?.thongTinThuTuc?.maLePhi) getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
@@ -47,6 +47,7 @@ const DanhMuc = (props: { button: any }) => {
                 {record?.thongTinThuTuc?.tinhTienTheoSoLuong ? 'Có' : 'Không'}
               </Descriptions.Item>
               <Descriptions.Item label="Mức lệ phí">
+                {/*//@ts-ignore*/}
                 {recordProduct?.currentPrice?.unitAmount
                   ? `${currencyFormat(recordProduct?.currentPrice?.unitAmount)} đồng`
                   : ''}

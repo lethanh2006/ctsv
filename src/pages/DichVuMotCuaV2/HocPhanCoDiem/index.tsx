@@ -1,4 +1,4 @@
-import type { IRecordHocPhan } from '@/services/HocPhanCoDiem/typing';
+import { IRecordHocPhan } from '@/services/DVMC/HocPhanCoDiem/typing';
 import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
 import { useModel } from '@@/plugin-model/useModel';
@@ -15,7 +15,7 @@ type Props = {
   initialValue?: IRecordHocPhan.record;
 };
 const HocPhanCoDiem = (props: Props) => {
-  const { getDsKyHoc, getDsDiemTheoKy, dsKyHoc, dsDiemTheoKy, loading } = useModel('hocphancodiem');
+  const { getDsKyHoc, getDsDiemTheoKy, dsKyHoc, dsDiemTheoKy, loading } = useModel('dvmc.hocphancodiem');
   const [idKy, setIdKy] = useState<string>(props?.initialValue?.idHocKy ?? '');
   useEffect(() => {
     getDsKyHoc();
@@ -42,6 +42,7 @@ const HocPhanCoDiem = (props: Props) => {
             onChange={(val: string, option: any) => {
               setIdKy(val);
               const newValue = {};
+              // @ts-ignore
               newValue[`${props?.fields?.idHocKy?.[0]}`] = {
                 idDiem: undefined,
                 tenHocKy: option?.key,
@@ -87,6 +88,7 @@ const HocPhanCoDiem = (props: Props) => {
               // danhSachXaPhuongNew[`${props?.fields?.xaPhuong?.join('.')}`] = [];
               // setObjDanhSachXaPhuong({ ...objDanhSachXaPhuong, ...danhSachXaPhuongNew });
               const newValue = {};
+              // @ts-ignore
               newValue[`${props?.fields?.idDiem?.[0]}`] = {
                 maHocPhan: option?.key,
                 tenHocPhan: option?.children,

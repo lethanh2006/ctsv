@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { Setting, TrangThaiBuoc, TrangThaiThaoTac } from '@/utils/constants';
 import {
   CheckCircleOutlined,
@@ -10,9 +11,8 @@ import {
 import { Button, Card, Modal, Spin, Timeline } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useAccess, useModel } from 'umi';
+import { useModel } from 'umi';
 import FormBieuMau from './FormBieuMau';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 
 const IconTrangThai = {
   PENDING: (
@@ -64,9 +64,7 @@ const FormQuyTrinh = (props: {
   thoiGianTaoDon?: string;
 }) => {
   const {
-    sinhVienGetTrangThaiDonModel,
     chuyenVienDieuPhoiGetTrangThaiDonModel,
-    chuyenVienTiepNhanGetTrangThaiDonModel,
     recordTrangThaiDon,
     setRecordDonThaoTac,
     recordDonThaoTac: recordDonThaoTacModel,
@@ -74,19 +72,18 @@ const FormQuyTrinh = (props: {
     loading,
     visibleFormBieuMau,
     setVisibleFormBieuMau,
-    adminGetTrangThaiDonModel,
     danhSachDonThaoTac,
     setDanhSachDonThaoTac,
     record,
     recordDon,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
   const arrPathName = pathname?.split('/') ?? [];
   const [checkLastStep, setCheckLastStep] = useState<boolean>(false);
   const [checkDuocPhepXuLy, setCheckDuocPhepXuLy] = useState<boolean>(false);
   const lastStep = props?.record?.danhSachBuoc?.[props?.record?.danhSachBuoc?.length - 1 ?? 0];
-  const [type, setType] = useState<string>('handle');
+  const [type, setType] = useState<'view' | 'handle' | 'create' | 'edit'>('handle');
   const [trangThaiDon, setTrangThaiDon] = useState<string>();
 
   useEffect(() => {
@@ -120,9 +117,9 @@ const FormQuyTrinh = (props: {
     isDonThaoTacOBuocCuoi: boolean,
     isDuocPhepXuLyDonThaoTac: boolean,
   ): any => {
-    // if (arrPathName?.includes('quanlydondieuphoi')) {
-    //   getChuyenVienXuLyDonModel(recordDonThaoTac?.idDonVi);
-    // }
+    if (arrPathName?.includes('quanlydondieuphoi')) {
+      getChuyenVienXuLyDonModel(recordDonThaoTac?.idDonVi);
+    }
     setType('handle');
     setRecordDonThaoTac(recordDonThaoTac);
     setVisibleFormBieuMau(true);
@@ -172,6 +169,7 @@ const FormQuyTrinh = (props: {
         {props?.record?.danhSachBuoc?.length
           ? props?.record?.danhSachBuoc?.map((buoc, index) => {
               const recordBuoc = recordTrangThaiDon?.find((item) => item.idBuoc === buoc._id);
+            // @ts-ignore
               const IconBuoc = IconTrangThai?.[recordBuoc?.trangThai ?? 'ANY'];
               return (
                 <>
@@ -184,6 +182,7 @@ const FormQuyTrinh = (props: {
                           <b>{buoc?.ten ?? ''}</b>
                           <br />
                           <div>
+                            {/*// @ts-ignore*/}
                             Trạng thái: {TrangThaiBuoc?.[recordBuoc?.trangThai ?? ''] ?? 'Đang chờ'}
                           </div>
                         </div>
@@ -202,7 +201,9 @@ const FormQuyTrinh = (props: {
                       );
                       // const isDuocPhepXuLy = recordDonThaoTac?.phanQuyen ?? false;
                       const isDuocPhepXuLy = true;
+                      // @ts-ignore
                       const IconThaoTac = IconTrangThai?.[recordThaoTac?.trangThai ?? 'ANY'];
+
                       return (
                         <Timeline.Item key={recordThaoTac?._id} dot={IconThaoTac}>
                           <b
@@ -220,6 +221,7 @@ const FormQuyTrinh = (props: {
                           <div>Đơn vị: {thaoTac?.tenDonVi || 'Đơn vị quản lý'}</div>
                           <div>
                             Trạng thái:{' '}
+                            {/*// @ts-ignore*/}
                             {TrangThaiThaoTac?.[recordThaoTac?.trangThai ?? ''] ?? 'Chưa xử lý'}
                           </div>
                           {!['OK', 'NOT_OK'].includes(recordThaoTac?.trangThai ?? '') ? (

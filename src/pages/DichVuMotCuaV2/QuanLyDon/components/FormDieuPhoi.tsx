@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 
 const FormDieuPhoi = (props: { onCancel: any }) => {
   const [form] = Form.useForm();
-  const { loading, recordDonThaoTac, dieuPhoiDonModel } = useModel('dichvumotcuav2');
+  const { loading, recordDonThaoTac, dieuPhoiDonModel } = useModel('dvmc.dichvumotcuav2');
   const { danhSachChuyenVienXuLy } = useModel('phanquyen');
   return (
     <Card title="Điều phối đơn">
