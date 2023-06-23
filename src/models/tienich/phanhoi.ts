@@ -19,6 +19,25 @@ export default () => {
   } = objInit;
   const [vaiTro, setVaiTro] = useState<EVaiTroBieuMau>(EVaiTroBieuMau.SINH_VIEN);
 
+  const traLoiPhanHoiDvmcModel = async (payload: {
+    id: string;
+    data: { noiDungTraLoiPhanHoi: string; maChuyenVien: string; noiDungPhanHoi: string };
+  }) => {
+    if (formSubmiting) return Promise.reject('Form submiting');
+    setFormSubmiting(true);
+
+    try {
+      const res = await traLoiPhanHoi(payload);
+      message.success('Trả lời thành công');
+      setVisibleForm(false);
+      getModel();
+      return res.data?.data;
+    } catch (err) {
+      return Promise.reject(err);
+    } finally {
+      setFormSubmiting(false);
+    }
+  };
   const traLoiPhanHoiModel = async (payload: {
     id: string;
     data: { noiDungTraLoiPhanHoi: string; maChuyenVien: string; noiDungPhanHoi: string };
@@ -54,6 +73,7 @@ export default () => {
     ...objInit,
     traLoiPhanHoiModel,
     getPhanHoiFromOtherModel,
+    traLoiPhanHoiDvmcModel,
     vaiTro,
     setVaiTro,
   };

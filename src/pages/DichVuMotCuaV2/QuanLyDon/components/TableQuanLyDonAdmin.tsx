@@ -2,7 +2,6 @@
 import TableBase from '@/components/OldTable';
 import ThanhToan from '@/pages/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
 import type { IColumn } from '@/utils/interfaces';
 import { includes } from '@/utils/utils';
@@ -19,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 const TableQuanLyDonAdmin = (props: {
   hideFilter?: boolean;
@@ -45,7 +45,7 @@ const TableQuanLyDonAdmin = (props: {
     setRecordDon,
     updateTrangThaiNhanKetQuaModel,
     typeTraKetQua,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const { setIdDichVu, adminGetTongSoDonDVMCModel } = useModel('dashboard');
 
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
@@ -126,8 +126,9 @@ const TableQuanLyDonAdmin = (props: {
       render: (val, recordRender) => {
         return (
           <div>
-            {recordRender?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find((item) => item._id === val)
-              ?.ten ?? ''}
+            {recordRender?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find(
+              (item: any) => item._id === val,
+            )?.ten ?? ''}
           </div>
         );
       },

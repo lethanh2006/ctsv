@@ -1,8 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/OldTable';
-import ThanhToan from '@/pages/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
 import type { IColumn } from '@/utils/interfaces';
 import { includes } from '@/utils/utils';
@@ -18,7 +17,6 @@ import {
 } from '@ant-design/icons';
 import {
   Button,
-  Divider,
   Dropdown,
   Menu,
   Modal,

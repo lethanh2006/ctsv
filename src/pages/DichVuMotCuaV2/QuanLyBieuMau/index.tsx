@@ -8,8 +8,7 @@ import type { IColumn } from '@/utils/interfaces';
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { useAccess, useModel } from 'umi';
+import {  useModel } from 'umi';
 import FormQuyTrinh from '../components/FormQuyTrinh';
 import Form from './components/Form';
 
@@ -33,7 +32,7 @@ const QuanLyBieuMau = () => {
   // const { getAllDonViModel } = useModel('donvi');
   const { getProductByCodeModel } = useModel('thanhtoan');
   // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
-  const access = useAccess();
+  // const access = useAccess();
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -156,9 +155,9 @@ const QuanLyBieuMau = () => {
               <Button
                 // disabled={!isUpdate}
                 onClick={() => {
-                  // if (record?.thongTinThuTuc?.maLePhi) {
-                  //   getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
-                  // }
+                  if (record?.thongTinThuTuc?.maLePhi) {
+                    getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
+                  }
                   setRecord(record);
                   setEdit(true);
                   setVisibleForm(true);

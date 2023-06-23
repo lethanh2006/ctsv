@@ -16,13 +16,12 @@ import { Button, Divider, message, Modal, Popconfirm, Popover, Tabs, Tooltip } f
 import axios from 'axios';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useAccess, useModel } from 'umi';
+import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 const LichSuGuiDon = () => {
-  const access = useAccess();
   const {
     page,
     limit,
@@ -36,34 +35,27 @@ const LichSuGuiDon = () => {
     visibleFormChinhSuaDon,
     setVisibleFormChinhSuaDon,
     setLoading,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [visibleViewInDon, setVisibleViewInDon] = useState<boolean>(false);
   const [type, setType] = useState<'edit' | 'view' | 'handle' | 'create'>('view');
   const { pathname } = window.location;
-  const { getAllKyHocSinhVienModel, setDanhSach: setDanhSachKyHoc } = useModel('kyhoc');
-  const { getAllNamHocSinhVienModel, setDanhSach: setDanhSachNamHoc } = useModel('namhoc');
-  const { getAllLopTinChiSinhVienModel, setDanhSach: setDanhSachLopTinChi } = useModel('loptinchi');
-  const { getAllMonHocSinhVienModel, setDanhSachMonHoc } = useModel('loptinchi');
+
   const [data, setData] = useState<any>();
   const [visibleForm, setVisibleForm] = useState<boolean>(false);
 
   useEffect(() => {
     setRecord({} as DichVuMotCuaV2.BieuMau);
     setLoaiDichVu(pathname?.includes('dichvumotcua') ? 'DVMC' : 'VAN_PHONG_SO');
-    if (access.sinhVien) {
-      getAllKyHocSinhVienModel();
-      getAllNamHocSinhVienModel();
-      getAllMonHocSinhVienModel();
-      getAllLopTinChiSinhVienModel();
-    }
+    // if (access.sinhVien) {
+    //   getAllKyHocSinhVienModel();
+    //   getAllNamHocSinhVienModel();
+    //   getAllMonHocSinhVienModel();
+    //   getAllLopTinChiSinhVienModel();
+    // }
 
     return () => {
       setDanhSach([]);
-      setDanhSachLopTinChi([]);
-      setDanhSachMonHoc([]);
-      setDanhSachKyHoc([]);
-      setDanhSachNamHoc([]);
     };
   }, []);
 
@@ -81,10 +73,10 @@ const LichSuGuiDon = () => {
             'Content-Type': 'application/json',
           },
         })
-          .then((response) => {
+          .then((response: any) => {
             if (response.ok) {
               // checks if the response is with status 200 (successful)
-              return response.blob().then((blob) => {
+              return response.blob().then((blob: any) => {
                 // const name = "Report.pdf";
                 // saveAs(blob, name);
                 setData(blob);
@@ -156,6 +148,7 @@ const LichSuGuiDon = () => {
       width: 150,
       search: 'filterString',
       notRegex: true,
+      //@ts-ignore
       render: (val) => <div>{TrangThaiDonDVMC?.[val] ?? 'Chưa cập nhật'}</div>,
     },
     {

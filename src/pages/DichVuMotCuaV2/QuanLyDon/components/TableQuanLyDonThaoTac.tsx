@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useModel } from 'umi';
 import ThanhToan from '@/pages/ThanhToan';
 import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 const TableQuanLyDon = () => {
   const {
@@ -27,7 +27,7 @@ const TableQuanLyDon = () => {
     setRecordDonThaoTac,
     recordDonThaoTac,
     exportDonModel,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
 
   const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
@@ -104,7 +104,7 @@ const TableQuanLyDon = () => {
         <div>
           {
             recordDon?.idDon?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find(
-              (item) => item._id === val,
+              (item: { _id: any; }) => item._id === val,
             )?.ten
           }
         </div>

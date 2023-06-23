@@ -117,8 +117,10 @@ const ElementDescription = (props: { type: string; text: string }) => {
           borderRadius: 5,
           backgroundColor: '#fff',
         }}
+        // @ts-ignore
         src={valueByType?.[props?.type]?.img}
       />
+      {/*// @ts-ignore*/}
       <div style={{ color: '#fff' }}>{valueByType?.[props?.type]?.text}</div>
     </div>
   );

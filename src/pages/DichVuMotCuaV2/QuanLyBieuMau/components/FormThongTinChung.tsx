@@ -7,10 +7,9 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAccess, useModel } from 'umi';
-import SelectHinhThuc from "@/pages/DaoTao/HinhThucDaoTao/Select";
+import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
 
 const FormThongTinChung = () => {
-  const access = useAccess();
   const [form] = Form.useForm();
   const {
     loading,
@@ -177,44 +176,44 @@ const FormThongTinChung = () => {
             </Form.Item>
           </Col>
 
-            <>
+          <>
+            <Col md={12}>
+              <Form.Item
+                initialValue={recordDichVu?.phamVi}
+                rules={[...rules.required]}
+                name="phamVi"
+                label="Phạm vi"
+              >
+                <Select onChange={(val: string) => setPhamVi(val)} placeholder="Phạm vi">
+                  {['Tất cả', 'Hình thức đào tạo'].map((item) => (
+                    <Select.Option key={item} value={item}>
+                      {item}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+
+            {phamVi === 'Hình thức đào tạo' && (
               <Col md={12}>
                 <Form.Item
-                  initialValue={recordDichVu?.phamVi}
+                  initialValue={recordDichVu?.hinhThucDaoTaoId}
                   rules={[...rules.required]}
-                  name="phamVi"
-                  label="Phạm vi"
+                  name="hinhThucDaoTaoId"
+                  label="Hình thức đào tạo"
                 >
-                  <Select onChange={(val: string) => setPhamVi(val)} placeholder="Phạm vi">
-                    {['Tất cả', 'Hình thức đào tạo'].map((item) => (
-                      <Select.Option key={item} value={item}>
-                        {item}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                  {/*<Select placeholder="Hình thức đào tạo">*/}
+                  {/*  /!*{danhSachHinhThucDaoTao?.map((item) => (*!/*/}
+                  {/*  /!*  <Select.Option key={item._id} value={item._id}>*!/*/}
+                  {/*  /!*    {item.danhMucHTDT.ten}*!/*/}
+                  {/*  /!*  </Select.Option>*!/*/}
+                  {/*  /!*))}*!/*/}
+                  {/*</Select>*/}
+                  <SelectHinhThuc />
                 </Form.Item>
               </Col>
-
-              {phamVi === 'Hình thức đào tạo' && (
-                <Col md={12}>
-                  <Form.Item
-                    initialValue={recordDichVu?.hinhThucDaoTaoId}
-                    rules={[...rules.required]}
-                    name="hinhThucDaoTaoId"
-                    label="Hình thức đào tạo"
-                  >
-                    {/*<Select placeholder="Hình thức đào tạo">*/}
-                    {/*  /!*{danhSachHinhThucDaoTao?.map((item) => (*!/*/}
-                    {/*  /!*  <Select.Option key={item._id} value={item._id}>*!/*/}
-                    {/*  /!*    {item.danhMucHTDT.ten}*!/*/}
-                    {/*  /!*  </Select.Option>*!/*/}
-                    {/*  /!*))}*!/*/}
-                    {/*</Select>*/}
-                    <SelectHinhThuc/>
-                  </Form.Item>
-                </Col>
-              )}
-            </>
+            )}
+          </>
 
           <Col md={12}>
             <Form.Item

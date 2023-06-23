@@ -10,7 +10,7 @@ import {
   SaveOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Form, Modal } from 'antd';
-import { useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import styles from './block.css';
@@ -27,12 +27,12 @@ const FormTaoQuyTrinh = () => {
     postBieuMauAdminModel,
     setCurrent,
   } = useModel('dvmc.dichvumotcuav2');
-  // const { getAllDonViModel, danhSach } = useModel('donvi');
+  const { getAllModel, danhSach } = useModel('tochucnhansu.donvi');
   const [visibleQuyTrinh, setVisibleQuyTrinh] = useState<boolean>(false);
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.QuyTrinh>();
-  // useEffect(() => {
-  //   getAllDonViModel();
-  // }, []);
+  useEffect(() => {
+    getAllModel();
+  }, []);
 
   const buildPostQuyTrinh = (values: { quyTrinh: DichVuMotCuaV2.QuyTrinh }) => {
     const quyTrinh: DichVuMotCuaV2.QuyTrinh = {
@@ -44,7 +44,7 @@ const FormTaoQuyTrinh = () => {
               ...thaoTac,
               nguoiDieuPhoiMacDinh: thaoTac?.idNguoiDieuPhoiMacDinh ? true : false,
               idDonVi: thaoTac?.idDonVi?.toString(),
-              // tenDonVi: danhSach?.find((item) => item._id === thaoTac?.idDonVi)?.ten ?? '',
+              tenDonVi: danhSach?.find((item) => item._id === thaoTac?.idDonVi)?.ten ?? '',
             }),
           ),
         };

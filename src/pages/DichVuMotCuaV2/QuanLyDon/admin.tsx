@@ -1,4 +1,4 @@
-import type { DichVuMotCuaV2 } from '@/services/DichVuMotCuaV2/typing';
+import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { Card, Tabs } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -15,7 +15,7 @@ const QuanLyDonAdmin = () => {
     setFilterInfo,
     setPage,
     setTypeTraKetQua,
-  } = useModel('dichvumotcuav2');
+  } = useModel('dvmc.dichvumotcuav2');
   const { adminGetTongSoDonDVMCModel, recordTongSoDon, setIdDichVu, idDichVu, setRecordTongSoDon } =
     useModel('dashboard');
   const { pathname } = window.location;

@@ -16,7 +16,7 @@ const BieuMauThaoTac = (props: {
   step: number;
   form: FormInstance;
 }) => {
-  // const { danhSach } = useModel('donvi');
+  const { danhSach } = useModel('tochucnhansu.donvi');
   const { record } = useModel('dvmc.dichvumotcuav2');
   const { getChuyenVienXuLyDonModel, danhSachChuyenVienXuLy, loading, setDanhSachChuyenVienXuLy } =
     useModel('phanquyen');
@@ -66,7 +66,9 @@ const BieuMauThaoTac = (props: {
             placeholder="Chọn loại đối tượng"
           >
             {Object.keys(LoaiDoiTuongXuLyQuyTrinh)?.map((item) => (
+              //@ts-ignore
               <Select.Option key={item} value={LoaiDoiTuongXuLyQuyTrinh[item]}>
+                {/*//@ts-ignore*/}
                 {LoaiDoiTuongXuLyQuyTrinh[item]}
               </Select.Option>
             ))}
@@ -93,11 +95,11 @@ const BieuMauThaoTac = (props: {
                 props.form.setFieldsValue(_.set(recordTemp, path, undefined));
               }}
             >
-              {/*{danhSach?.map((item) => (*/}
-              {/*  <Select.Option key={item._id} value={item._id}>*/}
-              {/*    {item.ten} ({item.maDonVi})*/}
-              {/*  </Select.Option>*/}
-              {/*))}*/}
+              {danhSach?.map((item) => (
+                <Select.Option key={item._id} value={item._id}>
+                  {item.ten} ({item.maDonVi})
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
         </Col>
@@ -121,9 +123,9 @@ const BieuMauThaoTac = (props: {
             filterOption={(value, option) => includes(option?.props.children, value)}
             showSearch
             placeholder="Chọn người xử lý"
-            // onMouseEnter={() => {
-            //   getChuyenVienXuLyDonModel(idDonVi);
-            // }}
+            onMouseEnter={() => {
+              getChuyenVienXuLyDonModel(idDonVi);
+            }}
           >
             {danhSachChuyenVienXuLy?.map((item) => (
               <Select.Option key={item.id} value={item.id.toString()}>

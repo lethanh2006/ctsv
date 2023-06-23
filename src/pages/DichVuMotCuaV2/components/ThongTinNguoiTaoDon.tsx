@@ -1,14 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import { Descriptions } from 'antd';
 import moment from 'moment';
-import { useModel, useAccess } from 'umi';
+import { useModel } from 'umi';
 
 const ThongTinNguoiTaoDon = (props: {
-  record?: Login.Profile;
+  record?: any;
   thongTinNguoiTaoAdmin?: { hoTen: string; maDonVi: string; maSinhVien: string };
 }) => {
-  const { loaiDichVu, recordDon } = useModel('dvmc.dichvumotcuav2');
-  const access = useAccess();
+  const { loaiDichVu } = useModel('dvmc.dichvumotcuav2');
 
   return (
     <Descriptions>
@@ -53,16 +52,16 @@ const ThongTinNguoiTaoDon = (props: {
           <Descriptions.Item>
             Chuyên ngành: {props?.record?.ten_nganh || props?.record?.tenNganh || ''}
           </Descriptions.Item>
-          {!access.sinhVien && (
-            <>
-              <Descriptions.Item>
-                Khóa: {recordDon?.thongTinNguoiTao?.khoaNganh?.[1] ?? ''}
-              </Descriptions.Item>
-              <Descriptions.Item>
-                Hình thức đào tạo: {recordDon?.thongTinNguoiTao?.hinhThucDaoTaoId?.[1] ?? ''}
-              </Descriptions.Item>
-            </>
-          )}
+          {/*{!access.sinhVien && (*/}
+          {/*  <>*/}
+          {/*    <Descriptions.Item>*/}
+          {/*      Khóa: {recordDon?.thongTinNguoiTao?.khoaNganh?.[1] ?? ''}*/}
+          {/*    </Descriptions.Item>*/}
+          {/*    <Descriptions.Item>*/}
+          {/*      Hình thức đào tạo: {recordDon?.thongTinNguoiTao?.hinhThucDaoTaoId?.[1] ?? ''}*/}
+          {/*    </Descriptions.Item>*/}
+          {/*  </>*/}
+          {/*)}*/}
           <Descriptions.Item>SĐT: {props?.record?.soDienThoai}</Descriptions.Item>
           <Descriptions.Item>Email: {props?.record?.email}</Descriptions.Item>
         </>

@@ -32,6 +32,7 @@ const Block = (props: {
     const objectRelateTemp = {};
     if (['DROP_LIST_SINGLE', 'DROP_LIST_MULTI', 'RADIO_BUTTON', 'CHECKLIST']?.includes(type)) {
       recordBlock?.dataSource?.forEach((item, index) => {
+        // @ts-ignore
         objectRelateTemp[index] = item.relatedElement?.length > 0;
       });
     }
@@ -40,6 +41,7 @@ const Block = (props: {
   const isLargeScreen = useMediaQuery({
     query: '(min-width: 992px)',
   });
+
 
   return (
     <div key={props?.index}>
@@ -71,6 +73,7 @@ const Block = (props: {
                     }}
                     value={item}
                   >
+                    {/*// @ts-ignore*/}
                     {ElementTemplateType?.[item] ?? ''}
                   </Select.Option>
                 ))}
@@ -178,6 +181,7 @@ const Block = (props: {
               <Select mode="multiple" placeholder="Chọn loại file">
                 {Object.keys(EFileType)?.map((item, index) => (
                   <Select.Option key={index} value={item}>
+                    {/*// @ts-ignore*/}
                     {EFileType[item]}
                   </Select.Option>
                 ))}
@@ -226,6 +230,7 @@ const Block = (props: {
                               checked={objectRelate?.[index]}
                               onChange={(val) => {
                                 const newObject = {};
+                                // @ts-ignore
                                 newObject[`${index}`] = val.target.checked;
                                 setObjectRelate({ ...objectRelate, ...newObject });
                               }}

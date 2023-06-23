@@ -30,7 +30,7 @@ import {
 import moment from 'moment';
 import mm from 'moment-timezone';
 import { useEffect, useState } from 'react';
-import { useAccess, useModel } from 'umi';
+import { useModel } from 'umi';
 import FormDieuPhoi from '../QuanLyDon/components/FormDieuPhoi';
 import FormXuLyDon from '../QuanLyDon/components/FormXuLyDon';
 import Table from './TableElement';
@@ -38,9 +38,9 @@ import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import type { Login } from '@/services/ant-design-pro/typings';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import HocPhanCoDiem from "@/pages/DichVuMotCuaV2/HocPhanCoDiem";
-import DiaChi from "@/pages/DichVuMotCuaV2/DiaChi";
+import HocPhanCoDiem from '@/pages/DichVuMotCuaV2/HocPhanCoDiem';
 import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh';
+import SelectDanToc from '@/pages/Core/DanToc/SelectDanToc';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -69,7 +69,6 @@ const FormBieuMau = (props: {
   // const isQuanTriVps = useCheckAccess('quan-tri-vps');
 
   const [form] = Form.useForm();
-  const access = useAccess();
   const {
     loading,
     danhSachDataTable,
@@ -80,10 +79,6 @@ const FormBieuMau = (props: {
     recordDon,
     sinhVienPutDonModel,
     exportDonModel,
-    setVisibleForm,
-    getDonSinhVienModel,
-    loaiDichVu,
-    adminGetDonVpsModel,
   } = useModel('dvmc.dichvumotcuav2');
   // const { danhSach: danhSachKyHoc } = useModel('kyhoc');
   // const { danhSach: danhSachNamHoc } = useModel('namhoc');
@@ -115,6 +110,7 @@ const FormBieuMau = (props: {
           (row: DichVuMotCuaV2.CauHinhBieuMau[]) => ({ cauHinhBieuMau: row }),
         );
 
+        // @ts-ignore
         recordTemp[`${name}[${indexCauHinh}].${cauHinh?.label}`] = arrData;
         setDanhSachDataTable(recordTemp);
       }
@@ -184,6 +180,7 @@ const FormBieuMau = (props: {
       if (values[item]?.fileList) {
         const checkSize = checkFileSize(values[item]?.fileList ?? []);
         if (!checkSize) return;
+        // @ts-ignore
         objectFileUpload[item] = await uploadMultiFile(values[item]?.fileList ?? [], true);
       }
     }
@@ -261,6 +258,7 @@ const FormBieuMau = (props: {
       case 'DATE_PICKER': {
         initialValue = item?.value ? moment(item?.value) : undefined;
         element = (
+          //@ts-ignore
           <DatePicker
             style={{ width: '100%' }}
             format="DD/MM/YYYY HH:mm"
@@ -275,10 +273,12 @@ const FormBieuMau = (props: {
         initialValue = renderFileList(
           item?.value?.map((file: { url: string; type: string }) => file?.url),
         );
+
         element = (
           <Upload
             otherProps={{
               maxCount: 1,
+              // @ts-ignore
               accept: item?.fileType?.map((type) => accessFileUpload?.[type])?.join(','),
               multiple: false,
               showUploadList: { showDownloadIcon: false },
@@ -299,6 +299,7 @@ const FormBieuMau = (props: {
           <Upload
             otherProps={{
               maxCount: 5,
+              // @ts-ignore
               accept: item?.fileType?.map((type) => accessFileUpload?.[type])?.join(','),
               multiple: true,
               showUploadList: { showDownloadIcon: false },
@@ -355,17 +356,17 @@ const FormBieuMau = (props: {
           //     diaChiCuThe: [`${name}.${item?.label ?? ''}`, 'soNhaTenDuong'],
           //   }}
           // />
-        <SelectDonViHanhChinh
-          form={form}
-          // listTinh={danhSachTinh}
-          hideQuanHuyen={item?.level === 1}
-          hideXaPhuong={[1, 2].includes(item?.level)}
-          notRequiredDiaChiCuThe={!item?.isRequired}
-          notRequiredQuanHuyen={!item?.isRequired}
-          notRequiredTinh={!item?.isRequired}
-          notRequiredXaPhuong={!item?.isRequired}
-          initialValue={item?.value}
-        />
+          <SelectDonViHanhChinh
+            form={form}
+            // listTinh={danhSachTinh}
+            hideQuanHuyen={item?.level === 1}
+            hideXaPhuong={[1, 2].includes(item?.level)}
+            notRequiredDiaChiCuThe={!item?.isRequired}
+            notRequiredQuanHuyen={!item?.isRequired}
+            notRequiredTinh={!item?.isRequired}
+            notRequiredXaPhuong={!item?.isRequired}
+            initialValue={item?.value}
+          />
         );
         break;
       }
@@ -429,6 +430,7 @@ const FormBieuMau = (props: {
                 );
               });
             }
+            // @ts-ignore
             row[cell?.label] = value;
           });
           return row;
@@ -489,7 +491,7 @@ const FormBieuMau = (props: {
       case 'MY_SEMESTER': {
         initialValue = item?.value;
         ruleElement = [...rules.text];
-        const kyHoc=[]
+
         // const kyHoc = access.sinhVien
         //   ? danhSachKyHoc
         //   : [
@@ -497,48 +499,20 @@ const FormBieuMau = (props: {
         //       // { id: 2, ten_ky_nam_hoc: '2', nam_hoc_id: [2, '2022-2023'] },
         //     ];
         ruleElement = [...rules.text];
-        element = access.sinhVien ? (
-          <Select allowClear placeholder={item?.label ?? ''}>
-            {kyHoc?.map((kyhoc: any) => (
-              <Select.Option
-                key={kyhoc.id}
-                value={`Kỳ ${kyhoc.ten_ky_nam_hoc} năm ${kyhoc.nam_hoc_id?.[1]}`}
-              >
-                Kỳ {kyhoc.ten_ky_nam_hoc} năm {kyhoc.nam_hoc_id?.[1]}
-              </Select.Option>
-            ))}
-          </Select>
-        ) : (
-          <Input placeholder="Nhập kỳ học" />
-        );
+        element = <Input placeholder="Nhập kỳ học" />;
+
         break;
       }
       case 'MY_YEAR': {
         initialValue = item?.value;
         ruleElement = [...rules.text];
-        const namHoc = [
-          // { id: 1, ten_nam_hoc: '2021-2022' },
-          // { id: 2, ten_nam_hoc: '2022-2023' },
-        ];
-        // element = access.sinhVien ? (
-        //   <Select allowClear placeholder={item?.label ?? ''}>
-        //     {namHoc?.map((nam: any) => (
-        //       <Select.Option key={nam.id} value={`Năm học ${nam.ten_nam_hoc}`}>
-        //         Năm học {nam.ten_nam_hoc}
-        //       </Select.Option>
-        //     ))}
-        //   </Select>
-        // ) : (
-        //   <Input placeholder="Nhập năm học" />
-        // );
-        element =
-          <Input placeholder="Nhập năm học" />
+        element = <Input placeholder="Nhập năm học" />;
 
         break;
       }
       case 'MY_CREDIT': {
         initialValue = item?.value;
-        const monHoc = [];
+        const monHoc: any[] = [];
         element = (
           <AutoComplete
             filterOption={(value, option) => includes(option?.props.children, value)}
@@ -557,20 +531,20 @@ const FormBieuMau = (props: {
       }
       case 'MY_COURSE': {
         initialValue = item?.value;
-        const lopHoc = [];
-        element = <Input placeholder="Chọn lớp tín chỉ" />
+        element = <Input placeholder="Chọn lớp tín chỉ" />;
         break;
       }
       case 'DAN_TOC': {
         initialValue = item?.value;
         element = (
-          <Select showSearch allowClear placeholder={item?.label ?? ''}>
-            {/*{danhSachDanToc?.map((dantoc: any) => (*/}
-            {/*  <Select.Option key={dantoc._id} value={dantoc.tenDanToc}>*/}
-            {/*    {dantoc.tenDanToc}*/}
-            {/*  </Select.Option>*/}
-            {/*))}*/}
-          </Select>
+          <SelectDanToc allowClear />
+          // <Select showSearch allowClear placeholder={item?.label ?? ''}>
+          //   {danhSachDanToc?.map((dantoc: any) => (
+          //     <Select.Option key={dantoc._id} value={dantoc.tenDanToc}>
+          //       {dantoc.tenDanToc}
+          //     </Select.Option>
+          //   ))}
+          // </Select>
         );
         break;
       }
@@ -627,7 +601,7 @@ const FormBieuMau = (props: {
                 </span>
               )}{' '}
               {item?.label ?? 'Chưa có tiêu đề'}
-              {item.type === 'DON_VI_HANH_CHINH'  && (
+              {item.type === 'DON_VI_HANH_CHINH' && (
                 <Tooltip title="Sao chép địa chỉ">
                   <CopyOutlined
                     onClick={() => {
