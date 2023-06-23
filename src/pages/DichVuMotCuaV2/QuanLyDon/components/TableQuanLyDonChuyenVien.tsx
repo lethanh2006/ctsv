@@ -1,9 +1,7 @@
-/* eslint-disable no-underscore-dangle */
 import TableBase from '@/components/OldTable';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
-import type { IColumn } from '@/utils/interfaces';
 import { includes } from '@/utils/utils';
 import {
   CheckOutlined,
@@ -11,12 +9,15 @@ import {
   CopyOutlined,
   DeleteOutlined,
   EditOutlined,
+  EyeOutlined,
   FileDoneOutlined,
   FileTextOutlined,
+  MenuOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import {
   Button,
+  Divider,
   Dropdown,
   Menu,
   Modal,
@@ -33,7 +34,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
-import FormTraLoiPhanHoi from './FormTraLoiPhanHoi';
+import { IColumn } from '@/components/Table/typing';
 
 const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   const {
@@ -70,13 +71,16 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   //   chuyenVienDieuPhoiGetTongSoDonDVMCModel,
   //   chuyenVienXuLyGetTongSoDonDVMCModel,
   // } = useModel('dashboard');
-
   // const { setVisibleForm, visibleForm } = useModel('phanhoi');
-
   const [type, setType] = useState<'handle' | 'view' | 'create' | 'edit'>('handle');
-
   const { pathname } = window.location;
-  const isDVMC = pathname?.includes('dichvumotcua') ?? false;
+
+  useEffect(() => {
+    return () => {
+      setTotal(0);
+      setDanhSachDon([]);
+    };
+  }, []);
 
   const onClickMenuExport = (
     idDon: string,
@@ -91,13 +95,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       tenDon,
     });
   };
-
-  useEffect(() => {
-    return () => {
-      setTotal(0);
-      setDanhSachDon([]);
-    };
-  }, []);
 
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
     // if (pathname?.includes('quanlydondieuphoi'))
@@ -133,9 +130,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       dataIndex: 'createdAt',
       align: 'center',
       width: 120,
-      render: (val) => (
-        <span title={moment(val).format('DD/MM/YYYY HH:mm:ss')}>{moment(val).fromNow()}</span>
-      ),
+      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
       onCell,
     },
     {
@@ -151,8 +146,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       width: 120,
       align: 'center',
       onCell,
-      search: 'search',
-      key: 'thongTinNguoiTao.hoTen',
+      filterType: 'string',
       // notRegex: true,
     },
     {
@@ -161,15 +155,13 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       width: 150,
       align: 'center',
       onCell,
-      search: 'search',
-      key: 'thongTinNguoiTao.maSinhVien',
+      filterType: 'string',
       // notRegex: true,
     },
     {
       title: 'Địa chỉ nhận đơn',
       width: 200,
       align: 'center',
-      hide: isDVMC ? false : true,
       // onCell,
       render: (recordTemp: DichVuMotCuaV2.Don) => {
         let isNhanTaiTruong = true;
@@ -215,7 +207,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       width: 150,
       onCell,
       align: 'center',
-      hide: !isDVMC ? true : false,
       dataIndex: 'idBuocHienTai',
       render: (val, recordRender) => {
         return (
@@ -232,7 +223,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       align: 'center',
       width: 120,
       // search: 'filterString',
-      notRegex: true,
       render: (val: 'OK' | 'NOT_OK' | 'PROCESSING') => (
         <Tag
           color={
@@ -260,14 +250,13 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     {
       title: 'Thao tác',
       align: 'center',
-      width: 100,
+      width: 70,
       fixed: 'right',
       render: (recordDonColumn: DichVuMotCuaV2.Don) => {
         return (
           <Popover
             content={
               <>
-                {' '}
                 <Tooltip title="Xuất mẫu đơn">
                   <Dropdown
                     overlay={
@@ -286,9 +275,11 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                       </Menu>
                     }
                   >
-                    <Button loading={loading} icon={<FileTextOutlined />} type="link" />
+                    <Button icon={<FileTextOutlined />} shape="circle" />
                   </Dropdown>
                 </Tooltip>
+                <Divider type="vertical" />
+
                 <Tooltip title="Xuất mẫu trả kết quả">
                   <Dropdown
                     overlay={
@@ -307,18 +298,23 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                       </Menu>
                     }
                   >
-                    <Button loading={loading} icon={<FileDoneOutlined />} type="link" />
+                    <Button icon={<FileDoneOutlined />} shape="circle" />
                   </Dropdown>
                 </Tooltip>
-                {/* <Tooltip title="Chi tiết">
-          <Button
-            onClick={() => {
-              handleDon(recordDonColumn);
-            }}
-            shape="circle"
-            icon={<EyeOutlined />}
-          />
-        </Tooltip> */}
+                <Divider type="vertical" />
+
+                <Tooltip title="Chi tiết">
+                  <Button
+                    onClick={() => {
+                      handleDon(recordDonColumn);
+                    }}
+                    shape="circle"
+                    type="primary"
+                    icon={<EyeOutlined />}
+                  />
+                </Tooltip>
+                <Divider type="vertical" />
+
                 <Tooltip title="Trả lời phản hồi">
                   <Button
                     disabled={!recordDonColumn?.noiDungPhanHoi || recordDonColumn.daTraLoiPhanHoi}
@@ -327,12 +323,44 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                       // setVisibleForm(true);
                     }}
                     icon={<QuestionCircleOutlined />}
-                    type="link"
+                    shape="circle"
                   />
                 </Tooltip>
+                {typeTraKetQua === 'CHUA_TRA_KQ' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xác nhận đã trả đơn">
+                      <Popconfirm
+                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
+                        onConfirm={() =>
+                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
+                        }
+                      >
+                        <Button icon={<CheckOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+                {typeTraKetQua === 'DA_TRA_KQ' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xác nhận lại chưa trả đơn">
+                      <Popconfirm
+                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
+                        onConfirm={() =>
+                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
+                        }
+                      >
+                        <Button icon={<CloseOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+
                 {trangThaiQuanLyDon === 'PROCESSING' && (
                   <>
-                    <Tooltip title="Xóa đơn" placement="bottom">
+                    <Divider type="vertical" />
+                    <Tooltip title="Xóa đơn">
                       <Popconfirm
                         onConfirm={async () => {
                           await adminDeleteDonModel(
@@ -347,45 +375,16 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                         }}
                         title="Bạn có chắc chắn xóa đơn này?"
                       >
-                        <Button danger type="link">
-                          <DeleteOutlined />
-                        </Button>
-                      </Popconfirm>
-                    </Tooltip>
-                  </>
-                )}
-                {typeTraKetQua === 'CHUA_TRA_KQ' && (
-                  <>
-                    <Tooltip title="Xác nhận đã trả đơn">
-                      <Popconfirm
-                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
-                        onConfirm={() =>
-                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
-                        }
-                      >
-                        <Button icon={<CheckOutlined />} type="link" />
-                      </Popconfirm>
-                    </Tooltip>
-                  </>
-                )}
-                {typeTraKetQua === 'DA_TRA_KQ' && (
-                  <>
-                    <Tooltip title="Xác nhận lại chưa trả đơn">
-                      <Popconfirm
-                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
-                        onConfirm={() =>
-                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
-                        }
-                      >
-                        <Button icon={<CloseOutlined />} type="link" />
+                        <Button danger icon={<DeleteOutlined />} shape="circle" />
                       </Popconfirm>
                     </Tooltip>
                   </>
                 )}
               </>
             }
+            placement="left"
           >
-            <Button icon={<EditOutlined />} type="primary" />
+            <Button icon={<MenuOutlined />} type="link" />
           </Popover>
         );
       },
@@ -409,6 +408,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
       scroll={{ x: 1350 }}
       loading={loading}
       getData={getData}
+      hideCard
     >
       {trangThaiQuanLyDon === 'PROCESSING' && (
         <Select

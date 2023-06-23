@@ -8,7 +8,7 @@ import type { IColumn } from '@/utils/interfaces';
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import {  useModel } from 'umi';
+import { useModel } from 'umi';
 import FormQuyTrinh from '../components/FormQuyTrinh';
 import Form from './components/Form';
 
@@ -30,7 +30,7 @@ const QuanLyBieuMau = () => {
     putTrangThaiBieuMauModel,
   } = useModel('dvmc.dichvumotcuav2');
   // const { getAllDonViModel } = useModel('donvi');
-  const { getProductByCodeModel } = useModel('thanhtoan');
+  const { getProductByCodeModel } = useModel('dvmc.thanhtoan');
   // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   // const access = useAccess();
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
@@ -191,7 +191,6 @@ const QuanLyBieuMau = () => {
     },
   ];
 
-
   return (
     <>
       <TableBase
@@ -201,7 +200,7 @@ const QuanLyBieuMau = () => {
         columns={columns}
         loading={loading}
         dependencies={[page, limit, condition, phamVi]}
-        getData={() => getBieuMauAdminModel('DVMC' )}
+        getData={() => getBieuMauAdminModel('DVMC')}
         Form={Form}
       >
         <Button

@@ -19,7 +19,7 @@ const FormThongTinChung = () => {
     setRecord,
   } = useModel('dvmc.dichvumotcuav2');
   const [phamVi, setPhamVi] = useState<string>(recordDichVu?.phamVi ?? '');
-  const { record } = useModel('thanhtoan');
+  const { record } = useModel('dvmc.thanhtoan');
   // const { danhSach } = useModel('donvi');
   // const { danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   // set kiểm tra xem đơn có được tạo lịch hẹn hay không

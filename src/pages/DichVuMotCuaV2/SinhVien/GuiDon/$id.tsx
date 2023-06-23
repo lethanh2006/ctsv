@@ -26,7 +26,7 @@ const SinhVienTaoDon = ({
 
   const { getAllMonHocSinhVienModel, setDanhSachMonHoc } = useModel('loptinchi');
 
-  const { visibleForm, setVisibleForm } = useModel('thanhtoan');
+  const { visibleForm, setVisibleForm } = useModel('dvmc.thanhtoan');
   const [infoSinhVien, setInfoSinhVien] = useState<Login.Profile>();
   useEffect(() => {
     window.scroll({ top: 0 });

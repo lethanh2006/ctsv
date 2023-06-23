@@ -80,7 +80,7 @@ export default () => {
   const [idDichVu, setIdDichVu] = useState<string>();
   const [recordTrangThaiDon, setRecordTrangThaiDon] = useState<DichVuMotCuaV2.TrangThaiBuoc[]>([]);
   const [phamVi, setPhamVi] = useState<'Tất cả' | 'Hình thức đào tạo'>('Tất cả');
-  const { setVisibleForm: setVisibleFormThanhToan } = useModel('thanhtoan');
+  const { setVisibleForm: setVisibleFormThanhToan } = useModel('dvmc.thanhtoan');
   const [isDonCanXuLy, setIsDonCanXuLy] = useState<number>(1);
   const [typeTraKetQua, setTypeTraKetQua] = useState<string>('');
   const { initialState } = useModel('@@initialState');
@@ -506,13 +506,6 @@ export default () => {
     setDanhSach(response?.data?.data ?? []);
   };
 
-  const getAllBieuMauVPSModel = async () => {
-    setLoading(true);
-    const res = await getAllDonVPS();
-    setDanhSach(res?.data?.data ?? []);
-    setLoading(false);
-  };
-
   const getAllBieuMauChuyenVienTiepNhanModel = async (loaiDichVuParam?: string) => {
     const response = await getAllBieuMauChuyenVienTiepNhan({
       condition: { loaiDichVu: loaiDichVuParam || loaiDichVu },
@@ -784,6 +777,5 @@ export default () => {
     getBieuMauAdminModel,
     typeTraKetQua,
     setTypeTraKetQua,
-    getAllBieuMauVPSModel,
   };
 };

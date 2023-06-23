@@ -5,7 +5,7 @@ import { currencyFormat } from '@/utils/utils';
 
 const DanhMuc = (props: { button: any }) => {
   const { record } = useModel('dvmc.dichvumotcuav2');
-  const { record: recordProduct, getProductByCodeModel } = useModel('thanhtoan');
+  const { record: recordProduct, getProductByCodeModel } = useModel('dvmc.thanhtoan');
   useEffect(() => {
     if (record?.thongTinThuTuc?.maLePhi) getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
   }, [record]);

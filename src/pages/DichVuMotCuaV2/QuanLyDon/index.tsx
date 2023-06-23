@@ -1,9 +1,8 @@
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { Card, Tabs } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import TableQuanLyDon from './components/TableQuanLyDonChuyenVien';
-
 const { TabPane } = Tabs;
 
 const QuanLyDon = () => {
@@ -17,26 +16,19 @@ const QuanLyDon = () => {
     setCondition,
     setFilterInfo,
     setLoaiDichVu,
-    isDonCanXuLy,
     setPage,
     setTypeTraKetQua,
-    getAllBieuMauVPSModel,
   } = useModel('dvmc.dichvumotcuav2');
-
+  const { pathname } = window.location;
   // const { chuyenVienDieuPhoiGetTongSoDonDVMCModel, chuyenVienXuLyGetTongSoDonDVMCModel, idDichVu } =
   //   useModel('dashboard');
 
-  const { pathname } = window.location;
-  const isDVMC = pathname?.includes('dichvumotcua') ?? false;
-
   useEffect(() => {
-    setLoaiDichVu(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+    setLoaiDichVu('DVMC');
     if (pathname?.includes('quanlydondieuphoi')) {
-      if (isDVMC) getAllBieuMauChuyenVienDieuPhoiModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-      else getAllBieuMauVPSModel();
+      getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
     } else {
-      if (isDVMC) getAllBieuMauChuyenVienTiepNhanModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
-      else getAllBieuMauVPSModel();
+      getAllBieuMauChuyenVienTiepNhanModel('DVMC');
     }
 
     return () => {
@@ -60,7 +52,7 @@ const QuanLyDon = () => {
   // }, [idDichVu]);
 
   return (
-    <Card bodyStyle={{ padding: '8px 24px 24px 24px' }} title="Quản lý đơn">
+    <Card title="Quản lý đơn">
       <Tabs
         onChange={(key: string) => {
           setPage(1);
@@ -97,13 +89,10 @@ const QuanLyDon = () => {
           tab="Không duyệt"
           key="NOT_OK"
         />
-        {isDVMC && (
-          <>
-            <TabPane tab="Chưa trả kết quả" key="CHUA_TRA_KQ" />
-            <TabPane tab="Đã trả kết quả" key="DA_TRA_KQ" />
-          </>
-        )}
+        <TabPane tab="Chưa trả kết quả" key="CHUA_TRA_KQ" />
+        <TabPane tab="Đã trả kết quả" key="DA_TRA_KQ" />
       </Tabs>
+
       <TableQuanLyDon />
     </Card>
   );

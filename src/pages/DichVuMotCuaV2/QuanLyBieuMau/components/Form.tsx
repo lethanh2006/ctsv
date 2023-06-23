@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 const Form = () => {
   const { current, loaiDichVu } = useModel('dvmc.dichvumotcuav2');
-  const { setRecord } = useModel('thanhtoan');
+  const { setRecord } = useModel('dvmc.thanhtoan');
 
   useEffect(() => {
     return () => {

@@ -13,7 +13,7 @@ const ThanhToan = (props: {
   trangThaiThanhToan?: string;
   isCongNo?: boolean;
 }) => {
-  const { getInvoiceByIdentityCodeModel, invoice, setInvoice } = useModel('thanhtoan');
+  const { getInvoiceByIdentityCodeModel, invoice, setInvoice } = useModel('dvmc.thanhtoan');
   const { initialState } = useModel('@@initialState');
   const access = useAccess();
   useEffect(() => {

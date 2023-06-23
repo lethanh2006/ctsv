@@ -22,7 +22,7 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
     payInvoiceByIdentityCodeModel,
     refundInvoiceByIdentityCodeModel,
     editInvoiceByIdentityCodeModel,
-  } = useModel('thanhtoan');
+  } = useModel('dvmc.thanhtoan');
   return (
     <Form
       form={form}
