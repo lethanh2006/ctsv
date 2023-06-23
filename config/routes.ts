@@ -42,39 +42,63 @@
     icon: 'HomeOutlined',
   },
 
-  // DICH VU MOT CUA
+  // DANH MUC HE THONG
+  {
+    name: 'DanhMuc',
+    path: '/danh-muc',
+    icon: 'copy',
+    routes: [
+      {
+        name: 'LoaiDanhHieu',
+        path: 'loai-danh-hieu',
+        component: './DanhMuc/LoaiDanhHieu',
+      },
+      {
+        name: 'DanhHieu',
+        path: 'danh-hieu',
+        component: './DanhMuc/DanhHieu',
+      },
+    ],
+  },
+
+  // SINH VIEN
+  {
+    name: 'SinhVien',
+    path: '/sinh-vien',
+    icon: 'contacts',
+    routes: [
+      {
+        name: 'DanhSachSinhVien',
+        path: 'danh-sach-sinh-vien',
+        component: './SinhVien',
+      },
+      // {
+      //   name: 'LopHanhChinh',
+      //   path: 'lop-hanh-chinh',
+      //   component: './NamHoc/LopHanhChinh',
+      // },
+      // {
+      //   name: 'DotNhapHoc',
+      //   path: 'dot-nhap-hoc',
+      //   component: './NamHoc/DotNhapHoc',
+      // },
+      // {
+      //   name: 'ChuyenTruong',
+      //   path: 'chuyen-truong',
+      // },
+      // {
+      //   name: 'KhenThuong',
+      //   path: 'khen-thuong',
+      // },
+      // {
+      //   name: 'KyLuat',
+      //   path: 'ky-luat',
+      // },
+    ],
+  },
 
   /////////////////////////////
   // DICH VU MOT CUA
-  // {
-  //   name: 'DichVuMotCua',
-  //   icon: 'AuditOutlined',
-  //   path: '/dichvumotcua',
-  //   // access: 'adminVaQuanTri',
-  //   routes: [
-  //     // {
-  //     //   name: 'ThongTinTongHop',
-  //     //   path: './thongtintonghop',
-  //     //   component: './DichVuMotCuaV2/ThongTinTongHop/Admin.tsx',
-  //     //   // access: 'adminAccessFilter',
-  //     //   maChucNang: 'don-dvmc-thao-tac:read-all',
-  //     // },
-  //     {
-  //       name: 'QuanLyBieuMau',
-  //       path: './quanlybieumau',
-  //       component: './DichVuMotCuaV2/QuanLyBieuMau',
-  //       // access: 'adminAccessFilter',
-  //       maChucNang: 'dvmc-thao-tac:read',
-  //     },
-  //     {
-  //       name: 'QuanLyDon',
-  //       path: './quanlydonadmin',
-  //       component: './DichVuMotCuaV2/QuanLyDon/admin',
-  //       // access: 'adminAccessFilter',
-  //       maChucNang: 'don-dvmc-thao-tac:read-all',
-  //     },
-  //   ],
-  // },
   {
     name: 'DichVuMotCua',
     icon: 'AuditOutlined',
@@ -118,59 +142,13 @@
     ],
   },
 
-  // SINH VIEN
+  //////////////////////
+  // SU KIEN
   {
-    name: 'SinhVien',
-    path: '/sinh-vien',
-    icon: 'contacts',
-    routes: [
-      {
-        name: 'DanhSachSinhVien',
-        path: 'danh-sach-sinh-vien',
-        component: './SinhVien',
-      },
-      // {
-      //   name: 'LopHanhChinh',
-      //   path: 'lop-hanh-chinh',
-      //   component: './NamHoc/LopHanhChinh',
-      // },
-      // {
-      //   name: 'DotNhapHoc',
-      //   path: 'dot-nhap-hoc',
-      //   component: './NamHoc/DotNhapHoc',
-      // },
-      // {
-      //   name: 'ChuyenTruong',
-      //   path: 'chuyen-truong',
-      // },
-      // {
-      //   name: 'KhenThuong',
-      //   path: 'khen-thuong',
-      // },
-      // {
-      //   name: 'KyLuat',
-      //   path: 'ky-luat',
-      // },
-    ],
-  },
-
-  // DANH MUC HE THONG
-  {
-    name: 'DanhMuc',
-    path: '/danh-muc',
-    icon: 'copy',
-    routes: [
-      {
-        name: 'LoaiDanhHieu',
-        path: 'loai-danh-hieu',
-        component: './DanhMuc/LoaiDanhHieu',
-      },
-      {
-        name: 'DanhHieu',
-        path: 'danh-hieu',
-        component: './DanhMuc/DanhHieu',
-      },
-    ],
+    name: 'SuKien',
+    icon: 'calendar',
+    path: '/su-kien',
+    component: './SuKien',
   },
 
   // PHAN HOI

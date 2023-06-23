@@ -5,7 +5,9 @@ import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi');
+  const objInit = useInitModel<PhanHoi.IRecord>('phan-hoi', undefined, undefined, undefined, {
+    createdAt: -1,
+  });
   const {
     formSubmiting,
     setFormSubmiting,
