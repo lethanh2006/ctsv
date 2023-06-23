@@ -10,7 +10,7 @@ export default () => {
     ELoaiSuKien.LICH_HOC,
     ELoaiSuKien.LICH_THI,
     ELoaiSuKien.CA_NHAN,
-    ELoaiSuKien.TAT_CA,
+    ELoaiSuKien.CHUNG,
   ]);
   const { setLoading, setDanhSach } = objInit;
 

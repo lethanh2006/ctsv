@@ -1,13 +1,20 @@
 import rules from '@/utils/rules';
+import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Descriptions, Form, Input } from 'antd';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { useModel } from 'umi';
 
 const FormPhanHoi = () => {
-  const { formSubmiting, record, setVisibleForm, traLoiPhanHoiModel } = useModel('tienich.phanhoi');
+  const { formSubmiting, record, setVisibleForm, traLoiPhanHoiModel, visibleForm } =
+    useModel('tienich.phanhoi');
   const [form] = Form.useForm();
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
+
+  useEffect(() => {
+    if (!visibleForm) resetFieldsForm(form);
+  }, [visibleForm]);
 
   const onFinish = async (values: PhanHoi.IRecord) => {
     traLoiPhanHoiModel({
