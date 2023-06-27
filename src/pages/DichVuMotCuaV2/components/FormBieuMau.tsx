@@ -365,7 +365,11 @@ const FormBieuMau = (props: {
             notRequiredQuanHuyen={!item?.isRequired}
             notRequiredTinh={!item?.isRequired}
             notRequiredXaPhuong={!item?.isRequired}
-            initialValue={item?.value}
+            initialValue={{
+              tinhTp:item?.value?.tenTinh,
+              quanHuyen:item?.value?.tenQuanHuyen,
+              xaPhuong:item?.value?.tenPhuongXa,
+            }}
           />
         );
         break;
