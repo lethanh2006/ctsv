@@ -58,7 +58,7 @@ const PhanHoiPage = () => {
       title: 'Thời gian hỏi',
       dataIndex: 'createdAt',
       align: 'center',
-      render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
       sortable: true,
       filterType: 'date',
       width: 120,
@@ -72,20 +72,20 @@ const PhanHoiPage = () => {
       render: (val) => <ExpandText>{val}</ExpandText>,
     },
     {
-      title: 'Thời gian trả lời',
-      dataIndex: 'thoiGianTraLoi',
-      align: 'center',
-      hide: daTraLoi === false,
-      render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
-      sortable: true,
-      filterType: 'date',
-      width: 120,
-    },
-    {
       title: 'Người trả lời',
       dataIndex: 'maChuyenVien',
       hide: daTraLoi === false,
       filterType: 'string',
+      width: 120,
+    },
+    {
+      title: 'Thời gian trả lời',
+      dataIndex: 'thoiGianTraLoi',
+      align: 'center',
+      hide: daTraLoi === false,
+      render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+      sortable: true,
+      filterType: 'date',
       width: 120,
     },
     {
@@ -94,7 +94,7 @@ const PhanHoiPage = () => {
       width: 70,
       fixed: 'right',
       render: (val, rec) => (
-        <Tooltip title={rec.daTraLoiPhanHoi ? 'Xem nội dung trả lời' : 'Trả lời'}>
+        <Tooltip title={rec.daTraLoiPhanHoi ? 'Xem chi tiết' : 'Trả lời'}>
           <Button onClick={() => handleEdit(rec)} type="link">
             {rec.daTraLoiPhanHoi ? <EyeOutlined /> : <EditOutlined />}
           </Button>

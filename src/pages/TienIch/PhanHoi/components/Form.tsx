@@ -30,8 +30,19 @@ const FormPhanHoi = () => {
   return (
     <Card title="Trả lời phản hồi">
       <Descriptions column={1}>
-        <Descriptions.Item label="Người hỏi">{record?.maSv}</Descriptions.Item>
+        <Descriptions.Item label="Người hỏi">{record?.maSv ?? '--'}</Descriptions.Item>
         <Descriptions.Item label="Câu hỏi">{record?.noiDungPhanHoi}</Descriptions.Item>
+        <Descriptions.Item label="Thời gian hỏi">
+          {moment(record?.createdAt).format('HH:mm DD/MM/YYYY')}
+        </Descriptions.Item>
+        <Descriptions.Item label="Loại phản hồi">{record?.loaiPhanHoi}</Descriptions.Item>
+        <Descriptions.Item label="File đính kèm">
+          {record?.urlPhanAnh ? (
+            <a href={record?.urlPhanAnh} target="_blank" rel="noreferrer">
+              File đính kèm
+            </a>
+          ) : null}
+        </Descriptions.Item>
       </Descriptions>
 
       <Form layout="vertical" onFinish={onFinish} form={form}>
@@ -40,14 +51,13 @@ const FormPhanHoi = () => {
             <Descriptions.Item label="Nội dung trả lời">
               {record?.noiDungTraLoiPhanHoi}
             </Descriptions.Item>
+            <Descriptions.Item label="Người trả lời">
+              {record?.maChuyenVien ?? '--'}
+            </Descriptions.Item>
             <Descriptions.Item label="Thời gian trả lời">
-              {' '}
               {record?.thoiGianTraLoi
                 ? moment(record.thoiGianTraLoi).format('HH:mm DD/MM/YYYY')
                 : '--'}
-            </Descriptions.Item>
-            <Descriptions.Item label="Người trả lời">
-              {record?.maChuyenVien ?? '--'}
             </Descriptions.Item>
           </Descriptions>
         ) : (
