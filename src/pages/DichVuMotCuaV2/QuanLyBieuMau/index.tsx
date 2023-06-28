@@ -1,12 +1,10 @@
 import ExpandText from '@/components/ExpandText';
-import TableBase from '@/components/OldTable';
+import TableBase from '@/components/Table';
+import { type IColumn } from '@/components/Table/typing';
 import FormView from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-
-import type { IColumn } from '@/utils/interfaces';
-// import { useCheckAccess } from '@/utils/utils';
-import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Modal, Popconfirm, Switch, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../components/FormQuyTrinh';
@@ -16,9 +14,7 @@ const QuanLyBieuMau = () => {
   const {
     page,
     limit,
-    condition,
     getBieuMauAdminModel,
-    loading,
     setRecord,
     setEdit,
     setVisibleForm,
@@ -26,7 +22,6 @@ const QuanLyBieuMau = () => {
     setCurrent,
     setLoaiDichVu,
     setDanhSach,
-    phamVi,
     putTrangThaiBieuMauModel,
   } = useModel('dvmc.dichvumotcuav2');
   // const { getAllDonViModel } = useModel('donvi');
@@ -35,15 +30,12 @@ const QuanLyBieuMau = () => {
   // const access = useAccess();
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
   const [visible, setVisible] = useState<boolean>(false);
-
   // const isCreate = useCheckAccess('dvmc-thao-tac:create');
   // const isUpdate = useCheckAccess('dvmc-thao-tac:update');
   // const isDelete = useCheckAccess('dvmc-thao-tac:delete');
-  const { pathname } = window.location;
-  const isDVMC = pathname?.includes('dichvumotcua') ?? false;
 
   useEffect(() => {
-    setLoaiDichVu(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');
+    setLoaiDichVu('DVMC');
     // getAllHinhThucDaoTaoModel();
     // getAllDonViModel();
     return () => {
@@ -54,66 +46,43 @@ const QuanLyBieuMau = () => {
 
   const columns: IColumn<DichVuMotCuaV2.BieuMau>[] = [
     {
-      title: 'STT',
-      dataIndex: 'index',
-      align: 'center',
-      width: 80,
-    },
-    {
       title: 'Tên dịch vụ',
       dataIndex: 'ten',
-      search: 'search',
+      filterType: 'string',
       width: 200,
     },
     {
       title: 'Yêu cầu trả phí',
       dataIndex: ['thongTinThuTuc', 'yeuCauTraPhi'],
-      // search: 'filter',
-      width: 120,
+      width: 80,
       align: 'center',
-      hide: !isDVMC,
-      render: (val) => <div>{val ? 'Có' : 'Không'}</div>,
+      render: (val) => <Checkbox checked={val} />,
     },
     {
       title: 'Tính theo số lượng',
       dataIndex: ['thongTinThuTuc', 'tinhTienTheoSoLuong'],
-      // search: 'search',
-      width: 120,
+      width: 80,
       align: 'center',
-      hide: !isDVMC,
-
-      render: (val) => <div>{val ? 'Có' : 'Không'}</div>,
+      render: (val) => <Checkbox checked={val} />,
     },
     {
       title: 'Mô tả',
       dataIndex: 'moTa',
-      search: 'search',
       width: 170,
-      align: 'center',
-      render: (val) => (
-        <ExpandText
-          style={{ marginBottom: 0 }}
-          ellipsis={{ rows: 2, expandable: true, symbol: <span>Xem tiếp</span> }}
-        >
-          {val}
-        </ExpandText>
-      ),
-      // render: (val) => <div>{val ? 'Có' : 'Không'}</div>,
+      render: (val) => <ExpandText>{val}</ExpandText>,
     },
-    {
-      title: 'Hình thức đào tạo',
-      width: 120,
-      dataIndex: 'hinhThucDaoTaoId',
-      align: 'center',
-      // hide: !access.admin,
-      render: (val, record) => (
-        <div>
-          {/*{record?.phamVi === 'Tất cả'*/}
-          {/*  ? 'Tất cả'*/}
-          {/*  : danhSachHinhThucDaoTao?.find((item) => item.id === val)?.display_name}*/}
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Hình thức đào tạo',
+    //   width: 120,
+    //   dataIndex: 'hinhThucDaoTaoId',
+    //   render: (val, record) => (
+    //     <div>
+    //       {/*{record?.phamVi === 'Tất cả'*/}
+    //       {/*  ? 'Tất cả'*/}
+    //       {/*  : danhSachHinhThucDaoTao?.find((item) => item.id === val)?.display_name}*/}
+    //     </div>
+    //   ),
+    // },
 
     {
       title: 'Trạng thái',
@@ -121,124 +90,86 @@ const QuanLyBieuMau = () => {
       align: 'center',
       width: 100,
       render: (val, record) => (
-        <Switch
-          checkedChildren="Mở"
-          unCheckedChildren="Mở"
-          checked={val}
-          onChange={() => {
-            putTrangThaiBieuMauModel(record._id);
-          }}
-        />
+        <Switch checked={val} onChange={() => putTrangThaiBieuMauModel(record._id)} size="small" />
       ),
     },
     {
       title: 'Thao tác',
       align: 'center',
-      width: 150,
+      width: 120,
       fixed: 'right',
-      render: (record: DichVuMotCuaV2.BieuMau) => {
-        return (
-          <>
-            <Tooltip title="Xem trước">
+      render: (record: DichVuMotCuaV2.BieuMau) => (
+        <>
+          <Tooltip title="Xem trước">
+            <Button
+              onClick={() => {
+                setRecord(record);
+                setRecordView({ thongTinDichVu: { ...record } } as any);
+                setVisible(true);
+              }}
+              type="link"
+              icon={<EyeOutlined />}
+            />
+          </Tooltip>
+
+          <Tooltip title="Chỉnh sửa">
+            <Button
+              // disabled={!isUpdate}
+              onClick={() => {
+                if (record?.thongTinThuTuc?.maLePhi) {
+                  getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
+                }
+                setRecord(record);
+                setEdit(true);
+                setVisibleForm(true);
+
+                setCurrent(0);
+              }}
+              type="link"
+              icon={<EditOutlined />}
+            />
+          </Tooltip>
+
+          <Tooltip title="Xóa">
+            <Popconfirm
+              // disabled={!isDelete}
+              onConfirm={() => {
+                deleteBieuMauAdminModel(record._id);
+              }}
+              title="Bạn có chắc chắn muốn xóa?"
+            >
               <Button
-                onClick={() => {
-                  setRecord(record);
-                  setRecordView({ thongTinDichVu: { ...record } } as any);
-                  setVisible(true);
-                }}
                 type="link"
-                icon={<EyeOutlined />}
-              />
-            </Tooltip>
-
-            <Tooltip title="Chỉnh sửa">
-              <Button
-                // disabled={!isUpdate}
-                onClick={() => {
-                  if (record?.thongTinThuTuc?.maLePhi) {
-                    getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
-                  }
-                  setRecord(record);
-                  setEdit(true);
-                  setVisibleForm(true);
-
-                  setCurrent(isDVMC ? 0 : 1);
-                }}
-                type="link"
-                icon={<EditOutlined />}
-              />
-            </Tooltip>
-
-            <Tooltip title="Xóa">
-              <Popconfirm
+                danger
                 // disabled={!isDelete}
-                onConfirm={() => {
-                  deleteBieuMauAdminModel(record._id);
-                }}
-                title="Bạn có chắc chắn muốn xóa?"
-              >
-                <Button
-                  type="link"
-                  danger
-                  // disabled={!isDelete}
-                  icon={<DeleteOutlined />}
-                />
-              </Popconfirm>
-            </Tooltip>
-          </>
-        );
-      },
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          </Tooltip>
+        </>
+      ),
     },
   ];
 
   return (
     <>
       <TableBase
-        widthDrawer={1000}
         title="Quản lý biểu mẫu"
         modelName="dvmc.dichvumotcuav2"
         columns={columns}
-        loading={loading}
-        dependencies={[page, limit, condition, phamVi]}
+        dependencies={[page, limit]}
         getData={() => getBieuMauAdminModel('DVMC')}
         Form={Form}
-      >
-        <Button
-          onClick={() => {
-            setVisibleForm(true);
-            setEdit(false);
-            setRecord({} as DichVuMotCuaV2.BieuMau);
-            setCurrent(isDVMC ? 0 : 1);
-          }}
-          type="primary"
-          icon={<PlusOutlined />}
-        >
-          Thêm mới
-        </Button>
-      </TableBase>
+      />
 
-      <Modal
-        destroyOnClose
-        width="800px"
-        footer={false}
-        visible={visible}
-        onCancel={() => {
-          setVisible(false);
-        }}
-      >
+      <Modal width={800} footer={null} visible={visible} onCancel={() => setVisible(false)}>
         <Tabs>
           <Tabs.TabPane tab="Quy trình" key={0}>
             <FormQuyTrinh type="view" record={recordView?.thongTinDichVu?.quyTrinh} />
           </Tabs.TabPane>
 
           <Tabs.TabPane tab="Biểu mẫu" key={1}>
-            <FormView
-              onCancel={() => {
-                setVisible(false);
-              }}
-              type="view"
-              record={recordView}
-            />
+            <FormView onCancel={() => setVisible(false)} type="view" record={recordView} />
           </Tabs.TabPane>
         </Tabs>
       </Modal>

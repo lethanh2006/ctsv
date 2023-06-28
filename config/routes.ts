@@ -108,26 +108,26 @@
   {
     name: 'DichVuMotCua',
     icon: 'AuditOutlined',
-    path: '/dichvumotcua',
+    path: '/dich-vu-mot-cua',
     // access: 'nhanVien',
     routes: [
       // {
       //   name: 'ThongTinTongHop',
-      //   path: './thongtintonghop/quanlydondieuphoi',
+      //   path: './thong-tin-tong-hop',
       //   // component: './DichVuMotCuaV2/ThongTinTongHop',
       //   // access: 'accessFilter',
       //   maChucNang: 'don-dvmc-thao-tac:read-all',
       // },
       {
         name: 'QuanLyBieuMau',
-        path: './quanlybieumau',
+        path: './bieu-mau',
         component: './DichVuMotCuaV2/QuanLyBieuMau',
         // access: 'accessFilter',
         maChucNang: 'dvmc-thao-tac:read',
       },
       {
         name: 'QuanLyDon',
-        path: './quanlydondieuphoi',
+        path: './don-vmc',
         component: './DichVuMotCuaV2/QuanLyDon',
         // access: 'accessFilter',
         maChucNang: 'don-dvmc-thao-tac:read-all',
@@ -139,12 +139,6 @@
       //   // access: 'accessFilter',
       //   maChucNang: 'don-dvmc-thao-tac:read-my',
       // },
-
-      {
-        name: 'PhanHoi',
-        path: './phanhoi',
-        component: './TienIch/PhanHoi',
-      },
     ],
   },
 
