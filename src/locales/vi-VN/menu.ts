@@ -3,6 +3,7 @@ export default {
   'menu.account': 'Tài khoản',
   'menu.account.center': 'Cá nhân',
   'menu.Dashboard': 'Trang chủ',
+  'menu.About': 'Giới thiệu Học viện',
   'menu.News': 'Tin tức',
   'menu.DichVuMotCua': 'Dịch vụ một cửa',
   'menu.DichVuMotCua.PhanHoi': 'Phản hồi',
