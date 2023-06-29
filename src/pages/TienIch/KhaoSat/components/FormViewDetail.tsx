@@ -1,6 +1,6 @@
 import UploadFile from '@/components/Upload/UploadFile';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
-import { Button, Card } from 'antd';
+import { Button, Card, Divider } from 'antd';
 import { useModel } from 'umi';
 import GridChoice from './QuestionView/GridChoice';
 import MultipleChoice from './QuestionView/MultipleChoice';
@@ -41,17 +41,11 @@ const ViewDetailKhaoSat = () => {
 
     return (
       <div key={question._id}>
-        <div className="ant-form-item-label fw500">
-          <label
-            className={question.batBuoc ? 'ant-form-item-required' : ''}
-            style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}
-          >
-            Câu {index + 1}: {question.noiDungCauHoi}
-          </label>
+        <div className="fw500">
+          Câu {index + 1}: {question.noiDungCauHoi}{' '}
+          {question.batBuoc ? <span style={{ color: 'red' }}>*</span> : null}
         </div>
-        <br />
         {questionEleMent}
-        <br />
       </div>
     );
   };
@@ -64,8 +58,9 @@ const ViewDetailKhaoSat = () => {
       {record?.danhSachKhoi?.map((item, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={index} style={{ marginBottom: 24 }}>
+          <Divider />
           <div className="fw500">{item.tieuDe}</div>
-          <div>{item.moTa}</div>
+          <div style={{ marginBottom: 8 }}>{item.moTa}</div>
 
           {item.danhSachCauHoi?.map((cauHoi, i) => renderQuestion(cauHoi, i))}
         </div>
