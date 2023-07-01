@@ -19,19 +19,24 @@ const FormFile = () => {
 
   const onFinish = async (values: any) => {
     setFormSubmiting(true);
-    const taiLieu = await buildUpLoadFile(values, 'taiLieu');
-    values.url = taiLieu;
-    delete values.taiLieu;
-    setFormSubmiting(false);
+    try {
+      const taiLieu = await buildUpLoadFile(values, 'taiLieu');
+      values.url = taiLieu;
+      delete values.taiLieu;
 
-    if (editFile) {
-      const index = recordFile?.index ? recordFile.index - 1 : 0;
-      if (record) record.danhSachTep[index] = values;
-    } else {
-      if (record) record.danhSachTep.push(values);
+      if (editFile) {
+        const index = recordFile?.index ?? 0;
+        if (record) record.danhSachTep[index] = values;
+      } else {
+        if (record) record.danhSachTep.push(values);
+      }
+      if (record) putModel(record?._id ?? '', record, undefined, undefined, false);
+      setVisibleFormFile(false);
+    } catch (er) {
+      console.log(er);
+    } finally {
+      setFormSubmiting(false);
     }
-    if (record) putModel(record?._id ?? '', record, undefined, undefined, false);
-    setVisibleFormFile(false);
   };
 
   return (
@@ -59,7 +64,7 @@ const FormFile = () => {
           initialValue={renderFileListUrlWithName(recordFile?.url ?? '', recordFile?.ten)}
           label="Tài liệu"
         >
-          <UploadOne maxCount={1} />
+          <UploadOne maxCount={1} accept="image/*, .xls, .xlsx, .doc, .docx, .pdf" />
         </Form.Item>
 
         <div className="form-footer">

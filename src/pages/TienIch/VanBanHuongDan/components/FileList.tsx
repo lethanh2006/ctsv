@@ -63,7 +63,7 @@ const FileList = () => {
       title: 'Tệp đính kèm',
       dataIndex: 'url',
       width: 120,
-      render: (val, recordFile) =>
+      render: (val) =>
         val ? (
           <>
             <PaperClipOutlined />{' '}
@@ -100,7 +100,7 @@ const FileList = () => {
     <>
       <TableStaticData
         columns={columns}
-        data={[...(record?.danhSachTep ?? [])]}
+        data={[...(record?.danhSachTep?.map((item, index) => ({ ...item, index })) ?? [])]}
         addStt
         Form={FormFile}
         showEdit={visibleFormFile}
