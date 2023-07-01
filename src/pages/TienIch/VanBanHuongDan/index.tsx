@@ -155,7 +155,12 @@ const VanBanHuongDanPage = () => {
                 }
                 description={
                   <div onClick={() => handleEdit(item)}>
-                    <div>Mô tả: {item.moTa || ''}</div>
+                    {item.moTa ? (
+                      <>
+                        Mô tả: {item.moTa}
+                        <br />
+                      </>
+                    ) : null}
                     <div>Số lượng văn bản: {item?.danhSachTep?.length ?? 0}</div>
                   </div>
                 }

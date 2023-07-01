@@ -28,6 +28,7 @@ const ViewSinhVien = () => {
     {
       title: 'Mã sinh viên',
       dataIndex: 'ma',
+      align: 'center',
       width: 100,
       sortable: true,
       filterType: 'string',
@@ -36,6 +37,7 @@ const ViewSinhVien = () => {
     {
       title: 'Ngày sinh',
       dataIndex: 'ngaySinh',
+      align: 'center',
       width: 100,
       filterType: 'date',
       sortable: true,
