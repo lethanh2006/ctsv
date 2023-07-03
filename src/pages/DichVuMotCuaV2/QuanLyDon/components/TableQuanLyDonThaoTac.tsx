@@ -6,7 +6,7 @@ import { Button, Divider, Dropdown, Menu, Modal, Select, Tabs, Tooltip } from 'a
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import ThanhToan from '@/pages/ThanhToan';
+import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
@@ -104,7 +104,7 @@ const TableQuanLyDon = () => {
         <div>
           {
             recordDon?.idDon?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find(
-              (item: { _id: any; }) => item._id === val,
+              (item: { _id: any }) => item._id === val,
             )?.ten
           }
         </div>

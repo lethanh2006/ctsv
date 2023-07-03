@@ -12,7 +12,7 @@ export default () => {
   );
   const [loading, setLoading] = useState<boolean>(false);
   const [idDichVu, setIdDichVu] = useState<string>();
-  const { loaiDichVu } = useModel('dichvumotcuav2');
+  const { loaiDichVu } = useModel('dvmc.dichvumotcuav2');
 
   const adminGetTongSoDonDVMCModel = async (isDvmc?: boolean) => {
     setLoading(true);
@@ -27,7 +27,7 @@ export default () => {
 
   const chuyenVienDieuPhoiGetTongSoDonDVMCModel = async (
     isDonCanXuLy?: number,
-    stringLoaiDichVu?: string,
+    stringLoaiDichVu?: 'DVMC' | 'VAN_PHONG_SO',
   ) => {
     setLoading(true);
     const response = await chuyenVienDieuPhoiGetTongSoDon({
@@ -41,7 +41,7 @@ export default () => {
 
   const chuyenVienXuLyGetTongSoDonDVMCModel = async (
     isDonCanXuLy?: number,
-    stringLoaiDichVu?: string,
+    stringLoaiDichVu?: 'DVMC' | 'VAN_PHONG_SO',
   ) => {
     setLoading(true);
     const response = await chuyenVienXuLyGetTongSoDon({
