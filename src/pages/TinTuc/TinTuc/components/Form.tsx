@@ -1,12 +1,13 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import TinyEditor from '@/components/TinyEditor';
 import UploadFile from '@/components/Upload/UploadFile';
+import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
 import { EPhamViChuDe } from '@/services/TinTuc/constant';
 import { type TinTuc } from '@/services/TinTuc/typing';
 import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, Row } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -103,22 +104,7 @@ const FormTinTuc = (props: any) => {
           {chuDeSelected?.phamVi === 'Tất cả' && (
             <Col xs={24} md={8}>
               <Form.Item name="danhSachVaiTro" label="Đối tượng">
-                <Select
-                  mode="multiple"
-                  placeholder="Chọn vai trò"
-                  onChange={(value: any) => {
-                    if (value.includes('tat_ca'))
-                      form.setFieldsValue({
-                        doiTuong: 'Tất cả',
-                        danhSachVaiTro: ['sinh_vien', 'nhan_vien'],
-                      });
-                  }}
-                  options={[
-                    { value: 'tat_ca', label: 'Tất cả' },
-                    { value: 'sinh_vien', label: 'Sinh viên' },
-                    { value: 'nhan_vien', label: 'Cán bộ, giảng viên' },
-                  ]}
-                />
+                <GroupTagVaiTro />
               </Form.Item>
             </Col>
           )}

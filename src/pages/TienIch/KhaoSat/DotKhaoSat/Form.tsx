@@ -1,7 +1,7 @@
 import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 import { type DotKhaoSat } from '@/services/TienIch/DotKhaoSat/typing';
-import { ELoaiDoiTuong, ELoaiDot, TenVaiTroBieuMau } from '@/services/TienIch/constant';
+import { ELoaiDoiTuong, ELoaiDot } from '@/services/TienIch/constant';
 import { EPhamViChuDe } from '@/services/TinTuc/constant';
 import rules from '@/utils/rules';
 import { includes, resetFieldsForm } from '@/utils/utils';
@@ -10,6 +10,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectMauKhaoSat from '../components/Select';
+import GroupTagVaiTro from './GroupTagVaiTro';
 
 const FormDotKhaoSat = (props: any) => {
   const [form] = Form.useForm();
@@ -401,20 +402,13 @@ const FormDotKhaoSat = (props: any) => {
               name="danhSachVaiTro"
               label={isNguoiDungCuThe ? 'Lọc theo vai trò' : 'Vai trò'}
             >
-              <Select
+              <GroupTagVaiTro
                 onChange={(val: string[]) => {
                   setConditionNguoiDungCuThe({
                     ...conditionNguoiDungCuThe,
                     vaiTroList: val?.length > 0 ? val : undefined,
                   });
                 }}
-                mode="multiple"
-                placeholder="Chọn vai trò"
-                options={Object.entries(TenVaiTroBieuMau).map(([value, label]) => ({
-                  value,
-                  label,
-                  key: value,
-                }))}
               />
             </Form.Item>
           </Col>
