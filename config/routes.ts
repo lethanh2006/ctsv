@@ -174,6 +174,15 @@
     component: './SuKien',
   },
 
+  //////////////////////
+  // THONG BAO
+  {
+    name: 'ThongBao',
+    icon: 'bell',
+    path: '/thong-bao',
+    component: './ThongBao',
+  },
+
   // PHAN HOI
   {
     name: 'PhanHoi',

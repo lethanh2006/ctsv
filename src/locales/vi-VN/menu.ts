@@ -19,6 +19,7 @@ export default {
   'menu.DanhMuc.LoaiPhongBan': 'Loại phòng ban',
 
   'menu.SuKien': 'Sự kiện',
+  'menu.ThongBao': 'Thông báo',
 
   'menu.SinhVien': 'Hồ sơ sinh viên',
   'menu.SinhVien.DanhSachSinhVien': 'Danh sách sinh viên',

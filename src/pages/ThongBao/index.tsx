@@ -1,17 +1,18 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
+import { type ThongBao } from '@/services/ThongBao/typing';
 import { EyeOutlined } from '@ant-design/icons';
 import { Button, Divider, Modal, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
+import Form from './components/Form';
 import ViewThongBao from './components/ViewThongBao';
 
-const ThongBao = () => {
-  const { getThongBaoAdminModel, page, limit, condition, setRecord, record, phamVi } =
-    useModel('thongbao');
+const ThongBaoPage = () => {
+  const { page, limit, setRecord, record } = useModel('thongbao.thongbao');
   const [visible, setVisible] = useState<boolean>(false);
 
-  const onCell = (recordThongBao: ThongBao.Record) => ({
+  const onCell = (recordThongBao: ThongBao.IRecord) => ({
     onClick: () => {
       setVisible(true);
       setRecord(recordThongBao);
@@ -19,7 +20,7 @@ const ThongBao = () => {
     style: { cursor: 'pointer' },
   });
 
-  const columns: IColumn<ThongBao.Record>[] = [
+  const columns: IColumn<ThongBao.IRecord>[] = [
     {
       title: 'Người gửi',
       dataIndex: 'senderName',
@@ -57,26 +58,26 @@ const ThongBao = () => {
         </Typography.Paragraph>
       ),
     },
-    {
-      title: 'Nội dung',
-      dataIndex: 'content',
-      align: 'center',
-      width: 200,
-      onCell,
-      render: (val) => (
-        <Typography.Paragraph
-          ellipsis={{ rows: 2, expandable: true, symbol: <span>Xem tiếp</span> }}
-        >
-          {val}
-        </Typography.Paragraph>
-      ),
-    },
+    // {
+    //   title: 'Nội dung',
+    //   dataIndex: 'content',
+    //   align: 'center',
+    //   width: 200,
+    //   onCell,
+    //   render: (val) => (
+    //     <Typography.Paragraph
+    //       ellipsis={{ rows: 2, expandable: true, symbol: <span>Xem tiếp</span> }}
+    //     >
+    //       {val}
+    //     </Typography.Paragraph>
+    //   ),
+    // },
     {
       title: 'Thao tác',
       align: 'center',
       width: 170,
       fixed: 'right',
-      render: (recordThongBao: ThongBao.Record) => (
+      render: (recordThongBao: ThongBao.IRecord) => (
         <>
           <Tooltip title="Xem chi tiết">
             <Button
@@ -127,27 +128,24 @@ const ThongBao = () => {
   return (
     <>
       <TableBase
-        title="Quản lý thông báo"
+        title="Thông báo"
         columns={columns}
-        modelName="thongbao"
+        modelName="thongbao.thongbao"
         widthDrawer={800}
-        formType="Drawer"
-        getData={getThongBaoAdminModel}
-        dependencies={[page, limit, condition, phamVi]}
-      />
+        dependencies={[page, limit]}
+        Form={Form}
+      >
+        {/* <FilterPhamVi modelName="thongbao.thongbao" /> */}
+      </TableBase>
 
       <Modal
-        width="80%"
+        width={800}
         bodyStyle={{ padding: 0 }}
         destroyOnClose
-        footer={
-          <Button type="primary" onClick={() => setVisible(false)}>
-            OK
-          </Button>
-        }
+        okButtonProps={{ hidden: true }}
+        cancelText="Đóng"
         visible={visible}
         onCancel={() => setVisible(false)}
-        title="Chi tiết thông báo"
       >
         <ViewThongBao record={record} />
       </Modal>
@@ -155,4 +153,4 @@ const ThongBao = () => {
   );
 };
 
-export default ThongBao;
+export default ThongBaoPage;

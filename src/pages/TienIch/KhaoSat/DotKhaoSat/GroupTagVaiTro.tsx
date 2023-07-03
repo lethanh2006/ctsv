@@ -23,7 +23,7 @@ const GroupTagVaiTro = (props: {
   };
 
   return (
-    <Space wrap size={[0, 8]} className="lich-tuan-list">
+    <Space wrap size={8} className="lich-tuan-list">
       {Object.entries(TenVaiTroBieuMau).map(([val, label]) => (
         <CheckableTag
           key={val}
