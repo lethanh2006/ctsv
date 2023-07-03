@@ -1,20 +1,30 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import TinyEditor from '@/components/TinyEditor';
 import UploadFile from '@/components/Upload/UploadFile';
+import { EPhamViChuDe } from '@/services/TinTuc/constant';
 import { type TinTuc } from '@/services/TinTuc/typing';
+import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
+import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectChuDe from '../../ChuDe/components/Select';
-import { buildUpLoadFile } from '@/services/uploadFile';
-import { EPhamViChuDe } from '@/services/TinTuc/constant';
 
 const FormTinTuc = (props: any) => {
   const [form] = Form.useForm();
-  const { record, setVisibleForm, edit, putModel, postModel, formSubmiting, getModel } =
-    useModel('tintuc.tintuc');
+  const {
+    record,
+    setFormSubmiting,
+    setVisibleForm,
+    edit,
+    putModel,
+    postModel,
+    formSubmiting,
+    getModel,
+    visibleForm,
+  } = useModel('tintuc.tintuc');
   const { danhSach: danhSachChuDe } = useModel('tintuc.chude');
   const [chuDeSelected, setChuDeSelected] = useState<TinTuc.IChuDe>();
   const { title } = props;
@@ -27,37 +37,43 @@ const FormTinTuc = (props: any) => {
   }, [danhSachChuDe.length]);
 
   useEffect(() => {
-    onChangeChuDe(record?.idTopic);
-    form.resetFields();
-    if (record?._id)
+    if (!visibleForm) resetFieldsForm(form);
+    else if (record?._id)
       form.setFieldsValue({
         ...record,
         danhSachVaiTro:
           record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
       });
-  }, [record?._id]);
+    onChangeChuDe(record?.idTopic);
+  }, [record?._id, visibleForm]);
 
   const onFinish = async (values: any) => {
     if (formSubmiting) return;
-    setVisibleForm(true);
-    const urlAnhDaiDien = await buildUpLoadFile(values, 'urlAnhDaiDien');
-    values.urlAnhDaiDien = urlAnhDaiDien;
-    setVisibleForm(false);
+    setFormSubmiting(true);
+    try {
+      const urlAnhDaiDien = await buildUpLoadFile(values, 'urlAnhDaiDien');
+      values.urlAnhDaiDien = urlAnhDaiDien;
+      setFormSubmiting(false);
 
-    const payload = {
-      ...values,
-      doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
-      phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
-    };
+      const payload = {
+        ...values,
+        doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
+        phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
+      };
 
-    if (edit) {
-      putModel(record?._id ?? '', payload, getModel)
-        .then()
-        .catch((er) => console.log(er));
-    } else
-      postModel(payload, getModel)
-        .then(() => form.resetFields())
-        .catch((er) => console.log(er));
+      if (edit) {
+        putModel(record?._id ?? '', payload, getModel)
+          .then()
+          .catch((er) => console.log(er));
+      } else
+        postModel(payload, getModel)
+          .then()
+          .catch((er) => console.log(er));
+    } catch (er) {
+      console.log(er);
+    } finally {
+      setFormSubmiting(false);
+    }
   };
 
   return (
@@ -132,7 +148,7 @@ const FormTinTuc = (props: any) => {
           <Button loading={formSubmiting} htmlType="submit" type="primary">
             {!edit ? 'Thêm mới ' : 'Lưu lại'}
           </Button>
-          <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+          <Button onClick={() => setVisibleForm(false)}>Hủy</Button>
         </div>
       </Form>
     </Card>
