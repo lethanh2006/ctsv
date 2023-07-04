@@ -1,4 +1,4 @@
-import { TenVaiTroBieuMau, type EVaiTroBieuMau } from '@/services/TienIch/constant';
+import { TenVaiTroBieuMau, EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { Space, Tag } from 'antd';
 import _ from 'lodash';
 const { CheckableTag } = Tag;
@@ -6,8 +6,10 @@ const { CheckableTag } = Tag;
 const GroupTagVaiTro = (props: {
   value?: EVaiTroBieuMau[];
   onChange?: (arr: EVaiTroBieuMau[]) => void;
+  listVaiTro?: EVaiTroBieuMau[];
 }) => {
   const { value, onChange } = props;
+  const listVaiTro = props.listVaiTro ?? Object.values(EVaiTroBieuMau);
 
   const handleChange = (val: EVaiTroBieuMau, checked: boolean) => {
     if (!checked) {
@@ -24,13 +26,13 @@ const GroupTagVaiTro = (props: {
 
   return (
     <Space wrap size={8} className="lich-tuan-list">
-      {Object.entries(TenVaiTroBieuMau).map(([val, label]) => (
+      {listVaiTro.map((item) => (
         <CheckableTag
-          key={val}
-          checked={value?.includes(val as EVaiTroBieuMau) || false}
-          onChange={(checked) => handleChange(val as EVaiTroBieuMau, checked)}
+          key={item}
+          checked={value?.includes(item) || false}
+          onChange={(checked) => handleChange(item, checked)}
         >
-          {label}
+          {TenVaiTroBieuMau[item]}
         </CheckableTag>
       ))}
     </Space>

@@ -1,6 +1,6 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import FilterPhamVi from '@/pages/TinTuc/ChuDe/components/Filter';
+// import FilterPhamVi from '@/pages/TinTuc/ChuDe/components/Filter';
 import { type DotKhaoSat } from '@/services/TienIch/DotKhaoSat/typing';
 import {
   DeleteOutlined,
@@ -222,7 +222,7 @@ const DotKhaoSatPage = () => {
         widthDrawer={800}
         Form={formTable}
       >
-        <FilterPhamVi modelName="tienich.dotkhaosat" />
+        {/* <FilterPhamVi modelName="tienich.dotkhaosat" /> */}
       </TableBase>
 
       <Modal

@@ -1,3 +1,4 @@
+import { type EVaiTroBieuMau } from '../TienIch/constant';
 import { type EReceiverType } from './constant';
 
 declare module ThongBao {
@@ -9,6 +10,14 @@ declare module ThongBao {
     description?: string;
     content?: string;
     imageUrl?: string;
+    filter: {
+      roles: EVaiTroBieuMau[];
+      idKhoaSinhVien: string;
+      idKhoa: string;
+      idNganh: string;
+      idLopHanhChinh: string;
+      idLopTinChi: string;
+    };
     data?: any;
     receiverType: EReceiverType;
     topics?: string[];
@@ -32,5 +41,12 @@ declare module ThongBao {
     khoaList?: number[];
     userIds?: string[];
     roles?: string[];
+  }
+
+  export interface IUser {
+    ssoId: string;
+    ma: string;
+    ten: string;
+    vaiTro: EVaiTroBieuMau;
   }
 }

@@ -1,11 +1,10 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
 import { type TinTuc } from '@/services/TinTuc/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
-import FilterPhamVi from './components/Filter';
+// import FilterPhamVi from './components/Filter';
 import Form from './components/Form';
 
 const ChuDeChung = () => {
@@ -23,17 +22,17 @@ const ChuDeChung = () => {
       filterType: 'string',
       sortable: true,
     },
-    {
-      title: 'Hình thức đào tạo',
-      dataIndex: 'hinhThucDaoTaoId',
-      width: 120,
-      filterType: 'customselect',
-      filterCustomSelect: <SelectHinhThuc multiple />,
-      render: (val, record) =>
-        record?.phamVi === 'Tất cả'
-          ? record?.phamVi
-          : record.hinhThucDaoTao?.danhMucHTDT?.ten ?? '--',
-    },
+    // {
+    //   title: 'Hình thức đào tạo',
+    //   dataIndex: 'hinhThucDaoTaoId',
+    //   width: 120,
+    //   filterType: 'customselect',
+    //   filterCustomSelect: <SelectHinhThuc multiple />,
+    //   render: (val, record) =>
+    //     record?.phamVi === 'Tất cả'
+    //       ? record?.phamVi
+    //       : record.hinhThucDaoTao?.danhMucHTDT?.ten ?? '--',
+    // },
     {
       title: 'Thứ tự hiển thị',
       dataIndex: 'order',
@@ -74,7 +73,7 @@ const ChuDeChung = () => {
       rowSortable
       onSortEnd={onSortEnd}
     >
-      <FilterPhamVi modelName="tintuc.chude" />
+      {/* <FilterPhamVi modelName="tintuc.chude" /> */}
     </TableBase>
   );
 };

@@ -1,14 +1,13 @@
 import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { EPhamViChuDe } from '@/services/TinTuc/constant';
 import { type TinTuc } from '@/services/TinTuc/typing';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import FilterPhamVi from '../ChuDe/components/Filter';
+// import FilterPhamVi from '../ChuDe/components/Filter';
 import SelectChuDe from '../ChuDe/components/Select';
 import Form from './components/Form';
 import ViewTinTuc from './components/ViewTinTuc';
@@ -43,14 +42,14 @@ const TinTucPage = () => {
       filterType: 'string',
       render: (val) => <ExpandText>{val}</ExpandText>,
     },
-    {
-      title: 'Phạm vi',
-      dataIndex: 'phamVi',
-      width: 100,
-      filterType: 'select',
-      filterData: Object.values(EPhamViChuDe),
-      onCell,
-    },
+    // {
+    //   title: 'Phạm vi',
+    //   dataIndex: 'phamVi',
+    //   width: 100,
+    //   filterType: 'select',
+    //   filterData: Object.values(EPhamViChuDe),
+    //   onCell,
+    // },
     {
       title: 'Chủ đề',
       dataIndex: 'idTopic',
@@ -124,7 +123,7 @@ const TinTucPage = () => {
         title="Tin tức"
         Form={Form}
       >
-        <FilterPhamVi modelName="tintuc.tintuc" />
+        {/* <FilterPhamVi modelName="tintuc.tintuc" /> */}
       </TableBase>
 
       <Modal

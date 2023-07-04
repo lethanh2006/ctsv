@@ -10,8 +10,8 @@ declare module TinTuc {
     urlAnhDaiDien: string;
     noiDung: string;
     ngayDang: string;
-    phamVi: EPhamViChuDe;
-    hinhThucDaoTaoId: number;
+    // phamVi: EPhamViChuDe;
+    // hinhThucDaoTaoId: number;
     nguoiDang: {
       _id: string;
       fullname: string;
@@ -21,12 +21,12 @@ declare module TinTuc {
   }
 
   export interface IChuDe {
-    phamVi: EPhamViChuDe;
+    // phamVi: EPhamViChuDe;
     _id: string;
     name: string;
     type: string;
     order: number;
-    hinhThucDaoTaoId: string;
-    hinhThucDaoTao?: HinhThucDaoTao.IRecordCoSo;
+    // hinhThucDaoTaoId: string;
+    // hinhThucDaoTao?: HinhThucDaoTao.IRecordCoSo;
   }
 }

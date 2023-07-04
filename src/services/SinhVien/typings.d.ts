@@ -13,8 +13,8 @@ declare module SinhVien {
     anhDaiDienUrl: string;
     ma: string;
     ten: string;
-    firstName: string;
-    lastName: string;
+    // firstName: string;
+    // lastName: string;
     gioiTinh: EGioiTinh;
     quocTich: string;
     danToc: string;
