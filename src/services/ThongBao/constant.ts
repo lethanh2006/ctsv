@@ -1,14 +1,19 @@
 export enum EReceiverType {
-  Topic = 'Topic',
-  User = 'User',
+  // Topic = 'Topic',
+  // User = 'User',
   All = 'All',
+  KhoaSinhVien = 'KhoaSinhVien',
+  Khoa = 'Khoa',
+  Nganh = 'Nganh',
+  LopHanhChinh = 'LopHanhChinh',
+  LopHocPhan = 'LopHocPhan',
 }
 
-export enum ELoaiDoiTuongThongBao {
-  TAT_CA = 'Toàn Học viện',
-  DON_VI = 'Khoa',
-  KHOA = 'Khóa sinh viên',
-  NGANH = 'Ngành đào tạo',
-  LOP_HANH_CHINH = 'Lớp hành chính',
-  LOP_HOC_PHAN = 'Lớp học phần',
-}
+export const LoaiDoiTuongThongBao = {
+  [EReceiverType.All]: 'Toàn Học viện',
+  [EReceiverType.Khoa]: 'Khoa',
+  [EReceiverType.KhoaSinhVien]: 'Khóa sinh viên',
+  [EReceiverType.Nganh]: 'Ngành đào tạo',
+  [EReceiverType.LopHanhChinh]: 'Lớp hành chính',
+  [EReceiverType.LopHocPhan]: 'Lớp học phần',
+};

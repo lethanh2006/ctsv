@@ -3,6 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { useModel } from 'umi';
+import GroupTagUsers from './GroupTagUsers';
 
 const TableSelectNhanSu = (props: {
   selectedUsers?: ThongBao.IUser[];
@@ -48,6 +49,13 @@ const TableSelectNhanSu = (props: {
 
   return (
     <>
+      {selectedUsers?.length ? (
+        <>
+          <div className="fw500">Đã chọn</div>
+          <GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} />
+        </>
+      ) : null}
+
       <TableBase
         columns={columns}
         dependencies={[page, limit]}

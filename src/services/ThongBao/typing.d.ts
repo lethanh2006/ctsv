@@ -10,6 +10,14 @@ declare module ThongBao {
     description?: string;
     content?: string;
     imageUrl?: string;
+    filter: {
+      roles: EVaiTroBieuMau[];
+      idKhoaSinhVien: string;
+      idKhoa: string;
+      idNganh: string;
+      idLopHanhChinh: string;
+      idLopTinChi: string;
+    };
     data?: any;
     receiverType: EReceiverType;
     topics?: string[];

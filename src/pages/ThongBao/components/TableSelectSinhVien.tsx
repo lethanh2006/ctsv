@@ -4,6 +4,7 @@ import { type SinhVien } from '@/services/SinhVien/typings';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { useModel } from 'umi';
+import GroupTagUsers from './GroupTagUsers';
 
 const TableSelectSinhVien = (props: {
   selectedUsers?: ThongBao.IUser[];
@@ -49,6 +50,13 @@ const TableSelectSinhVien = (props: {
 
   return (
     <>
+      {selectedUsers?.length ? (
+        <>
+          <div className="fw500">Đã chọn</div>
+          <GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} />
+        </>
+      ) : null}
+
       <TableBase
         columns={columns}
         dependencies={[page, limit]}
