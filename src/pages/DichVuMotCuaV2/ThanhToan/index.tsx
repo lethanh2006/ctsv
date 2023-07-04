@@ -1,21 +1,13 @@
-import { Tabs } from 'antd';
-import { useEffect } from 'react';
-import { useModel, useAccess } from 'umi';
-import ThongTinThanhToan from './ThongTinThanhToan';
-import Table from '@/components/Table';
-import { currencyFormat } from '@/utils/utils';
-import moment from 'moment';
 import { TrangThaiThanhToan } from '@/utils/constants';
+import { currencyFormat } from '@/utils/utils';
+import { Table, Tabs } from 'antd';
+import moment from 'moment';
+import { useEffect } from 'react';
+import { useModel } from 'umi';
 import ChiTietDichVu from './ChiTietDichVu';
-
-const ThanhToan = (props: {
-  identityCode: string;
-  trangThaiThanhToan?: string;
-  isCongNo?: boolean;
-}) => {
+import ThongTinThanhToan from './ThongTinThanhToan';
+const ThanhToan = (props: { identityCode: string; isCongNo?: boolean }) => {
   const { getInvoiceByIdentityCodeModel, invoice, setInvoice } = useModel('dvmc.thanhtoan');
-  const { initialState } = useModel('@@initialState');
-  const access = useAccess();
   useEffect(() => {
     return () => {
       setInvoice(undefined);
@@ -38,11 +30,7 @@ const ThanhToan = (props: {
     <div>
       <ThongTinThanhToan
         isCongNo={props?.isCongNo ?? false}
-        trangThaiThanhToan={
-          props?.trangThaiThanhToan
-            ? props?.trangThaiThanhToan ?? ''
-            : TrangThaiThanhToan?.[invoice?.status ?? ''] ?? ''
-        }
+        trangThaiThanhToan={invoice?.status ?? TrangThaiThanhToan.open}
       />
       {invoice?.metadata?.loai !== 'Dịch vụ một cửa' &&
       invoice?.metadata?.thongTinChiTiet?.length ? (
@@ -60,11 +48,9 @@ const ThanhToan = (props: {
       <Tabs>
         <Tabs.TabPane tab="Chi tiết" key="chitiet">
           <Table
-            otherProps={{
-              scroll: { x: 600 },
-              pagination: false,
-            }}
-            data={[
+            scroll={{ x: 600 }}
+            pagination={false}
+            dataSource={[
               ...listChiTiet,
               {
                 productName: 'Tổng',
@@ -98,11 +84,9 @@ const ThanhToan = (props: {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Lịch sử thanh toán" key="lichsu">
           <Table
-            otherProps={{
-              scroll: { x: 600 },
-              pagination: false,
-            }}
-            data={invoice?.paidHistory?.map((item, index) => ({
+            scroll={{ x: 600 }}
+            pagination={false}
+            dataSource={invoice?.paidHistory?.map((item, index) => ({
               ...item,
               index: index + 1,
             }))}
@@ -149,7 +133,7 @@ const ThanhToan = (props: {
           />
         </Tabs.TabPane>
       </Tabs>
-      {access.sinhVien && (
+      {/* {access.sinhVien && (
         <>
           <br />
           <b>
@@ -184,7 +168,7 @@ const ThanhToan = (props: {
             </b>
           </p>
         </>
-      )}
+      )} */}
     </div>
   );
 };

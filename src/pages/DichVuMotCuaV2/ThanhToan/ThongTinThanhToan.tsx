@@ -1,45 +1,32 @@
+import { MapKeyTrangThaiThanhToan, TrangThaiThanhToan } from '@/utils/constants';
 import rules from '@/utils/rules';
 import { currencyFormat } from '@/utils/utils';
-import { EditOutlined, FormOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Descriptions, Form, InputNumber, Popconfirm } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
-import { useAccess, useModel } from 'umi';
+import { useModel } from 'umi';
 
 // import { DescriptionWrapper } from './index.style';
 
 export interface ThongTinThanhToanProps {
   isCongNo?: boolean;
-  trangThaiThanhToan: string;
+  trangThaiThanhToan: TrangThaiThanhToan;
 }
 
 const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const access = useAccess();
-  const {
-    invoice,
-    payInvoiceByIdentityCodeModel,
-    refundInvoiceByIdentityCodeModel,
-    editInvoiceByIdentityCodeModel,
-  } = useModel('dvmc.thanhtoan');
+  const { invoice, payInvoiceByIdentityCodeModel } = useModel('dvmc.thanhtoan');
   return (
     <Form
       form={form}
       onFinish={(values) => {
         values.amountPaid = Number(values?.amountPaid) < 0 ? 0 : Number(values?.amountPaid);
-        if (invoice?.amountRemaining && invoice.amountRemaining > 0)
-          payInvoiceByIdentityCodeModel(
-            invoice?.identityCode ?? '',
-            values,
-            props?.isCongNo ?? false,
-          );
-        else
-          refundInvoiceByIdentityCodeModel(
-            invoice?.identityCode ?? '',
-            values,
-            props?.isCongNo ?? false,
-          );
+        payInvoiceByIdentityCodeModel({
+          ...values,
+          maChiTietThu: invoice?.identityCode ?? '',
+        });
       }}
     >
       <>
@@ -50,16 +37,13 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
         <b
           style={{
             color:
-              props?.trangThaiThanhToan === 'Đã thanh toán đủ' ||
-              props?.trangThaiThanhToan === 'Thanh toán thừa'
-                ? 'blue'
+              props?.trangThaiThanhToan === TrangThaiThanhToan.paid ||
+              props?.trangThaiThanhToan === TrangThaiThanhToan.overpaid
+                ? '#28a745'
                 : '#dc3545',
           }}
         >
-          {props?.trangThaiThanhToan === 'Đã thanh toán đủ' ||
-          props?.trangThaiThanhToan === 'Thanh toán thừa'
-            ? `${!access.sinhVien ? 'Sinh viên' : 'Bạn'} đã hoàn thành nộp Lệ phí`
-            : `${!access.sinhVien ? 'Sinh viên' : 'Bạn'} chưa nộp đủ Lệ phí`}
+          {MapKeyTrangThaiThanhToan[props.trangThaiThanhToan]}
         </b>
         {invoice?.metadata?.loai === 'Dịch vụ một cửa' && (
           <p>{`Số lượng: ${invoice?.items?.[0]?.quantity ?? 0} ${
@@ -91,21 +75,19 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
                   max={1000000000}
                   style={{ width: 180 }}
                   placeholder="Số tiền đã nộp"
-                  min={0}
+                  min={1}
                 />
               </Form.Item>
               <Popconfirm
                 title="Bạn có chắc chắn chỉnh sửa số tiền đã thanh toán của thí sinh không?"
                 onConfirm={async () => {
                   const amountPaid = form.getFieldValue('amountPaidEdit');
-                  if (amountPaid >= 0)
-                    editInvoiceByIdentityCodeModel(
-                      invoice?.identityCode ?? '',
-                      {
-                        amountPaid,
-                      },
-                      props?.isCongNo ?? false,
-                    );
+                  if (amountPaid > 0)
+                    payInvoiceByIdentityCodeModel({
+                      amountPaid,
+                      transactionDate: moment().toISOString(),
+                      maChiTietThu: invoice?.identityCode ?? '',
+                    });
                 }}
               >
                 <Button type="primary" style={{ marginLeft: 10 }}>
@@ -126,78 +108,75 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
         <Descriptions.Item label="Số tiền còn lại phải nộp">
           {currencyFormat(invoice?.amountRemaining ?? 0)} đ
         </Descriptions.Item>
-        <Descriptions.Item
-          label={`Số tiền ${access.sinhVien ? 'thanh toán thừa' : 'phải hoàn trả'}`}
-        >
+        <Descriptions.Item label={'Số tiền phải hoàn trả'}>
           {currencyFormat(invoice?.amountRefund ?? 0)} đ
         </Descriptions.Item>
         {((invoice?.amountRemaining && invoice.amountRemaining > 0) ||
-          (invoice?.amountRefund && invoice.amountRefund > 0)) &&
-          !access.sinhVien && (
-            <>
-              <Descriptions.Item
-                label={invoice?.amountRemaining ?? 0 > 0 ? 'Thanh toán' : 'Hoàn trả'}
-              >
-                <div style={{ display: 'flex' }}>
-                  <Form.Item
-                    style={{ marginBottom: 0 }}
-                    initialValue={currencyFormat(0)}
-                    rules={[...rules.required]}
-                    name="amountPaid"
-                  >
-                    <InputNumber
-                      formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      max={
-                        invoice?.amountRefund && invoice.amountRefund > 0
-                          ? invoice.amountRefund
-                          : 99999999
-                      }
-                      style={{ width: 180 }}
-                      placeholder={
-                        invoice?.amountRemaining && invoice.amountRemaining > 0
-                          ? 'Số tiền cần thanh toán'
-                          : 'Số tiền cần hoàn trả'
-                      }
-                      min={0}
-                    />
-                  </Form.Item>
-
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      form.setFieldsValue({
-                        amountPaid:
-                          invoice?.amountRemaining && invoice.amountRemaining > 0
-                            ? invoice.amountDue - invoice.amountPaid
-                            : invoice.amountPaid - invoice.amountDue,
-                      });
-                    }}
-                    style={{ marginLeft: 10 }}
-                  >
-                    Thanh toán hết
-                  </Button>
-                </div>
-              </Descriptions.Item>
-              <Descriptions.Item label="Thời gian thanh toán">
-                <Form.Item initialValue={moment(invoice?.transactionDate)} name="transactionDate">
-                  <DatePicker
-                    style={{ width: 180, minWidth: 180 }}
-                    showTime
-                    format="HH:mm DD/MM/YYYY"
-                    placeholder="Chọn thời gian"
-                    disabledDate={(cur) => moment(cur).isAfter(moment())}
+          (invoice?.amountRefund && invoice.amountRefund > 0)) && (
+          <>
+            <Descriptions.Item
+              label={invoice?.amountRemaining ?? 0 > 0 ? 'Thanh toán' : 'Hoàn trả'}
+            >
+              <div style={{ display: 'flex' }}>
+                <Form.Item
+                  style={{ marginBottom: 0 }}
+                  initialValue={currencyFormat(0)}
+                  rules={[...rules.required]}
+                  name="amountPaid"
+                >
+                  <InputNumber
+                    addonAfter={'đ'}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    max={
+                      invoice?.amountRefund && invoice.amountRefund > 0
+                        ? invoice.amountRefund
+                        : 99999999
+                    }
+                    style={{ width: 180 }}
+                    placeholder={
+                      invoice?.amountRemaining && invoice.amountRemaining > 0
+                        ? 'Số tiền cần thanh toán'
+                        : 'Số tiền cần hoàn trả'
+                    }
+                    min={0}
                   />
                 </Form.Item>
-              </Descriptions.Item>
-            </>
-          )}
+
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.setFieldsValue({
+                      amountPaid:
+                        invoice?.amountRemaining && invoice.amountRemaining > 0
+                          ? invoice.amountDue - invoice.amountPaid
+                          : invoice.amountPaid - invoice.amountDue,
+                    });
+                  }}
+                  style={{ marginLeft: 10 }}
+                >
+                  Thanh toán hết
+                </Button>
+              </div>
+            </Descriptions.Item>
+            <Descriptions.Item label="Thời gian thanh toán">
+              <Form.Item initialValue={moment(invoice?.transactionDate)} name="transactionDate">
+                <DatePicker
+                  style={{ width: 180, minWidth: 180 }}
+                  showTime
+                  format="HH:mm DD/MM/YYYY"
+                  placeholder="Chọn thời gian"
+                  disabledDate={(cur) => moment(cur).isAfter(moment())}
+                />
+              </Form.Item>
+            </Descriptions.Item>
+          </>
+        )}
       </Descriptions>
 
-      {((invoice?.amountRemaining && invoice.amountRemaining > 0) ||
-        (invoice?.amountRefund && invoice.amountRefund > 0)) &&
-      !access.sinhVien ? (
+      {(invoice?.amountRemaining && invoice.amountRemaining > 0) ||
+      (invoice?.amountRefund && invoice.amountRefund > 0) ? (
         <Form.Item style={{ textAlign: 'center', marginBottom: 0, marginTop: 8 }}>
-          {invoice?.amountPaid && invoice.amountPaid > 0 ? (
+          {/* {invoice?.amountPaid && invoice.amountPaid > 0 ? (
             <Button
               onClick={() => {
                 setEdit(true);
@@ -209,7 +188,8 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
             </Button>
           ) : (
             <></>
-          )}
+          )} */}
+
           <Button
             icon={<EditOutlined />}
             type="primary"
@@ -223,6 +203,7 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
         <div />
       )}
     </Form>
+    // chưa có api edit & refund
   );
 };
 

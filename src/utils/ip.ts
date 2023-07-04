@@ -9,6 +9,7 @@ const ipGlobal = 'https://ais2.aisenote.com/qldt-internal-api'; // ip dev
 const ipDaoTao = 'https://ais.aisenote.com/qldt';
 const ipNhanSu = 'https://ais.aisenote.com/tcns';
 const ipCore = 'https://ais.aisenote.com/core';
+const ipTaiChinh = 'https://ais.aisenote.com/tai-chinh-api';
 
 const currentRole = EModuleKey.CTSV;
 
@@ -19,6 +20,7 @@ const keycloakTokenEndpoint =
   'https://ais.aisenote.com/keycloak/realms/vwa/protocol/openid-connect/token';
 
 export {
+  ipTaiChinh,
   ipNhanSu,
   ipDaoTao,
   ipCore,

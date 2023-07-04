@@ -25,7 +25,8 @@ const QuanLyBieuMau = () => {
     putTrangThaiBieuMauModel,
   } = useModel('dvmc.dichvumotcuav2');
   // const { getAllDonViModel } = useModel('donvi');
-  const { getProductByCodeModel } = useModel('dvmc.thanhtoan');
+  const { getAllModel, setRecord: setRecordKhoanThu, danhSach } = useModel('dvmc.khoanthu');
+  const { getAllModel: getAllMucThu } = useModel('dvmc.mucthu');
   // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
   // const access = useAccess();
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
@@ -36,6 +37,7 @@ const QuanLyBieuMau = () => {
 
   useEffect(() => {
     setLoaiDichVu('DVMC');
+    getAllModel(false, undefined, { 'metaData.service': 'DVMC' });
     // getAllHinhThucDaoTaoModel();
     // getAllDonViModel();
     return () => {
@@ -116,8 +118,14 @@ const QuanLyBieuMau = () => {
             <Button
               // disabled={!isUpdate}
               onClick={() => {
-                if (record?.thongTinThuTuc?.maLePhi) {
-                  getProductByCodeModel(record?.thongTinThuTuc?.maLePhi);
+                if (record?.thongTinThuTuc?.idKhoanThu) {
+                  setRecordKhoanThu(
+                    danhSach.find((item) => item._id === record.thongTinThuTuc?.idKhoanThu),
+                  );
+                  getAllMucThu(false, undefined, {
+                    product: record.thongTinThuTuc.idKhoanThu,
+                    active: true,
+                  });
                 }
                 setRecord(record);
                 setEdit(true);
@@ -154,6 +162,8 @@ const QuanLyBieuMau = () => {
   return (
     <>
       <TableBase
+        formType="Drawer"
+        widthDrawer={1000}
         title="Quản lý biểu mẫu"
         modelName="dvmc.dichvumotcuav2"
         columns={columns}
@@ -161,7 +171,6 @@ const QuanLyBieuMau = () => {
         getData={() => getBieuMauAdminModel('DVMC')}
         Form={Form}
       />
-
       <Modal width={800} footer={null} visible={visible} onCancel={() => setVisible(false)}>
         <Tabs>
           <Tabs.TabPane tab="Quy trình" key={0}>

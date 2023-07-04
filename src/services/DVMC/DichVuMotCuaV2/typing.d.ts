@@ -80,9 +80,11 @@ declare module DichVuMotCuaV2 {
     ketQuaThucHien?: string;
     mauBieu?: string;
     luuY?: string;
-    maLePhi: string;
     tinhTienTheoSoLuong: boolean;
     choPhepGuiNhieuLan: boolean;
+    idKhoanThu: string;
+    idNguonThu: string;
+    idMucThu: string;
   }
 
   export interface BuocQuyTrinh {
@@ -142,6 +144,7 @@ declare module DichVuMotCuaV2 {
   }
 
   export interface Don {
+    idBuocHienTai: string;
     daTraKetQua: boolean;
     daTraLoiPhanHoi: boolean;
     noiDungPhanHoi: string;

@@ -398,10 +398,16 @@ export const MapKeyColorTrangThaiDotDangKyDeTaiQLKH = {
 };
 
 export enum TrangThaiThanhToan {
-  open = 'Chưa thanh toán đủ',
-  paid = 'Đã thanh toán đủ',
-  overpaid = 'Thanh toán thừa',
+  open = 'open',
+  paid = 'paid',
+  overpaid = 'overpaid',
 }
+
+export const MapKeyTrangThaiThanhToan = {
+  [TrangThaiThanhToan.open]: 'Chưa thanh toán đủ',
+  [TrangThaiThanhToan.paid]: 'Đã thanh toán đủ',
+  [TrangThaiThanhToan.overpaid]: 'Thanh toán thừa',
+};
 
 export enum ETrangThaiKhoa {
   DA_KHOA = 'Đã nộp',

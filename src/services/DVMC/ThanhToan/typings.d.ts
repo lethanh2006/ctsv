@@ -1,3 +1,5 @@
+import type { TrangThaiThanhToan } from '@/utils/constants';
+
 declare module ThanhToan {
   export interface Price {
     currency: string;
@@ -11,11 +13,14 @@ declare module ThanhToan {
   }
 
   export interface Product {
-    prices: Price[];
     active: boolean;
     _id: string;
     code: string;
     name: string;
+    nguonThu: {
+      _id: string;
+      name: string;
+    };
     metaData: {
       source: string;
     };
@@ -23,6 +28,7 @@ declare module ThanhToan {
     createdAt: string;
     updatedAt: string;
     currentPrice: Price;
+    'metaData.service': string;
   }
 
   export interface Item {
@@ -53,7 +59,7 @@ declare module ThanhToan {
 
   export interface Invoice {
     transactionDate: string;
-    status: string;
+    status: TrangThaiThanhToan;
     _id: string;
     code: string;
     amountPaid: number;

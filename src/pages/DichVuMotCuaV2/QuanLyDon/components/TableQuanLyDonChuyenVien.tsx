@@ -1,14 +1,15 @@
 import TableBase from '@/components/OldTable';
+import type { IColumn } from '@/components/Table/typing';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
 import { includes } from '@/utils/utils';
+import ThanhToan from '../../ThanhToan';
 import {
   CheckOutlined,
   CloseOutlined,
   CopyOutlined,
   DeleteOutlined,
-  EditOutlined,
   EyeOutlined,
   FileDoneOutlined,
   FileTextOutlined,
@@ -34,7 +35,6 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
-import { IColumn } from '@/components/Table/typing';
 
 const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   const {
@@ -375,7 +375,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
                         }}
                         title="Bạn có chắc chắn xóa đơn này?"
                       >
-                        <Button danger icon={<DeleteOutlined />} shape="circle" />
+                        <Button danger type="primary" icon={<DeleteOutlined />} shape="circle" />
                       </Popconfirm>
                     </Tooltip>
                   </>
@@ -493,14 +493,11 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
               record={recordDon}
             />
           </Tabs.TabPane>
-          {/*{recordDon?.identityCode && (*/}
-          {/*  <Tabs.TabPane tab="Thông tin thanh toán" key={2}>*/}
-          {/*    <ThanhToan*/}
-          {/*      identityCode={recordDon?.identityCode}*/}
-          {/*      trangThaiThanhToan={recordDon?.trangThaiThanhToan}*/}
-          {/*    />*/}
-          {/*  </Tabs.TabPane>*/}
-          {/*)}*/}
+          {recordDon?.identityCode && (
+            <Tabs.TabPane tab="Thông tin thanh toán" key={2}>
+              <ThanhToan identityCode={recordDon?.identityCode} />
+            </Tabs.TabPane>
+          )}
           <Tabs.TabPane tab="Lịch sử trả kết quả" key={3}>
             <TableLichSuTraKetQua data={recordDon?.lichSuChinhSua ?? []} />
           </Tabs.TabPane>

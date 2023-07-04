@@ -1,13 +1,13 @@
 import TinyEditor from '@/components/TinyEditor';
-import { uploadFile } from '@/services/uploadFile';
 import Upload from '@/components/Upload/UploadMultiFile';
-import rules from '@/utils/rules';
-import { renderFileListUrlWithName } from '@/utils/utils';
-import { ArrowRightOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
-import { useEffect, useState } from 'react';
-import { useAccess, useModel } from 'umi';
 import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
+import { uploadFile } from '@/services/uploadFile';
+import rules from '@/utils/rules';
+import { currencyFormat, renderFileListUrlWithName } from '@/utils/utils';
+import { ArrowRightOutlined } from '@ant-design/icons';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd';
+import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 
 const FormThongTinChung = () => {
   const [form] = Form.useForm();
@@ -18,6 +18,20 @@ const FormThongTinChung = () => {
     record: recordDichVu,
     setRecord,
   } = useModel('dvmc.dichvumotcuav2');
+
+  const {
+    danhSach,
+    setRecord: setRecordProduct,
+    record: recordProduct,
+  } = useModel('dvmc.khoanthu');
+
+  const {
+    danhSach: danhSachMucThu,
+    getAllModel,
+    setDanhSach,
+    loading: loadingMucThu,
+  } = useModel('dvmc.mucthu');
+
   const [phamVi, setPhamVi] = useState<string>(recordDichVu?.phamVi ?? '');
   const { record } = useModel('dvmc.thanhtoan');
   // const { danhSach } = useModel('donvi');
@@ -28,7 +42,7 @@ const FormThongTinChung = () => {
   useEffect(() => {
     form.setFieldsValue({
       mucLePhi: recordDichVu?.mucLePhi || record?.currentPrice?.unitAmount,
-      donViTinh: recordDichVu?.donViTinh || record?.unitLabel,
+      donViTinh: recordDichVu?.donViTinh || record?.unitLabel || recordProduct?.unitLabel,
     });
   }, [record]);
 
@@ -360,50 +374,7 @@ const FormThongTinChung = () => {
               Yêu cầu trả phí
             </Form.Item>
           </Col>
-          {yeuCauTraPhi && (
-            <>
-              <Col md={12}>
-                <Form.Item
-                  name={['thongTinThuTuc', 'tinhTienTheoSoLuong']}
-                  initialValue={recordDichVu?.thongTinThuTuc?.tinhTienTheoSoLuong}
-                >
-                  <Checkbox
-                    checked={tinhTienTheoSoLuong}
-                    onChange={(e) => {
-                      setTinhTienTheoSoLuong(e.target.checked);
-                    }}
-                  />{' '}
-                  Tính tiền theo số lượng
-                </Form.Item>
-              </Col>
-              <Col style={{ marginTop: '-12px' }} md={12}>
-                <Form.Item
-                  name="mucLePhi"
-                  label="Mức lệ phí"
-                  rules={[...rules.required]}
-                  // initialValue={record?.currentPrice?.unitAmount}
-                >
-                  <InputNumber
-                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    style={{ width: '100%' }}
-                    placeholder="Mức lệ phí"
-                    max={10000000}
-                    min={0}
-                  />
-                </Form.Item>
-              </Col>
-              <Col style={{ marginTop: '-12px' }} md={12}>
-                <Form.Item
-                  name="donViTinh"
-                  label="Đơn vị tính"
-                  // initialValue={record?.unitLabel}
-                  rules={[...rules.text, ...rules.required, ...rules.length(30)]}
-                >
-                  <Input placeholder="Đơn vị tính" />
-                </Form.Item>
-              </Col>
-            </>
-          )}
+
           <Col md={8}>
             <Form.Item
               name={['thongTinThuTuc', 'choPhepGuiNhieuLan']}
@@ -428,6 +399,78 @@ const FormThongTinChung = () => {
               Tạo lịch hẹn trả đơn
             </Checkbox>
           </Col>
+          {yeuCauTraPhi && (
+            <>
+              <Col span={24}>
+                <Form.Item
+                  name={['thongTinThuTuc', 'tinhTienTheoSoLuong']}
+                  initialValue={recordDichVu?.thongTinThuTuc?.tinhTienTheoSoLuong}
+                >
+                  <Checkbox
+                    checked={tinhTienTheoSoLuong}
+                    onChange={(e) => {
+                      setTinhTienTheoSoLuong(e.target.checked);
+                    }}
+                  />{' '}
+                  Tính tiền theo số lượng
+                </Form.Item>
+              </Col>
+              <Col md={8}>
+                <Form.Item
+                  name={['thongTinThuTuc', 'idKhoanThu']}
+                  label="Chọn lệ phí"
+                  rules={[...rules.required]}
+                  initialValue={recordDichVu?.thongTinThuTuc?.idKhoanThu}
+                >
+                  <Select
+                    onChange={(val) => {
+                      const recordProdTemp = danhSach.find((item) => item._id === val);
+                      if (val) {
+                        setRecordProduct(recordProdTemp);
+                        setDanhSach([]);
+                        getAllModel(false, undefined, { product: val, active: true });
+                      }
+                      form.setFieldsValue({
+                        maLePhi: undefined,
+                        donViTinh: recordProdTemp?.unitLabel,
+                      });
+                    }}
+                    placeholder="Chọn lệ phí"
+                    options={danhSach.map((item) => ({ label: item.name, value: item._id }))}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col md={8}>
+                <Form.Item
+                  initialValue={recordDichVu?.thongTinThuTuc?.idMucThu}
+                  rules={[...rules.required]}
+                  name={['thongTinThuTuc', 'idMucThu']}
+                  label="Chọn mức giá"
+                >
+                  <Select
+                    notFoundContent={loadingMucThu && <Spin spinning />}
+                    placeholder="Chọn mức giá"
+                    options={danhSachMucThu?.map((item) => ({
+                      label: `${currencyFormat(item.unitAmount)} ${item.currency}`,
+                      value: item._id,
+                    }))}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col md={8}>
+                <Form.Item
+                  name="donViTinh"
+                  label="Đơn vị tính"
+                  initialValue={recordProduct?.unitLabel}
+                  rules={[...rules.required]}
+                >
+                  <Input placeholder="Hãy chọn mức lệ phí" readOnly />
+                </Form.Item>
+              </Col>
+            </>
+          )}
           {taoLichHen && (
             <Col md={24}>
               <Form.Item

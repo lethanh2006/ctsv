@@ -366,9 +366,9 @@ const FormBieuMau = (props: {
             notRequiredTinh={!item?.isRequired}
             notRequiredXaPhuong={!item?.isRequired}
             initialValue={{
-              tinhTp:item?.value?.tenTinh,
-              quanHuyen:item?.value?.tenQuanHuyen,
-              xaPhuong:item?.value?.tenPhuongXa,
+              tinhTp: item?.value?.tenTinh,
+              quanHuyen: item?.value?.tenQuanHuyen,
+              xaPhuong: item?.value?.tenPhuongXa,
             }}
           />
         );
@@ -709,9 +709,9 @@ const FormBieuMau = (props: {
               return buildForm(`cauHinhBieuMau[${index}]`, item);
             })}
 
-            {((record?.thongTinThuTuc?.yeuCauTraPhi &&
-              record?.thongTinThuTuc?.tinhTienTheoSoLuong) ||
-              props?.record?.trangThaiThanhToan) &&
+            {record?.thongTinThuTuc?.yeuCauTraPhi &&
+              record?.thongTinThuTuc?.tinhTienTheoSoLuong &&
+              props?.record?.trangThaiThanhToan &&
               !(props?.edit !== null && props?.edit !== undefined) && (
                 <Form.Item
                   initialValue={props?.record?.soLuongThanhToan}

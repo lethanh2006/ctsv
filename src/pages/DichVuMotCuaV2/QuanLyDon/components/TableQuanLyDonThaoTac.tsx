@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useModel } from 'umi';
 import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 const TableQuanLyDon = () => {
   const {
@@ -256,10 +256,7 @@ const TableQuanLyDon = () => {
           </Tabs.TabPane>
           {recordDonThaoTac?.idDon?.identityCode && (
             <Tabs.TabPane tab="Thông tin thanh toán" key={2}>
-              <ThanhToan
-                identityCode={recordDonThaoTac?.idDon?.identityCode}
-                trangThaiThanhToan={recordDonThaoTac?.idDon?.trangThaiThanhToan}
-              />
+              <ThanhToan identityCode={recordDonThaoTac?.idDon?.identityCode} />
             </Tabs.TabPane>
           )}
         </Tabs>

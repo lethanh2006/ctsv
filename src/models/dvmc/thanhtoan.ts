@@ -12,11 +12,12 @@ import {
   refundInvoiceByIdentityCode,
   thongKeMyInvoice,
 } from '@/services/DVMC/ThanhToan/thanhtoan';
+import type { ThanhToan } from '@/services/DVMC/ThanhToan/typings';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-  const objInit = useInitModel<ThanhToan.Invoice>('SLINK-MANUAL/thanh-toan/invoice');
+  const objInit = useInitModel<ThanhToan.Invoice>('chi-tiet-thu');
   const { setLoading, setDanhSach, setRecord, setVisibleForm, setTotal, limit, page, condition } =
     objInit;
   const [invoice, setInvoice] = useState<ThanhToan.Invoice>();
@@ -51,25 +52,19 @@ export default () => {
   const getInvoiceByIdentityCodeModel = async (identityCode?: string) => {
     if (!identityCode) return;
     const response = await getInvoiceByIdentityCode(identityCode);
-    setInvoice(response?.data?.data?.data);
+    setInvoice(response?.data?.data);
   };
 
-  const payInvoiceByIdentityCodeModel = async (
-    identityCode: string,
-    payload: {
-      amountPaid: number;
-      transactionDate: string;
-    },
-    isCongNo?: boolean,
-  ) => {
-    if (!identityCode) return;
+  const payInvoiceByIdentityCodeModel = async (payload: {
+    maChiTietThu: string;
+    amountPaid: number;
+    transactionDate: string;
+  }) => {
+    if (!payload.maChiTietThu) return;
     setLoading(true);
-    await payInvoiceByIdentityCode(identityCode, payload);
+    await payInvoiceByIdentityCode(payload);
     message.success('Cập nhật thanh toán thành công');
-    getInvoiceByIdentityCodeModel(identityCode);
-    if (isCongNo === true) {
-      getInvoiceModel();
-    }
+    getInvoiceByIdentityCodeModel(payload.maChiTietThu);
     setLoading(false);
   };
 

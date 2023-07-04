@@ -2,6 +2,7 @@
 import TableBase from '@/components/OldTable';
 import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
+import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
 import type { IColumn } from '@/utils/interfaces';
 import { includes } from '@/utils/utils';
@@ -18,7 +19,6 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 
 const TableQuanLyDonAdmin = (props: {
   hideFilter?: boolean;
@@ -359,10 +359,7 @@ const TableQuanLyDonAdmin = (props: {
           </Tabs.TabPane>
           {recordView?.identityCode && (
             <Tabs.TabPane tab="Thông tin thanh toán" key={2}>
-              <ThanhToan
-                identityCode={recordView?.identityCode}
-                trangThaiThanhToan={recordView?.trangThaiThanhToan}
-              />
+              <ThanhToan identityCode={recordView?.identityCode} />
             </Tabs.TabPane>
           )}
           <Tabs.TabPane tab="Lịch sử trả kết quả" key={3}>

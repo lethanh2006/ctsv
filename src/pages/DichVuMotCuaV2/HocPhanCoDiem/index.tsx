@@ -1,4 +1,4 @@
-import { IRecordHocPhan } from '@/services/DVMC/HocPhanCoDiem/typing';
+import type { IRecordHocPhan } from '@/services/DVMC/HocPhanCoDiem/typing';
 import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
 import { useModel } from '@@/plugin-model/useModel';
@@ -15,7 +15,8 @@ type Props = {
   initialValue?: IRecordHocPhan.record;
 };
 const HocPhanCoDiem = (props: Props) => {
-  const { getDsKyHoc, getDsDiemTheoKy, dsKyHoc, dsDiemTheoKy, loading } = useModel('dvmc.hocphancodiem');
+  const { getDsKyHoc, getDsDiemTheoKy, dsKyHoc, dsDiemTheoKy, loading } =
+    useModel('dvmc.hocphancodiem');
   const [idKy, setIdKy] = useState<string>(props?.initialValue?.idHocKy ?? '');
   useEffect(() => {
     getDsKyHoc();
