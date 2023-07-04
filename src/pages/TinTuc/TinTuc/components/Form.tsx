@@ -1,15 +1,12 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import TinyEditor from '@/components/TinyEditor';
 import UploadFile from '@/components/Upload/UploadFile';
-import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
-import { EPhamViChuDe } from '@/services/TinTuc/constant';
-import { type TinTuc } from '@/services/TinTuc/typing';
 import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useModel } from 'umi';
 import SelectChuDe from '../../ChuDe/components/Select';
 
@@ -26,16 +23,16 @@ const FormTinTuc = (props: any) => {
     getModel,
     visibleForm,
   } = useModel('tintuc.tintuc');
-  const { danhSach: danhSachChuDe } = useModel('tintuc.chude');
-  const [chuDeSelected, setChuDeSelected] = useState<TinTuc.IChuDe>();
+  // const { danhSach: danhSachChuDe } = useModel('tintuc.chude');
+  // const [chuDeSelected, setChuDeSelected] = useState<TinTuc.IChuDe>();
   const { title } = props;
 
-  const onChangeChuDe = (val?: string) =>
-    setChuDeSelected(danhSachChuDe.find((item) => item._id === val));
+  // const onChangeChuDe = (val?: string) =>
+  //   setChuDeSelected(danhSachChuDe.find((item) => item._id === val));
 
-  useEffect(() => {
-    onChangeChuDe(record?.idTopic);
-  }, [danhSachChuDe.length]);
+  // useEffect(() => {
+  //   onChangeChuDe(record?.idTopic);
+  // }, [danhSachChuDe.length]);
 
   useEffect(() => {
     if (!visibleForm) resetFieldsForm(form);
@@ -45,7 +42,7 @@ const FormTinTuc = (props: any) => {
         danhSachVaiTro:
           record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
       });
-    onChangeChuDe(record?.idTopic);
+    // onChangeChuDe(record?.idTopic);
   }, [record?._id, visibleForm]);
 
   const onFinish = async (values: any) => {
@@ -59,7 +56,7 @@ const FormTinTuc = (props: any) => {
       const payload = {
         ...values,
         doiTuong: values.danhSachVaiTro?.length !== 1 ? 'Tất cả' : 'Vai trò',
-        phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
+        // phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
       };
 
       if (edit) {
@@ -88,7 +85,7 @@ const FormTinTuc = (props: any) => {
           <Input placeholder="Nhập tiêu đề" />
         </Form.Item>
         <Form.Item name="idTopic" label="Chủ đề" rules={[...rules.required]}>
-          <SelectChuDe onChange={(val) => onChangeChuDe(val)} />
+          <SelectChuDe />
         </Form.Item>
         <Form.Item name="moTa" label="Mô tả" rules={[...rules.text, ...rules.length(2000)]}>
           <Input placeholder="Mô tả" />
@@ -97,17 +94,17 @@ const FormTinTuc = (props: any) => {
         <Row gutter={[12, 0]}>
           <Col span={24} md={8}>
             <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
-              <UploadFile isAvatar />
+              <UploadFile isAvatarSmall />
             </Form.Item>
           </Col>
 
-          {chuDeSelected?.phamVi === 'Tất cả' && (
+          {/* {chuDeSelected?.phamVi === 'Tất cả' && (
             <Col xs={24} md={8}>
               <Form.Item name="danhSachVaiTro" label="Đối tượng">
                 <GroupTagVaiTro />
               </Form.Item>
             </Col>
-          )}
+          )} */}
 
           <Col xs={24} md={8}>
             <Form.Item

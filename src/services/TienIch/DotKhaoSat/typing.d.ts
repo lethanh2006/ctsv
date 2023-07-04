@@ -22,8 +22,8 @@ declare module DotKhaoSat {
     danhSachNganhHoc: BieuMau.GeneralInfo[];
     danhSachDonVi: BieuMau.GeneralInfo[];
     loaiDoiTuongSuDung: ELoaiDoiTuong[];
-    phamVi: EPhamViChuDe;
-    hinhThucDaoTaoId: string;
+    // phamVi: EPhamViChuDe;
+    // hinhThucDaoTaoId: string;
     daLam: boolean;
   }
 }

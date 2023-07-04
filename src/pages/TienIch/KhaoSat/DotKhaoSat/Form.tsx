@@ -1,8 +1,6 @@
-import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 import { type DotKhaoSat } from '@/services/TienIch/DotKhaoSat/typing';
 import { ELoaiDoiTuong, ELoaiDot } from '@/services/TienIch/constant';
-import { EPhamViChuDe } from '@/services/TinTuc/constant';
 import rules from '@/utils/rules';
 import { includes, resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, DatePicker, Form, Input, Row, Select, Switch } from 'antd';
@@ -20,7 +18,7 @@ const FormDotKhaoSat = (props: any) => {
   const [doiTuong, setDoiTuong] = useState<ELoaiDoiTuong | undefined>(
     record?.loaiDoiTuongSuDung?.[0] ?? ELoaiDoiTuong.TAT_CA,
   );
-  const [phamVi, setPhamVi] = useState<EPhamViChuDe>(record?.phamVi ?? EPhamViChuDe.TAT_CA);
+  // const [phamVi, setPhamVi] = useState<EPhamViChuDe>(record?.phamVi ?? EPhamViChuDe.TAT_CA);
   const isNguoiDungCuThe = doiTuong === ELoaiDoiTuong.NGUOI_DUNG_CU_THE;
   const title = props?.title ?? '';
 
@@ -33,7 +31,7 @@ const FormDotKhaoSat = (props: any) => {
           record?.thoiGianBatDau ? moment(record.thoiGianBatDau) : undefined,
           record?.thoiGianKetThuc ? moment(record.thoiGianKetThuc) : undefined,
         ],
-        phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
+        // phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
         loaiDoiTuongSuDung: record?.loaiDoiTuongSuDung?.[0] ?? ELoaiDoiTuong.TAT_CA,
       });
   }, [record?._id, visibleForm]);
@@ -92,16 +90,16 @@ const FormDotKhaoSat = (props: any) => {
     });
     const thoiGianBatDau = values?.thoiGian?.[0] ?? values.thoiGianBatDau;
     const thoiGianKetThuc = values?.thoiGian?.[1] ?? values.thoiGianKetThuc;
+    delete values.thoiGian;
 
     values.loaiDoiTuongSuDung = doiTuong === ELoaiDoiTuong.TAT_CA ? [] : [doiTuong];
 
-    if (values?.hinhThucDaoTaoId === -1) {
-      values.hinhThucDaoTaoId = undefined;
-      values.isTatCaHe = true;
-    } else {
-      values.isTatCaHe = false;
-    }
-    delete values.thoiGian;
+    // if (values?.hinhThucDaoTaoId === -1) {
+    //   values.hinhThucDaoTaoId = undefined;
+    //   values.isTatCaHe = true;
+    // } else {
+    //   values.isTatCaHe = false;
+    // }
 
     const payload = {
       ...record,
@@ -152,7 +150,7 @@ const FormDotKhaoSat = (props: any) => {
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={phamVi === EPhamViChuDe.HINH_THUC_DAO_TAO ? 6 : 12}>
+          {/* <Col xs={24} md={phamVi === EPhamViChuDe.HINH_THUC_DAO_TAO ? 6 : 12}>
             <Form.Item rules={[...rules.required]} name="phamVi" label="Phạm vi">
               <Select
                 onChange={(val: EPhamViChuDe) => setPhamVi(val)}
@@ -176,7 +174,7 @@ const FormDotKhaoSat = (props: any) => {
                 <SelectHinhThuc />
               </Form.Item>
             </Col>
-          )}
+          )} */}
 
           <Col xs={24} sm={12}>
             <Form.Item
