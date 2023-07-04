@@ -1,3 +1,4 @@
+import { type EVaiTroBieuMau } from '../TienIch/constant';
 import { type EReceiverType } from './constant';
 
 declare module ThongBao {
@@ -32,5 +33,12 @@ declare module ThongBao {
     khoaList?: number[];
     userIds?: string[];
     roles?: string[];
+  }
+
+  export interface IUser {
+    ssoId: string;
+    ma: string;
+    ten: string;
+    vaiTro: EVaiTroBieuMau;
   }
 }

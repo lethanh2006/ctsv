@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import TableSelectNhanSu from './TableSelectNhanSu';
 import TableSelectSinhVien from './TableSelectSinhVien';
+import { type ThongBao } from '@/services/ThongBao/typing';
+import _ from 'lodash';
 
 const FormThongBao = (props: any) => {
   const [form] = Form.useForm();
@@ -31,6 +33,9 @@ const FormThongBao = (props: any) => {
   } = useModel('thongbao.thongbao');
   const { title } = props;
   const [activeKey, setActiveKey] = useState<string>();
+  const [danhSachNhanSu, setDanhSachNhanSu] = useState<ThongBao.IUser[]>([]);
+  const [danhSachSinhVien, setDanhSachSinhVien] = useState<ThongBao.IUser[]>([]);
+  const danhSachUser = [...danhSachSinhVien, ...danhSachNhanSu];
   const danhSachVaiTro: EVaiTroBieuMau[] = Form.useWatch('danhSachVaiTro', form);
   const doiTuongSelected: ELoaiDoiTuongThongBao =
     Form.useWatch('doiTuong', form) || ELoaiDoiTuongThongBao.TAT_CA;
@@ -92,27 +97,14 @@ const FormThongBao = (props: any) => {
             <Form.Item
               name="description"
               label="Mô tả"
-              rules={[...rules.text, ...rules.length(2000)]}
+              rules={[...rules.text, ...rules.length(500)]}
             >
               <Input.TextArea rows={3} placeholder="Mô tả" />
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="danhSachVaiTro"
-              label="Đối tượng nhận thông báo"
-              rules={[...rules.required]}
-            >
-              <GroupTagVaiTro
-                onChange={(arr) => {
-                  if (arr?.length && !activeKey) setActiveKey(arr[0]);
-                }}
-              />
-            </Form.Item>
-          </Col>
           <Col span={24} md={12}>
-            <Form.Item name="doiTuong" label="Thuộc" rules={[...rules.required]}>
+            <Form.Item name="doiTuong" label="Đối tượng nhận thông báo" rules={[...rules.required]}>
               <Select
                 options={Object.values(ELoaiDoiTuongThongBao).map((item) => ({
                   key: item,
@@ -120,7 +112,28 @@ const FormThongBao = (props: any) => {
                   label: item,
                 }))}
                 placeholder="Chọn nhóm người nhận"
-                onChange={() => form.setFieldsValue({ danhSachDoiTuong: undefined })}
+                onChange={() =>
+                  form.setFieldsValue({
+                    danhSachVaiTro: undefined,
+                    danhSachDoiTuong: undefined,
+                  })
+                }
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24} md={12}>
+            <Form.Item name="danhSachVaiTro" label="Vai trò" rules={[...rules.required]}>
+              <GroupTagVaiTro
+                onChange={(arr) => {
+                  if (arr?.length && !activeKey) setActiveKey(arr[0]);
+                }}
+                listVaiTro={
+                  [ELoaiDoiTuongThongBao.KHOA, ELoaiDoiTuongThongBao.NGANH].includes(
+                    doiTuongSelected,
+                  )
+                    ? [EVaiTroBieuMau.SINH_VIEN]
+                    : undefined
+                }
               />
             </Form.Item>
           </Col>
@@ -160,22 +173,28 @@ const FormThongBao = (props: any) => {
 
               {loaiNguoiDung === 'users' ? (
                 <Col span={24} style={{ marginBottom: 12 }}>
+                  <ul>
+                    {danhSachUser.map((item) => (
+                      <li key={item.ssoId}>{item.ten}</li>
+                    ))}
+                  </ul>
                   <Tabs accessKey={activeKey} onChange={(tab) => setActiveKey(tab)}>
                     {danhSachVaiTro.map((item) => (
                       <Tabs.TabPane key={item} tab={TenVaiTroBieuMau[item]} />
                     ))}
                   </Tabs>
 
-                  <div
-                    style={{ display: activeKey === EVaiTroBieuMau.SINH_VIEN ? 'block' : 'none' }}
-                  >
-                    <TableSelectSinhVien />
-                  </div>
-                  <div
-                    style={{ display: activeKey === EVaiTroBieuMau.NHAN_VIEN ? 'block' : 'none' }}
-                  >
-                    <TableSelectNhanSu />
-                  </div>
+                  {activeKey === EVaiTroBieuMau.SINH_VIEN ? (
+                    <TableSelectSinhVien
+                      selectedUsers={danhSachSinhVien}
+                      setSelectedUsers={setDanhSachSinhVien}
+                    />
+                  ) : activeKey === EVaiTroBieuMau.NHAN_VIEN ? (
+                    <TableSelectNhanSu
+                      selectedUsers={danhSachNhanSu}
+                      setSelectedUsers={setDanhSachNhanSu}
+                    />
+                  ) : null}
                 </Col>
               ) : null}
             </>
