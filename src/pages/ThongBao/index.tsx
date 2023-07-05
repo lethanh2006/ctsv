@@ -1,12 +1,15 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { EyeOutlined } from '@ant-design/icons';
-import { Button, Divider, Modal, Tooltip, Typography } from 'antd';
+import { Button, Modal, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import Form from './components/Form';
 import ViewThongBao from './components/ViewThongBao';
+import moment from 'moment';
+import { EReceiverType, LoaiDoiTuongThongBao } from '@/services/ThongBao/constant';
 
 const ThongBaoPage = () => {
   const { page, limit, setRecord, record } = useModel('thongbao.thongbao');
@@ -24,7 +27,6 @@ const ThongBaoPage = () => {
     {
       title: 'Người gửi',
       dataIndex: 'senderName',
-      align: 'center',
       width: 150,
       filterType: 'string',
       onCell,
@@ -32,50 +34,45 @@ const ThongBaoPage = () => {
     {
       title: 'Tiêu đề',
       dataIndex: 'title',
-      align: 'center',
       width: 200,
       filterType: 'string',
       onCell,
-      render: (val) => (
-        <Typography.Paragraph
-          ellipsis={{ rows: 2, expandable: true, symbol: <span>Xem tiếp</span> }}
-        >
-          {val}
-        </Typography.Paragraph>
-      ),
+      render: (val) => <ExpandText>{val}</ExpandText>,
     },
     {
       title: 'Mô tả',
       dataIndex: 'description',
-      align: 'center',
       width: 200,
+      filterType: 'string',
       onCell,
-      render: (val) => (
-        <Typography.Paragraph
-          ellipsis={{ rows: 2, expandable: true, symbol: <span>Xem tiếp</span> }}
-        >
-          {val}
-        </Typography.Paragraph>
-      ),
+      render: (val) => <ExpandText>{val}</ExpandText>,
     },
-    // {
-    //   title: 'Nội dung',
-    //   dataIndex: 'content',
-    //   align: 'center',
-    //   width: 200,
-    //   onCell,
-    //   render: (val) => (
-    //     <Typography.Paragraph
-    //       ellipsis={{ rows: 2, expandable: true, symbol: <span>Xem tiếp</span> }}
-    //     >
-    //       {val}
-    //     </Typography.Paragraph>
-    //   ),
-    // },
+    {
+      title: 'Đối tượng nhận thông báo',
+      dataIndex: 'receiverType',
+      width: 120,
+      filterType: 'select',
+      filterData: Object.values(EReceiverType).map((value) => ({
+        value,
+        label: LoaiDoiTuongThongBao?.[value] ?? '',
+      })),
+      onCell,
+      render: (val: EReceiverType) => LoaiDoiTuongThongBao?.[val],
+    },
+    {
+      title: 'Thời gian gửi',
+      dataIndex: 'createdAt',
+      width: 120,
+      align: 'center',
+      filterType: 'datetime',
+      sortable: true,
+      onCell,
+      render: (val) => moment(val).format('HH:mm:ss DD/MM/YYYY'),
+    },
     {
       title: 'Thao tác',
       align: 'center',
-      width: 170,
+      width: 60,
       fixed: 'right',
       render: (recordThongBao: ThongBao.IRecord) => (
         <>
@@ -85,12 +82,10 @@ const ThongBaoPage = () => {
                 setRecord(recordThongBao);
                 setVisible(true);
               }}
-              shape="circle"
-              type="primary"
+              type="link"
               icon={<EyeOutlined />}
             />
           </Tooltip>
-          <Divider type="vertical" />
           {/* <Tooltip title="Sửa">
             <Button
               disabled={!canUpdate}
@@ -131,7 +126,7 @@ const ThongBaoPage = () => {
         title="Thông báo"
         columns={columns}
         modelName="thongbao.thongbao"
-        widthDrawer={800}
+        widthDrawer={1000}
         dependencies={[page, limit]}
         Form={Form}
       >

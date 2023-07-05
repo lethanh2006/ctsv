@@ -6,6 +6,8 @@ import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
 import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
 import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
+import { EReceiverType, LoaiDoiTuongThongBao } from '@/services/ThongBao/constant';
+import { type ThongBao } from '@/services/ThongBao/typing';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
@@ -15,9 +17,6 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import TableSelectNhanSu from './TableSelectNhanSu';
 import TableSelectSinhVien from './TableSelectSinhVien';
-import { type ThongBao } from '@/services/ThongBao/typing';
-import _ from 'lodash';
-import { EReceiverType, LoaiDoiTuongThongBao } from '@/services/ThongBao/constant';
 
 const FormThongBao = (props: any) => {
   const [form] = Form.useForm();
@@ -37,7 +36,8 @@ const FormThongBao = (props: any) => {
   const [danhSachSinhVien, setDanhSachSinhVien] = useState<ThongBao.IUser[]>([]);
   const roles: EVaiTroBieuMau[] = Form.useWatch(['filter', 'roles'], form);
   const receiverType: EReceiverType = Form.useWatch('receiverType', form) || EReceiverType.All;
-  const loaiNguoiDung = Form.useWatch('loaiNguoiDung', form);
+  const loaiNguoiDung: EReceiverType = Form.useWatch('loaiNguoiDung', form);
+  const danhSachDoiTuong: string[] = Form.useWatch('danhSachDoiTuong', form);
 
   useEffect(() => {
     if (!visibleForm) resetFieldsForm(form);
@@ -46,7 +46,7 @@ const FormThongBao = (props: any) => {
     setActiveKey(roles?.[0]);
     form.setFieldsValue({
       receiverType: EReceiverType.All,
-      loaiNguoiDung: 'all',
+      loaiNguoiDung: EReceiverType.All,
       content: record?.content ?? '<p></p>',
     });
   }, [record?._id, visibleForm]);
@@ -63,7 +63,13 @@ const FormThongBao = (props: any) => {
         values.filter[`id${receiverType}`] = values.danhSachDoiTuong;
       delete values.danhSachDoiTuong;
 
-      console.log('🚀 ~ file: Form.tsx:56 ~ onFinish ~ values:', values);
+      if (loaiNguoiDung === EReceiverType.User) {
+        values.receiverType = loaiNguoiDung;
+        values.users = [...danhSachNhanSu, ...danhSachSinhVien].map((item) => item.code);
+        delete values.filter;
+      }
+      delete values.loaiNguoiDung;
+
       // if (edit) {
       //   putModel(record?._id ?? '', values)
       //     .then()
@@ -91,12 +97,12 @@ const FormThongBao = (props: any) => {
         </Form.Item>
 
         <Row gutter={[12, 0]}>
-          <Col span={24} md={6}>
-            <Form.Item name="urlAnhDaiDien" label="Ảnh đại diện">
+          <Col span={24} md={8}>
+            <Form.Item name="imageUrl" label="Ảnh đại diện">
               <UploadFile isAvatarSmall />
             </Form.Item>
           </Col>
-          <Col span={24} md={18}>
+          <Col span={24} md={16}>
             <Form.Item
               name="description"
               label="Mô tả"
@@ -106,23 +112,25 @@ const FormThongBao = (props: any) => {
             </Form.Item>
           </Col>
 
-          <Col span={24} md={12}>
+          <Col span={24} md={8}>
             <Form.Item
               name="receiverType"
               label="Đối tượng nhận thông báo"
               rules={[...rules.required]}
             >
               <Select
-                options={Object.entries(LoaiDoiTuongThongBao).map(([value, label]) => ({
-                  key: value,
-                  value,
-                  label,
-                }))}
+                options={Object.entries(LoaiDoiTuongThongBao)
+                  .filter(([value]) => value !== EReceiverType.User)
+                  .map(([value, label]) => ({
+                    key: value,
+                    value,
+                    label,
+                  }))}
                 placeholder="Chọn nhóm người nhận"
                 onChange={() => {
                   form.setFieldsValue({
-                    filter: { roles: undefined },
-                    danhSachDoiTuong: undefined,
+                    filter: { roles: [] },
+                    danhSachDoiTuong: [],
                   });
                   setDanhSachNhanSu([]);
                   setDanhSachSinhVien([]);
@@ -130,7 +138,7 @@ const FormThongBao = (props: any) => {
               />
             </Form.Item>
           </Col>
-          <Col span={24} md={12}>
+          <Col span={24} md={8}>
             <Form.Item name={['filter', 'roles']} label="Vai trò" rules={[...rules.required]}>
               <GroupTagVaiTro
                 onChange={(arr) => {
@@ -141,11 +149,23 @@ const FormThongBao = (props: any) => {
                 listVaiTro={
                   [EReceiverType.KhoaSinhVien, EReceiverType.Nganh].includes(receiverType)
                     ? [EVaiTroBieuMau.SINH_VIEN]
+                    : receiverType === EReceiverType.Khoa
+                    ? [EVaiTroBieuMau.NHAN_VIEN]
                     : undefined
                 }
               />
             </Form.Item>
           </Col>
+          {roles?.length ? (
+            <Col span={24} md={8}>
+              <Form.Item name="loaiNguoiDung" label="Danh sách người dùng">
+                <Radio.Group buttonStyle="solid" optionType="button">
+                  <Radio value={EReceiverType.All}>Tất cả</Radio>
+                  <Radio value={EReceiverType.User}>Người dùng cụ thể</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </Col>
+          ) : null}
 
           {receiverType !== EReceiverType.All ? (
             <Col span={24}>
@@ -155,13 +175,13 @@ const FormThongBao = (props: any) => {
                 rules={[...rules.required]}
               >
                 {receiverType === EReceiverType.Khoa ? (
-                  <SelectDonVi multiple />
+                  <SelectDonVi multiple selectMa />
                 ) : receiverType === EReceiverType.KhoaSinhVien ? (
                   <SelectKhoaSinhVien multiple />
                 ) : receiverType === EReceiverType.LopHanhChinh ? (
-                  <SelectLopHanhChinhDebounce multiple />
+                  <SelectLopHanhChinhDebounce multiple selectTen />
                 ) : receiverType === EReceiverType.LopHocPhan ? (
-                  <SelectLopHocPhanDebounce multiple />
+                  <SelectLopHocPhanDebounce multiple selectTen />
                 ) : receiverType === EReceiverType.Nganh ? (
                   <SelectNganhCoSo multiple />
                 ) : null}
@@ -171,16 +191,7 @@ const FormThongBao = (props: any) => {
 
           {roles?.length ? (
             <>
-              <Col span={24}>
-                <Form.Item name="loaiNguoiDung" label="Danh sách người dùng">
-                  <Radio.Group buttonStyle="solid" optionType="button">
-                    <Radio value={'all'}>Tất cả</Radio>
-                    <Radio value={'users'}>Người dùng cụ thể</Radio>
-                  </Radio.Group>
-                </Form.Item>
-              </Col>
-
-              {loaiNguoiDung === 'users' ? (
+              {loaiNguoiDung === EReceiverType.User ? (
                 <Col span={24} style={{ marginBottom: 12 }}>
                   <Tabs accessKey={activeKey} onChange={(tab) => setActiveKey(tab)}>
                     {Object.values(EVaiTroBieuMau).map((item) =>
@@ -194,11 +205,13 @@ const FormThongBao = (props: any) => {
                     <TableSelectSinhVien
                       selectedUsers={danhSachSinhVien}
                       setSelectedUsers={setDanhSachSinhVien}
+                      danhSachDoiTuong={{ [`id${receiverType}`]: danhSachDoiTuong }}
                     />
                   ) : activeKey === EVaiTroBieuMau.NHAN_VIEN ? (
                     <TableSelectNhanSu
                       selectedUsers={danhSachNhanSu}
                       setSelectedUsers={setDanhSachNhanSu}
+                      danhSachDoiTuong={{ [`id${receiverType}`]: danhSachDoiTuong }}
                     />
                   ) : null}
                 </Col>

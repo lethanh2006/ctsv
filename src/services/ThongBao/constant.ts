@@ -1,6 +1,6 @@
 export enum EReceiverType {
   // Topic = 'Topic',
-  // User = 'User',
+  User = 'User',
   All = 'All',
   KhoaSinhVien = 'KhoaSinhVien',
   Khoa = 'Khoa',
@@ -9,7 +9,8 @@ export enum EReceiverType {
   LopHocPhan = 'LopHocPhan',
 }
 
-export const LoaiDoiTuongThongBao = {
+export const LoaiDoiTuongThongBao: Partial<Record<EReceiverType, string>> = {
+  [EReceiverType.User]: 'Người dùng cụ thể',
   [EReceiverType.All]: 'Toàn Học viện',
   [EReceiverType.Khoa]: 'Khoa',
   [EReceiverType.KhoaSinhVien]: 'Khóa sinh viên',

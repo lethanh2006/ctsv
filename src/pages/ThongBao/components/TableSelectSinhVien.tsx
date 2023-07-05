@@ -1,6 +1,5 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { type SinhVien } from '@/services/SinhVien/typings';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { useModel } from 'umi';
@@ -9,63 +8,57 @@ import GroupTagUsers from './GroupTagUsers';
 const TableSelectSinhVien = (props: {
   selectedUsers?: ThongBao.IUser[];
   setSelectedUsers?: (val: ThongBao.IUser[]) => void;
+  danhSachDoiTuong?: Record<string, string[]>;
 }) => {
-  const { selectedUsers, setSelectedUsers } = props;
-  const { page, limit } = useModel('sinhvien.sinhvien');
+  const { selectedUsers, setSelectedUsers, danhSachDoiTuong } = props;
+  const { page, limit } = useModel('thongbao.sinhvien');
 
-  const onChange = (keys?: string[], rows?: SinhVien.IRecord[]) => {
+  const onChange = (keys?: string[], rows?: ThongBao.IUser[]) => {
     if (setSelectedUsers)
       setSelectedUsers(
         rows?.map((item) => ({
-          ma: item.ma,
-          ssoId: item.ssoId,
-          ten: item.ten,
-          vaiTro: EVaiTroBieuMau.SINH_VIEN,
+          ...item,
+          vaiTro: EVaiTroBieuMau.NHAN_VIEN,
         })) ?? [],
       );
   };
 
-  const columns: IColumn<SinhVien.IRecord>[] = [
+  const columns: IColumn<ThongBao.IUser>[] = [
     {
       title: 'Mã sinh viên',
-      dataIndex: 'ma',
+      dataIndex: 'code',
       width: 80,
     },
     {
       title: 'Họ tên',
-      dataIndex: 'ten',
       width: 150,
-    },
-    {
-      title: 'CCCD',
-      dataIndex: 'cccd',
-      width: 150,
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      width: 150,
+      render: (val, rec) => [rec.lastname, rec.firstname].join(' '),
     },
   ];
 
   return (
     <>
       {selectedUsers?.length ? (
-        <>
+        <div style={{ marginBottom: 12 }}>
           <div className="fw500">Đã chọn</div>
           <GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} />
-        </>
+        </div>
       ) : null}
 
       <TableBase
         columns={columns}
-        dependencies={[page, limit]}
-        modelName="sinhvien.sinhvien"
+        dependencies={[page, limit, danhSachDoiTuong]}
+        params={danhSachDoiTuong}
+        modelName="thongbao.sinhvien"
         hideCard
         buttons={{ create: false, reload: false }}
         rowSelection
-        detailRow={{ selectedRowKeys: selectedUsers?.map((item) => item.ssoId), onChange }}
-        otherProps={{ size: 'small', rowKey: 'ssoId' }}
+        detailRow={{
+          selectedRowKeys: selectedUsers?.map((item) => item.code),
+          onChange,
+          preserveSelectedRowKeys: true,
+        }}
+        otherProps={{ size: 'small', rowKey: 'code' }}
       />
     </>
   );

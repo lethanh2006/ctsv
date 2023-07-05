@@ -12,8 +12,9 @@ const SelectLopHanhChinhDebounce = (props: {
   onChange?: any;
   multiple?: boolean;
   disabled?: boolean;
+  selectTen?: boolean;
 }) => {
-  const { value, onChange, multiple, disabled } = props;
+  const { value, onChange, multiple, disabled, selectTen } = props;
   const { danhSach, getModel, setFilters, filters, loading } = useModel('daotao.lophanhchinh');
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const SelectLopHanhChinhDebounce = (props: {
       onSearch={(val) => searchDebounceLopHanhChinh(val)}
       options={danhSach.map((item) => ({
         key: item._id,
-        value: item._id,
+        value: selectTen ? item.ten : item._id,
         label: `${item.ten}`,
       }))}
       showSearch

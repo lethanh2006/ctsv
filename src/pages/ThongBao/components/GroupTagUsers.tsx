@@ -7,16 +7,16 @@ const GroupTagUsers = (props: {
 }) => {
   const { users, setUsers } = props;
 
-  const onClose = (ssoId: string) => {
-    const tmp = users?.filter((item) => item.ssoId !== ssoId) ?? [];
+  const onClose = (code: string) => {
+    const tmp = users?.filter((item) => item.code !== code) ?? [];
     if (setUsers) setUsers(tmp);
   };
 
   return (
     <Space wrap>
       {users?.map((item) => (
-        <Tag key={item.ssoId} closable onClose={() => onClose(item.ssoId)}>
-          {item.ten} {item.ma}
+        <Tag key={item.code} closable onClose={() => onClose(item.code)}>
+          {item.firstname} {item.lastname} - {item.code}
         </Tag>
       ))}
     </Space>

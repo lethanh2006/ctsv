@@ -14,8 +14,9 @@ const SelectDonVi = (props: {
   style?: React.CSSProperties;
   allowClear?: boolean;
   placeholder?: string;
+  selectMa?: boolean;
 }) => {
-  const { value, onChange, multiple, disabled, style, allowClear, placeholder } = props;
+  const { value, onChange, multiple, disabled, style, allowClear, placeholder, selectMa } = props;
   const { danhSach, getAllModel } = useModel('tochucnhansu.donvi');
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const SelectDonVi = (props: {
       disabled={disabled}
       options={danhSach.map((item) => ({
         key: item._id,
-        value: item._id,
+        value: selectMa ? item.maDonVi : item._id,
         label: `${item.ten} (${item.maDonVi})`,
       }))}
       showSearch

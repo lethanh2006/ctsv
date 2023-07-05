@@ -10,7 +10,7 @@ declare module ThongBao {
     description?: string;
     content?: string;
     imageUrl?: string;
-    filter: {
+    filter?: {
       roles: EVaiTroBieuMau[];
       idKhoaSinhVien: string;
       idKhoa: string;
@@ -18,35 +18,18 @@ declare module ThongBao {
       idLopHanhChinh: string;
       idLopTinChi: string;
     };
-    data?: any;
     receiverType: EReceiverType;
     topics?: string[];
     users?: string[];
+    data?: any;
     createdAt: string; // '2023-06-27T07:47:29.693Z';
     read: boolean;
   }
 
-  export interface PostRecord {
-    title: string;
-    description: string;
-    content?: string;
-    htmlContent?: string;
-    imageUrl?: string;
-    hinhThucDaoTaoId?: number;
-    loaiDoiTuong: string[];
-    lopHanhChinhList?: number[];
-    lopTinChiList?: number[];
-    nganhList?: number[];
-    donViList?: number[];
-    khoaList?: number[];
-    userIds?: string[];
-    roles?: string[];
-  }
-
   export interface IUser {
-    ssoId: string;
-    ma: string;
-    ten: string;
-    vaiTro: EVaiTroBieuMau;
+    code: string;
+    firstname: string;
+    lastname: string;
+    vaiTro?: EVaiTroBieuMau;
   }
 }
