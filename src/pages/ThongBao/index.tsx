@@ -67,7 +67,7 @@ const ThongBaoPage = () => {
       filterType: 'datetime',
       sortable: true,
       onCell,
-      render: (val) => moment(val).format('HH:mm:ss DD/MM/YYYY'),
+      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
     },
     {
       title: 'Thao tác',
@@ -136,7 +136,6 @@ const ThongBaoPage = () => {
       <Modal
         width={800}
         bodyStyle={{ padding: 0 }}
-        destroyOnClose
         okButtonProps={{ hidden: true }}
         cancelText="Đóng"
         visible={visible}
