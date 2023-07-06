@@ -186,6 +186,7 @@ const DotKhaoSatPage = () => {
                   type="primary"
                   shape="circle"
                   icon={<EditOutlined />}
+                  disabled={record.kichHoat}
                 />
               </Tooltip>
               <Divider type="vertical" />
@@ -196,8 +197,14 @@ const DotKhaoSatPage = () => {
                   onConfirm={() => deleteModel(record._id)}
                   title="Bạn có chắc chắn muốn xóa khảo sát này?"
                   placement="topLeft"
+                  disabled={record.kichHoat}
                 >
-                  <Button shape="circle" danger icon={<DeleteOutlined />} />
+                  <Button
+                    shape="circle"
+                    danger
+                    icon={<DeleteOutlined />}
+                    disabled={record.kichHoat}
+                  />
                 </Popconfirm>
               </Tooltip>
             </>
