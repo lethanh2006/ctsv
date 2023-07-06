@@ -5,10 +5,5 @@ export async function getHocTapHienTai(sinhVienSsoId: string) {
   return axios.get(`${ipDaoTao}/sinh-vien/${sinhVienSsoId}/thong-tin-hoc-tap-hien-tai`);
 }
 
-// export async function kichHoatNguonThu(id: string) {
-//   return axios.put(`${ip3}/nguon-thu/${id}/activate`);
-// }
-
-// export async function tatKichHoatNguonThu(id: string) {
-//   return axios.put(`${ip3}/nguon-thu/${id}/inactivate`);
-// }
+export const getThongTinSinhVienBySsoId = (ssoId: string) =>
+  axios.get(`${ipDaoTao}/sinh-vien/${ssoId}/info`);

@@ -66,6 +66,9 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     chuyenVienDieuPhoiGetDonVpsModel,
     chuyenVienXuLyGetDonVpsModel,
   } = useModel('dvmc.dichvumotcuav2');
+
+  const { getThongTinSinhVienBySsoIdModel, record: infoNguoiTaoDon } =
+    useModel('sinhvien.sinhvien');
   // const {
   //   setIdDichVu,
   //   chuyenVienDieuPhoiGetTongSoDonDVMCModel,
@@ -97,8 +100,10 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
   };
 
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
+    getThongTinSinhVienBySsoIdModel(recordDonColumn?.thongTinNguoiTao?.ssoId);
     // if (pathname?.includes('quanlydondieuphoi'))
     getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
+
     // else getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
     setRecordDon(recordDonColumn);
     setVisibleFormDon(true);
@@ -485,7 +490,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
           <Tabs.TabPane tab="Biểu mẫu" key={1}>
             <Form
               hideCamKet
-              infoNguoiTaoDon={recordDon?.thongTinNguoiTao}
+              infoNguoiTaoDon={infoNguoiTaoDon}
               type={type}
               onCancel={() => {
                 setVisibleFormDon(false);

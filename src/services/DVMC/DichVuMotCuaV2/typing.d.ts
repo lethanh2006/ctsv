@@ -162,6 +162,7 @@ declare module DichVuMotCuaV2 {
     trangThaiThanhToan?: string;
     thongTinNguoiTao?: Login.Profile & {
       _id: string;
+      ssoId: string;
     };
     thongTinDichVu: {
       _id: string;

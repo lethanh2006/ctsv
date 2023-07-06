@@ -1,71 +1,73 @@
-/* eslint-disable no-nested-ternary */
+import type { SinhVien } from '@/services/SinhVien/typings';
 import { Descriptions } from 'antd';
-import moment from 'moment';
-import { useModel } from 'umi';
 
 const ThongTinNguoiTaoDon = (props: {
-  record?: any;
+  record?: SinhVien.IRecord;
   thongTinNguoiTaoAdmin?: { hoTen: string; maDonVi: string; maSinhVien: string };
 }) => {
-  const { loaiDichVu } = useModel('dvmc.dichvumotcuav2');
-
   return (
-    <Descriptions>
-      <Descriptions.Item>
-        Họ và tên:{' '}
-        {props?.record?.name || props?.record?.hoTen || props?.thongTinNguoiTaoAdmin?.hoTen || ''}
+    <Descriptions column={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 4, xxl: 4 }} size="small">
+      <Descriptions.Item label={'Họ và tên'} span={2}>
+        {props?.record?.ten}
       </Descriptions.Item>
-      {loaiDichVu === 'DVMC' && (
-        <Descriptions.Item>
-          Ngày sinh:{' '}
-          {props?.record?.ngay_sinh
-            ? moment(props?.record?.ngay_sinh)?.format('DD-MM-YYYY')
-            : props?.record?.ngaySinh !== 'false'
-            ? props?.record?.ngaySinh?.split('-')?.reverse()?.join('-')
-            : ''}
-        </Descriptions.Item>
-      )}
-      <Descriptions.Item>
-        {loaiDichVu === 'DVMC' ? 'Mã sinh viên' : 'Mã cán bộ'}:{' '}
-        {props?.record?.ma_dinh_danh ||
-          props?.record?.maSinhVien ||
-          props?.thongTinNguoiTaoAdmin?.maSinhVien ||
-          ''}
+      <Descriptions.Item label={'Ngày sinh'} span={2}>
+        {props?.record?.ngaySinh ?? ''}
       </Descriptions.Item>
-      <Descriptions.Item>
-        {loaiDichVu === 'DVMC' ? 'Khoa' : 'Đơn vị'}:{' '}
-        {props?.record?.ten_don_vi
-          ? props?.record?.ten_don_vi
-          : props?.record?.tenDonVi && props?.record?.tenDonVi !== 'false'
-          ? props?.record?.tenDonVi
-          : props?.record?.maDonVi && props?.record?.maDonVi !== 'false'
-          ? props?.record?.maDonVi
-          : props?.record?.don_vi_id
-          ? props?.record?.don_vi_id[1]
-          : props?.thongTinNguoiTaoAdmin?.maDonVi ?? ''}
+      <Descriptions.Item label={'Mã sinh viên'} span={2}>
+        {props?.record?.ma || props?.thongTinNguoiTaoAdmin?.maSinhVien || ''}
       </Descriptions.Item>
-      {loaiDichVu === 'DVMC' && (
-        <>
-          <Descriptions.Item>
-            Lớp: {props?.record?.lop_hanh_chinh_id?.[1] || props?.record?.tenLopHanhChinh || ''}
-          </Descriptions.Item>
-          <Descriptions.Item>
-            Chuyên ngành: {props?.record?.ten_nganh || props?.record?.tenNganh || ''}
-          </Descriptions.Item>
-          {/*{!access.sinhVien && (*/}
-          {/*  <>*/}
-          {/*    <Descriptions.Item>*/}
-          {/*      Khóa: {recordDon?.thongTinNguoiTao?.khoaNganh?.[1] ?? ''}*/}
-          {/*    </Descriptions.Item>*/}
-          {/*    <Descriptions.Item>*/}
-          {/*      Hình thức đào tạo: {recordDon?.thongTinNguoiTao?.hinhThucDaoTaoId?.[1] ?? ''}*/}
-          {/*    </Descriptions.Item>*/}
-          {/*  </>*/}
-          {/*)}*/}
-          <Descriptions.Item>SĐT: {props?.record?.soDienThoai}</Descriptions.Item>
-          <Descriptions.Item>Email: {props?.record?.email}</Descriptions.Item>
-        </>
-      )}
+      <Descriptions.Item span={2} label={'Hệ đào tạo'}>
+        {props?.record?.khoaNganh?.khoaSinhVien?.trinhDoDaoTao?.dmTrinhDo?.ten}
+      </Descriptions.Item>
+      <Descriptions.Item span={2} label={'Hình thức đào tạo'}>
+        {props?.record?.khoaNganh?.khoaSinhVien?.hinhThucDaoTao?.danhMucHTDT?.ten}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Khóa'} span={2}>
+        {props?.record?.khoaNganh?.khoaSinhVien?.ten}
+      </Descriptions.Item>
+
+      <Descriptions.Item label={'Ngành'} span={2}>
+        {props?.record?.khoaNganh?.nganh?.ten}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Lớp'} span={2}>
+        {props?.record?.lopHanhChinhList?.[0]?.ten ?? ''}
+      </Descriptions.Item>
+
+      <Descriptions.Item label={'SĐT'} span={2}>
+        {props?.record?.soDienThoai}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Email'} span={2}>
+        {props?.record?.email}
+      </Descriptions.Item>
+
+      <Descriptions.Item label={'Số CMT/CCCD'} span={2}>
+        {props?.record?.cccd}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Ngày cấp'} span={2}>
+        {props?.record?.ngayCapCccd?.split('-')?.reverse()?.join('-')}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Nơi cấp'} span={4}>
+        {props?.record?.noiCapCccd}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Nơi sinh'} span={4}>
+        {[
+          props.record?.xaPhuongNoiSinh,
+          props.record?.quanHuyenNoiSinh,
+          props.record?.tinhTpNoiSinh,
+        ]
+          .filter((item) => item !== '' && item !== null && item !== undefined)
+          .join(', ')}
+      </Descriptions.Item>
+      <Descriptions.Item label={'Hộ khẩu thường trú'} span={4}>
+        {[
+          props.record?.soNhaTenDuongThuongTru,
+          props.record?.xaPhuongThuongTru,
+          props.record?.quanHuyenThuongTru,
+          props.record?.tinhTpThuongTru,
+        ]
+          .filter((item) => item !== '' && item !== null && item !== undefined)
+          .join(', ')}
+      </Descriptions.Item>
     </Descriptions>
   );
 };

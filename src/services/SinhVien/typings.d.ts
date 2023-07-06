@@ -13,8 +13,8 @@ declare module SinhVien {
     anhDaiDienUrl: string;
     ma: string;
     ten: string;
-    // firstName: string;
-    // lastName: string;
+    firstName: string;
+    lastName: string;
     gioiTinh: EGioiTinh;
     quocTich: string;
     danToc: string;
@@ -29,6 +29,27 @@ declare module SinhVien {
     email2: string;
     nguoiLienLac: string;
     soDienThoaiNguoiLienLac: string;
+    khoaNganh: {
+      khoaSinhVien: {
+        ten: string;
+        hinhThucDaoTao: {
+          ma: string;
+          danhMucHTDT: {
+            ten: string;
+          };
+        };
+        trinhDoDaoTao: {
+          ma: string;
+          dmTrinhDo: {
+            ten: string;
+          };
+        };
+        namHocBatDau: number;
+      };
+      nganh: {
+        ten: string;
+      };
+    };
 
     loaiNoiSinh: string;
     quocGiaNoiSinh: string;
@@ -101,6 +122,8 @@ declare module SinhVien {
     thongTinCacCon: string;
 
     khoaSinhVienId: string;
+    khoaSinhVien?: KhoaSinhVien.IRecord;
+    lopHanhChinhList?: LopHanhChinh.IRecord[];
     nganhId: string;
     trinhDoDaoTaoId: string;
     hinhThucDaoTaoId: string;

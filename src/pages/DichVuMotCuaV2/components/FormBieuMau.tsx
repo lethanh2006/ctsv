@@ -1,13 +1,12 @@
+import Upload from '@/components/Upload/UploadMultiFile';
+import SelectDanToc from '@/pages/Core/DanToc/SelectDanToc';
+import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh';
+import HocPhanCoDiem from '@/pages/DichVuMotCuaV2/HocPhanCoDiem';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import type { SinhVien } from '@/services/SinhVien/typings';
 import { accessFileUpload, MaDichVuVps } from '@/utils/constants';
 import rules from '@/utils/rules';
-import {
-  checkFileSize,
-  includes,
-  renderFileList,
-  uploadMultiFile,
-  // useCheckAccess,
-} from '@/utils/utils';
-import Upload from '@/components/Upload/UploadMultiFile';
+import { checkFileSize, includes, renderFileList, uploadMultiFile } from '@/utils/utils';
 import { CopyOutlined } from '@ant-design/icons';
 import {
   AutoComplete,
@@ -36,16 +35,11 @@ import FormXuLyDon from '../QuanLyDon/components/FormXuLyDon';
 import Table from './TableElement';
 import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
-import type { Login } from '@/services/ant-design-pro/typings';
-import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import HocPhanCoDiem from '@/pages/DichVuMotCuaV2/HocPhanCoDiem';
-import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh';
-import SelectDanToc from '@/pages/Core/DanToc/SelectDanToc';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
 const FormBieuMau = (props: {
-  infoNguoiTaoDon?: Login.Profile;
+  infoNguoiTaoDon?: SinhVien.IRecord;
   record?: DichVuMotCuaV2.Don & { index?: number };
   type?: 'view' | 'handle' | 'create' | 'edit';
   onCancel?: any;
