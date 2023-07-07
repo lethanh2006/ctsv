@@ -35,6 +35,7 @@ import FormXuLyDon from '../QuanLyDon/components/FormXuLyDon';
 import Table from './TableElement';
 import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
+import SelectTonGiao from '@/pages/Core/TonGiao/SelectTonGiao';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -142,9 +143,10 @@ const FormBieuMau = (props: {
         if (item?.type === 'DON_VI_HANH_CHINH') {
           value = {
             ...values?.[`${name}[${index}].${item?.label}`],
-            // tenTinh: tenTinh?.[`${name}[${index}].${item?.label}.maTinh`],
-            // tenQuanHuyen: tenQuanHuyen?.[`${name}[${index}].${item?.label}.maQuanHuyen`],
-            // tenPhuongXa: tenPhuongXa?.[`${name}[${index}].${item?.label}.maPhuongXa`],
+            tenTinh: values?.tinhTp,
+            tenQuanHuyen: values?.quanHuyen,
+            tenPhuongXa: values?.xaPhuong,
+            soNhaTenDuong: values?.soNhaTenDuong,
           };
         } else if (item?.type === 'TABLE') {
           value = danhSachDataTable?.[`${name}[${index}].${item?.label}`]?.map(
@@ -191,8 +193,7 @@ const FormBieuMau = (props: {
 
   useEffect(() => {
     const valuesTemp = {};
-    // getAllDanToc();
-    // getAllTonGiao();
+
     buildValuesForm(
       valuesTemp,
       'cauHinhBieuMau',
@@ -202,11 +203,6 @@ const FormBieuMau = (props: {
 
     return () => {
       if (!props?.handleAdd) setDanhSachDataTable({});
-      // setTenTinh({});
-      // setTenQuanHuyen({});
-      // setTenXaPhuong({});
-      // setObjDanhSachQuanHuyen({});
-      // setObjDanhSachXaPhuong({});
     };
   }, []);
 
@@ -226,26 +222,25 @@ const FormBieuMau = (props: {
 
   const buildForm = (name: string, item: DichVuMotCuaV2.CauHinhBieuMau) => {
     let element = <Input placeholder="Nhập nội dung" />;
-    let ruleElement: any[] = [...rules.required];
+    let ruleElement: any[] = item.isRequired ? [...rules.required] : [];
     let initialValue = item?.value;
 
     if (!item?.type) return <div />;
     switch (item?.type) {
       case 'TEXT_AREA': {
-        ruleElement = [...rules.text];
+        ruleElement = item.isRequired ? [...rules.required, ...rules.text] : [...rules.text];
         element = <Input.TextArea rows={3} placeholder={item?.label ?? ''} />;
         break;
       }
       case 'INPUT_NUMBER': {
         initialValue = Number(item?.value);
-        element = (
-          <InputNumber
-            style={{ width: '100%' }}
-            placeholder={item?.label ?? ''}
-            min={item?.min ?? 0}
-            max={item?.max ?? 100000000}
-          />
-        );
+        if (item.min || item.max) {
+          ruleElement = [
+            ...(item.isRequired ? rules.required : []),
+            ...rules.number(item.max, item.min, false),
+          ];
+        }
+        element = <InputNumber style={{ width: '100%' }} placeholder={item?.label ?? ''} />;
         break;
       }
 
@@ -263,7 +258,8 @@ const FormBieuMau = (props: {
       }
 
       case 'UPLOAD_SINGLE': {
-        ruleElement = [...rules.fileRequired];
+        ruleElement = item.isRequired ? [...rules.fileRequired] : [];
+
         initialValue = renderFileList(
           item?.value?.map((file: { url: string; type: string }) => file?.url),
         );
@@ -282,7 +278,8 @@ const FormBieuMau = (props: {
         break;
       }
       case 'UPLOAD_MULTI': {
-        ruleElement = [...rules.fileRequired];
+        ruleElement = item.isRequired ? [...rules.fileRequired] : [];
+
         initialValue = renderFileList(
           typeof item?.value === 'object'
             ? item?.value?.map((file: { url: string; type: string }) => file?.url)
@@ -333,26 +330,9 @@ const FormBieuMau = (props: {
         initialValue = item?.value;
         ruleElement = [];
         element = (
-          // <DiaChi
-          //   hideDiaChiCuThe={item?.level !== 4}
-          //   hideQuanHuyen={item?.level === 1}
-          //   hideXaPhuong={[1, 2].includes(item?.level)}
-          //   notRequiredDiaChiCuThe={!item?.isRequired}
-          //   notRequiredQuanHuyen={!item?.isRequired}
-          //   notRequiredTinh={!item?.isRequired}
-          //   notRequiredXaPhuong={!item?.isRequired}
-          //   initialValue={item?.value}
-          //   form={form}
-          //   fields={{
-          //     tinh: [`${name}.${item?.label ?? ''}`, 'maTinh'],
-          //     quanHuyen: [`${name}.${item?.label ?? ''}`, 'maQuanHuyen'],
-          //     xaPhuong: [`${name}.${item?.label ?? ''}`, 'maPhuongXa'],
-          //     diaChiCuThe: [`${name}.${item?.label ?? ''}`, 'soNhaTenDuong'],
-          //   }}
-          // />
           <SelectDonViHanhChinh
             form={form}
-            // listTinh={danhSachTinh}
+            hasSoNha={item?.level === 4}
             hideQuanHuyen={item?.level === 1}
             hideXaPhuong={[1, 2].includes(item?.level)}
             notRequiredDiaChiCuThe={!item?.isRequired}
@@ -363,6 +343,7 @@ const FormBieuMau = (props: {
               tinhTp: item?.value?.tenTinh,
               quanHuyen: item?.value?.tenQuanHuyen,
               xaPhuong: item?.value?.tenPhuongXa,
+              soNhaTenDuong: item?.value?.soNhaTenDuong,
             }}
           />
         );
@@ -396,16 +377,18 @@ const FormBieuMau = (props: {
         break;
       }
       case 'TABLE': {
-        ruleElement = [
-          {
-            validator: (__: { field: string | number }, value: any, callback: any) => {
-              if (!danhSachDataTable || !danhSachDataTable?.[__?.field]?.length) callback('');
-              callback();
-            },
-            message: 'Bắt buộc',
-            required: true,
-          },
-        ];
+        ruleElement = item?.isRequired
+          ? [
+              {
+                validator: (__: { field: string | number }, value: any, callback: any) => {
+                  if (!danhSachDataTable || !danhSachDataTable?.[__?.field]?.length) callback('');
+                  callback();
+                },
+                message: 'Bắt buộc',
+                required: true,
+              },
+            ]
+          : [];
 
         const data = item?.value?.map((recordRow: DichVuMotCuaV2.CauHinhBieuMau[]) => {
           const row = {};
@@ -452,7 +435,6 @@ const FormBieuMau = (props: {
             }
             textSaveButton="Lưu"
             hascreate
-            // hasTotal
             widthDrawer="55%"
             Form={FormBieuMau}
             otherProps={{
@@ -488,24 +470,15 @@ const FormBieuMau = (props: {
 
       case 'MY_SEMESTER': {
         initialValue = item?.value;
-        ruleElement = [...rules.text];
-
-        // const kyHoc = access.sinhVien
-        //   ? danhSachKyHoc
-        //   : [
-        //       // { id: 1, ten_ky_nam_hoc: '1', nam_hoc_id: [1, '2022-2023'] },
-        //       // { id: 2, ten_ky_nam_hoc: '2', nam_hoc_id: [2, '2022-2023'] },
-        //     ];
-        ruleElement = [...rules.text];
+        ruleElement = [...(item.isRequired ? rules.required : []), ...rules.text];
         element = <Input placeholder="Nhập kỳ học" />;
 
         break;
       }
       case 'MY_YEAR': {
         initialValue = item?.value;
-        ruleElement = [...rules.text];
+        ruleElement = [...(item.isRequired ? rules.required : []), ...rules.text];
         element = <Input placeholder="Nhập năm học" />;
-
         break;
       }
       case 'MY_CREDIT': {
@@ -529,35 +502,19 @@ const FormBieuMau = (props: {
       }
       case 'MY_COURSE': {
         initialValue = item?.value;
+        ruleElement = [...(item.isRequired ? rules.required : []), ...rules.text];
         element = <Input placeholder="Chọn lớp tín chỉ" />;
         break;
       }
       case 'DAN_TOC': {
         initialValue = item?.value;
-        element = (
-          <SelectDanToc allowClear />
-          // <Select showSearch allowClear placeholder={item?.label ?? ''}>
-          //   {danhSachDanToc?.map((dantoc: any) => (
-          //     <Select.Option key={dantoc._id} value={dantoc.tenDanToc}>
-          //       {dantoc.tenDanToc}
-          //     </Select.Option>
-          //   ))}
-          // </Select>
-        );
+        element = <SelectDanToc allowClear />;
         break;
       }
 
       case 'TON_GIAO': {
         initialValue = item?.value;
-        element = (
-          <Select showSearch allowClear placeholder={item?.label ?? ''}>
-            {/*{danhSachTonGiao?.map((tongiao: any) => (*/}
-            {/*  <Select.Option key={tongiao._id} value={tongiao.tenTonGiao}>*/}
-            {/*    {tongiao.tenTonGiao}*/}
-            {/*  </Select.Option>*/}
-            {/*))}*/}
-          </Select>
-        );
+        element = <SelectTonGiao />;
         break;
       }
       case 'HOC_PHAN_CO_DIEM': {
@@ -622,7 +579,11 @@ const FormBieuMau = (props: {
             </div>
           }
           name={item.type === 'DON_VI_HANH_CHINH' ? undefined : `${name}.${item?.label}`}
-          rules={item?.isRequired ? [...ruleElement, ...rules.required] : []}
+          rules={
+            item?.isRequired && item.type !== 'TABLE'
+              ? [...ruleElement, ...rules.required]
+              : [...ruleElement]
+          }
           initialValue={initialValue}
         >
           {element}

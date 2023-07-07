@@ -47,7 +47,7 @@ export enum ElementTemplateType {
   TEXT_BLOCK = 'Đoạn văn bản',
   DAN_TOC = 'Dân tộc',
   TON_GIAO = 'Tôn giáo',
-  HOC_PHAN_CO_DIEM = 'Học phần có điểm',
+  // HOC_PHAN_CO_DIEM = 'Học phần có điểm',
   // CMT_CCCD = 'CMT/CCCD',
   // BUTTON_SEARCH_PHONG = 'Button tìm phòng VPS',
 }

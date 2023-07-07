@@ -90,6 +90,7 @@ const FormThongTinChung = () => {
               tinhTienTheoSoLuong,
               choPhepGuiNhieuLan,
               maLePhi: record?.code,
+              idNguonThu: recordProduct?.nguonThu,
               coQuanCoThamQuyen:
                 values?.thongTinThuTuc?.coQuanCoThamQuyen?.length > 0
                   ? values?.thongTinThuTuc?.coQuanCoThamQuyen?.join(', ')
@@ -104,7 +105,6 @@ const FormThongTinChung = () => {
             thoiHanBatDauThaoTac: values?.thoiHanBatDauThaoTac,
             traKetQua: taoLichHen ? true : false,
           });
-
           setCurrent(1);
         }}
         form={form}
