@@ -40,6 +40,7 @@ const CauHoiThuongGapPage = () => {
             <Popconfirm
               title="Bạn có chắc chắn xóa câu hỏi này?"
               onConfirm={() => deleteModel(rec._id, getModel)}
+              placement="topLeft"
             >
               <Button icon={<DeleteOutlined />} type="link" danger />
             </Popconfirm>

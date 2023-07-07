@@ -1,3 +1,4 @@
+import { type PhanHoi } from '@/services/TienIch/PhanHoi/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Descriptions, Form, Input } from 'antd';
@@ -63,11 +64,11 @@ const FormPhanHoi = () => {
         ) : (
           <Form.Item
             name="noiDungTraLoiPhanHoi"
-            label="Trả lời"
+            label="Nội dung trả lời"
             initialValue={record?.noiDungTraLoiPhanHoi}
             rules={[...rules.required, ...rules.text, ...rules.length(2000)]}
           >
-            <Input.TextArea rows={4} placeholder="Nhập nội dung trả lời" />
+            <Input.TextArea rows={4} placeholder="Nhập nội dung" />
           </Form.Item>
         )}
 

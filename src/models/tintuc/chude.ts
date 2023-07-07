@@ -1,6 +1,6 @@
 import useInitModel from '@/hooks/useInitModel';
-import { getAllLoaiChuDe } from '@/services/TinTuc';
-import { type TinTuc } from '@/services/TinTuc/typing';
+import { getAllLoaiChuDe } from '@/services/TienIch/TinTuc';
+import { type TinTuc } from '@/services/TienIch/TinTuc/typing';
 import { useState } from 'react';
 
 export default () => {

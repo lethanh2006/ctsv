@@ -1,4 +1,4 @@
-import { type EPhamViChuDe } from '@/services/TinTuc/constant';
+import { type EPhamViChuDe } from '@/services/TienIch/TinTuc/constant';
 import { type ELoaiBieuMau, type ELoaiDoiTuong } from '../constant';
 
 declare module BieuMau {

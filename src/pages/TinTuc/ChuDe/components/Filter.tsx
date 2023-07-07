@@ -1,5 +1,5 @@
 import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
-import { EPhamViChuDe } from '@/services/TinTuc/constant';
+import { EPhamViChuDe } from '@/services/TienIch/TinTuc/constant';
 import { Select, Space } from 'antd';
 import { useModel } from 'umi';
 

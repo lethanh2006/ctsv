@@ -1,7 +1,7 @@
 import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { type TinTuc } from '@/services/TinTuc/typing';
+import { type TinTuc } from '@/services/TienIch/TinTuc/typing';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';

@@ -1,4 +1,4 @@
-import { type EPhamViChuDe } from '@/services/TinTuc/constant';
+import { type EPhamViChuDe } from '@/services/TienIch/TinTuc/constant';
 import { type BieuMau } from '../BieuMau/typings';
 import { type ELoaiDot, type ELoaiDoiTuong, type EVaiTroBieuMau } from '../constant';
 

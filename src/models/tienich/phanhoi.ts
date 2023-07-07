@@ -1,5 +1,6 @@
 import useInitModel from '@/hooks/useInitModel';
-import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/TienIch/PhanHoi/phanhoi';
+import { getPhanHoiFromOther, traLoiPhanHoi } from '@/services/TienIch/PhanHoi';
+import { type PhanHoi } from '@/services/TienIch/PhanHoi/typing';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { message } from 'antd';
 import { useState } from 'react';

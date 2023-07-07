@@ -2,20 +2,21 @@ import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Select, Tooltip } from 'antd';
+import { Button, Select, Tooltip, Tag } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import Form from './components/Form';
+import { type PhanHoi } from '@/services/TienIch/PhanHoi/typing';
 
 const PhanHoiPage = () => {
-  const { setCondition, page, limit, handleEdit } = useModel('tienich.phanhoi');
+  const { setCondition, page, limit, handleEdit, setPage } = useModel('tienich.phanhoi');
   const [daTraLoi, setDaTraLoi] = useState<boolean | undefined>();
   // const { getAllHinhThucDaoTaoModel, danhSachHinhThucDaoTao } = useModel('namhoc.lophanhchinh');
 
   const columns: IColumn<PhanHoi.IRecord>[] = [
     {
-      title: 'Mã định danh',
+      title: 'Mã sinh viên',
       dataIndex: 'maSv',
       align: 'center',
       filterType: 'string',
@@ -64,6 +65,20 @@ const PhanHoiPage = () => {
       width: 120,
     },
     {
+      title: 'Loại phản hồi',
+      dataIndex: 'loaiPhanHoi',
+      width: 120,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'daTraLoiPhanHoi',
+      align: 'center',
+      width: 100,
+      render: (val) =>
+        val ? <Tag color="green">Đã trả lời</Tag> : <Tag color="red">Chưa trả lời</Tag>,
+      hide: daTraLoi !== undefined,
+    },
+    {
       title: 'Câu trả lời',
       dataIndex: 'noiDungTraLoiPhanHoi',
       filterType: 'string',
@@ -106,6 +121,7 @@ const PhanHoiPage = () => {
   const onChangeTrangThai = (value?: string) => {
     const isAnswer = value === 'Đã trả lời';
     setCondition({ daTraLoiPhanHoi: value ? isAnswer : undefined });
+    setPage(1);
     setDaTraLoi(value ? isAnswer : undefined);
   };
 
