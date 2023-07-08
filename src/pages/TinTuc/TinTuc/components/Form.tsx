@@ -35,12 +35,14 @@ const FormTinTuc = (props: any) => {
   // }, [danhSachChuDe.length]);
 
   useEffect(() => {
-    if (!visibleForm) resetFieldsForm(form);
-    else if (record?._id)
+    if (!visibleForm) {
+      resetFieldsForm(form);
+      form.setFieldsValue({ noiDung: '' });
+    } else if (record?._id)
       form.setFieldsValue({
         ...record,
-        danhSachVaiTro:
-          record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
+        // danhSachVaiTro:
+        //   record?.doiTuong !== 'Tất cả' ? record?.danhSachVaiTro : ['sinh_vien', 'nhan_vien'],
       });
     // onChangeChuDe(record?.idTopic);
   }, [record?._id, visibleForm]);
@@ -123,7 +125,11 @@ const FormTinTuc = (props: any) => {
           </Col>
         </Row>
 
-        <Form.Item name="noiDung" label="Nội dung" rules={[...rules.requiredHtml]}>
+        <Form.Item
+          name="noiDung"
+          label="Nội dung"
+          rules={[...rules.requiredHtml, ...rules.required]}
+        >
           <TinyEditor height={700} />
         </Form.Item>
 

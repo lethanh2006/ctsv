@@ -2,6 +2,7 @@ import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type CauHoiThuongGap } from '@/services/TienIch/CauHoiThuongGap/typing';
+import { decodeHtmlEntities } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
@@ -20,11 +21,7 @@ const CauHoiThuongGapPage = () => {
     {
       title: 'Trả lời',
       dataIndex: 'cauTraLoi',
-      render: (val) => (
-        <ExpandText>
-          <div dangerouslySetInnerHTML={{ __html: val }} />
-        </ExpandText>
-      ),
+      render: (val) => <ExpandText>{decodeHtmlEntities(val)}</ExpandText>,
       width: 350,
     },
     {

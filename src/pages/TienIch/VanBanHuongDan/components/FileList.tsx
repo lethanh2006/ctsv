@@ -106,6 +106,7 @@ const FileList = () => {
         showEdit={visibleFormFile}
         setShowEdit={setVisibleFormFile}
         hasTotal
+        otherProps={{ pagination: false, scroll: { y: 500 } }}
       >
         <Button type="primary" onClick={handleAdd}>
           <PlusCircleOutlined />
