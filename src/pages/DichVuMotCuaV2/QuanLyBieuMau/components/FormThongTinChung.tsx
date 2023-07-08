@@ -65,9 +65,10 @@ const FormThongTinChung = () => {
         // filename: values?.[name]?.fileList?.[0]?.name?.split('.')?.[0] ?? 'fileName',
         public: '1',
       });
+      debugger;
       return {
         ...response?.data?.data?.file,
-        // _id: response?.data?.data?.file?.id,
+        url: response?.data?.data?.url,
       };
     } else return values?.[name]?.fileList?.[0]?.url ? recordDichVu?.[name] : {};
   };
