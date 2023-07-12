@@ -143,27 +143,27 @@
   },
 
   // TIN TUC
-  {
-    name: 'TinTuc',
-    path: 'tin-tuc',
-    icon: 'global',
-    routes: [
-      {
-        name: 'ChuDe',
-        path: './chu-de',
-        component: './TinTuc/ChuDe',
-        // access: 'adminAccessFilter',
-        // maChucNang: 'chu-de-chung:read',
-      },
-      {
-        name: 'TinTuc',
-        path: './tin-tuc',
-        component: './TinTuc/TinTuc',
-        // access: 'adminAccessFilter',
-        // maChucNang: 'tin-tuc:read',
-      },
-    ],
-  },
+  // {
+  //   name: 'TinTuc',
+  //   path: 'tin-tuc',
+  //   icon: 'global',
+  //   routes: [
+  //     {
+  //       name: 'ChuDe',
+  //       path: './chu-de',
+  //       component: './TinTuc/ChuDe',
+  //       // access: 'adminAccessFilter',
+  //       // maChucNang: 'chu-de-chung:read',
+  //     },
+  //     {
+  //       name: 'TinTuc',
+  //       path: './tin-tuc',
+  //       component: './TinTuc/TinTuc',
+  //       // access: 'adminAccessFilter',
+  //       // maChucNang: 'tin-tuc:read',
+  //     },
+  //   ],
+  // },
 
   //////////////////////
   // SU KIEN
