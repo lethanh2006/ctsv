@@ -105,25 +105,22 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
 
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
     getThongTinSinhVienBySsoIdModel(recordDonColumn?.thongTinNguoiTao?.ssoId);
-    if (pathname?.includes('chuyenvientiepnhan')){
+    if (pathname?.includes('chuyenvientiepnhan')) {
       setRecordDon(recordDonColumn?.idDon);
       setRecordDonThaoTac(recordDonColumn);
-      setDanhSachDonThaoTac([recordDonColumn])
+      setDanhSachDonThaoTac([recordDonColumn]);
       // getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?.idDon?._id}, 1, 100);
-    }
-
-    else {
-      if (pathname?.includes('quanlydondieuphoi')){
+    } else {
+      if (pathname?.includes('quanlydondieuphoi')) {
         setRecordDon(recordDonColumn?.idDon);
         setRecordDonThaoTac(recordDonColumn);
-        setDanhSachDonThaoTac([recordDonColumn])
+        setDanhSachDonThaoTac([recordDonColumn]);
         // getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?.idDon?._id }, 1, 100);
-      }else {
-        setRecordDon(recordDonColumn  );
+      } else {
+        setRecordDon(recordDonColumn);
         getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
       }
     }
-
 
     setVisibleFormDon(true);
     setType('view');
@@ -422,10 +419,282 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       },
     },
   ];
+  const columnsThaoTac: IColumn<DichVuMotCuaV2.Don>[] = [
+    {
+      title: 'STT',
+      dataIndex: 'index',
+      align: 'center',
+      width: 80,
+      onCell,
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'createdAt',
+      align: 'center',
+      width: 120,
+      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+      onCell,
+    },
+    {
+      title: 'Loại đơn',
+      dataIndex: ['idDon', 'thongTinDichVu', 'ten'],
+      align: 'center',
+      width: 200,
+      onCell,
+    },
+    {
+      title: 'Người tạo',
+      dataIndex: ['idDon', 'thongTinNguoiTao', 'hoTen'],
+      width: 120,
+      align: 'center',
+      onCell,
+      filterType: 'string',
+      // notRegex: true,
+    },
+    {
+      title: 'Mã sinh viên',
+      dataIndex: ['idDon', 'thongTinNguoiTao', 'maSinhVien'],
+      width: 150,
+      align: 'center',
+      onCell,
+      filterType: 'string',
+      // notRegex: true,
+    },
+    {
+      title: 'Địa chỉ nhận đơn',
+      width: 200,
+      align: 'center',
+      // onCell,
+      render: (recordTemp: DichVuMotCuaV2.Don) => {
+        let isNhanTaiTruong = true;
+        const blockNhanDon = recordTemp?.idDon?.thongTinDichVu?.cauHinhBieuMau?.find(
+          (item) => item.label === 'Phương thức nhận đơn',
+        );
+        let diaChiNhanDon = '';
+        if (blockNhanDon?.value === 'Nhận tại trường') diaChiNhanDon = 'Nhận tại trường';
+        else {
+          const valueChuyenPhatNhanh = blockNhanDon?.dataSource
+            ?.find((item) => item.label === 'Chuyển phát nhanh')
+            ?.relatedElement?.find((item) => item.type === 'DON_VI_HANH_CHINH')?.value;
+          diaChiNhanDon = [
+            valueChuyenPhatNhanh?.soNhaTenDuong,
+            valueChuyenPhatNhanh?.tenPhuongXa,
+            valueChuyenPhatNhanh?.tenQuanHuyen,
+            valueChuyenPhatNhanh?.tenTinh,
+          ]
+            ?.filter((item) => item !== null && item !== undefined && item !== '')
+            ?.join(', ');
+          if (diaChiNhanDon) isNhanTaiTruong = false;
+        }
+        return (
+          <div>
+            {isNhanTaiTruong === false && (
+              <Tooltip title="Sao chép địa chỉ">
+                <CopyOutlined
+                  onClick={() => {
+                    navigator.clipboard.writeText(diaChiNhanDon);
+                    message.success('Đã copy địa chỉ');
+                  }}
+                  style={{ marginRight: 8, fontSize: 18 }}
+                />
+              </Tooltip>
+            )}
+            {diaChiNhanDon}
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Bước',
+      width: 150,
+      onCell,
+      align: 'center',
+      dataIndex: ['idDon', 'idBuocHienTai'],
+      render: (val, recordRender) => {
+        return (
+          <div>
+            {recordRender?.idDon?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find((item) => item._id === val)
+              ?.ten ?? ''}
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: ['idDon', 'trangThai'],
+      align: 'center',
+      width: 120,
+      // search: 'filterString',
+      render: (val: 'OK' | 'NOT_OK' | 'PROCESSING') => (
+        <Tag
+          color={
+            TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.PROCESSING
+              ? ColorTrangThaiDonMotCua.PROCESSING
+              : TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.OK
+              ? ColorTrangThaiDonMotCua.OK
+              : ColorTrangThaiDonMotCua.NOT_OK
+          }
+        >
+          {TrangThaiDonDVMC?.[val] ?? 'Chưa cập nhật'}
+        </Tag>
+      ),
+      onCell,
+    },
+    {
+      title: 'Trạng thái thanh toán',
+      dataIndex: 'trangThaiThanhToan',
+      width: 120,
+      align: 'center',
+      render: (val) => <div>{val || 'Dịch vụ không tính phí'}</div>,
+      onCell,
+    },
 
+    {
+      title: 'Thao tác',
+      align: 'center',
+      width: 70,
+      fixed: 'right',
+      render: (recordDonColumn: DichVuMotCuaV2.Don) => {
+        return (
+          <Popover
+            content={
+              <>
+                <Tooltip title="Xuất mẫu đơn">
+                  <Dropdown
+                    overlay={
+                      <Menu
+                        onClick={(item: any) =>
+                          onClickMenuExport(
+                            recordDonColumn?._id ?? '',
+                            item,
+                            'MAU_DON',
+                            `BieuMau_${recordDonColumn?.thongTinDichVu?.ten}_${recordDonColumn?.thongTinNguoiTao?.maSinhVien}_${recordDonColumn?.thongTinNguoiTao?.hoTen}`,
+                          )
+                        }
+                      >
+                        <Menu.Item key="word">Tải về</Menu.Item>
+                        <Menu.Item key="pdf">In mẫu</Menu.Item>
+                      </Menu>
+                    }
+                  >
+                    <Button icon={<FileTextOutlined />} shape="circle" />
+                  </Dropdown>
+                </Tooltip>
+                <Divider type="vertical" />
+
+                <Tooltip title="Xuất mẫu trả kết quả">
+                  <Dropdown
+                    overlay={
+                      <Menu
+                        onClick={(item: any) =>
+                          onClickMenuExport(
+                            recordDonColumn?._id ?? '',
+                            item,
+                            'TRA_LOI',
+                            `KetQua_${recordDonColumn?.thongTinDichVu?.ten}_${recordDonColumn?.thongTinNguoiTao?.maSinhVien}_${recordDonColumn?.thongTinNguoiTao?.hoTen}`,
+                          )
+                        }
+                      >
+                        <Menu.Item key="word">Tải về</Menu.Item>
+                        <Menu.Item key="pdf">In mẫu</Menu.Item>
+                      </Menu>
+                    }
+                  >
+                    <Button icon={<FileDoneOutlined />} shape="circle" />
+                  </Dropdown>
+                </Tooltip>
+                <Divider type="vertical" />
+
+                <Tooltip title="Chi tiết">
+                  <Button
+                    onClick={() => {
+                      handleDon(recordDonColumn);
+                    }}
+                    shape="circle"
+                    type="primary"
+                    icon={<EyeOutlined />}
+                  />
+                </Tooltip>
+                <Divider type="vertical" />
+
+                <Tooltip title="Trả lời phản hồi">
+                  <Button
+                    disabled={!recordDonColumn?.noiDungPhanHoi || recordDonColumn.daTraLoiPhanHoi}
+                    onClick={() => {
+                      setRecordDon(recordDonColumn);
+                      // setVisibleForm(true);
+                    }}
+                    icon={<QuestionCircleOutlined />}
+                    shape="circle"
+                  />
+                </Tooltip>
+                {typeTraKetQua === 'CHUA_TRA_KQ' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xác nhận đã trả đơn">
+                      <Popconfirm
+                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
+                        onConfirm={() =>
+                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
+                        }
+                      >
+                        <Button icon={<CheckOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+                {typeTraKetQua === 'DA_TRA_KQ' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xác nhận lại chưa trả đơn">
+                      <Popconfirm
+                        title="Bạn có chắc muốn thay đổi trạng thái trả kết quả không?"
+                        onConfirm={() =>
+                          updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
+                        }
+                      >
+                        <Button icon={<CloseOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+
+                {trangThaiQuanLyDon === 'PROCESSING' && (
+                  <>
+                    <Divider type="vertical" />
+                    <Tooltip title="Xóa đơn">
+                      <Popconfirm
+                        onConfirm={async () => {
+                          await adminDeleteDonModel(
+                            recordDonColumn?._id ?? '',
+                            pathname?.includes('quanlydondieuphoi') ? 'dieuphoi' : 'tiepnhan',
+                          );
+                          // if (pathname?.includes('quanlydondieuphoi')) {
+                          //   chuyenVienDieuPhoiGetTongSoDonDVMCModel(isDonCanXuLy);
+                          // } else {
+                          //   chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
+                          // }
+                        }}
+                        title="Bạn có chắc chắn xóa đơn này?"
+                      >
+                        <Button danger type="primary" icon={<DeleteOutlined />} shape="circle" />
+                      </Popconfirm>
+                    </Tooltip>
+                  </>
+                )}
+              </>
+            }
+            placement="left"
+          >
+            <Button icon={<MenuOutlined />} type="link" />
+          </Popover>
+        );
+      },
+    },
+  ];
   return (
     <TableBase
-      columns={columns}
+      columns={props.type === 'Thao tác' ? columnsThaoTac : columns}
       dependencies={[
         page,
         limit,
@@ -443,7 +712,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       getData={getData}
       hideCard
     >
-      {trangThaiQuanLyDon === 'PROCESSING' && (
+      {trangThaiQuanLyDon === 'PROCESSING' && props?.type !== 'Thao tác' && (
         <Select
           onChange={(val) => {
             setIsDonCanXuLy(val);
