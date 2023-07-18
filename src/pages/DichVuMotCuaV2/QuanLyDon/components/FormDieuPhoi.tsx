@@ -3,29 +3,33 @@ import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
 import { Button, Card, Form, Select } from 'antd';
 import { useModel } from 'umi';
+import SelectChuyenVienDonVi from '@/pages/Core/ChuyenVienDonVi/SelectChuyenVienDonVi';
 
 const FormDieuPhoi = (props: { onCancel: any }) => {
   const [form] = Form.useForm();
-  const { loading, recordDonThaoTac, dieuPhoiDonModel } = useModel('dvmc.dichvumotcuav2');
+  const { loading, recordDonThaoTac, dieuPhoiDonModel, idDonViSelect } =
+    useModel('dvmc.dichvumotcuav2');
   const { danhSachChuyenVienXuLy } = useModel('phanquyen');
+  const { danhSach:danhSachChuyenVien } = useModel('tochucnhansu.nhansudonvi');
   return (
     <Card title="Điều phối đơn">
       <Form
         // labelCol={{ span: 24 }}
         onFinish={async (values) => {
           if (!recordDonThaoTac?._id) return;
-          const chuyenVien = danhSachChuyenVienXuLy?.find(
-            (item) => item.id === values?.idChuyenVien,
+          const chuyenVien = danhSachChuyenVien?.find(
+            (item) => item?.thongTinNhanSu?.ssoId === values?.idChuyenVien,
           );
           dieuPhoiDonModel({
             idDonThaoTac: recordDonThaoTac._id,
             data: {
               nguoiDuocGiao: {
-                _id: chuyenVien?.id?.toString() || '',
-                hoTen: chuyenVien?.name || '',
-                gioiTinh: chuyenVien?.gioi_tinh || '',
-                ngaySinh: chuyenVien?.ngay_sinh || '',
-                maDinhDanh: chuyenVien?.ma_dinh_danh || '',
+                _id: chuyenVien?.thongTinNhanSuId?.toString() || '',
+                hoTen: chuyenVien?.thongTinNhanSu?.ten || '',
+                gioiTinh: chuyenVien?.thongTinNhanSu?.gioiTinh || '',
+                ngaySinh: chuyenVien?.thongTinNhanSu?.ngaySinh || '',
+                maDinhDanh: chuyenVien?.thongTinNhanSu?.maCanBo || '',
+                ssoId: chuyenVien?.thongTinNhanSu?.ssoId || '',
               },
             },
           });
@@ -35,18 +39,19 @@ const FormDieuPhoi = (props: { onCancel: any }) => {
         form={form}
       >
         <Form.Item rules={[...rules.required]} name="idChuyenVien" label="Chuyên viên xử lý">
-          <Select
-            allowClear
-            showSearch
-            placeholder="Chọn chuyên viên xử lý"
-            filterOption={(value, option) => includes(option?.props.children, value)}
-          >
-            {danhSachChuyenVienXuLy?.map((item) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
+          {/*<Select*/}
+          {/*  allowClear*/}
+          {/*  showSearch*/}
+          {/*  placeholder="Chọn chuyên viên xử lý"*/}
+          {/*  filterOption={(value, option) => includes(option?.props.children, value)}*/}
+          {/*>*/}
+          {/*  {danhSachChuyenVienXuLy?.map((item) => (*/}
+          {/*    <Select.Option key={item.id} value={item.id}>*/}
+          {/*      {item.name}*/}
+          {/*    </Select.Option>*/}
+          {/*  ))}*/}
+          {/*</Select>*/}
+          <SelectChuyenVienDonVi idDonVi={idDonViSelect ?? ''} />
         </Form.Item>
 
         <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>

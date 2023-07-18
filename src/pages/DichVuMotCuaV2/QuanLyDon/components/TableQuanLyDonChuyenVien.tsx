@@ -36,9 +36,11 @@ import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
 
-const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
+const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
   const {
     chuyenVienDieuPhoiGetDonModel,
+    chuyenVienDieuPhoiGetThaoTacModel,
+    chuyenVienXyLyGetThaoTacModel,
     chuyenVienXuLyGetDonModel,
     getDonThaoTacChuyenVienDieuPhoiModel,
     getDonThaoTacChuyenVienXuLyModel,
@@ -47,6 +49,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     condition,
     loading,
     trangThaiQuanLyDon,
+    trangThaiQuanLyDonThaoTac,
     danhSach,
     record,
     setRecord,
@@ -54,6 +57,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
     setVisibleFormDon,
     recordDon,
     setRecordDonThaoTac,
+    setDanhSachDonThaoTac,
     setRecordDon,
     exportDonModel,
     setTotal,
@@ -101,17 +105,40 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
 
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
     getThongTinSinhVienBySsoIdModel(recordDonColumn?.thongTinNguoiTao?.ssoId);
-    // if (pathname?.includes('quanlydondieuphoi'))
-    getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
+    if (pathname?.includes('chuyenvientiepnhan')){
+      setRecordDon(recordDonColumn?.idDon);
+      setRecordDonThaoTac(recordDonColumn);
+      setDanhSachDonThaoTac([recordDonColumn])
+      // getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?.idDon?._id}, 1, 100);
+    }
 
-    // else getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
-    setRecordDon(recordDonColumn);
+    else {
+      if (pathname?.includes('quanlydondieuphoi')){
+        setRecordDon(recordDonColumn?.idDon);
+        setRecordDonThaoTac(recordDonColumn);
+        setDanhSachDonThaoTac([recordDonColumn])
+        // getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?.idDon?._id }, 1, 100);
+      }else {
+        setRecordDon(recordDonColumn  );
+        getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
+      }
+    }
+
+
     setVisibleFormDon(true);
     setType('view');
   };
 
   const getData = () => {
-    chuyenVienDieuPhoiGetDonModel('DVMC');
+    if (pathname?.includes('chuyenvientiepnhan')) {
+      chuyenVienXyLyGetThaoTacModel();
+    } else {
+      if (pathname?.includes('quanlydondieuphoi')) {
+        chuyenVienDieuPhoiGetThaoTacModel();
+      } else {
+        chuyenVienDieuPhoiGetDonModel('DVMC');
+      }
+    }
   };
 
   const onCell = (recordDonColumn: DichVuMotCuaV2.Don) => ({
@@ -404,6 +431,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean }) => {
         limit,
         condition,
         trangThaiQuanLyDon,
+        trangThaiQuanLyDonThaoTac,
         record?._id,
         danhSach,
         isDonCanXuLy,

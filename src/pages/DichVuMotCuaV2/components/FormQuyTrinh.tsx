@@ -75,7 +75,7 @@ const FormQuyTrinh = (props: {
     danhSachDonThaoTac,
     setDanhSachDonThaoTac,
     record,
-    recordDon,
+    recordDon,setIdDonViSelect
   } = useModel('dvmc.dichvumotcuav2');
   const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
@@ -89,7 +89,9 @@ const FormQuyTrinh = (props: {
   useEffect(() => {
     if (props.idDon) {
       // adminGetTrangThaiDonModel(props.idDon);
-      chuyenVienDieuPhoiGetTrangThaiDonModel(props.idDon);
+      // if (pathname?.includes('quanlydondieuphoi')) {
+      //   chuyenVienDieuPhoiGetTrangThaiDonModel(props.idDon);
+      // }
     }
   }, [props.idDon]);
 
@@ -116,6 +118,7 @@ const FormQuyTrinh = (props: {
     recordDonThaoTac: DichVuMotCuaV2.DonThaoTac,
     isDonThaoTacOBuocCuoi: boolean,
     isDuocPhepXuLyDonThaoTac: boolean,
+    idDonVi?: string,
   ): any => {
     if (arrPathName?.includes('quanlydondieuphoi')) {
       getChuyenVienXuLyDonModel(recordDonThaoTac?.idDonVi);
@@ -125,6 +128,7 @@ const FormQuyTrinh = (props: {
     setVisibleFormBieuMau(true);
     setCheckLastStep(isDonThaoTacOBuocCuoi);
     setCheckDuocPhepXuLy(isDuocPhepXuLyDonThaoTac);
+    setIdDonViSelect(idDonVi)
   };
 
   useEffect(() => {
@@ -168,8 +172,9 @@ const FormQuyTrinh = (props: {
         )}
         {props?.record?.danhSachBuoc?.length
           ? props?.record?.danhSachBuoc?.map((buoc, index) => {
+
               const recordBuoc = recordTrangThaiDon?.find((item) => item.idBuoc === buoc._id);
-            // @ts-ignore
+              // @ts-ignore
               const IconBuoc = IconTrangThai?.[recordBuoc?.trangThai ?? 'ANY'];
               return (
                 <>
@@ -220,8 +225,7 @@ const FormQuyTrinh = (props: {
                           </b>
                           <div>Đơn vị: {thaoTac?.tenDonVi || 'Đơn vị quản lý'}</div>
                           <div>
-                            Trạng thái:{' '}
-                            {/*// @ts-ignore*/}
+                            Trạng thái: {/*// @ts-ignore*/}
                             {TrangThaiThaoTac?.[recordThaoTac?.trangThai ?? ''] ?? 'Chưa xử lý'}
                           </div>
                           {!['OK', 'NOT_OK'].includes(recordThaoTac?.trangThai ?? '') ? (
@@ -251,6 +255,7 @@ const FormQuyTrinh = (props: {
                                       recordDonThaoTac,
                                       isDonThaoTacOBuocCuoi,
                                       isDuocPhepXuLy,
+                                      thaoTac?.idDonVi,
                                     );
                                   }}
                                   style={{ padding: 0 }}

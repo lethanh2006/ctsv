@@ -5,10 +5,12 @@ import { useModel } from 'umi';
 import TableQuanLyDon from './components/TableQuanLyDonChuyenVien';
 const { TabPane } = Tabs;
 
-const QuanLyDon = () => {
+const QuanLyDon = (props: { type?: string }) => {
   const {
     trangThaiQuanLyDon,
+    trangThaiQuanLyDonThaoTac,
     setTrangThaiQuanLyDon,
+    setTrangThaiQuanLyDonThaoTac,
     getAllBieuMauChuyenVienDieuPhoiModel,
     getAllBieuMauChuyenVienTiepNhanModel,
     setRecord,
@@ -25,10 +27,14 @@ const QuanLyDon = () => {
 
   useEffect(() => {
     setLoaiDichVu('DVMC');
-    if (pathname?.includes('quanlydondieuphoi')) {
-      getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
-    } else {
+    if (pathname?.includes('chuyenvientiepnhan')) {
       getAllBieuMauChuyenVienTiepNhanModel('DVMC');
+    } else {
+      if (pathname?.includes('quanlydondieuphoi')) {
+        getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
+      } else {
+        getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
+      }
     }
 
     return () => {
@@ -66,16 +72,20 @@ const QuanLyDon = () => {
           // } else {
           //   chuyenVienXuLyGetTongSoDonDVMCModel(isDonCanXuLy);
           // }
-          setTrangThaiQuanLyDon(key);
+
+          if (props.type==='Thao tác') {
+            setTrangThaiQuanLyDonThaoTac(key)
+          }else {
+            setTrangThaiQuanLyDon(key);}
         }}
-        activeKey={trangThaiQuanLyDon}
+        activeKey={props?.type==='Thao tác'?trangThaiQuanLyDonThaoTac:trangThaiQuanLyDon}
       >
         <TabPane
           // tab={`Chờ xử lý (${
           //   recordTongSoDon?.find((item) => item.trangThai === 'PROCESSING')?.soLuong ?? 0
           // })`}
           tab="Chờ xử lý"
-          key="PROCESSING"
+          key={`${props?.type==='Thao tác'?'PENDING':'PROCESSING'}`}
         />
         <TabPane
           // tab={`Duyệt (${recordTongSoDon?.find((item) => item.trangThai === 'OK')?.soLuong ?? 0})`}
@@ -93,7 +103,7 @@ const QuanLyDon = () => {
         <TabPane tab="Đã trả kết quả" key="DA_TRA_KQ" />
       </Tabs>
 
-      <TableQuanLyDon />
+      <TableQuanLyDon type={props.type}/>
     </Card>
   );
 };
