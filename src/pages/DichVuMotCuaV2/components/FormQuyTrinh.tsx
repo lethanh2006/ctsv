@@ -85,13 +85,13 @@ const FormQuyTrinh = (props: {
   const lastStep = props?.record?.danhSachBuoc?.[props?.record?.danhSachBuoc?.length - 1 ?? 0];
   const [type, setType] = useState<'view' | 'handle' | 'create' | 'edit'>('handle');
   const [trangThaiDon, setTrangThaiDon] = useState<string>();
-
+  console.log('reddddd',recordDonThaoTacModel)
   useEffect(() => {
     if (props.idDon) {
       // adminGetTrangThaiDonModel(props.idDon);
-      // if (pathname?.includes('quanlydondieuphoi')) {
-      //   chuyenVienDieuPhoiGetTrangThaiDonModel(props.idDon);
-      // }
+      if (pathname?.includes('quanlydondieuphoi')) {
+        chuyenVienDieuPhoiGetTrangThaiDonModel(props.idDon);
+      }
     }
   }, [props.idDon]);
 
@@ -172,7 +172,6 @@ const FormQuyTrinh = (props: {
         )}
         {props?.record?.danhSachBuoc?.length
           ? props?.record?.danhSachBuoc?.map((buoc, index) => {
-
               const recordBuoc = recordTrangThaiDon?.find((item) => item.idBuoc === buoc._id);
               // @ts-ignore
               const IconBuoc = IconTrangThai?.[recordBuoc?.trangThai ?? 'ANY'];
@@ -200,6 +199,8 @@ const FormQuyTrinh = (props: {
                       const recordDonThaoTac = danhSachDonThaoTac?.find(
                         (item) => item.idThaoTac === thaoTac._id,
                       );
+                      console.log('record',recordDonThaoTac)
+                      console.log('danhsach',danhSachDonThaoTac)
                       const isDonThaoTacOBuocCuoi = recordDonThaoTac?.idBuoc === lastStep?._id;
                       const recordThaoTac = recordBuoc?.danhSachThongKeThaoTac?.find(
                         (item) => item.idThaoTac === thaoTac._id,
@@ -325,7 +326,7 @@ const FormQuyTrinh = (props: {
             hideCamKet
             infoNguoiTaoDon={recordDonThaoTacModel?.nguoiTao}
             type={type}
-            record={arrPathName?.includes('vanphongso') ? recordDon : recordDonThaoTacModel?.idDon}
+            record={ recordDonThaoTacModel?.idDon}
             traKetQua={checkLastStep}
             duocPhepSuaKetQua={checkDuocPhepXuLy}
           />

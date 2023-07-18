@@ -4,6 +4,7 @@ import { AppModules, EModuleKey } from '@/services/ant-design-pro/constant';
 const ipRoot = 'https://ais.aisenote.com/dev/'; // ip dev
 
 const ip3 = ipRoot + 'slink'; // ip dev
+
 const ipNotif = ipRoot + 'notification'; // ip dev
 const ipDaoTao = ipRoot + 'qldt';
 const ipNhanSu = ipRoot + 'tcns';

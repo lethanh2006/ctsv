@@ -271,16 +271,16 @@ export default () => {
           ? {
             ...condition,
             // loaiDichVu: loaiDichVuParam || loaiDichVu,
-            trangThai: trangThaiQuanLyDonThaoTac,
-            // 'thongTinDichVu._id': record?._id,
+            trangThai: trangThaiQuanLyDon,
+            'thongTinDichVu._id': record?._id,
           }
           : {
             ...condition,
             // loaiDichVu: loaiDichVuParam || loaiDichVu,
             trangThai: 'OK',
-            // 'thongTinDichVu._id': record?._id,
-            // traKetQua: true,
-            // daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
+            'thongTinDichVu._id': record?._id,
+            traKetQua: true,
+            daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
           },
     });
     setDanhSachDon(response?.data?.data?.result ?? []);
@@ -297,16 +297,16 @@ export default () => {
           ? {
             ...condition,
             // loaiDichVu: loaiDichVuParam || loaiDichVu,
-            trangThai: trangThaiQuanLyDonThaoTac,
-            // 'thongTinDichVu._id': record?._id,
+            trangThai: trangThaiQuanLyDon,
+            'thongTinDichVu._id': record?._id,
           }
           : {
             ...condition,
             // loaiDichVu: loaiDichVuParam || loaiDichVu,
             trangThai: 'OK',
-            // 'thongTinDichVu._id': record?._id,
-            // traKetQua: true,
-            // daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
+            'thongTinDichVu._id': record?._id,
+            traKetQua: true,
+            daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
           },
     });
     setDanhSachDon(response?.data?.data?.result ?? []);
@@ -522,11 +522,9 @@ export default () => {
     await chuyenVienXuLyDuyetDon(payload);
     message.success('Xử lý thành công');
     setVisibleFormBieuMau(false);
-    // getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDon?._id }, 1, 100);
-    getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: payload?.idDonThaoTac }, 1, 100);
+    getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDon?._id }, 1, 100);
     chuyenVienXuLyGetDonModel();
-    // chuyenVienTiepNhanGetTrangThaiDonModel(recordDon?._id);
-    chuyenVienTiepNhanGetTrangThaiDonModel(payload?.idDonThaoTac);
+    chuyenVienTiepNhanGetTrangThaiDonModel(recordDon?._id);
   };
 
   const chuyenVienDieuPhoiDuyetDonModel = async (payload: {
@@ -540,15 +538,13 @@ export default () => {
     message.success('Xử lý thành công');
     setVisibleFormBieuMau(false);
     if (loaiDichVu === 'VAN_PHONG_SO') setVisibleFormDon(false);
-    // getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDon?._id }, 1, 100);
-    getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: payload?.idDonThaoTac }, 1, 100);
+    getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDon?._id }, 1, 100);
     if (loaiDichVu === 'VAN_PHONG_SO') {
       chuyenVienDieuPhoiGetDonVpsModel();
     } else {
       chuyenVienDieuPhoiGetDonModel();
     }
-    // chuyenVienDieuPhoiGetTrangThaiDonModel(recordDon?._id);
-    chuyenVienDieuPhoiGetTrangThaiDonModel(payload?.idDonThaoTac);
+    chuyenVienDieuPhoiGetTrangThaiDonModel(recordDon?._id);
   };
 
   const getAllBieuMauChuyenVienDieuPhoiModel = async (loaiDichVuParam?: string) => {
