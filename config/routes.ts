@@ -132,6 +132,20 @@
         // access: 'accessFilter',
         maChucNang: 'don-dvmc-thao-tac:read-all',
       },
+      {
+        name: 'ChuyenVienTiepNhanQuanLyDon',
+        path: './chuyenvientiepnhan',
+        component: './DichVuMotCuaV2/ChuyenVienXuLy',
+        // access: 'accessFilter',
+        // maChucNang: 'don-dvmc-thao-tac:read-all',
+      },
+      {
+        name: 'ChuyenVienDieuPhoiQuanLyDon',
+        path: './quanlydondieuphoi',
+        component: './DichVuMotCuaV2/ChuyenVienDieuPhoi',
+        // access: 'accessFilter',
+        // maChucNang: 'don-dvmc-thao-tac:read-all',
+      },
       // {
       //   name: 'ChuyenVienTiepNhanQuanLyDon',
       //   path: './quanlydonchuyenvien',

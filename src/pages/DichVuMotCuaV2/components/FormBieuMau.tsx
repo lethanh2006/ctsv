@@ -29,7 +29,7 @@ import {
 import moment from 'moment';
 import mm from 'moment-timezone';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useAccess, useModel } from 'umi';
 import FormDieuPhoi from '../QuanLyDon/components/FormDieuPhoi';
 import FormXuLyDon from '../QuanLyDon/components/FormXuLyDon';
 import Table from './TableElement';
@@ -74,6 +74,7 @@ const FormBieuMau = (props: {
     recordDon,
     sinhVienPutDonModel,
     exportDonModel,
+    idDonViSelect,
   } = useModel('dvmc.dichvumotcuav2');
   // const { danhSach: danhSachKyHoc } = useModel('kyhoc');
   // const { danhSach: danhSachNamHoc } = useModel('namhoc');
@@ -92,7 +93,6 @@ const FormBieuMau = (props: {
 
   const { pathname } = window.location;
   const arrPathName = pathname?.split('/') ?? [];
-
   const buildValuesForm = (
     valuesInit: any,
     name: string,
@@ -805,7 +805,7 @@ const FormBieuMau = (props: {
                 Không duyệt
               </Button>
 
-              {arrPathName?.includes('quanlydondieuphoi') && (
+              {!arrPathName?.includes('chuyenvientiepnhan') && (
                 <Button
                   // disabled={!canDieuPhoiDon}
                   style={{

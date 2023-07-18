@@ -24,10 +24,12 @@ const FormXuLyDon = (props: {
     recordDon,
     setLoading,
     chuyenVienDieuPhoiDuyetDonModel,
+    chuyenVienXuLyDuyetDonModel,
     traKetQuaModel,
     adminPutDonModel,
   } = useModel('dvmc.dichvumotcuav2');
-
+  const { pathname } = window.location;
+  const arrPathName = pathname?.split('/') ?? [];
   return (
     <Card title={titleByType?.[props?.type]}>
       <Form
@@ -52,7 +54,10 @@ const FormXuLyDon = (props: {
                 },
               },
             };
-            chuyenVienDieuPhoiDuyetDonModel(payload);
+            if (arrPathName?.includes('quanlydondieuphoi')) {
+              chuyenVienDieuPhoiDuyetDonModel(payload);
+            }else
+              chuyenVienXuLyDuyetDonModel(payload);
           }
           if (
             props?.traKetQua === true ||
