@@ -106,16 +106,16 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
     getThongTinSinhVienBySsoIdModel(recordDonColumn?.thongTinNguoiTao?.ssoId);
     if (pathname?.includes('chuyenvientiepnhan')) {
-      setRecordDon(recordDonColumn?.idDon);
-      setRecordDonThaoTac(recordDonColumn);
-      setDanhSachDonThaoTac([recordDonColumn]);
-      // getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?.idDon?._id}, 1, 100);
+      setRecordDon(recordDonColumn);
+      // setRecordDonThaoTac(recordDonColumn);
+      // setDanhSachDonThaoTac([recordDonColumn]);
+      getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id}, 1, 100);
     } else {
       if (pathname?.includes('quanlydondieuphoi')) {
-        setRecordDon(recordDonColumn?.idDon);
-        setRecordDonThaoTac(recordDonColumn);
-        setDanhSachDonThaoTac([recordDonColumn]);
-        // getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?.idDon?._id }, 1, 100);
+        setRecordDon(recordDonColumn);
+        // setRecordDonThaoTac(recordDonColumn);
+        // setDanhSachDonThaoTac([recordDonColumn]);
+        getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
       } else {
         setRecordDon(recordDonColumn);
         getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);

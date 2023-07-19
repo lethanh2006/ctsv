@@ -34,7 +34,10 @@ export async function chuyenVienDieuPhoiGetDonSinhVien(payload: {
   limit: number;
   me?: number;
 }) {
-  return axios.get(`${ip3}/don-dvmc/chuyen-vien-dieu-phoi/don/pageable`, {
+  // return axios.get(`${ip3}/don-dvmc/chuyen-vien-dieu-phoi/don/pageable`, {
+  //   params: payload,
+  // });
+  return axios.get(`${ip3}/don-dvmc/admin/don/pageable`, {
     params: payload,
   });
 }
@@ -43,7 +46,10 @@ export async function chuyenVienDieuPhoiGetThaoTac(payload: {
   page: number;
   limit: number;
 }) {
-  return axios.get(`${ip3}/don-dvmc/dieu-phoi/don/thao-tac`, {
+  // return axios.get(`${ip3}/don-dvmc/dieu-phoi/don/thao-tac`, {
+  //   params: payload,
+  // });
+  return axios.get(`${ip3}/don-dvmc/chuyen-vien-dieu-phoi/don/pageable`, {
     params: payload,
   });
 }export async function chuyenVienXuLyGetThaoTac(payload: {
@@ -51,7 +57,10 @@ export async function chuyenVienDieuPhoiGetThaoTac(payload: {
   page: number;
   limit: number;
 }) {
-  return axios.get(`${ip3}/don-dvmc/xu-ly/don/thao-tac`, {
+  // return axios.get(`${ip3}/don-dvmc/xu-ly/don/thao-tac`, {
+  //   params: payload,
+  // });
+  return axios.get(`${ip3}/don-dvmc/chuyen-vien-tiep-nhan/don/pageable`, {
     params: payload,
   });
 }
