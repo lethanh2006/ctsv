@@ -633,7 +633,7 @@ export default () => {
       }
       setLoading(false);
     } catch (err) {
-      message.error('Biểu mẫu không tồn tại');
+      message.error('Biểu mẫu không tồn tại, cần liên hệ quản trị để thêm vào biểu mẫu');
       setLoading(false);
     }
   };
