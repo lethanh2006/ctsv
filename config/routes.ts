@@ -123,14 +123,14 @@
         path: './bieu-mau',
         component: './DichVuMotCuaV2/QuanLyBieuMau',
         // access: 'accessFilter',
-        maChucNang: 'dvmc-thao-tac:read',
+        // maChucNang: 'dvmc-thao-tac:read',
       },
       {
         name: 'QuanLyDon',
         path: './don-vmc',
         component: './DichVuMotCuaV2/QuanLyDon',
         // access: 'accessFilter',
-        maChucNang: 'don-dvmc-thao-tac:read-all',
+        // maChucNang: 'don-dvmc-thao-tac:read-all',
       },
       {
         name: 'ChuyenVienTiepNhanQuanLyDon',

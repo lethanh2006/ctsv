@@ -28,10 +28,10 @@ const QuanLyDon = (props: { type?: string }) => {
   useEffect(() => {
     setLoaiDichVu('DVMC');
     if (pathname?.includes('chuyenvientiepnhan')) {
-      getAllBieuMauChuyenVienTiepNhanModel('DVMC');
+      // getAllBieuMauChuyenVienTiepNhanModel('DVMC');
     } else {
       if (pathname?.includes('quanlydondieuphoi')) {
-        getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
+        // getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
       } else {
         getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
       }
