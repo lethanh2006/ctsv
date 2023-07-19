@@ -25,7 +25,7 @@ const FormDieuPhoi = (props: { onCancel: any }) => {
             data: {
               nguoiDuocGiao: {
                 _id: chuyenVien?.thongTinNhanSuId?.toString() || '',
-                hoTen: chuyenVien?.thongTinNhanSu?.ten || '',
+                hoTen: `${chuyenVien?.thongTinNhanSu?.hoDem} ${chuyenVien?.thongTinNhanSu?.ten}`,
                 gioiTinh: chuyenVien?.thongTinNhanSu?.gioiTinh || '',
                 ngaySinh: chuyenVien?.thongTinNhanSu?.ngaySinh || '',
                 maDinhDanh: chuyenVien?.thongTinNhanSu?.maCanBo || '',

@@ -322,13 +322,13 @@ export default () => {
         typeTraKetQua !== 'CHUA_TRA_KQ' && typeTraKetQua !== 'DA_TRA_KQ'
           ? {
               ...condition,
-              loaiDichVu: loaiDichVuParam || loaiDichVu,
+              // loaiDichVu: loaiDichVuParam || loaiDichVu,
               trangThai: trangThaiQuanLyDon,
               'thongTinDichVu._id': record?._id,
             }
           : {
               ...condition,
-              loaiDichVu: loaiDichVuParam || loaiDichVu,
+              // loaiDichVu: loaiDichVuParam || loaiDichVu,
               trangThai: 'OK',
               'thongTinDichVu._id': record?._id,
               traKetQua: true,
@@ -343,6 +343,7 @@ export default () => {
 
   const chuyenVienDieuPhoiGetDonVpsModel = async () => {
     setLoading(true);
+    chuyenVienDieuPhoiGetTrangThaiDonModel(recordDon?._id);
     const response = await chuyenVienDieuPhoiGetDonSinhVien({
       page,
       limit,
@@ -359,6 +360,7 @@ export default () => {
       setPage(response?.data?.data?.page - 1 ?? 1);
     }
     setLoading(false);
+
   };
 
   const getDonThaoTacChuyenVienXuLyModel = async (
@@ -384,6 +386,7 @@ export default () => {
     });
     setDanhSachDonThaoTac(response?.data?.data?.result ?? []);
     // setTotal(response?.data?.data?.total);
+
     setLoading(false);
   };
 

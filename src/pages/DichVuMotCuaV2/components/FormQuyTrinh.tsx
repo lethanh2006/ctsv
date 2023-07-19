@@ -199,8 +199,6 @@ const FormQuyTrinh = (props: {
                       const recordDonThaoTac = danhSachDonThaoTac?.find(
                         (item) => item.idThaoTac === thaoTac._id,
                       );
-                      console.log('record',recordDonThaoTac)
-                      console.log('danhsach',danhSachDonThaoTac)
                       const isDonThaoTacOBuocCuoi = recordDonThaoTac?.idBuoc === lastStep?._id;
                       const recordThaoTac = recordBuoc?.danhSachThongKeThaoTac?.find(
                         (item) => item.idThaoTac === thaoTac._id,
