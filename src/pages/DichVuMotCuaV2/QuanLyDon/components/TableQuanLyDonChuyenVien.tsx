@@ -69,6 +69,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
     updateTrangThaiNhanKetQuaModel,
     chuyenVienDieuPhoiGetDonVpsModel,
     chuyenVienXuLyGetDonVpsModel,
+    chuyenVienTiepNhanGetTrangThaiDonModel,chuyenVienDieuPhoiGetTrangThaiDonModel
   } = useModel('dvmc.dichvumotcuav2');
 
   const { getThongTinSinhVienBySsoIdModel, record: infoNguoiTaoDon } =
@@ -107,17 +108,16 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
     getThongTinSinhVienBySsoIdModel(recordDonColumn?.thongTinNguoiTao?.ssoId);
     if (pathname?.includes('chuyenvientiepnhan')) {
       setRecordDon(recordDonColumn);
-      // setRecordDonThaoTac(recordDonColumn);
-      // setDanhSachDonThaoTac([recordDonColumn]);
+      chuyenVienTiepNhanGetTrangThaiDonModel(recordDonColumn?._id);
       getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id}, 1, 100);
     } else {
       if (pathname?.includes('quanlydondieuphoi')) {
         setRecordDon(recordDonColumn);
-        // setRecordDonThaoTac(recordDonColumn);
-        // setDanhSachDonThaoTac([recordDonColumn]);
+        chuyenVienTiepNhanGetTrangThaiDonModel(recordDonColumn?._id);
         getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
       } else {
         setRecordDon(recordDonColumn);
+        chuyenVienTiepNhanGetTrangThaiDonModel(recordDonColumn?._id);
         getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
       }
     }
