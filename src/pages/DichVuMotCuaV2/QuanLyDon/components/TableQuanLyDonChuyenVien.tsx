@@ -41,8 +41,10 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
     chuyenVienDieuPhoiGetDonModel,
     chuyenVienDieuPhoiGetThaoTacModel,
     chuyenVienXyLyGetThaoTacModel,
+    adminGetTrangThaiDonModel,
     chuyenVienXuLyGetDonModel,
     getDonThaoTacChuyenVienDieuPhoiModel,
+    getDonThaoTacAdminModel,
     getDonThaoTacChuyenVienXuLyModel,
     page,
     limit,
@@ -117,8 +119,8 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
         getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
       } else {
         setRecordDon(recordDonColumn);
-        chuyenVienTiepNhanGetTrangThaiDonModel(recordDonColumn?._id);
-        getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
+        adminGetTrangThaiDonModel(recordDonColumn?._id);
+        getDonThaoTacAdminModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
       }
     }
 
