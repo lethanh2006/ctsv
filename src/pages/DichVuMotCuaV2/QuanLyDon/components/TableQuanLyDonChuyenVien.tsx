@@ -1,4 +1,4 @@
-import TableBase from '@/components/OldTable';
+
 import type { IColumn } from '@/components/Table/typing';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
@@ -35,6 +35,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
+import TableBase from '@/components/Table';
 
 const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
   const {
@@ -149,13 +150,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
   });
 
   const columns: IColumn<DichVuMotCuaV2.Don>[] = [
-    {
-      title: 'STT',
-      dataIndex: 'index',
-      align: 'center',
-      width: 80,
-      onCell,
-    },
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
@@ -710,8 +704,8 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       modelName="dvmc.dichvumotcuav2"
       dataState="danhSachDon"
       scroll={{ x: 1350 }}
-      loading={loading}
       getData={getData}
+      buttons={{create:false}}
       hideCard
     >
       {trangThaiQuanLyDon === 'PROCESSING' && props?.type !== 'Thao tác' && (

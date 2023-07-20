@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-import TableBase from '@/components/OldTable';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { IColumn } from '@/utils/interfaces';
 import { Button, Divider, Dropdown, Menu, Modal, Select, Tabs, Tooltip } from 'antd';
@@ -9,6 +8,7 @@ import { useModel } from 'umi';
 import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import TableBase from "@/components/Table";
 
 const TableQuanLyDon = () => {
   const {
@@ -46,12 +46,6 @@ const TableQuanLyDon = () => {
     });
   };
   const columns: IColumn<DichVuMotCuaV2.DonThaoTac>[] = [
-    {
-      title: 'STT',
-      dataIndex: 'index',
-      width: 80,
-      align: 'center',
-    },
     {
       title: 'Dịch vụ',
       align: 'center',
@@ -205,6 +199,7 @@ const TableQuanLyDon = () => {
       dataState="danhSachDonThaoTac"
       scroll={{ x: 1650 }}
       loading={loading}
+      buttons={{create:false}}
       getData={() => {
         if (pathname?.includes('quanlydondieuphoi'))
           getDonThaoTacChuyenVienDieuPhoiModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');

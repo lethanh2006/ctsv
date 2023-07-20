@@ -1,7 +1,8 @@
-import Table from '@/components/OldTable/Table';
+
 import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import type { IColumn } from '@/utils/interfaces';
 import moment from 'moment';
+import {Table} from "antd";
 
 const TableLichSuTraKetQua = (props: { data: DichVuMotCuaV2.LichSuChinhSua[] }) => {
   const columns: IColumn<DichVuMotCuaV2.LichSuChinhSua>[] = [

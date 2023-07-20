@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import TableBase from '@/components/OldTable';
+
 import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
+import TableBase from '@/components/Table';
 
 const TableQuanLyDonAdmin = (props: {
   hideFilter?: boolean;
@@ -85,13 +86,6 @@ const TableQuanLyDonAdmin = (props: {
   // const canDelete = useCheckAccess('don_dvmc_thao-tac:delete');
 
   const columns: IColumn<DichVuMotCuaV2.Don>[] = [
-    {
-      title: 'STT',
-      dataIndex: 'index',
-      align: 'center',
-      width: 80,
-      onCell,
-    },
     {
       title: 'Loại đơn',
       dataIndex: ['thongTinDichVu', 'ten'],
@@ -290,15 +284,14 @@ const TableQuanLyDonAdmin = (props: {
   return (
     <>
       <TableBase
+        columns={columns}
         dataState="danhSachDon"
-        widthDrawer="60%"
         modelName="dichvumotcuav2"
         scroll={{ x: 1300 }}
-        columns={columns}
-        loading={loading}
         dependencies={[page, limit, condition, trangThaiQuanLyDon, record?._id]}
         getData={adminGetDonModel}
         hideCard
+        buttons={{create:false}}
       >
         {props.hideFilter !== true && (
           <Select
