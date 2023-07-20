@@ -300,7 +300,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                       </Menu>
                     }
                   >
-                    <Button icon={<FileTextOutlined />} shape="circle" />
+                    <Button type="link" icon={<FileTextOutlined />} shape="circle" />
                   </Dropdown>
                 </Tooltip>
                 <Divider type="vertical" />
@@ -323,7 +323,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                       </Menu>
                     }
                   >
-                    <Button icon={<FileDoneOutlined />} shape="circle" />
+                    <Button type="link" icon={<FileDoneOutlined />} shape="circle" />
                   </Dropdown>
                 </Tooltip>
                 <Divider type="vertical" />
@@ -334,7 +334,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                       handleDon(recordDonColumn);
                     }}
                     shape="circle"
-                    type="primary"
+                    type="link"
                     icon={<EyeOutlined />}
                   />
                 </Tooltip>
@@ -342,6 +342,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
 
                 <Tooltip title="Trả lời phản hồi">
                   <Button
+                    type="link"
                     disabled={!recordDonColumn?.noiDungPhanHoi || recordDonColumn.daTraLoiPhanHoi}
                     onClick={() => {
                       setRecordDon(recordDonColumn);
@@ -361,7 +362,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                           updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', true, getData)
                         }
                       >
-                        <Button icon={<CheckOutlined />} shape="circle" />
+                        <Button type="link" icon={<CheckOutlined />} shape="circle" />
                       </Popconfirm>
                     </Tooltip>
                   </>
@@ -376,7 +377,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                           updateTrangThaiNhanKetQuaModel(recordDonColumn?._id ?? '', false, getData)
                         }
                       >
-                        <Button icon={<CloseOutlined />} shape="circle" />
+                        <Button type="link" icon={<CloseOutlined />} shape="circle" />
                       </Popconfirm>
                     </Tooltip>
                   </>
@@ -400,7 +401,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                         }}
                         title="Bạn có chắc chắn xóa đơn này?"
                       >
-                        <Button danger type="primary" icon={<DeleteOutlined />} shape="circle" />
+                        <Button type="link" danger  icon={<DeleteOutlined />} shape="circle" />
                       </Popconfirm>
                     </Tooltip>
                   </>
