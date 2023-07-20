@@ -248,7 +248,7 @@ const FormQuyTrinh = (props: {
                                   {recordDonThaoTac?.nguoiDuocGiao?.maDinhDanh ?? ''})
                                 </div>
                               )}
-                              {!access.admin&&recordDonThaoTac && isDuocPhepXuLy && (
+                              {recordDonThaoTac && isDuocPhepXuLy && (
                                 <Button
                                   onClick={() => {
                                     xuLyDon(

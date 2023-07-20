@@ -5,7 +5,7 @@ export default {
   'menu.Dashboard': 'Trang chủ',
   'menu.About': 'Giới thiệu Học viện',
   'menu.News': 'Tin tức',
-  'menu.DichVuMotCua': 'Dịch vụ một cửa',
+  'menu.DichVuMotCua': 'Dịch vụ hành chính',
   'menu.DichVuMotCua.PhanHoi': 'Phản hồi',
   'menu.DichVuMotCua.ThongTinTongHop': 'Thông tin tổng hợp',
   'menu.DichVuMotCua.QuanLyBieuMau': 'Quản lý biểu mẫu',

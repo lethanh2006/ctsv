@@ -33,7 +33,11 @@ import {
   traKetQua,
   updateTrangThaiNhanKetQua,
   userGetAllBieuMau,
-  nhanVienDeleteDon, chuyenVienDieuPhoiGetThaoTac, chuyenVienXuLyGetThaoTac,
+  nhanVienDeleteDon,
+  chuyenVienDieuPhoiGetThaoTac,
+  chuyenVienXuLyGetThaoTac,
+  getDonThaoTacAdmin,
+  adminDuyetDon,
 } from '@/services/DVMC/DichVuMotCuaV2/dichvumotcuav2';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import type { MaDichVuVps } from '@/utils/constants';
@@ -85,7 +89,7 @@ export default () => {
   const [typeTraKetQua, setTypeTraKetQua] = useState<string>('');
   const { initialState } = useModel('@@initialState');
 
-  const [idDonViSelect,setIdDonViSelect]=useState<string>()
+  const [idDonViSelect, setIdDonViSelect] = useState<string>();
 
   const getBieuMauAdminModel = async (loaiDichVuParam?: string) => {
     setLoading(true);
@@ -261,6 +265,14 @@ export default () => {
     // setTotal(response?.data?.data?.total);
     setLoading(false);
   };
+  const chuyenVienDieuPhoiGetTrangThaiDonModel = async (idDon?: string) => {
+    if (!idDon) return;
+    setLoading(true);
+    const response = await chuyenVienDieuPhoiGetTrangThaiDon(idDon, { condition });
+    setRecordTrangThaiDon(response?.data?.data ?? []);
+    setLoading(false);
+  };
+
   const chuyenVienDieuPhoiGetThaoTacModel = async (loaiDichVuParam?: string) => {
     setLoading(true);
     const response = await chuyenVienDieuPhoiGetThaoTac({
@@ -269,19 +281,19 @@ export default () => {
       condition:
         typeTraKetQua !== 'CHUA_TRA_KQ' && typeTraKetQua !== 'DA_TRA_KQ'
           ? {
-            ...condition,
-            // loaiDichVu: loaiDichVuParam || loaiDichVu,
-            trangThai: trangThaiQuanLyDon,
-            'thongTinDichVu._id': record?._id,
-          }
+              ...condition,
+              // loaiDichVu: loaiDichVuParam || loaiDichVu,
+              trangThai: trangThaiQuanLyDon,
+              'thongTinDichVu._id': record?._id,
+            }
           : {
-            ...condition,
-            // loaiDichVu: loaiDichVuParam || loaiDichVu,
-            trangThai: 'OK',
-            'thongTinDichVu._id': record?._id,
-            traKetQua: true,
-            daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
-          },
+              ...condition,
+              // loaiDichVu: loaiDichVuParam || loaiDichVu,
+              trangThai: 'OK',
+              'thongTinDichVu._id': record?._id,
+              traKetQua: true,
+              daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
+            },
     });
     setDanhSachDon(response?.data?.data?.result ?? []);
     setTotal(response?.data?.data?.total ?? 0);
@@ -295,19 +307,19 @@ export default () => {
       condition:
         typeTraKetQua !== 'CHUA_TRA_KQ' && typeTraKetQua !== 'DA_TRA_KQ'
           ? {
-            ...condition,
-            // loaiDichVu: loaiDichVuParam || loaiDichVu,
-            trangThai: trangThaiQuanLyDon,
-            'thongTinDichVu._id': record?._id,
-          }
+              ...condition,
+              // loaiDichVu: loaiDichVuParam || loaiDichVu,
+              trangThai: trangThaiQuanLyDon,
+              'thongTinDichVu._id': record?._id,
+            }
           : {
-            ...condition,
-            // loaiDichVu: loaiDichVuParam || loaiDichVu,
-            trangThai: 'OK',
-            'thongTinDichVu._id': record?._id,
-            traKetQua: true,
-            daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
-          },
+              ...condition,
+              // loaiDichVu: loaiDichVuParam || loaiDichVu,
+              trangThai: 'OK',
+              'thongTinDichVu._id': record?._id,
+              traKetQua: true,
+              daTraKetQua: typeTraKetQua === 'CHUA_TRA_KQ' ? false : true,
+            },
     });
     setDanhSachDon(response?.data?.data?.result ?? []);
     setTotal(response?.data?.data?.total ?? 0);
@@ -360,7 +372,6 @@ export default () => {
       setPage(response?.data?.data?.page - 1 ?? 1);
     }
     setLoading(false);
-
   };
 
   const getDonThaoTacChuyenVienXuLyModel = async (
@@ -376,6 +387,32 @@ export default () => {
       return;
     setLoading(true);
     const response = await getDonThaoTacChuyenVienXuLy({
+      page: pageParams || page,
+      limit: limitParams || limit,
+      condition: conditionParams || {
+        ...condition,
+        trangThai: trangThaiQuanLyDonThaoTac,
+        idDichVu: record?._id || danhSach?.map((item) => item._id),
+      },
+    });
+    setDanhSachDonThaoTac(response?.data?.data?.result ?? []);
+    // setTotal(response?.data?.data?.total);
+
+    setLoading(false);
+  };
+  const getDonThaoTacAdminModel = async (
+    loaiDichVuParam?: string,
+    conditionParams?: any,
+    pageParams?: number,
+    limitParams?: number,
+  ) => {
+    if (
+      loaiDichVuParam &&
+      danhSach?.filter((item) => item.loaiDichVu === loaiDichVuParam)?.length === 0
+    )
+      return;
+    setLoading(true);
+    const response = await getDonThaoTacAdmin({
       page: pageParams || page,
       limit: limitParams || limit,
       condition: conditionParams || {
@@ -499,14 +536,6 @@ export default () => {
     setLoading(false);
   };
 
-  const chuyenVienDieuPhoiGetTrangThaiDonModel = async (idDon?: string) => {
-    if (!idDon) return;
-    setLoading(true);
-    const response = await chuyenVienDieuPhoiGetTrangThaiDon(idDon, { condition });
-    setRecordTrangThaiDon(response?.data?.data ?? []);
-    setLoading(false);
-  };
-
   const chuyenVienTiepNhanGetTrangThaiDonModel = async (idDon?: string) => {
     if (!idDon) return;
     setLoading(true);
@@ -548,6 +577,31 @@ export default () => {
       chuyenVienDieuPhoiGetDonModel();
     }
     chuyenVienDieuPhoiGetTrangThaiDonModel(recordDon?._id);
+  };
+  const adminGetTrangThaiDonModel = async (idDon?: string) => {
+    setLoading(true);
+    const response = await adminGetTrangThaiDon(idDon ?? '', { condition });
+    setRecordTrangThaiDon(response?.data?.data ?? []);
+    setLoading(false);
+  };
+  const adminDuyetDonModel = async (payload: {
+    type: string;
+    idDonThaoTac: string;
+    data: {
+      urlFileDinhKem: string[];
+    };
+  }) => {
+    await adminDuyetDon(payload);
+    message.success('Xử lý thành công');
+    setVisibleFormBieuMau(false);
+    if (loaiDichVu === 'VAN_PHONG_SO') setVisibleFormDon(false);
+    getDonThaoTacAdminModel(undefined, { idDon: recordDon?._id }, 1, 100);
+    if (loaiDichVu === 'VAN_PHONG_SO') {
+      chuyenVienDieuPhoiGetDonVpsModel();
+    } else {
+      adminGetDonModel();
+    }
+    adminGetTrangThaiDonModel(recordDon?._id);
   };
 
   const getAllBieuMauChuyenVienDieuPhoiModel = async (loaiDichVuParam?: string) => {
@@ -603,13 +657,6 @@ export default () => {
   const sinhVienGetTrangThaiDonModel = async (idDon: string) => {
     setLoading(true);
     const response = await sinhVienGetTrangThaiDon(idDon, { condition });
-    setRecordTrangThaiDon(response?.data?.data ?? []);
-    setLoading(false);
-  };
-
-  const adminGetTrangThaiDonModel = async (idDon: string) => {
-    setLoading(true);
-    const response = await adminGetTrangThaiDon(idDon, { condition });
     setRecordTrangThaiDon(response?.data?.data ?? []);
     setLoading(false);
   };
@@ -834,6 +881,11 @@ export default () => {
     getBieuMauAdminModel,
     typeTraKetQua,
     setTypeTraKetQua,
-    chuyenVienDieuPhoiGetThaoTacModel,chuyenVienXyLyGetThaoTacModel,idDonViSelect,setIdDonViSelect
+    chuyenVienDieuPhoiGetThaoTacModel,
+    chuyenVienXyLyGetThaoTacModel,
+    idDonViSelect,
+    setIdDonViSelect,
+    getDonThaoTacAdminModel,
+    adminDuyetDonModel,
   };
 };

@@ -52,7 +52,8 @@ export async function chuyenVienDieuPhoiGetThaoTac(payload: {
   return axios.get(`${ip3}/don-dvmc/chuyen-vien-dieu-phoi/don/pageable`, {
     params: payload,
   });
-}export async function chuyenVienXuLyGetThaoTac(payload: {
+}
+export async function chuyenVienXuLyGetThaoTac(payload: {
   condition?: any;
   page: number;
   limit: number;
@@ -125,7 +126,11 @@ export async function getDonThaoTacChuyenVienXuLy(payload: {
     params: payload,
   });
 }
-
+export async function getDonThaoTacAdmin(payload: { condition: any; page: number; limit: number }) {
+  return axios.get(`${ip3}/don-dvmc/admin/don-thao-tac/pageable`, {
+    params: payload,
+  });
+}
 export async function chuyenVienDieuPhoiDuyetDon(payload: {
   type: string;
   idDonThaoTac: string;
@@ -138,7 +143,18 @@ export async function chuyenVienDieuPhoiDuyetDon(payload: {
     payload.data,
   );
 }
-
+export async function adminDuyetDon(payload: {
+  type: string;
+  idDonThaoTac: string;
+  data: {
+    urlFileDinhKem: string[];
+  };
+}) {
+  return axios.post(
+    `${ip3}/don-dvmc/admin/don-thao-tac/${payload.idDonThaoTac}/duyet/${payload.type}`,
+    payload.data,
+  );
+}
 export async function chuyenVienXuLyDuyetDon(payload: {
   type: string;
   idDonThaoTac: string;
