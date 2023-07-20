@@ -1,16 +1,14 @@
-/* eslint-disable no-underscore-dangle */
+import SelectChuyenVienDonVi from '@/pages/ToChucNhanSu/ChuyenVienDonVi/SelectChuyenVienDonVi';
 import rules from '@/utils/rules';
-import { includes } from '@/utils/utils';
-import { Button, Card, Form, Select } from 'antd';
+import { Button, Card, Form } from 'antd';
 import { useModel } from 'umi';
-import SelectChuyenVienDonVi from '@/pages/Core/ChuyenVienDonVi/SelectChuyenVienDonVi';
 
 const FormDieuPhoi = (props: { onCancel: any }) => {
   const [form] = Form.useForm();
   const { loading, recordDonThaoTac, dieuPhoiDonModel, idDonViSelect } =
     useModel('dvmc.dichvumotcuav2');
-  const { danhSachChuyenVienXuLy } = useModel('phanquyen');
-  const { danhSach:danhSachChuyenVien } = useModel('tochucnhansu.nhansudonvi');
+  const { danhSach: danhSachChuyenVien } = useModel('tochucnhansu.nhansudonvi');
+
   return (
     <Card title="Điều phối đơn">
       <Form

@@ -17,7 +17,7 @@ const SelectNhanSuDonVi = (props: {
   const { danhSach, getAllModel } = useModel('tochucnhansu.nhansudonvi');
 
   useEffect(() => {
-    if (idDonVi) getAllModel(undefined,undefined,{donViId:idDonVi});
+    if (idDonVi && loadData) getAllModel(undefined, undefined, { donViId: idDonVi });
   }, [idDonVi]);
 
   return (
