@@ -5,10 +5,12 @@ import SelectQuocTich from '@/pages/Core/QuocTich/SelectQuocTich';
 import SelectTonGiao from '@/pages/Core/TonGiao/SelectTonGiao';
 import { getTinhThanhPho } from '@/services/Core/DonViHanhChinh';
 import { type DonViHanhChinh } from '@/services/Core/DonViHanhChinh/typing';
+import { exportLyLich } from '@/services/SinhVien';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import { EGioiTinh } from '@/services/constant';
 import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
+import { resetFieldsForm } from '@/utils/utils';
 import { PlusOutlined, PrinterOutlined, SaveOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -22,10 +24,11 @@ import {
   Row,
   Select,
 } from 'antd';
+import fileDownload from 'js-file-download';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectDonViHanhChinh from '../../Core/DonViHanhChinh/SelectDonViHanhChinh';
-import './scroll_card.less';
+import SelectKhoaNganh from '@/pages/DaoTao/KhoaNganh/Select';
 
 const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) => {
   const [form] = Form.useForm();
@@ -34,11 +37,11 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
     edit,
     postModel,
     putModel,
-    getModel,
     formSubmiting,
     setRecord,
     setEdit,
     setFormSubmiting,
+    visibleForm,
   } = useModel('sinhvien.sinhvien');
   const { afterAddNew } = props;
   const [listTinh, setListTinh] = useState<DonViHanhChinh.IRecord[]>();
@@ -50,9 +53,9 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
   }, []);
 
   useEffect(() => {
-    if (record?._id) form.setFieldsValue(record);
-    else form.resetFields();
-  }, [record?._id]);
+    if (!visibleForm) resetFieldsForm(form);
+    else if (record?._id) form.setFieldsValue(record);
+  }, [record?._id, visibleForm]);
 
   const onFinish = async (values: SinhVien.IRecord) => {
     setFormSubmiting(true);
@@ -61,11 +64,11 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
     setFormSubmiting(false);
 
     if (edit) {
-      putModel(record?._id ?? '', values, getModel, undefined, false)
+      putModel(record?._id ?? '', values, undefined, undefined, false)
         .then()
         .catch((er) => console.log(er));
     } else
-      postModel(values, getModel, false)
+      postModel(values, undefined, false)
         .then((rec) => {
           setRecord(rec);
           setEdit(true);
@@ -74,9 +77,20 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
         .catch((er) => console.log(er));
   };
 
+  const onExport = () => {
+    if (record?.ssoId) {
+      if (formSubmiting) return;
+      setFormSubmiting(true);
+
+      exportLyLich(record?.ssoId)
+        .then((res) => fileDownload(res.data, `Hồ sơ ${record.ten}.pdf`))
+        .finally(() => setFormSubmiting(false));
+    }
+  };
+
   return (
     <Form onFinish={onFinish} form={form} layout="vertical">
-      {/* <div className="button-section">
+      <div className="button-section">
         <Button
           loading={formSubmiting}
           htmlType="submit"
@@ -86,8 +100,12 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
           {!edit ? <>Thêm mới và Tiếp tục</> : <>Lưu lại</>}
         </Button>
 
-        {edit ? <Button icon={<PrinterOutlined />}>In hồ sơ</Button> : null}
-      </div> */}
+        {edit ? (
+          <Button icon={<PrinterOutlined />} onClick={onExport} loading={formSubmiting}>
+            In hồ sơ
+          </Button>
+        ) : null}
+      </div>
 
       <Divider orientation="center">Thông tin chung</Divider>
       <Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
@@ -99,13 +117,18 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
 
         <Col span={24} md={18}>
           <Row gutter={[12, 0]}>
-            <Col span={24}>
+            <Col span={24} md={16}>
               <Form.Item
                 name="ma"
                 label="Mã sinh viên"
                 rules={[...rules.required, ...rules.text, ...rules.length(20)]}
               >
                 <Input placeholder="Mã sinh viên" disabled={edit} />
+              </Form.Item>
+            </Col>
+            <Col span={24} md={8}>
+              <Form.Item name="khoaNganhId" label="Khóa ngành" rules={[...rules.required]}>
+                <SelectKhoaNganh disabled={edit} />
               </Form.Item>
             </Col>
           </Row>
@@ -146,7 +169,7 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
               </Form.Item>
             </Col>
 
-            <Col span={24} md={8}>
+            <Col span={12} md={8}>
               <Form.Item
                 name="cccd"
                 label="Số CMTND/CCCD/Hộ chiếu"
@@ -155,7 +178,7 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
                 <Input placeholder="Nhập số CMTND/CCCD/Hộ chiếu" />
               </Form.Item>
             </Col>
-            <Col span={24} md={8}>
+            <Col span={12} md={8}>
               <Form.Item
                 name="noiCapCccd"
                 label="Nơi cấp"
@@ -164,7 +187,7 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
                 <Input placeholder="Nhập nơi cấp" />
               </Form.Item>
             </Col>
-            <Col span={24} md={8}>
+            <Col span={12} md={8}>
               <Form.Item name="ngayCapCccd" label="Ngày cấp" rules={[...rules.truocHomNay]}>
                 <MyDatePicker placeholder="Chọn ngày cấp" allowClear />
               </Form.Item>
@@ -196,12 +219,16 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
           </Divider>
           <Row gutter={[12, 0]}>
             <Col span={12} md={12}>
-              <Form.Item
-                name="loaiNoiSinh"
-                label="Loại nơi sinh"
-                rules={[...rules.text, ...rules.length(250)]}
-              >
-                <Input placeholder="Nhập loại nơi sinh" />
+              <Form.Item name="loaiNoiSinh" label="Loại nơi sinh">
+                <Select
+                  placeholder="Chọn loại nơi sinh"
+                  allowClear
+                  options={['Trong nước', 'Nước ngoài'].map((item) => ({
+                    key: item,
+                    value: item,
+                    label: item,
+                  }))}
+                />
               </Form.Item>
             </Col>
             <Col span={12} md={12}>
@@ -287,7 +314,11 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void }) =
               </Form.Item>
             </Col>
             <Col span={24} md={8}>
-              <Form.Item name="chiNhanhNganHang" label="Chi nhánh ngân hàng">
+              <Form.Item
+                name="chiNhanhNganHang"
+                label="Chi nhánh ngân hàng"
+                rules={[...rules.text, ...rules.length(250)]}
+              >
                 <Input placeholder="Nhập chi nhánh" />
               </Form.Item>
             </Col>

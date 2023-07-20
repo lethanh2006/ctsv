@@ -2,17 +2,17 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import ModalSinhVien from './component/ModalSinhVien';
+import PreviewHoSo from './component/PreviewHoSo';
+import SelectKhoaNganh from '../DaoTao/KhoaNganh/Select';
 
 const ViewSinhVien = () => {
-  const { getModel, page, limit, deleteModel, handleEdit } = useModel('sinhvien.sinhvien');
+  const { page, limit, handleView, isView } = useModel('sinhvien.sinhvien');
 
   const onCell = (rec: SinhVien.IRecord) => ({
-    onClick: () => handleEdit(rec),
+    onClick: () => handleView(rec),
     style: { cursor: 'pointer' },
   });
 
@@ -66,6 +66,16 @@ const ViewSinhVien = () => {
       filterType: 'string',
       onCell,
     },
+    {
+      title: 'Khóa ngành',
+      dataIndex: 'khoaNganhId',
+      width: 120,
+      filterType: 'customselect',
+      filterCustomSelect: <SelectKhoaNganh multiple />,
+      render: (val, rec) =>
+        `${rec.khoaNganh?.khoaSinhVien?.ten ?? ''} - ${rec.khoaNganh?.nganh?.ma ?? ''}`,
+      onCell,
+    },
     // {
     //   title: 'Thao tác',
     //   align: 'center',
@@ -95,11 +105,11 @@ const ViewSinhVien = () => {
       columns={columns}
       dependencies={[page, limit]}
       modelName="sinhvien.sinhvien"
-      title="Hồ sơ sinh viên"
-      Form={ModalSinhVien}
-      formType="Modal"
+      title="Danh sách sinh viên"
+      Form={isView ? PreviewHoSo : ModalSinhVien}
+      formProps={{ hasEdit: true }}
       widthDrawer={1100}
-      buttons={{ create: false }}
+      buttons={{ import: true }}
     />
   );
 };
