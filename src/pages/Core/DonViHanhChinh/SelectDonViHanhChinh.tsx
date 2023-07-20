@@ -1,4 +1,4 @@
-import { FormItem } from '@/components/FormItem';
+import { FormItem } from './FormItem';
 import { getPhuongXa, getQuanHuyen } from '@/services/Core/DonViHanhChinh';
 import { type DonViHanhChinh } from '@/services/Core/DonViHanhChinh/typing';
 import rules from '@/utils/rules';
