@@ -1,6 +1,7 @@
-import Upload from '@/components/Upload/UploadMultiFile';
+
 import { Button, Card, Form } from 'antd';
 import XLSX from 'xlsx';
+import UploadFile from "@/components/Upload/UploadFile";
 
 const ImportExcel = (props: { onCancel: any; title?: string; handleData: any }) => {
   const [form] = Form.useForm();
@@ -28,7 +29,7 @@ const ImportExcel = (props: { onCancel: any; title?: string; handleData: any }) 
         form={form}
       >
         <Form.Item label="File excel" name="file">
-          <Upload
+          <UploadFile
             otherProps={{
               maxCount: 1,
               accept: '.xls, .xlsx, .ods',

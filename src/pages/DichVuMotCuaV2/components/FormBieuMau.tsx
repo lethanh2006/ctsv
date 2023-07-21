@@ -1,4 +1,4 @@
-import Upload from '@/components/Upload/UploadMultiFile';
+
 import SelectDanToc from '@/pages/Core/DanToc/SelectDanToc';
 import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh';
 import HocPhanCoDiem from '@/pages/DichVuMotCuaV2/HocPhanCoDiem';
@@ -36,6 +36,7 @@ import Table from './TableElement';
 import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import SelectTonGiao from '@/pages/Core/TonGiao/SelectTonGiao';
+import UploadFile from "@/components/Upload/UploadFile";
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -243,10 +244,9 @@ const FormBieuMau = (props: {
         );
 
         element = (
-          <Upload
+          <UploadFile
             otherProps={{
               maxCount: 1,
-              // @ts-ignore
               accept: item?.fileType?.map((type) => accessFileUpload?.[type])?.join(','),
               multiple: false,
               showUploadList: { showDownloadIcon: false },
@@ -265,7 +265,7 @@ const FormBieuMau = (props: {
         );
 
         element = (
-          <Upload
+          <UploadFile
             otherProps={{
               maxCount: 5,
               // @ts-ignore
@@ -273,7 +273,6 @@ const FormBieuMau = (props: {
               multiple: true,
               showUploadList: { showDownloadIcon: false },
             }}
-            limit={5}
           />
         );
         break;
