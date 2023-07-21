@@ -104,11 +104,11 @@
   },
 
   /////////////////////////////
-  // DICH VU MOT CUA
+  // DICH VU HANH CHINH
   {
-    name: 'DichVuMotCua',
+    name: 'DichVuHanhChinh',
     icon: 'AuditOutlined',
-    path: '/dich-vu-mot-cua',
+    path: '/dich-vu-hanh-chinh',
     // access: 'nhanVien',
     routes: [
       // {
