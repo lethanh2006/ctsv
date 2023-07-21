@@ -5,7 +5,7 @@ import { useModel } from 'umi';
 
 const FormDieuPhoi = (props: { onCancel: any }) => {
   const [form] = Form.useForm();
-  const { loading, recordDonThaoTac, dieuPhoiDonModel, idDonViSelect } =
+  const { loading, recordDonThaoTac, dieuPhoiDonModel,adminDieuPhoiDonModel, idDonViSelect } =
     useModel('dvmc.dichvumotcuav2');
   const { danhSach: danhSachChuyenVien } = useModel('tochucnhansu.nhansudonvi');
 
@@ -18,7 +18,7 @@ const FormDieuPhoi = (props: { onCancel: any }) => {
           const chuyenVien = danhSachChuyenVien?.find(
             (item) => item?.thongTinNhanSu?.ssoId === values?.idChuyenVien,
           );
-          dieuPhoiDonModel({
+          adminDieuPhoiDonModel({
             idDonThaoTac: recordDonThaoTac._id,
             data: {
               nguoiDuocGiao: {

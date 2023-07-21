@@ -1,4 +1,3 @@
-
 import type { IColumn } from '@/components/Table/typing';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
@@ -40,17 +39,11 @@ import TableBase from '@/components/Table';
 const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
   const {
     chuyenVienDieuPhoiGetDonModel,
-    chuyenVienDieuPhoiGetThaoTacModel,
-    chuyenVienXyLyGetThaoTacModel,
     adminGetTrangThaiDonModel,
-    chuyenVienXuLyGetDonModel,
-    getDonThaoTacChuyenVienDieuPhoiModel,
     getDonThaoTacAdminModel,
-    getDonThaoTacChuyenVienXuLyModel,
     page,
     limit,
     condition,
-    loading,
     trangThaiQuanLyDon,
     trangThaiQuanLyDonThaoTac,
     danhSach,
@@ -60,7 +53,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
     setVisibleFormDon,
     recordDon,
     setRecordDonThaoTac,
-    setDanhSachDonThaoTac,
     setRecordDon,
     exportDonModel,
     setTotal,
@@ -70,19 +62,10 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
     adminDeleteDonModel,
     typeTraKetQua,
     updateTrangThaiNhanKetQuaModel,
-    chuyenVienDieuPhoiGetDonVpsModel,
-    chuyenVienXuLyGetDonVpsModel,
-    chuyenVienTiepNhanGetTrangThaiDonModel,chuyenVienDieuPhoiGetTrangThaiDonModel
   } = useModel('dvmc.dichvumotcuav2');
 
   const { getThongTinSinhVienBySsoIdModel, record: infoNguoiTaoDon } =
     useModel('sinhvien.sinhvien');
-  // const {
-  //   setIdDichVu,
-  //   chuyenVienDieuPhoiGetTongSoDonDVMCModel,
-  //   chuyenVienXuLyGetTongSoDonDVMCModel,
-  // } = useModel('dashboard');
-  // const { setVisibleForm, visibleForm } = useModel('phanhoi');
   const [type, setType] = useState<'handle' | 'view' | 'create' | 'edit'>('handle');
   const { pathname } = window.location;
 
@@ -109,36 +92,16 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
 
   const handleDon = (recordDonColumn: DichVuMotCuaV2.Don) => {
     getThongTinSinhVienBySsoIdModel(recordDonColumn?.thongTinNguoiTao?.ssoId);
-    if (pathname?.includes('chuyenvientiepnhan')) {
-      setRecordDon(recordDonColumn);
-      chuyenVienTiepNhanGetTrangThaiDonModel(recordDonColumn?._id);
-      getDonThaoTacChuyenVienXuLyModel(undefined, { idDon: recordDonColumn?._id}, 1, 100);
-    } else {
-      if (pathname?.includes('quanlydondieuphoi')) {
-        setRecordDon(recordDonColumn);
-        chuyenVienTiepNhanGetTrangThaiDonModel(recordDonColumn?._id);
-        getDonThaoTacChuyenVienDieuPhoiModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
-      } else {
-        setRecordDon(recordDonColumn);
-        adminGetTrangThaiDonModel(recordDonColumn?._id);
-        getDonThaoTacAdminModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
-      }
-    }
+    setRecordDon(recordDonColumn);
+    adminGetTrangThaiDonModel(recordDonColumn?._id);
+    getDonThaoTacAdminModel(undefined, { idDon: recordDonColumn?._id }, 1, 100);
 
     setVisibleFormDon(true);
     setType('view');
   };
 
   const getData = () => {
-    if (pathname?.includes('chuyenvientiepnhan')) {
-      chuyenVienXyLyGetThaoTacModel();
-    } else {
-      if (pathname?.includes('quanlydondieuphoi')) {
-        chuyenVienDieuPhoiGetThaoTacModel();
-      } else {
-        chuyenVienDieuPhoiGetDonModel('DVMC');
-      }
-    }
+    chuyenVienDieuPhoiGetDonModel('DVMC');
   };
 
   const onCell = (recordDonColumn: DichVuMotCuaV2.Don) => ({
@@ -172,7 +135,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       align: 'center',
       onCell,
       filterType: 'string',
-      // notRegex: true,
     },
     {
       title: 'Mã sinh viên',
@@ -181,7 +143,6 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       align: 'center',
       onCell,
       filterType: 'string',
-      // notRegex: true,
     },
     {
       title: 'Địa chỉ nhận đơn',
@@ -401,7 +362,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
                         }}
                         title="Bạn có chắc chắn xóa đơn này?"
                       >
-                        <Button type="link" danger  icon={<DeleteOutlined />} shape="circle" />
+                        <Button type="link" danger icon={<DeleteOutlined />} shape="circle" />
                       </Popconfirm>
                     </Tooltip>
                   </>
@@ -465,14 +426,16 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       render: (recordTemp: DichVuMotCuaV2.Don) => {
         let isNhanTaiTruong = true;
         const blockNhanDon = recordTemp?.idDon?.thongTinDichVu?.cauHinhBieuMau?.find(
-          (item) => item.label === 'Phương thức nhận đơn',
+          (item: any) => item.label === 'Phương thức nhận đơn',
         );
         let diaChiNhanDon = '';
         if (blockNhanDon?.value === 'Nhận tại trường') diaChiNhanDon = 'Nhận tại trường';
         else {
           const valueChuyenPhatNhanh = blockNhanDon?.dataSource
-            ?.find((item) => item.label === 'Chuyển phát nhanh')
-            ?.relatedElement?.find((item) => item.type === 'DON_VI_HANH_CHINH')?.value;
+            ?.find((item: { label: string }) => item.label === 'Chuyển phát nhanh')
+            ?.relatedElement?.find(
+              (item: { type: string }) => item.type === 'DON_VI_HANH_CHINH',
+            )?.value;
           diaChiNhanDon = [
             valueChuyenPhatNhanh?.soNhaTenDuong,
             valueChuyenPhatNhanh?.tenPhuongXa,
@@ -510,8 +473,9 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       render: (val, recordRender) => {
         return (
           <div>
-            {recordRender?.idDon?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find((item) => item._id === val)
-              ?.ten ?? ''}
+            {recordRender?.idDon?.thongTinDichVu?.quyTrinh?.danhSachBuoc?.find(
+              (item: { _id: any; }) => item._id === val,
+            )?.ten ?? ''}
           </div>
         );
       },
@@ -706,7 +670,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       dataState="danhSachDon"
       scroll={{ x: 1350 }}
       getData={getData}
-      buttons={{create:false}}
+      buttons={{ create: false }}
       hideCard
     >
       {trangThaiQuanLyDon === 'PROCESSING' && props?.type !== 'Thao tác' && (

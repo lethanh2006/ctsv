@@ -38,6 +38,7 @@ import {
   chuyenVienXuLyGetThaoTac,
   getDonThaoTacAdmin,
   adminDuyetDon,
+  adminDieuPhoiDon,
 } from '@/services/DVMC/DichVuMotCuaV2/dichvumotcuav2';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import type { MaDichVuVps } from '@/utils/constants';
@@ -438,13 +439,13 @@ export default () => {
           typeTraKetQua !== 'CHUA_TRA_KQ' && typeTraKetQua !== 'DA_TRA_KQ'
             ? {
                 ...condition,
-                loaiDichVu: loaiDichVuParam || loaiDichVu,
+                // loaiDichVu: loaiDichVuParam || loaiDichVu,
                 trangThai: trangThaiQuanLyDon,
                 'thongTinDichVu._id': record?._id,
               }
             : {
                 ...condition,
-                loaiDichVu: loaiDichVuParam || loaiDichVu,
+                // loaiDichVu: loaiDichVuParam || loaiDichVu,
                 trangThai: 'OK',
                 'thongTinDichVu._id': record?._id,
                 traKetQua: true,
@@ -596,11 +597,9 @@ export default () => {
     setVisibleFormBieuMau(false);
     if (loaiDichVu === 'VAN_PHONG_SO') setVisibleFormDon(false);
     getDonThaoTacAdminModel(undefined, { idDon: recordDon?._id }, 1, 100);
-    if (loaiDichVu === 'VAN_PHONG_SO') {
-      chuyenVienDieuPhoiGetDonVpsModel();
-    } else {
-      adminGetDonModel();
-    }
+
+    adminGetDonModel();
+
     adminGetTrangThaiDonModel(recordDon?._id);
   };
 
@@ -627,7 +626,31 @@ export default () => {
     } as any);
     setDanhSach(response?.data?.data ?? []);
   };
-
+  const adminDieuPhoiDonModel = async (payload: {
+    idDonThaoTac: string;
+    data: {
+      nguoiDuocGiao: {
+        _id: string;
+        hoTen: string;
+        gioiTinh: string;
+        ngaySinh: string;
+        maDinhDanh: string;
+        ssoId: string;
+      };
+    };
+  }) => {
+    try {
+      setLoading(true);
+      await adminDieuPhoiDon(payload);
+      message.success('Điều phối thành công');
+      setLoading(false);
+      setVisibleFormBieuMau(false);
+      getDonThaoTacAdminModel(undefined, { idDon: recordDon?._id }, 1, 100);
+      adminGetTrangThaiDonModel(recordDon?._id);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
   const dieuPhoiDonModel = async (payload: {
     idDonThaoTac: string;
     data: {
@@ -887,5 +910,6 @@ export default () => {
     setIdDonViSelect,
     getDonThaoTacAdminModel,
     adminDuyetDonModel,
+    adminDieuPhoiDonModel
   };
 };

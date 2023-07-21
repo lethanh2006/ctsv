@@ -1,4 +1,4 @@
-import Upload from '@/components/Upload/UploadMultiFile';
+
 import SelectDanToc from '@/pages/Core/DanToc/SelectDanToc';
 import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinh';
 import HocPhanCoDiem from '@/pages/DichVuMotCuaV2/HocPhanCoDiem';
@@ -36,6 +36,7 @@ import Table from './TableElement';
 import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import SelectTonGiao from '@/pages/Core/TonGiao/SelectTonGiao';
+import UploadFile from "@/components/Upload/UploadFile";
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -74,18 +75,10 @@ const FormBieuMau = (props: {
     recordDon,
     sinhVienPutDonModel,
     exportDonModel,
-    idDonViSelect,
   } = useModel('dvmc.dichvumotcuav2');
-  // const { danhSach: danhSachKyHoc } = useModel('kyhoc');
-  // const { danhSach: danhSachNamHoc } = useModel('namhoc');
-  // const { danhSach: danhSachLopTinChi, danhSachMonHoc } = useModel('loptinchi');
-  // const { danhSachDanToc, danhSachTonGiao, getAllTonGiao, getAllDanToc } =
-  //   useModel('dantoctongiao');
-
   const [recordEdit, setRecordEdit] = useState<{ duLieuBieuMau: DichVuMotCuaV2.CauHinhBieuMau[] }>({
     duLieuBieuMau: [],
   });
-
   const [valuesForm, setValuesForm] = useState<any>({});
   const [visibleFormDieuPhoi, setVisibleFormDieuPhoi] = useState<boolean>(false);
   const [visibleFormXuLy, setVisibleFormXuLy] = useState<boolean>(false);
@@ -93,6 +86,8 @@ const FormBieuMau = (props: {
 
   const { pathname } = window.location;
   const arrPathName = pathname?.split('/') ?? [];
+
+
   const buildValuesForm = (
     valuesInit: any,
     name: string,
@@ -190,22 +185,6 @@ const FormBieuMau = (props: {
     );
     return { valuesFinal, duLieuBieuMau };
   };
-
-  useEffect(() => {
-    const valuesTemp = {};
-
-    buildValuesForm(
-      valuesTemp,
-      'cauHinhBieuMau',
-      props?.record?.thongTinDichVu?.cauHinhBieuMau ?? [],
-    );
-    setValuesForm(valuesTemp);
-
-    return () => {
-      if (!props?.handleAdd) setDanhSachDataTable({});
-    };
-  }, []);
-
   const onClickMenuExport = (
     idDon: string,
     item: { key: 'word' | 'pdf' },
@@ -265,10 +244,9 @@ const FormBieuMau = (props: {
         );
 
         element = (
-          <Upload
+          <UploadFile
             otherProps={{
               maxCount: 1,
-              // @ts-ignore
               accept: item?.fileType?.map((type) => accessFileUpload?.[type])?.join(','),
               multiple: false,
               showUploadList: { showDownloadIcon: false },
@@ -287,7 +265,7 @@ const FormBieuMau = (props: {
         );
 
         element = (
-          <Upload
+          <UploadFile
             otherProps={{
               maxCount: 5,
               // @ts-ignore
@@ -295,7 +273,6 @@ const FormBieuMau = (props: {
               multiple: true,
               showUploadList: { showDownloadIcon: false },
             }}
-            limit={5}
           />
         );
         break;
@@ -379,15 +356,15 @@ const FormBieuMau = (props: {
       case 'TABLE': {
         ruleElement = item?.isRequired
           ? [
-              {
-                validator: (__: { field: string | number }, value: any, callback: any) => {
-                  if (!danhSachDataTable || !danhSachDataTable?.[__?.field]?.length) callback('');
-                  callback();
-                },
-                message: 'Bắt buộc',
-                required: true,
+            {
+              validator: (__: { field: string | number }, value: any, callback: any) => {
+                if (!danhSachDataTable || !danhSachDataTable?.[__?.field]?.length) callback('');
+                callback();
               },
-            ]
+              message: 'Bắt buộc',
+              required: true,
+            },
+          ]
           : [];
 
         const data = item?.value?.map((recordRow: DichVuMotCuaV2.CauHinhBieuMau[]) => {
@@ -595,8 +572,8 @@ const FormBieuMau = (props: {
         {formItemElement}
         {item?.dataSource?.map((data, indexDataSource) => {
           return valuesForm?.[`${name}.${item?.label}`] === data?.label ||
-            (valuesForm?.[`${name}.${item?.label}`]?.length &&
-              valuesForm?.[`${name}.${item?.label}`]?.includes(data?.label)) ? (
+          (valuesForm?.[`${name}.${item?.label}`]?.length &&
+            valuesForm?.[`${name}.${item?.label}`]?.includes(data?.label)) ? (
             data?.relatedElement?.map((ele, indexEle) => {
               return buildForm(
                 `${name}.dataSource[${indexDataSource}].relatedElement[${indexEle}]`,
@@ -634,6 +611,25 @@ const FormBieuMau = (props: {
       }
     }
   };
+
+  //==============EFFECT======================
+
+  useEffect(() => {
+    const valuesTemp = {};
+
+    buildValuesForm(
+      valuesTemp,
+      'cauHinhBieuMau',
+      props?.record?.thongTinDichVu?.cauHinhBieuMau ?? [],
+    );
+    setValuesForm(valuesTemp);
+
+    return () => {
+      if (!props?.handleAdd) setDanhSachDataTable({});
+    };
+  }, []);
+
+
 
   return (
     <Card title={props?.title} bodyStyle={{ padding: window.screen.width > 600 ? '30px' : 12 }}>

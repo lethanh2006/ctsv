@@ -1,5 +1,4 @@
 import TinyEditor from '@/components/TinyEditor';
-import Upload from '@/components/Upload/UploadMultiFile';
 import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
 import { uploadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
@@ -8,6 +7,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import UploadFile from "@/components/Upload/UploadFile";
 
 const FormThongTinChung = () => {
   const [form] = Form.useForm();
@@ -156,7 +156,7 @@ const FormThongTinChung = () => {
                   : { fileList: [] }
               }
             >
-              <Upload
+              <UploadFile
                 otherProps={{
                   maxCount: 1,
                   accept: '.docx',
@@ -180,7 +180,7 @@ const FormThongTinChung = () => {
                   : { fileList: [] }
               }
             >
-              <Upload
+              <UploadFile
                 otherProps={{
                   maxCount: 1,
                   accept: '.docx',

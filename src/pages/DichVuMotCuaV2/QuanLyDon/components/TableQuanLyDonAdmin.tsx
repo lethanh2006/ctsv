@@ -4,7 +4,6 @@ import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
-import type { IColumn } from '@/utils/interfaces';
 import { includes } from '@/utils/utils';
 import {
   CheckOutlined,
@@ -20,6 +19,7 @@ import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
 import TableBase from '@/components/Table';
+import {IColumn} from "@/components/Table/typing";
 
 const TableQuanLyDonAdmin = (props: {
   hideFilter?: boolean;
@@ -91,7 +91,6 @@ const TableQuanLyDonAdmin = (props: {
       dataIndex: ['thongTinDichVu', 'ten'],
       align: 'center',
       width: 200,
-      search: 'search',
       onCell,
     },
     {
@@ -99,7 +98,6 @@ const TableQuanLyDonAdmin = (props: {
       dataIndex: ['thongTinNguoiTao', 'hoTen'],
       width: 200,
       align: 'center',
-      search: 'search',
       onCell,
     },
     {
@@ -107,7 +105,6 @@ const TableQuanLyDonAdmin = (props: {
       dataIndex: ['thongTinNguoiTao', 'maSinhVien'],
       width: 150,
       align: 'center',
-      search: 'search',
       onCell,
     },
     {
@@ -132,8 +129,6 @@ const TableQuanLyDonAdmin = (props: {
       dataIndex: 'trangThai',
       align: 'center',
       width: 120,
-      // search: 'filterString',
-      notRegex: true,
       render: (val: 'OK' | 'NOT_OK' | 'PROCESSING') => (
         <Tag
           color={

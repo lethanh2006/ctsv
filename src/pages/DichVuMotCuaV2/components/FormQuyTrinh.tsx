@@ -11,7 +11,7 @@ import {
 import { Button, Card, Modal, Spin, Timeline } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import {useAccess, useModel} from 'umi';
+import { useModel} from 'umi';
 import FormBieuMau from './FormBieuMau';
 
 const IconTrangThai = {
@@ -74,8 +74,7 @@ const FormQuyTrinh = (props: {
     setVisibleFormBieuMau,
     danhSachDonThaoTac,
     setDanhSachDonThaoTac,
-    record,
-    recordDon,setIdDonViSelect
+    record, setIdDonViSelect
   } = useModel('dvmc.dichvumotcuav2');
   const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
@@ -85,8 +84,6 @@ const FormQuyTrinh = (props: {
   const lastStep = props?.record?.danhSachBuoc?.[props?.record?.danhSachBuoc?.length - 1 ?? 0];
   const [type, setType] = useState<'view' | 'handle' | 'create' | 'edit'>('handle');
   const [trangThaiDon, setTrangThaiDon] = useState<string>();
-  const access=useAccess();
-  console.log('reddddd',recordDonThaoTacModel)
   useEffect(() => {
     if (props.idDon) {
       // adminGetTrangThaiDonModel(props.idDon);

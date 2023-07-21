@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
-import type { IColumn } from '@/utils/interfaces';
 import { Button, Divider, Dropdown, Menu, Modal, Select, Tabs, Tooltip } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import TableBase from "@/components/Table";
+import {IColumn} from "@/components/Table/typing";
 
 const TableQuanLyDon = () => {
   const {
@@ -48,7 +48,7 @@ const TableQuanLyDon = () => {
   const columns: IColumn<DichVuMotCuaV2.DonThaoTac>[] = [
     {
       title: 'Dịch vụ',
-      align: 'center',
+      width: 120,
       dataIndex: ['idDon', 'thongTinDichVu', 'ten'],
     },
 
@@ -73,7 +73,6 @@ const TableQuanLyDon = () => {
       dataIndex: ['nguoiTao', 'hoTen'],
       width: 150,
       align: 'center',
-      search: 'search',
     },
     {
       title: 'Trạng thái thanh toán',
@@ -87,7 +86,6 @@ const TableQuanLyDon = () => {
       dataIndex: 'tenDonVi',
       width: 180,
       align: 'center',
-      search: 'search',
     },
     {
       title: 'Bước',
@@ -115,7 +113,6 @@ const TableQuanLyDon = () => {
       dataIndex: ['nguoiDuocGiao', 'hoTen'],
       width: 150,
       align: 'center',
-      search: 'search',
     },
 
     {
@@ -198,7 +195,6 @@ const TableQuanLyDon = () => {
       modelName="dichvumotcuav2"
       dataState="danhSachDonThaoTac"
       scroll={{ x: 1650 }}
-      loading={loading}
       buttons={{create:false}}
       getData={() => {
         if (pathname?.includes('quanlydondieuphoi'))
