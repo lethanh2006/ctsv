@@ -194,6 +194,23 @@ export async function dieuPhoiDon(payload: {
     payload.data,
   );
 }
+export async function adminDieuPhoiDon(payload: {
+  idDonThaoTac: string;
+  data: {
+    nguoiDuocGiao: {
+      _id: string;
+      hoTen: string;
+      gioiTinh: string;
+      ngaySinh: string;
+      maDinhDanh: string;
+    };
+  };
+}) {
+  return axios.post(
+    `${ip3}/don-dvmc/admin/don-thao-tac/${payload.idDonThaoTac}/dieu-phoi`,
+    payload.data,
+  );
+}
 
 export async function sinhVienGetTrangThaiDon(idDon: string, payload: { condition: any }) {
   return axios.get(`${ip3}/don-dvmc/sinh-vien/me/don-dvmc/${idDon}/buoc`, { params: payload });

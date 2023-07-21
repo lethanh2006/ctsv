@@ -25,8 +25,10 @@ const FormXuLyDon = (props: {
     setLoading,
     chuyenVienDieuPhoiDuyetDonModel,
     chuyenVienXuLyDuyetDonModel,
+    adminDuyetDonModel,
     traKetQuaModel,
     adminPutDonModel,
+    adminDieuPhoiDonModel
   } = useModel('dvmc.dichvumotcuav2');
   const { pathname } = window.location;
   const arrPathName = pathname?.split('/') ?? [];
@@ -41,7 +43,7 @@ const FormXuLyDon = (props: {
             checkFileSize(values?.ketQuaDinhKem?.fileList ?? []);
           if (!checkSize) return;
           setLoading(true);
-          if (props?.recordEdit) await adminPutDonModel(recordDon?._id ?? '', props?.recordEdit);
+          if (props?.recordEdit&&props?.recordEdit?.duLieuBieuMau?.length>0) await adminPutDonModel(recordDon?._id ?? '', props?.recordEdit);
           if (props.type !== 'edit-result') {
             const urlFileDinhKem = await uploadMultiFile(values?.urlFileDinhKem?.fileList);
             const payload = {
@@ -54,10 +56,11 @@ const FormXuLyDon = (props: {
                 },
               },
             };
-            if (arrPathName?.includes('quanlydondieuphoi')) {
-              chuyenVienDieuPhoiDuyetDonModel(payload);
-            }else
-              chuyenVienXuLyDuyetDonModel(payload);
+            // if (arrPathName?.includes('quanlydondieuphoi')) {
+            //   chuyenVienDieuPhoiDuyetDonModel(payload);
+            // }else
+            //   chuyenVienXuLyDuyetDonModel(payload);
+            adminDuyetDonModel(payload);
           }
           if (
             props?.traKetQua === true ||

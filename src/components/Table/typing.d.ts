@@ -1,36 +1,37 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import type { ColumnType as ICol } from 'rc-table/lib/interface';
 import { type EOperatorType } from './constant';
+import {IColumn} from "@/utils/interfaces";
 
-export interface IColumn<T> extends Omit<ICol<T>, 'dataIndex' | 'width' | 'children'> {
-  /** Ẩn cột khi hiển thị trên table, nhưng vẫn có trong filter, import, export */
-  hide?: boolean;
-
-  children?: IColumn<T>[];
-
-  /** Cho phép sắp xếp hay ko, thường chỉ nên cho sắp xêp các trường: Mã, tên (ngắn), số lượng, ngày */
-  sortable?: boolean;
-
-  /** Data để filter với trường họp chọn filterType là 'select' */
-  filterData?: string[] | TDataOption[];
-
-  /** Các loại filter, đối với
-   * - 'customselect' thì phải có 'filterCustomSelect'
-   * - 'select' thì phải có 'filterData' */
-  filterType?: 'string' | 'number' | 'date' | 'datetime' | 'select' | 'customselect';
-
-  /** JSX Element trả về 1 mảng value, thường là id */
-  filterCustomSelect?: JSX.Element;
-
-  /** Bắt buộc phải có để dùng custom Filter hoặc Import dữ liệu */
-  dataIndex?: keyof T | 'index' | string[];
-
-  /** Bắt buộc phải có
-   * Lưu ý: độ rộng phải fit tương đối với nội dung của column, ko để quá rộng, hẹp
-   * Phải check cả ở mobile view
-   */
-  width: number;
-}
+// export interface IColumn<T> extends Omit<ICol<T>, 'dataIndex' | 'width' | 'children'> {
+//   /** Ẩn cột khi hiển thị trên table, nhưng vẫn có trong filter, import, export */
+//   hide?: boolean;
+//
+//   children?: IColumn<T>[];
+//
+//   /** Cho phép sắp xếp hay ko, thường chỉ nên cho sắp xêp các trường: Mã, tên (ngắn), số lượng, ngày */
+//   sortable?: boolean;
+//
+//   /** Data để filter với trường họp chọn filterType là 'select' */
+//   filterData?: string[] | TDataOption[];
+//
+//   /** Các loại filter, đối với
+//    * - 'customselect' thì phải có 'filterCustomSelect'
+//    * - 'select' thì phải có 'filterData' */
+//   filterType?: 'string' | 'number' | 'date' | 'datetime' | 'select' | 'customselect';
+//
+//   /** JSX Element trả về 1 mảng value, thường là id */
+//   filterCustomSelect?: JSX.Element;
+//
+//   /** Bắt buộc phải có để dùng custom Filter hoặc Import dữ liệu */
+//   dataIndex?: keyof T | 'index' | string[];
+//
+//   /** Bắt buộc phải có
+//    * Lưu ý: độ rộng phải fit tương đối với nội dung của column, ko để quá rộng, hẹp
+//    * Phải check cả ở mobile view
+//    */
+//   width: number;
+// }
 
 export type TDataOption = {
   label: string;
