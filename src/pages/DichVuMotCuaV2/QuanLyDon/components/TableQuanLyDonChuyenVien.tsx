@@ -672,6 +672,38 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       getData={getData}
       buttons={{ create: false }}
       hideCard
+      otherButtons={[
+        <>
+          {props.hideFilter !== true && (
+            <Select
+              allowClear
+              placeholder="Lọc theo loại dịch vụ"
+              onChange={(val: string | undefined) => {
+                // setIdDichVu(val);
+                setRecord(
+                  val
+                    ? danhSach?.find((item) => item._id === val)
+                    : ({
+                      _id: {
+                        $in: danhSach?.map((item) => item._id),
+                      },
+                    } as any),
+                );
+              }}
+              showSearch
+              filterOption={(value, option) => includes(option?.props.children, value)}
+              value={typeof record?._id === 'string' ? record?._id : undefined}
+              style={{ width: '400px' }}
+            >
+              {danhSach?.map((item) => (
+                <Select.Option key={item._id} value={item._id}>
+                  {item.ten}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </>
+      ]}
     >
       {/*{trangThaiQuanLyDon === 'PROCESSING' && props?.type !== 'Thao tác' && (*/}
       {/*  <Select*/}
@@ -694,34 +726,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       {/*    </Select.Option>*/}
       {/*  </Select>*/}
       {/*)}*/}
-      {props.hideFilter !== true && (
-        <Select
-          allowClear
-          placeholder="Lọc theo loại dịch vụ"
-          onChange={(val: string | undefined) => {
-            // setIdDichVu(val);
-            setRecord(
-              val
-                ? danhSach?.find((item) => item._id === val)
-                : ({
-                    _id: {
-                      $in: danhSach?.map((item) => item._id),
-                    },
-                  } as any),
-            );
-          }}
-          showSearch
-          filterOption={(value, option) => includes(option?.props.children, value)}
-          value={typeof record?._id === 'string' ? record?._id : undefined}
-          style={{ width: '400px' }}
-        >
-          {danhSach?.map((item) => (
-            <Select.Option key={item._id} value={item._id}>
-              {item.ten}
-            </Select.Option>
-          ))}
-        </Select>
-      )}
+
 
       <Modal
         destroyOnClose

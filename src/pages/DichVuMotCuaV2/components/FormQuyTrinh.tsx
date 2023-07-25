@@ -1,5 +1,4 @@
-/* eslint-disable no-underscore-dangle */
-import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { Setting, TrangThaiBuoc, TrangThaiThaoTac } from '@/utils/constants';
 import {
   CheckCircleOutlined,
@@ -8,11 +7,10 @@ import {
   LoadingOutlined,
   PauseCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Modal, Spin, Timeline } from 'antd';
+import { Button, Card, Spin, Timeline } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useModel} from 'umi';
-import FormBieuMau from './FormBieuMau';
+import { useModel } from 'umi';
 
 const IconTrangThai = {
   PENDING: (
@@ -74,9 +72,9 @@ const FormQuyTrinh = (props: {
     setVisibleFormBieuMau,
     danhSachDonThaoTac,
     setDanhSachDonThaoTac,
-    record, setIdDonViSelect
+    record,
+    setIdDonViSelect,
   } = useModel('dvmc.dichvumotcuav2');
-  const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
   const arrPathName = pathname?.split('/') ?? [];
   const [checkLastStep, setCheckLastStep] = useState<boolean>(false);
@@ -118,15 +116,12 @@ const FormQuyTrinh = (props: {
     isDuocPhepXuLyDonThaoTac: boolean,
     idDonVi?: string,
   ): any => {
-    if (arrPathName?.includes('quanlydondieuphoi')) {
-      getChuyenVienXuLyDonModel(recordDonThaoTac?.idDonVi);
-    }
     setType('handle');
     setRecordDonThaoTac(recordDonThaoTac);
     setVisibleFormBieuMau(true);
     setCheckLastStep(isDonThaoTacOBuocCuoi);
     setCheckDuocPhepXuLy(isDuocPhepXuLyDonThaoTac);
-    setIdDonViSelect(idDonVi)
+    setIdDonViSelect(idDonVi);
   };
 
   useEffect(() => {

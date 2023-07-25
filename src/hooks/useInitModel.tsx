@@ -1,8 +1,8 @@
+import { type TFilter, type TImportHeader, type TImportResponse } from '@/components/Table/typing';
 import { chuanHoaObject } from '@/utils/utils';
 import { message } from 'antd';
 import { useState } from 'react';
 import useInitService from './useInitService';
-import { type TImportHeader, type TFilter, type TImportResponse } from '@/components/Table/typing';
 
 /**
  *
@@ -29,6 +29,7 @@ const useInitModel = <T,>(
   const [condition, setCondition] = useState<{ [k in keyof T]?: any } | any>(initCondition);
   const [sort, setSort] = useState<{ [k in keyof T]?: 1 | -1 } | undefined>(initSort);
   const [edit, setEdit] = useState<boolean>(false);
+  const [isView, setIsView] = useState<boolean>(true);
   const [visibleForm, setVisibleForm] = useState<boolean>(false);
   const [total, setTotal] = useState<number>(0);
   const [filterInfo, setFilterInfo] = useState<any>({});
@@ -67,6 +68,7 @@ const useInitModel = <T,>(
     paramLimit?: number,
     path?: string,
     otherQuery?: Record<string, any>,
+    isSetDanhSach?: boolean,
   ): Promise<T[]> => {
     setLoading(true);
     const payload = {
@@ -86,10 +88,18 @@ const useInitModel = <T,>(
 
     try {
       const response = await getService(payload, path ?? 'page');
-      if (setDanhSach) setDanhSach(response?.data?.data?.result ?? []);
-      setTotal(response?.data?.data?.total ?? 0);
+      const tempData: T[] = response?.data?.data?.result ?? [];
+      const tempTotal: number = response?.data?.data?.total ?? 0;
 
-      return response?.data?.data?.result;
+      if (tempData.length === 0 && tempTotal) {
+        const maxPage = Math.ceil(tempTotal / payload.limit) || 1;
+        setPage(maxPage);
+        return Promise.reject('Invalid page');
+      } else {
+        if (isSetDanhSach !== false) setDanhSach(tempData);
+        setTotal(tempTotal);
+        return tempData;
+      }
     } catch (er) {
       return Promise.reject(er);
     } finally {
@@ -103,6 +113,7 @@ const useInitModel = <T,>(
     conditionParam?: Partial<T>,
     filterParam?: TFilter<T>[],
     pathParam?: string,
+    isSetDanhSach?: boolean,
   ): Promise<T[]> => {
     setLoading(true);
     try {
@@ -114,7 +125,7 @@ const useInitModel = <T,>(
       const response = await getAllService(payload, pathParam);
       const data: T[] = response?.data?.data ?? [];
       // if (sortParam) data.sort(sortParam);
-      setDanhSach(data);
+      if (isSetDanhSach !== false) setDanhSach(data);
       if (isSetRecord) setRecord(data?.[0]);
 
       return data;
@@ -205,10 +216,18 @@ const useInitModel = <T,>(
     }
   };
 
-  const handleEdit = (rec: T) => {
-    setRecord(rec);
-    setVisibleForm(true);
+  const handleEdit = (rec?: T) => {
+    if (rec) setRecord(rec);
     setEdit(true);
+    setIsView(false);
+    setVisibleForm(true);
+  };
+
+  const handleView = (rec?: T) => {
+    if (rec) setRecord(rec);
+    setEdit(false);
+    setIsView(true);
+    setVisibleForm(true);
   };
 
   /**
@@ -295,6 +314,8 @@ const useInitModel = <T,>(
     setCondition,
     edit,
     setEdit,
+    isView,
+    setIsView,
     visibleForm,
     setVisibleForm,
     total,
@@ -310,6 +331,7 @@ const useInitModel = <T,>(
     importHeaders,
     setImportHeaders,
     handleEdit,
+    handleView,
     getImportHeaderModel,
     getImportTemplateModel,
     postExecuteImpotModel,
@@ -317,6 +339,8 @@ const useInitModel = <T,>(
     getByIdService,
     getService,
     getAllService,
+    postService,
+    putService,
   };
 };
 

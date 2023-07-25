@@ -10,7 +10,7 @@ import {
 declare module SinhVien {
   export interface IRecord {
     _id: string;
-    anhDaiDienUrl: string;
+    anhDaiDienUrl: string | null;
     ma: string;
     ten: string;
     firstName: string;
@@ -29,27 +29,8 @@ declare module SinhVien {
     email2: string;
     nguoiLienLac: string;
     soDienThoaiNguoiLienLac: string;
-    khoaNganh: {
-      khoaSinhVien: {
-        ten: string;
-        hinhThucDaoTao: {
-          ma: string;
-          danhMucHTDT: {
-            ten: string;
-          };
-        };
-        trinhDoDaoTao: {
-          ma: string;
-          dmTrinhDo: {
-            ten: string;
-          };
-        };
-        namHocBatDau: number;
-      };
-      nganh: {
-        ten: string;
-      };
-    };
+    khoaNganhId: string;
+    khoaNganh: KhoaNganh.IRecord;
 
     loaiNoiSinh: string;
     quocGiaNoiSinh: string;
@@ -129,6 +110,7 @@ declare module SinhVien {
     hinhThucDaoTaoId: string;
     chuongTrinhId: string;
     ssoId: string;
+    trangThaiHoc?: string;
   }
 
   export interface IHocBongSinhVien {

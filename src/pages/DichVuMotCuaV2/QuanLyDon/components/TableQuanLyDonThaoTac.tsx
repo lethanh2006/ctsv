@@ -1,14 +1,13 @@
-/* eslint-disable no-underscore-dangle */
+import TableBase from '@/components/Table';
+import { type IColumn } from '@/components/Table/typing';
+import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
+import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
+import { FileDoneOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, Modal, Select, Tabs, Tooltip } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
-import { FileTextOutlined, FileDoneOutlined } from '@ant-design/icons';
-import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import TableBase from "@/components/Table";
-import {IColumn} from "@/components/Table/typing";
 
 const TableQuanLyDon = () => {
   const {
@@ -28,8 +27,6 @@ const TableQuanLyDon = () => {
     recordDonThaoTac,
     exportDonModel,
   } = useModel('dvmc.dichvumotcuav2');
-
-  const { getChuyenVienXuLyDonModel } = useModel('phanquyen');
   const { pathname } = window.location;
   const [type, setType] = useState<'handle' | 'view' | 'edit' | 'create'>('handle');
   const isDVMC = pathname?.includes('dichvumotcua') ?? false;
@@ -157,9 +154,6 @@ const TableQuanLyDon = () => {
             <Button
               style={{ padding: 0 }}
               onClick={() => {
-                if (pathname?.includes('quanlydondieuphoi')) {
-                  getChuyenVienXuLyDonModel(recordDon?.idDonVi);
-                }
                 setRecordDonThaoTac(recordDon);
                 setVisibleFormBieuMau(true);
                 setType('handle');
@@ -195,7 +189,7 @@ const TableQuanLyDon = () => {
       modelName="dichvumotcuav2"
       dataState="danhSachDonThaoTac"
       scroll={{ x: 1650 }}
-      buttons={{create:false}}
+      buttons={{ create: false }}
       getData={() => {
         if (pathname?.includes('quanlydondieuphoi'))
           getDonThaoTacChuyenVienDieuPhoiModel(isDVMC ? 'DVMC' : 'VAN_PHONG_SO');

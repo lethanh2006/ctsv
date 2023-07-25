@@ -1,15 +1,13 @@
+import SelectNhanSuDonVi from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDonVi';
 import { LoaiDoiTuongXuLyQuyTrinh } from '@/utils/constants';
 import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
 import type { FormInstance } from 'antd';
-import { Spin } from 'antd';
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import _ from 'lodash';
 import mm from 'moment-timezone';
 import { useState } from 'react';
 import { useModel } from 'umi';
-import SelectChuyenVienDonVi from '@/pages/Core/ChuyenVienDonVi/SelectChuyenVienDonVi';
-
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
 const BieuMauThaoTac = (props: {
@@ -19,8 +17,6 @@ const BieuMauThaoTac = (props: {
 }) => {
   const { danhSach } = useModel('tochucnhansu.donvi');
   const { record } = useModel('dvmc.dichvumotcuav2');
-  const { getChuyenVienXuLyDonModel, danhSachChuyenVienXuLy, loading, setDanhSachChuyenVienXuLy } =
-    useModel('phanquyen');
   const [loaiDoiTuong, setLoaiDoiTuong] = useState<string>(
     record?.quyTrinh?.danhSachBuoc?.[props?.step]?.danhSachThaoTac?.[props.field.name]
       ?.loaiDoiTuongXuLy ?? '',
@@ -135,7 +131,7 @@ const BieuMauThaoTac = (props: {
             {/*    </Select.Option>*/}
             {/*  ))}*/}
             {/*</Select>*/}
-            <SelectChuyenVienDonVi idDonVi={idDonVi} />
+            <SelectNhanSuDonVi idDonVi={idDonVi} />
           </Form.Item>
         </Col>
       )}
