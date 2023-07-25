@@ -1,11 +1,11 @@
-import SelectChuyenVienDonVi from '@/pages/ToChucNhanSu/ChuyenVienDonVi/SelectChuyenVienDonVi';
+import SelectNhanSuDonVi from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDonVi';
 import rules from '@/utils/rules';
 import { Button, Card, Form } from 'antd';
 import { useModel } from 'umi';
 
 const FormDieuPhoi = (props: { onCancel: any }) => {
   const [form] = Form.useForm();
-  const { loading, recordDonThaoTac, dieuPhoiDonModel,adminDieuPhoiDonModel, idDonViSelect } =
+  const { loading, recordDonThaoTac, adminDieuPhoiDonModel, idDonViSelect } =
     useModel('dvmc.dichvumotcuav2');
   const { danhSach: danhSachChuyenVien } = useModel('tochucnhansu.nhansudonvi');
 
@@ -49,7 +49,7 @@ const FormDieuPhoi = (props: { onCancel: any }) => {
           {/*    </Select.Option>*/}
           {/*  ))}*/}
           {/*</Select>*/}
-          <SelectChuyenVienDonVi idDonVi={idDonViSelect ?? ''} />
+          <SelectNhanSuDonVi idDonVi={idDonViSelect ?? ''} />
         </Form.Item>
 
         <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
