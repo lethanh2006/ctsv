@@ -31,6 +31,7 @@ const FormBieuMau = () => {
     loaiDichVu,
   } = useModel('dvmc.dichvumotcuav2');
   const [recordView, setRecordView] = useState<DichVuMotCuaV2.Don>();
+  const [viewBieuBMau, setViewBieuBMau] = useState<boolean>(false);
   //@ts-ignore
   const [choPhepGuiNhieuLan, setChoPhepGuiNhieuLan] = useState<boolean>(
     record?.thongTinThuTuc?.choPhepGuiNhieuLan ?? false,
@@ -174,7 +175,8 @@ const FormBieuMau = () => {
               onClick={() => {
                 const valueView = form.getFieldsValue(true);
                 setRecordView({ thongTinDichVu: { ...valueView } } as DichVuMotCuaV2.Don);
-                setVisibleFormBieuMau(true);
+                setViewBieuBMau(true);
+
               }}
             >
               Xem trước
@@ -210,10 +212,10 @@ const FormBieuMau = () => {
         destroyOnClose
         width="60%"
         footer={false}
-        visible={visibleFormBieuMau}
+        visible={viewBieuBMau}
         bodyStyle={{ padding: 0 }}
         onCancel={() => {
-          setVisibleFormBieuMau(false);
+          setViewBieuBMau(false);
         }}
       >
         <FormView type="view" record={recordView} />

@@ -304,24 +304,24 @@ const FormQuyTrinh = (props: {
           ''
         )}
 
-        {/*<Modal*/}
-        {/*  destroyOnClose*/}
-        {/*  width="850px"*/}
-        {/*  footer={false}*/}
-        {/*  visible={visibleFormBieuMau}*/}
-        {/*  onCancel={() => {*/}
-        {/*    setVisibleFormBieuMau(false);*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <FormBieuMau*/}
-        {/*    hideCamKet*/}
-        {/*    infoNguoiTaoDon={recordDonThaoTacModel?.nguoiTao}*/}
-        {/*    type={type}*/}
-        {/*    record={ recordDonThaoTacModel?.idDon}*/}
-        {/*    traKetQua={checkLastStep}*/}
-        {/*    duocPhepSuaKetQua={checkDuocPhepXuLy}*/}
-        {/*  />*/}
-        {/*</Modal>*/}
+        <Modal
+          destroyOnClose
+          width="850px"
+          footer={false}
+          visible={visibleFormBieuMau}
+          onCancel={() => {
+            setVisibleFormBieuMau(false);
+          }}
+        >
+          <FormBieuMau
+            hideCamKet
+            infoNguoiTaoDon={recordDonThaoTacModel?.nguoiTao}
+            type={type}
+            record={ recordDonThaoTacModel?.idDon}
+            traKetQua={checkLastStep}
+            duocPhepSuaKetQua={checkDuocPhepXuLy}
+          />
+        </Modal>
       </Spin>
     </Card>
   );
