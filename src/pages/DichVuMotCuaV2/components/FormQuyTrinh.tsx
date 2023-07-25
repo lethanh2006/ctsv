@@ -83,6 +83,8 @@ const FormQuyTrinh = (props: {
   const lastStep = props?.record?.danhSachBuoc?.[props?.record?.danhSachBuoc?.length - 1 ?? 0];
   const [type, setType] = useState<'view' | 'handle' | 'create' | 'edit'>('handle');
   const [trangThaiDon, setTrangThaiDon] = useState<string>();
+  const {  record: infoNguoiTaoDon } =
+    useModel('sinhvien.sinhvien');
   useEffect(() => {
     if (props.idDon) {
       // adminGetTrangThaiDonModel(props.idDon);
@@ -316,7 +318,7 @@ const FormQuyTrinh = (props: {
         >
           <FormBieuMau
             hideCamKet
-            infoNguoiTaoDon={recordDonThaoTacModel?.nguoiTao}
+            infoNguoiTaoDon={infoNguoiTaoDon||recordDonThaoTacModel?.nguoiTao}
             type={type}
             record={ recordDonThaoTacModel?.idDon}
             traKetQua={checkLastStep}
