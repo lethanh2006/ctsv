@@ -519,6 +519,7 @@ const FormBieuMau = (props: {
         <Form.Item
           key={item?.label}
           extra={item?.note ? <i>{item?.note}</i> : false}
+          style={{display:'flex',alignItems:'center'}}
           label={
             <div
               title={item?.label ?? 'Chưa có tiêu đề'}
@@ -653,6 +654,7 @@ const FormBieuMau = (props: {
         labelCol={{ xs: 6, lg: 6, xl: 6 }}
         onFinish={onFinish}
         form={form}
+        // layout={'vertical'}
       >
         {props?.record?.thongTinDichVu?.cauHinhBieuMau?.length ?? 0 ? (
           <>

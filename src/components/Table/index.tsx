@@ -47,6 +47,7 @@ const TableBase = (props: TableBaseProps) => {
     destroyModal,
     addStt,
     rowSortable,
+    onCreate,
   } = props;
   let { columns } = props;
   const { visibleForm, setVisibleForm, setEdit, setRecord, setIsView } = useModel(modelName);
@@ -325,10 +326,12 @@ const TableBase = (props: TableBaseProps) => {
               <Button
                 size={props?.otherProps?.size}
                 onClick={() => {
-                  setRecord({});
+                  setRecord(undefined);
                   setEdit(false);
                   setIsView(false);
                   setVisibleForm(true);
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                  onCreate && onCreate();
                 }}
                 icon={<PlusCircleOutlined />}
                 type="primary"

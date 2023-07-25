@@ -80,6 +80,7 @@ const FormThongTinChung = () => {
         scrollToFirstError
         labelCol={{ span: 24 }}
         onFinish={async (values) => {
+          console.log('value',values)
           values.fileMau = await buildUpLoadFile(values, 'fileMau');
           values.fileTraLoi = await buildUpLoadFile(values, 'fileTraLoi');
           setRecord({
@@ -97,9 +98,9 @@ const FormThongTinChung = () => {
                   ? values?.thongTinThuTuc?.coQuanCoThamQuyen?.join(', ')
                   : undefined,
             },
-            thongTinHoSo: values?.thongTinHoSo?.text ?? '',
-            thongTinQuyTrinh: values?.thongTinQuyTrinh?.text ?? '',
-            thongTinYeuCau: values?.thongTinYeuCau?.text ?? '',
+            thongTinHoSo: values?.thongTinHoSo ?? '',
+            thongTinQuyTrinh: values?.thongTinQuyTrinh ?? '',
+            thongTinYeuCau: values?.thongTinYeuCau ?? '',
             ten: values?.ten,
             ghiChu: values?.ghiChu,
             moTa: values?.moTa,
@@ -194,13 +195,18 @@ const FormThongTinChung = () => {
           <>
             <Col md={12}>
               <Form.Item
-                initialValue={recordDichVu?.phamVi}
+                initialValue={recordDichVu?.phamVi??'Tất cả'}
                 rules={[...rules.required]}
                 name="phamVi"
                 label="Phạm vi"
               >
                 <Select onChange={(val: string) => setPhamVi(val)} placeholder="Phạm vi">
-                  {['Tất cả', 'Hình thức đào tạo'].map((item) => (
+                  {/*{['Tất cả', 'Hình thức đào tạo'].map((item) => (*/}
+                  {/*  <Select.Option key={item} value={item}>*/}
+                  {/*    {item}*/}
+                  {/*  </Select.Option>*/}
+                  {/*))}*/}
+                  {['Tất cả'].map((item) => (
                     <Select.Option key={item} value={item}>
                       {item}
                     </Select.Option>
@@ -326,29 +332,29 @@ const FormThongTinChung = () => {
               <Input placeholder="Mẫu biểu" />
             </Form.Item>
           </Col>
-          <Col md={12}>
-            <Form.Item
-              name={'thoiHanBatDauThaoTac'}
-              label="Thời hạn bắt đầu thao tác"
-              initialValue={recordDichVu?.thoiHanBatDauThaoTac ?? 'Bắt đầu thao tác'}
-              rules={[...rules.required]}
-            >
-              <Select onChange={(val: string) => {}} placeholder="Thời hạn bắt đầu thao tác">
-                <Select.Option value={'Bắt đầu thao tác'}>Bắt đầu thao tác</Select.Option>
-                <Select.Option value={'Bắt đầu xử lý'}>Bắt đầu xử lý</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col md={12}>
-            <Form.Item
-              name={'maDichVu'}
-              label="Mã dịch vụ"
-              initialValue={recordDichVu?.maDichVu}
-              rules={[...rules.text, ...rules.length(200)]}
-            >
-              <Input placeholder="Mã dịch vụ" />
-            </Form.Item>
-          </Col>
+          {/*<Col md={12}>*/}
+          {/*  <Form.Item*/}
+          {/*    name={'thoiHanBatDauThaoTac'}*/}
+          {/*    label="Thời hạn bắt đầu thao tác"*/}
+          {/*    initialValue={recordDichVu?.thoiHanBatDauThaoTac ?? 'Bắt đầu thao tác'}*/}
+          {/*    rules={[...rules.required]}*/}
+          {/*  >*/}
+          {/*    <Select onChange={(val: string) => {}} placeholder="Thời hạn bắt đầu thao tác">*/}
+          {/*      <Select.Option value={'Bắt đầu thao tác'}>Bắt đầu thao tác</Select.Option>*/}
+          {/*      <Select.Option value={'Bắt đầu xử lý'}>Bắt đầu xử lý</Select.Option>*/}
+          {/*    </Select>*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
+          {/*<Col md={12}>*/}
+          {/*  <Form.Item*/}
+          {/*    name={'maDichVu'}*/}
+          {/*    label="Mã dịch vụ"*/}
+          {/*    initialValue={recordDichVu?.maDichVu}*/}
+          {/*    rules={[...rules.text, ...rules.length(200)]}*/}
+          {/*  >*/}
+          {/*    <Input placeholder="Mã dịch vụ" />*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
           <Col xs={24}>
             <Form.Item
               name={['thongTinThuTuc', 'luuY']}
@@ -506,7 +512,7 @@ const FormThongTinChung = () => {
             <Form.Item
               name="thongTinHoSo"
               label=""
-              initialValue={{ text: recordDichVu?.thongTinHoSo ?? '' }}
+              initialValue={recordDichVu?.thongTinHoSo ?? '' }
               // rules={[...rules.text]}
             >
               <TinyEditor height={350} />
@@ -519,7 +525,7 @@ const FormThongTinChung = () => {
             <Form.Item
               name="thongTinQuyTrinh"
               label=""
-              initialValue={{ text: recordDichVu?.thongTinQuyTrinh ?? '' }}
+              initialValue={ recordDichVu?.thongTinQuyTrinh ?? '' }
               // rules={[...rules.text]}
             >
               <TinyEditor height={350} />
@@ -532,7 +538,7 @@ const FormThongTinChung = () => {
             <Form.Item
               name="thongTinYeuCau"
               label=""
-              initialValue={{ text: recordDichVu?.thongTinYeuCau ?? '' }}
+              initialValue={ recordDichVu?.thongTinYeuCau ?? '' }
               // rules={[...rules.text]}
             >
               <TinyEditor height={350} />
