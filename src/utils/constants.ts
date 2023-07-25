@@ -117,8 +117,8 @@ export enum TrangThaiThaoTac {
 export enum ColorTrangThaiDonMotCua {
   PENDING = 'gray',
   OK = '#28a745cc',
-  NOT_OK = '#007EB9cc',
-  PROCESSING = '#1890ffcc',
+  NOT_OK = 'red',
+  PROCESSING = 'yellow',
 }
 
 export enum ExportType {

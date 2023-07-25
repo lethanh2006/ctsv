@@ -170,8 +170,18 @@ const QuanLyBieuMau = () => {
         dependencies={[page, limit]}
         getData={() => getBieuMauAdminModel('DVMC')}
         Form={Form}
+        destroyModal
+        onCreate={() => {
+          setCurrent(0);
+        }}
       />
-      <Modal width={800} footer={null} visible={visible} onCancel={() => setVisible(false)}>
+      <Modal
+        width={800}
+        footer={null}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        destroyOnClose
+      >
         <Tabs>
           <Tabs.TabPane tab="Quy trình" key={0}>
             <FormQuyTrinh type="view" record={recordView?.thongTinDichVu?.quyTrinh} />

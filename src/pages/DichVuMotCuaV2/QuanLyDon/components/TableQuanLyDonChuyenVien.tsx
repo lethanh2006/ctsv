@@ -154,7 +154,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
         const blockNhanDon = recordTemp?.thongTinDichVu?.cauHinhBieuMau?.find(
           (item) => item.label === 'Phương thức nhận đơn',
         );
-        let diaChiNhanDon = '';
+        let diaChiNhanDon = 'Nhận tại trường';
         if (blockNhanDon?.value === 'Nhận tại trường') diaChiNhanDon = 'Nhận tại trường';
         else {
           const valueChuyenPhatNhanh = blockNhanDon?.dataSource
@@ -673,27 +673,27 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string }) => {
       buttons={{ create: false }}
       hideCard
     >
-      {trangThaiQuanLyDon === 'PROCESSING' && props?.type !== 'Thao tác' && (
-        <Select
-          onChange={(val) => {
-            setIsDonCanXuLy(val);
-            // if (pathname?.includes('quanlydondieuphoi')) {
-            //   chuyenVienDieuPhoiGetTongSoDonDVMCModel(val);
-            // } else {
-            //   chuyenVienXuLyGetTongSoDonDVMCModel(val);
-            // }
-          }}
-          style={{ marginRight: 8, width: 150 }}
-          value={isDonCanXuLy}
-        >
-          <Select.Option key={0} value={0}>
-            Tất cả đơn
-          </Select.Option>
-          <Select.Option key={1} value={1}>
-            Đơn cần xử lý
-          </Select.Option>
-        </Select>
-      )}
+      {/*{trangThaiQuanLyDon === 'PROCESSING' && props?.type !== 'Thao tác' && (*/}
+      {/*  <Select*/}
+      {/*    onChange={(val) => {*/}
+      {/*      setIsDonCanXuLy(val);*/}
+      {/*      // if (pathname?.includes('quanlydondieuphoi')) {*/}
+      {/*      //   chuyenVienDieuPhoiGetTongSoDonDVMCModel(val);*/}
+      {/*      // } else {*/}
+      {/*      //   chuyenVienXuLyGetTongSoDonDVMCModel(val);*/}
+      {/*      // }*/}
+      {/*    }}*/}
+      {/*    style={{ marginRight: 8, width: 150 }}*/}
+      {/*    value={isDonCanXuLy}*/}
+      {/*  >*/}
+      {/*    <Select.Option key={0} value={0}>*/}
+      {/*      Tất cả đơn*/}
+      {/*    </Select.Option>*/}
+      {/*    <Select.Option key={1} value={1}>*/}
+      {/*      Đơn cần xử lý*/}
+      {/*    </Select.Option>*/}
+      {/*  </Select>*/}
+      {/*)}*/}
       {props.hideFilter !== true && (
         <Select
           allowClear

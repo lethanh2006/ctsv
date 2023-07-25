@@ -8,6 +8,7 @@ import _ from 'lodash';
 import mm from 'moment-timezone';
 import { useState } from 'react';
 import { useModel } from 'umi';
+import SelectChuyenVienDonVi from '@/pages/Core/ChuyenVienDonVi/SelectChuyenVienDonVi';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -104,37 +105,40 @@ const BieuMauThaoTac = (props: {
           </Form.Item>
         </Col>
       )}
-      <Col xs={24} lg={12}>
-        <Form.Item
-          style={{ marginBottom: 8 }}
-          labelCol={{ span: 24 }}
-          name={[props.field.name, 'idNguoiDieuPhoiMacDinh']}
-          label="Người xử lý"
-        >
-          <Select
-            notFoundContent={
-              loading ? (
-                <Spin spinning />
-              ) : (
-                'Không có cán bộ nào được phân quyền là chuyên viên xử lý đơn'
-              )
-            }
-            allowClear
-            filterOption={(value, option) => includes(option?.props.children, value)}
-            showSearch
-            placeholder="Chọn người xử lý"
-            onMouseEnter={() => {
-              getChuyenVienXuLyDonModel(idDonVi);
-            }}
+      {loaiDoiTuong === 'Đơn vị cụ thể' && (
+        <Col xs={24} lg={12}>
+          <Form.Item
+            style={{ marginBottom: 8 }}
+            labelCol={{ span: 24 }}
+            name={[props.field.name, 'idNguoiDieuPhoiMacDinh']}
+            label="Người xử lý"
           >
-            {danhSachChuyenVienXuLy?.map((item) => (
-              <Select.Option key={item.id} value={item.id.toString()}>
-                {item.ma_dinh_danh} - {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-      </Col>
+            {/*<Select*/}
+            {/*  notFoundContent={*/}
+            {/*    loading ? (*/}
+            {/*      <Spin spinning />*/}
+            {/*    ) : (*/}
+            {/*      'Không có cán bộ nào được phân quyền là chuyên viên xử lý đơn'*/}
+            {/*    )*/}
+            {/*  }*/}
+            {/*  allowClear*/}
+            {/*  filterOption={(value, option) => includes(option?.props.children, value)}*/}
+            {/*  showSearch*/}
+            {/*  placeholder="Chọn người xử lý"*/}
+            {/*  onMouseEnter={() => {*/}
+            {/*    getChuyenVienXuLyDonModel(idDonVi);*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  {danhSachChuyenVienXuLy?.map((item) => (*/}
+            {/*    <Select.Option key={item.id} value={item.id.toString()}>*/}
+            {/*      {item.ma_dinh_danh} - {item.name}*/}
+            {/*    </Select.Option>*/}
+            {/*  ))}*/}
+            {/*</Select>*/}
+            <SelectChuyenVienDonVi idDonVi={idDonVi} />
+          </Form.Item>
+        </Col>
+      )}
     </Row>
   );
 };
