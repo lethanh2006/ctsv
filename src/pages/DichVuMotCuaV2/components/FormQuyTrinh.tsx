@@ -7,10 +7,11 @@ import {
   LoadingOutlined,
   PauseCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Spin, Timeline } from 'antd';
+import { Button, Card, Modal, Spin, Timeline } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import FormBieuMau from './FormBieuMau';
 
 const IconTrangThai = {
   PENDING: (
