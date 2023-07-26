@@ -1,5 +1,5 @@
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import { Setting, TrangThaiBuoc, TrangThaiThaoTac } from '@/utils/constants';
+import { Setting, TrangThaiBuoc, TrangThaiThaoTac } from '@/services/DVMC/constants';
 import {
   CheckCircleOutlined,
   ClockCircleOutlined,
@@ -253,8 +253,8 @@ const FormQuyTrinh = (props: {
                                       thaoTac?.idDonVi,
                                     );
                                   }}
-                                  style={{ padding: 0 }}
-                                  type="link"
+                                  // style={{ padding: 0 }}
+                                  type="primary"
                                 >
                                   Xử lý
                                 </Button>

@@ -1,7 +1,7 @@
 import type { IColumn } from '@/components/Table/typing';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
+import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/services/DVMC/constants';
 import { includes } from '@/utils/utils';
 import ThanhToan from '../../ThanhToan';
 import {

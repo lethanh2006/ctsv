@@ -25,32 +25,7 @@ export const MapKeyThoiGianDot = {
   [EThoiGianDot.DA_DIEN_RA]: 'Đã diễn ra',
 };
 
-export enum ElementTemplateType {
-  TEXT_INPUT = 'Nhập Text 1 dòng',
-  TEXT_AREA = 'Nhập Text nhiều dòng',
-  INPUT_NUMBER = 'Nhập số',
-  DATE_PICKER = 'Chọn ngày tháng',
-  UPLOAD_SINGLE = 'Chọn 1 file',
-  UPLOAD_MULTI = 'Chọn nhiều file',
-  DROP_LIST_SINGLE = 'Lựa chọn một (dạng Droplist)',
-  DROP_LIST_MULTI = 'Lựa chọn nhiều (dạng Droplist)',
-  RADIO_BUTTON = 'Lựa chọn một (Radio)',
-  CHECKLIST = 'Lựa chọn nhiều (Checklist)',
-  DON_VI_HANH_CHINH = 'Đơn vị hành chính',
-  TABLE = 'Dạng bảng',
-  MY_SEMESTER = 'Kỳ học của sinh viên',
-  MY_YEAR = 'Năm học của sinh viên',
-  MY_CREDIT = 'Môn học của sinh viên',
-  // CREDIT = 'Môn học',
-  MY_COURSE = 'Lớp tín chỉ của sinh viên',
-  // _OTO = 'Dịch vụ Ô-tô',
-  TEXT_BLOCK = 'Đoạn văn bản',
-  DAN_TOC = 'Dân tộc',
-  TON_GIAO = 'Tôn giáo',
-  // HOC_PHAN_CO_DIEM = 'Học phần có điểm',
-  // CMT_CCCD = 'CMT/CCCD',
-  // BUTTON_SEARCH_PHONG = 'Button tìm phòng VPS',
-}
+
 
 export enum EFileType {
   doc = 'Tài liệu (doc, docx)',
@@ -59,11 +34,7 @@ export enum EFileType {
   image = 'Ảnh (png, jpg, jpeg)',
 }
 
-export enum LoaiDoiTuongXuLyQuyTrinh {
-  DON_VI_CU_THE = 'Đơn vị cụ thể',
-  DON_VI_QUAN_LY = 'Đơn vị quản lý',
-  // CO_VAN_HOC_TAP = 'Cố vấn học tập',
-}
+
 
 export const LevelDonViHanhChinh = [
   'Tỉnh',
@@ -89,11 +60,6 @@ export const TitleFormImport = {
   danhSachNguoiDungCuThe: 'người dùng',
 };
 
-export enum TrangThaiDonDVMC {
-  OK = 'Đã duyệt',
-  NOT_OK = 'Không duyệt',
-  PROCESSING = 'Đang xử lý',
-}
 
 export enum ELoaiDotKhaiBaoKHCN {
   TU_NGAY_DEN_NGAY = 'Từ ngày đến ngày',
@@ -102,24 +68,9 @@ export enum ELoaiDotKhaiBaoKHCN {
   MOC_THOI_GIAN_NAM = 'Mốc thời gian (năm)',
 }
 
-export enum TrangThaiBuoc {
-  OK = 'Đã duyệt',
-  NOT_OK = 'Không duyệt',
-  PROCESSING = 'Đang xử lý',
-}
 
-export enum TrangThaiThaoTac {
-  PENDING = 'Chưa duyệt',
-  OK = 'Đã duyệt',
-  NOT_OK = 'Không duyệt',
-}
 
-export enum ColorTrangThaiDonMotCua {
-  PENDING = 'gray',
-  OK = '#28a745cc',
-  NOT_OK = 'red',
-  PROCESSING = 'yellow',
-}
+
 
 export enum ExportType {
   WORD = 'word',
@@ -397,17 +348,8 @@ export const MapKeyColorTrangThaiDotDangKyDeTaiQLKH = {
   'Đã diễn ra': '#dc3545',
 };
 
-export enum TrangThaiThanhToan {
-  open = 'open',
-  paid = 'paid',
-  overpaid = 'overpaid',
-}
 
-export const MapKeyTrangThaiThanhToan = {
-  [TrangThaiThanhToan.open]: 'Chưa thanh toán đủ',
-  [TrangThaiThanhToan.paid]: 'Đã thanh toán đủ',
-  [TrangThaiThanhToan.overpaid]: 'Thanh toán thừa',
-};
+
 
 export enum ETrangThaiKhoa {
   DA_KHOA = 'Đã nộp',
@@ -863,11 +805,7 @@ export enum ELoaiXeCong {
   BON_NAM_CHO = '45 chỗ',
 }
 
-export enum MaDichVuVps {
-  MUON_OTO = 'MUON_OTO',
-  MUON_PHONG_HOC = 'MUON_PHONG_HOC',
-  BAO_CAO_SU_CO = 'BAO_CAO_SU_CO',
-}
+
 
 export enum ETrangThaiDonVps {
   DA_DUYET = 'Đã xử lý',

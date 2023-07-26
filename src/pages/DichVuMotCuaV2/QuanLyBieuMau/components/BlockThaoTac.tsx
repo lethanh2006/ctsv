@@ -1,5 +1,5 @@
 import SelectNhanSuDonVi from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDonVi';
-import { LoaiDoiTuongXuLyQuyTrinh } from '@/utils/constants';
+import { LoaiDoiTuongXuLyQuyTrinh } from '@/services/DVMC/constants';
 import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
 import type { FormInstance } from 'antd';

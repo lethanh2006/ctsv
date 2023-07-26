@@ -1,4 +1,4 @@
-import { EFileType, ElementTemplateType, LevelCCCD, LevelDonViHanhChinh } from '@/utils/constants';
+import { EFileType, ElementTemplateType, LevelCCCD, LevelDonViHanhChinh } from '@/services/DVMC/constants';
 import rules from '@/utils/rules';
 import { includes } from '@/utils/utils';
 import {

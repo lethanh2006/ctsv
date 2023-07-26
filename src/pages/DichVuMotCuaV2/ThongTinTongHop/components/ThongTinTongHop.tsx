@@ -5,7 +5,7 @@ import {
   chuyenVienDieuPhoiGetSoDonHomNay,
   chuyenVienDieuPhoiGetTongSoDon,
 } from '@/services/Dashboard/dashboard';
-import { TrangThaiDonDVMC } from '@/utils/constants';
+import { TrangThaiDonDVMC } from '@/services/DVMC/constants';
 import { Badge, Card, Col, Row, Select, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAccess, useModel } from 'umi';
@@ -17,7 +17,7 @@ interface DataSoLuongDon {
 
 const ThongTinTongHop = () => {
   const access = useAccess();
-  const { danhSach, loaiDichVu, setRecord } = useModel('dichvumotcuav2');
+  const { danhSach, loaiDichVu, setRecord } = useModel('dvmc.dichvumotcuav2');
   const { recordTongSoDon, idDichVu, setIdDichVu } = useModel('dashboard');
   const [donHomNay, setDonHomNay] = useState<DataSoLuongDon[]>();
   const [tongSoDon, setTongSoDon] = useState<DataSoLuongDon[]>();
