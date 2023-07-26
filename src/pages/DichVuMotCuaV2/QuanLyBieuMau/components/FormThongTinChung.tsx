@@ -7,10 +7,13 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import UploadFile from "@/components/Upload/UploadFile";
+import UploadFile from '@/components/Upload/UploadFile';
+import SelectMucThu from '@/pages/DichVuMotCuaV2/MucThu/Select';
+import SelectKhoanThu from '@/pages/DichVuMotCuaV2/KhoanThu/Select';
 
 const FormThongTinChung = () => {
   const [form] = Form.useForm();
+  const [conditionMucThu, setConditionMucThu] = useState<any>();
   const {
     loading,
     edit,
@@ -24,13 +27,6 @@ const FormThongTinChung = () => {
     setRecord: setRecordProduct,
     record: recordProduct,
   } = useModel('dvmc.khoanthu');
-
-  const {
-    danhSach: danhSachMucThu,
-    getAllModel,
-    setDanhSach,
-    loading: loadingMucThu,
-  } = useModel('dvmc.mucthu');
 
   const [phamVi, setPhamVi] = useState<string>(recordDichVu?.phamVi ?? '');
   const { record } = useModel('dvmc.thanhtoan');
@@ -80,7 +76,7 @@ const FormThongTinChung = () => {
         scrollToFirstError
         labelCol={{ span: 24 }}
         onFinish={async (values) => {
-          console.log('value',values)
+          console.log('value', values);
           values.fileMau = await buildUpLoadFile(values, 'fileMau');
           values.fileTraLoi = await buildUpLoadFile(values, 'fileTraLoi');
           setRecord({
@@ -93,6 +89,7 @@ const FormThongTinChung = () => {
               choPhepGuiNhieuLan,
               maLePhi: record?.code,
               idNguonThu: recordProduct?.nguonThu,
+              // idKhoanThu:danhSach?.find((items)=>{return items?._id===values?.idKhoanThu})?.name,
               coQuanCoThamQuyen:
                 values?.thongTinThuTuc?.coQuanCoThamQuyen?.length > 0
                   ? values?.thongTinThuTuc?.coQuanCoThamQuyen?.join(', ')
@@ -195,7 +192,7 @@ const FormThongTinChung = () => {
           <>
             <Col md={12}>
               <Form.Item
-                initialValue={recordDichVu?.phamVi??'Tất cả'}
+                initialValue={recordDichVu?.phamVi ?? 'Tất cả'}
                 rules={[...rules.required]}
                 name="phamVi"
                 label="Phạm vi"
@@ -419,21 +416,34 @@ const FormThongTinChung = () => {
                   rules={[...rules.required]}
                   initialValue={recordDichVu?.thongTinThuTuc?.idKhoanThu}
                 >
-                  <Select
+                  {/*<Select*/}
+                  {/*  onChange={(val) => {*/}
+                  {/*    const recordProdTemp = danhSach.find((item) => item._id === val);*/}
+                  {/*    if (val) {*/}
+                  {/*      setRecordProduct(recordProdTemp);*/}
+                  {/*      setConditionMucThu({ product: val, active: true })*/}
+                  {/*    }*/}
+                  {/*    form.setFieldsValue({*/}
+                  {/*      maLePhi: undefined,*/}
+                  {/*      donViTinh: recordProdTemp?.unitLabel,*/}
+                  {/*    });*/}
+                  {/*  }}*/}
+                  {/*  placeholder="Chọn lệ phí"*/}
+                  {/*  options={danhSach.map((item) => ({ label: item.name, value: item._id }))}*/}
+                  {/*/>*/}
+                  <SelectKhoanThu
                     onChange={(val) => {
                       const recordProdTemp = danhSach.find((item) => item._id === val);
                       if (val) {
                         setRecordProduct(recordProdTemp);
-                        setDanhSach([]);
-                        getAllModel(false, undefined, { product: val, active: true });
+                        setConditionMucThu({ product: val, active: true });
                       }
                       form.setFieldsValue({
                         maLePhi: undefined,
                         donViTinh: recordProdTemp?.unitLabel,
                       });
                     }}
-                    placeholder="Chọn lệ phí"
-                    options={danhSach.map((item) => ({ label: item.name, value: item._id }))}
+                    initCondition={{ 'metaData.service': 'DVMC' }}
                   />
                 </Form.Item>
               </Col>
@@ -445,14 +455,15 @@ const FormThongTinChung = () => {
                   name={['thongTinThuTuc', 'idMucThu']}
                   label="Chọn mức giá"
                 >
-                  <Select
-                    notFoundContent={loadingMucThu && <Spin spinning />}
-                    placeholder="Chọn mức giá"
-                    options={danhSachMucThu?.map((item) => ({
-                      label: `${currencyFormat(item.unitAmount)} ${item.currency}`,
-                      value: item._id,
-                    }))}
-                  />
+                  {/*<Select*/}
+                  {/*  notFoundContent={loadingMucThu && <Spin spinning />}*/}
+                  {/*  placeholder="Chọn mức giá"*/}
+                  {/*  options={danhSachMucThu?.map((item) => ({*/}
+                  {/*    label: `${currencyFormat(item.unitAmount)} ${item.currency}`,*/}
+                  {/*    value: item._id,*/}
+                  {/*  }))}*/}
+                  {/*/>*/}
+                  <SelectMucThu condition={conditionMucThu} isGetId/>
                 </Form.Item>
               </Col>
 
@@ -517,7 +528,7 @@ const FormThongTinChung = () => {
               rules={[...rules.text, ...rules.length(200)]}
             >
               {/*<Input placeholder="Đơn vị thực hiện" />*/}
-              <TinyEditor height={300}/>
+              <TinyEditor height={300} />
             </Form.Item>
           </Col>
         </Row>
@@ -527,7 +538,7 @@ const FormThongTinChung = () => {
             <Form.Item
               name="thongTinHoSo"
               label=""
-              initialValue={recordDichVu?.thongTinHoSo ?? '' }
+              initialValue={recordDichVu?.thongTinHoSo ?? ''}
               // rules={[...rules.text]}
             >
               <TinyEditor height={350} />
@@ -540,7 +551,7 @@ const FormThongTinChung = () => {
             <Form.Item
               name="thongTinQuyTrinh"
               label=""
-              initialValue={ recordDichVu?.thongTinQuyTrinh ?? '' }
+              initialValue={recordDichVu?.thongTinQuyTrinh ?? ''}
               // rules={[...rules.text]}
             >
               <TinyEditor height={350} />
@@ -553,7 +564,7 @@ const FormThongTinChung = () => {
             <Form.Item
               name="thongTinYeuCau"
               label=""
-              initialValue={ recordDichVu?.thongTinYeuCau ?? '' }
+              initialValue={recordDichVu?.thongTinYeuCau ?? ''}
               // rules={[...rules.text]}
             >
               <TinyEditor height={350} />
