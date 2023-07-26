@@ -525,7 +525,7 @@ const FormThongTinChung = () => {
               name={['thongTinThuTuc', 'donViThucHien']}
               label=""
               initialValue={recordDichVu?.thongTinThuTuc?.donViThucHien}
-              rules={[...rules.text, ...rules.length(200)]}
+              rules={[...rules.text, ...rules.length(550)]}
             >
               {/*<Input placeholder="Đơn vị thực hiện" />*/}
               <TinyEditor height={300} />
