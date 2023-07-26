@@ -258,16 +258,6 @@ const FormThongTinChung = () => {
           </Col>
           <Col md={12}>
             <Form.Item
-              name={['thongTinThuTuc', 'donViThucHien']}
-              label="Đơn vị thực hiện"
-              initialValue={recordDichVu?.thongTinThuTuc?.donViThucHien}
-              rules={[...rules.text, ...rules.length(200)]}
-            >
-              <Input placeholder="Đơn vị thực hiện" />
-            </Form.Item>
-          </Col>
-          <Col md={12}>
-            <Form.Item
               name={['thongTinThuTuc', 'capDo']}
               label="Cấp độ"
               initialValue={recordDichVu?.thongTinThuTuc?.capDo}
@@ -287,21 +277,21 @@ const FormThongTinChung = () => {
             </Form.Item>
           </Col>
 
-          <Col md={12}>
-            <Form.Item
-              name={['thongTinThuTuc', 'coQuanCoThamQuyen']}
-              label="Cơ quan có thẩm quyền"
-              initialValue={recordDichVu?.thongTinThuTuc?.coQuanCoThamQuyen?.split(', ')}
-            >
-              <Select placeholder="Cơ quan có thẩm quyền" allowClear showSearch mode="multiple">
-                {/*{danhSach?.map((item: DonVi.Record) => (*/}
-                {/*  <Select.Option key={item._id} value={item.ten}>*/}
-                {/*    {item?.ten}*/}
-                {/*  </Select.Option>*/}
-                {/*))}*/}
-              </Select>
-            </Form.Item>
-          </Col>
+          {/*<Col md={12}>*/}
+          {/*  <Form.Item*/}
+          {/*    name={['thongTinThuTuc', 'coQuanCoThamQuyen']}*/}
+          {/*    label="Cơ quan có thẩm quyền"*/}
+          {/*    initialValue={recordDichVu?.thongTinThuTuc?.coQuanCoThamQuyen?.split(', ')}*/}
+          {/*  >*/}
+          {/*    <Select placeholder="Cơ quan có thẩm quyền" allowClear showSearch mode="multiple">*/}
+          {/*      /!*{danhSach?.map((item: DonVi.Record) => (*!/*/}
+          {/*      /!*  <Select.Option key={item._id} value={item.ten}>*!/*/}
+          {/*      /!*    {item?.ten}*!/*/}
+          {/*      /!*  </Select.Option>*!/*/}
+          {/*      /!*))}*!/*/}
+          {/*    </Select>*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
           <Col md={12}>
             <Form.Item
               name={['thongTinThuTuc', 'phamViPhucVu']}
@@ -503,6 +493,31 @@ const FormThongTinChung = () => {
               initialValue={recordDichVu?.cauTraLoiMacDinh}
             >
               <Input.TextArea placeholder="Câu trả lời mặc định" />
+            </Form.Item>
+          </Col>
+          {/*<Col md={24}>*/}
+          {/*  <Form.Item*/}
+          {/*    name={['thongTinThuTuc', 'donViThucHien']}*/}
+          {/*    label="Đơn vị thực hiện"*/}
+          {/*    initialValue={recordDichVu?.thongTinThuTuc?.donViThucHien}*/}
+          {/*    rules={[...rules.text, ...rules.length(200)]}*/}
+          {/*  >*/}
+          {/*    /!*<Input placeholder="Đơn vị thực hiện" />*!/*/}
+          {/*    <TinyEditor height={300}/>*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
+        </Row>
+        <h3 style={{ fontWeight: 'bold' }}>Đơn vị thực hiện</h3>
+        <Row>
+          <Col md={24}>
+            <Form.Item
+              name={['thongTinThuTuc', 'donViThucHien']}
+              label=""
+              initialValue={recordDichVu?.thongTinThuTuc?.donViThucHien}
+              rules={[...rules.text, ...rules.length(200)]}
+            >
+              {/*<Input placeholder="Đơn vị thực hiện" />*/}
+              <TinyEditor height={300}/>
             </Form.Item>
           </Col>
         </Row>
