@@ -3,7 +3,7 @@
 import ThanhToan from '@/pages/DichVuMotCuaV2/ThanhToan';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/utils/constants';
+import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/services/DVMC/constants';
 import { includes } from '@/utils/utils';
 import {
   CheckOutlined,

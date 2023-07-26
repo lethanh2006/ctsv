@@ -1,4 +1,4 @@
-import { MapKeyTrangThaiThanhToan, TrangThaiThanhToan } from '@/utils/constants';
+import { MapKeyTrangThaiThanhToan, TrangThaiThanhToan } from '@/services/DVMC/constants';
 import rules from '@/utils/rules';
 import { currencyFormat } from '@/utils/utils';
 import { EditOutlined } from '@ant-design/icons';

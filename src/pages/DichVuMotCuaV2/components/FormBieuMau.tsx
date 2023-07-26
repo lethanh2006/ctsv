@@ -4,7 +4,7 @@ import SelectDonViHanhChinh from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChi
 import HocPhanCoDiem from '@/pages/DichVuMotCuaV2/HocPhanCoDiem';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import type { SinhVien } from '@/services/SinhVien/typings';
-import { accessFileUpload, MaDichVuVps } from '@/utils/constants';
+import { accessFileUpload, MaDichVuVps } from '@/services/DVMC/constants';
 import rules from '@/utils/rules';
 import { checkFileSize, includes, renderFileList, uploadMultiFile } from '@/utils/utils';
 import { CopyOutlined } from '@ant-design/icons';

@@ -7,7 +7,7 @@ import ThongTinTongHop from './components/ThongTinTongHop';
 const ThongTinTongHopChuyenVienDieuPhoi = () => {
   const { idDichVu, chuyenVienDieuPhoiGetTongSoDonDVMCModel } = useModel('dashboard');
   const { setTrangThaiQuanLyDon, getAllBieuMauChuyenVienDieuPhoiModel } =
-    useModel('dichvumotcuav2');
+    useModel('dvmc.dichvumotcuav2');
 
   useEffect(() => {
     chuyenVienDieuPhoiGetTongSoDonDVMCModel();
