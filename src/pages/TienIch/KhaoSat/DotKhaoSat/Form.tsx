@@ -226,7 +226,7 @@ const FormDotKhaoSat = (props: any) => {
                 isNguoiDungCuThe ? [] : record?.danhSachLopHanhChinh?.map((item) => item.name)
               }
             >
-              <SelectLopHanhChinhDebounce multiple={true} mode={'tags'} selectTen={true} />
+              <SelectLopHanhChinhDebounce multiple={true} selectTen={true} />
             </Form.Item>
             {/* {!isNguoiDungCuThe && renderButtonImportExcel('danhSachLopHanhChinh')} */}
           </div>
@@ -242,7 +242,7 @@ const FormDotKhaoSat = (props: any) => {
                 isNguoiDungCuThe ? [] : record?.danhSachLopTinChi?.map((item) => item.name)
               }
             >
-              <SelectLopHocPhanDebounce mode={'tags'} selectTen={true} />
+              <SelectLopHocPhanDebounce multiple selectTen={true} />
             </Form.Item>
             {/* {!isNguoiDungCuThe && renderButtonImportExcel('danhSachLopTinChi')} */}
           </div>

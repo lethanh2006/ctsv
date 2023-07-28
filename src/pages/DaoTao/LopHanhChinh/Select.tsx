@@ -11,11 +11,10 @@ const SelectLopHanhChinhDebounce = (props: {
   value?: string;
   onChange?: any;
   multiple?: boolean;
-  mode?: 'multiple' | 'tags' | undefined;
   disabled?: boolean;
   selectTen?: boolean;
 }) => {
-  const { value, onChange, multiple, disabled, selectTen,mode } = props;
+  const { value, onChange, multiple, disabled, selectTen } = props;
   const { danhSach, getModel, setFilters, filters, loading } = useModel('daotao.lophanhchinh');
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const SelectLopHanhChinhDebounce = (props: {
 
   return (
     <Select
-      mode={mode?mode:multiple ? 'multiple' : undefined}
+      mode={multiple ? 'multiple' : undefined}
       value={value}
       onChange={onChange}
       disabled={disabled}
