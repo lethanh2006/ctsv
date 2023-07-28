@@ -181,12 +181,12 @@
 
   //////////////////////
   // SU KIEN
-  {
-    name: 'SuKien',
-    icon: 'calendar',
-    path: '/su-kien',
-    component: './SuKien',
-  },
+  // {
+  //   name: 'SuKien',
+  //   icon: 'calendar',
+  //   path: '/su-kien',
+  //   component: './SuKien',
+  // },
 
   //////////////////////
   // THONG BAO
@@ -220,49 +220,90 @@
 
   // TIEN ICH
   {
-    name: 'TienIch',
+    name: 'KhaoSat',
+    path: 'khao-sat',
     icon: 'form',
-    path: '/tien-ich',
     routes: [
       {
-        name: 'KhaoSat',
-        path: 'khao-sat',
-        routes: [
-          {
-            name: 'BieuMauKhaoSat',
-            path: 'bieu-mau-khao-sat',
-            component: './TienIch/KhaoSat',
-          },
-          {
-            name: 'DotKhaoSat',
-            path: 'dot-khao-sat',
-            component: './TienIch/KhaoSat/DotKhaoSat',
-          },
-        ],
+        name: 'BieuMauKhaoSat',
+        path: 'bieu-mau-khao-sat',
+        component: './TienIch/KhaoSat',
       },
-      // {
-      //   name: 'TracNghiem',
-      //   path: './tracnghiem',
-      //   component: './BieuMau/TracNghiem',
-      // },
-      // {
-      //   name: 'KhaiBaoSucKhoe',
-      //   path: './khaibaosuckhoe',
-      //   component: './BieuMau/KhaiBaoSucKhoe',
-      // },
       {
-        name: 'CauHoiThuongGap',
-        path: 'cau-hoi-thuong-gap',
-        component: './TienIch/CauHoiThuongGap',
-      },
-
-      {
-        name: 'VanBanHuongDan',
-        path: 'van-ban-huong-dan',
-        component: './TienIch/VanBanHuongDan',
+        name: 'DotKhaoSat',
+        path: 'dot-khao-sat',
+        component: './TienIch/KhaoSat/DotKhaoSat',
       },
     ],
   },
+  // {
+  //   name: 'TracNghiem',
+  //   path: './tracnghiem',
+  //   component: './BieuMau/TracNghiem',
+  // },
+  // {
+  //   name: 'KhaiBaoSucKhoe',
+  //   path: './khaibaosuckhoe',
+  //   component: './BieuMau/KhaiBaoSucKhoe',
+  // },
+  {
+    name: 'CauHoiThuongGap',
+    path: 'cau-hoi-thuong-gap',
+    icon: 'QuestionCircleOutlined',
+    component: './TienIch/CauHoiThuongGap',
+  },
+
+  {
+    name: 'VanBanHuongDan',
+    path: 'van-ban-huong-dan',
+    icon: 'FileTextOutlined',
+    component: './TienIch/VanBanHuongDan',
+  },
+
+  // {
+  //   name: 'TienIch',
+  //   icon: 'form',
+  //   path: '/tien-ich',
+  //   routes: [
+  //     {
+  //       name: 'KhaoSat',
+  //       path: 'khao-sat',
+  //       routes: [
+  //         {
+  //           name: 'BieuMauKhaoSat',
+  //           path: 'bieu-mau-khao-sat',
+  //           component: './TienIch/KhaoSat',
+  //         },
+  //         {
+  //           name: 'DotKhaoSat',
+  //           path: 'dot-khao-sat',
+  //           component: './TienIch/KhaoSat/DotKhaoSat',
+  //         },
+  //       ],
+  //     },
+  //     // {
+  //     //   name: 'TracNghiem',
+  //     //   path: './tracnghiem',
+  //     //   component: './BieuMau/TracNghiem',
+  //     // },
+  //     // {
+  //     //   name: 'KhaiBaoSucKhoe',
+  //     //   path: './khaibaosuckhoe',
+  //     //   component: './BieuMau/KhaiBaoSucKhoe',
+  //     // },
+  //     {
+  //       name: 'CauHoiThuongGap',
+  //       path: 'cau-hoi-thuong-gap',
+  //       component: './TienIch/CauHoiThuongGap',
+  //     },
+  //
+  //     {
+  //       name: 'VanBanHuongDan',
+  //       path: 'van-ban-huong-dan',
+  //       component: './TienIch/VanBanHuongDan',
+  //     },
+  //   ],
+  // },
 
   {
     path: '/notification',

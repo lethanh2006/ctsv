@@ -154,6 +154,7 @@ const DotKhaoSatPage = () => {
                       fileDownload(res.data, 'Kết quả khảo sát.xlsx'),
                     );
                   }}
+                  type={'link'}
                   icon={<ExportOutlined />}
                 />
               </Tooltip>
@@ -161,6 +162,7 @@ const DotKhaoSatPage = () => {
 
               <Tooltip title="Thống kê">
                 <Button
+                  type={'link'}
                   onClick={() => onStatistic(record)}
                   shape="circle"
                   icon={<PieChartOutlined />}
@@ -170,6 +172,7 @@ const DotKhaoSatPage = () => {
 
               <Tooltip title="Xem trước">
                 <Button
+                  type={'link'}
                   onClick={() => getBieuMau(record.idKhaoSat).then(() => setVisibleBieuMau(true))}
                   shape="circle"
                   icon={<EyeOutlined />}
@@ -183,7 +186,7 @@ const DotKhaoSatPage = () => {
                     setForm('edit');
                     handleEdit(record);
                   }}
-                  type="primary"
+                  type={'link'}
                   shape="circle"
                   icon={<EditOutlined />}
                   disabled={record.kichHoat}
@@ -200,6 +203,7 @@ const DotKhaoSatPage = () => {
                   disabled={record.kichHoat}
                 >
                   <Button
+                    type={'link'}
                     shape="circle"
                     danger
                     icon={<DeleteOutlined />}
