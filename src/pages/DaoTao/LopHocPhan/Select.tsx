@@ -25,7 +25,7 @@ const SelectLopHocPhanDebounce = (props: {
   const searchDebounceLopHocPhan = _.debounce((val) => {
     setFilters([{ active: true, field: 'ten', values: [val], operator: EOperatorType.CONTAIN }]);
   }, 800);
-  console.log('danh sach lop',danhSach)
+
   return (
     <Select
       mode={multiple ? 'multiple' : undefined}
