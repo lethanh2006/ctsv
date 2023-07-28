@@ -38,9 +38,9 @@ export default {
   'menu.TinTuc.TinTuc': 'Tin tức',
 
   'menu.TienIch': 'Tiện ích',
-  'menu.TienIch.KhaoSat': 'Khảo sát',
-  'menu.TienIch.KhaoSat.BieuMauKhaoSat': 'Biểu mẫu khảo sát',
-  'menu.TienIch.KhaoSat.DotKhaoSat': 'Đợt khảo sát',
-  'menu.TienIch.CauHoiThuongGap': 'Câu hỏi thường gặp',
-  'menu.TienIch.VanBanHuongDan': 'Văn bản hướng dẫn',
+  'menu.KhaoSat': 'Khảo sát',
+  'menu.KhaoSat.BieuMauKhaoSat': 'Biểu mẫu khảo sát',
+  'menu.KhaoSat.DotKhaoSat': 'Đợt khảo sát',
+  'menu.CauHoiThuongGap': 'Câu hỏi thường gặp',
+  'menu.VanBanHuongDan': 'Văn bản hướng dẫn',
 };
