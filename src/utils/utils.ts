@@ -452,3 +452,7 @@ export const resetFieldsForm = (form: any, formDefaultValues?: Record<string, an
   Object.keys(values).map((k) => (values[k] = undefined));
   form.setFieldsValue({ ...values, ...(formDefaultValues ?? {}) });
 };
+export function includes(str1: string, str2: string) {
+  // str1 có chứa str2 ko
+  return Format(str1).includes(Format(str2));
+}
