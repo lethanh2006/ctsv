@@ -9,12 +9,17 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectMauKhaoSat from '../components/Select';
 import GroupTagVaiTro from './GroupTagVaiTro';
+import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
+import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
+import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectKhoaNganh from '@/pages/DaoTao/KhoaNganh/Select';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
+import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
 
 const FormDotKhaoSat = (props: any) => {
   const [form] = Form.useForm();
   const { formSubmiting, record, setVisibleForm, edit, putModel, postModel, visibleForm } =
     useModel('tienich.dotkhaosat');
-  const { setConditionNguoiDungCuThe, conditionNguoiDungCuThe } = useModel('user');
   const [doiTuong, setDoiTuong] = useState<ELoaiDoiTuong | undefined>(
     record?.loaiDoiTuongSuDung?.[0] ?? ELoaiDoiTuong.TAT_CA,
   );
@@ -52,6 +57,7 @@ const FormDotKhaoSat = (props: any) => {
   };
 
   const onFinish = async (values: any) => {
+    console.log('values', values);
     if (isNguoiDungCuThe) {
       values.danhSachLopHanhChinh = [];
       values.danhSachLopTinChi = [];
@@ -59,35 +65,35 @@ const FormDotKhaoSat = (props: any) => {
       values.danhSachKhoaHoc = [];
       values.danhSachVaiTro = [];
     } else {
-      values.danhSachLopHanhChinh = buildListDoiTuongSuDung(
-        values?.danhSachLopHanhChinh ?? [],
-        'danhSachLopHanhChinh',
-      );
-      values.danhSachLopTinChi = buildListDoiTuongSuDung(
-        values?.danhSachLopTinChi ?? [],
-        'danhSachLopTinChi',
-      );
-      values.danhSachNganhHoc = buildListDoiTuongSuDung(
-        values?.danhSachNganhHoc ?? [],
-        'danhSachNganhHoc',
-      );
-      values.danhSachKhoaHoc = buildListDoiTuongSuDung(
-        values?.danhSachKhoaHoc ?? [],
-        'danhSachKhoaHoc',
-      );
+      // values.danhSachLopHanhChinh = buildListDoiTuongSuDung(
+      //   values?.danhSachLopHanhChinh ?? [],
+      //   'danhSachLopHanhChinh',
+      // );
+      // values.danhSachLopTinChi = buildListDoiTuongSuDung(
+      //   values?.danhSachLopTinChi ?? [],
+      //   'danhSachLopTinChi',
+      // );
+      // values.danhSachNganhHoc = buildListDoiTuongSuDung(
+      //   values?.danhSachNganhHoc ?? [],
+      //   'danhSachNganhHoc',
+      // );
+      // values.danhSachKhoaHoc = buildListDoiTuongSuDung(
+      //   values?.danhSachKhoaHoc ?? [],
+      //   'danhSachKhoaHoc',
+      // );
     }
-    values.danhSachNguoiDung = values?.danhSachNguoiDung?.map((item: string) => {
-      const infoUser = item?.split('||');
-      if (infoUser.length === 1) {
-        return record?.danhSachNguoiDung?.find(
-          (ele: BieuMau.GeneralInfo) => ele?.code === infoUser?.[0]?.split('-')?.[0],
-        );
-      } else
-        return {
-          code: infoUser?.[0],
-          name: infoUser?.[1],
-        };
-    });
+    // values.danhSachNguoiDung = values?.danhSachNguoiDung?.map((item: string) => {
+    //   const infoUser = item?.split('||');
+    //   if (infoUser.length === 1) {
+    //     return record?.danhSachNguoiDung?.find(
+    //       (ele: BieuMau.GeneralInfo) => ele?.code === infoUser?.[0]?.split('-')?.[0],
+    //     );
+    //   } else
+    //     return {
+    //       code: infoUser?.[0],
+    //       name: infoUser?.[1],
+    //     };
+    // });
     const thoiGianBatDau = values?.thoiGian?.[0] ?? values.thoiGianBatDau;
     const thoiGianKetThuc = values?.thoiGian?.[1] ?? values.thoiGianKetThuc;
     delete values.thoiGian;
@@ -220,30 +226,7 @@ const FormDotKhaoSat = (props: any) => {
                 isNguoiDungCuThe ? [] : record?.danhSachLopHanhChinh?.map((item) => item.name)
               }
             >
-              {/* <Select
-                  maxTagCount={8}
-                  onChange={(val: string[]) => {
-                    if (!isNguoiDungCuThe) return;
-                    setConditionNguoiDungCuThe({
-                      ...conditionNguoiDungCuThe,
-                      lopHanhChinhIds:
-                        val.length > 0 ? val?.map((item) => item?.split('||')?.[0]) : undefined,
-                    });
-                  }}
-                  onSearch={(value) => {
-                    debouncedSearchLopHanhChinh(value);
-                  }}
-                  showSearch
-                  allowClear
-                  mode="tags"
-                  placeholder="Lớp hành chính"
-                >
-                  {danhSach.map((item) => (
-                    <Select.Option key={item.id} value={`${item.id}||${item.ten_lop_hanh_chinh}`}>
-                      {item.ten_lop_hanh_chinh}
-                    </Select.Option>
-                  ))}
-                </Select> */}
+              <SelectLopHanhChinhDebounce multiple={true} selectTen={true} />
             </Form.Item>
             {/* {!isNguoiDungCuThe && renderButtonImportExcel('danhSachLopHanhChinh')} */}
           </div>
@@ -259,33 +242,7 @@ const FormDotKhaoSat = (props: any) => {
                 isNguoiDungCuThe ? [] : record?.danhSachLopTinChi?.map((item) => item.name)
               }
             >
-              {/* <Select
-                  maxTagCount={8}
-                  onChange={(val: string[]) => {
-                    if (!isNguoiDungCuThe) return;
-                    setConditionNguoiDungCuThe({
-                      ...conditionNguoiDungCuThe,
-                      lopTinChiIds:
-                        val.length > 0 ? val?.map((item) => item?.split('||')?.[0]) : undefined,
-                    });
-                  }}
-                  onSearch={(value) => {
-                    debouncedSearchLopTinChi(value);
-                  }}
-                  showSearch
-                  allowClear
-                  mode="tags"
-                  placeholder="Tìm kiếm theo tên lớp"
-                >
-                  {danhSachLopTinChi.map((item) => (
-                    <Select.Option
-                      key={item.ten_lop_tin_chi}
-                      value={`${item.id}||${item.ten_lop_tin_chi}`}
-                    >
-                      {item.ten_lop_tin_chi}
-                    </Select.Option>
-                  ))}
-                </Select> */}
+              <SelectLopHocPhanDebounce multiple selectTen={true} />
             </Form.Item>
             {/* {!isNguoiDungCuThe && renderButtonImportExcel('danhSachLopTinChi')} */}
           </div>
@@ -302,31 +259,25 @@ const FormDotKhaoSat = (props: any) => {
                 : record?.danhSachKhoaHoc?.map((item) => `${item.id}||${item.name}`)
             }
           >
-            <Select
-              maxTagCount={8}
-              onChange={(val: string[]) => {
-                if (!isNguoiDungCuThe) return;
-                setConditionNguoiDungCuThe({
-                  ...conditionNguoiDungCuThe,
-                  khoaSinhVienIds:
-                    val.length > 0 ? val?.map((item) => item?.split('||')?.[0]) : undefined,
-                });
-              }}
-              filterOption={(value, option) => includes(option?.props.children, value)}
-              showSearch
-              allowClear
-              mode="tags"
-              placeholder="Chọn khóa"
-            >
-              {/* {danhSachKhoaHoc?.map((item) => (
-                    <Select.Option
-                      key={item.display_name}
-                      value={`${item.id}||${item.display_name}`}
-                    >
-                      {item.display_name}
-                    </Select.Option>
-                  ))} */}
-            </Select>
+            {/*<Select*/}
+            {/*  maxTagCount={8}*/}
+            {/*  onChange={(val: string[]) => {*/}
+            {/*    if (!isNguoiDungCuThe) return;*/}
+            {/*    setConditionNguoiDungCuThe({*/}
+            {/*      ...conditionNguoiDungCuThe,*/}
+            {/*      khoaSinhVienIds:*/}
+            {/*        val.length > 0 ? val?.map((item) => item?.split('||')?.[0]) : undefined,*/}
+            {/*    });*/}
+            {/*  }}*/}
+            {/*  filterOption={(value, option) => includes(option?.props.children, value)}*/}
+            {/*  showSearch*/}
+            {/*  allowClear*/}
+            {/*  mode="tags"*/}
+            {/*  placeholder="Chọn khóa"*/}
+            {/*>*/}
+
+            {/*</Select>*/}
+            <SelectKhoaSinhVien multiple={true} />
           </Form.Item>
         ) : doiTuong === ELoaiDoiTuong.NGANH ? (
           <Form.Item
@@ -341,57 +292,27 @@ const FormDotKhaoSat = (props: any) => {
                 : record?.danhSachNganhHoc?.map((item) => `${item.id}||${item.name}`)
             }
           >
-            <Select
-              maxTagCount={8}
-              onChange={(val: string[]) => {
-                if (!isNguoiDungCuThe) return;
-                setConditionNguoiDungCuThe({
-                  ...conditionNguoiDungCuThe,
-                  nganhIds: val.length > 0 ? val?.map((item) => item?.split('||')?.[0]) : undefined,
-                });
-              }}
-              filterOption={(value, option) => includes(option?.props.children, value)}
-              showSearch
-              allowClear
-              mode="tags"
-              placeholder="Ngành học"
-            >
-              {/* {danhSachNganh.map((item) => (
-                    <Select.Option
-                      key={item.ten_nganh_viet_tat}
-                      value={`${item.id}||${item.ten_nganh} (${item.ten_nganh_viet_tat})`}
-                    >
-                      {item.ten_nganh} ({item.ten_nganh_viet_tat})
-                    </Select.Option>
-                  ))} */}
-            </Select>
+            <SelectNganhCoSo multiple={true} />
           </Form.Item>
         ) : doiTuong === ELoaiDoiTuong.NGUOI_DUNG_CU_THE ? (
-          <Form.Item
-            style={{ marginBottom: 8, marginRight: 8, width: '100%' }}
-            rules={[...rules.required]}
-            name="danhSachNguoiDung"
-            label="Người dùng cụ thể"
-            initialValue={record?.danhSachNguoiDung?.map((item) => `${item?.code}||${item?.name}`)}
-          >
-            {/* <Select
-              maxTagCount={8}
-              onSearch={(value) => {
-                debouncedSearchUser(value);
-              }}
-              showSearch
-              allowClear
-              mode="tags"
-              placeholder="Tìm kiếm theo mã định danh"
-              filterOption={(value, option) => includes(option?.props.children, value)}
+          <>
+            {/*<Form.Item*/}
+            {/*  style={{ marginBottom: 8, marginRight: 8, width: '100%' }}*/}
+            {/*  label="Chọn khoá ngành"*/}
+            {/*>*/}
+            {/*  <SelectKhoaNganh />*/}
+            {/*</Form.Item>*/}
+
+            <Form.Item
+              style={{ marginBottom: 8, marginRight: 8, width: '100%' }}
+              rules={[...rules.required]}
+              name="danhSachNguoiDung"
+              label="Người dùng cụ thể"
+              initialValue={record?.danhSachNguoiDung}
             >
-              {danhSachNguoiDungCuThe.map((item) => (
-                <Select.Option key={item?.code} value={`${item?.code}||${item?.name}`}>
-                  {item?.code}-{item?.name}
-                </Select.Option>
-              ))}
-            </Select> */}
-          </Form.Item>
+              <SelectSinhVienDebounce multiple={true}/>
+            </Form.Item>
+          </>
         ) : null}
 
         <Row gutter={[12, 0]}>
@@ -401,12 +322,12 @@ const FormDotKhaoSat = (props: any) => {
               label={isNguoiDungCuThe ? 'Lọc theo vai trò' : 'Vai trò'}
             >
               <GroupTagVaiTro
-                onChange={(val: string[]) => {
-                  setConditionNguoiDungCuThe({
-                    ...conditionNguoiDungCuThe,
-                    vaiTroList: val?.length > 0 ? val : undefined,
-                  });
-                }}
+              // onChange={(val: string[]) => {
+              //   setConditionNguoiDungCuThe({
+              //     ...conditionNguoiDungCuThe,
+              //     vaiTroList: val?.length > 0 ? val : undefined,
+              //   });
+              // }}
               />
             </Form.Item>
           </Col>
