@@ -142,20 +142,20 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
                   />
                 </Form.Item>
 
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    form.setFieldsValue({
-                      amountPaid:
-                        invoice?.amountRemaining && invoice.amountRemaining > 0
-                          ? invoice.amountDue - invoice.amountPaid
-                          : invoice.amountPaid - invoice.amountDue,
-                    });
-                  }}
-                  style={{ marginLeft: 10 }}
-                >
-                  Thanh toán hết
-                </Button>
+                {/*<Button*/}
+                {/*  type="primary"*/}
+                {/*  onClick={() => {*/}
+                {/*    form.setFieldsValue({*/}
+                {/*      amountPaid:*/}
+                {/*        invoice?.amountRemaining && invoice.amountRemaining > 0*/}
+                {/*          ? invoice.amountDue - invoice.amountPaid*/}
+                {/*          : invoice.amountPaid - invoice.amountDue,*/}
+                {/*    });*/}
+                {/*  }}*/}
+                {/*  style={{ marginLeft: 10 }}*/}
+                {/*>*/}
+                {/*  Thanh toán hết*/}
+                {/*</Button>*/}
               </div>
             </Descriptions.Item>
             <Descriptions.Item label="Thời gian thanh toán">
@@ -173,35 +173,35 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
         )}
       </Descriptions>
 
-      {(invoice?.amountRemaining && invoice.amountRemaining > 0) ||
-      (invoice?.amountRefund && invoice.amountRefund > 0) ? (
-        <Form.Item style={{ textAlign: 'center', marginBottom: 0, marginTop: 8 }}>
-          {/* {invoice?.amountPaid && invoice.amountPaid > 0 ? (
-            <Button
-              onClick={() => {
-                setEdit(true);
-              }}
-              style={{ marginRight: 8 }}
-              icon={<FormOutlined />}
-            >
-              Chỉnh sửa
-            </Button>
-          ) : (
-            <></>
-          )} */}
+      {/*{(invoice?.amountRemaining && invoice.amountRemaining > 0) ||*/}
+      {/*(invoice?.amountRefund && invoice.amountRefund > 0) ? (*/}
+      {/*  <Form.Item style={{ textAlign: 'center', marginBottom: 0, marginTop: 8 }}>*/}
+      {/*    /!* {invoice?.amountPaid && invoice.amountPaid > 0 ? (*/}
+      {/*      <Button*/}
+      {/*        onClick={() => {*/}
+      {/*          setEdit(true);*/}
+      {/*        }}*/}
+      {/*        style={{ marginRight: 8 }}*/}
+      {/*        icon={<FormOutlined />}*/}
+      {/*      >*/}
+      {/*        Chỉnh sửa*/}
+      {/*      </Button>*/}
+      {/*    ) : (*/}
+      {/*      <></>*/}
+      {/*    )} *!/*/}
 
-          <Button
-            icon={<EditOutlined />}
-            type="primary"
-            htmlType="submit"
-            style={{ marginTop: 10 }}
-          >
-            Cập nhật thông tin thanh toán
-          </Button>
-        </Form.Item>
-      ) : (
-        <div />
-      )}
+      {/*    <Button*/}
+      {/*      icon={<EditOutlined />}*/}
+      {/*      type="primary"*/}
+      {/*      htmlType="submit"*/}
+      {/*      style={{ marginTop: 10 }}*/}
+      {/*    >*/}
+      {/*      Cập nhật thông tin thanh toán*/}
+      {/*    </Button>*/}
+      {/*  </Form.Item>*/}
+      {/*) : (*/}
+      {/*  <div />*/}
+      {/*)}*/}
     </Form>
     // chưa có api edit & refund
   );
