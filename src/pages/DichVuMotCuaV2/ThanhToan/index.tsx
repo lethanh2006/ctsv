@@ -76,7 +76,7 @@ const ThanhToan = (props: { identityCode: string; isCongNo?: boolean }) => {
                 width: 200,
                 align: 'center',
                 render: (record: any) => (
-                  <div>{currencyFormat(record?.quantity * record?.unitAmount)} đồng</div>
+                  <div>{currencyFormat(record?.quantity * record?.unitAmount)} VND</div>
                 ),
               },
             ]}
@@ -102,7 +102,7 @@ const ThanhToan = (props: { identityCode: string; isCongNo?: boolean }) => {
                 width: 100,
                 align: 'center',
                 dataIndex: 'amountPaid',
-                render: (val: number) => <div>{currencyFormat(val)}</div>,
+                render: (val: number) => <div>{currencyFormat(val)} VND</div>,
               },
 
               {

@@ -48,18 +48,18 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
         {invoice?.metadata?.loai === 'Dịch vụ một cửa' && (
           <p>{`Số lượng: ${invoice?.items?.[0]?.quantity ?? 0} ${
             invoice?.items?.[0]?.unitLabel ?? ''
-          }. Mức lệ phí: ${currencyFormat(invoice?.items?.[0]?.unitAmount ?? 0)} đ/${
+          }. Mức lệ phí: ${currencyFormat(invoice?.items?.[0]?.unitAmount ?? 0)} VND/${
             invoice?.items?.[0]?.unitLabel ?? ''
           }`}</p>
         )}
       </>
       <Descriptions column={1} bordered>
         <Descriptions.Item label="Số tiền phải nộp">
-          {currencyFormat(invoice?.amountDue ?? 0)} đ
+          {currencyFormat(invoice?.amountDue ?? 0)} VND
         </Descriptions.Item>
         {!edit ? (
           <Descriptions.Item label="Số tiền đã nộp">
-            {currencyFormat(invoice?.amountPaid ?? 0)} đ
+            {currencyFormat(invoice?.amountPaid ?? 0)} VND
           </Descriptions.Item>
         ) : (
           <Descriptions.Item label="Số tiền đã nộp">
@@ -106,71 +106,71 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
           </Descriptions.Item>
         )}
         <Descriptions.Item label="Số tiền còn lại phải nộp">
-          {currencyFormat(invoice?.amountRemaining ?? 0)} đ
+          {currencyFormat(invoice?.amountRemaining ?? 0)} VND
         </Descriptions.Item>
         <Descriptions.Item label={'Số tiền phải hoàn trả'}>
-          {currencyFormat(invoice?.amountRefund ?? 0)} đ
+          {currencyFormat(invoice?.amountRefund ?? 0)} VND
         </Descriptions.Item>
-        {((invoice?.amountRemaining && invoice.amountRemaining > 0) ||
-          (invoice?.amountRefund && invoice.amountRefund > 0)) && (
-          <>
-            <Descriptions.Item
-              label={invoice?.amountRemaining ?? 0 > 0 ? 'Thanh toán' : 'Hoàn trả'}
-            >
-              <div style={{ display: 'flex' }}>
-                <Form.Item
-                  style={{ marginBottom: 0 }}
-                  initialValue={currencyFormat(0)}
-                  rules={[...rules.required]}
-                  name="amountPaid"
-                >
-                  <InputNumber
-                    addonAfter={'đ'}
-                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    max={
-                      invoice?.amountRefund && invoice.amountRefund > 0
-                        ? invoice.amountRefund
-                        : 99999999
-                    }
-                    style={{ width: 180 }}
-                    placeholder={
-                      invoice?.amountRemaining && invoice.amountRemaining > 0
-                        ? 'Số tiền cần thanh toán'
-                        : 'Số tiền cần hoàn trả'
-                    }
-                    min={0}
-                  />
-                </Form.Item>
+        {/*{((invoice?.amountRemaining && invoice.amountRemaining > 0) ||*/}
+        {/*  (invoice?.amountRefund && invoice.amountRefund > 0)) && (*/}
+        {/*  <>*/}
+        {/*    <Descriptions.Item*/}
+        {/*      label={invoice?.amountRemaining ?? 0 > 0 ? 'Thanh toán' : 'Hoàn trả'}*/}
+        {/*    >*/}
+        {/*      <div style={{ display: 'flex' }}>*/}
+        {/*        <Form.Item*/}
+        {/*          style={{ marginBottom: 0 }}*/}
+        {/*          initialValue={currencyFormat(0)}*/}
+        {/*          rules={[...rules.required]}*/}
+        {/*          name="amountPaid"*/}
+        {/*        >*/}
+        {/*          <InputNumber*/}
+        {/*            addonAfter={'đ'}*/}
+        {/*            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}*/}
+        {/*            max={*/}
+        {/*              invoice?.amountRefund && invoice.amountRefund > 0*/}
+        {/*                ? invoice.amountRefund*/}
+        {/*                : 99999999*/}
+        {/*            }*/}
+        {/*            style={{ width: 180 }}*/}
+        {/*            placeholder={*/}
+        {/*              invoice?.amountRemaining && invoice.amountRemaining > 0*/}
+        {/*                ? 'Số tiền cần thanh toán'*/}
+        {/*                : 'Số tiền cần hoàn trả'*/}
+        {/*            }*/}
+        {/*            min={0}*/}
+        {/*          />*/}
+        {/*        </Form.Item>*/}
 
-                {/*<Button*/}
-                {/*  type="primary"*/}
-                {/*  onClick={() => {*/}
-                {/*    form.setFieldsValue({*/}
-                {/*      amountPaid:*/}
-                {/*        invoice?.amountRemaining && invoice.amountRemaining > 0*/}
-                {/*          ? invoice.amountDue - invoice.amountPaid*/}
-                {/*          : invoice.amountPaid - invoice.amountDue,*/}
-                {/*    });*/}
-                {/*  }}*/}
-                {/*  style={{ marginLeft: 10 }}*/}
-                {/*>*/}
-                {/*  Thanh toán hết*/}
-                {/*</Button>*/}
-              </div>
-            </Descriptions.Item>
-            <Descriptions.Item label="Thời gian thanh toán">
-              <Form.Item initialValue={moment(invoice?.transactionDate)} name="transactionDate">
-                <DatePicker
-                  style={{ width: 180, minWidth: 180 }}
-                  showTime
-                  format="HH:mm DD/MM/YYYY"
-                  placeholder="Chọn thời gian"
-                  disabledDate={(cur) => moment(cur).isAfter(moment())}
-                />
-              </Form.Item>
-            </Descriptions.Item>
-          </>
-        )}
+        {/*        /!*<Button*!/*/}
+        {/*        /!*  type="primary"*!/*/}
+        {/*        /!*  onClick={() => {*!/*/}
+        {/*        /!*    form.setFieldsValue({*!/*/}
+        {/*        /!*      amountPaid:*!/*/}
+        {/*        /!*        invoice?.amountRemaining && invoice.amountRemaining > 0*!/*/}
+        {/*        /!*          ? invoice.amountDue - invoice.amountPaid*!/*/}
+        {/*        /!*          : invoice.amountPaid - invoice.amountDue,*!/*/}
+        {/*        /!*    });*!/*/}
+        {/*        /!*  }}*!/*/}
+        {/*        /!*  style={{ marginLeft: 10 }}*!/*/}
+        {/*        /!*>*!/*/}
+        {/*        /!*  Thanh toán hết*!/*/}
+        {/*        /!*</Button>*!/*/}
+        {/*      </div>*/}
+        {/*    </Descriptions.Item>*/}
+        {/*    <Descriptions.Item label="Thời gian thanh toán">*/}
+        {/*      <Form.Item initialValue={moment(invoice?.transactionDate)} name="transactionDate">*/}
+        {/*        <DatePicker*/}
+        {/*          style={{ width: 180, minWidth: 180 }}*/}
+        {/*          showTime*/}
+        {/*          format="HH:mm DD/MM/YYYY"*/}
+        {/*          placeholder="Chọn thời gian"*/}
+        {/*          disabledDate={(cur) => moment(cur).isAfter(moment())}*/}
+        {/*        />*/}
+        {/*      </Form.Item>*/}
+        {/*    </Descriptions.Item>*/}
+        {/*  </>*/}
+        {/*)}*/}
       </Descriptions>
 
       {/*{(invoice?.amountRemaining && invoice.amountRemaining > 0) ||*/}
