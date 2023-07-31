@@ -30,7 +30,7 @@ const ThanhToan = (props: { identityCode: string; isCongNo?: boolean }) => {
     <div>
       <ThongTinThanhToan
         isCongNo={props?.isCongNo ?? false}
-        trangThaiThanhToan={invoice?.status ?? TrangThaiThanhToan.open}
+        trangThaiThanhToan={invoice?.status ?? TrangThaiThanhToan?.open}
       />
       {invoice?.metadata?.loai !== 'Dịch vụ một cửa' &&
       invoice?.metadata?.thongTinChiTiet?.length ? (
