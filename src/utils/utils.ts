@@ -1,9 +1,10 @@
 import { uploadFile } from '@/services/uploadFile';
 import { message } from 'antd';
+import { type AxiosResponse } from 'axios';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from 'axios';
 
 const reg =
   /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -453,10 +454,12 @@ export const resetFieldsForm = (form: any, formDefaultValues?: Record<string, an
   Object.keys(values).map((k) => (values[k] = undefined));
   form.setFieldsValue({ ...values, ...(formDefaultValues ?? {}) });
 };
-export function includes(str1: string, str2: string) {
-  // str1 có chứa str2 ko
-  return Format(str1).includes(Format(str2));
-}
+
+/**
+ * Get file name from response's header
+ * @param response Response from Export API
+ * @returns
+ */
 export const getFilenameHeader = (response: AxiosResponse<any>) => {
   const token = String(response.headers['content-disposition'])
     .split(';')
@@ -467,3 +470,8 @@ export const getFilenameHeader = (response: AxiosResponse<any>) => {
     return decodeURIComponent(token.substring(10).slice(0, -1));
   }
 };
+
+export function includes(str1: string, str2: string) {
+  // str1 có chứa str2 ko
+  return Format(str1).includes(Format(str2));
+}
