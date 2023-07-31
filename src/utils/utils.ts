@@ -3,6 +3,7 @@ import { message } from 'antd';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
+import {AxiosResponse} from "axios";
 
 const reg =
   /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -456,3 +457,13 @@ export function includes(str1: string, str2: string) {
   // str1 có chứa str2 ko
   return Format(str1).includes(Format(str2));
 }
+export const getFilenameHeader = (response: AxiosResponse<any>) => {
+  const token = String(response.headers['content-disposition'])
+    .split(';')
+    .find((a) => a.startsWith('filename='));
+  if (!token) {
+    return 'Tài liệu';
+  } else {
+    return decodeURIComponent(token.substring(10).slice(0, -1));
+  }
+};

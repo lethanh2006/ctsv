@@ -264,6 +264,7 @@ export async function downloadDon(payload: { idDon: string; mauExport: 'MAU_DON'
 export async function printDon(payload: { idDon: string; mauExport: 'MAU_DON' | 'TRA_LOI' }) {
   return axios.get(
     `${ip3}/don-dvmc/${payload.idDon}/export/word/?mauExport=${payload.mauExport}&exportType=pdf`,
+    { responseType: 'arraybuffer' },
   );
 }
 

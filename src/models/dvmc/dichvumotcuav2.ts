@@ -46,6 +46,7 @@ import { message } from 'antd';
 import FileDownload from 'js-file-download';
 import { useState } from 'react';
 import { useModel } from 'umi';
+import {getFilenameHeader} from "@/utils/utils";
 
 export default () => {
   const objInit = useInitModel<DichVuMotCuaV2.BieuMau>('dvmc');
@@ -699,10 +700,12 @@ export default () => {
       setLoading(true);
       if (payload?.exportType === 'pdf') {
         const response = await printDon(payload);
-        window.open(response?.data?.url);
+        // window.open(response?.data?.url);
+        // const response = await downloadDon(payload);
+        FileDownload(response.data, getFilenameHeader(response)||`${payload?.tenDon ?? 'dondichvu'}.pdf`);
       } else {
         const response = await downloadDon(payload);
-        FileDownload(response.data, `${payload?.tenDon ?? 'dondichvu'}.doc`);
+        FileDownload(response.data, getFilenameHeader(response)||`${payload?.tenDon ?? 'dondichvu'}.doc`);
       }
       setLoading(false);
     } catch (err) {

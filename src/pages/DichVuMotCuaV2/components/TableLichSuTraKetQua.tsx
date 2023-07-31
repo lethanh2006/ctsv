@@ -1,8 +1,9 @@
 
 import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import moment from 'moment';
-import {Table} from "antd";
-import {IColumn} from "@/components/Table/typing";
+import {useModel} from "umi";
+import { IColumn } from '@/components/Table/typing';
+import TableStaticData from "@/components/Table/TableStaticData";
 
 const TableLichSuTraKetQua = (props: { data: DichVuMotCuaV2.LichSuChinhSua[] }) => {
   const columns: IColumn<DichVuMotCuaV2.LichSuChinhSua>[] = [
@@ -52,9 +53,9 @@ const TableLichSuTraKetQua = (props: { data: DichVuMotCuaV2.LichSuChinhSua[] }) 
   ];
 
   return (
-    <Table
+    <TableStaticData
       columns={columns}
-      data={props.data?.map((item, index) => ({ ...item, index: index + 1 }))}
+      data={props?.data?.map((item, index) => ({ ...item, index: index + 1 }))}
     />
   );
 };
