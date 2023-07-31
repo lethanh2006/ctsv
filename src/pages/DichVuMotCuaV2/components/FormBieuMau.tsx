@@ -37,6 +37,7 @@ import ThongTinNguoiTaoDon from './ThongTinNguoiTaoDon';
 import TieuDeBieuMau from './TieuDeBieuMau';
 import SelectTonGiao from '@/pages/Core/TonGiao/SelectTonGiao';
 import UploadFile from "@/components/Upload/UploadFile";
+import SelectDonViHanhChinhWithDinamicForm from '@/pages/Core/DonViHanhChinh/SelectDonViHanhChinhWithDinamicForm';
 
 mm.tz.setDefault('Asia/Ho_Chi_Minh');
 
@@ -307,20 +308,25 @@ const FormBieuMau = (props: {
         initialValue = item?.value;
         ruleElement = [];
         element = (
-          <SelectDonViHanhChinh
+          <SelectDonViHanhChinhWithDinamicForm
             form={form}
-            hasSoNha={item?.level === 4}
+            hideDiaChiCuThe={item?.level === 4}
             hideQuanHuyen={item?.level === 1}
             hideXaPhuong={[1, 2].includes(item?.level)}
             notRequiredDiaChiCuThe={!item?.isRequired}
             notRequiredQuanHuyen={!item?.isRequired}
             notRequiredTinh={!item?.isRequired}
             notRequiredXaPhuong={!item?.isRequired}
-            initialValue={{
-              tinhTp: item?.value?.tenTinh,
-              quanHuyen: item?.value?.tenQuanHuyen,
-              xaPhuong: item?.value?.tenPhuongXa,
-              soNhaTenDuong: item?.value?.soNhaTenDuong,
+            initialValue={
+              typeof item?.value?.maPhuongXa === 'string'
+                ? item?.value
+                : { ...item.value, maPhuongXa: item?.value?.maPhuongXa?.maPhuongXa }
+            }
+            fields={{
+              tinh: [`${name}.${item?.label ?? ''}`, 'maTinh'],
+              quanHuyen: [`${name}.${item?.label ?? ''}`, 'maQuanHuyen'],
+              xaPhuong: [`${name}.${item?.label ?? ''}`, 'maPhuongXa'],
+              diaChiCuThe: [`${name}.${item?.label ?? ''}`, 'soNhaTenDuong'],
             }}
           />
         );
