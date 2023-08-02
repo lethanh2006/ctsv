@@ -148,7 +148,7 @@ const FormDotKhaoSat = (props: any) => {
             <Form.Item name="thoiGian" label="Thời gian khảo sát" rules={[...rules.required]}>
               <DatePicker.RangePicker
                 format="HH:mm DD/MM/YYYY"
-                disabledDate={(cur) => moment(cur).isBefore(moment())}
+                disabledDate={(cur) => moment(cur).isBefore(moment(),'days')}
                 style={{ width: '100%' }}
                 placeholder={['Thời gian bắt đầu', 'Thời gian kết thúc']}
                 showTime

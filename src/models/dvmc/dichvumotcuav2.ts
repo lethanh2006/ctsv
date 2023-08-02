@@ -734,9 +734,7 @@ export default () => {
       setLoading(true);
       await adminDeleteDon(idDon);
       message.success('Xóa thành công');
-      if (role === 'dieuphoi') chuyenVienDieuPhoiGetDonModel();
-      else if (role === 'tiepnhan') chuyenVienXuLyGetDonModel();
-      else adminGetDonModel();
+     adminGetDonModel();
     } catch (err) {
       setLoading(false);
       message.error('Đơn đang được xử lý hoặc đã được thanh toán');
