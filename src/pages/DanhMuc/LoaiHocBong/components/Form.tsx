@@ -10,17 +10,17 @@ const FormLoaiHocBong = (props: any) => {
   const { title } = props;
 
   useEffect(() => {
-    if (record?._id) form.setFieldsValue(record);
-    else form.resetFields();
-  }, [record?._id]);
+    if (!visibleForm) resetFieldsForm(form);
+    else if (record?._id) form.setFieldsValue(record);
+  }, [record?._id, visibleForm]);
 
   const onFinish = async (values: LoaiHocBong.IRecord) => {
     if (edit) {
-      putModel(record?._id ?? '', values, getModel)
+      putModel(record?._id ?? '', values)
         .then()
         .catch((er) => console.log(er));
     } else
-      postModel(values, getModel)
+      postModel(values)
         .then(() => form.resetFields())
         .catch((er) => console.log(er));
   };
@@ -44,7 +44,7 @@ const FormLoaiHocBong = (props: any) => {
           <Button loading={formSubmiting} htmlType="submit" type="primary">
             {!edit ? 'Thêm mới ' : 'Lưu lại'}
           </Button>
-          <Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+          <Button onClick={() => setVisibleForm(false)}>Hủy</Button>
         </div>
       </Form>
     </Card>
