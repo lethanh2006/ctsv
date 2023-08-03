@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import type { SortEnd, SortableContainerProps } from 'react-sortable-hoc';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import { useModel } from 'umi';
+import ModalExport from './Export';
 import ModalImport from './Import';
 import ModalCustomFilter from './ModalCustomFilter';
 import { EOperatorType } from './constant';
@@ -69,6 +70,7 @@ const TableBase = (props: TableBaseProps) => {
   const hasFilter = columns?.filter((item) => item.filterType)?.length;
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [visibleImport, setVisibleImport] = useState(false);
+  const [visibleExport, setVisibleExport] = useState(false);
 
   useEffect(() => {
     setPage(1);
@@ -345,7 +347,11 @@ const TableBase = (props: TableBaseProps) => {
               Nhập dữ liệu
             </Button>
           ) : null}
-          {buttonOptions?.export ? <Button icon={<ExportOutlined />}>Xuất dữ liệu</Button> : null}
+          {buttonOptions?.export ? (
+            <Button icon={<ExportOutlined />} onClick={() => setVisibleExport(true)}>
+              Xuất dữ liệu
+            </Button>
+          ) : null}
 
           {props.otherButtons}
         </div>
@@ -506,6 +512,16 @@ const TableBase = (props: TableBaseProps) => {
             getData(params);
             setVisibleImport(false);
           }}
+        />
+      ) : null}
+
+      {buttonOptions?.export ? (
+        <ModalExport
+          visible={visibleExport}
+          modelName={modelName}
+          onCancel={() => setVisibleExport(false)}
+          fileName={`Danh sách ${title ?? 'dữ liệu'}.xlsx`}
+          condition={params}
         />
       ) : null}
     </>

@@ -15,7 +15,6 @@ const QuanLyDon = (props: { type?: string }) => {
     setRecord,
     setDanhSach,
     setCondition,
-    setFilterInfo,
     setLoaiDichVu,
     setPage,
     setTypeTraKetQua,
@@ -23,16 +22,15 @@ const QuanLyDon = (props: { type?: string }) => {
 
   useEffect(() => {
     setLoaiDichVu('DVMC');
-
     getAllBieuMauChuyenVienDieuPhoiModel('DVMC');
 
     return () => {
       setDanhSach([]);
       setRecord({} as DichVuMotCuaV2.BieuMau);
       setCondition({});
-      setFilterInfo({});
     };
   }, []);
+
   return (
     <Card title="Quản lý đơn">
       <Tabs
