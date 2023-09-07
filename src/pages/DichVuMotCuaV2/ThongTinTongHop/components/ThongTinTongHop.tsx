@@ -159,10 +159,10 @@ const ThongTinTongHop = () => {
 							return TrangThaiDonDVMC?.[item.trangThai];
 						})}
 						// yAxis={[[111], [12], [1]]}
-						yAxis={recordTongSoDon?.map((item) => {
+						yAxis={[recordTongSoDon?.map((item) => {
               // @ts-ignore
               return item.soLuong;
-            })}
+            })]}
 						yLabel={['']}
 					/>
 				</Card>
