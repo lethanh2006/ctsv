@@ -29,21 +29,21 @@ export async function adminGetTongSoDon(payload?: {
   idDichVu?: string;
   loaiDichVu: 'DVMC' | 'VAN_PHONG_SO';
 }) {
-  return axios.get(`${ip3}/dashboard/thong-ke-don/admin/tong-so-don`, { params: payload });
+  return axios.get(`${ip3}/don-dvmc/dashboard/thong-ke-don/admin/tong-so-don`, { params: payload });
 }
 
 export async function adminGetSoDonDaXuLy(payload?: {
   idDichVu?: string;
   loaiDichVu: 'DVMC' | 'VAN_PHONG_SO';
 }) {
-  return axios.get(`${ip3}/dashboard/thong-ke-don/admin/so-don-da-xu-ly`, { params: payload });
+  return axios.get(`${ip3}/don-dvmc/dashboard/thong-ke-don/admin/so-don-da-xu-ly`, { params: payload });
 }
 
 export async function adminGetSoDonHomNay(payload?: {
   idDichVu?: string;
   loaiDichVu: 'DVMC' | 'VAN_PHONG_SO';
 }) {
-  return axios.get(`${ip3}/dashboard/thong-ke-don/admin/so-don-hom-nay`, { params: payload });
+  return axios.get(`${ip3}/don-dvmc/dashboard/thong-ke-don/admin/so-don-hom-nay`, { params: payload });
 }
 
 export async function chuyenVienDieuPhoiGetTongSoDon(payload?: {
@@ -51,7 +51,7 @@ export async function chuyenVienDieuPhoiGetTongSoDon(payload?: {
   loaiDichVu: 'DVMC' | 'VAN_PHONG_SO';
   me?: number;
 }) {
-  return axios.get(`${ip3}/dashboard/thong-ke-don/chuyen-vien-dieu-phoi/tong-so-don`, {
+  return axios.get(`${ip3}/don-dvmc/dashboard/thong-ke-don/admin/tong-so-don`, {
     params: payload,
   });
 }
