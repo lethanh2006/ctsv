@@ -1,4 +1,3 @@
-import Donut from '@/components/Chart/Pie';
 import {
   adminGetSoDonHomNay,
   adminGetTongSoDon,
@@ -9,6 +8,8 @@ import { TrangThaiDonDVMC } from '@/services/DVMC/constants';
 import { Badge, Card, Col, Row, Select, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAccess, useModel } from 'umi';
+import DonutChart from '@/components/Chart/DonutChart';
+import numeral from 'numeral';
 
 interface DataSoLuongDon {
   trangThai: string;
@@ -25,16 +26,18 @@ const ThongTinTongHop = () => {
   const isDvmc = pathname?.includes('dichvumotcua') ?? false;
 
   const getDonHomNay = async () => {
-    const response = access.adminVaQuanTri
-      ? await adminGetSoDonHomNay({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' })
-      : await chuyenVienDieuPhoiGetSoDonHomNay({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' });
+    // const response = access.admin
+    //   ? await adminGetSoDonHomNay({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' })
+    //   : await chuyenVienDieuPhoiGetSoDonHomNay({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' });
+    const response = await adminGetSoDonHomNay({ loaiDichVu: 'DVMC' });
     setDonHomNay(response?.data?.data ?? []);
   };
 
   const getTongSoDon = async () => {
-    const response = access.adminVaQuanTri
-      ? await adminGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' })
-      : await chuyenVienDieuPhoiGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' });
+    // const response = access.admin
+    //   ? await adminGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' })
+    //   : await chuyenVienDieuPhoiGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' });
+    const response = await adminGetTongSoDon({ loaiDichVu: 'DVMC' });
     setTongSoDon(response?.data?.data ?? []);
   };
 
@@ -122,13 +125,24 @@ const ThongTinTongHop = () => {
             </div>
           }
         >
-          <Donut
-            labelTotal="đơn"
-            height={272}
-            data={recordTongSoDon?.map((item) => ({
-              x: TrangThaiDonDVMC?.[item.trangThai],
-              y: item.soLuong,
-            }))}
+          {/*<Donut*/}
+          {/*  labelTotal="đơn"*/}
+          {/*  height={272}*/}
+          {/*  data={recordTongSoDon?.map((item) => ({*/}
+          {/*    x: TrangThaiDonDVMC?.[item.trangThai],*/}
+          {/*    y: item.soLuong,*/}
+          {/*  }))}*/}
+          {/*/>*/}
+          <DonutChart
+            xAxis={recordTongSoDon?.map((item) => {
+              // @ts-ignore
+              return TrangThaiDonDVMC?.[item.trangThai];
+            })}
+            yAxis={recordTongSoDon?.map((item) => {
+              // @ts-ignore
+              return numeral(item.soLuong).format('0,0');
+            })}
+            yLabel={['']}
           />
         </Card>
       </Col>

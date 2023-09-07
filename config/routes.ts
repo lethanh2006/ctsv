@@ -111,13 +111,13 @@
     path: '/dich-vu-hanh-chinh',
     // access: 'nhanVien',
     routes: [
-      // {
-      //   name: 'ThongTinTongHop',
-      //   path: './thong-tin-tong-hop',
-      //   // component: './DichVuMotCuaV2/ThongTinTongHop',
-      //   // access: 'accessFilter',
-      //   maChucNang: 'don-dvmc-thao-tac:read-all',
-      // },
+      {
+        name: 'ThongTinTongHop',
+        path: './thong-tin-tong-hop',
+        component: './DichVuMotCuaV2/ThongTinTongHop',
+        // access: 'accessFilter',
+        // maChucNang: 'don-dvmc-thao-tac:read-all',
+      },
       {
         name: 'QuanLyBieuMau',
         path: './bieu-mau',
