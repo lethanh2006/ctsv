@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 const DonutChart = (props: DataChartType) => {
 	const { xAxis, yAxis, height, colors, formatY, showTotal, width } = props;
-
 	const options = {
 		chart: {
 			defaultLocale: 'vi',
@@ -55,7 +54,7 @@ const DonutChart = (props: DataChartType) => {
 		},
 	};
 
-	const series = yAxis?.[0] || [];
+  const series = yAxis?.[0] || [];
 
 	return <Chart options={options} series={series} type='donut' height={height ?? 350} width={width} />;
 };

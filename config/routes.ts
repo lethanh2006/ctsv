@@ -103,58 +103,58 @@
 		],
 	},
 
-	/////////////////////////////
-	// DICH VU HANH CHINH
-	{
-		name: 'DichVuHanhChinh',
-		icon: 'AuditOutlined',
-		path: '/dich-vu-hanh-chinh',
-		// access: 'nhanVien',
-		routes: [
-			// {
-			//   name: 'ThongTinTongHop',
-			//   path: './thong-tin-tong-hop',
-			//   // component: './DichVuMotCuaV2/ThongTinTongHop',
-			//   // access: 'accessFilter',
-			//   maChucNang: 'don-dvmc-thao-tac:read-all',
-			// },
-			{
-				name: 'QuanLyBieuMau',
-				path: './bieu-mau',
-				component: './DichVuMotCuaV2/QuanLyBieuMau',
-				// access: 'admin',
-				// maChucNang: 'dvmc-thao-tac:read',
-			},
-			{
-				name: 'QuanLyDon',
-				path: './don-vmc',
-				component: './DichVuMotCuaV2/QuanLyDon',
-				// access: 'admin',
-				// maChucNang: 'don-dvmc-thao-tac:read-all',
-			},
-			// {
-			//   name: 'ChuyenVienTiepNhanQuanLyDon',
-			//   path: './chuyenvientiepnhan',
-			//   component: './DichVuMotCuaV2/ChuyenVienXuLy',
-			//   access: 'user',
-			//   // maChucNang: 'don-dvmc-thao-tac:read-all',
-			// },
-			// {
-			//   name: 'ChuyenVienDieuPhoiQuanLyDon',
-			//   path: './quanlydondieuphoi',
-			//   component: './DichVuMotCuaV2/ChuyenVienDieuPhoi',
-			//   access: 'user',
-			//   // maChucNang: 'don-dvmc-thao-tac:read-all',
-			// },
-			// {
-			//   name: 'ChuyenVienTiepNhanQuanLyDon',
-			//   path: './quanlydonchuyenvien',
-			//   // component: './DichVuMotCuaV2/QuanLyDon',
-			//   // access: 'accessFilter',
-			//   maChucNang: 'don-dvmc-thao-tac:read-my',
-			// },
-		],
-	},
+  /////////////////////////////
+  // DICH VU HANH CHINH
+  {
+    name: 'DichVuHanhChinh',
+    icon: 'AuditOutlined',
+    path: '/dich-vu-hanh-chinh',
+    // access: 'nhanVien',
+    routes: [
+      {
+        name: 'ThongTinTongHop',
+        path: './thong-tin-tong-hop',
+        component: './DichVuMotCuaV2/ThongTinTongHop',
+        // access: 'accessFilter',
+        // maChucNang: 'don-dvmc-thao-tac:read-all',
+      },
+      {
+        name: 'QuanLyBieuMau',
+        path: './bieu-mau',
+        component: './DichVuMotCuaV2/QuanLyBieuMau',
+        // access: 'admin',
+        // maChucNang: 'dvmc-thao-tac:read',
+      },
+      {
+        name: 'QuanLyDon',
+        path: './don-vmc',
+        component: './DichVuMotCuaV2/QuanLyDon',
+        // access: 'admin',
+        // maChucNang: 'don-dvmc-thao-tac:read-all',
+      },
+      // {
+      //   name: 'ChuyenVienTiepNhanQuanLyDon',
+      //   path: './chuyenvientiepnhan',
+      //   component: './DichVuMotCuaV2/ChuyenVienXuLy',
+      //   access: 'user',
+      //   // maChucNang: 'don-dvmc-thao-tac:read-all',
+      // },
+      // {
+      //   name: 'ChuyenVienDieuPhoiQuanLyDon',
+      //   path: './quanlydondieuphoi',
+      //   component: './DichVuMotCuaV2/ChuyenVienDieuPhoi',
+      //   access: 'user',
+      //   // maChucNang: 'don-dvmc-thao-tac:read-all',
+      // },
+      // {
+      //   name: 'ChuyenVienTiepNhanQuanLyDon',
+      //   path: './quanlydonchuyenvien',
+      //   // component: './DichVuMotCuaV2/QuanLyDon',
+      //   // access: 'accessFilter',
+      //   maChucNang: 'don-dvmc-thao-tac:read-my',
+      // },
+    ],
+  },
 
 	// TIN TUC
 	// {

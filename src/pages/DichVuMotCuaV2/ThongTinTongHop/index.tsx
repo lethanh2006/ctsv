@@ -24,9 +24,9 @@ const ThongTinTongHopChuyenVienDieuPhoi = () => {
   return (
     <>
       <ThongTinTongHop />
-      <Card bodyStyle={{ padding: 0 }} title="Danh sách đơn">
-        <TableQuanLyDon hideFilter />
-      </Card>
+      {/*<Card bodyStyle={{ padding: 0 }} title="Danh sách đơn">*/}
+      {/*  <TableQuanLyDon hideFilter />*/}
+      {/*</Card>*/}
     </>
   );
 };
