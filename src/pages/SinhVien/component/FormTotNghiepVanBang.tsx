@@ -1,7 +1,8 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import UploadFile from '@/components/Upload/UploadFile';
 import rules from '@/utils/rules';
-import { Col, Divider, Form, Input, InputNumber, Radio, Row } from 'antd';
+import { SaveOutlined } from '@ant-design/icons';
+import { Button, Col, Divider, Form, Input, Row, InputNumber, Radio } from 'antd';
 import { useEffect, useState } from 'react';
 
 const FormTotNghiepVanBang = () => {
@@ -13,9 +14,9 @@ const FormTotNghiepVanBang = () => {
 
   return (
     <Form layout="vertical">
-      {/* <Button icon={<SaveOutlined />} type="primary" htmlType="submit">
+      <Button icon={<SaveOutlined />} type="primary" htmlType="submit">
         Cập nhật
-      </Button> */}
+      </Button>
 
       <Divider orientation="center">Thông tin tốt nghiệp</Divider>
       <Row gutter={[12, 0]}>

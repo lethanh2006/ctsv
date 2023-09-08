@@ -1,38 +1,65 @@
 import { EOperatorType } from '@/components/Table/constant';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Empty } from 'antd';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
-const SelectSinhVienDebounce = (props: { value?: string; onChange?: any; multiple?: boolean }) => {
-  const { value, onChange, multiple } = props;
-  const { danhSach, getModel, setFilters, filters, loading } = useModel('sinhvien.sinhvien');
+const SelectSinhVienDebounce = (props: {
+	value?: string | string[];
+	onChange?: (val: string | string[] | null) => void;
+	multiple?: boolean;
+	disabled?: boolean;
+}) => {
+	const { value, onChange, multiple, disabled } = props;
+	const { danhSach, getModel, setFilters, filters, loading } = useModel('sinhvien.sinhvien');
 
-  useEffect(() => {
-    getModel();
-  }, [filters]);
+	useEffect(() => {
+		getModel(
+			undefined,
+			(!filters || !filters.length) && value
+				? [
+						{
+							active: true,
+							field: 'ssoId',
+							values: Array.isArray(value) ? value : [value],
+							operator: EOperatorType.INCLUDE,
+						},
+				  ]
+				: undefined,
+			undefined,
+			1,
+			20,
+		);
+	}, [filters, value]);
 
-  const searchDebounceSinhVien = _.debounce((val) => {
-    setFilters([{ active: true, field: 'ten', values: [val], operator: EOperatorType.CONTAIN }]);
-  }, 800);
+	const searchDebounceSinhVien = _.debounce((val) => {
+		setFilters([{ active: true, field: 'ten', values: [val], operator: EOperatorType.CONTAIN }]);
+	}, 800);
 
-  return (
-    <Select
-      mode={multiple ? 'multiple' : undefined}
-      value={value}
-      onChange={onChange}
-      onSearch={(val) => searchDebounceSinhVien(val)}
-      notFoundContent={loading ? <Spin spinning={true} /> : undefined}
-      options={danhSach.map((item) => ({
-        key: item?.ssoId,
-        value: item?.ssoId,
-        label: `${item.ten} - ${item.ma}`,
-      }))}
-      showSearch
-      optionFilterProp="label"
-      placeholder="Chọn sinh viên"
-    />
-  );
+	return (
+		<Select
+			mode={multiple ? 'multiple' : undefined}
+			value={value}
+			onChange={onChange}
+			disabled={disabled}
+			onSearch={(val) => searchDebounceSinhVien(val)}
+			notFoundContent={
+				loading ? (
+					<Spin spinning={true} tip='Đang tìm kiếm...' style={{ width: '100%', margin: 10 }} />
+				) : (
+					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='Không có dữ liệu, hãy thử nhập từ khóa khác!' />
+				)
+			}
+			options={danhSach.map((item) => ({
+				key: item?.ssoId,
+				value: item?.ssoId,
+				label: `${item.ten} - ${item.ma}`,
+			}))}
+			showSearch
+			optionFilterProp='label'
+			placeholder='Chọn sinh viên (tìm kiếm theo họ tên sinh viên)'
+		/>
+	);
 };
 
 export default SelectSinhVienDebounce;

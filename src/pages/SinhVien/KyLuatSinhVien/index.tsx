@@ -4,7 +4,6 @@ import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import moment from 'moment';
 import { useModel } from 'umi';
-import FormKyLuat from './components/Form';
 
 const KyLuatSinhVienPage = () => {
   const { getModel, page, limit } = useModel('sinhvien.kyluat');
@@ -73,8 +72,7 @@ const KyLuatSinhVienPage = () => {
         }
         modelName="sinhvien.kyluat"
         hideCard
-        // buttons={{ create: false }}
-        Form={FormKyLuat}
+        buttons={{ create: false }}
       />
     </>
   );
