@@ -7,9 +7,3 @@ export async function getHocTapHienTai(sinhVienSsoId: string) {
 
 export const getThongTinSinhVienBySsoId = (ssoId: string) =>
   axios.get(`${ipDaoTao}/sinh-vien/${ssoId}/info`);
-
-export async function exportLyLich(sinhVienSsoId: string) {
-  return axios.get(`${ipDaoTao}/sinh-vien/${sinhVienSsoId}/export-ly-lich`, {
-    responseType: 'arraybuffer',
-  });
-}
