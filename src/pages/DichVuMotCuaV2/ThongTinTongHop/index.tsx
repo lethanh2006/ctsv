@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useModel } from 'umi';
 import TableQuanLyDon from '../QuanLyDon/components/TableQuanLyDonChuyenVien';
 import ThongTinTongHop from './components/ThongTinTongHop';
+import moment from "moment";
 
 const ThongTinTongHopChuyenVienDieuPhoi = () => {
   const { idDichVu, chuyenVienDieuPhoiGetTongSoDonDVMCModel } = useModel('dashboard');
@@ -24,9 +25,9 @@ const ThongTinTongHopChuyenVienDieuPhoi = () => {
   return (
     <>
       <ThongTinTongHop />
-      {/*<Card bodyStyle={{ padding: 0 }} title="Danh sách đơn">*/}
-      {/*  <TableQuanLyDon hideFilter />*/}
-      {/*</Card>*/}
+      <Card  title="Danh sách đơn cần xử lý trong ngày">
+        <TableQuanLyDon hideFilter isDashboard/>
+      </Card>
     </>
   );
 };

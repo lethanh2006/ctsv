@@ -41,6 +41,19 @@ export async function chuyenVienDieuPhoiGetDonSinhVien(payload: {
     params: payload,
   });
 }
+export async function chuyenVienDieuPhoiGetDonSinhVienThongKe(payload: {
+  condition: any;
+  page: number;
+  limit: number;
+  me?: number;
+}) {
+  // return axios.get(`${ip3}/don-dvmc/chuyen-vien-dieu-phoi/don/pageable`, {
+  //   params: payload,
+  // });
+  return axios.get(`${ip3}/don-dvmc/admin/don/den-han-xu-ly/pageable`, {
+    params: payload,
+  });
+}
 export async function chuyenVienDieuPhoiGetThaoTac(payload: {
   condition?: any;
   page: number;
