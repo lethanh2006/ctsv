@@ -48,6 +48,12 @@ const DonutChart = (props: DataChartType) => {
 								return formatY ? formatY(val) : tienVietNam(val);
 							},
 						},
+            value: {
+              formatter: (w: any) => {
+                const val = w;
+                return formatY ? formatY(val) : tienVietNam(val);
+              },
+            }
 					},
 				},
 			},
