@@ -102,7 +102,7 @@ const ThongTinTongHop = () => {
           <Col xs={24}>
             <Card>
               <Statistic
-                title={<div style={{ fontSize: 16 }}>Số lượng đã xử lý</div>}
+                title={<div style={{ fontSize: 16 }}>Số lượng đơn đã xử lý</div>}
                 value={donDaXuLy}
               />
             </Card>
