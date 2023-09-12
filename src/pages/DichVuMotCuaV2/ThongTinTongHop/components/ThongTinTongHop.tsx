@@ -71,7 +71,7 @@ const ThongTinTongHop = () => {
 									return previousValue + currentValue?.soLuong;
 								}, 0)}
 							/>
-							<Badge style={{ marginRight: 8 }} color='blue' /> Đang xử lý:
+							<Badge style={{ marginRight: 8 }} color='blue' />Đang xử lý:
 							{tongSoDon?.find((item) => item.trangThai === 'PROCESSING')?.soLuong ?? 0}
 							<br />
 							<Badge style={{ marginRight: 8 }} color='green' />
