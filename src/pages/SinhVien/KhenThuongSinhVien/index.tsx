@@ -2,6 +2,7 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import { useModel } from 'umi';
+import FormKhenThuong from "@/pages/SinhVien/KhenThuongSinhVien/components/Form";
 
 const KhenThuongSinhVienPage = () => {
   const { getModel, page, limit } = useModel('sinhvien.khenthuong');
@@ -62,7 +63,8 @@ const KhenThuongSinhVienPage = () => {
         dependencies={[page, limit]}
         modelName="sinhvien.khenthuong"
         hideCard
-        buttons={{ create: false }}
+        Form={FormKhenThuong}
+        buttons={{ create: true }}
       />
     </>
   );
