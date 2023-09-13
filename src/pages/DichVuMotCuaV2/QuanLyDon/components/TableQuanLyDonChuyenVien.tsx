@@ -50,7 +50,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 		typeTraKetQua,
 		updateTrangThaiNhanKetQuaModel,
     chuyenVienDieuPhoiGetDonThongKeModel,
-		setCondition,
+		setCondition,setIsDashBoard
 	} = useModel('dvmc.dichvumotcuav2');
 
 	const { getThongTinSinhVienBySsoIdModel, record: infoNguoiTaoDon } = useModel('sinhvien.sinhvien');
@@ -105,6 +105,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 		onClick: () => {
 			// getCsvcByIdModel(recordDonColumn?.idCoSoVatChat ?? '');
 			handleDon(recordDonColumn);
+      setIsDashBoard(props?.isDashboard??false)
 		},
 		style: { cursor: 'pointer' },
 	});

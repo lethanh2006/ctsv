@@ -75,6 +75,7 @@ export default () => {
 	const [thuTuc, setThuTuc] = useState<DichVuMotCuaV2.ThuTuc>();
 	const [visibleFormBieuMau, setVisibleFormBieuMau] = useState<boolean>(false);
 	const [visibleFormDon, setVisibleFormDon] = useState<boolean>(false);
+	const [isDashBoard, setIsDashBoard] = useState<boolean>(false);
 	const [visibleFormChinhSuaDon, setVisibleFormChinhSuaDon] = useState<boolean>(false);
 	const [current, setCurrent] = useState<number>(0);
 	const [typeForm, setTypeForm] = useState<string>('add');
@@ -611,8 +612,12 @@ export default () => {
 		setVisibleFormBieuMau(false);
 		if (loaiDichVu === 'VAN_PHONG_SO') setVisibleFormDon(false);
 		getDonThaoTacAdminModel(undefined, { idDon: recordDon?._id }, 1, 100);
+    if (isDashBoard){
+      chuyenVienDieuPhoiGetDonThongKeModel('DVMC')
+    }else {
+      adminGetDonModel();
+    }
 
-		adminGetDonModel();
 
 		adminGetTrangThaiDonModel(recordDon?._id);
 	};
@@ -747,7 +752,11 @@ export default () => {
 			setLoading(true);
 			await adminDeleteDon(idDon);
 			message.success('Xóa thành công');
-			adminGetDonModel();
+      if (isDashBoard){
+        chuyenVienDieuPhoiGetDonThongKeModel('DVMC')
+      }else {
+        adminGetDonModel();
+      }
 		} catch (err) {
 			setLoading(false);
 			message.error('Đơn đang được xử lý hoặc đã được thanh toán');
@@ -814,7 +823,11 @@ export default () => {
 			setLoading(true);
 			await adminPutDon(idDon, payload);
 			message.success('Sửa thành công');
-			adminGetDonModel();
+      if (isDashBoard){
+        chuyenVienDieuPhoiGetDonThongKeModel('DVMC')
+      }else {
+        adminGetDonModel();
+      }
 			setVisibleFormChinhSuaDon(false);
 		} catch (err) {
 			setLoading(false);
@@ -830,7 +843,13 @@ export default () => {
 				message.success('Cập nhật trạng thái trả kết quả thành công!');
 			}
 			if (getData) getData();
-			else adminGetDonModel();
+			else{
+        if (isDashBoard){
+          chuyenVienDieuPhoiGetDonThongKeModel('DVMC')
+        }else {
+          adminGetDonModel();
+        }
+      };
 		} catch (error) {
 			setLoading(false);
 		}
@@ -921,6 +940,6 @@ export default () => {
 		getDonThaoTacAdminModel,
 		adminDuyetDonModel,
 		adminDieuPhoiDonModel,
-    chuyenVienDieuPhoiGetDonThongKeModel
+    chuyenVienDieuPhoiGetDonThongKeModel,setIsDashBoard,isDashBoard
 	};
 };
