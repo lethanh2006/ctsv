@@ -3,11 +3,11 @@ import { Button, Card, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useModel } from 'umi';
+import CongNoSinhVienPage from '../CongNoSinhVien';
 import HocBongSinhVienPage from '../HocBongSinhVien';
 import NoiNgoaiTruSinhVienPage from '../NoiNgoaiTruSinhVien';
 import ViecLamSinhVienPage from '../ViecLamSinhVien';
 import FormSinhVien from './Form';
-import FormCongNoSinhVien from './FormCongNoSinhVien';
 import FormKhenThuongKyLuat from './FormKhenThuongKyLuat';
 import FormQuaTrinhHocTap from './FormQuaTrinhHocTap';
 import FormTotNghiepVanBang from './FormTotNghiepVanBang';
@@ -49,11 +49,8 @@ const ModalSinhVien = (props: any) => {
 					<FormKhenThuongKyLuat />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab='Công nợ' key={'7'} disabled={!record?.ssoId}>
-					<FormCongNoSinhVien />
+					<CongNoSinhVienPage sinhVienSsoId={record?.ssoId} />
 				</Tabs.TabPane>
-				{/* <Tabs.TabPane tab='Cố vấn học tập' key={'3'} disabled={!record?.ssoId}>
-					<FormCoVanHocTap />
-				</Tabs.TabPane> */}
 				<Tabs.TabPane tab='Nội / ngoại trú' key={'4'} disabled={!record?.ssoId}>
 					<NoiNgoaiTruSinhVienPage />
 				</Tabs.TabPane>
