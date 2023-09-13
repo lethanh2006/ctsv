@@ -1,10 +1,10 @@
-import DonutChart from '@/components/Chart/DonutChart';
 import KetQuaToanKhoaSinhVien from '@/pages/DaoTao/KetQuaHocTap/KetQuaToanKhoaSinhVien';
 import { formatPhoneNumber } from '@/utils/utils';
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Empty, Image, Row, Spin } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
+import ChartCongNoSinhVien from '../CongNoSinhVien/ChartCongNo';
 
 type DescriptionItem = {
 	label?: string;
@@ -177,18 +177,7 @@ const PreviewHoSo = (props: any) => {
 							</Col>
 							<Col span={24} md={8}>
 								<Card title='Công nợ' bordered={false} headStyle={{ padding: 0 }} bodyStyle={{ padding: '8px 0 0 0' }}>
-									<DonutChart
-										yAxis={[[2400000, 1240000]]}
-										xAxis={['Đã nộp', 'Chưa nộp']}
-										yLabel={['Số tiền']}
-										height={320}
-										otherOptions={{
-											legend: {
-												position: 'bottom',
-												horizontalAlign: 'center',
-											},
-										}}
-									/>
+									<ChartCongNoSinhVien />
 								</Card>
 							</Col>
 						</Row>
