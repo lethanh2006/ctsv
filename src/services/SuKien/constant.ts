@@ -44,7 +44,7 @@ export const locationPathMappingToESuKienType: Record<string, ESuKienType> = {
 export const ESuKienTypeMappingToLabel: Record<ESuKienType, string> = {
 	[ESuKienType.CA_NHAN]: 'Cá nhân',
 	[ESuKienType.TAT_CA]: 'Chung',
-	[ESuKienType.CAC_HOAT_DONG]: 'Các hoạt động tư vấn tuyển sinh, hướng nghiệp',
+	[ESuKienType.CAC_HOAT_DONG]: 'Công tác sinh viên',
 	[ESuKienType.DAO_TAO_BOI_DUONG]: 'Đào tạo bồi dưỡng',
 	[ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'Hợp tác quốc tế, nghiên cứu khoa học và chuyển giao công nghệ',
 	[ESuKienType.THUC_THI_CHINH_SACH]: 'Thực thi, phát triển chính sách',
