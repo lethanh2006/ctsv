@@ -1,16 +1,21 @@
 import { EOperatorType } from '@/components/Table/constant';
+import { type SinhVien } from '@/services/SinhVien/typings';
 import { Select, Spin, Empty } from 'antd';
+import { type BaseOptionType } from 'antd/lib/select';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
 const SelectSinhVienDebounce = (props: {
 	value?: string | string[];
-	onChange?: (val: string | string[] | null) => void;
+	onChange?: (val: string | string[] | null, option?: BaseOptionType) => void;
 	multiple?: boolean;
 	disabled?: boolean;
+	keyValue?: keyof SinhVien.IRecord;
+	hideMaSinhVien?: boolean;
+	ignoreOptions?: string[];
 }) => {
-	const { value, onChange, multiple, disabled } = props;
+	const { value, onChange, multiple, disabled, keyValue = 'ssoId', hideMaSinhVien, ignoreOptions } = props;
 	const { danhSach, getModel, setFilters, filters, loading } = useModel('sinhvien.sinhvien');
 
 	useEffect(() => {
@@ -51,9 +56,11 @@ const SelectSinhVienDebounce = (props: {
 				)
 			}
 			options={danhSach.map((item) => ({
-				key: item?.ssoId,
-				value: item?.ssoId,
-				label: `${item.ten} - ${item.ma}`,
+				key: item?.[keyValue],
+				value: item?.[keyValue],
+				label: hideMaSinhVien ? item.ten : `${item.ten} - ${item.ma}`,
+				rawData: item,
+				disabled: !!ignoreOptions?.find((optionValue) => optionValue === item?.[keyValue]),
 			}))}
 			showSearch
 			optionFilterProp='label'

@@ -51,6 +51,10 @@ const OIDCBounder_: FC = ({ children }) => {
 	};
 
 	useEffect(() => {
+		// Disable auth layout với page hiển thị QR của sự kiện
+		if (window.location.pathname.includes('qr-su-kien')) {
+			return;
+		}
 		if (auth.isLoading) {
 			return;
 		}

@@ -166,7 +166,50 @@
 		name: 'SuKien',
 		icon: 'calendar',
 		path: '/su-kien',
-		component: './SuKien',
+		routes: [
+			{
+				name: 'CacHoatDongChoSinhVien',
+				icon: 'calendar',
+				path: 'cac-hoat-dong-cho-sinh-vien',
+				component: './SuKien',
+			},
+			{
+				name: 'DaoTaoBoiDuong',
+				icon: 'calendar',
+				path: 'dao-tao-boi-duong',
+				component: './SuKien',
+			},
+			{
+				name: 'HopTacNghienCuuChuyenGiao',
+				icon: 'calendar',
+				path: 'hop-tac-nghien-cuu-chuyen-giao',
+				component: './SuKien',
+			},
+			{
+				name: 'ThucThiChinhSach',
+				icon: 'calendar',
+				path: 'thuc-thi-chinh-sach',
+				component: './SuKien',
+			},
+			{
+				name: 'HoatDongXaHoi',
+				icon: 'calendar',
+				path: 'hoat-dong-xa-hoi',
+				component: './SuKien',
+			},
+			{
+				name: 'Khac',
+				icon: 'calendar',
+				path: 'khac',
+				component: './SuKien',
+			},
+		],
+	},
+	{
+		path: `/qr-su-kien/:id`,
+		component: './SuKien/QRCode',
+		layout: false,
+		hideInMenu: true,
 	},
 
 	//////////////////////

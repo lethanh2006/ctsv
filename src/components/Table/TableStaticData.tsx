@@ -90,7 +90,12 @@ const TableStaticData = (props: TableStaticProps) => {
 					? { key: item, value: item, text: item }
 					: { key: item.value, value: item.value, text: item.label },
 			),
-			onFilter: (value: string, record: any) => record[dataIndex]?.indexOf(value) === 0,
+			onFilter: (value: string | number | boolean, record: any) => {
+				if (typeof value === 'string') {
+					return record[dataIndex]?.indexOf(value) === 0;
+				}
+				return record[dataIndex] === value;
+			},
 		};
 	};
 

@@ -84,7 +84,7 @@ const TableBase = (props: TableBaseProps) => {
 		return () => {
 			if (noCleanUp !== true) {
 				// setCondition(undefined);
-				setFilters(undefined);
+				setFilters?.(undefined);
 				// setSort(undefined);
 			}
 		};

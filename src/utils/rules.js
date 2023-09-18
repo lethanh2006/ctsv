@@ -133,7 +133,7 @@ const rules = {
 	sauNgay: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
-				if (value && moment(value).isBefore(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (mo && value && moment(value).isBefore(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
 				callback();
 			},
 			message: 'Không được trước ' + label,
@@ -142,7 +142,7 @@ const rules = {
 	truocHomNay: [
 		{
 			validator: (_, value, callback) => {
-				if (value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (mo && value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
 				callback();
 			},
 			message: 'Không được sau thời điểm hiện tại',
@@ -151,7 +151,7 @@ const rules = {
 	truocNgay: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
-				if (value && moment(value).isAfter(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (mo && value && moment(value).isAfter(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
 				callback();
 			},
 			message: 'Không được sau ' + label,
