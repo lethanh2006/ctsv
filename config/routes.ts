@@ -345,6 +345,26 @@
 				path: 'danh-hieu',
 				component: './DanhMuc/DanhHieu',
 			},
+			{
+				name: 'ThamGiaCongTacXaHoi',
+				path: 'tham-gia-cong-tac-xa-hoi',
+				component: './DanhMuc/DiemRenLuyen',
+			},
+			{
+				name: 'CapDatGiai',
+				path: 'cap-dat-giai',
+				component: './DanhMuc/DiemRenLuyen',
+			},
+			{
+				name: 'KyTucXa',
+				path: 'ky-tuc-xa',
+				component: './DanhMuc/DiemRenLuyen',
+			},
+			{
+				name: 'PhongKyTucXa',
+				path: 'phong-ky-tuc-xa',
+				component: './DanhMuc/DiemRenLuyen',
+			},
 		],
 	},
 

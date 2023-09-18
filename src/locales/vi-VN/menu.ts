@@ -17,6 +17,10 @@ export default {
 	'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
 	'menu.DanhMuc.DanhHieu': 'Khen thưởng/kỷ luật',
 	'menu.DanhMuc.LoaiPhongBan': 'Loại phòng ban',
+	'menu.DanhMuc.ThamGiaCongTacXaHoi': 'Tham gia công tác xã hội',
+	'menu.DanhMuc.CapDatGiai': 'Cấp đạt giải',
+	'menu.DanhMuc.KyTucXa': 'Ký túc xá',
+	'menu.DanhMuc.PhongKyTucXa': 'Phòng ký túc xá',
 
 	'menu.SuKien': 'Sự kiện',
 	'menu.SuKien.CacHoatDongChoSinhVien': 'Công tác sinh viên',
