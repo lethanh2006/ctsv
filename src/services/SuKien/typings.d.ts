@@ -13,6 +13,7 @@ declare module SuKien {
 		suKienChuaDienRa: number;
 		suKienDangDienRa: number;
 		suKienDaDienRa: number;
+		thongKe?: ThongKeTheoSuKien[];
 	}
 	export interface ThongKeTheoSuKien {
 		tenSuKien: string;

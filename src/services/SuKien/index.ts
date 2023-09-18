@@ -1,6 +1,7 @@
 import axios from '@/utils/axios';
 import { ip3 } from '@/utils/ip';
 import { type ESuKienType } from './constant';
+import { type SuKien } from './typings';
 
 const url = 'su-kien/user';
 
@@ -14,12 +15,7 @@ export async function getThongKeSuKien(
 	payload: { nam: string; loaiSuKien: ESuKienType } | { idSuKien: string; loaiSuKien: ESuKienType },
 ) {
 	interface ResponseSuccess {
-		data: {
-			suKienChuaDienRa: number;
-			suKienDangDienRa: number;
-			suKienDaDienRa: number;
-			thongKe: [];
-		};
+		data: SuKien.ThongKeTheoNam | SuKien.ThongKeTheoSuKien;
 		success: true;
 	}
 	return axios.get<ResponseSuccess>(`${ip3}/su-kien/thong-ke`, { params: payload });

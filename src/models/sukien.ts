@@ -33,7 +33,7 @@ export default () => {
 		setIsLoadingThongKeTheoNam(true);
 		try {
 			const response = await getThongKeSuKien({ nam: '2023', loaiSuKien: getSuKienType() });
-			setThongKeTheoNamData(response.data?.data);
+			setThongKeTheoNamData(response.data?.data as SuKien.ThongKeTheoNam);
 		} finally {
 			setIsLoadingThongKeTheoNam(false);
 		}
@@ -44,7 +44,7 @@ export default () => {
 		setIsLoadingThongKeTheoSuKien(true);
 		try {
 			const response = await getThongKeSuKien({ idSuKien: id, loaiSuKien: getSuKienType() });
-			setThongKeTheoSuKienData(response.data?.data);
+			setThongKeTheoSuKienData(response.data?.data as SuKien.ThongKeTheoSuKien);
 		} finally {
 			setIsLoadingThongKeTheoSuKien(false);
 		}
