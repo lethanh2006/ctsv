@@ -36,7 +36,7 @@ declare module SuKien {
 		diaDiem?: string;
 		ghiChu?: string;
 		trangThai?: ETrangThaiDienRa;
-		loaiSuKienSinhVien?: ELoaiSuKienSinhVien;
+		kyHoc?: string;
 		filter?: {
 			roles?: EVaiTroBieuMau[];
 			idKhoaSinhVien: string;

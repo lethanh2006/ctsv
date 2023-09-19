@@ -19,7 +19,8 @@ export default {
 	'menu.DanhMuc.LoaiPhongBan': 'Loại phòng ban',
 
 	'menu.SuKien': 'Sự kiện',
-	'menu.SuKien.CacHoatDongChoSinhVien': 'Công tác sinh viên',
+	'menu.SuKien.TuanLeCongDan': 'Tuần lễ công dân',
+	'menu.SuKien.CacHoatDongChoSinhVien': 'Tư vấn tuyển sinh, hướng nghiệp',
 	'menu.SuKien.DaoTaoBoiDuong': 'Đào tạo bồi dưỡng',
 	'menu.SuKien.HopTacNghienCuuChuyenGiao': 'Hợp tác quốc tế, nghiên cứu khoa học và chuyển giao công nghệ',
 	'menu.SuKien.ThucThiChinhSach': 'Thực thi, phát triển chính sách',
