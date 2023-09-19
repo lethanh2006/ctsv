@@ -26,6 +26,7 @@ export const FormDanhMuc = () => {
 		resetFieldsForm(form, {
 			...record,
 			loai: getLoaiDanhMucChung(),
+			idCha: record?.idCha?._id,
 		} as DanhMucDiemRenLuyen.IRecord);
 	}, [record?._id, visibleForm]);
 

@@ -1,6 +1,7 @@
 import { type ELoaiDanhMucChung, ELoaiDanhMucChungMappingToTitle } from '@/services/DiemRenLuyen/DanhMuc/constant';
+import { type DanhMucDiemRenLuyen } from '@/services/DiemRenLuyen/DanhMuc/typing';
 import { Select } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
 export const SelectDanhMucDiemRenLuyen = (props: {
@@ -14,11 +15,13 @@ export const SelectDanhMucDiemRenLuyen = (props: {
 	loaiDanhMuc: ELoaiDanhMucChung;
 }) => {
 	const { value, onChange, multiple, condition, allowClear, disabled, readOnly, loaiDanhMuc } = props;
-	const { danhSach, getAllModel, visibleForm } = useModel('diemrenluyen.danhmuc');
+	const { getAllModel, visibleForm } = useModel('diemrenluyen.danhmuc');
+
+	const [state, setState] = useState<DanhMucDiemRenLuyen.IRecord[]>([]);
 
 	useEffect(() => {
-		if (!visibleForm) {
-			getAllModel(false, undefined, { ...condition, loai: loaiDanhMuc });
+		if (visibleForm) {
+			getAllModel(false, undefined, { ...condition, loai: loaiDanhMuc }, undefined, undefined, false).then(setState);
 		}
 	}, [visibleForm, condition, loaiDanhMuc]);
 
@@ -28,7 +31,7 @@ export const SelectDanhMucDiemRenLuyen = (props: {
 			value={value}
 			onChange={onChange}
 			disabled={disabled}
-			options={danhSach.map((item) => ({
+			options={state.map((item) => ({
 				key: item._id,
 				value: item._id,
 				label: item.ten,
