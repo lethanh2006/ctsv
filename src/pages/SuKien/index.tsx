@@ -1,206 +1,416 @@
+import TableBase from '@/components/Table';
+import { EOperatorType } from '@/components/Table/constant';
+import { type IColumn } from '@/components/Table/typing';
 import { messagesCalendar } from '@/services/Calendar/constant';
-import { ColorSuKien, type ELoaiSuKien } from '@/services/SuKien/constant';
+import {
+	ColorSuKien,
+	ESuKienType,
+	ESuKienTypeMappingToLabel,
+	ETrangThaiDienRa,
+	ETrangThaiDienRaMappingToHexColor,
+	ETrangThaiDienRaMappingToTagColor,
+	ETrangThaiDienRaMappingToTagLabel,
+	ETrangThaiDienRaMappingToThongKeKey,
+} from '@/services/SuKien/constant';
 import { type SuKien } from '@/services/SuKien/typings';
-import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Modal, Row, Spin } from 'antd';
+import { CalendarOutlined, DeleteOutlined, EditOutlined, PieChartOutlined, TableOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Modal, Popconfirm, Row, Segmented, Spin, Tag, Tooltip } from 'antd';
+import { sum } from 'lodash';
 import moment, { type Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import type { DateRange, View } from 'react-big-calendar';
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useModel } from 'umi';
-import FormSuKien from './components/Form';
-import ModalViewDetailCalendar from './components/ModalViewDetail';
+import { Detail } from './components/Detail';
+import Form from './components/Form';
+import { ThongKeNguoiThamDu } from './components/ThongKeNguoiThamDu';
+
 const localizer = momentLocalizer(moment);
 
 const SuKienPage = () => {
-  const {
-    visibleForm,
-    setVisibleForm,
-    setRecord,
-    setEdit,
-    selectSuKiens,
-    getSuKienTrongKhoangModel,
-    loading,
-  } = useModel('sukien');
-  const [date, setDate] = useState(new Date());
-  const [dateRange, setDateRange] = useState<Moment[]>([
-    moment().startOf('week'),
-    moment().endOf('week'),
-  ]);
-  const [calendarView, setCalendarView] = useState<View>(Views.WEEK);
-  const [dataCalendar, setDataCalendar] = useState<{ title: string; [x: string]: unknown }[]>([]);
-  const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
-  const [visibleXemThem, setVisibleXemThem] = useState<boolean>(false);
-  const [eventsRecord, setEventRecord] = useState<SuKien.IRecord[]>([]);
-  const [dateXemThem, setDateXemThem] = useState<any>();
-  const [selectEvent, setSelectEvent] = useState<any>();
+	const {
+		getModel,
+		deleteModel,
+		handleEdit,
+		handleView,
+		getSuKienType,
+		thongKeTheoNamData,
+		isLoadingThongKeTheoNam,
+		loading,
+		visibleForm,
+		setRecord,
+		setEdit,
+		setIsView,
+		setVisibleForm,
+		setIsVisibleFormDetail,
+		isView,
+		edit,
+		danhSach,
+		handleViewThongKe,
+	} = useModel('sukien');
 
-  //#region Get Data
-  const getSuKien = async (): Promise<any[]> =>
-    getSuKienTrongKhoangModel({
-      fromDate: dateRange[0].toISOString(),
-      toDate: dateRange[1].toISOString(),
-      types: selectSuKiens,
-    }).then((data) => {
-      const temp = data.map((item) => ({
-        ...item,
-        title: item?.tenSuKien ?? '',
-        start: moment(item?.thoiGianBatDau).toDate(),
-        end: moment(item?.thoiGianKetThuc).toDate(),
-      }));
-      return temp;
-    });
+	const [layout, setLayout] = useState<'listing' | 'time'>('listing');
+	const [calendarView, setCalendarView] = useState<View>(Views.MONTH);
+	const [date, setDate] = useState(new Date());
+	const [dateRange, setDateRange] = useState<Moment[]>([moment().startOf('month'), moment().endOf('month')]);
+	const [dataCalendar, setDataCalendar] = useState<{ title: string; rawData: SuKien.IRecord }[]>([]);
 
-  const getData = () => {
-    getSuKien()
-      .then((values) => {
-        setDataCalendar(values);
-      })
-      .catch((er) => console.log(er));
-  };
+	const eventPropGetter = (event: { title: string; rawData: SuKien.IRecord }) => ({
+		style: { backgroundColor: ColorSuKien?.[event?.rawData?.loaiSuKien as keyof typeof ColorSuKien] },
+	});
+	const eventCustom = ({ event }: { event: { title: string; rawData: SuKien.IRecord } }) => {
+		const { title } = event;
+		return <div style={{ width: '100%', fontSize: 13 }}>{title || '--'}</div>;
+	};
 
-  //#endregion
+	const handleSelect = (event?: any) => {
+		setRecord({
+			thoiGianBatDau: event?.start?.toISOString(),
+			thoiGianKetThuc: event?.end?.toISOString(),
+		} as SuKien.IRecord);
+		setEdit(false);
+		setIsView(false);
+		setVisibleForm(true);
+	};
 
-  useEffect(() => {
-    getData();
-  }, [dateRange[0].valueOf(), dateRange[1].valueOf(), ...selectSuKiens]);
+	const onCell = (rec: SuKien.IRecord) => ({
+		onClick: () => handleView(rec),
+		style: {
+			cursor: 'pointer',
+		},
+	});
+	const columns: IColumn<SuKien.IRecord>[] = [
+		{
+			title: 'Tên sự kiện',
+			dataIndex: 'tenSuKien',
+			width: 200,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Loại',
+			width: 160,
+			filterType: 'select',
+			onCell,
+			dataIndex: 'loaiSuKienSinhVien',
+			hide: getSuKienType() !== ESuKienType.CAC_HOAT_DONG,
+		},
+		{
+			title: 'Địa điểm',
+			dataIndex: 'diaDiem',
+			width: 200,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Thời gian bắt đầu',
+			align: 'center',
+			sortable: true,
+			dataIndex: 'thoiGianBatDau',
+			filterType: 'datetime',
+			width: 160,
+			onCell,
+			render: (_, record) => {
+				return record.thoiGianBatDau ? moment(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : null;
+			},
+		},
+		{
+			title: 'Thời gian kết thúc',
+			align: 'center',
+			sortable: true,
+			dataIndex: 'thoiGianKetThuc',
+			filterType: 'datetime',
+			width: 160,
+			onCell,
+			render: (_, record) => {
+				return record.thoiGianKetThuc ? moment(record.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : null;
+			},
+		},
+		{
+			title: 'Thời gian diễn ra',
+			align: 'center',
+			sortable: true,
+			dataIndex: 'thoiGianDienRa',
+			width: 160,
+			onCell,
+			render: (_, record) => {
+				return record.thoiGianDienRa ? moment(record.thoiGianDienRa).format('HH:mm DD/MM/YYYY') : null;
+			},
+		},
+		// {
+		// 	title: 'Kinh phí',
+		// 	dataIndex: 'kinhPhi',
+		// 	width: 180,
+		// 	filterType: 'number',
+		// 	onCell,
+		// 	sortable: true,
+		// },
+		// {
+		// 	title: 'Số lượng',
+		// 	dataIndex: 'soLuong',
+		// 	width: 140,
+		// 	filterType: 'number',
+		// 	sortable: true,
+		// 	onCell,
+		// 	align: 'center',
+		// },
+		{
+			title: 'Trạng thái',
+			dataIndex: 'trangThai',
+			width: 160,
+			filterType: 'select',
+			filterData: Object.values(ETrangThaiDienRa),
+			onCell,
+			align: 'center',
+			render: (_, record) => {
+				if (record.trangThai) {
+					return (
+						<Tag color={ETrangThaiDienRaMappingToTagColor[record.trangThai]}>
+							{ETrangThaiDienRaMappingToTagLabel[record.trangThai]}
+						</Tag>
+					);
+				}
+				return null;
+			},
+		},
+		{
+			title: 'Thao tác',
+			align: 'center',
+			width: 120,
+			fixed: 'right',
+			render: (_, record) => {
+				return (
+					<>
+						{record.trangThai !== ETrangThaiDienRa.CHUA_DIEN_RA && (
+							<Tooltip title='Thống kê người tham dự'>
+								<Button onClick={() => handleViewThongKe(record)} type='link' icon={<PieChartOutlined />} />
+							</Tooltip>
+						)}
+						<Tooltip title='Chỉnh sửa'>
+							<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+						</Tooltip>
+						<Tooltip title='Xóa'>
+							<Popconfirm
+								onConfirm={() => deleteModel(record._id, () => getModel())}
+								title='Bạn có chắc chắn muốn xóa ngành đào tạo này?'
+								placement='topLeft'
+							>
+								<Button danger type='link' icon={<DeleteOutlined />} />
+							</Popconfirm>
+						</Tooltip>
+					</>
+				);
+			},
+		},
+	];
 
-  const eventPropGetter = (event: { title: string; loaiSuKien?: string }) => ({
-    style: { backgroundColor: ColorSuKien?.[event?.loaiSuKien as ELoaiSuKien] },
-  });
+	useEffect(() => {
+		if (layout === 'time') {
+			getModel(undefined, [
+				{
+					active: true,
+					field: 'thoiGianKetThuc',
+					values: [dateRange[0].toISOString()],
+					operator: EOperatorType.GREAT_EQUAL,
+				},
+				{
+					active: true,
+					field: 'thoiGianBatDau',
+					values: [dateRange[1].toISOString()],
+					operator: EOperatorType.LESS_EQUAL,
+				},
+			]);
+		}
+	}, [layout, dateRange[0].valueOf(), dateRange[1].valueOf()]);
 
-  const eventCustom = ({ event }: any) => {
-    const { title, loaiSuKien } = event;
-    return (
-      <div style={{ width: '100%', fontSize: 13 }}>
-        <b>{loaiSuKien || ''}</b>: {title || '--'}
-      </div>
-    );
-  };
+	useEffect(() => {
+		setDataCalendar(
+			danhSach.map((item) => ({
+				rawData: item,
+				title: item.tenSuKien,
+				start: moment(item?.thoiGianBatDau).toDate(),
+				end: moment(item?.thoiGianKetThuc).toDate(),
+			})),
+		);
+	}, [danhSach, layout]);
 
-  const handleSelect = (event?: any) => {
-    setRecord({
-      thoiGianBatDau: event?.start?.toISOString(),
-      thoiGianKetThuc: event?.end?.toISOString(),
-    } as SuKien.IRecord);
-    setEdit(false);
-    setVisibleForm(true);
-  };
+	const renderContent = () => {
+		if (layout === 'listing') {
+			return (
+				<TableBase
+					hideCard
+					widthDrawer={900}
+					modelName='sukien'
+					columns={columns}
+					Form={Form as any}
+					otherProps={{ hideCard: false }}
+				/>
+			);
+		}
+		return (
+			<Spin spinning={loading}>
+				<Calendar
+					events={dataCalendar}
+					formats={{
+						dayHeaderFormat: 'dddd DD/MM/YYYY',
+						dayRangeHeaderFormat: (range: DateRange) => {
+							return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format('DD/MM')}`;
+						},
+					}}
+					onRangeChange={(val) => {
+						if (Array.isArray(val)) setDateRange([moment(val[0]).startOf('d'), moment(val.at(-1)).endOf('d')]);
+						else setDateRange([moment(val.start).startOf('d'), moment(val.end).endOf('d')]);
+					}}
+					localizer={localizer}
+					defaultView={calendarView}
+					onView={(view) => setCalendarView(view)}
+					onNavigate={(newDate) => setDate(newDate)}
+					selectable
+					scrollToTime={new Date(1970, 1, 1, 6)}
+					defaultDate={new Date()}
+					date={date}
+					messages={messagesCalendar}
+					views={['month', 'week', 'day']}
+					style={{ height: 700, overflow: 'auto' }}
+					min={moment('0000', 'HHmm').toDate()}
+					max={moment('2359', 'HHmm').toDate()}
+					eventPropGetter={eventPropGetter}
+					onSelectSlot={handleSelect}
+					components={{ event: (event) => eventCustom(event) }}
+					popup
+					onSelectEvent={(event) => {
+						setRecord(event.rawData);
+						setIsVisibleFormDetail(true);
+					}}
+				/>
+				<Modal
+					onCancel={() => setVisibleForm(false)}
+					footer={null}
+					title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} sự kiện`}
+					visible={visibleForm}
+					width={900}
+				>
+					<Form hideCard />
+				</Modal>
+			</Spin>
+		);
+	};
 
-  return (
-    <Card title="Sự kiện" bordered>
-      <Row gutter={[12, 12]}>
-        <Col span={24}>
-          <Button
-            type="primary"
-            onClick={() => {
-              setRecord(undefined);
-              setVisibleForm(true);
-            }}
-          >
-            <PlusCircleOutlined /> Thêm sự kiện
-          </Button>
-        </Col>
+	const renderStatistic = () => {
+		return (
+			<Col span={24}>
+				<Row gutter={[12, 12]}>
+					<Col span={24} md={12} lg={6}>
+						<Card bodyStyle={{ padding: '8px 14px' }} loading={isLoadingThongKeTheoNam}>
+							<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+								<div style={{ fontSize: 18, fontWeight: 700, color: '#007EB9' }}>
+									{sum([
+										thongKeTheoNamData?.suKienChuaDienRa ?? 0,
+										thongKeTheoNamData?.suKienDangDienRa ?? 0,
+										thongKeTheoNamData?.suKienDaDienRa ?? 0,
+									])}
+								</div>
+								<div>Tổng số sự kiện</div>
+							</div>
+						</Card>
+					</Col>
+					{Object.values(ETrangThaiDienRa).map((item) => {
+						const key = ETrangThaiDienRaMappingToThongKeKey[item];
+						return (
+							<Col key={item} span={24} md={12} lg={6}>
+								<Card bodyStyle={{ padding: '8px 14px' }} loading={isLoadingThongKeTheoNam}>
+									<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+										<div style={{ fontSize: 18, fontWeight: 700, color: ETrangThaiDienRaMappingToHexColor[item] }}>
+											{thongKeTheoNamData?.[key]}
+										</div>
+										<div>{ETrangThaiDienRaMappingToTagLabel[item]}</div>
+									</div>
+								</Card>
+							</Col>
+						);
+					})}
+				</Row>
+			</Col>
+		);
+		// return (
+		// 	<>
+		// 		<Col xs={24} md={10} lg={8} xl={6}>
+		// 			<Card loading={isLoadingThongKeTheoNam}>
+		// 				<Statistic
+		// 					title='Tổng số sự kiện'
+		// 					value={sum([
+		// 						thongKeTheoNamData?.suKienChuaDienRa ?? 0,
+		// 						thongKeTheoNamData?.suKienDangDienRa ?? 0,
+		// 						thongKeTheoNamData?.suKienDaDienRa ?? 0,
+		// 					])}
+		// 				/>
+		// 				<Space direction='vertical'>
+		// 					{Object.values(ETrangThaiDienRa).map((item) => {
+		// 						const key = ETrangThaiDienRaMappingToThongKeKey[item];
+		// 						if (thongKeTheoNamData?.[key] !== undefined) {
+		// 							return (
+		// 								<Space key={item}>
+		// 									<Badge color={ETrangThaiDienRaMappingToTagColor[item]} />
+		// 									<div>{ETrangThaiDienRaMappingToTagLabel[item]}</div>: {thongKeTheoNamData?.[key]}
+		// 								</Space>
+		// 							);
+		// 						}
+		// 						return null;
+		// 					})}
+		// 				</Space>
+		// 			</Card>
+		// 		</Col>
+		// 		<Col xs={24} md={14} lg={16} xl={18}>
+		// 			<Card>
+		// 				<Spin spinning={isLoadingThongKeTheoNam}>
+		// 					<DonutChart
+		// 						yAxis={[
+		// 							[
+		// 								thongKeTheoNamData?.suKienChuaDienRa ?? 0,
+		// 								thongKeTheoNamData?.suKienDangDienRa ?? 0,
+		// 								thongKeTheoNamData?.suKienDaDienRa ?? 0,
+		// 							],
+		// 						]}
+		// 						xAxis={[ETrangThaiDienRa.CHUA_DIEN_RA, ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA]}
+		// 						yLabel={[]}
+		// 						formatY={(vsl) => vsl.toString()}
+		// 					/>
+		// 				</Spin>
+		// 			</Card>
+		// 		</Col>
+		// 	</>
+		// );
+	};
 
-        <Col span={24}>
-          <Spin spinning={loading}>
-            <Calendar
-              formats={{
-                dayHeaderFormat: 'dddd DD/MM/YYYY',
-                dayRangeHeaderFormat: (range: DateRange) => {
-                  return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format(
-                    'DD/MM',
-                  )}`;
-                },
-              }}
-              localizer={localizer}
-              events={dataCalendar}
-              defaultView={calendarView}
-              onView={(view) => setCalendarView(view)}
-              onRangeChange={(val) => {
-                if (Array.isArray(val))
-                  setDateRange([moment(val[0]).startOf('d'), moment(val.at(-1)).endOf('d')]);
-                else setDateRange([moment(val.start).startOf('d'), moment(val.end).endOf('d')]);
-              }}
-              onNavigate={(newDate) => setDate(newDate)}
-              selectable
-              scrollToTime={new Date(1970, 1, 1, 6)}
-              defaultDate={new Date()}
-              date={date}
-              messages={messagesCalendar}
-              views={['month', 'week', 'day']}
-              style={{ height: 700, overflow: 'auto' }}
-              min={moment('0000', 'HHmm').toDate()}
-              max={moment('2359', 'HHmm').toDate()}
-              eventPropGetter={eventPropGetter}
-              onSelectSlot={handleSelect}
-              onSelectEvent={(rec: any) => {
-                setSelectEvent(rec);
-                setVisibleDetail(true);
-              }}
-              components={{ event: (event: any) => eventCustom(event) }}
-              popup
-              onShowMore={(events: any[], d) => {
-                setEventRecord(events);
-                setDateXemThem(d);
-                setVisibleXemThem(true);
-              }}
-            />
-          </Spin>
-        </Col>
-      </Row>
-
-      <Modal
-        visible={visibleForm}
-        bodyStyle={{ padding: 0 }}
-        onCancel={() => setVisibleForm(false)}
-        footer={null}
-        maskClosable={false}
-      >
-        <FormSuKien getData={getData} />
-      </Modal>
-
-      {/* Modal xem chi tiết lịch */}
-      {selectEvent ? (
-        <ModalViewDetailCalendar
-          visible={visibleDetail}
-          setVisible={setVisibleDetail}
-          event={selectEvent}
-          getData={getData}
-        />
-      ) : null}
-
-      <Modal
-        visible={visibleXemThem}
-        title={'Lịch ' + moment(dateXemThem).format('dddd, ngà\\y DD/MM/YYYY')}
-        onCancel={() => setVisibleXemThem(false)}
-        footer={null}
-      >
-        {eventsRecord?.map((item: SuKien.IRecord) => {
-          return (
-            <div
-              key={item._id}
-              style={{
-                backgroundColor: ColorSuKien?.[item?.loaiSuKien],
-                color: 'white',
-                padding: 5,
-                marginBottom: 10,
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                setSelectEvent(item);
-                setVisibleDetail(true);
-              }}
-            >
-              <b>{item?.loaiSuKien}</b>: {item?.tenSuKien}
-            </div>
-          );
-        })}
-      </Modal>
-    </Card>
-  );
+	return (
+		<>
+			<Row gutter={[12, 12]}>
+				{renderStatistic()}
+				<Col xs={24}>
+					<Card
+						title={
+							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+								<div>{ESuKienTypeMappingToLabel[getSuKienType()]}</div>
+								<Segmented
+									value={layout}
+									onChange={(value) => setLayout(value as typeof layout)}
+									options={[
+										{ label: <TableOutlined />, value: 'listing' },
+										{ label: <CalendarOutlined />, value: 'time' },
+									]}
+								/>
+							</div>
+						}
+					>
+						{renderContent()}
+					</Card>
+				</Col>
+			</Row>
+			<Detail />
+			<ThongKeNguoiThamDu />
+		</>
+	);
 };
 
 export default SuKienPage;
