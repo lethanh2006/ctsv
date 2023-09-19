@@ -36,6 +36,7 @@ export default {
 	'menu.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
 
 	'menu.ThongBao': 'Thông báo',
+	'menu.LopHanhChinh': 'Lớp hành chính',
 
 	'menu.SinhVien': 'Hồ sơ sinh viên',
 	'menu.SinhVien.DanhSachSinhVien': 'Danh sách sinh viên',

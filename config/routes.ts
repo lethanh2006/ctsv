@@ -84,6 +84,15 @@
 		],
 	},
 
+	//////////////////////
+	// LỚP HÀNH CHÍNH
+	{
+		name: 'LopHanhChinh',
+		icon: 'appstore',
+		path: '/lop-hanh-chinh',
+		component: './DaoTao/LopHanhChinh',
+	},
+
 	/////////////////////////////
 	// DICH VU HANH CHINH
 	{

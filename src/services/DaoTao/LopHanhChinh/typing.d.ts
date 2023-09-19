@@ -2,9 +2,9 @@ declare module LopHanhChinh {
 	export interface IRecord {
 		_id: string;
 		ten: string;
-		khoaSinhVienId: string;
+		maKhoaSinhVien: string;
 		khoaSinhVien?: KhoaSinhVien.IRecord;
-		nganhId: string;
+		maNganh: string;
 		nganh?: NganhDaoTao.IRecordCoSo;
 		siSo: number;
 		nhanSuSsoId?: string;
