@@ -212,6 +212,25 @@
 		hideInMenu: true,
 	},
 
+	// DRL
+	{
+		name: 'DiemRenLuyen',
+		path: '/diem-ren-luyen',
+		icon: 'user',
+		routes: [
+			{
+				name: 'DotChamDiem',
+				path: 'dot-cham-diem',
+				component: './DiemRenLuyen/DotChamDiem',
+			},
+			{
+				name: 'TongHopDuLieu',
+				path: 'tong-hop-du-lieu',
+				component: './DiemRenLuyen/TongHopDuLieu',
+			},
+		],
+	},
+
 	//////////////////////
 	// THONG BAO
 	{
@@ -348,22 +367,22 @@
 			{
 				name: 'ThamGiaCongTacXaHoi',
 				path: 'tham-gia-cong-tac-xa-hoi',
-				component: './DanhMuc/DiemRenLuyen',
+				component: './DiemRenLuyen/DanhMuc',
 			},
 			{
 				name: 'CapDatGiai',
 				path: 'cap-dat-giai',
-				component: './DanhMuc/DiemRenLuyen',
+				component: './DiemRenLuyen/DanhMuc',
 			},
 			{
 				name: 'KyTucXa',
 				path: 'ky-tuc-xa',
-				component: './DanhMuc/DiemRenLuyen',
+				component: './DiemRenLuyen/DanhMuc',
 			},
 			{
 				name: 'PhongKyTucXa',
 				path: 'phong-ky-tuc-xa',
-				component: './DanhMuc/DiemRenLuyen',
+				component: './DiemRenLuyen/DanhMuc',
 			},
 		],
 	},

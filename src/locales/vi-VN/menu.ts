@@ -30,6 +30,10 @@ export default {
 	'menu.SuKien.HoatDongXaHoi': 'Hoạt động xã hội',
 	'menu.SuKien.Khac': 'Các đơn vị ngoài Học viện',
 
+	'menu.DiemRenLuyen': 'Điểm rèn luyện',
+	'menu.DiemRenLuyen.DotChamDiem': 'Đợt chấm điểm',
+	'menu.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
+
 	'menu.ThongBao': 'Thông báo',
 
 	'menu.SinhVien': 'Hồ sơ sinh viên',
