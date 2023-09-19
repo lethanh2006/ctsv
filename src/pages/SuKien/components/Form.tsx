@@ -1,4 +1,5 @@
 import MyDatePicker from '@/components/MyDatePicker';
+import { SelectHocKy } from '@/pages/DaoTao/HocKy/SelectHocKy';
 import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
 import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
 import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
@@ -7,7 +8,13 @@ import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
 import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
-import { ELoaiSuKienSinhVien, EReceiverType, ESuKienType, LoaiDoiTuongThamGia } from '@/services/SuKien/constant';
+import {
+	ELoaiSuKienSinhVien,
+	EReceiverType,
+	ESuKienType,
+	ETuanLeCongDan,
+	LoaiDoiTuongThamGia,
+} from '@/services/SuKien/constant';
 import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
@@ -133,6 +140,30 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<Input placeholder='Tên sự kiện' />
 							</Form.Item>
 						</Col>
+						{getSuKienType() === ESuKienType.TUAN_LE_CONG_DAN && (
+							<Col xs={24}>
+								<Form.Item
+									rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+									name='tuanLeCongDan'
+									label='Loại'
+								>
+									<Select
+										placeholder='Loại'
+										options={Object.values(ETuanLeCongDan).map((item) => ({
+											value: item,
+											label: item,
+										}))}
+									/>
+								</Form.Item>
+							</Col>
+						)}
+						{getSuKienType() === ESuKienType.TUAN_LE_CONG_DAN && (
+							<Col xs={24}>
+								<Form.Item rules={[...rules.required, ...rules.text, ...rules.length(250)]} name='kyHoc' label='Học kỳ'>
+									<SelectHocKy />
+								</Form.Item>
+							</Col>
+						)}
 						{getSuKienType() === ESuKienType.CAC_HOAT_DONG && (
 							<Col xs={24}>
 								<Form.Item rules={[...rules.required]} name='loaiSuKienSinhVien' label='Loại'>

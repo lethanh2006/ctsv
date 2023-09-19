@@ -105,9 +105,6 @@ export const Detail = () => {
 				<Descriptions.Item label='Kinh phí'>{record?.kinhPhi ? tienVietNam(record?.kinhPhi) : '--'}</Descriptions.Item>
 				<Descriptions.Item label='Số lượng'>{record?.soLuong ?? record?.users?.length ?? '--'}</Descriptions.Item>
 				<Descriptions.Item label='Ghi chú'>{record?.ghiChu ?? '--'}</Descriptions.Item>
-				{record?.loaiSuKienSinhVien && (
-					<Descriptions.Item label='Loại sự kiện'>{record?.loaiSuKienSinhVien}</Descriptions.Item>
-				)}
 				<Descriptions.Item label='Mã sự kiện'>
 					<Link target='_blank' to={`/qr-su-kien/${record?._id}`}>
 						{record?.maSuKien}

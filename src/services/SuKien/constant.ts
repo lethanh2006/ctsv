@@ -16,6 +16,7 @@ export enum ETrangThaiDienRa {
 export enum ESuKienType {
 	CA_NHAN = 'Cá nhân',
 	TAT_CA = 'Chung',
+	TUAN_LE_CONG_DAN = 'Tuần lễ công dân',
 	CAC_HOAT_DONG = 'Các hoạt động cho sinh viên',
 	DAO_TAO_BOI_DUONG = 'Đào tạo bồi dưỡng',
 	HOP_TAC_NGUYEN_CUU_CHUYEN_GAO = 'Hợp tác - Nghiên cứu - chuyển giao',
@@ -33,6 +34,7 @@ export enum ELoaiSuKienSinhVien {
 }
 
 export const locationPathMappingToESuKienType: Record<string, ESuKienType> = {
+	'tuan-le-cong-dan': ESuKienType.TUAN_LE_CONG_DAN,
 	'cac-hoat-dong-cho-sinh-vien': ESuKienType.CAC_HOAT_DONG,
 	'dao-tao-boi-duong': ESuKienType.DAO_TAO_BOI_DUONG,
 	'hop-tac-nghien-cuu-chuyen-giao': ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO,
@@ -44,7 +46,8 @@ export const locationPathMappingToESuKienType: Record<string, ESuKienType> = {
 export const ESuKienTypeMappingToLabel: Record<ESuKienType, string> = {
 	[ESuKienType.CA_NHAN]: 'Cá nhân',
 	[ESuKienType.TAT_CA]: 'Chung',
-	[ESuKienType.CAC_HOAT_DONG]: 'Công tác sinh viên',
+	[ESuKienType.TUAN_LE_CONG_DAN]: 'Tuần lễ công dân',
+	[ESuKienType.CAC_HOAT_DONG]: 'Tư vấn tuyển sinh, hướng nghiệp',
 	[ESuKienType.DAO_TAO_BOI_DUONG]: 'Đào tạo bồi dưỡng',
 	[ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'Hợp tác quốc tế, nghiên cứu khoa học và chuyển giao công nghệ',
 	[ESuKienType.THUC_THI_CHINH_SACH]: 'Thực thi, phát triển chính sách',
@@ -109,4 +112,12 @@ export const LoaiDoiTuongThamGia: Partial<Record<EReceiverType, string>> = {
 export enum ESuKienRole {
 	HOC_VIEN = 'sinh_vien',
 	CAN_BO = 'nhan_vien',
+}
+
+export enum ETuanLeCongDan {
+	DAU_KHOA = 'Đầu khóa',
+	GIUA_KHOA = 'Giữa khóa',
+	CUOI_KHOA = 'Cuối khóa',
+	// HOI_THAO_CHUYEN_DE_VIEC_LAM = "Hội thảo, nói chuyện chuyên đề về việc làm, đào tạo kỹ năng mềm",
+	// KHAC = "Khác",
 }
