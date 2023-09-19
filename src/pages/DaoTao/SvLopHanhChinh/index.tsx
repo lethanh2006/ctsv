@@ -2,11 +2,14 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import ModalChiTietSinhVien from '@/pages/SinhVien/component/ModalChiTietSinhVien';
 import { formatPhoneNumber } from '@/utils/utils';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
+import Form from './components/Form';
 
 const SinhVienLopHanhChinh = (props: { hideCard?: boolean }) => {
-	const { page, limit } = useModel('daotao.sinhvienlophanhchinh');
+	const { getModel, page, limit, deleteModel } = useModel('daotao.sinhvienlophanhchinh');
 	const { record: recLopHanhChinh } = useModel('daotao.lophanhchinh');
 	const { handleView: handleViewSinhVien } = useModel('sinhvien.sinhvien');
 	const { hideCard } = props;
@@ -47,25 +50,25 @@ const SinhVienLopHanhChinh = (props: { hideCard?: boolean }) => {
 			render: (val, rec) => rec?.sinhVien?.soDienThoai && formatPhoneNumber(rec?.sinhVien?.soDienThoai),
 			onCell,
 		},
-		// {
-		// 	title: 'Thao tác',
-		// 	align: 'center',
-		// 	width: 60,
-		// 	fixed: 'right',
-		// 	render: (record: LopHanhChinh.IRecordSinhVien) => (
-		// 		<>
-		// 			<Tooltip title='Xóa'>
-		// 				<Popconfirm
-		// 					onConfirm={() => deleteModel(record._id, () => getModel({ lopHanhChinhId: recLopHanhChinh?._id }))}
-		// 					title='Bạn có chắc chắn muốn xóa sinh viên khỏi lớp?'
-		// 					placement='topRight'
-		// 				>
-		// 					<Button danger type='link' icon={<DeleteOutlined />} />
-		// 				</Popconfirm>
-		// 			</Tooltip>
-		// 		</>
-		// 	),
-		// },
+		{
+			title: 'Thao tác',
+			align: 'center',
+			width: 60,
+			fixed: 'right',
+			render: (record: LopHanhChinh.IRecordSinhVien) => (
+				<>
+					<Tooltip title='Xóa'>
+						<Popconfirm
+							onConfirm={() => deleteModel(record._id, () => getModel({ lopHanhChinhId: recLopHanhChinh?._id }))}
+							title='Bạn có chắc chắn muốn xóa sinh viên khỏi lớp?'
+							placement='topRight'
+						>
+							<Button danger type='link' icon={<DeleteOutlined />} />
+						</Popconfirm>
+					</Tooltip>
+				</>
+			),
+		},
 	];
 
 	return (
@@ -75,11 +78,12 @@ const SinhVienLopHanhChinh = (props: { hideCard?: boolean }) => {
 				dependencies={[page, limit, recLopHanhChinh?._id]}
 				params={{ lopHanhChinhId: recLopHanhChinh?._id }}
 				modelName='daotao.sinhvienlophanhchinh'
+				title='Sinh viên lớp hành chính'
+				Form={Form}
 				hideCard={hideCard}
-				buttons={{ create: false }}
 			/>
 
-			<ModalChiTietSinhVien hasDetail sinhVienSsoId={sinhVienSsoId ?? ''} />
+			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasEdit />
 		</>
 	);
 };

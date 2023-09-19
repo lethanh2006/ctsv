@@ -9,16 +9,19 @@ const SelectKhoaSinhVien = (props: {
 	value?: string;
 	onChange?: (val: string) => void;
 	multiple?: boolean;
-	condition?: any;
+	condition?: Partial<KhoaSinhVien.IRecord>;
 	allowClear?: boolean;
 	disabled?: boolean;
+	style?: React.CSSProperties;
+	isSetRecord?: boolean;
+	selectMa?: boolean;
 	readOnly?: boolean;
 }) => {
-	const { value, onChange, multiple, condition, allowClear, disabled, readOnly } = props;
+	const { value, onChange, multiple, condition, allowClear, disabled, style, isSetRecord, selectMa, readOnly } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('daotao.khoasinhvien');
 
 	useEffect(() => {
-		if (!visibleForm) getAllModel(false, undefined, condition);
+		if (!visibleForm) getAllModel(isSetRecord, { namHocBatDau: -1 }, condition);
 	}, [visibleForm, JSON.stringify(condition)]);
 
 	return (
@@ -29,7 +32,7 @@ const SelectKhoaSinhVien = (props: {
 			disabled={disabled}
 			options={danhSach.map((item) => ({
 				key: item._id,
-				value: item._id,
+				value: selectMa ? item.ma : item._id,
 				label: item.ten,
 			}))}
 			removeIcon={readOnly ? null : undefined}
@@ -37,7 +40,7 @@ const SelectKhoaSinhVien = (props: {
 			optionFilterProp='label'
 			placeholder='Chọn khóa sinh viên'
 			allowClear={allowClear ?? false}
-			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined }}
+			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined, ...style }}
 		/>
 	);
 };

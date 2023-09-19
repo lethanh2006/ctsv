@@ -12,24 +12,47 @@ const SelectNganhCoSo = (props: {
 	multiple?: boolean;
 	allowClear?: boolean;
 	hasDefault?: boolean;
-	allowList?: string[];
+	maKhoaSinhVien?: string;
+	style?: React.CSSProperties;
+	selectMa?: boolean;
+	condition?: Partial<NganhDaoTao.IRecordCoSo>;
+	disabled?: boolean;
 	readOnly?: boolean;
 }) => {
-	const { value, onChange, multiple, allowClear, hasDefault, allowList, readOnly } = props;
+	const {
+		value,
+		onChange,
+		multiple,
+		allowClear,
+		hasDefault,
+		maKhoaSinhVien,
+		style,
+		selectMa,
+		condition,
+		disabled,
+		readOnly,
+	} = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('daotao.nganhdaotao');
+	const { getAllModel: getKhoaNganh } = useModel('daotao.khoanganh');
 
-	useEffect(() => {
-		if (!visibleForm)
+	const getData = async () => {
+		if (!visibleForm) {
+			let allowList: string[] = [];
+			if (maKhoaSinhVien) {
+				const res = await getKhoaNganh(false, undefined, { maKhoaSinhVien });
+				allowList = res.map((item) => item.maNganh);
+			}
+
 			getAllModel(
 				false,
 				undefined,
-				{ parentId: null },
-				allowList && allowList.length
+				{ ...condition, parentId: null },
+				allowList.length
 					? [
 							{
 								active: true,
-								field: '_id',
-								values: allowList ?? [],
+								field: 'ma',
+								values: allowList,
 								operator: EOperatorType.INCLUDE,
 							},
 					  ]
@@ -37,25 +60,31 @@ const SelectNganhCoSo = (props: {
 			).then((data) => {
 				// Nếu chưa chọn giá trị và (sau khi thêm mới hoặc data chỉ có 1 phần tử)
 				// Thì chọn phần tử đầu tiên
-				if (hasDefault && data.length === 1 && !!onChange) onChange(data[0]._id);
+				if (hasDefault && !!onChange) onChange(selectMa ? data?.[0]?.ma : data?.[0]?._id);
 			});
-	}, [visibleForm, ...(allowList ?? [])]);
+		}
+	};
+
+	useEffect(() => {
+		getData();
+	}, [visibleForm, maKhoaSinhVien, JSON.stringify(condition)]);
 
 	return (
 		<Select
+			disabled={disabled}
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
 			onChange={onChange}
 			options={danhSach.map((item) => ({
 				key: item._id,
-				value: item._id,
+				value: selectMa ? item.ma : item._id,
 				label: `${item.dmNganh?.ten} (${item.ma})`,
 			}))}
 			showSearch
 			optionFilterProp='label'
 			placeholder='Chọn ngành đào tạo'
 			allowClear={allowClear ?? false}
-			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined }}
+			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined, ...style }}
 			removeIcon={readOnly ? null : undefined}
 		/>
 	);
