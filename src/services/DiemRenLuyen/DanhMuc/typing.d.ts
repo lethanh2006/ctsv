@@ -7,6 +7,6 @@ declare module DanhMucDiemRenLuyen {
 		ten: string;
 		ghiChu?: string;
 		loai: ELoaiDanhMucChung;
-		idCha?: string;
+		idCha?: DanhMucDiemRenLuyen.IRecord;
 	}
 }
