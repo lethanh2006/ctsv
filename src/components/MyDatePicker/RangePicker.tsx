@@ -50,7 +50,7 @@ const MyDateRangePicker = (
 	};
 
 	let objMoment: any = undefined;
-	if (props.value && typeof props.value.every((item) => typeof item === 'string')) {
+	if (props.value && props.value.every((item) => typeof item === 'string')) {
 		objMoment = props.value.map((item) => {
 			return moment(item, saveFormat);
 		});
