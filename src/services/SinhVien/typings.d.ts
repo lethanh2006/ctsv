@@ -107,12 +107,12 @@ declare module SinhVien {
 		thongTinAnhChiEm: string;
 		// thongTinCacCon: string;
 
-		khoaSinhVienId: string;
+		maKhoaSinhVien: string;
 		khoaSinhVien?: KhoaSinhVien.IRecord;
-		khoaNganhId?: string;
+		maKhoaNganh?: string;
 		khoaNganh?: KhoaNganh.IRecord;
 		lopHanhChinhList?: LopHanhChinh.IRecord[];
-		nganhId: string;
+		maNganh: string;
 		maTrinhDo: string;
 		maHinhThuc: string;
 		chuongTrinhId: string;

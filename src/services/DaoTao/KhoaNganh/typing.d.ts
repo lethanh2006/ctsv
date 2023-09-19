@@ -1,16 +1,17 @@
 declare module KhoaNganh {
-  export interface IRecord {
-    _id: string;
-    ten: string;
-    chuongTrinhId: string;
-    chuongTrinh?: ChuongTrinhDaoTao.IRecord;
-    khoaSinhVienId: string;
-    khoaSinhVien: KhoaSinhVien.IRecord;
-    nganhId: string;
-    nganh: NganhDaoTao.IRecordCoSo;
-    namBatDau?: number;
-    namKetThuc?: number;
-    createdAt?: string;
-    updatedAt?: string;
-  }
+	export interface IRecord {
+		_id: string;
+		ma: string;
+		ten: string;
+		maChuongTrinh: string;
+		chuongTrinh?: ChuongTrinhDaoTao.IRecord;
+		maKhoaSinhVien: string;
+		khoaSinhVien: KhoaSinhVien.IRecord;
+		maNganh: string;
+		nganh: NganhDaoTao.IRecordCoSo;
+		namBatDau?: number;
+		namKetThuc?: number;
+		createdAt?: string;
+		updatedAt?: string;
+	}
 }

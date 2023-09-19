@@ -91,7 +91,7 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 							</Form.Item>
 						</Col>
 						<Col span={24} md={16}>
-							<Form.Item name='khoaNganhId' label='Khóa ngành' rules={[...rules.required]}>
+							<Form.Item name='maKhoaNganh' label='Khóa ngành' rules={[...rules.required]}>
 								<SelectKhoaNganh disabled={edit} />
 							</Form.Item>
 						</Col>
