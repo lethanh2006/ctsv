@@ -24,7 +24,7 @@ export default {
 
 	'menu.SuKien': 'Hoạt động',
 
-	'menu.CheDoChinhSachHocBong': 'Chế độ chính sách học bổng',
+	'menu.CheDoChinhSachHocBong': 'Chính sách học bổng',
 
 	'menu.SuKien.TuanLeCongDan': 'Tuần lễ sinh hoạt công dân',
 
