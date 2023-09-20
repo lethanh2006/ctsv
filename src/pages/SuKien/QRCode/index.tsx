@@ -27,7 +27,7 @@ const QRCodePage = () => {
 				<Empty
 					description={
 						<Space direction='vertical'>
-							<Typography.Paragraph strong>Sự kiện không tồn tại</Typography.Paragraph>
+							<Typography.Paragraph strong>Hoạt động không tồn tại</Typography.Paragraph>
 						</Space>
 					}
 				/>

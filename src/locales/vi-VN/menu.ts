@@ -22,20 +22,32 @@ export default {
 	'menu.DanhMuc.KyTucXa': 'Ký túc xá',
 	'menu.DanhMuc.PhongKyTucXa': 'Phòng ký túc xá',
 
-	'menu.SuKien': 'Sự kiện',
-	'menu.SuKien.TuanLeCongDan': 'Tuần lễ công dân',
-	'menu.SuKien.CacHoatDongChoSinhVien': 'Tư vấn tuyển sinh, hướng nghiệp',
-	'menu.SuKien.DaoTaoBoiDuong': 'Đào tạo bồi dưỡng',
-	'menu.SuKien.HopTacNghienCuuChuyenGiao': 'Hợp tác quốc tế, nghiên cứu khoa học và chuyển giao công nghệ',
-	'menu.SuKien.ThucThiChinhSach': 'Thực thi, phát triển chính sách',
-	'menu.SuKien.HoatDongXaHoi': 'Hoạt động xã hội',
-	'menu.SuKien.Khac': 'Các đơn vị ngoài Học viện',
+	'menu.SuKien': 'Hoạt động',
 
-	'menu.DiemRenLuyen': 'Điểm rèn luyện',
+	'menu.CheDoChinhSachHocBong': 'Chính sách học bổng',
+
+	'menu.SuKien.TuanLeCongDan': 'Tuần lễ sinh hoạt công dân',
+
+	'menu.SuKien.CacHoatDongChoSinhVien': 'Hoạt động hướng nghiệp, việc làm và kỹ năng mềm',
+
+	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong': 'Hoạt động kết nối và phục vụ cộng đồng',
+	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.DaoTaoBoiDuong': 'Đào tạo bồi dưỡng',
+	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.HopTacNghienCuuChuyenGiao':
+		'Nghiên cứu khoa học và chuyển giao công nghệ',
+	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.ThucThiChinhSach': 'Thực thi, phát triển chính sách',
+	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.HoatDongXaHoi': 'Hoạt động xã hội, thiện nguyện',
+	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.Khac': 'Các đơn vị ngoài Học viện',
+
+	'menu.SuKien.VanHoaVanNgheTheThao': 'Văn hóa, văn nghệ và thể thao',
+
+	'menu.DiemRenLuyen': 'Đánh giá rèn luyện',
 	'menu.DiemRenLuyen.DotChamDiem': 'Đợt chấm điểm',
 	'menu.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
 
 	'menu.ThongBao': 'Thông báo',
+
+	'menu.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
+
 	'menu.LopHanhChinh': 'Lớp hành chính',
 
 	'menu.SinhVien': 'Hồ sơ sinh viên',

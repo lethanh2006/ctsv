@@ -135,9 +135,9 @@ const FormSuKien = ({ hideCard }: Props) => {
 							<Form.Item
 								rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 								name='tenSuKien'
-								label='Tên sự kiện'
+								label='Tên hoạt động'
 							>
-								<Input placeholder='Tên sự kiện' />
+								<Input placeholder='Tên hoạt động' />
 							</Form.Item>
 						</Col>
 						{getSuKienType() === ESuKienType.TUAN_LE_CONG_DAN && (
@@ -157,13 +157,11 @@ const FormSuKien = ({ hideCard }: Props) => {
 								</Form.Item>
 							</Col>
 						)}
-						{getSuKienType() === ESuKienType.TUAN_LE_CONG_DAN && (
-							<Col xs={24}>
-								<Form.Item rules={[...rules.required, ...rules.text, ...rules.length(250)]} name='kyHoc' label='Học kỳ'>
-									<SelectHocKy />
-								</Form.Item>
-							</Col>
-						)}
+						<Col xs={24}>
+							<Form.Item rules={[...rules.required, ...rules.text, ...rules.length(250)]} name='kyHoc' label='Học kỳ'>
+								<SelectHocKy />
+							</Form.Item>
+						</Col>
 						{getSuKienType() === ESuKienType.CAC_HOAT_DONG && (
 							<Col xs={24}>
 								<Form.Item rules={[...rules.required]} name='loaiSuKienSinhVien' label='Loại'>
@@ -198,24 +196,26 @@ const FormSuKien = ({ hideCard }: Props) => {
 							</Form.Item>
 						</Col>
 
-						<Col xs={24} md={12}>
+						<Col xs={24} md={getSuKienType() !== ESuKienType.TUAN_LE_CONG_DAN ? 12 : 24}>
 							<Form.Item rules={[...rules.text, ...rules.length(250)]} name='diaDiem' label='Địa điểm'>
 								<Input placeholder='Địa điểm' />
 							</Form.Item>
 						</Col>
-						<Col xs={24} md={12}>
-							<Form.Item rules={[...rules.number(Number.MAX_SAFE_INTEGER, 0)]} name='kinhPhi' label='Kinh phí'>
-								<InputNumber
-									style={{ width: '100%' }}
-									placeholder='Kinh phí'
-									formatter={(value) => {
-										const value_ = Number(value);
-										return isNaN(value_) ? (value as any) : tienVietNam(value_);
-									}}
-									parser={(value) => (value ? Number(value?.replace(/[^0-9]/g, '')) : '')}
-								/>
-							</Form.Item>
-						</Col>
+						{getSuKienType() !== ESuKienType.TUAN_LE_CONG_DAN && (
+							<Col xs={24} md={12}>
+								<Form.Item rules={[...rules.number(Number.MAX_SAFE_INTEGER, 0)]} name='kinhPhi' label='Kinh phí'>
+									<InputNumber
+										style={{ width: '100%' }}
+										placeholder='Kinh phí'
+										formatter={(value) => {
+											const value_ = Number(value);
+											return isNaN(value_) ? (value as any) : tienVietNam(value_);
+										}}
+										parser={(value) => (value ? Number(value?.replace(/[^0-9]/g, '')) : '')}
+									/>
+								</Form.Item>
+							</Col>
+						)}
 
 						<Col span={24} md={8}>
 							<Form.Item name='receiverType' label='Đối tượng tham gia' rules={[...rules.required]}>
@@ -338,7 +338,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 		return <div>{renderContent()}</div>;
 	}
 
-	return <Card title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} sự kiện`}>{renderContent()}</Card>;
+	return <Card title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} hoạt động`}>{renderContent()}</Card>;
 };
 
 export default FormSuKien;

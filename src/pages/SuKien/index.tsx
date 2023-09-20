@@ -4,7 +4,6 @@ import { type IColumn } from '@/components/Table/typing';
 import { messagesCalendar } from '@/services/Calendar/constant';
 import {
 	ColorSuKien,
-	ESuKienType,
 	ESuKienTypeMappingToLabel,
 	ETrangThaiDienRa,
 	ETrangThaiDienRaMappingToHexColor,
@@ -82,19 +81,11 @@ const SuKienPage = () => {
 	});
 	const columns: IColumn<SuKien.IRecord>[] = [
 		{
-			title: 'Tên sự kiện',
+			title: 'Tên hoạt động',
 			dataIndex: 'tenSuKien',
 			width: 200,
 			filterType: 'string',
 			onCell,
-		},
-		{
-			title: 'Loại',
-			width: 160,
-			filterType: 'select',
-			onCell,
-			dataIndex: 'loaiSuKienSinhVien',
-			hide: getSuKienType() !== ESuKienType.CAC_HOAT_DONG,
 		},
 		{
 			title: 'Địa điểm',
@@ -287,7 +278,7 @@ const SuKienPage = () => {
 				<Modal
 					onCancel={() => setVisibleForm(false)}
 					footer={null}
-					title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} sự kiện`}
+					title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} hoạt động`}
 					visible={visibleForm}
 					width={900}
 				>
@@ -311,7 +302,7 @@ const SuKienPage = () => {
 										thongKeTheoNamData?.suKienDaDienRa ?? 0,
 									])}
 								</div>
-								<div>Tổng số sự kiện</div>
+								<div>Tổng số hoạt động</div>
 							</div>
 						</Card>
 					</Col>
@@ -338,7 +329,7 @@ const SuKienPage = () => {
 		// 		<Col xs={24} md={10} lg={8} xl={6}>
 		// 			<Card loading={isLoadingThongKeTheoNam}>
 		// 				<Statistic
-		// 					title='Tổng số sự kiện'
+		// 					title='Tổng số hoạt động'
 		// 					value={sum([
 		// 						thongKeTheoNamData?.suKienChuaDienRa ?? 0,
 		// 						thongKeTheoNamData?.suKienDangDienRa ?? 0,
