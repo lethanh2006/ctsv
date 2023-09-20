@@ -53,7 +53,7 @@ export const Detail = () => {
 		<Modal
 			width={900}
 			visible={isVisibleFormDetail}
-			title='Chi tiết sự kiện'
+			title='Chi tiết hoạt động'
 			destroyOnClose
 			onCancel={() => setIsVisibleFormDetail(false)}
 			footer={
@@ -69,7 +69,7 @@ export const Detail = () => {
 						Chỉnh sửa
 					</Button>
 					<Popconfirm
-						title='Bạn có chắc chắn muốn xóa sự kiện này không?'
+						title='Bạn có chắc chắn muốn xóa hoạt động này không?'
 						onConfirm={() => {
 							deleteModel(record?._id ?? '', getModel);
 							setIsVisibleFormDetail(false);
@@ -94,7 +94,7 @@ export const Detail = () => {
 						'--'
 					)}
 				</Descriptions.Item>
-				<Descriptions.Item label='Tên sự kiện'>{record?.tenSuKien}</Descriptions.Item>
+				<Descriptions.Item label='Tên hoạt động'>{record?.tenSuKien}</Descriptions.Item>
 				<Descriptions.Item label='Địa điểm'>{record?.diaDiem ?? '--'}</Descriptions.Item>
 				<Descriptions.Item label='Thời gian bắt đầu'>
 					{record?.thoiGianBatDau ? moment(record?.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : '--'}
@@ -105,7 +105,7 @@ export const Detail = () => {
 				<Descriptions.Item label='Kinh phí'>{record?.kinhPhi ? tienVietNam(record?.kinhPhi) : '--'}</Descriptions.Item>
 				<Descriptions.Item label='Số lượng'>{record?.soLuong ?? record?.users?.length ?? '--'}</Descriptions.Item>
 				<Descriptions.Item label='Ghi chú'>{record?.ghiChu ?? '--'}</Descriptions.Item>
-				<Descriptions.Item label='Mã sự kiện'>
+				<Descriptions.Item label='Mã hoạt động'>
 					<Link target='_blank' to={`/qr-su-kien/${record?._id}`}>
 						{record?.maSuKien}
 					</Link>

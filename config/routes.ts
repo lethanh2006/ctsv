@@ -93,6 +93,76 @@
 		component: './DaoTao/LopHanhChinh',
 	},
 
+	//////////////////////
+	// SU KIEN
+	{
+		name: 'SuKien',
+		icon: 'calendar',
+		path: '/su-kien',
+		routes: [
+			{
+				name: 'TuanLeCongDan',
+				path: 'tuan-le-cong-dan',
+				component: './SuKien',
+			},
+			{
+				name: 'CacHoatDongChoSinhVien',
+				path: 'cac-hoat-dong-cho-sinh-vien',
+				component: './SuKien',
+			},
+			{
+				name: 'VanHoaVanNgheTheThao',
+				path: 'van-hoa-van-nghe-the-thao',
+				component: './SuKien',
+			},
+			{
+				name: 'HoatDongKetNoiVaPhucVuCongDong',
+				path: 'hoat-dong-ket-noi-va-phuc-vu-cong-dong',
+				routes: [
+					{
+						name: 'DaoTaoBoiDuong',
+						path: 'dao-tao-boi-duong',
+						component: './SuKien',
+					},
+					{
+						name: 'HopTacNghienCuuChuyenGiao',
+						path: 'hop-tac-nghien-cuu-chuyen-giao',
+						component: './SuKien',
+					},
+					{
+						name: 'ThucThiChinhSach',
+						path: 'thuc-thi-chinh-sach',
+						component: './SuKien',
+					},
+					{
+						name: 'HoatDongXaHoi',
+						path: 'hoat-dong-xa-hoi',
+						component: './SuKien',
+					},
+					{
+						name: 'Khac',
+						path: 'khac',
+						component: './SuKien',
+					},
+				],
+			},
+		],
+	},
+	{
+		path: `/qr-su-kien/:id`,
+		component: './SuKien/QRCode',
+		layout: false,
+		hideInMenu: true,
+	},
+
+	// Chế độ chính sách, học bổng
+	{
+		path: '/che-do-chinh-sach-hoc-bong',
+		name: 'CheDoChinhSachHocBong',
+		component: './CheDoChinhSachHocBong',
+		icon: 'read',
+	},
+
 	/////////////////////////////
 	// DICH VU HANH CHINH
 	{
@@ -169,57 +239,6 @@
 	//   ],
 	// },
 
-	//////////////////////
-	// SU KIEN
-	{
-		name: 'SuKien',
-		icon: 'calendar',
-		path: '/su-kien',
-		routes: [
-			{
-				name: 'TuanLeCongDan',
-				path: 'tuan-le-cong-dan',
-				component: './SuKien',
-			},
-			{
-				name: 'CacHoatDongChoSinhVien',
-				path: 'cac-hoat-dong-cho-sinh-vien',
-				component: './SuKien',
-			},
-			{
-				name: 'DaoTaoBoiDuong',
-				path: 'dao-tao-boi-duong',
-				component: './SuKien',
-			},
-			{
-				name: 'HopTacNghienCuuChuyenGiao',
-				path: 'hop-tac-nghien-cuu-chuyen-giao',
-				component: './SuKien',
-			},
-			{
-				name: 'ThucThiChinhSach',
-				path: 'thuc-thi-chinh-sach',
-				component: './SuKien',
-			},
-			{
-				name: 'HoatDongXaHoi',
-				path: 'hoat-dong-xa-hoi',
-				component: './SuKien',
-			},
-			{
-				name: 'Khac',
-				path: 'khac',
-				component: './SuKien',
-			},
-		],
-	},
-	{
-		path: `/qr-su-kien/:id`,
-		component: './SuKien/QRCode',
-		layout: false,
-		hideInMenu: true,
-	},
-
 	// DRL
 	{
 		name: 'DiemRenLuyen',
@@ -239,14 +258,48 @@
 		],
 	},
 
+	// Khen thưởng kỷ luật
+	{
+		name: 'KhenThuongKyLuat',
+		path: 'khen-thuong-ky-luat',
+		component: './KhenThuongKyLuat',
+		icon: 'trophy',
+	},
+
+	// TIEN ICH
+	{
+		name: 'KhaoSat',
+		path: 'khao-sat',
+		icon: 'form',
+		routes: [
+			{
+				name: 'BieuMauKhaoSat',
+				path: 'bieu-mau-khao-sat',
+				component: './TienIch/KhaoSat',
+			},
+			{
+				name: 'DotKhaoSat',
+				path: 'dot-khao-sat',
+				component: './TienIch/KhaoSat/DotKhaoSat',
+			},
+		],
+	},
+
+	{
+		name: 'VanBanHuongDan',
+		path: 'van-ban-huong-dan',
+		icon: 'FileTextOutlined',
+		component: './TienIch/VanBanHuongDan',
+	},
+
 	//////////////////////
 	// THONG BAO
-	{
-		name: 'ThongBao',
-		icon: 'bell',
-		path: '/thong-bao',
-		component: './ThongBao',
-	},
+	// {
+	// 	name: 'ThongBao',
+	// 	icon: 'bell',
+	// 	path: '/thong-bao',
+	// 	component: './ThongBao',
+	// },
 
 	// PHAN HOI
 	{
@@ -269,24 +322,6 @@
 		],
 	},
 
-	// TIEN ICH
-	{
-		name: 'KhaoSat',
-		path: 'khao-sat',
-		icon: 'form',
-		routes: [
-			{
-				name: 'BieuMauKhaoSat',
-				path: 'bieu-mau-khao-sat',
-				component: './TienIch/KhaoSat',
-			},
-			{
-				name: 'DotKhaoSat',
-				path: 'dot-khao-sat',
-				component: './TienIch/KhaoSat/DotKhaoSat',
-			},
-		],
-	},
 	// {
 	//   name: 'TracNghiem',
 	//   path: './tracnghiem',
@@ -302,13 +337,6 @@
 		path: 'cau-hoi-thuong-gap',
 		icon: 'QuestionCircleOutlined',
 		component: './TienIch/CauHoiThuongGap',
-	},
-
-	{
-		name: 'VanBanHuongDan',
-		path: 'van-ban-huong-dan',
-		icon: 'FileTextOutlined',
-		component: './TienIch/VanBanHuongDan',
 	},
 
 	// {

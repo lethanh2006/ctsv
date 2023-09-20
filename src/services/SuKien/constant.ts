@@ -2,9 +2,9 @@ import { type TagProps } from 'antd';
 import { type SuKien } from './typings';
 
 export enum ETrangThaiThamGiaSuKien {
-	THAM_DU_THANH_CONG = 'Tham dự sự kiện thành công.',
-	THAM_DU_THAT_BAI = 'Tham dự sự kiện thất bại.',
-	DA_THAM_DU = 'Bạn đã đã đăng ký tham gia sự kiện này trước đó.',
+	THAM_DU_THANH_CONG = 'Tham dự hoạt động thành công.',
+	THAM_DU_THAT_BAI = 'Tham dự hoạt động thất bại.',
+	DA_THAM_DU = 'Bạn đã đã đăng ký tham gia hoạt động này trước đó.',
 }
 
 export enum ETrangThaiDienRa {
@@ -22,15 +22,14 @@ export enum ESuKienType {
 	HOP_TAC_NGUYEN_CUU_CHUYEN_GAO = 'Hợp tác - Nghiên cứu - chuyển giao',
 	THUC_THI_CHINH_SACH = 'Thực thi, phát triển chính sách',
 	HOAT_DONG_XA_HOI = 'Hoạt động xã hội',
+	VAN_HOA_VAN_NGHE_THE_THAO = 'Văn hóa, văn nghệ và thể thao',
 	KHAC = 'Khác',
 }
 
 export enum ELoaiSuKienSinhVien {
-	TUAN_LE_CONG_DAN = 'Tuần lễ công dân',
-	HOAT_DONG_HUY_DONG_GIAO_DUC_TU_TUONG_CHINH_TRI = 'Hoạt động huy động giáo dục tư tưởng chính trị các cấp',
 	NGAY_HOI_VIEC_LAM = 'Ngày hội việc làm',
-	HOI_THAO_CHUYEN_DE_VIEC_LAM = 'Hội thảo, nói chuyện chuyên đề về việc làm, đào tạo kỹ năng mềm',
-	KHAC = 'Khác',
+	HOI_THAO_CHUYEN_DE_VIEC_LAM = 'Hội thảo, nói chuyện chuyên đề về việc làm',
+	DAO_TAO_KY_NANG_MEM = 'Đào tạo kỹ năng mềm',
 }
 
 export const locationPathMappingToESuKienType: Record<string, ESuKienType> = {
@@ -40,18 +39,20 @@ export const locationPathMappingToESuKienType: Record<string, ESuKienType> = {
 	'hop-tac-nghien-cuu-chuyen-giao': ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO,
 	'thuc-thi-chinh-sach': ESuKienType.THUC_THI_CHINH_SACH,
 	'hoat-dong-xa-hoi': ESuKienType.HOAT_DONG_XA_HOI,
+	'van-hoa-van-nghe-the-thao': ESuKienType.VAN_HOA_VAN_NGHE_THE_THAO,
 	khac: ESuKienType.KHAC,
 };
 
 export const ESuKienTypeMappingToLabel: Record<ESuKienType, string> = {
 	[ESuKienType.CA_NHAN]: 'Cá nhân',
 	[ESuKienType.TAT_CA]: 'Chung',
-	[ESuKienType.TUAN_LE_CONG_DAN]: 'Tuần lễ công dân',
-	[ESuKienType.CAC_HOAT_DONG]: 'Tư vấn tuyển sinh, hướng nghiệp',
+	[ESuKienType.TUAN_LE_CONG_DAN]: 'Tuần lễ sinh hoạt công dân',
+	[ESuKienType.CAC_HOAT_DONG]: 'Hoạt động hướng nghiệp, việc làm và kỹ năng mềm',
 	[ESuKienType.DAO_TAO_BOI_DUONG]: 'Đào tạo bồi dưỡng',
-	[ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'Hợp tác quốc tế, nghiên cứu khoa học và chuyển giao công nghệ',
+	[ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'Nghiên cứu khoa học và chuyển giao công nghệ',
 	[ESuKienType.THUC_THI_CHINH_SACH]: 'Thực thi, phát triển chính sách',
-	[ESuKienType.HOAT_DONG_XA_HOI]: 'Hoạt động xã hội',
+	[ESuKienType.HOAT_DONG_XA_HOI]: 'Hoạt động xã hội, thiện nguyện',
+	[ESuKienType.VAN_HOA_VAN_NGHE_THE_THAO]: 'Văn hóa, văn nghệ và thể thao',
 	[ESuKienType.KHAC]: 'Các đơn vị ngoài học viện',
 };
 
