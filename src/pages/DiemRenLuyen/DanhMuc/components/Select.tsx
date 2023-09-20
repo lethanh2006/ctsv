@@ -1,4 +1,4 @@
-import { type ELoaiDanhMucChung, ELoaiDanhMucChungMappingToTitle } from '@/services/DiemRenLuyen/DanhMuc/constant';
+import { ELoaiDanhMucChungMappingToTitle, type ELoaiDanhMucChung } from '@/services/DiemRenLuyen/DanhMuc/constant';
 import { type DanhMucDiemRenLuyen } from '@/services/DiemRenLuyen/DanhMuc/typing';
 import { Select } from 'antd';
 import { useEffect, useState } from 'react';
@@ -13,15 +13,18 @@ export const SelectDanhMucDiemRenLuyen = (props: {
 	disabled?: boolean;
 	readOnly?: boolean;
 	loaiDanhMuc: ELoaiDanhMucChung;
+	idKyTucXa?: string;
 }) => {
-	const { value, onChange, multiple, condition, allowClear, disabled, readOnly, loaiDanhMuc } = props;
+	const { value, onChange, multiple, condition, allowClear, disabled, readOnly, loaiDanhMuc, idKyTucXa: idCha } = props;
 	const { getAllModel, visibleForm } = useModel('diemrenluyen.danhmuc');
 
 	const [state, setState] = useState<DanhMucDiemRenLuyen.IRecord[]>([]);
 
 	useEffect(() => {
 		if (visibleForm) {
-			getAllModel(false, undefined, { ...condition, loai: loaiDanhMuc }, undefined, undefined, false).then(setState);
+			getAllModel(false, undefined, { ...condition, loai: loaiDanhMuc, idCha }, undefined, undefined, false).then(
+				setState,
+			);
 		}
 	}, [visibleForm, condition, loaiDanhMuc]);
 
