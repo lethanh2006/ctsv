@@ -150,7 +150,7 @@ export const FormDotChamDiem = () => {
 
 	return (
 		<Card title={(isView ? 'Chi tiết ' : edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'đợt chấm điểm'}>
-			<Form id='FormDanhMuc' onFinish={onFinish} form={form} layout='vertical'>
+			<Form id='FormDanhMuc' onFinish={onFinish} form={form} layout='vertical' onFinishFailed={console.log}>
 				<Form.Item name={['filter', 'roles']} label='Thành phần' rules={[...rules.required]} hidden />
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24} md={12}>
@@ -205,7 +205,7 @@ export const FormDotChamDiem = () => {
 					<Col span={24} md={8}>
 						<Form.Item name='receiverType' label='Đối tượng tham gia' rules={[...rules.required]}>
 							<Select
-								open={false}
+								open={disabledForm ? false : undefined}
 								style={{ pointerEvents: disabledForm ? 'none' : undefined }}
 								options={Object.entries(LoaiDoiTuongThamGia).map(([value, label]) => ({
 									key: value,
@@ -217,7 +217,7 @@ export const FormDotChamDiem = () => {
 								placeholder='Đối tượng tham gia'
 								onChange={() => {
 									form.setFieldsValue({
-										filter: { roles: [] } as any,
+										filter: { roles: [EVaiTroBieuMau.SINH_VIEN] } as any,
 										danhSachDoiTuong: [],
 									});
 									setDanhSachNhanSu([]);

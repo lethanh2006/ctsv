@@ -1,3 +1,4 @@
+import { type EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { type EHeDaoTaoRenLuyen } from './constants';
 
 declare module DotChamDiem {
@@ -39,4 +40,22 @@ declare module DotChamDiem {
 		thamGia?: boolean;
 		fullname?: string;
 	}
+
+	export type BaoCaoLop = {
+		tongSo: number;
+		tongHopLopDauKy: number;
+		tongHopLopGiuaKy: number;
+		tongHopLopCuoiKy: number;
+	};
+
+	export type BaoCaoSinhVien = {
+		tongSo: number;
+		tongNoiTru: number;
+		tongNgoaiTru: number;
+	};
+	export type BaoCaoSuKien = {
+		_id: string;
+		tongSinhVien: number;
+		suKien: SuKien.Record;
+	};
 }

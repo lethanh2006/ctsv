@@ -278,11 +278,11 @@
 				],
 			},
 
-			// {
-			// 	name: 'TongHopDuLieu',
-			// 	path: 'tong-hop-du-lieu',
-			// 	component: './DiemRenLuyen/TongHopDuLieu',
-			// },
+			{
+				name: 'TongHopDuLieu',
+				path: 'tong-hop-du-lieu',
+				component: './DiemRenLuyen/TongHopDuLieu',
+			},
 		],
 	},
 

@@ -1,5 +1,5 @@
 import { Select } from 'antd';
-import { useEffect } from 'react';
+import { type CSSProperties, useEffect } from 'react';
 import { useModel } from 'umi';
 
 export const SelectDotChamDiem = (props: {
@@ -10,8 +10,9 @@ export const SelectDotChamDiem = (props: {
 	allowClear?: boolean;
 	disabled?: boolean;
 	readOnly?: boolean;
+	style?: CSSProperties;
 }) => {
-	const { value, onChange, multiple, condition, allowClear, disabled, readOnly } = props;
+	const { value, onChange, multiple, condition, allowClear, disabled, readOnly, style } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('diemrenluyen.dotchamdiem');
 
 	useEffect(() => {
@@ -36,7 +37,7 @@ export const SelectDotChamDiem = (props: {
 			optionFilterProp='label'
 			placeholder='Đợt chấm điểm'
 			allowClear={allowClear ?? false}
-			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined }}
+			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined, ...style }}
 		/>
 	);
 };
