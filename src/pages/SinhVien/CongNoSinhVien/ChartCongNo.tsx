@@ -11,7 +11,7 @@ const ChartCongNoSinhVien = () => {
 	const fetchData = async () => {
 		if (recSinhVien?.ssoId)
 			getThongKeCongNoSinhVien(recSinhVien.ssoId)
-				.then((res) => setData(res.data))
+				.then((res) => setData(res.data?.data))
 				.catch((er) => console.log(er));
 	};
 
@@ -21,10 +21,11 @@ const ChartCongNoSinhVien = () => {
 
 	return (
 		<DonutChart
-			yAxis={[[data?.tongTienDaThu ?? 0, data?.tongTienPhaiThu ?? 0]]}
+			yAxis={[[data?.tongTienDaThu ?? 0, data?.tongTienConLai ?? 0]]}
 			xAxis={['Đã nộp', 'Chưa nộp']}
 			yLabel={['Số tiền']}
 			height={320}
+			showTotal
 			otherOptions={{
 				legend: {
 					position: 'bottom',
