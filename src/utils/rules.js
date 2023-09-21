@@ -130,6 +130,15 @@ const rules = {
 			message: 'Không được trước thời điểm hiện tại',
 		},
 	],
+	sauThoiDiem: (mo, label) => [
+		{
+			validator: (_, value, callback) => {
+				if (mo && value && moment(value).isBefore(moment(mo))) callback('');
+				callback();
+			},
+			message: 'Không được trước ' + label,
+		},
+	],
 	sauNgay: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
@@ -146,6 +155,15 @@ const rules = {
 				callback();
 			},
 			message: 'Không được sau thời điểm hiện tại',
+		},
+	],
+	truocThoiDiem: (mo, label) => [
+		{
+			validator: (_, value, callback) => {
+				if (mo && value && moment(value).isAfter(moment(mo))) callback('');
+				callback();
+			},
+			message: 'Không được trước ' + label,
 		},
 	],
 	truocNgay: (mo, label) => [
