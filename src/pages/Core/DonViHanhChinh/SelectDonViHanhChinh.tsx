@@ -1,38 +1,54 @@
 import { getPhuongXa, getQuanHuyen } from '@/services/Core/DonViHanhChinh';
 import { type DonViHanhChinh } from '@/services/Core/DonViHanhChinh/typing';
 import rules from '@/utils/rules';
-import { Col, Form, type FormInstance, Select, Input } from 'antd';
-import _ from 'lodash';
+import { Col, Input, Row, Select, type FormInstance, Form } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
 
 const SelectDonViHanhChinh = (props: {
 	form: FormInstance<any>;
-	suffix: 'NoiSinh' | 'ThuongTru' | 'QueQuan';
+	suffix?: 'NoiSinh' | 'ThuongTru' | 'QueQuan';
 	listTinh?: DonViHanhChinh.IRecord[];
 	hasSoNha?: boolean;
+	disabled?: boolean;
+	hideTinh?: boolean;
+	hideQuanHuyen?: boolean;
+	hideXaPhuong?: boolean;
+	notRequiredTinh?: boolean;
+	notRequiredQuanHuyen?: boolean;
+	notRequiredXaPhuong?: boolean;
+	notRequiredDiaChiCuThe?: boolean;
+	initialValue?: DonViHanhChinh.IDataInit;
+	hasLabel?: boolean;
+	keyValue?: keyof DonViHanhChinh.IRecord;
 }) => {
-	const { form, suffix, listTinh, hasSoNha } = props;
-	const { record: recSinhVien } = useModel('sinhvien.sinhvien');
-	const [idTinh, setIdTinh] = useState<string>();
-	const [idHuyen, setIdHuyen] = useState<string>();
+	const {
+		form,
+		suffix,
+		listTinh,
+		hasSoNha,
+		hideTinh,
+		hideQuanHuyen,
+		hideXaPhuong,
+		hasLabel,
+		keyValue = 'tenDonVi',
+	} = props;
+	const [idTinh, setIdTinh] = useState<string | undefined>(props?.initialValue?.tinhTp);
+	const [idHuyen, setIdHuyen] = useState<string | undefined>(props?.initialValue?.quanHuyen);
 	const [listHuyen, setListHuyen] = useState<DonViHanhChinh.IRecord[]>([]);
 	const [listXa, setListXa] = useState<DonViHanhChinh.IRecord[]>([]);
 
 	const onchangeTinhThanhPho = (e: string) => {
 		setIdTinh(e);
-		form.setFieldsValue({ ['quanHuyen' + suffix]: undefined, ['xaPhuong' + suffix]: undefined });
+		form.setFieldsValue({
+			[suffix ? 'quanHuyen' + suffix : 'quanHuyen']: undefined,
+			[suffix ? 'xaPhuong' + suffix : 'xaPhuong']: undefined,
+		});
 	};
 
 	const onchangeQuanHuyen = (e: string) => {
 		setIdHuyen(e);
-		form.setFieldsValue({ ['xaPhuong' + suffix]: undefined });
+		form.setFieldsValue({ [suffix ? 'xaPhuong' + suffix : 'xaPhuong']: undefined });
 	};
-
-	useEffect(() => {
-		setIdTinh(_.get(recSinhVien, 'tinhTp' + suffix));
-		setIdHuyen(_.get(recSinhVien, 'quanHuyen' + suffix));
-	}, [recSinhVien?._id, suffix]);
 
 	useEffect(() => {
 		if (idTinh)
@@ -49,66 +65,89 @@ const SelectDonViHanhChinh = (props: {
 	}, [idHuyen]);
 
 	return (
-		<>
-			<Col span={12} md={hasSoNha ? 6 : 8}>
-				<Form.Item name={'tinhTp' + suffix} label='Tỉnh/Thành phố'>
-					<Select
-						placeholder='Chọn tỉnh/thành phố'
-						options={listTinh?.map((item) => ({
-							key: item.ma,
-							value: item.tenDonVi,
-							label: item.tenDonVi,
-						}))}
-						allowClear
-						showSearch
-						onChange={(val, opt: any) => onchangeTinhThanhPho(opt.key)}
-						optionFilterProp='label'
-					/>
-				</Form.Item>
-			</Col>
-			<Col span={12} md={hasSoNha ? 6 : 8}>
-				<Form.Item name={'quanHuyen' + suffix} label='Quận/Huyện'>
-					<Select
-						placeholder='Chọn quận/huyện'
-						options={(listHuyen ?? []).map((item) => ({
-							key: item.ma,
-							value: item.tenDonVi,
-							label: item.tenDonVi,
-						}))}
-						allowClear
-						showSearch
-						onChange={(val, opt: any) => onchangeQuanHuyen(opt.key)}
-						optionFilterProp='label'
-					/>
-				</Form.Item>
-			</Col>
-			<Col span={12} md={hasSoNha ? 6 : 8}>
-				<Form.Item name={'xaPhuong' + suffix} label='Phường/Xã'>
-					<Select
-						placeholder='Chọn phường/xã'
-						allowClear
-						showSearch
-						options={(listXa ?? []).map((item) => ({
-							key: item.ma,
-							value: item.tenDonVi,
-							label: item.tenDonVi,
-						}))}
-						optionFilterProp='label'
-					/>
-				</Form.Item>
-			</Col>
-			{hasSoNha ? (
-				<Col span={12} md={6}>
+		<Row gutter={[12, 0]}>
+			{!hideTinh && (
+				<Col span={8}>
 					<Form.Item
-						name={'soNhaTenDuong' + suffix}
-						label='Số nhà/Tên đường'
-						rules={[...rules.text, ...rules.length(250)]}
+						name={suffix ? 'tinhTp' + suffix : 'tinhTp'}
+						label={hasLabel ? 'Tỉnh/Thành phố' : undefined}
+						initialValue={props.initialValue?.tinhTp}
+						rules={props.notRequiredTinh === true ? [] : [...rules.required]}
 					>
-						<Input placeholder='Nhập số nhà/tên đường' />
+						<Select
+							placeholder='Chọn tỉnh/thành phố'
+							options={listTinh?.map((item) => ({
+								key: item.ma,
+								value: item[keyValue],
+								label: item.tenDonVi,
+							}))}
+							allowClear
+							showSearch
+							onChange={(val, opt: any) => onchangeTinhThanhPho(opt?.key)}
+							optionFilterProp='label'
+						/>
+					</Form.Item>
+				</Col>
+			)}
+			{!hideQuanHuyen && (
+				<Col span={8}>
+					<Form.Item
+						initialValue={props.initialValue?.quanHuyen}
+						name={suffix ? 'quanHuyen' + suffix : 'quanHuyen'}
+						rules={props.notRequiredQuanHuyen === true ? [] : [...rules.required]}
+						label={hasLabel ? 'Quận/Huyện' : undefined}
+					>
+						<Select
+							placeholder='Chọn quận/huyện'
+							options={(listHuyen ?? []).map((item) => ({
+								key: item.ma,
+								value: item[keyValue],
+								label: item.tenDonVi,
+							}))}
+							allowClear
+							showSearch
+							onChange={(val, opt: any) => onchangeQuanHuyen(opt?.key)}
+							optionFilterProp='label'
+						/>
+					</Form.Item>
+				</Col>
+			)}
+
+			{!hideXaPhuong && (
+				<Col span={8}>
+					<Form.Item
+						initialValue={props.initialValue?.xaPhuong}
+						name={suffix ? 'xaPhuong' + suffix : 'xaPhuong'}
+						rules={props.notRequiredXaPhuong === true ? [] : [...rules.required]}
+						label={hasLabel ? 'Phường/Xã' : undefined}
+					>
+						<Select
+							placeholder='Chọn phường/xã'
+							allowClear
+							showSearch
+							options={(listXa ?? []).map((item) => ({
+								key: item.ma,
+								value: item[keyValue],
+								label: item.tenDonVi,
+							}))}
+							optionFilterProp='label'
+						/>
+					</Form.Item>
+				</Col>
+			)}
+			{hasSoNha ? (
+				<Col span={24}>
+					<Form.Item
+						name={suffix ? 'soNhaTenDuong' + suffix : 'soNhaTenDuong'}
+						initialValue={props.initialValue?.soNhaTenDuong}
+						rules={[...(props.notRequiredDiaChiCuThe ? [] : rules.required), ...rules.text, ...rules.length(250)]}
+						label={hasLabel ? 'Số nhà, đường phố' : undefined}
+					>
+						<Input.TextArea placeholder='Nhập số nhà/tên đường' />
 					</Form.Item>
 				</Col>
 			) : null}
-		</>
+		</Row>
 	);
 };
 

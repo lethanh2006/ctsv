@@ -250,11 +250,39 @@
 				path: 'dot-cham-diem',
 				component: './DiemRenLuyen/DotChamDiem',
 			},
-			// {
-			// 	name: 'TongHopDuLieu',
-			// 	path: 'tong-hop-du-lieu',
-			// 	component: './DiemRenLuyen/TongHopDuLieu',
-			// },
+
+			{
+				name: 'QuanLyMinhChung',
+				path: 'quan-ly-minh-chung',
+				routes: [
+					{
+						name: 'NoiNgoaiTru',
+						path: 'noi-ngoai-tru',
+						component: './DiemRenLuyen/QuanLyMinhChung',
+					},
+					{
+						name: 'ThamGiaCongTacXaHoi',
+						path: 'tham-gia-cong-tac-xa-hoi',
+						component: './DiemRenLuyen/QuanLyMinhChung',
+					},
+					{
+						name: 'TuyenTruyen',
+						path: 'tuyen-truyen',
+						component: './DiemRenLuyen/QuanLyMinhChung',
+					},
+					{
+						name: 'DacBiet',
+						path: 'dac-biet',
+						component: './DiemRenLuyen/QuanLyMinhChung',
+					},
+				],
+			},
+
+			{
+				name: 'TongHopDuLieu',
+				path: 'tong-hop-du-lieu',
+				component: './DiemRenLuyen/TongHopDuLieu',
+			},
 		],
 	},
 

@@ -41,7 +41,15 @@ export default {
 	'menu.SuKien.VanHoaVanNgheTheThao': 'Văn hóa, văn nghệ và thể thao',
 
 	'menu.DiemRenLuyen': 'Đánh giá rèn luyện',
+
 	'menu.DiemRenLuyen.DotChamDiem': 'Đợt chấm điểm',
+
+	'menu.DiemRenLuyen.QuanLyMinhChung': 'Quản lý minh chứng',
+	'menu.DiemRenLuyen.QuanLyMinhChung.NoiNgoaiTru': 'Nội ngoại trú',
+	'menu.DiemRenLuyen.QuanLyMinhChung.ThamGiaCongTacXaHoi': 'Tham gia công tác xã hội',
+	'menu.DiemRenLuyen.QuanLyMinhChung.TuyenTruyen': 'Tuyên truyền tích cực về Trường/Khoa',
+	'menu.DiemRenLuyen.QuanLyMinhChung.DacBiet': 'Thành tích đặc biệt',
+
 	'menu.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
 
 	'menu.ThongBao': 'Thông báo',
