@@ -3,8 +3,9 @@ export default {
 	'menu.account': 'Tài khoản',
 	'menu.account.center': 'Cá nhân',
 	'menu.Dashboard': 'Trang chủ',
-	'menu.About': 'Giới thiệu Học viện',
+	'menu.About': `Giới thiệu ${APP_CONFIG_TIEN_TO_TRUONG.toLowerCase()}`,
 	'menu.News': 'Tin tức',
+
 	'menu.DichVuHanhChinh': 'Dịch vụ hành chính',
 	'menu.DichVuHanhChinh.PhanHoi': 'Phản hồi',
 	'menu.DichVuHanhChinh.ThongTinTongHop': 'Thông tin tổng hợp',

@@ -34,6 +34,7 @@ const useInitModel = <T,>(
 	const [visibleForm, setVisibleForm] = useState<boolean>(false);
 	const [total, setTotal] = useState<number>(0);
 	const [importHeaders, setImportHeaders] = useState<TImportHeader[]>([]); // Import Headers lấy từ API
+	const [selectedIds, setSelectedIds] = useState<string[]>();
 
 	const {
 		getAllService,
@@ -153,7 +154,7 @@ const useInitModel = <T,>(
 		}
 	};
 
-	const postModel = async (payload: T, getData?: any, closeModal?: boolean): Promise<T> => {
+	const postModel = async (payload: Partial<T>, getData?: any, closeModal?: boolean): Promise<T> => {
 		if (formSubmiting) Promise.reject('form submiting');
 		setFormSubmiting(true);
 		try {
@@ -174,7 +175,7 @@ const useInitModel = <T,>(
 
 	const putModel = async (
 		id: string | number,
-		payload: T,
+		payload: Partial<T>,
 		getData?: any,
 		notGet?: boolean,
 		closeModal?: boolean,
@@ -197,7 +198,7 @@ const useInitModel = <T,>(
 		}
 	};
 
-	const deleteModel = async (id: string | number, getData?: any): Promise<any> => {
+	const deleteModel = async (id: string | number, getData?: () => void): Promise<any> => {
 		setLoading(true);
 		try {
 			const res = await deleteService(id);
@@ -212,6 +213,35 @@ const useInitModel = <T,>(
 			else getModel(undefined, undefined, undefined, newPage);
 
 			return res.data;
+		} catch (err) {
+			return Promise.reject(err);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const deleteManyModel = async (ids: (string | number)[], getData?: () => void): Promise<any> => {
+		if (!ids.length) return;
+		setLoading(true);
+		try {
+			const arr = ids.map((id) => deleteService(id, true));
+			const res = await Promise.allSettled(arr);
+			const count = res.filter((i) => i.status === 'fulfilled').length;
+			if (count > 0) {
+				message.success(`Xóa thành công ${count} mục`);
+
+				const maxPage = Math.ceil((total - count) / limit) || 1;
+				let newPage = page;
+				if (newPage > maxPage) {
+					newPage = maxPage;
+					setPage(newPage);
+				} else if (getData) getData();
+				else getModel(undefined, undefined, undefined, newPage);
+			} else {
+				message.error('Có lỗi xảy ra');
+				const err = res.filter((i) => i.status === 'rejected');
+				return Promise.reject(err);
+			}
 		} catch (err) {
 			return Promise.reject(err);
 		} finally {
@@ -357,6 +387,7 @@ const useInitModel = <T,>(
 		getByIdModel,
 		getModel,
 		deleteModel,
+		deleteManyModel,
 		putModel,
 		postModel,
 		getAllModel,
@@ -399,6 +430,8 @@ const useInitModel = <T,>(
 		putService,
 		getExportFieldsModel,
 		postExportModel,
+		selectedIds,
+		setSelectedIds,
 	};
 };
 

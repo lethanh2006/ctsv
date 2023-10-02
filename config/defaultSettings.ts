@@ -7,14 +7,14 @@ const Settings: LayoutSettings & {
 	siderWidth: number;
 } = {
 	navTheme: 'dark',
-	primaryColor: '#007EB9',
+	primaryColor: process.env.APP_CONFIG_PRIMARY_COLOR,
 	borderRadiusBase: '2px',
 	layout: 'mix',
 	contentWidth: 'Fluid',
 	fixedHeader: false,
 	fixSiderbar: true,
 	colorWeak: false,
-	title: 'Công tác sinh viên VWA',
+	title: process.env.APP_CONFIG_TITLE_CTSV ?? '',
 	pwa: false,
 	logo: '/logo.png',
 	iconfontUrl: '',

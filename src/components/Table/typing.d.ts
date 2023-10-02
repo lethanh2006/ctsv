@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import type { ColumnType as ICol } from 'rc-table/lib/interface';
+import type { ColumnType } from 'antd/lib/table';
 import { type EOperatorType } from './constant';
 
-export interface IColumn<T> extends Omit<ICol<T>, 'dataIndex' | 'width' | 'children'> {
+export interface IColumn<T> extends Omit<ColumnType<T>, 'dataIndex' | 'width' | 'children'> {
 	/** Ẩn cột khi hiển thị trên table, nhưng vẫn có trong filter, import, export */
 	hide?: boolean;
 
@@ -41,6 +40,11 @@ export type TableBaseProps = {
 	/** Tên model */
 	modelName: any;
 
+	/** Import dùng model khác? */
+	modelImportName?: any;
+	/** Export dùng model khác? */
+	modelExportName?: any;
+
 	Form?: React.FC;
 	formType?: 'Modal' | 'Drawer';
 	columns: IColumn<any>[];
@@ -48,7 +52,7 @@ export type TableBaseProps = {
 	widthDrawer?: number | 'full';
 
 	/** Hàm getData tùy chỉnh, nếu ko có thì 'getModel' của model sẽ là mặc định */
-	getData?: Function;
+	getData?: (params: any) => void;
 
 	/** Tham số phụ thuộc để getData được gọi */
 	dependencies?: any[];
@@ -92,6 +96,9 @@ export type TableBaseProps = {
 	/** View antd Row Selection */
 	detailRow?: any;
 
+	/** Cho phép xóa nhiều, đi kèm với props `rowSelection` */
+	deleteMany?: boolean;
+
 	hideTotal?: boolean;
 	pageable?: boolean;
 	hideCard?: boolean;
@@ -122,6 +129,7 @@ export type TableBaseProps = {
 	onSortEnd?: (record: any, newIndex: number) => void;
 
 	hideChildrenRows?: boolean;
+
 	onCreate?: () => void;
 };
 
@@ -136,7 +144,7 @@ export type TableStaticProps = {
 	data: any[];
 	columns: IColumn<any>[];
 
-	title?: string;
+	title?: React.ReactNode;
 	Form?: any;
 	formProps?: any;
 
