@@ -294,32 +294,6 @@
 		icon: 'trophy',
 	},
 
-	// TIEN ICH
-	{
-		name: 'KhaoSat',
-		path: 'khao-sat',
-		icon: 'form',
-		routes: [
-			{
-				name: 'BieuMauKhaoSat',
-				path: 'bieu-mau-khao-sat',
-				component: './TienIch/KhaoSat',
-			},
-			{
-				name: 'DotKhaoSat',
-				path: 'dot-khao-sat',
-				component: './TienIch/KhaoSat/DotKhaoSat',
-			},
-		],
-	},
-
-	{
-		name: 'VanBanHuongDan',
-		path: 'van-ban-huong-dan',
-		icon: 'FileTextOutlined',
-		component: './TienIch/VanBanHuongDan',
-	},
-
 	//////////////////////
 	// THONG BAO
 	// {

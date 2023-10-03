@@ -75,10 +75,5 @@ export default {
 	'menu.TinTuc.ChuDe': 'Chủ đề',
 	'menu.TinTuc.TinTuc': 'Tin tức',
 
-	'menu.TienIch': 'Tiện ích',
-	'menu.KhaoSat': 'Khảo sát',
-	'menu.KhaoSat.BieuMauKhaoSat': 'Biểu mẫu khảo sát',
-	'menu.KhaoSat.DotKhaoSat': 'Đợt khảo sát',
 	'menu.CauHoiThuongGap': 'Câu hỏi thường gặp',
-	'menu.VanBanHuongDan': 'Văn bản hướng dẫn',
 };
