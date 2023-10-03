@@ -10,7 +10,7 @@ const ipDaoTao = ipRoot + 'qldt';
 const ipNhanSu = ipRoot + 'tcns';
 const ipCore = ipRoot + 'core';
 const ipTaiChinh = ipRoot + 'tai-chinh-api';
-const ipGlobal = 'https://ais2.aisenote.com/qldt-internal-api'; // ip dev
+const ipGlobal = APP_CONFIG_IP_GLOBAL; // ip dev
 
 const currentRole = EModuleKey.CTSV;
 
