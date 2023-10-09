@@ -1,4 +1,4 @@
-import { primaryColor } from '@/services/ant-design-pro/constant';
+import { primaryColor } from '@/services/base/constant';
 import { Col, Empty, Row, Space, Spin, Statistic, Typography } from 'antd';
 import moment from 'moment';
 import { QRCodeSVG } from 'qrcode.react';
