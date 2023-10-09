@@ -52,13 +52,6 @@ const TieuDeBieuMau = (props: { title: string }) => {
 			<p style={{ fontSize: '16px', display: 'flex', fontWeight: 'bold', justifyContent: 'center' }}>
 				<div style={{ marginRight: 8 }}>Kính gửi:</div>
 				<div>
-					{/*<div>- Ban Giám đốc Học viện Phụ nữ Việt Nam;</div>*/}
-					{/*<div>*/}
-					{/*  -{' '}*/}
-					{/*  {record?.thongTinThuTuc?.donViThucHien ||*/}
-					{/*    recordDon?.thongTinDichVu?.thongTinThuTuc?.donViThucHien ||*/}
-					{/*    'Phòng Công tác sinh viên'}*/}
-					{/*</div>*/}
 					<div
 						dangerouslySetInnerHTML={{
 							__html:
