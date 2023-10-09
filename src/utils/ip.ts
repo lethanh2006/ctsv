@@ -1,4 +1,4 @@
-import { AppModules, EModuleKey } from '@/services/ant-design-pro/constant';
+import { AppModules, EModuleKey } from '@/services/base/constant';
 
 const ipRoot = APP_CONFIG_IP_ROOT; // ip dev
 
@@ -10,7 +10,6 @@ const ipDaoTao = ipRoot + 'qldt';
 const ipNhanSu = ipRoot + 'tcns';
 const ipCore = ipRoot + 'core';
 const ipTaiChinh = ipRoot + 'tai-chinh-api';
-const ipGlobal = APP_CONFIG_IP_GLOBAL; // ip dev
 
 const currentRole = EModuleKey.CTSV;
 
@@ -29,7 +28,6 @@ export {
 	ipCore,
 	ip3,
 	ipNotif,
-	ipGlobal,
 	currentRole,
 	keycloakClientID,
 	resourceServerClientId,

@@ -1,4 +1,5 @@
-import { primaryColor } from '@/services/ant-design-pro/constant';
+import { primaryColor } from '@/services/base/constant';
+import { inputFormat } from '@/utils/utils';
 import {
 	CloseOutlined,
 	ExportOutlined,
@@ -21,10 +22,10 @@ import {
 	Popconfirm,
 	Space,
 	Table,
+	Tooltip,
 	type InputRef,
+	type PaginationProps,
 } from 'antd';
-import type { PaginationProps } from 'antd/es/pagination';
-import Tooltip from 'antd/es/tooltip';
 import type { FilterValue, SortOrder } from 'antd/lib/table/interface';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -38,7 +39,6 @@ import ModalCustomFilter from './ModalCustomFilter';
 import { EOperatorType } from './constant';
 import './style.less';
 import type { IColumn, TDataOption, TFilter, TableBaseProps } from './typing';
-import { inputFormat } from '@/utils/utils';
 
 const TableBase = (props: TableBaseProps) => {
 	const {
@@ -179,7 +179,14 @@ const TableBase = (props: TableBaseProps) => {
 						allowClear
 						enterButton
 						value={selectedKeys[0]}
-						onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+						onChange={(e) => {
+							if (e.type === 'click') {
+								setSelectedKeys([]);
+								confirm();
+							} else {
+								setSelectedKeys(e.target.value ? [e.target.value] : []);
+							}
+						}}
 						onSearch={(value) => handleSearch(dataIndex, value, confirm)}
 						ref={searchInputRef}
 					/>
