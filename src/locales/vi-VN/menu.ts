@@ -13,6 +13,7 @@ export default {
 	'menu.DichVuHanhChinh.QuanLyDon': 'Quản lý đơn',
 	'menu.DichVuHanhChinh.ChuyenVienDieuPhoiQuanLyDon': 'Điều phối',
 	'menu.DichVuHanhChinh.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
+
 	'menu.DanhMuc': 'Danh mục',
 	'menu.DanhMuc.ChucVu': 'Chức vụ',
 	'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
@@ -23,14 +24,11 @@ export default {
 	'menu.DanhMuc.KyTucXa': 'Ký túc xá',
 	'menu.DanhMuc.PhongKyTucXa': 'Phòng ký túc xá',
 
-	'menu.SuKien': 'Hoạt động',
-
 	'menu.CheDoChinhSachHocBong': 'Chính sách học bổng',
 
+	'menu.SuKien': 'Hoạt động',
 	'menu.SuKien.TuanLeCongDan': 'Tuần lễ sinh hoạt công dân',
-
 	'menu.SuKien.CacHoatDongChoSinhVien': 'Hoạt động hướng nghiệp, việc làm và kỹ năng mềm',
-
 	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong': 'Hoạt động kết nối và phục vụ cộng đồng',
 	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.DaoTaoBoiDuong': 'Đào tạo bồi dưỡng',
 	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.HopTacNghienCuuChuyenGiao':
@@ -38,22 +36,16 @@ export default {
 	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.ThucThiChinhSach': 'Thực thi, phát triển chính sách',
 	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.HoatDongXaHoi': 'Hoạt động xã hội, thiện nguyện',
 	'menu.SuKien.HoatDongKetNoiVaPhucVuCongDong.Khac': 'Các đơn vị ngoài Học viện',
-
 	'menu.SuKien.VanHoaVanNgheTheThao': 'Văn hóa, văn nghệ và thể thao',
 
 	'menu.DiemRenLuyen': 'Đánh giá rèn luyện',
-
 	'menu.DiemRenLuyen.DotChamDiem': 'Đợt chấm điểm',
-
 	'menu.DiemRenLuyen.QuanLyMinhChung': 'Quản lý minh chứng',
 	'menu.DiemRenLuyen.QuanLyMinhChung.NoiNgoaiTru': 'Nội ngoại trú',
 	'menu.DiemRenLuyen.QuanLyMinhChung.ThamGiaCongTacXaHoi': 'Tham gia công tác xã hội',
 	'menu.DiemRenLuyen.QuanLyMinhChung.TuyenTruyen': 'Tuyên truyền tích cực về Trường/Khoa',
 	'menu.DiemRenLuyen.QuanLyMinhChung.DacBiet': 'Thành tích đặc biệt',
-
 	'menu.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
-
-	'menu.ThongBao': 'Thông báo',
 
 	'menu.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
 
@@ -62,14 +54,9 @@ export default {
 	'menu.SinhVien': 'Hồ sơ sinh viên',
 	'menu.SinhVien.DanhSachSinhVien': 'Danh sách sinh viên',
 	'menu.SinhVien.DotNhapHoc': 'Đợt nhập học',
-	'menu.SinhVien.LopHanhChinh': 'Lớp hành chính',
 	'menu.SinhVien.ChuyenTruong': 'Chuyển trường',
 	'menu.SinhVien.KhenThuong': 'Khen thưởng',
 	'menu.SinhVien.KyLuat': 'Kỷ luật',
-
-	'menu.PhanHoi': 'Phản hồi',
-	'menu.PhanHoi.TatCaPhanHoi': 'Tất cả',
-	'menu.PhanHoi.PhanHoiDonVi': 'Phản hồi đơn vị',
 
 	'menu.TinTuc': 'Tin tức',
 	'menu.TinTuc.ChuDe': 'Chủ đề',

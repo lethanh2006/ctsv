@@ -277,36 +277,6 @@
 		icon: 'trophy',
 	},
 
-	//////////////////////
-	// THONG BAO
-	// {
-	// 	name: 'ThongBao',
-	// 	icon: 'bell',
-	// 	path: '/thong-bao',
-	// 	component: './ThongBao',
-	// },
-
-	// PHAN HOI
-	{
-		name: 'PhanHoi',
-		path: './phan-hoi',
-		icon: 'QuestionCircleOutlined',
-		// maChucNang: 'phan-hoi:read',
-		// access: 'routeFilter',
-		routes: [
-			{
-				name: 'TatCaPhanHoi',
-				path: './all',
-				component: './TienIch/PhanHoi',
-			},
-			// {
-			//   name: 'PhanHoiDonVi',
-			//   path: './gui-den-toi',
-			//   component: './PhanHoi/GuiDenToi.tsx',
-			// },
-		],
-	},
-
 	// {
 	//   name: 'TracNghiem',
 	//   path: './tracnghiem',
