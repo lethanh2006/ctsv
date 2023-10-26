@@ -170,6 +170,8 @@ export type TableStaticProps = {
 	 * @returns
 	 */
 	onSortEnd?: (record: any, newIndex: number) => void;
+
+	hideChildrenRows?: boolean;
 };
 
 // IMPORT HEADER
@@ -190,6 +192,8 @@ export type TImportResponse = {
 
 export type TImportRowResponse = {
 	index: number;
+	rowIndex: number;
+	row: { row: number };
 	rowErrors?: string[];
 };
 
