@@ -1,4 +1,4 @@
-import { uploadFile } from '@/services/uploadFile';
+import { EFileScope, uploadFile } from '@/services/uploadFile';
 import { message, type FormInstance } from 'antd';
 import { type AxiosResponse } from 'axios';
 import type { Moment } from 'moment';
@@ -197,8 +197,7 @@ export const uploadMultiFile = async (arrFile: any[], returnFileType?: boolean, 
 		?.map(async (file: { originFileObj: any; type: string; name: string }) => {
 			const response = await uploadFile({
 				file: file?.originFileObj,
-				// filename: parse(file?.name).name,
-				isPublic: '1',
+				scope: EFileScope.PUBLIC,
 			});
 			if (returnFileType) return { url: response?.data?.data?.url, type: file.type };
 			else if (returnAllResponse) return response?.data?.data;
@@ -435,3 +434,18 @@ export function includes(str1: string, str2: string) {
 	// str1 có chứa str2 ko
 	return Format(str1).includes(Format(str2));
 }
+
+/**
+ * So sánh họ tên tiếng Việt
+ * @param a
+ * @param b
+ * @returns
+ */
+export const compareFullname = (a: any, b: any): number => {
+	if (typeof a !== 'string' || typeof b !== 'string') return 0;
+	const tenA = a.split(' ').pop()?.toLocaleLowerCase() ?? '';
+	const tenB = b.split(' ').pop()?.toLocaleLowerCase() ?? '';
+	const compareTen = tenA.localeCompare(tenB);
+
+	return compareTen === 0 ? a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()) : compareTen;
+};
