@@ -1,20 +1,17 @@
 import { EOperatorType } from '@/components/Table/constant';
-import { ETinhTrangSucKhoe, colorETinhTrangSucKhoe } from '@/services/DotKhamSuKhoe/constant';
+import { ETinhTrangSucKhoe, colorETinhTrangSucKhoe, fieldTinhTrangSucKhoe } from '@/services/DotKhamSuKhoe/constant';
 
 import { Card, Col, Row } from 'antd';
+import { useEffect } from 'react';
 import { useModel } from 'umi';
 
 const StatKetQuaKhamSucKhoe = () => {
-	// const { isThoiHoc } = props;
-	const { setFilters, filters } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
-	// const { thongkeSinhVienCanhBaoModel, thongKe } = useModel('ketquahoctap.xethocvu.thongke');
-	// const { record: recHocKy } = useModel('hocky.hocky');
+	const { setFilters, filters, thongKeSucKhoeSinhVienModel, thongKe } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
+	const { record } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
-	// const tongSVCanhBao = (thongKe?.choDuyet ?? 0) + (thongKe?.khongDuyet ?? 0) + (thongKe?.daDuyet ?? 0);
-
-	// useEffect(() => {
-	// 	if (recHocKy?.ma) thongkeSinhVienCanhBaoModel(isThoiHoc ? 'thoi-hoc' : 'canh-bao-ket-qua-hoc-tap', recHocKy?.ma);
-	// }, [recHocKy?.ma, isThoiHoc]);
+	useEffect(() => {
+		if (record?._id) thongKeSucKhoeSinhVienModel(record?._id);
+	}, [record?._id]);
 
 	const handleTrangThai = (tinhTrangSucKhoe?: ETinhTrangSucKhoe) => {
 		const temp = [...(filters ?? [])].filter((item) => item.field !== 'tinhTrangSucKhoe');
@@ -33,11 +30,8 @@ const StatKetQuaKhamSucKhoe = () => {
 			<Row gutter={[12, 12]} style={{ marginBottom: 12 }}>
 				<Col span={12} md={6}>
 					<Card className='card-stat-small' onClick={() => handleTrangThai()} style={{ cursor: 'pointer' }}>
-						<span className='num'>
-							{/* {'--'} */}
-							--
-						</span>
-						<span>Tổng số SV</span>
+						<span className='num'>{thongKe?.total ?? '--'}</span>
+						<span>Tổng số sinh viên</span>
 					</Card>
 				</Col>
 
@@ -45,10 +39,9 @@ const StatKetQuaKhamSucKhoe = () => {
 					<Col span={12} md={6} key={item}>
 						<Card className='card-stat-small' style={{ cursor: 'pointer' }} onClick={() => handleTrangThai(item)}>
 							<span className='num' style={{ color: colorETinhTrangSucKhoe[item] }}>
-								{/* {thongKe?.[fieldTrangThaiDuyetCanhBao[item]] ?? '--'} */}
-								--
+								{thongKe?.[fieldTinhTrangSucKhoe[item]] ?? '--'}
 							</span>
-							<span>SV {item.toLocaleLowerCase()}</span>
+							<span>Sinh viên {item.toLocaleLowerCase()}</span>
 						</Card>
 					</Col>
 				))}

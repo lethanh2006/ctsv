@@ -31,4 +31,11 @@ declare module DotKhamSucKhoe {
 		hoTen: string;
 		tinhTrangSucKhoe: ETinhTrangSucKhoe;
 	}
+
+	export interface IThongKeSucKhoeSinhVien {
+		total: number;
+		binhThuong: number;
+		chuaDanhGia: number;
+		coBenh: number;
+	}
 }
