@@ -279,7 +279,11 @@
 				name: 'DotKhamSucKhoe',
 				path: 'dot-kham-suc-khoe',
 				component: './HoSoTheoDoiSucKhoe/DotKhamSucKhoe',
-				icon: 'trophy',
+			},
+			{
+				name: 'KetQuaKhamSucKhoe',
+				path: 'ket-qua-kham-suc-khoe',
+				component: './HoSoTheoDoiSucKhoe/KetQuaKhamSucKhoe',
 			},
 		],
 	},

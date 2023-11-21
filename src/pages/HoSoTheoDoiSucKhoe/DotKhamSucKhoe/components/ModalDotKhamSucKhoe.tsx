@@ -41,7 +41,9 @@ const ModalDotKhamSucKhoe = (props: any) => {
 
 			{currentStep !== 0 ? (
 				<div style={{ textAlign: 'center', marginBottom: 0, marginTop: 18 }}>
-					<Button onClick={() => setVisibleForm(false)}>Hoàn thành</Button>
+					<Button type='primary' onClick={() => setVisibleForm(false)}>
+						Hoàn thành
+					</Button>
 				</div>
 			) : null}
 		</Card>

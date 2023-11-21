@@ -1,13 +1,13 @@
-export enum ETrangThaiKhaiBaoSucKhoe {
+export enum ETrangThaiKhamSucKhoe {
 	CHO_DUYET = 'Chờ duyệt',
 	DA_DUYET = 'Đã duyệt',
-	KHONG_DUYET = 'Không duyệt',
+	YEU_CAU_CHINH_SUA = 'Yêu cầu chỉnh sửa',
 }
 
-export const colorETrangThaiKhaiBaoSucKhoe: Record<ETrangThaiKhaiBaoSucKhoe, string> = {
-	[ETrangThaiKhaiBaoSucKhoe.CHO_DUYET]: 'blue',
-	[ETrangThaiKhaiBaoSucKhoe.DA_DUYET]: 'green',
-	[ETrangThaiKhaiBaoSucKhoe.KHONG_DUYET]: 'orange',
+export const colorETrangThaiKhaiBaoSucKhoe: Record<ETrangThaiKhamSucKhoe, string> = {
+	[ETrangThaiKhamSucKhoe.CHO_DUYET]: 'blue',
+	[ETrangThaiKhamSucKhoe.DA_DUYET]: 'green',
+	[ETrangThaiKhamSucKhoe.YEU_CAU_CHINH_SUA]: 'orange',
 };
 
 export enum ETinhTrangSucKhoe {

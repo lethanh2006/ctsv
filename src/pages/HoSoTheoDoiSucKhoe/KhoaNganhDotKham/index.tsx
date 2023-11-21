@@ -39,7 +39,7 @@ const KhoaNganhDotKhamPage = () => {
 					<Tooltip title='Loại bỏ'>
 						<Popconfirm
 							onConfirm={() => deleteModel(rec._id, () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id }))}
-							title='Bạn có chắc chắn muốn bỏ khóa ngành này khỏi đợt khai báo?'
+							title='Bạn có chắc chắn muốn bỏ khóa ngành này khỏi đợt khám sức?'
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />

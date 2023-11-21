@@ -49,6 +49,7 @@ export default {
 
 	'menu.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
+	'menu.HoSoTheoDoiSucKhoe.KetQuaKhamSucKhoe': 'Kết quả khám sức khỏe',
 
 	'menu.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
 

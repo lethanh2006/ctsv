@@ -9,7 +9,8 @@ import { useState } from 'react';
 import { useModel } from 'umi';
 import FormSinhVienDotKham from './Form';
 
-const SinhVienDotKhamPage = () => {
+const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
+	const { isKetQua } = props;
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('khaibaosuckhoe.suckhoesinhvien');
 	const { record: recDotKhaiBao } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
 	const { handleView: handleViewSinhVien } = useModel('sinhvien.sinhvien');
@@ -64,7 +65,7 @@ const SinhVienDotKhamPage = () => {
 					<Tooltip title='Loại bỏ'>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id }))}
-							title='Bạn có chắc chắn muốn bỏ sinh viên này khỏi đợt khai báo?'
+							title='Bạn có chắc chắn muốn bỏ sinh viên này khỏi đợt khám?'
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -72,6 +73,7 @@ const SinhVienDotKhamPage = () => {
 					</Tooltip>
 				</>
 			),
+			hide: isKetQua,
 		},
 	];
 
@@ -85,9 +87,9 @@ const SinhVienDotKhamPage = () => {
 				title='Sinh viên đợt khai báo sức khỏe'
 				Form={FormSinhVienDotKham}
 				hideCard
-				rowSelection
-				deleteMany
-				buttons={{ import: true, create: false }}
+				rowSelection={isKetQua ? false : true}
+				deleteMany={isKetQua ? false : true}
+				buttons={{ import: !isKetQua ? true : false, create: false }}
 			/>
 
 			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasDetail />

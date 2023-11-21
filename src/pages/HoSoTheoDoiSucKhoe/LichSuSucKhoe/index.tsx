@@ -7,19 +7,18 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
 const LichSuSucKhoeSinhVienPage = () => {
-	const { getOneModel, danhSach } = useModel('khaibaosuckhoe.suckhoesinhvien');
+	const { getAllModel, loading } = useModel('khaibaosuckhoe.suckhoesinhvien');
 	const { record: recSinhVien } = useModel('sinhvien.sinhvien');
-	const [sinhVien, setSinhVien] = useState<DotKhamSucKhoe.ISucKhoeSinhVien[]>();
+	const [danhSach, setDanhSach] = useState<DotKhamSucKhoe.ISucKhoeSinhVien[]>([]);
 
 	const getData = () =>
-		getOneModel({ sinhVienSsoId: recSinhVien?.ssoId }).then((rec) => {
-			const items = danhSach.filter((item: any) => item?._id === rec._id);
-			setSinhVien(items);
-		});
+		getAllModel(undefined, undefined, { sinhVienSsoId: recSinhVien?.ssoId }, undefined, undefined, false).then((res) =>
+			setDanhSach(res),
+		);
 
 	useEffect(() => {
 		getData();
-	}, [recSinhVien?.ssoId]);
+	}, [recSinhVien?._id]);
 
 	const columns: IColumn<DotKhamSucKhoe.ISucKhoeSinhVien>[] = [
 		{
@@ -46,12 +45,12 @@ const LichSuSucKhoeSinhVienPage = () => {
 	return (
 		<>
 			<TableStaticData
+				loading={loading}
 				columns={columns}
-				data={sinhVien ?? []}
-				size='middle'
-				addStt
-				otherProps={{ scroll: { y: 380 }, pagination: false }}
+				data={danhSach}
+				otherProps={{ create: false, filter: true }}
 				hasTotal
+				addStt
 			/>
 		</>
 	);
