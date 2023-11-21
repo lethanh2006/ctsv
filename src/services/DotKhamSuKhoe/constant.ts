@@ -1,3 +1,5 @@
+import type { DotKhamSucKhoe } from './typing';
+
 export enum ETrangThaiKhamSucKhoe {
 	CHO_DUYET = 'Chờ duyệt',
 	DA_DUYET = 'Đã duyệt',
@@ -20,4 +22,10 @@ export const colorETinhTrangSucKhoe: Record<ETinhTrangSucKhoe, string> = {
 	[ETinhTrangSucKhoe.BINH_THUONG]: 'green',
 	[ETinhTrangSucKhoe.CO_BENH]: 'red',
 	[ETinhTrangSucKhoe.CHUA_DANH_GIA]: 'default',
+};
+
+export const fieldTinhTrangSucKhoe: Record<ETinhTrangSucKhoe, keyof DotKhamSucKhoe.IThongKeSucKhoeSinhVien> = {
+	[ETinhTrangSucKhoe.BINH_THUONG]: 'binhThuong',
+	[ETinhTrangSucKhoe.CO_BENH]: 'coBenh',
+	[ETinhTrangSucKhoe.CHUA_DANH_GIA]: 'chuaDanhGia',
 };

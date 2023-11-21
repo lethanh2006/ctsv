@@ -38,8 +38,6 @@ const DotKhamSucKhoePage = () => {
 			title: 'Học kỳ',
 			dataIndex: 'tenHocKy',
 			width: 150,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectHocKy selectMa />,
 			onCell,
 		},
 		{
