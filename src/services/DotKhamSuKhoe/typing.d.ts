@@ -13,7 +13,7 @@ declare module DotKhamSucKhoe {
 		ghiChu: string;
 	}
 
-	export interface ISucKhoeKhaoNganh {
+	export interface IDotKhamKhoaNganh {
 		_id: string;
 		dotKhamSucKhoeId: string;
 		maKhoaNganh: string;

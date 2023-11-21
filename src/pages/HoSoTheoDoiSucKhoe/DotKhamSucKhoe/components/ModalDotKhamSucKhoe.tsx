@@ -6,7 +6,7 @@ import SinhVienDotKhaiBaoPage from '../../SinhVienDotKham';
 import FormDotKhamSucKhoe from './Form';
 
 const ModalDotKhamSucKhoe = (props: any) => {
-	const { record, edit, setVisibleForm } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { record, edit, setVisibleForm } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const title = props?.title ?? '';
 	const [currentStep, setCurrentStep] = useState(0);
 

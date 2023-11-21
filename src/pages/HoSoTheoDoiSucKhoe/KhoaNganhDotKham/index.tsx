@@ -7,8 +7,8 @@ import { useModel } from 'umi';
 import FormKhoaNganhDotKham from './Form';
 
 const KhoaNganhDotKhamPage = () => {
-	const { page, limit, deleteModel, getModel } = useModel('khaibaosuckhoe.suckhoekhoanganh');
-	const { record: recDotKhaiBao } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { page, limit, deleteModel, getModel } = useModel('hosotheodoisuckhoe.dotkhamkhoanganh');
+	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
 	const columns: IColumn<DotKhamSucKhoe.ISucKhoeKhaoNganh>[] = [
 		{
@@ -56,7 +56,7 @@ const KhoaNganhDotKhamPage = () => {
 				columns={columns}
 				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
 				dependencies={[page, limit]}
-				modelName='khaibaosuckhoe.suckhoekhoanganh'
+				modelName='hosotheodoisuckhoe.dotkhamkhoanganh'
 				title='Khóa ngành - đợt khai báo sức khỏe'
 				Form={FormKhoaNganhDotKham}
 				hideCard

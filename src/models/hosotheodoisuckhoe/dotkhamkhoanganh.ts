@@ -4,15 +4,15 @@ import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<DotKhamSucKhoe.ISucKhoeKhaoNganh>('dot-kham-suc-khoe-khoa-nganh');
+	const objInit = useInitModel<DotKhamSucKhoe.IDotKhamKhoaNganh>('dot-kham-suc-khoe-khoa-nganh');
 	const { formSubmiting, setFormSubmiting, setVisibleForm } = objInit;
 
 	const postManyKhoaNganhModel = async (
 		dotKhamSucKhoeId: string,
 		payLoad: {
-			danhSachKhoaNganh: DotKhamSucKhoe.ISucKhoeKhaoNganh[];
+			danhSachKhoaNganh: DotKhamSucKhoe.IDotKhamKhoaNganh[];
 		},
-	): Promise<DotKhamSucKhoe.ISucKhoeKhaoNganh> => {
+	): Promise<DotKhamSucKhoe.IDotKhamKhoaNganh> => {
 		if (formSubmiting) return Promise.reject('form submiting');
 		setFormSubmiting(true);
 

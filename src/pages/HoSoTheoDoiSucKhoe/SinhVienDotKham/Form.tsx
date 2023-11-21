@@ -10,9 +10,9 @@ import { useModel } from 'umi';
 const FormSinhVienDotKham = (props: any) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, getModel, formSubmiting, visibleForm } = useModel(
-		'khaibaosuckhoe.suckhoesinhvien',
+		'hosotheodoisuckhoe.suckhoesinhvien',
 	);
-	const { record: recDotKhaiBao } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { title } = props;
 
 	const getData = () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id });
@@ -43,7 +43,7 @@ const FormSinhVienDotKham = (props: any) => {
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24}>
-						<Form.Item label='Đợt đăng ký học phần'>
+						<Form.Item label='Đợt khám sức khỏe'>
 							<Input value={recDotKhaiBao?.ten} disabled />
 						</Form.Item>
 					</Col>

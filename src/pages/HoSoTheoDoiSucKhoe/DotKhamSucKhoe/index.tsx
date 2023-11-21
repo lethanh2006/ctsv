@@ -15,7 +15,7 @@ import ExpandText from '@/components/ExpandText';
 
 const DotKhamSucKhoePage = () => {
 	const { page, limit, deleteModel, handleEdit, putModel, getModel, setRecord } = useModel(
-		'khaibaosuckhoe.dotkhaibaosuckhoe',
+		'hosotheodoisuckhoe.dotkhamsuckhoe',
 	);
 	const { record: recHocKy, setRecord: retRecHocKy, danhSach: danhSachHocKy } = useModel('hocky.hocky');
 	const [viewYeuCau, setViewYeuCau] = useState<boolean>(false);
@@ -140,7 +140,7 @@ const DotKhamSucKhoePage = () => {
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName='khaibaosuckhoe.dotkhaibaosuckhoe'
+				modelName='hosotheodoisuckhoe.dotkhamsuckhoe'
 				title='Đợt khám sức khỏe'
 				Form={ModalDotKhamSucKhoe}
 				widthDrawer={1000}

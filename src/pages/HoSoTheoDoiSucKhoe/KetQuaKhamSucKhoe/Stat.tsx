@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 
 const StatKetQuaKhamSucKhoe = () => {
 	// const { isThoiHoc } = props;
-	const { setFilters, filters } = useModel('khaibaosuckhoe.suckhoesinhvien');
+	const { setFilters, filters } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
 	// const { thongkeSinhVienCanhBaoModel, thongKe } = useModel('ketquahoctap.xethocvu.thongke');
 	// const { record: recHocKy } = useModel('hocky.hocky');
 

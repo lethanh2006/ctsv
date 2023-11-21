@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
 const LichSuSucKhoeSinhVienPage = () => {
-	const { getAllModel, loading } = useModel('khaibaosuckhoe.suckhoesinhvien');
+	const { getAllModel, loading } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
 	const { record: recSinhVien } = useModel('sinhvien.sinhvien');
 	const [danhSach, setDanhSach] = useState<DotKhamSucKhoe.ISucKhoeSinhVien[]>([]);
 

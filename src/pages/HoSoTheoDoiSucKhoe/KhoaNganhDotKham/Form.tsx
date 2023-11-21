@@ -8,9 +8,9 @@ import { useModel } from 'umi';
 const FormKhoaNganhDotKham = (props: any) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, getModel, formSubmiting, postManyKhoaNganhModel, visibleForm } = useModel(
-		'khaibaosuckhoe.suckhoekhoanganh',
+		'hosotheodoisuckhoe.dotkhamkhoanganh',
 	);
-	const { record: recDotKhaiBao } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { danhSach: danhSachKhaoNganh } = useModel('daotao.khoanganh');
 	const { title } = props;
 
@@ -39,7 +39,7 @@ const FormKhoaNganhDotKham = (props: any) => {
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24}>
-						<Form.Item label='Đợt đăng ký học phần'>
+						<Form.Item label='Đợt khám sức khỏe'>
 							<Input value={recDotKhaiBao?.ten} disabled />
 						</Form.Item>
 					</Col>

@@ -11,8 +11,8 @@ import FormSinhVienDotKham from './Form';
 
 const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 	const { isKetQua } = props;
-	const { getModel, page, limit, deleteModel, handleEdit } = useModel('khaibaosuckhoe.suckhoesinhvien');
-	const { record: recDotKhaiBao } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { getModel, page, limit, deleteModel, handleEdit } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
+	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { handleView: handleViewSinhVien } = useModel('sinhvien.sinhvien');
 	const [sinhVienSsoId, setSinhVienSsoId] = useState<string>();
 
@@ -43,7 +43,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 			onCell,
 		},
 		{
-			title: 'Sức khỏe',
+			title: 'Tình trạng sức khỏe',
 			dataIndex: 'tinhTrangSucKhoe',
 			align: 'center',
 			width: 170,
@@ -83,7 +83,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 				columns={columns}
 				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
 				dependencies={[page, limit]}
-				modelName='khaibaosuckhoe.suckhoesinhvien'
+				modelName='hosotheodoisuckhoe.suckhoesinhvien'
 				title='Sinh viên đợt khai báo sức khỏe'
 				Form={FormSinhVienDotKham}
 				hideCard

@@ -15,7 +15,7 @@ const SelectDotKhamSucKhoe = (props: {
 	isSetRecord?: boolean;
 }) => {
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord } = props;
-	const { danhSach, getAllModel, visibleForm, setRecord } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { danhSach, getAllModel, visibleForm, setRecord } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
 	useEffect(() => {
 		if (!visibleForm)

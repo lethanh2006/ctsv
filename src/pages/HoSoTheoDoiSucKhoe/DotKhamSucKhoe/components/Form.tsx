@@ -19,7 +19,7 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 		setRecord,
 		setEdit,
 		visibleForm,
-	} = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	} = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { record: recHocKy } = useModel('hocky.hocky');
 	const thoiGianBatDau = Form.useWatch('thoiGianBatDau', form);
 	const { afterAddNew } = props;

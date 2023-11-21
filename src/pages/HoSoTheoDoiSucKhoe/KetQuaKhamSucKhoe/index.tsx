@@ -11,7 +11,7 @@ const KetQuaKhamSucKhoePage = () => {
 		danhSach: danhSachDotKham,
 		setRecord: setRecordDotKham,
 		record: recDot,
-	} = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	} = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
 	const { record: recHocKy, setRecord, danhSach: danhSachHocKy } = useModel('hocky.hocky');
 
