@@ -1,0 +1,98 @@
+import TableBase from '@/components/Table';
+import { type IColumn } from '@/components/Table/typing';
+import ModalChiTietSinhVien from '@/pages/SinhVien/component/ModalChiTietSinhVien';
+import { ETinhTrangSucKhoe, colorETinhTrangSucKhoe } from '@/services/DotKhamSuKhoe/constant';
+import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Tag, Tooltip } from 'antd';
+import { useState } from 'react';
+import { useModel } from 'umi';
+import FormSinhVienDotKham from './Form';
+
+const SinhVienDotKhamPage = () => {
+	const { getModel, page, limit, deleteModel, handleEdit } = useModel('khaibaosuckhoe.suckhoesinhvien');
+	const { record: recDotKhaiBao } = useModel('khaibaosuckhoe.dotkhaibaosuckhoe');
+	const { handleView: handleViewSinhVien } = useModel('sinhvien.sinhvien');
+	const [sinhVienSsoId, setSinhVienSsoId] = useState<string>();
+
+	const onCell = (rec: DotKhamSucKhoe.ISucKhoeSinhVien) => ({
+		onClick: () => {
+			if (rec.sinhVienSsoId) {
+				setSinhVienSsoId(rec.sinhVienSsoId);
+				handleViewSinhVien();
+			}
+		},
+		style: { cursor: 'pointer' },
+	});
+
+	const columns: IColumn<DotKhamSucKhoe.ISucKhoeSinhVien>[] = [
+		{
+			title: 'Mã sinh viên',
+			dataIndex: 'maSinhVien',
+			width: 120,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Họ tên',
+			dataIndex: 'hoTen',
+			width: 170,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Sức khỏe',
+			dataIndex: 'tinhTrangSucKhoe',
+			align: 'center',
+			width: 170,
+			filterType: 'select',
+			filterData: Object.values(ETinhTrangSucKhoe),
+			render: (val, rec) => <Tag color={colorETinhTrangSucKhoe[val as ETinhTrangSucKhoe]}>{val}</Tag>,
+			onCell,
+		},
+		{
+			title: 'Thao tác',
+			align: 'center',
+			width: 90,
+			fixed: 'right',
+			render: (record: any) => (
+				<>
+					<Tooltip title='Chỉnh sửa'>
+						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+					</Tooltip>
+					<Tooltip title='Loại bỏ'>
+						<Popconfirm
+							onConfirm={() => deleteModel(record._id, () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id }))}
+							title='Bạn có chắc chắn muốn bỏ sinh viên này khỏi đợt khai báo?'
+							placement='topRight'
+						>
+							<Button danger type='link' icon={<DeleteOutlined />} />
+						</Popconfirm>
+					</Tooltip>
+				</>
+			),
+		},
+	];
+
+	return (
+		<>
+			<TableBase
+				columns={columns}
+				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
+				dependencies={[page, limit]}
+				modelName='khaibaosuckhoe.suckhoesinhvien'
+				title='Sinh viên đợt khai báo sức khỏe'
+				Form={FormSinhVienDotKham}
+				hideCard
+				rowSelection
+				deleteMany
+				buttons={{ import: true, create: false }}
+			/>
+
+			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasDetail />
+		</>
+	);
+};
+
+export default SinhVienDotKhamPage;

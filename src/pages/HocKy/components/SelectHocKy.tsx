@@ -1,4 +1,4 @@
-import { type HocKy } from '@/services/DaoTao/HocKy/typing';
+import type { HocKy } from '@/services/DaoTao/HocKy/typing';
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -18,7 +18,7 @@ const SelectHocKy = (props: {
 	selectMa?: boolean;
 }) => {
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, selectMa, disabled } = props;
-	const { danhSach, getAllModel, visibleForm } = useModel('hocky.hocky');
+	const { danhSach, getAllModel, visibleForm, loading } = useModel('hocky.hocky');
 
 	useEffect(() => {
 		if (!visibleForm) getAllModel(!!isSetRecord, { ma: -1 }, condition);
@@ -40,6 +40,7 @@ const SelectHocKy = (props: {
 			placeholder='Chọn học kỳ'
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
+			loading={loading}
 		/>
 	);
 };

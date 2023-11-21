@@ -269,6 +269,21 @@
 		],
 	},
 
+	//Khai báo sức khỏe
+	{
+		name: 'HoSoTheoDoiSucKhoe',
+		path: 'ho-so-theo-do-suc-kheo',
+		icon: 'HeartOutlined',
+		routes: [
+			{
+				name: 'DotKhamSucKhoe',
+				path: 'dot-kham-suc-khoe',
+				component: './HoSoTheoDoiSucKhoe/DotKhamSucKhoe',
+				icon: 'trophy',
+			},
+		],
+	},
+
 	// Khen thưởng kỷ luật
 	{
 		name: 'KhenThuongKyLuat',
