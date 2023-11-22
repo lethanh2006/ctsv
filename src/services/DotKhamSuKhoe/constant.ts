@@ -14,18 +14,18 @@ export const colorETrangThaiKhaiBaoSucKhoe: Record<ETrangThaiKhamSucKhoe, string
 
 export enum ETinhTrangSucKhoe {
 	BINH_THUONG = 'Bình thường',
-	CO_BENH = 'Có bệnh',
-	CHUA_DANH_GIA = 'Chưa đánh giá',
+	CAN_LUU_Y = 'Cần lưu ý',
+	CHUA_CO_KET_QUA = 'Chưa có kết quả',
 }
 
 export const colorETinhTrangSucKhoe: Record<ETinhTrangSucKhoe, string> = {
 	[ETinhTrangSucKhoe.BINH_THUONG]: 'green',
-	[ETinhTrangSucKhoe.CO_BENH]: 'red',
-	[ETinhTrangSucKhoe.CHUA_DANH_GIA]: 'default',
+	[ETinhTrangSucKhoe.CAN_LUU_Y]: 'red',
+	[ETinhTrangSucKhoe.CHUA_CO_KET_QUA]: 'default',
 };
 
 export const fieldTinhTrangSucKhoe: Record<ETinhTrangSucKhoe, keyof DotKhamSucKhoe.IThongKeSucKhoeSinhVien> = {
 	[ETinhTrangSucKhoe.BINH_THUONG]: 'binhThuong',
-	[ETinhTrangSucKhoe.CO_BENH]: 'coBenh',
-	[ETinhTrangSucKhoe.CHUA_DANH_GIA]: 'chuaDanhGia',
+	[ETinhTrangSucKhoe.CAN_LUU_Y]: 'coBenh',
+	[ETinhTrangSucKhoe.CHUA_CO_KET_QUA]: 'chuaDanhGia',
 };

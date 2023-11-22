@@ -110,7 +110,7 @@ const DotKhamSucKhoePage = () => {
 							<>
 								<Popconfirm
 									onConfirm={() => handleDuyet(rec)}
-									title='Bạn có chắc chắn muốn duyệt tốt nghiệp đợt khám sức khỏe?'
+									title='Bạn có chắc chắn muốn duyệt đợt khám sức khỏe?'
 									placement='topRight'
 								>
 									<ButtonExtend tooltip='Duyệt' type='link' className='btn-success' icon={<CheckOutlined />} />
