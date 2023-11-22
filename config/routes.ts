@@ -140,9 +140,9 @@
 
 	// Chế độ chính sách, học bổng
 	{
-		path: '/che-do-chinh-sach-hoc-bong',
-		name: 'CheDoChinhSachHocBong',
-		component: './CheDoChinhSachHocBong',
+		path: '/che-do-chinh-sach',
+		name: 'CheDoChinhSach',
+		component: './CheDoChinhSach',
 		icon: 'read',
 	},
 

@@ -24,7 +24,7 @@ export default {
 	'menu.DanhMuc.KyTucXa': 'Ký túc xá',
 	'menu.DanhMuc.PhongKyTucXa': 'Phòng ký túc xá',
 
-	'menu.CheDoChinhSachHocBong': 'Chính sách học bổng',
+	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.SuKien': 'Hoạt động',
 	'menu.SuKien.TuanLeCongDan': 'Tuần lễ sinh hoạt công dân',
