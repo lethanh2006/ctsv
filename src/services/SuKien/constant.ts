@@ -12,7 +12,11 @@ export enum ETrangThaiDienRa {
 	DA_DIEN_RA = 'Đã diễn ra',
 	DANG_DIEN_RA = 'Đang diễn ra',
 }
-
+export const MapETrangThaiDienRa={
+  [ETrangThaiDienRa.CHUA_DIEN_RA]:'Chưa duyệt',
+  [ETrangThaiDienRa.DA_DIEN_RA]:'Đã duyệt',
+  [ETrangThaiDienRa.DANG_DIEN_RA]:'Yêu cầu chỉnh sửa',
+}
 export enum ESuKienType {
 	CA_NHAN = 'Cá nhân',
 	TAT_CA = 'Chung',

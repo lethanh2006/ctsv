@@ -10,21 +10,37 @@ import {
 	ETrangThaiDienRaMappingToTagColor,
 	ETrangThaiDienRaMappingToTagLabel,
 	ETrangThaiDienRaMappingToThongKeKey,
+	MapETrangThaiDienRa,
 } from '@/services/SuKien/constant';
 import { type SuKien } from '@/services/SuKien/typings';
 import {
-  CalendarOutlined,
-  CheckOutlined,
-  DeleteOutlined,
-  DownloadOutlined,
-  EditOutlined,
-  MenuOutlined,
-  PieChartOutlined, SendOutlined,
-  TableOutlined,
-  UndoOutlined,
-  UploadOutlined,
+	CalendarOutlined,
+	CheckOutlined,
+	DeleteOutlined,
+	DownloadOutlined,
+	EditOutlined,
+	MenuOutlined,
+	PieChartOutlined,
+	SendOutlined,
+	TableOutlined,
+	UndoOutlined,
+	UploadOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Col, Divider, Modal, Popconfirm, Popover, Row, Segmented, Spin, Tag, Tooltip } from 'antd';
+import {
+	Button,
+	Card,
+	Col,
+	Divider,
+	Modal,
+	Popconfirm,
+	Popover,
+	Row,
+	Segmented,
+	Select,
+	Spin,
+	Tag,
+	Tooltip,
+} from 'antd';
 import { sum } from 'lodash';
 import moment, { type Moment } from 'moment';
 import { useEffect, useState } from 'react';
@@ -162,7 +178,7 @@ const SuKienPage = () => {
 			dataIndex: 'trangThai',
 			width: 160,
 			filterType: 'select',
-			filterData: Object.values(ETrangThaiDienRa),
+			filterData: Object.values(ETrangThaiDienRa)?.map((val) => ({ value: val, label: MapETrangThaiDienRa?.[val] })),
 			onCell,
 			align: 'center',
 			render: (_, record) => {
