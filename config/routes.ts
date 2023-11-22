@@ -62,7 +62,7 @@
 			{
 				name: 'LopHanhChinh',
 				icon: 'appstore',
-				path: '/lop-hanh-chinh',
+				path: 'lop-hanh-chinh',
 				component: './DaoTao/LopHanhChinh',
 			},
 
