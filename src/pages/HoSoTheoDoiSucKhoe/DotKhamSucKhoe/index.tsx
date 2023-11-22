@@ -28,7 +28,7 @@ const DotKhamSucKhoePage = () => {
 	const getData = () => getModel({ maHocKy: recHocKy?.ma });
 
 	const handleDuyet = (record: DotKhamSucKhoe.IRecord) => {
-		putModel(record._id ?? '', { ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET }, getData)
+		putModel(record._id ?? '', { ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET, ghiChu: '' }, getData)
 			.then()
 			.catch((err) => console.log(err));
 	};
