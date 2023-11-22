@@ -28,7 +28,7 @@ const DotKhamSucKhoePage = () => {
 	const getData = () => getModel({ maHocKy: recHocKy?.ma });
 
 	const handleDuyet = (record: DotKhamSucKhoe.IRecord) => {
-		putModel(record._id ?? '', { ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET }, getData)
+		putModel(record._id ?? '', { ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET, ghiChu: '' }, getData)
 			.then()
 			.catch((err) => console.log(err));
 	};
@@ -110,7 +110,7 @@ const DotKhamSucKhoePage = () => {
 							<>
 								<Popconfirm
 									onConfirm={() => handleDuyet(rec)}
-									title='Bạn có chắc chắn muốn duyệt tốt nghiệp đợt khám sức khỏe?'
+									title='Bạn có chắc chắn muốn duyệt đợt khám sức khỏe?'
 									placement='topRight'
 								>
 									<ButtonExtend tooltip='Duyệt' type='link' className='btn-success' icon={<CheckOutlined />} />
