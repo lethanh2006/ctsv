@@ -10,10 +10,37 @@ import {
 	ETrangThaiDienRaMappingToTagColor,
 	ETrangThaiDienRaMappingToTagLabel,
 	ETrangThaiDienRaMappingToThongKeKey,
+	MapETrangThaiDienRa,
 } from '@/services/SuKien/constant';
 import { type SuKien } from '@/services/SuKien/typings';
-import { CalendarOutlined, DeleteOutlined, EditOutlined, PieChartOutlined, TableOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Modal, Popconfirm, Row, Segmented, Spin, Tag, Tooltip } from 'antd';
+import {
+	CalendarOutlined,
+	CheckOutlined,
+	DeleteOutlined,
+	DownloadOutlined,
+	EditOutlined,
+	MenuOutlined,
+	PieChartOutlined,
+	SendOutlined,
+	TableOutlined,
+	UndoOutlined,
+	UploadOutlined,
+} from '@ant-design/icons';
+import {
+	Button,
+	Card,
+	Col,
+	Divider,
+	Modal,
+	Popconfirm,
+	Popover,
+	Row,
+	Segmented,
+	Select,
+	Spin,
+	Tag,
+	Tooltip,
+} from 'antd';
 import { sum } from 'lodash';
 import moment, { type Moment } from 'moment';
 import { useEffect, useState } from 'react';
@@ -151,7 +178,7 @@ const SuKienPage = () => {
 			dataIndex: 'trangThai',
 			width: 160,
 			filterType: 'select',
-			filterData: Object.values(ETrangThaiDienRa),
+			filterData: Object.values(ETrangThaiDienRa)?.map((val) => ({ value: val, label: MapETrangThaiDienRa?.[val] })),
 			onCell,
 			align: 'center',
 			render: (_, record) => {
@@ -168,7 +195,7 @@ const SuKienPage = () => {
 		{
 			title: 'Thao tác',
 			align: 'center',
-			width: 120,
+			width: 150,
 			fixed: 'right',
 			render: (_, record) => {
 				return (
@@ -190,6 +217,34 @@ const SuKienPage = () => {
 								<Button danger type='link' icon={<DeleteOutlined />} />
 							</Popconfirm>
 						</Tooltip>
+						<Popover
+							placement={'left'}
+							content={
+								<>
+									<Tooltip title='Duyệt'>
+										<Button type='link' shape={'circle'} icon={<CheckOutlined />} />
+									</Tooltip>
+									<Divider type={'vertical'} />
+									<Tooltip title='Yêu cầu chỉnh sửa'>
+										<Button type='link' shape={'circle'} icon={<UndoOutlined />} />
+									</Tooltip>
+									<Divider type={'vertical'} />
+									<Tooltip title='Tải xuống'>
+										<Button type='link' shape={'circle'} icon={<DownloadOutlined />} />
+									</Tooltip>
+									<Divider type={'vertical'} />
+									<Tooltip title='Tải lên'>
+										<Button type='link' shape={'circle'} icon={<UploadOutlined />} />
+									</Tooltip>
+									<Divider type={'vertical'} />
+									<Tooltip title='Gửi văn thư'>
+										<Button type='link' shape={'circle'} icon={<SendOutlined />} />
+									</Tooltip>
+								</>
+							}
+						>
+							<Button type='link' icon={<MenuOutlined />} />
+						</Popover>
 					</>
 				);
 			},

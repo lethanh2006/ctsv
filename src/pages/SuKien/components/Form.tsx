@@ -1,4 +1,5 @@
 import MyDatePicker from '@/components/MyDatePicker';
+import TableStaticData from '@/components/Table/TableStaticData';
 import { SelectHocKy } from '@/pages/DaoTao/HocKy/SelectHocKy';
 import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
 import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
@@ -19,12 +20,13 @@ import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm, tienVietNam } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Radio, Row, Select, Tabs } from 'antd';
+import { Button, Card, Col, Form, Input, InputNumber, Modal, Radio, Row, Select, Table, Tabs } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { first } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import FormDuTruKinhPhi from './FormDuTruKinhPhi';
 
 interface Props {
 	hideCard?: boolean;
@@ -58,6 +60,8 @@ const FormSuKien = ({ hideCard }: Props) => {
 	const receiverType: EReceiverType = Form.useWatch('receiverType', form) ?? EReceiverType.All;
 	const variantDanhSachThamGia = Form.useWatch('variantDanhSachThamGia', form) ?? 'Tất cả';
 	const danhSachDoiTuong: string[] = Form.useWatch('danhSachDoiTuong', form);
+	const [dataDuTruKinhPhi, setDataDuTruKinhPhi] = useState<any[]>([]);
+	const [visibleFormDuTruKinhPhi, setVisibleFormDuTruKinhPhi] = useState(false);
 
 	useEffect(() => {
 		setDanhSachNhanSu([]);
@@ -315,6 +319,91 @@ const FormSuKien = ({ hideCard }: Props) => {
 							</Col>
 						) : null}
 
+						<Col xs={24}>
+							<div>Dự trù kinh phí</div>
+							<TableStaticData
+								size='small'
+								data={dataDuTruKinhPhi}
+								addStt
+								columns={[
+									{
+										title: 'Nội dung',
+										width: 200,
+										dataIndex: 'noiDung',
+										align: 'center',
+									},
+									{
+										title: 'Đơn vị tính',
+										width: 200,
+										dataIndex: 'donViTinh',
+										align: 'center',
+									},
+									{
+										title: 'Số lượng',
+										dataIndex: 'soLuong',
+										width: 200,
+										align: 'center',
+									},
+									{
+										title: 'Lượt',
+										dataIndex: 'luot',
+										width: 200,
+										align: 'center',
+									},
+									{
+										title: 'Định mức',
+										dataIndex: 'dinhMuc',
+										width: 200,
+										align: 'center',
+									},
+									{
+										title: 'Dự toán',
+										dataIndex: 'duToan',
+										width: 200,
+										align: 'center',
+									},
+									{
+										title: 'Phân bổ nguồn',
+										dataIndex: 'phanBoNguon',
+										width: 200,
+										align: 'center',
+									},
+									{
+										title: 'Tiến độ hoàn thành',
+										dataIndex: 'tienDoHoanThanh',
+										width: 200,
+										align: 'center',
+									},
+									{
+										title: 'Chứng từ yêu cầu',
+										dataIndex: 'chungTu',
+										width: 200,
+										align: 'center',
+									},
+								]}
+							>
+								<Button
+									onClick={() => {
+										setVisibleFormDuTruKinhPhi(true);
+									}}
+									type='primary'
+									size='small'
+								>
+									Thêm mới
+								</Button>
+								<Modal
+									footer={false}
+									width={700}
+									bodyStyle={{ padding: 0 }}
+									visible={visibleFormDuTruKinhPhi}
+									onCancel={() => {
+										setVisibleFormDuTruKinhPhi(false);
+									}}
+								>
+									<FormDuTruKinhPhi setData={setDataDuTruKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
+								</Modal>
+							</TableStaticData>
+						</Col>
 						<Col xs={24}>
 							<Form.Item rules={[...rules.text, ...rules.length(1000)]} name='ghiChu' label='Ghi chú'>
 								<Input.TextArea placeholder='Ghi chú' rows={3} />

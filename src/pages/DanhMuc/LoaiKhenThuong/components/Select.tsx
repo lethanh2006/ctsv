@@ -1,0 +1,65 @@
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Modal, Select } from 'antd';
+import { useEffect } from 'react';
+import { useModel } from 'umi';
+import FormLoaiKhenThuong from './Form';
+import { type BaseOptionType } from 'antd/lib/select';
+
+const SelectLoaiKhenThuong = (props: {
+	value?: string;
+	onChange?: (value?: string, option?: BaseOptionType) => void;
+	hasCreate?: boolean;
+	multiple?: boolean;
+	listLoaiKhenThuongId?: string[];
+	disabled?: boolean;
+	allowClear?: boolean;
+}) => {
+	const { value, onChange, hasCreate, multiple, listLoaiKhenThuongId, disabled, allowClear } = props;
+	const { danhSach, getAllModel, setVisibleForm, visibleForm, setEdit, setRecord } = useModel('danhmuc.loaikhenthuong');
+
+	useEffect(() => {
+		if (!visibleForm) getAllModel();
+	}, [visibleForm]);
+
+	const onAddNew = () => {
+		setRecord(undefined);
+		setEdit(false);
+		setVisibleForm(true);
+	};
+
+	return (
+		<div style={{ display: 'flex', gap: 8 }}>
+			<div className={hasCreate !== false ? 'width-select-custom' : 'fullWidth'}>
+				<Select
+					allowClear={allowClear}
+					disabled={disabled}
+					mode={multiple ? 'multiple' : undefined}
+					value={value}
+					onChange={onChange}
+					options={danhSach
+						.filter((item) => !listLoaiKhenThuongId || listLoaiKhenThuongId?.includes(item._id))
+						.map((item) => ({
+							key: item._id,
+							value: item._id,
+							label: item.ten,
+							rawData: item,
+						}))}
+					showSearch
+					optionFilterProp='label'
+					placeholder='Chọn loại khen thưởng'
+				/>
+			</div>
+
+			{hasCreate !== false ? (
+				<>
+					<Button icon={<PlusOutlined />} onClick={onAddNew} />
+					<Modal visible={visibleForm} bodyStyle={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
+						<FormLoaiKhenThuong title='Loại khen thưởng' />
+					</Modal>
+				</>
+			) : null}
+		</div>
+	);
+};
+
+export default SelectLoaiKhenThuong;

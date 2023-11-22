@@ -430,6 +430,13 @@ export const getFilenameHeader = (response: AxiosResponse<any>) => {
 	}
 };
 
+export const toISOString = (date: moment.MomentInput) => {
+	if (date) {
+		return moment(date).startOf('day').toISOString();
+	}
+	return undefined;
+};
+
 export function includes(str1: string, str2: string) {
 	// str1 có chứa str2 ko
 	return Format(str1).includes(Format(str2));
