@@ -11,6 +11,7 @@ import FormSinhVien from './Form';
 import FormKhenThuongKyLuat from './FormKhenThuongKyLuat';
 import FormQuaTrinhHocTap from './FormQuaTrinhHocTap';
 import FormTotNghiepVanBang from './FormTotNghiepVanBang';
+import LichSuSucKhoeSinhVienPage from '@/pages/HoSoTheoDoiSucKhoe/LichSuSucKhoe';
 
 const ModalSinhVien = (props: any) => {
 	const { record, edit, setVisibleForm, handleView } = useModel('sinhvien.sinhvien');
@@ -53,6 +54,9 @@ const ModalSinhVien = (props: any) => {
 				</Tabs.TabPane>
 				<Tabs.TabPane tab='Nội / ngoại trú' key={'4'} disabled={!record?.ssoId}>
 					<NoiNgoaiTruSinhVienPage />
+				</Tabs.TabPane>
+				<Tabs.TabPane tab='Tình trạng sức khỏe' key={'8'} disabled={!record?.ssoId}>
+					<LichSuSucKhoeSinhVienPage />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab='Tốt nghiệp & Văn bằng' key={'5'} disabled={!record?.ssoId}>
 					<FormTotNghiepVanBang />
