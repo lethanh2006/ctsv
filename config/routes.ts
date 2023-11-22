@@ -224,6 +224,29 @@
 					},
 				],
 			},
+			// Khen thưởng kỷ luật
+			{
+				name: 'KhenThuongKyLuat',
+				path: 'khen-thuong-ky-luat',
+				icon: 'trophy',
+				routes: [
+					{
+						path: 'khen-thuong',
+						name: 'KhenThuong',
+						component: './KhenThuongKyLuat/KhenThuong',
+					},
+					// {
+					// 	path: 'sang-kien',
+					// 	name: 'SangKien',
+					// 	component: './KhenThuongKyLuat/SangKienNew',
+					// },
+					{
+						path: 'ky-luat',
+						name: 'KyLuat',
+						component: './KhenThuongKyLuat/KyLuat',
+					},
+				],
+			},
 			{
 				name: 'CheDoChinhSach',
 				component: './CheDoChinhSach',
@@ -310,14 +333,6 @@
 
 	//Khai báo sức khỏe
 
-	// Khen thưởng kỷ luật
-	{
-		name: 'KhenThuongKyLuat',
-		path: 'khen-thuong-ky-luat',
-		component: './KhenThuongKyLuat',
-		icon: 'trophy',
-	},
-
 	// {
 	//   name: 'TracNghiem',
 	//   path: './tracnghiem',
@@ -386,6 +401,27 @@
 		path: '/danh-muc',
 		icon: 'copy',
 		routes: [
+			{
+				name: 'LoaiKhenThuong',
+				path: 'loai-khen-thuong',
+				component: './DanhMuc/LoaiKhenThuong',
+			},
+			{
+				name: 'HinhThucKhenThuong',
+				path: 'hinh-thuc-khen-thuong',
+				component: './DanhMuc/HinhThucKhenThuong',
+			},
+			{
+				name: 'CapKyLuat',
+				path: 'cap-ky-luat',
+				component: './DanhMuc/CapKyLuat',
+			},
+			{
+				name: 'HinhThucKyLuat',
+				path: 'hinh-thuc-ky-luat',
+				component: './DanhMuc/HinhThucKyLuat',
+			},
+
 			{
 				name: 'LoaiDanhHieu',
 				path: 'loai-danh-hieu',

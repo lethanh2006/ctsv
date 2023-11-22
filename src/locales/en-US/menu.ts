@@ -23,6 +23,11 @@ export default {
 	'menu.DanhMuc.CapDatGiai': 'Cấp đạt giải',
 	'menu.DanhMuc.KyTucXa': 'Ký túc xá',
 	'menu.DanhMuc.PhongKyTucXa': 'Phòng ký túc xá',
+	'menu.DanhMuc.CapKyLuat': 'Cấp kỷ luật',
+	'menu.DanhMuc.HinhThucKyLuat': 'Hình thức kỷ luật',
+	'menu.DanhMuc.LoaiKyLuat': 'Loại kỷ luật',
+	'menu.DanhMuc.HinhThucKhenThuong': 'Hình thức khen thưởng',
+	'menu.DanhMuc.LoaiKhenThuong': 'Loại khen thưởng',
 
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
@@ -53,7 +58,9 @@ export default {
 	'menu.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.KetQuaKhamSucKhoe': 'Kết quả khám sức khỏe',
 
-	'menu.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
+	'menu.CheDoChinhSach.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
+	'menu.CheDoChinhSach.KhenThuongKyLuat.KhenThuong': 'Khen thưởng',
+	'menu.CheDoChinhSach.KhenThuongKyLuat.KyLuat': 'Kỷ luật',
 
 	'menu.LopHanhChinh': 'Lớp hành chính',
 

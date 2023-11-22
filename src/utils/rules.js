@@ -157,6 +157,15 @@ const rules = {
 			message: 'Không được sau thời điểm hiện tại',
 		},
 	],
+	nhoHonBangHomNay: [
+		{
+			validator: (_, value, callback) => {
+				if (value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }).add(1, 'day'))) callback('');
+				callback();
+			},
+			message: 'Không được sau ngày hôm nay',
+		},
+	],
 	truocThoiDiem: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
