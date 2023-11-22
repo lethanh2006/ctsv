@@ -422,21 +422,21 @@
 				component: './DanhMuc/HinhThucKyLuat',
 			},
 
-			{
-				name: 'LoaiDanhHieu',
-				path: 'loai-danh-hieu',
-				component: './DanhMuc/LoaiDanhHieu',
-			},
-			{
-				name: 'DanhHieu',
-				path: 'danh-hieu',
-				component: './DanhMuc/DanhHieu',
-			},
-			{
-				name: 'ThamGiaCongTacXaHoi',
-				path: 'tham-gia-cong-tac-xa-hoi',
-				component: './DiemRenLuyen/DanhMuc',
-			},
+			// {
+			// 	name: 'LoaiDanhHieu',
+			// 	path: 'loai-danh-hieu',
+			// 	component: './DanhMuc/LoaiDanhHieu',
+			// },
+			// {
+			// 	name: 'DanhHieu',
+			// 	path: 'danh-hieu',
+			// 	component: './DanhMuc/DanhHieu',
+			// },
+			// {
+			// 	name: 'ThamGiaCongTacXaHoi',
+			// 	path: 'tham-gia-cong-tac-xa-hoi',
+			// 	component: './DiemRenLuyen/DanhMuc',
+			// },
 			{
 				name: 'CapDatGiai',
 				path: 'cap-dat-giai',
