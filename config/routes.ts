@@ -331,53 +331,6 @@
 	//   ],
 	// },
 
-	// DRL
-	{
-		name: 'DiemRenLuyen',
-		path: '/diem-ren-luyen',
-		icon: 'user',
-		routes: [
-			{
-				name: 'DotChamDiem',
-				path: 'dot-cham-diem',
-				component: './DiemRenLuyen/DotChamDiem',
-			},
-
-			{
-				name: 'QuanLyMinhChung',
-				path: 'quan-ly-minh-chung',
-				routes: [
-					{
-						name: 'NoiNgoaiTru',
-						path: 'noi-ngoai-tru',
-						component: './DiemRenLuyen/QuanLyMinhChung',
-					},
-					{
-						name: 'ThamGiaCongTacXaHoi',
-						path: 'tham-gia-cong-tac-xa-hoi',
-						component: './DiemRenLuyen/QuanLyMinhChung',
-					},
-					{
-						name: 'TuyenTruyen',
-						path: 'tuyen-truyen',
-						component: './DiemRenLuyen/QuanLyMinhChung',
-					},
-					{
-						name: 'DacBiet',
-						path: 'dac-biet',
-						component: './DiemRenLuyen/QuanLyMinhChung',
-					},
-				],
-			},
-
-			{
-				name: 'TongHopDuLieu',
-				path: 'tong-hop-du-lieu',
-				component: './DiemRenLuyen/TongHopDuLieu',
-			},
-		],
-	},
-
 	//Nội ngoại trú
 	{
 		name: 'NoiNgoaiTru',
