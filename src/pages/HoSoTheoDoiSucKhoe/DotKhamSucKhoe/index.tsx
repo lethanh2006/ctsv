@@ -55,7 +55,7 @@ const DotKhamSucKhoePage = () => {
 			align: 'center',
 			filterType: 'datetime',
 			sortable: true,
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && moment(val).format(' DD/MM/YYYY'),
 			onCell,
 		},
 		{
@@ -65,7 +65,7 @@ const DotKhamSucKhoePage = () => {
 			align: 'center',
 			filterType: 'datetime',
 			sortable: true,
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && moment(val).format(' DD/MM/YYYY'),
 			onCell,
 		},
 		{
@@ -125,7 +125,7 @@ const DotKhamSucKhoePage = () => {
 							</>
 						}
 					>
-						<Button icon={<MenuOutlined />} />
+						<Button type='link' icon={<MenuOutlined />} />
 					</Popover>
 				</>
 			),
@@ -133,7 +133,7 @@ const DotKhamSucKhoePage = () => {
 	];
 
 	return (
-		<Card title='Đợt khai báo sức khỏe'>
+		<Card title='Đợt khám sức khỏe'>
 			<TableBase
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
