@@ -22,7 +22,8 @@ export enum ESuKienType {
 	HOP_TAC_NGUYEN_CUU_CHUYEN_GAO = 'Hợp tác - Nghiên cứu - chuyển giao',
 	THUC_THI_CHINH_SACH = 'Thực thi, phát triển chính sách',
 	HOAT_DONG_XA_HOI = 'Hoạt động xã hội',
-	VAN_HOA_VAN_NGHE_THE_THAO = 'Văn hóa, văn nghệ và thể thao',
+	VAN_HOA_VAN_NGHE_THE_THAO = 'Sự kiện',
+	HOAT_DONG_CAU_LAC_BO = 'Hoạt động câu lạc bộ',
 	KHAC = 'Khác',
 }
 
@@ -39,7 +40,8 @@ export const locationPathMappingToESuKienType: Record<string, ESuKienType> = {
 	'hop-tac-nghien-cuu-chuyen-giao': ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO,
 	'thuc-thi-chinh-sach': ESuKienType.THUC_THI_CHINH_SACH,
 	'hoat-dong-xa-hoi': ESuKienType.HOAT_DONG_XA_HOI,
-	'van-hoa-van-nghe-the-thao': ESuKienType.VAN_HOA_VAN_NGHE_THE_THAO,
+	'su-kien': ESuKienType.VAN_HOA_VAN_NGHE_THE_THAO,
+	'hoat-dong-cau-lac-bo': ESuKienType.HOAT_DONG_CAU_LAC_BO,
 	khac: ESuKienType.KHAC,
 };
 
@@ -52,8 +54,9 @@ export const ESuKienTypeMappingToLabel: Record<ESuKienType, string> = {
 	[ESuKienType.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'Nghiên cứu khoa học và chuyển giao công nghệ',
 	[ESuKienType.THUC_THI_CHINH_SACH]: 'Thực thi, phát triển chính sách',
 	[ESuKienType.HOAT_DONG_XA_HOI]: 'Hoạt động xã hội, thiện nguyện',
-	[ESuKienType.VAN_HOA_VAN_NGHE_THE_THAO]: 'Văn hóa, văn nghệ và thể thao',
+	[ESuKienType.VAN_HOA_VAN_NGHE_THE_THAO]: 'Sự kiện',
 	[ESuKienType.KHAC]: 'Các đơn vị ngoài học viện',
+	[ESuKienType.HOAT_DONG_CAU_LAC_BO]: 'Hoạt động câu lạc bộ',
 };
 
 export const ETrangThaiDienRaMappingToTagLabel: Record<ETrangThaiDienRa, string> = {

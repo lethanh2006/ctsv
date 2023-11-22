@@ -65,8 +65,6 @@ const FormCheDoChinhSach = () => {
 			thoiGianMienGiamKetThuc: values?.thoiGian ? toISOString(values?.thoiGian?.[1]) : undefined,
 		};
 
-		debugger;
-
 		if (edit) {
 			putModel(record?._id ?? '', payload);
 		} else {
