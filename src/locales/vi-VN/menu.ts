@@ -47,6 +47,9 @@ export default {
 	'menu.DiemRenLuyen.QuanLyMinhChung.DacBiet': 'Thành tích đặc biệt',
 	'menu.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
 
+	'menu.NoiNgoaiTru': 'Nội trú, ngoại trú',
+	'menu.NoiNgoaiTru.DotKhaiBaoNoiNgoaitru': 'Đợt khai báo',
+
 	'menu.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.KetQuaKhamSucKhoe': 'Kết quả khám sức khỏe',
