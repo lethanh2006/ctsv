@@ -8,24 +8,24 @@ const ChartSoTinChi = () => {
 
 	const series = [
 		{
-			name: 'Số TC đạt',
+			name: 'Số TC tích lũy HK',
 			group: 'dat',
-			data: danhSach.map((item) => item.soTinChiDat),
+			data: danhSach.map((item) => item.tongSoTinChiTichLuyHocKy),
 		},
 		{
-			name: 'Số TC tích luỹ',
+			name: 'Tổng số TC tích luỹ',
 			group: 'tichluy',
-			data: danhSach.map((item) => item.tongSoTinChiTichLuy),
+			data: danhSach.map((item) => item.tongSoTinChiTichLuyToanKhoa),
 		},
 		{
-			name: 'Số TC không đạt',
+			name: 'Số TC nợ trong HK',
 			group: 'dat',
-			data: danhSach.map((item) => item.tongSoTinChiDaDk - item.soTinChiDat),
+			data: danhSach.map((item) => item.tongSoTinChiNoHocKy),
 		},
 		{
-			name: 'Số TC nợ',
+			name: 'Tổng số TC nợ',
 			group: 'tichluy',
-			data: danhSach.map((item) => item.tongSoTinChiNo),
+			data: danhSach.map((item) => item.tongSoTinChiNoToanKhoa),
 		},
 	];
 

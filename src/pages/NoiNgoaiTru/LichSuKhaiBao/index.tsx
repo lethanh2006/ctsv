@@ -35,7 +35,7 @@ const LichSuKhaiBaoPage = () => {
 			title: 'Kỳ học',
 			dataIndex: 'dotKhaiBaoId',
 			width: 150,
-			render: (val, rec) => rec.dotKhaiBao?.hocKy?.ten,
+			render: (val, rec) => rec.dotKhaiBao?.hocKy?.ten ?? rec.dotKhaiBao?.maHocKy,
 			onCell,
 		},
 		{
