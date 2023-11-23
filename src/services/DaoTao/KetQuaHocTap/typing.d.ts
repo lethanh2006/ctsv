@@ -9,17 +9,35 @@ declare module KetQuaHocKy {
 		maHocKy: string;
 		hocKy?: HocKy.IRecord;
 		maSvHk: string;
+		// Toàn khóa
+		trungBinhTichLuyToanKhoa: number;
+		trungBinhTichLuyToanKhoaThang4: number;
+		tongSoTinChiTichLuyToanKhoa: number;
+		tongSoTinChiNoToanKhoa: number;
 
-		soTinChiDat: number;
-		tongSoTinChiTichLuy: number;
-		tongSoTinChiNo: number;
-		tongSoTinChiDaDk: number;
+		tongSoTinChiDangKyHocKy: number;
+		tongSoTinChiDangKyToanKhoa: number;
 
-		trungBinhHocBong: number;
-		trungBinhHocKy: number;
+		tongSoTinChiHocCaiThien: number;
+		tongSoTinChiHocLai: number;
+		tongSoTinChiThiCaiThien: number;
+		tongSoTinChiThiLai: number;
+
+		// Học kỳ
+		trungBinhHocKy: number; //TBC học kỳ (hệ 10)
+		trungBinhHocKyThang4: number; //TBC học kỳ (hệ 4)
+		tongSoTinChiHocKy: number; //Số tín chỉ đạt học kỳ
+		tongSoTinChiTichLuyHocKy: number; // Số tín chỉ tích lũy học kỳ
+		trungBinhHocBongHocKyThang4: number; // TBC học bổng trong kỳ
+		tongSoTinChiNoHocKy: number; // Số tín chỉ nợ trong kỳ
+
 		trungBinhTichLuy: number;
+		trungBinhHocBong: number;
+
 		trinhDo: ETrinhDoKqhtHocKy;
 		hocLuc: ELoaiHocLuc;
 		// lopHpSvList?: LopHocPhan.IRecordSinhVienLopHP[];
+
+		thuTuHocKy?: number;
 	}
 }
