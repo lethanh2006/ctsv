@@ -54,6 +54,9 @@ export default {
 	'menu.CheDoChinhSach.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
 	'menu.CheDoChinhSach.CheDoChinhSach': 'Chế độ chính sách',
 
+	'menu.NoiNgoaiTru': 'Nội trú, ngoại trú',
+	'menu.NoiNgoaiTru.DotKhaiBaoNoiNgoaitru': 'Đợt khai báo',
+
 	'menu.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.KetQuaKhamSucKhoe': 'Kết quả khám sức khỏe',

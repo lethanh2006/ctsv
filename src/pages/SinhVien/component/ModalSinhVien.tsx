@@ -1,17 +1,17 @@
 import KetQuaToanKhoaSinhVien from '@/pages/DaoTao/KetQuaHocTap/KetQuaToanKhoaSinhVien';
+import LichSuSucKhoeSinhVienPage from '@/pages/HoSoTheoDoiSucKhoe/LichSuSucKhoe';
+import LichSuKhaiBaoPage from '@/pages/NoiNgoaiTru/LichSuKhaiBao';
 import { Button, Card, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useModel } from 'umi';
 import CongNoSinhVienPage from '../CongNoSinhVien';
 import HocBongSinhVienPage from '../HocBongSinhVien';
-import NoiNgoaiTruSinhVienPage from '../NoiNgoaiTruSinhVien';
 import ViecLamSinhVienPage from '../ViecLamSinhVien';
 import FormSinhVien from './Form';
 import FormKhenThuongKyLuat from './FormKhenThuongKyLuat';
 import FormQuaTrinhHocTap from './FormQuaTrinhHocTap';
 import FormTotNghiepVanBang from './FormTotNghiepVanBang';
-import LichSuSucKhoeSinhVienPage from '@/pages/HoSoTheoDoiSucKhoe/LichSuSucKhoe';
 
 const ModalSinhVien = (props: any) => {
 	const { record, edit, setVisibleForm, handleView } = useModel('sinhvien.sinhvien');
@@ -53,7 +53,7 @@ const ModalSinhVien = (props: any) => {
 					<CongNoSinhVienPage sinhVienSsoId={record?.ssoId} />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab='Nội / ngoại trú' key={'4'} disabled={!record?.ssoId}>
-					<NoiNgoaiTruSinhVienPage />
+					<LichSuKhaiBaoPage />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab='Tình trạng sức khỏe' key={'8'} disabled={!record?.ssoId}>
 					<LichSuSucKhoeSinhVienPage />
