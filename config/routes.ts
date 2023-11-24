@@ -331,6 +331,20 @@
 	//   ],
 	// },
 
+	//Nội ngoại trú
+	{
+		name: 'NoiNgoaiTru',
+		path: 'noi-ngoai-tru',
+		icon: 'DeploymentUnitOutlined',
+		routes: [
+			{
+				name: 'DotKhaiBaoNoiNgoaitru',
+				path: 'dot-khai-bao-noi-ngoai-tru',
+				component: './NoiNgoaiTru/QuanLyDot',
+			},
+		],
+	},
+
 	//Khai báo sức khỏe
 
 	// {

@@ -75,7 +75,7 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 							onChange={(val) => {
 								form.validateFields(['thoiGianKetThuc']);
 							}}
-							format='DD/MM/YYYY HH:mm:ss'
+							format='DD/MM/YYYY'
 							showTime
 						/>
 					</Form.Item>
@@ -86,11 +86,7 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 						label='Thời gian kết thúc'
 						rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'Thời gian bắt đầu')]}
 					>
-						<MyDatePicker
-							format='DD/MM/YYYY HH:mm:ss'
-							showTime
-							disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)}
-						/>
+						<MyDatePicker format='DD/MM/YYYY' showTime disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)} />
 					</Form.Item>
 				</Col>
 			</Row>

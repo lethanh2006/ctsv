@@ -10,7 +10,7 @@ const KhoaNganhDotKhamPage = () => {
 	const { page, limit, deleteModel, getModel } = useModel('hosotheodoisuckhoe.dotkhamkhoanganh');
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
-	const columns: IColumn<DotKhamSucKhoe.ISucKhoeKhaoNganh>[] = [
+	const columns: IColumn<DotKhamSucKhoe.IDotKhamKhoaNganh>[] = [
 		{
 			title: 'Khóa sinh viên',
 			dataIndex: 'maKhoaSinhVien',
@@ -39,7 +39,7 @@ const KhoaNganhDotKhamPage = () => {
 					<Tooltip title='Loại bỏ'>
 						<Popconfirm
 							onConfirm={() => deleteModel(rec._id, () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id }))}
-							title='Bạn có chắc chắn muốn bỏ khóa ngành này khỏi đợt khám sức?'
+							title='Bạn có chắc chắn muốn bỏ khóa ngành này khỏi đợt khám sức khỏe?'
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -57,7 +57,7 @@ const KhoaNganhDotKhamPage = () => {
 				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
 				dependencies={[page, limit]}
 				modelName='hosotheodoisuckhoe.dotkhamkhoanganh'
-				title='Khóa ngành - đợt khai báo sức khỏe'
+				title='Khóa ngành - đợt khám sức khỏe'
 				Form={FormKhoaNganhDotKham}
 				hideCard
 				rowSelection

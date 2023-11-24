@@ -84,7 +84,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
 				dependencies={[page, limit]}
 				modelName='hosotheodoisuckhoe.suckhoesinhvien'
-				title='Sinh viên đợt khai báo sức khỏe'
+				title='Sinh viên đợt khám sức khỏe'
 				Form={FormSinhVienDotKham}
 				hideCard
 				rowSelection={isKetQua ? false : true}

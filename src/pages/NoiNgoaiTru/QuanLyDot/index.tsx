@@ -1,87 +1,114 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
-import { type IColumn } from '@/components/Table/typing';
+import type { IColumn } from '@/components/Table/typing';
 import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
-import { ETrangThaiKhamSucKhoe, colorETrangThaiKhaiBaoSucKhoe } from '@/services/DotKhamSuKhoe/constant';
-import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
+import { kichHoatTrangThai } from '@/services/NoiNgoaiTru';
+import { ETrangThaiDuyetNoiNgoaiTru, colorETrangThaiDuyetNoiNgoaiTru } from '@/services/NoiNgoaiTru/constant';
+import type { NoiNgoaiTru } from '@/services/NoiNgoaiTru/typing';
 import { ArrowDownOutlined, CheckOutlined, DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
-import { Button, Card, Popconfirm, Popover, Tag, Tooltip } from 'antd';
+import { Button, Popconfirm, Popover, Switch, Tag, Tooltip, message } from 'antd';
 import moment from 'moment';
-import { useModel } from 'umi';
-import ModalDotKhamSucKhoe from './components/ModalDotKhamSucKhoe';
 import { useState } from 'react';
+import { useModel } from 'umi';
 import ModalYeuCauChinhSua from './components/ModalYeuCauChinhSua';
-import ExpandText from '@/components/ExpandText';
+import ViewChiTiet from './components/ViewChiTiet';
+import Form from './components/Form';
 
-const DotKhamSucKhoePage = () => {
-	const { page, limit, deleteModel, handleEdit, putModel, getModel, setRecord } = useModel(
-		'hosotheodoisuckhoe.dotkhamsuckhoe',
-	);
+const DotKhaiBaoNoiNgoaiTruPage = () => {
+	const { page, limit, handleEdit, deleteModel, getModel, putModel, setRecord } = useModel('noingoaitru.dotkhaibao');
 	const { record: recHocKy, setRecord: retRecHocKy, danhSach: danhSachHocKy } = useModel('hocky.hocky');
 	const [viewYeuCau, setViewYeuCau] = useState<boolean>(false);
-
-	const onCell = (record: DotKhamSucKhoe.IRecord) => ({
-		onClick: () => handleEdit(record),
-		style: { cursor: 'pointer' },
-	});
+	const [viewChitiet, setViewChiTiet] = useState<boolean>(false);
 
 	const getData = () => getModel({ maHocKy: recHocKy?.ma });
 
-	const handleDuyet = (record: DotKhamSucKhoe.IRecord) => {
-		putModel(record._id ?? '', { ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET, ghiChu: '' }, getData)
+	const onCell = (record: NoiNgoaiTru.IRecord) => ({
+		onClick: () => (setViewChiTiet(true), setRecord(record)),
+		style: { cursor: 'pointer' },
+	});
+
+	const handleDuyet = (record: NoiNgoaiTru.IRecord) => {
+		putModel(record._id ?? '', { ...record, trangThaiDuyet: ETrangThaiDuyetNoiNgoaiTru.DA_DUYET, ghiChu: '' }, getData)
 			.then()
 			.catch((err) => console.log(err));
 	};
 
-	const columns: IColumn<any>[] = [
+	const handleActiveTrangThai = (check: boolean, id: string) => {
+		kichHoatTrangThai(id, check ? 'kich-hoat ' : 'bo-kich-hoat')
+			.then(
+				() => (
+					getModel({ maHocKy: recHocKy?.ma }),
+					message.success(`${check ? 'Kích hoạt thành công' : 'Bỏ kích hoạt thành công'}`)
+				),
+			)
+			.catch((err) => console.log(err));
+	};
+
+	const columns: IColumn<NoiNgoaiTru.IRecord>[] = [
 		{
-			title: 'Học kỳ',
-			dataIndex: 'tenHocKy',
+			title: 'Kỳ học',
+			dataIndex: 'maHocKy',
 			width: 150,
-			onCell,
+			render: (val, rec) => rec.hocKy?.ten ?? val,
 		},
 		{
-			title: 'Tên đợt khám',
-			dataIndex: 'ten',
+			title: 'Tên đợt',
+			dataIndex: 'tenDot',
+			align: 'center',
 			width: 150,
 			filterType: 'string',
 			sortable: true,
 			onCell,
 		},
+
 		{
-			title: 'Bắt đầu',
+			title: 'Thời gian',
 			dataIndex: 'thoiGianBatDau',
-			width: 120,
 			align: 'center',
-			filterType: 'datetime',
-			sortable: true,
-			render: (val) => val && moment(val).format(' DD/MM/YYYY'),
+			width: 250,
 			onCell,
+			render: (val, rec) => {
+				return (
+					<>
+						{moment(val).format('HH:mm DD/MM/YYYY')} - {moment(rec?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}
+					</>
+				);
+			},
 		},
 		{
-			title: 'Kết thúc',
-			dataIndex: 'thoiGianKetThuc',
-			width: 120,
+			title: 'Kích hoạt',
+			dataIndex: 'trangThai',
 			align: 'center',
-			filterType: 'datetime',
-			sortable: true,
-			render: (val) => val && moment(val).format(' DD/MM/YYYY'),
+			width: 150,
+			render: (val, rec) => {
+				return <Switch checked={val === 'Kích hoạt'} onChange={(e) => handleActiveTrangThai(e, rec?._id ?? '')} />;
+			},
+		},
+		{
+			title: 'Danh sách khóa khai báo',
+			dataIndex: 'danhSachKhoaSinhVienKhaiBao',
+			align: 'center',
+			width: 200,
 			onCell,
+			render: (val) => val.map((item: any) => item).join(', '),
 		},
 		{
 			title: 'Trạng thái',
-			dataIndex: 'trangThai',
+			dataIndex: 'trangThaiDuyet',
 			align: 'center',
+			fixed: 'right',
 			filterType: 'select',
-			filterData: Object.values(ETrangThaiKhamSucKhoe),
-			render: (val, rec) => <Tag color={colorETrangThaiKhaiBaoSucKhoe[val as ETrangThaiKhamSucKhoe]}>{val}</Tag>,
-			width: 120,
+			filterData: Object.values(ETrangThaiDuyetNoiNgoaiTru),
+			render: (val, rec) => <Tag color={colorETrangThaiDuyetNoiNgoaiTru[val as ETrangThaiDuyetNoiNgoaiTru]}>{val}</Tag>,
+			width: 150,
 			onCell,
 		},
 		{
 			title: 'Ghi chú',
 			dataIndex: 'ghiChu',
 			width: 150,
+			fixed: 'right',
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			onCell,
 		},
@@ -98,7 +125,7 @@ const DotKhamSucKhoePage = () => {
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => deleteModel(rec._id)}
-							title='Bạn có chắc chắn muốn xóa đợt khám sức khỏe này?'
+							title='Bạn có chắc chắn muốn xóa đợt khai báo nội ngoại trú này?'
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -133,16 +160,15 @@ const DotKhamSucKhoePage = () => {
 	];
 
 	return (
-		<Card title='Đợt khám sức khỏe'>
+		<>
 			<TableBase
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName='hosotheodoisuckhoe.dotkhamsuckhoe'
-				title='Đợt khám sức khỏe'
-				Form={ModalDotKhamSucKhoe}
-				widthDrawer={1000}
-				hideCard
+				modelName='noingoaitru.dotkhaibao'
+				title='Đợt khai báo nội ngoại trú'
+				Form={Form}
+				widthDrawer={800}
 				rowSelection
 				deleteMany
 				otherButtons={[
@@ -160,8 +186,8 @@ const DotKhamSucKhoePage = () => {
 				]}
 			/>
 			<ModalYeuCauChinhSua visibleForm={viewYeuCau} setVisibleForm={setViewYeuCau} />
-		</Card>
+			<ViewChiTiet visibleForm={viewChitiet} setVisibleForm={setViewChiTiet} />
+		</>
 	);
 };
-
-export default DotKhamSucKhoePage;
+export default DotKhaiBaoNoiNgoaiTruPage;
