@@ -23,6 +23,11 @@ export default () => {
 
 	const [isVisibleThongKe, setIsVisibleThongKe] = useState(false);
 
+
+	const [editKinhPhi, setEditKinhPhi] = useState(false);
+	const [recordKinhPhi, setRecordKinhPhi] = useState<SuKien.IKinhPhiDuTru>();
+	const [dataKinhPhi, setDataKinhPhi] = useState<SuKien.IKinhPhiDuTru[]>([]);
+
 	const getSuKienType = () => {
 		const suKienType = last(window.location.pathname.split('/')) ?? '';
 		return locationPathMappingToESuKienType[suKienType];
@@ -119,5 +124,6 @@ export default () => {
 		setIsVisibleThongKe,
 		isLoadingThongKeTheoSuKien,
 		thongKeTheoSuKienData,
+    editKinhPhi,setEditKinhPhi,recordKinhPhi,setRecordKinhPhi,dataKinhPhi,setDataKinhPhi
 	};
 };
