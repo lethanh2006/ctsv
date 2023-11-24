@@ -370,7 +370,7 @@ export const decodeHtmlEntities = (str: string): string => {
  * Number to currency format
  * @param number value
  */
-export const inputFormat = (value?: number): string => `${value}`.replace(/(?=(\d{3})+(?!\d))\B/g, ',');
+export const inputFormat = (value?: number): string => value?`${value}`.replace(/(?=(\d{3})+(?!\d))\B/g, ','):'';
 
 /**
  * Input value to number
