@@ -10,6 +10,7 @@ import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien
 import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import {
+	ELoaiSoLuong,
 	ELoaiSuKienSinhVien,
 	EReceiverType,
 	ESuKienType,
@@ -19,14 +20,32 @@ import {
 import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
-import { resetFieldsForm, tienVietNam } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Modal, Radio, Row, Select, Table, Tabs } from 'antd';
+import {inputFormat, resetFieldsForm, tienVietNam} from '@/utils/utils';
+import {
+	Button,
+	Card,
+	Col,
+	Form,
+	Input,
+	InputNumber,
+	Modal,
+	Popconfirm,
+	Radio,
+	Row,
+	Select,
+	Tabs,
+	Tag,
+	Tooltip,
+} from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { first } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormDuTruKinhPhi from './FormDuTruKinhPhi';
+import { IColumn } from '@/components/Table/typing';
+import ExpandText from '@/components/ExpandText';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 interface Props {
 	hideCard?: boolean;
@@ -49,6 +68,10 @@ const FormSuKien = ({ hideCard }: Props) => {
 		putModel,
 		postModel,
 		getModel,
+		setRecordKinhPhi,
+		setEditKinhPhi,
+		dataKinhPhi,
+		setDataKinhPhi,
 	} = useModel('sukien');
 	const [form] = Form.useForm<FormValues>();
 	const thoiGianBatDau = useWatch(['thoiGianBatDau'], form);
@@ -60,7 +83,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 	const receiverType: EReceiverType = Form.useWatch('receiverType', form) ?? EReceiverType.All;
 	const variantDanhSachThamGia = Form.useWatch('variantDanhSachThamGia', form) ?? 'Tất cả';
 	const danhSachDoiTuong: string[] = Form.useWatch('danhSachDoiTuong', form);
-	const [dataDuTruKinhPhi, setDataDuTruKinhPhi] = useState<any[]>([]);
+	// const [dataDuTruKinhPhi, setDataDuTruKinhPhi] = useState<SuKien.IKinhPhiDuTru[]>([]);
 	const [visibleFormDuTruKinhPhi, setVisibleFormDuTruKinhPhi] = useState(false);
 
 	useEffect(() => {
@@ -85,6 +108,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 		setDanhSachNhanSu((record?.users ?? [])?.filter((item) => item.vaiTro === EVaiTroBieuMau.NHAN_VIEN));
 		setDanhSachSinhVien((record?.users ?? [])?.filter((item) => item.vaiTro === EVaiTroBieuMau.SINH_VIEN));
 		setActiveKey(first(record?.roles ?? []));
+		setDataKinhPhi(record?.kinhPhiDuTru ?? []);
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: FormValues) => {
@@ -111,7 +135,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 			delete values.filter?.roles;
 		}
 		delete values.variantDanhSachThamGia;
-
+		values.kinhPhiDuTru = dataKinhPhi;
 		if (edit) {
 			putModel(record?._id ?? '', values, getModel)
 				.then()
@@ -122,7 +146,168 @@ const FormSuKien = ({ hideCard }: Props) => {
 				.catch((er) => console.log(er));
 		}
 	};
-
+	const columns: IColumn<SuKien.IKinhPhiDuTru>[] = [
+		{
+			title: 'Nội dung',
+			width: 200,
+			dataIndex: 'noiDung',
+			align: 'center',
+			render: (val) => <ExpandText>{val}</ExpandText>,
+		},
+		{
+			title: 'Đơn vị tính',
+			width: 90,
+			dataIndex: 'dvTinh',
+			align: 'center',
+		},
+		{
+			title: 'Số lượng',
+			// dataIndex: 'soLuong',
+			width: 150,
+			// align: 'center',
+			children: [
+				{
+					title: 'Người',
+					dataIndex: 'soLuong',
+					align: 'center',
+					width: 80,
+					render: (val, recordVal) => {
+						return <>{recordVal?.loaiSoLuong === ELoaiSoLuong.NGUOI && inputFormat(val)}</>;
+					},
+				},
+				{
+					title: 'Ngày',
+					dataIndex: 'soLuong',
+					align: 'center',
+					width: 80,
+					render: (val, recordVal) => {
+						return <>{recordVal?.loaiSoLuong === ELoaiSoLuong.NGAY && inputFormat(val)}</>;
+					},
+				},
+				{
+					title: 'Khác',
+					dataIndex: 'soLuong',
+					align: 'center',
+					width: 80,
+					render: (val, recordVal) => {
+						return <>{recordVal?.loaiSoLuong === ELoaiSoLuong.KHAC && inputFormat(val)}</>;
+					},
+				},
+			],
+		},
+		{
+			title: 'Lượt',
+			dataIndex: 'luot',
+			width: 90,
+			align: 'center',
+      render:(val)=>inputFormat(+val)
+		},
+		{
+			title: 'Phòng',
+			dataIndex: 'phong',
+			width: 120,
+			align: 'center',
+		},
+		{
+			title: 'Định mức',
+			dataIndex: 'dinhMuc',
+			width: 90,
+			align: 'center',
+      render:(val)=>inputFormat(+val)
+		},
+		{
+			title: 'Dự toán',
+			dataIndex: 'duToan',
+			width: 120,
+			align: 'center',
+      render:(val)=>inputFormat(+val)
+		},
+		{
+			title: 'Phân bổ nguồn',
+			// dataIndex: 'phanBoNguon',
+			width: 300,
+			align: 'center',
+			children: [
+				{
+					title: 'NSNN',
+					dataIndex: 'nguonNSNN',
+					width: 100,
+          align: 'center',
+          render:(val)=>inputFormat(+val)
+				},
+				{
+					title: 'Tự chủ',
+					dataIndex: 'nguonTuChu',
+					width: 100,
+          align: 'center',
+          render:(val)=>inputFormat(+val)
+				},
+				{
+					title: 'Vận động tài trợ',
+					dataIndex: 'nguonTaiTro',
+					width: 100,
+          align: 'center',
+          render:(val)=>inputFormat(+val)
+				},
+			],
+		},
+		{
+			title: 'Tiến độ hoàn thành',
+			dataIndex: 'hoanThanh',
+			width: 120,
+			align: 'center',
+			render: (val) => (val ? <Tag color={'green'}>Hoàn thành</Tag> : <Tag color={'red'}>Chưa hoàn thành</Tag>),
+		},
+		{
+			title: 'Chứng từ yêu cầu',
+			dataIndex: 'chungTuYeuCau',
+			width: 150,
+			align: 'center',
+		},
+		{
+			title: 'Ý kiến TCKT',
+			dataIndex: 'yKienTCKT',
+			width: 200,
+			align: 'center',
+			render: (val) => <ExpandText>{val}</ExpandText>,
+		},
+		{
+			title: 'Thao tác',
+			align: 'center',
+			width: 90,
+			fixed: 'right',
+			render: (_, recordVal) => {
+				return (
+					<>
+						<Tooltip title='Chỉnh sửa'>
+							<Button
+								onClick={() => {
+									setRecordKinhPhi(recordVal);
+									setEditKinhPhi(true);
+									setVisibleFormDuTruKinhPhi(true);
+								}}
+								type='link'
+								icon={<EditOutlined />}
+							/>
+						</Tooltip>
+						<Tooltip title='Xóa'>
+							<Popconfirm
+								onConfirm={() => {
+									if (dataKinhPhi) {
+										setDataKinhPhi(dataKinhPhi?.filter((item) => item?.id !== recordVal?.id));
+									}
+								}}
+								title='Bạn có chắc chắn muốn xóa ngành đào tạo này?'
+								placement='topLeft'
+							>
+								<Button danger type='link' icon={<DeleteOutlined />} />
+							</Popconfirm>
+						</Tooltip>
+					</>
+				);
+			},
+		},
+	];
 	const renderContent = () => {
 		return (
 			<>
@@ -321,69 +506,11 @@ const FormSuKien = ({ hideCard }: Props) => {
 
 						<Col xs={24}>
 							<div>Dự trù kinh phí</div>
-							<TableStaticData
-								size='small'
-								data={dataDuTruKinhPhi}
-								addStt
-								columns={[
-									{
-										title: 'Nội dung',
-										width: 200,
-										dataIndex: 'noiDung',
-										align: 'center',
-									},
-									{
-										title: 'Đơn vị tính',
-										width: 200,
-										dataIndex: 'donViTinh',
-										align: 'center',
-									},
-									{
-										title: 'Số lượng',
-										dataIndex: 'soLuong',
-										width: 200,
-										align: 'center',
-									},
-									{
-										title: 'Lượt',
-										dataIndex: 'luot',
-										width: 200,
-										align: 'center',
-									},
-									{
-										title: 'Định mức',
-										dataIndex: 'dinhMuc',
-										width: 200,
-										align: 'center',
-									},
-									{
-										title: 'Dự toán',
-										dataIndex: 'duToan',
-										width: 200,
-										align: 'center',
-									},
-									{
-										title: 'Phân bổ nguồn',
-										dataIndex: 'phanBoNguon',
-										width: 200,
-										align: 'center',
-									},
-									{
-										title: 'Tiến độ hoàn thành',
-										dataIndex: 'tienDoHoanThanh',
-										width: 200,
-										align: 'center',
-									},
-									{
-										title: 'Chứng từ yêu cầu',
-										dataIndex: 'chungTu',
-										width: 200,
-										align: 'center',
-									},
-								]}
-							>
+							<TableStaticData size='small' data={dataKinhPhi} addStt columns={columns}>
 								<Button
 									onClick={() => {
+										setEditKinhPhi(false);
+										setRecordKinhPhi(undefined);
 										setVisibleFormDuTruKinhPhi(true);
 									}}
 									type='primary'
@@ -399,8 +526,9 @@ const FormSuKien = ({ hideCard }: Props) => {
 									onCancel={() => {
 										setVisibleFormDuTruKinhPhi(false);
 									}}
+									destroyOnClose
 								>
-									<FormDuTruKinhPhi setData={setDataDuTruKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
+									<FormDuTruKinhPhi setData={setDataKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
 								</Modal>
 							</TableStaticData>
 						</Col>

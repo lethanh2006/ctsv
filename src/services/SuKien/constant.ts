@@ -129,3 +129,14 @@ export enum ETuanLeCongDan {
 	// HOI_THAO_CHUYEN_DE_VIEC_LAM = "Hội thảo, nói chuyện chuyên đề về việc làm, đào tạo kỹ năng mềm",
 	// KHAC = "Khác",
 }
+
+export enum ELoaiSoLuong {
+  NGUOI = 'Người',
+  NGAY = 'Ngày',
+  KHAC = 'Khác',
+}
+export enum EPhanBoNguon {
+  NGAN_SACH = 'Ngân sách nhà nước',
+  TU_CHU = 'Tự chủ',
+  TAI_TRO = 'Vận động tài trợ',
+}

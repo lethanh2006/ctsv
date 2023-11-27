@@ -27,6 +27,7 @@ declare module SuKien {
 		loaiSuKien: ESuKienType;
 		tenSuKien: string;
 		maSuKien?: string;
+		kinhPhiDuTru: IKinhPhiDuTru[];
 		listNguoiDaThamDa?: IUser[];
 		thoiGianBatDau?: string;
 		thoiGianKetThuc?: string;
@@ -57,5 +58,23 @@ declare module SuKien {
 		vaiTro?: EVaiTroBieuMau;
 		thamGia?: boolean;
 		fullname?: string;
+	}
+	export interface IKinhPhiDuTru {
+		noiDung: string;
+		dvTinh: string;
+		loaiSoLuong: string;
+		phong: string;
+		soLuong: 0;
+		luot: 0;
+		dinhMuc: 'string';
+		duToan: 0;
+		nguonNSNN: 0;
+		nguonTuChu: 0;
+		nguonTaiTro: 0;
+		phanBoNguon: 'Ngân sách nhà nước';
+		chungTuYeuCau: 'string';
+		hoanThanh: true;
+		yKienTCKT: 'string';
+		[key: string]: any;
 	}
 }
