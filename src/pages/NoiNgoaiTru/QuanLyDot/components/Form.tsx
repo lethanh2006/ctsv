@@ -1,13 +1,9 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
-import {
-	ETrangThaiNoiNgoaiTru,
-	colorETrangThaiDuyetNoiNgoaiTru,
-	type ETrangThaiDuyetNoiNgoaiTru,
-} from '@/services/NoiNgoaiTru/constant';
+import { ETrangThaiNoiNgoaiTru } from '@/services/NoiNgoaiTru/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Divider, Form, Input, Row, Select, Tag } from 'antd';
+import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -42,7 +38,6 @@ const FormDotKhaoBaoNoiNgoaiTru = (props: any) => {
 	return (
 		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Divider orientation='center'>Thông tin chung</Divider>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24} md={12}>
 						<Form.Item label='Kỳ học'>
@@ -92,18 +87,9 @@ const FormDotKhaoBaoNoiNgoaiTru = (props: any) => {
 									label: item,
 								}))}
 							/>
-							{/* <Switch /> */}
 						</Form.Item>
 					</Col>
-					{edit ? (
-						<Col xs={24} md={12}>
-							<Form.Item name='trangThaiDuyet' label='Trạng thái'>
-								<Tag color={colorETrangThaiDuyetNoiNgoaiTru[record?.trangThaiDuyet as ETrangThaiDuyetNoiNgoaiTru]}>
-									{record?.trangThaiDuyet}
-								</Tag>
-							</Form.Item>
-						</Col>
-					) : null}
+					<Form.Item name='trangThaiDuyet' label='Trạng thái' hidden />
 				</Row>
 
 				<div className='form-footer'>
