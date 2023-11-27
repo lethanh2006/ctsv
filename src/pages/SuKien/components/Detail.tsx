@@ -6,6 +6,7 @@ import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import {
+	ELoaiSoLuong,
 	EReceiverType,
 	ETrangThaiDienRaMappingToTagColor,
 	ETrangThaiDienRaMappingToTagLabel,
@@ -13,13 +14,16 @@ import {
 } from '@/services/SuKien/constant';
 import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
-import { tienVietNam } from '@/utils/utils';
+import { inputFormat, tienVietNam } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Descriptions, Modal, Popconfirm, Space, Tabs, Tag, Typography } from 'antd';
+import { Button, Descriptions, Modal, Popconfirm, Space, Tabs, Tag, Tooltip, Typography } from 'antd';
 import { first } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Link, useModel } from 'umi';
+import { IColumn } from '@/components/Table/typing';
+import ExpandText from '@/components/ExpandText';
+import TableStaticData from '@/components/Table/TableStaticData';
 
 export const Detail = () => {
 	const { deleteModel, handleEdit, setIsVisibleFormDetail, record, isVisibleFormDetail, getModel } = useModel('sukien');
@@ -36,7 +40,132 @@ export const Detail = () => {
 		...(record?.filter?.idLopHocPhan ?? []),
 		...(record?.filter?.idNganh ?? []),
 	];
-
+	const columns: IColumn<SuKien.IKinhPhiDuTru>[] = [
+		{
+			title: 'Nội dung',
+			width: 200,
+			dataIndex: 'noiDung',
+			align: 'center',
+			render: (val) => <ExpandText>{val}</ExpandText>,
+		},
+		{
+			title: 'Đơn vị tính',
+			width: 90,
+			dataIndex: 'dvTinh',
+			align: 'center',
+		},
+		{
+			title: 'Số lượng',
+			// dataIndex: 'soLuong',
+			width: 150,
+			// align: 'center',
+			children: [
+				{
+					title: 'Người',
+					dataIndex: 'soLuong',
+					align: 'center',
+					width: 80,
+					render: (val, recordVal) => {
+						return <>{recordVal?.loaiSoLuong === ELoaiSoLuong.NGUOI && inputFormat(val)}</>;
+					},
+				},
+				{
+					title: 'Ngày',
+					dataIndex: 'soLuong',
+					align: 'center',
+					width: 80,
+					render: (val, recordVal) => {
+						return <>{recordVal?.loaiSoLuong === ELoaiSoLuong.NGAY && inputFormat(val)}</>;
+					},
+				},
+				{
+					title: 'Khác',
+					dataIndex: 'soLuong',
+					align: 'center',
+					width: 80,
+					render: (val, recordVal) => {
+						return <>{recordVal?.loaiSoLuong === ELoaiSoLuong.KHAC && inputFormat(val)}</>;
+					},
+				},
+			],
+		},
+		{
+			title: 'Lượt',
+			dataIndex: 'luot',
+			width: 90,
+			align: 'center',
+			render: (val) => inputFormat(+val),
+		},
+		{
+			title: 'Phòng',
+			dataIndex: 'phong',
+			width: 120,
+			align: 'center',
+		},
+		{
+			title: 'Định mức',
+			dataIndex: 'dinhMuc',
+			width: 90,
+			align: 'center',
+			render: (val) => inputFormat(+val),
+		},
+		{
+			title: 'Dự toán',
+			dataIndex: 'duToan',
+			width: 120,
+			align: 'center',
+			render: (val) => inputFormat(+val),
+		},
+		{
+			title: 'Phân bổ nguồn',
+			// dataIndex: 'phanBoNguon',
+			width: 300,
+			align: 'center',
+			children: [
+				{
+					title: 'NSNN',
+					dataIndex: 'nguonNSNN',
+					width: 100,
+					align: 'center',
+					render: (val) => inputFormat(+val),
+				},
+				{
+					title: 'Tự chủ',
+					dataIndex: 'nguonTuChu',
+					width: 100,
+					align: 'center',
+					render: (val) => inputFormat(+val),
+				},
+				{
+					title: 'Vận động tài trợ',
+					dataIndex: 'nguonTaiTro',
+					width: 100,
+					align: 'center',
+					render: (val) => inputFormat(+val),
+				},
+			],
+		},
+		{
+			title: 'Tiến độ hoàn thành',
+			dataIndex: 'hoanThanh',
+			width: 120,
+			align: 'center',
+			render: (val) => (val ? <Tag color={'green'}>Hoàn thành</Tag> : <Tag color={'red'}>Chưa hoàn thành</Tag>),
+		},
+		{
+			title: 'Chứng từ yêu cầu',
+			dataIndex: 'chungTuYeuCau',
+			width: 150,
+			align: 'center',
+		},
+		{
+			title: 'Ý kiến TCKT',
+			dataIndex: 'yKienTCKT',
+			width: 200,
+			align: 'center',
+			render: (val) => <ExpandText>{val}</ExpandText>,
+		},
+	];
 	useEffect(() => {
 		if (isVisibleFormDetail) {
 			setDanhSachNhanSu((record?.users ?? [])?.filter((item) => item.vaiTro === EVaiTroBieuMau.NHAN_VIEN));
@@ -161,6 +290,12 @@ export const Detail = () => {
 					) : null}
 				</div>
 			) : null}
+			{record?.kinhPhiDuTru && record?.kinhPhiDuTru?.length > 0 && (
+				<>
+					<div style={{ fontSize: 14, fontWeight: 600 }}>Kinh phí dự trù</div>
+					<TableStaticData size='small' data={record?.kinhPhiDuTru} addStt columns={columns} />
+				</>
+			)}
 		</Modal>
 	);
 };
