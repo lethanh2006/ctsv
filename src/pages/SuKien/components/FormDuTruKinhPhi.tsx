@@ -1,5 +1,5 @@
 import rules from '@/utils/rules';
-import { Button, Card, Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { ELoaiSoLuong, EPhanBoNguon } from '@/services/SuKien/constant';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -94,49 +94,76 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 						</Col>
 						<Col xs={12}>
 							<Form.Item rules={[...rules.required]} name='luot' label='Lượt'>
-								<InputNumber 	formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} style={{ width: '100%' }} min={1} placeholder='Lượt' />
+								<InputNumber
+									formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+									style={{ width: '100%' }}
+									min={1}
+									placeholder='Lượt'
+								/>
 							</Form.Item>
 						</Col>{' '}
 						<Col xs={12}>
 							<Form.Item rules={[...rules.required]} name='dinhMuc' label='Định mức'>
-								<InputNumber 	formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} style={{ width: '100%' }} min={1} placeholder='Định mức' />
+								<InputNumber
+									formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+									style={{ width: '100%' }}
+									min={1}
+									placeholder='Định mức'
+								/>
 							</Form.Item>
 						</Col>
-						<Col xs={12}>
+						<Col xs={24}>
 							<Form.Item rules={[...rules.required]} name='phanBoNguon' label='Phân bổ nguồn'>
 								<Select
+									mode={'multiple'}
 									placeholder='Phân bổ nguồn'
 									options={Object.values(EPhanBoNguon)?.map((val) => ({ value: val, label: val }))}
 								/>
 							</Form.Item>
 						</Col>
-						{currentPhanBoNguon === EPhanBoNguon.NGAN_SACH && (
+						{currentPhanBoNguon?.includes(EPhanBoNguon.NGAN_SACH) && (
 							<Col xs={12}>
-								<Form.Item rules={[...rules.required]} name='nguonNSNN' label='Nguồn NSNN'>
-									<InputNumber 	formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} style={{ width: '100%' }} min={1} placeholder='Nguồn NSNN' />
+								<Form.Item rules={[...rules.required]} name='nguonNSNN' label='Số tiền nguồn NSNN'>
+									<InputNumber
+										formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										style={{ width: '100%' }}
+										min={1}
+										placeholder='Số tiền nguồn NSNN'
+									/>
 								</Form.Item>
 							</Col>
 						)}
-						{currentPhanBoNguon === EPhanBoNguon.TU_CHU && (
+						{currentPhanBoNguon?.includes(EPhanBoNguon.TU_CHU) && (
 							<Col xs={12}>
-								<Form.Item rules={[...rules.required]} name='nguonTuChu' label='Nguồn tự chủ'>
-									<InputNumber 	formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} style={{ width: '100%' }} min={1} placeholder='Nguồn tự chủ' />
+								<Form.Item rules={[...rules.required]} name='nguonTuChu' label='Số tiền nguồn tự chủ'>
+									<InputNumber
+										formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										style={{ width: '100%' }}
+										min={1}
+										placeholder='Số tiền nguồn tự chủ'
+									/>
 								</Form.Item>
 							</Col>
 						)}
-						{currentPhanBoNguon === EPhanBoNguon.TAI_TRO && (
+						{currentPhanBoNguon?.includes(EPhanBoNguon.TAI_TRO) && (
 							<Col xs={12}>
-								<Form.Item rules={[...rules.required]} name='nguonTaiTro' label='Nguồn tài trợ'>
-									<InputNumber 	formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} style={{ width: '100%' }} min={1} placeholder='Nguồn tài trợ' />
+								<Form.Item rules={[...rules.required]} name='nguonTaiTro' label='Số tiền nguồn tài trợ'>
+									<InputNumber
+										formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										style={{ width: '100%' }}
+										min={1}
+										placeholder='Số tiền nguồn tài trợ'
+									/>
 								</Form.Item>
 							</Col>
 						)}
 						<Col xs={24}>
 							<Form.Item rules={[...rules.required]} name='hoanThanh' label='Tiến độ hoàn thành'>
-								<Radio.Group>
-									<Radio value={true}>Hoàn thành</Radio>
-									<Radio value={false}>Chưa hoàn thành</Radio>
-								</Radio.Group>
+								{/*<Radio.Group>*/}
+								{/*	<Radio value={true}>Hoàn thành</Radio>*/}
+								{/*	<Radio value={false}>Chưa hoàn thành</Radio>*/}
+								{/*</Radio.Group>*/}
+								<Input.TextArea placeholder={'Tiến độ hoàn thành'} rows={2} />
 							</Form.Item>
 						</Col>
 						<Col xs={24}>
