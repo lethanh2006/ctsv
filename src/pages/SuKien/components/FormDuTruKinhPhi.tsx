@@ -4,6 +4,7 @@ import { ELoaiSoLuong, EPhanBoNguon } from '@/services/SuKien/constant';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import { nanoid } from 'nanoid';
+import {inputFormat, inputParse} from "@/utils/utils";
 
 interface Props {
 	hideCard?: boolean;
@@ -85,7 +86,8 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 						<Col xs={12}>
 							<Form.Item rules={[...rules.required]} name='soLuong' label='Số lượng'>
 								<InputNumber
-									formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+									formatter={inputFormat}
+                    parser={inputParse}
 									style={{ width: '100%' }}
 									min={1}
 									placeholder='Số lượng'
@@ -95,7 +97,8 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 						<Col xs={12}>
 							<Form.Item rules={[...rules.required]} name='luot' label='Lượt'>
 								<InputNumber
-									formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+									formatter={inputFormat}
+                    parser={inputParse}
 									style={{ width: '100%' }}
 									min={1}
 									placeholder='Lượt'
@@ -105,7 +108,8 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 						<Col xs={12}>
 							<Form.Item rules={[...rules.required]} name='dinhMuc' label='Định mức'>
 								<InputNumber
-									formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+									formatter={inputFormat}
+                    parser={inputParse}
 									style={{ width: '100%' }}
 									min={1}
 									placeholder='Định mức'
@@ -125,7 +129,8 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Col xs={12}>
 								<Form.Item rules={[...rules.required]} name='nguonNSNN' label='Số tiền nguồn NSNN'>
 									<InputNumber
-										formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										formatter={inputFormat}
+                    parser={inputParse}
 										style={{ width: '100%' }}
 										min={1}
 										placeholder='Số tiền nguồn NSNN'
@@ -137,7 +142,8 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Col xs={12}>
 								<Form.Item rules={[...rules.required]} name='nguonTuChu' label='Số tiền nguồn tự chủ'>
 									<InputNumber
-										formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										formatter={inputFormat}
+                    parser={inputParse}
 										style={{ width: '100%' }}
 										min={1}
 										placeholder='Số tiền nguồn tự chủ'
@@ -149,7 +155,8 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Col xs={12}>
 								<Form.Item rules={[...rules.required]} name='nguonTaiTro' label='Số tiền nguồn tài trợ'>
 									<InputNumber
-										formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										formatter={inputFormat}
+                    parser={inputParse}
 										style={{ width: '100%' }}
 										min={1}
 										placeholder='Số tiền nguồn tài trợ'
