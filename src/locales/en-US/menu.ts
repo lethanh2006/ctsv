@@ -42,6 +42,7 @@ export default {
 	'menu.HoatDongKetNoiVaPhucVuCongDong.Khac': 'Các đơn vị ngoài Học viện',
 	'menu.VanHoaVanNgheTheThao': 'Văn hóa, thể thao',
 	'menu.VanHoaVanNgheTheThao.HoatDongCauLacBo': 'Hoạt động câu lạc bộ',
+	'menu.VanHoaVanNgheTheThao.QuanLyCauLacBo': 'Quản lý câu lạc bộ',
 	'menu.VanHoaVanNgheTheThao.SuKien': 'Sự kiện',
 
 	'menu.CheDoChinhSach.DiemRenLuyen': 'Đánh giá rèn luyện',
@@ -53,6 +54,9 @@ export default {
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.DacBiet': 'Thành tích đặc biệt',
 	'menu.CheDoChinhSach.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
 	'menu.CheDoChinhSach.CheDoChinhSach': 'Chế độ chính sách',
+
+	'menu.NoiNgoaiTru': 'Nội trú, ngoại trú',
+	'menu.NoiNgoaiTru.DotKhaiBaoNoiNgoaitru': 'Đợt khai báo',
 
 	'menu.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',

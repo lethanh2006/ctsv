@@ -1,4 +1,3 @@
-import { EOperatorType } from '@/components/Table/constant';
 import { Select } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -22,14 +21,7 @@ const SelectDonVi = (props: {
 
 	useEffect(() => {
 		// Fix cứng khoa
-		getAllModel(false, undefined, undefined, [
-			{
-				active: true,
-				field: 'loaiPhongBanId',
-				values: ['64803abec0fb527080456a29'],
-				operator: EOperatorType.EQUAL,
-			},
-		]);
+		getAllModel(false, undefined, undefined);
 	}, []);
 
 	return (
