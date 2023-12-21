@@ -28,7 +28,7 @@ declare module CauLacBo {
 		cauLacBoId: string;
 		chucVuThanhVienCauLacBo: EChucVuThanhVienCauLacBo;
 		namHoc: string;
-		vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan;
-		banBoPhanId: string;
+		danhSachBanBoPhan: { vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan; banBoPhanId: string }[];
+		[x: string]: string;
 	}
 }

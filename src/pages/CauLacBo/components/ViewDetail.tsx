@@ -7,6 +7,8 @@ import ThanhVienCauLacBo from '../ThanhVien';
 const ViewDetailCLB = () => {
 	const { record } = useModel('caulacbo.caulacbo');
 	const { danhSach } = useModel('tochucnhansu.donvi');
+	const { filters } = useModel('caulacbo.thanhvien');
+	const { danhSach: danhSachPhongBan } = useModel('caulacbo.phongban');
 
 	return (
 		<div>
@@ -50,7 +52,14 @@ const ViewDetailCLB = () => {
 			<Descriptions title='Danh sách ban/bộ phận' column={{ xs: 2, sm: 2, md: 4, xl: 6, xxl: 6 }} />
 			<PhongBanCauLacBo />
 			<br />
-			<Descriptions title='Danh sách thành viên' column={{ xs: 2, sm: 2, md: 4, xl: 6, xxl: 6 }} />
+			<Descriptions
+				title={`Danh sách thành viên ${
+					danhSachPhongBan.find((item) =>
+						filters.find((ele) => ele.field === 'danhSachBanBoPhan.banBoPhanId')?.values?.includes(item._id),
+					)?.ten || 'câu lạc bộ'
+				}`}
+				column={{ xs: 2, sm: 2, md: 4, xl: 6, xxl: 6 }}
+			/>
 			<ThanhVienCauLacBo />
 		</div>
 	);

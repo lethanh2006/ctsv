@@ -35,18 +35,25 @@ const FormThanhVienCLB = () => {
 		}
 	}, [record?._id, visibleForm]);
 
-	const onFinish = async (values: CauLacBo.ThanhVien) => {
+	const onFinish = async (
+		values: CauLacBo.ThanhVien & { banBoPhanId: string[]; vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan[] },
+	) => {
 		if (!recordCLB?._id) return;
 
-		const payload = {
+		const payload: any = {
 			...record,
 			...values,
 			cauLacBoId: recordCLB._id,
 			...sinhVien,
 			namHoc: new Date().getFullYear().toString(),
 			chucVuThanhVienCauLacBo: values?.chucVuThanhVienCauLacBo ?? null,
-			vaiTroThanhVienBanBoPhan: values?.vaiTroThanhVienBanBoPhan ?? null,
-			banBoPhanId: values?.banBoPhanId ?? null,
+			danhSachBanBoPhan:
+				values?.banBoPhanId?.map((item, index) => ({
+					vaiTroThanhVienBanBoPhan: values?.vaiTroThanhVienBanBoPhan?.[index] ?? null,
+					banBoPhanId: item,
+				})) ?? [],
+			vaiTroThanhVienBanBoPhan: undefined,
+			banBoPhanId: undefined,
 		};
 
 		if (edit) {
@@ -85,6 +92,7 @@ const FormThanhVienCLB = () => {
 					<Col xs={24} md={24}>
 						<Form.Item name='banBoPhanId' label='Thuộc ban/bộ phận khác?'>
 							<Select
+								mode='multiple'
 								allowClear
 								placeholder='Chọn ban/bộ phận'
 								options={danhSachPhongBan.map((item) => ({
@@ -94,20 +102,23 @@ const FormThanhVienCLB = () => {
 							/>
 						</Form.Item>
 					</Col>
-					{banBoPhanId && (
-						<Col xs={24} md={24}>
-							<Form.Item name='vaiTroThanhVienBanBoPhan' label='Vai trò trong ban/bộ phận khác'>
+					{banBoPhanId?.map((item: string, index: number) => (
+						<Col key={item} xs={24} md={24}>
+							<Form.Item
+								name={['vaiTroThanhVienBanBoPhan', index]}
+								label={`Vai trò trong ${danhSachPhongBan.find((ele) => ele._id === item)?.ten}`}
+							>
 								<Select
 									allowClear
 									placeholder='Chọn vai trò'
-									options={Object.values(EVaiTroThanhVienPhongBan).map((item) => ({
-										value: item,
-										label: MapKeyVaiTroThanhVienPhongBanCLB[item],
+									options={Object.values(EVaiTroThanhVienPhongBan).map((ele) => ({
+										value: ele,
+										label: MapKeyVaiTroThanhVienPhongBanCLB[ele],
 									}))}
 								/>
 							</Form.Item>
 						</Col>
-					)}
+					))}
 				</Row>
 
 				<div className='form-footer'>

@@ -5,26 +5,49 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormPhongBan from './Form';
+import { EOperatorType } from '@/components/Table/constant';
 
 const PhongBanCauLacBo = () => {
 	const { handleEdit, deleteModel, getModel } = useModel('caulacbo.phongban');
 
+	const { filters, setFilters } = useModel('caulacbo.thanhvien');
+
 	const getData = () => {
 		getModel(undefined, undefined, undefined, 1, 100);
 	};
+
+	const onCell = (record: CauLacBo.PhongBan) => ({
+		onClick: () => {
+			setFilters([
+				...filters.filter((item) => item.field !== 'danhSachBanBoPhan.banBoPhanId'),
+				{ field: 'danhSachBanBoPhan.banBoPhanId', values: [record._id], operator: EOperatorType.INCLUDE, active: true },
+			]);
+		},
+		style: { cursor: 'pointer' },
+	});
 
 	const columns: IColumn<CauLacBo.PhongBan>[] = [
 		{
 			title: 'Tên ban/bộ phận',
 			dataIndex: 'ten',
 			width: 200,
+			onCell,
 		},
 
 		{
 			title: 'Mô tả',
 			dataIndex: 'moTa',
-			width: 150,
+			width: 250,
 			align: 'center',
+			ellipsis: {
+				showTitle: false,
+			},
+			render: (val) => (
+				<Tooltip placement='topLeft' title={val}>
+					{val}
+				</Tooltip>
+			),
+			onCell,
 		},
 
 		{
@@ -62,7 +85,15 @@ const PhongBanCauLacBo = () => {
 	return (
 		<TableBase
 			getData={getData}
-			otherProps={{ size: 'small', pagination: false }}
+			otherProps={{
+				size: 'small',
+				pagination: false,
+				rowClassName: (rec: CauLacBo.PhongBan, index: number) => {
+					if (filters.find((item) => item.field === 'danhSachBanBoPhan.banBoPhanId')?.values?.includes(rec._id))
+						return 'row-selected';
+					return '';
+				},
+			}}
 			hideCard
 			widthDrawer={600}
 			Form={FormPhongBan}

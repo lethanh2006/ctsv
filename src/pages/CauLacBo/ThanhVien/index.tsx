@@ -53,17 +53,19 @@ const ThanhVienCauLacBo = () => {
 		{
 			title: 'Ban/bộ phận',
 			width: 200,
-			dataIndex: 'banBoPhanId',
+			dataIndex: 'danhSachBanBoPhan.banBoPhanId',
 			render: (val, rec: CauLacBo.ThanhVien) => (
 				<div>
-					{rec.banBoPhanId
-						? `${[
-								danhSach.find((item) => item._id === rec.banBoPhanId)?.ten,
-								MapKeyVaiTroThanhVienPhongBanCLB[rec?.vaiTroThanhVienBanBoPhan ?? ''],
-						  ]
-								.filter((item) => item)
-								.join(': ')}`
-						: ''}
+					{rec?.danhSachBanBoPhan?.map((item) => (
+						<div key={item.banBoPhanId}>
+							{`- ${[
+								danhSach.find((ele) => ele._id === item.banBoPhanId)?.ten,
+								MapKeyVaiTroThanhVienPhongBanCLB?.[item?.vaiTroThanhVienBanBoPhan ?? ''],
+							]
+								.filter((ele) => ele)
+								.join(': ')}`}
+						</div>
+					))}
 				</div>
 			),
 			filterType: 'select',
