@@ -160,6 +160,11 @@
 		icon: 'FileOutlined',
 		routes: [
 			{
+				name: 'QuanLyCauLacBo',
+				path: 'quan-ly-cau-lac-bo',
+				component: './CauLacBo',
+			},
+			{
 				name: 'HoatDongCauLacBo',
 				path: 'hoat-dong-cau-lac-bo',
 				component: './SuKien',

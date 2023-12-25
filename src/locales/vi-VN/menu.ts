@@ -42,6 +42,7 @@ export default {
 	'menu.HoatDongKetNoiVaPhucVuCongDong.Khac': 'Các đơn vị ngoài Học viện',
 	'menu.VanHoaVanNgheTheThao': 'Văn hóa, thể thao',
 	'menu.VanHoaVanNgheTheThao.HoatDongCauLacBo': 'Hoạt động câu lạc bộ',
+	'menu.VanHoaVanNgheTheThao.QuanLyCauLacBo': 'Quản lý câu lạc bộ',
 	'menu.VanHoaVanNgheTheThao.SuKien': 'Sự kiện',
 
 	'menu.CheDoChinhSach.DiemRenLuyen': 'Đánh giá rèn luyện',
