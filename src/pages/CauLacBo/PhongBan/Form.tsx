@@ -19,7 +19,7 @@ const FormPhongBan = () => {
 		}
 	}, [record?._id, visibleForm]);
 
-	const onFinish = async (values: CauLacBo.IRecord) => {
+	const onFinish = async (values: CauLacBo.PhongBan) => {
 		if (!recordCLB?._id) return;
 		const payload = {
 			...record,

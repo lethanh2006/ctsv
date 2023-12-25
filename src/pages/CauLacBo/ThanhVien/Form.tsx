@@ -30,6 +30,7 @@ const FormThanhVienCLB = () => {
 		else if (record?._id) {
 			form.setFieldsValue({
 				...record,
+				banBoPhanId: record.danhSachBanBoPhan.map((item) => item.banBoPhanId),
 			});
 			setSinhVien({ hoTen: record.hoTen, maSinhVien: record.maSinhVien });
 		}

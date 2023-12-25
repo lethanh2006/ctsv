@@ -3,6 +3,7 @@ import { Descriptions, Tag } from 'antd';
 import { useModel } from 'umi';
 import PhongBanCauLacBo from '../PhongBan';
 import ThanhVienCauLacBo from '../ThanhVien';
+import HoatDongCauLacBo from '../HoatDong';
 
 const ViewDetailCLB = () => {
 	const { record } = useModel('caulacbo.caulacbo');
@@ -61,6 +62,9 @@ const ViewDetailCLB = () => {
 				column={{ xs: 2, sm: 2, md: 4, xl: 6, xxl: 6 }}
 			/>
 			<ThanhVienCauLacBo />
+			<br />
+			<Descriptions title='Hoạt động của CLB' column={{ xs: 2, sm: 2, md: 4, xl: 6, xxl: 6 }} />
+			<HoatDongCauLacBo />
 		</div>
 	);
 };

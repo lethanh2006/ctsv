@@ -19,3 +19,15 @@ export const MapKeyVaiTroThanhVienPhongBanCLB = {
 	[EVaiTroThanhVienPhongBan.PHO_TRUONG_BAN]: 'Phó trưởng ban',
 	[EVaiTroThanhVienPhongBan.TRUONG_BAN]: 'Trưởng ban',
 };
+
+export enum ETrangThaiHoatDong {
+	DA_THUC_HIEN = 'Đã thực hiện',
+	CHUA_THUC_HIEN = 'Chưa thực hiện',
+	HUY = 'Hủy',
+}
+
+export const MapKeyColorTrangThaiHoatDongCLB = {
+	[ETrangThaiHoatDong.DA_THUC_HIEN]: '#28a745',
+	[ETrangThaiHoatDong.CHUA_THUC_HIEN]: '#1890ff',
+	[ETrangThaiHoatDong.HUY]: '#ff4d4f',
+};

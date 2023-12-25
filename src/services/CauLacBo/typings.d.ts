@@ -1,4 +1,4 @@
-import type { EChucVuThanhVienCauLacBo, EVaiTroThanhVienPhongBan } from './constant';
+import type { EChucVuThanhVienCauLacBo, ETrangThaiHoatDong, EVaiTroThanhVienPhongBan } from './constant';
 
 declare module CauLacBo {
 	export interface IRecord {
@@ -30,5 +30,17 @@ declare module CauLacBo {
 		namHoc: string;
 		danhSachBanBoPhan: { vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan; banBoPhanId: string }[];
 		[x: string]: string;
+	}
+
+	export interface HoatDong {
+		_id: string;
+		idCauLacBo: string;
+		ten: string;
+		thoiGianDuKien: string;
+		noiDung: string;
+		ghiChu: string;
+		minhChung: string;
+		fileDinhKem: string[];
+		trangThai: ETrangThaiHoatDong;
 	}
 }
