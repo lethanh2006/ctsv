@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { ELoaiThoiGianMienGiam } from '@/services/CheDoChinhSach/constant';
 import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Select, Tooltip } from 'antd';
+import {Button, Popconfirm, Select, Tag, Tooltip} from 'antd';
 import { useModel } from 'umi';
 import { SelectHocKy } from '../DaoTao/HocKy/SelectHocKy';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
@@ -75,6 +75,14 @@ const CheDoChinhSachComponent = () => {
 				);
 			},
 		},
+    {
+      title: 'Trạng thái',
+      dataIndex: 'index',
+      filterType: 'string',
+      width: 200,
+      align: 'center',
+      render:(val)=>val%2===0&&val>3?<Tag color={'green'}>Đã nhận</Tag>:<Tag color={"red"}>Chưa nhận</Tag>
+    },
 		{
 			title: 'Thao tác',
 			align: 'center',
