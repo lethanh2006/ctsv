@@ -1,0 +1,468 @@
+import TableBase from '@/components/Table';
+import type { IColumn } from '@/components/Table/typing';
+import { useModel } from '@@/plugin-model/useModel';
+import { CheckOutlined, DollarCircleOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Dropdown, Menu, Modal, Select, Tabs, Tag, Tooltip } from 'antd';
+import { useEffect, useState } from 'react';
+import View from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/ViewQuyTrinh/components/View';
+import SelectDotKhaiBao from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/DotKhaiBao/Select';
+import FormTiepNhanNhieuDon from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/FormTiepNhanNhieuDon';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
+import { TrangThaiTiepNhan } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import { MapColorTrangThaiTiepNhan, TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
+import { ELoaiTinhTrangDon } from '@/services/QuyTrinhDong/constant';
+import type { EMaTrangThaiThanhToan } from '@/services/TaiChinh/constant';
+import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
+import moment from 'moment';
+import ThongTinThanhToan from '@/pages/TaiChinh/ChiTietThu/components/ThongTinThanhToan';
+import { toISOString } from '@/utils/utils';
+
+interface IProps {
+	type: 'dieu_phoi' | 'tiep_nhan';
+	title?: string;
+}
+const TableTiepNhanDieuPhoi = (props: IProps) => {
+	const { type, title } = props;
+	const {
+		getQuyTrinhChuyenVienModel,
+		page,
+		limit,
+		condition,
+		setCondition,
+		visibleForm,
+		setVisibleForm,
+		record,
+		current,
+		setCurrent,
+		setCurrentFormKhaiBao,
+		setDataQuyTrinh,
+		loaiTinhTrangDon,
+		setLoaiTinhTrangDon,
+		exportMauDonTheoBuocModel,
+		exportMauTraKetQuaTheoBuocModel,
+		loading,
+		traKetQuaModel,
+		quyTrinhSelect,
+	} = useModel('quytrinh.khaibaoquytrinh');
+
+	const { getAllModel: getAllDanhMucChung } = useModel('quytrinh.danhmuc');
+	const { record: recordChiTietThu, getChiTietThuByIdentityCodeModel } = useModel('taichinh.chitietthu');
+	const [visibleModal, setVisibleModal] = useState<boolean>(false);
+
+	useEffect(() => {
+		getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.QUY_TRINH });
+	}, []);
+	const [currentRecord, setCurrentRecord] = useState<any>();
+
+	const [visibleTiepNhanNhieuDon, setVisibleTiepNhanNhieuDon] = useState<boolean>(false);
+	const [dotQuyTrinhId, setDotQuyTrinhId] = useState<string>();
+	const [maBuoc, setMaBuoc] = useState<string>();
+	const [trangThaiTiepNhan, settrangThaiTiepNhan] = useState<string>();
+	const isTabTraKetQua = condition?.daTraKetQua !== null && condition?.daTraKetQua !== undefined;
+
+	const handleSetData = (recordVal: KhaiBaoQuyTrinh.IRecord) => {
+		//set data buoc hien tai
+		setCurrent(recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1]);
+		const arr = recordVal?.quyTrinh?.danhSachFormKhaiBao;
+		const obj = arr?.find((item: { ma: any }) => item?.ma === recordVal?.danhSachBuocXuLy?.[0]?.maFormKhaiBao);
+		setCurrentFormKhaiBao(obj);
+	};
+
+	const getData = async () => {
+		if (quyTrinhSelect?._id)
+			getQuyTrinhChuyenVienModel(type, {
+				quyTrinhId: quyTrinhSelect?._id,
+				maBuoc,
+				trangThaiTiepNhan,
+				dotQuyTrinhId,
+			});
+	};
+
+	const onCell = (recordVal: KhaiBaoQuyTrinh.IRecord) => ({
+		onClick: () => {
+			setCurrentRecord(recordVal);
+			setDataQuyTrinh(recordVal);
+			handleSetData(recordVal);
+			setVisibleForm(true);
+		},
+		style: { cursor: 'pointer' },
+	});
+	const columns: IColumn<KhaiBaoQuyTrinh.IRecord>[] = [
+		{
+			title: 'Tên quy trình',
+			dataIndex: 'quyTrinh',
+			width: 150,
+			render: (val, recordVal) => {
+				return recordVal?.quyTrinh?.ten;
+			},
+			onCell,
+		},
+		{
+			title: 'Người khai',
+			dataIndex: 'nguoiKhaiBao.ten',
+			width: 150,
+			filterType: 'string',
+			align: 'center',
+			render: (val, recordVal) => {
+				return recordVal?.nguoiKhaiBao?.ten ? recordVal?.nguoiKhaiBao?.ten : 'Không có dữ liệu';
+			},
+			onCell,
+		},
+		{
+			title: 'Mã',
+			dataIndex: 'nguoiKhaiBao.ma',
+			width: 120,
+			filterType: 'string',
+			align: 'center',
+			render: (val, recordVal) => {
+				return recordVal?.nguoiKhaiBao?.ma ? recordVal?.nguoiKhaiBao?.ma : 'Không có dữ liệu';
+			},
+			onCell,
+		},
+		{
+			title: 'Tiến trình',
+			dataIndex: 'quyTrinh',
+			width: 180,
+			align: 'center',
+			render: (val, recordVal) => {
+				const buocHienTai = recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1];
+				return (
+					<>
+						Bước {recordVal?.danhSachBuocXuLy?.length}/{val?.danhSachBuocXuLy?.length} : {buocHienTai.ten}
+					</>
+				);
+			},
+			onCell,
+		},
+		{
+			title: 'Trạng thái xử lý',
+			dataIndex: 'trangThaiTiepNhan',
+			width: 200,
+			align: 'center',
+			render: (val, recordVal) => (
+				<Tag
+					color={
+						MapColorTrangThaiTiepNhan?.[
+							recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1]
+								?.trangThaiTiepNhan as TrangThaiTiepNhan
+						] ?? 'yellow'
+					}
+				>
+					{recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1]?.trangThaiTiepNhan}
+				</Tag>
+			),
+			onCell,
+		},
+		{
+			title: 'Trạng thái thanh toán',
+			dataIndex: 'trangThaiThanhToan',
+			width: 200,
+			align: 'center',
+			render: (val: EMaTrangThaiThanhToan) => (
+				<Tag color={EMauTrangThaiThanhToanTable?.[val] ?? 'gray'}>
+					{val ? ETrangThaiThanhToan[val] : 'Dịch vụ không tính phí'}
+				</Tag>
+			),
+			onCell,
+		},
+		// {
+		// 	title: 'Ngày khai',
+		// 	dataIndex: 'createdAt',
+		// 	width: 120,
+		// 	// filterType: 'string',
+		// 	filterType: 'date',
+		// 	sortable: true,
+		// 	align: 'center',
+		// 	render: (val) => {
+		// 		return val ? moment(val).format('DD/MM/YYYY') : 'Không có dữ liệu';
+		// 	},
+		// 	onCell,
+		// },
+		{
+			title: !isTabTraKetQua ? 'Hạn xử lý' : 'Ngày hẹn trả kết quả',
+			width: 120,
+			align: 'center',
+			render: (val, recordVal) => {
+				const buocHienTai = recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1];
+				const thoiGianTemp = isTabTraKetQua ? recordVal?.ngayHenTraKetQua : buocHienTai?.hanCuoiTiepNhan;
+				return thoiGianTemp ? moment(thoiGianTemp).format('DD/MM/YYYY') : 'Không có dữ liệu';
+			},
+			onCell,
+		},
+		{
+			title: 'Người trả kết quả',
+			width: 140,
+			align: 'center',
+			hide: !condition?.daTraKetQua === true,
+			render: (recordVal: KhaiBaoQuyTrinh.IRecord) => (
+				<div>
+					{recordVal?.hoTenNguoiTraKetQua} (
+					{recordVal?.thoiGianTraKetQua
+						? moment(recordVal?.thoiGianTraKetQua).format('HH:mm DD/MM/YYYY')
+						: 'Không có dữ liệu về thời gian trả kết quả'}
+					)
+				</div>
+			),
+		},
+		{
+			title: 'Thao tác',
+			align: 'center',
+			width: 100,
+			fixed: 'right',
+			render: (recordVal: KhaiBaoQuyTrinh.IRecord) => {
+				const buocHienTai = recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1];
+				const formKhai = recordVal?.quyTrinh?.danhSachFormKhaiBao?.find(
+					(item) => item.ma === buocHienTai?.maFormKhaiBao,
+				);
+				const formTiepNhan = recordVal?.quyTrinh?.danhSachFormTiepNhan?.find(
+					(item) => item.ma === buocHienTai?.maFormTiepNhan,
+				);
+
+				return (
+					<>
+						<Tooltip title='Xem chi tiết'>
+							<Button
+								onClick={() => {
+									setCurrentRecord(recordVal);
+									handleSetData(recordVal);
+									setDataQuyTrinh(recordVal);
+									setVisibleForm(true);
+								}}
+								type='link'
+								icon={<EyeOutlined />}
+							/>
+						</Tooltip>
+						{recordVal.identityCode && (
+							<Tooltip title={<div style={{ maxWidth: 100 }}>Thông tin thanh toán</div>}>
+								<Button
+									onClick={() => {
+										getChiTietThuByIdentityCodeModel(recordVal.identityCode);
+										setVisibleModal(true);
+									}}
+									type='link'
+									icon={<DollarCircleOutlined />}
+								/>
+							</Tooltip>
+						)}
+						{(formKhai?.fileId || formTiepNhan?.fileId) && (
+							<Tooltip title='Xuất mẫu đơn'>
+								<Dropdown
+									overlay={
+										<Menu
+											onClick={(val) => {
+												if (val.key === 'MAU_DON')
+													exportMauDonTheoBuocModel(recordVal._id, buocHienTai.ma, formKhai?.ten ?? '');
+												else exportMauTraKetQuaTheoBuocModel(recordVal._id, buocHienTai.ma, formTiepNhan?.ten ?? '');
+											}}
+										>
+											{formKhai?.fileId && <Menu.Item key={'MAU_DON'}>Mẫu đơn</Menu.Item>}
+											{formTiepNhan?.fileId && buocHienTai?.trangThaiTiepNhan === TrangThaiTiepNhan.DA_DUYET && (
+												<Menu.Item key={'MAU_TRA_KET_QUA'}>Mẫu trả kết quả</Menu.Item>
+											)}
+										</Menu>
+									}
+									placement='bottomLeft'
+								>
+									<Button loading={loading} type='link' icon={<ExportOutlined />} />
+								</Dropdown>
+							</Tooltip>
+						)}
+						{buocHienTai?.laBuocCuoi && recordVal?.daTraKetQua === false && (
+							<Tooltip title={<div style={{ maxWidth: 100 }}>Trả kết quả</div>}>
+								<Button
+									loading={loading}
+									onClick={() => {
+										traKetQuaModel(recordVal._id, getData);
+									}}
+									type='link'
+									icon={<CheckOutlined />}
+								/>
+							</Tooltip>
+						)}
+					</>
+				);
+			},
+		},
+	];
+
+	useEffect(() => {
+		return () => {
+			setDataQuyTrinh(undefined);
+			setLoaiTinhTrangDon(ELoaiTinhTrangDon.TAT_CA);
+		};
+	}, []);
+	return (
+		<>
+			<TableBase
+				otherProps={{ size: 'small' }}
+				title={
+					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						<div>{title}</div>
+						<div>
+							{type === 'tiep_nhan' && (
+								<Button
+									size='small'
+									type={'primary'}
+									onClick={() => {
+										setVisibleTiepNhanNhieuDon(true);
+									}}
+								>
+									Tiếp nhận nhiều đơn
+								</Button>
+							)}
+						</div>
+					</div>
+				}
+				modelName={'quytrinh.khaibaoquytrinh'}
+				columns={columns}
+				getData={getData}
+				dependencies={[
+					page,
+					limit,
+					condition,
+					loaiTinhTrangDon,
+					quyTrinhSelect?._id,
+					maBuoc,
+					dotQuyTrinhId,
+					trangThaiTiepNhan,
+				]}
+				destroyModal
+				buttons={{ create: false }}
+				otherButtons={[
+					<>
+						{/*<SelectQuyTrinhChuyenVien*/}
+						{/*	style={{ width: 250 }}*/}
+						{/*	allowClear*/}
+						{/*	onChange={(val: any) => {*/}
+						{/*		const obj = dataQuyTrinh?.find((item) => item?._id === val);*/}
+						{/*		setCurentQuyTrinhSelect(obj);*/}
+						{/*	}}*/}
+						{/*	loaiXuLyDon={type}*/}
+						{/*/>*/}
+						<SelectDotKhaiBao
+              size={'small'}
+							style={{ width: 170 }}
+							idQuyTrinh={quyTrinhSelect?._id ?? ''}
+							onChange={(val: any) => {
+								setDotQuyTrinhId(val);
+							}}
+						/>
+						<Select
+              size={'small'}
+							placeholder={'Chọn bước'}
+							style={{ width: 220 }}
+							allowClear
+							onChange={(val) => {
+								setMaBuoc(val?.toString());
+							}}
+							notFoundContent={quyTrinhSelect?.danhSachBuocXuLy ? 'Không có dữ liệu' : 'Vui lòng chọn quy trình trước'}
+							options={quyTrinhSelect?.danhSachBuocXuLy?.map((val) => {
+								return {
+									value: val?.ma,
+									label: val?.ten,
+								};
+							})}
+						/>
+						<Select
+              size={'small'}
+							placeholder={'Chọn trạng thái'}
+							style={{ width: 220 }}
+							allowClear
+							onChange={(val) => {
+								settrangThaiTiepNhan(val);
+							}}
+							options={Object.values(TrangThaiTiepNhanDon)?.map((val) => {
+								return {
+									value: val,
+									label: val,
+								};
+							})}
+						/>
+						<DatePicker.RangePicker
+              size={'small'}
+							allowClear
+							onChange={(val) => {
+								setCondition({
+									...condition,
+									createdAt: val
+										? {
+												$gte: toISOString(val[0]),
+												$lte: toISOString(val[1]),
+										  }
+										: undefined,
+								});
+							}}
+							format={'DD/MM/YYYY'}
+							placeholder={['Từ ngày', 'đến ngày']}
+						/>
+					</>,
+				]}
+			>
+				<Tabs
+					style={{ marginTop: -16 }}
+					onChange={(val: any) => {
+						setLoaiTinhTrangDon(val as ELoaiTinhTrangDon);
+						setCondition({
+							...condition,
+							danhSachBuocXuLy: [ELoaiTinhTrangDon.CAN_XU_LY, ELoaiTinhTrangDon.TAT_CA].includes(val)
+								? undefined
+								: { $elemMatch: { laBuocCuoi: true, trangThaiTiepNhan: TrangThaiTiepNhan.DA_DUYET } },
+							daTraKetQua: [ELoaiTinhTrangDon.CAN_XU_LY, ELoaiTinhTrangDon.TAT_CA].includes(val)
+								? undefined
+								: val === ELoaiTinhTrangDon.DA_TRA_KET_QUA,
+						});
+					}}
+				>
+					{Object.values(ELoaiTinhTrangDon)?.map((val) => (
+						<Tabs.TabPane tab={val} key={val} />
+					))}
+				</Tabs>
+			</TableBase>
+			<Modal
+				title={record?.quyTrinh?.ten}
+				visible={visibleForm}
+				onCancel={() => setVisibleForm(false)}
+				width={1000}
+				footer={null}
+			>
+				{current && (
+					<View
+						modalName={'quytrinh.khaibaoquytrinh'}
+						dataQuyTrinh={currentRecord}
+						current={current}
+						type={type}
+						getData={getData}
+					/>
+				)}
+			</Modal>
+			<Modal
+				title={'Tiếp nhận nhiều đơn'}
+				visible={visibleTiepNhanNhieuDon}
+				onCancel={() => setVisibleTiepNhanNhieuDon(false)}
+				width={800}
+				destroyOnClose
+				footer={null}
+			>
+				<FormTiepNhanNhieuDon
+					handleCancel={() => {
+						setVisibleTiepNhanNhieuDon(false);
+						getData();
+					}}
+				/>
+			</Modal>
+
+			<Modal
+				visible={visibleModal}
+				onCancel={() => setVisibleModal(false)}
+				footer={null}
+				bodyStyle={{ padding: 0 }}
+				width={1000}
+				destroyOnClose
+			>
+				{recordChiTietThu?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
+			</Modal>
+		</>
+	);
+};
+export default TableTiepNhanDieuPhoi;

@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { ELoaiThoiGianMienGiam } from '@/services/CheDoChinhSach/constant';
 import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Select, Tooltip } from 'antd';
+import {Button, Popconfirm, Select, Tooltip} from 'antd';
 import { useModel } from 'umi';
 import { SelectHocKy } from '../DaoTao/HocKy/SelectHocKy';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
