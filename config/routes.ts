@@ -313,6 +313,33 @@
 	// 	],
 	// },
 
+  //Quy trinh dong
+  {
+    name: 'QuyTrinh',
+    icon: 'AuditOutlined',
+    path: './quy-trinh',
+    // component: './KhaiBaoQuyTrinh',
+    routes: [
+      {
+        name: 'DieuPhoi',
+        icon: 'AuditOutlined',
+        path: './dieu-phoi',
+        component: './QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/DieuPhoi',
+      },
+      {
+        name: 'TiepNhan',
+        icon: 'AuditOutlined',
+        path: './tiep-nhan',
+        component: './QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/TiepNhan',
+      },
+      {
+        name: 'ThongKe',
+        path: './thong-ke',
+        component: './QuyTrinhDong/QuanLyQuyTrinh/ThongKe',
+      },
+    ],
+  },
+
 	// TIN TUC
 	// {
 	//   name: 'TinTuc',
