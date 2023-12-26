@@ -165,17 +165,6 @@ const FormCheDoChinhSach = () => {
 							</Form.Item>
 						</Col>
 					)}
-					<Col xs={24} md={24}>
-						<Form.Item name='trangThai' label='Trạng thái'>
-							<Select
-								placeholder={'Chọn trạng thái'}
-								options={[
-									{ value: 'ok', label: 'Đã nhận' },
-									{ value: 'cancel', label: 'Chưa nhận' },
-								]}
-							/>
-						</Form.Item>
-					</Col>
 				</Row>
 
 				<div className='form-footer'>
