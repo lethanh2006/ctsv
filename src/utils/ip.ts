@@ -11,7 +11,7 @@ const ipNotif = ipRoot + 'notification'; // ip dev
 const ipDaoTao = ipRoot + 'qldt';
 const ipNhanSu = ipRoot + 'tcns';
 const ipCore = ipRoot + 'core';
-const ipTaiChinh = ipRoot + 'tai-chinh-api';
+const ipTaiChinh = ipRoot + 'tai-chinh-api-v2';
 const ipSlink = ipRoot + 'slink'; // ip dev
 
 const currentRole = EModuleKey.CTSV;

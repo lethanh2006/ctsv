@@ -19,3 +19,6 @@ export const getDataThongKeJson = (idThongKe: string, payload: { filters: any })
 export const getDataThongKeExcel = (payload?: { thongKeQuyTrinhDongIds?: string[]; start?: string; end?: string }) => {
 	return axios.post(`${ip3}/thong-ke-quy-trinh-dong/execute/excel`, payload, { responseType: 'arraybuffer' });
 };
+
+export const thongKeDonTheoBuoc = (idQuyTrinh: string) =>
+	axios.get(`${ip3}/thong-ke-quy-trinh-dong/general/quy-trinh/${idQuyTrinh}`);

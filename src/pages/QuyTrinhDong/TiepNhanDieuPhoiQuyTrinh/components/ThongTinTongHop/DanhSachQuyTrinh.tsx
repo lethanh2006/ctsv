@@ -1,5 +1,6 @@
 import { DownOutlined, FileAddOutlined, FolderOutlined } from '@ant-design/icons';
-import { Input, TreeProps } from 'antd';
+import type { TreeProps } from 'antd';
+import { Input } from 'antd';
 import { Tree } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import Highlighter from 'react-highlight-words';
@@ -8,11 +9,11 @@ import { getQuyTrinhLinhVuc } from '@/services/QuyTrinhDong/quytrinh';
 import { useModel } from '@@/plugin-model/useModel';
 import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import { nanoid } from 'nanoid';
-import {currentRole} from "@/utils/ip";
-import {MapCurrentRoles} from "@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants";
+import { currentRole } from '@/utils/ip';
+import { MapCurrentRoles } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
 const DanhSachQuyTrinh = (props: { type: string }) => {
 	const { dataQuyTrinh, getDataByChuyenVien } = useModel('quytrinh.quanlyquytrinh');
-	const { setQuyTrinhSelect } = useModel('quytrinh.khaibaoquytrinh');
+	const { setQuyTrinhSelect, setMaBuoc } = useModel('quytrinh.khaibaoquytrinh');
 	const [selectedKey, setselectedKeys] = useState<any>([]);
 	const [checkedKey, setCheckedKey] = useState<any>([]);
 	const [expandedKeys, setExpandedKeys] = useState<any>([]);
@@ -26,9 +27,11 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 		setAutoExpandParent(false);
 	};
 	const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
+		const isBuoc = selectedKeys?.[0]?.toString()?.includes('buoc||');
 		setselectedKeys(selectedKeys);
 		if (dataQuyTrinh?.find((val) => val?._id === selectedKeys?.[0]))
 			setQuyTrinhSelect(dataQuyTrinh?.find((val) => val?._id === selectedKeys?.[0]));
+		setMaBuoc(isBuoc ? selectedKeys?.[0]?.toString()?.replace('buoc||', '') : undefined);
 	};
 	const onCheck: TreeProps['onCheck'] = (checkedKeys: any, info) => {
 		setCheckedKey(checkedKeys);
@@ -88,6 +91,13 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 							title: item3.ten,
 							key: item3._id,
 							icon: <FileAddOutlined />,
+							children: item3?.danhSachBuocXuLy?.map((ele) => {
+								return {
+									title: ele.ten,
+									key: `buoc||${ele.ma}`,
+									icon: <FileAddOutlined />,
+								};
+							}),
 						};
 					}),
 			};
@@ -109,7 +119,7 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 	useEffect(() => {
 		if (props?.type) {
 			getDataLinhVuc();
-			getDataByChuyenVien(props?.type,MapCurrentRoles?.[currentRole]);
+			getDataByChuyenVien(props?.type, MapCurrentRoles?.[currentRole]);
 		}
 	}, [props?.type]);
 

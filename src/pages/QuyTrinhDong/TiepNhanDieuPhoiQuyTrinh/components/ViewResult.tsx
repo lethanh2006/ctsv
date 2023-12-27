@@ -1,9 +1,10 @@
 import { Card, Form, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import type { LoaiHinhNCKH } from '@/services/QuanLyKhoaHocV2/LoaiHinhNCKH/typings';
-import FormRender from '@/pages/QuanLyKhoaHocV2/SanPhamNCKH/components/FormRender';
+
 import { useModel } from '@@/plugin-model/useModel';
 import { TrangThaiKhaiBao } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
+import FormRender from '../../QuanLyQuyTrinh/components/MauDon/FormRender';
+import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
 
 const ViewResult = (props: { danhSachKhaiBao: any }) => {
 	const { danhSachKhaiBao } = props;
@@ -38,7 +39,7 @@ const ViewResult = (props: { danhSachKhaiBao: any }) => {
 					}}
 					disabled={true}
 				>
-					{currentFormKhaiBao?.cauHinhLoaiHinh?.map((item: LoaiHinhNCKH.TruongThongTin | LoaiHinhNCKH.Cot) => (
+					{currentFormKhaiBao?.cauHinhLoaiHinh?.map((item: LoaiHinh.TruongThongTin | LoaiHinh.Cot) => (
 						<FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />
 					))}
 				</Form>

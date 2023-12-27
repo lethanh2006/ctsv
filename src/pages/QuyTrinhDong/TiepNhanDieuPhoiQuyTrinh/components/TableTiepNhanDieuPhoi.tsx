@@ -15,8 +15,8 @@ import { ELoaiTinhTrangDon } from '@/services/QuyTrinhDong/constant';
 import type { EMaTrangThaiThanhToan } from '@/services/TaiChinh/constant';
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
 import moment from 'moment';
-import ThongTinThanhToan from '@/pages/TaiChinh/ChiTietThu/components/ThongTinThanhToan';
 import { toISOString } from '@/utils/utils';
+import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
 
 interface IProps {
 	type: 'dieu_phoi' | 'tiep_nhan';
@@ -44,10 +44,11 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		loading,
 		traKetQuaModel,
 		quyTrinhSelect,
+		maBuoc,
 	} = useModel('quytrinh.khaibaoquytrinh');
 
 	const { getAllModel: getAllDanhMucChung } = useModel('quytrinh.danhmuc');
-	const { record: recordChiTietThu, getChiTietThuByIdentityCodeModel } = useModel('taichinh.chitietthu');
+	const { record: recordChiTietThu, getByIdModel } = useModel('taichinh.hoadon');
 	const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -57,7 +58,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 
 	const [visibleTiepNhanNhieuDon, setVisibleTiepNhanNhieuDon] = useState<boolean>(false);
 	const [dotQuyTrinhId, setDotQuyTrinhId] = useState<string>();
-	const [maBuoc, setMaBuoc] = useState<string>();
+
 	const [trangThaiTiepNhan, settrangThaiTiepNhan] = useState<string>();
 	const isTabTraKetQua = condition?.daTraKetQua !== null && condition?.daTraKetQua !== undefined;
 
@@ -233,11 +234,11 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 								icon={<EyeOutlined />}
 							/>
 						</Tooltip>
-						{recordVal.identityCode && (
+						{recordVal.idHoaDon && (
 							<Tooltip title={<div style={{ maxWidth: 100 }}>Thông tin thanh toán</div>}>
 								<Button
 									onClick={() => {
-										getChiTietThuByIdentityCodeModel(recordVal.identityCode);
+										getByIdModel(recordVal.idHoaDon);
 										setVisibleModal(true);
 									}}
 									type='link'
@@ -341,14 +342,14 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 						{/*	loaiXuLyDon={type}*/}
 						{/*/>*/}
 						<SelectDotKhaiBao
-              size={'small'}
+							size={'small'}
 							style={{ width: 170 }}
 							idQuyTrinh={quyTrinhSelect?._id ?? ''}
 							onChange={(val: any) => {
 								setDotQuyTrinhId(val);
 							}}
 						/>
-						<Select
+						{/* <Select
               size={'small'}
 							placeholder={'Chọn bước'}
 							style={{ width: 220 }}
@@ -363,9 +364,9 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 									label: val?.ten,
 								};
 							})}
-						/>
+						/> */}
 						<Select
-              size={'small'}
+							size={'small'}
 							placeholder={'Chọn trạng thái'}
 							style={{ width: 220 }}
 							allowClear
@@ -380,7 +381,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 							})}
 						/>
 						<DatePicker.RangePicker
-              size={'small'}
+							size={'small'}
 							allowClear
 							onChange={(val) => {
 								setCondition({

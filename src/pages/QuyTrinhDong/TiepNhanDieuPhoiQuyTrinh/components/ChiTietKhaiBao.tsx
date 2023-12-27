@@ -1,22 +1,22 @@
 import { CheckOutlined, CloseOutlined, UndoOutlined } from '@ant-design/icons';
-import {Button, Col, Form, Input, message, Modal, Row, Spin, Steps, Tag} from 'antd';
+import { Button, Col, Form, Input, message, Modal, Row, Spin, Steps, Tag } from 'antd';
 import { useEffect, useState } from 'react';
+import type { TrangThaiTiepNhan } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
 import {
 	MapColorTrangThaiTiepNhan,
 	TrangThaiKhaiBao,
-	TrangThaiTiepNhan,
 	TrangThaiTiepNhanDon,
 } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
 import ThongTinTiepNhan from './thongTinTiepNhan';
 import ViewResult from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/ViewResult';
 import { useModel } from '@@/plugin-model/useModel';
-import { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/typing';
+import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/typing';
 import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
 const { TextArea } = Input;
 const { Step } = Steps;
 interface IProps {
 	dataQuyTrinh?: any;
-  type?: 'dieu_phoi' | 'tiep_nhan';
+	type?: 'dieu_phoi' | 'tiep_nhan';
 }
 const ChiTietKhaiBao = (props: IProps) => {
 	const { dataQuyTrinh } = props;
@@ -95,6 +95,7 @@ const ChiTietKhaiBao = (props: IProps) => {
 							{dataQuyTrinh?.danhSachBuocXuLy?.map((value) => {
 								return (
 									<Step
+										key={value.ten}
 										description={renderDescription(value)}
 										// disabled={!edit}
 										title={value?.ten}
@@ -116,52 +117,51 @@ const ChiTietKhaiBao = (props: IProps) => {
 							})}
 						</div>
 					</Col>
-          {props?.type==='tiep_nhan'&&
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Button
-                  style={{ marginRight: 8 }}
-                  type={'primary'}
-                  icon={<CheckOutlined />}
-                  onClick={() => {
-                    setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
-                    setVisibleDuyet(true);
-                  }}
-                >
-                  Duyệt
-                </Button>
-                <Button
-                  style={{ marginRight: 8 }}
-                  danger
-                  icon={<CloseOutlined />}
-                  onClick={() => {
-                    setCurrentTypeDuyet(TrangThaiTiepNhanDon.KHONG_DUYET);
-                    setVisibleDuyet(true);
-                  }}
-                >
-                  Không duyệt
-                </Button>
-                <Button
-                  style={{ marginRight: 8 }}
-                  icon={<UndoOutlined />}
-                  onClick={() => {
-                    setCurrentTypeDuyet(TrangThaiTiepNhanDon.CHINH_SUA_LAI);
-                    setVisibleDuyet(true);
-                  }}
-                >
-                  Chỉnh sửa lại
-                </Button>
-                <Button
-                  onClick={() => {
-                    setVisibleForm(false);
-                  }}
-                >
-                  Đóng
-                </Button>
-              </div>
-            </Col>
-          }
-
+					{props?.type === 'tiep_nhan' && (
+						<Col xs={24} sm={24} md={24} lg={24} xl={24}>
+							<div style={{ display: 'flex', justifyContent: 'center' }}>
+								<Button
+									style={{ marginRight: 8 }}
+									type={'primary'}
+									icon={<CheckOutlined />}
+									onClick={() => {
+										setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
+										setVisibleDuyet(true);
+									}}
+								>
+									Duyệt
+								</Button>
+								<Button
+									style={{ marginRight: 8 }}
+									danger
+									icon={<CloseOutlined />}
+									onClick={() => {
+										setCurrentTypeDuyet(TrangThaiTiepNhanDon.KHONG_DUYET);
+										setVisibleDuyet(true);
+									}}
+								>
+									Không duyệt
+								</Button>
+								<Button
+									style={{ marginRight: 8 }}
+									icon={<UndoOutlined />}
+									onClick={() => {
+										setCurrentTypeDuyet(TrangThaiTiepNhanDon.CHINH_SUA_LAI);
+										setVisibleDuyet(true);
+									}}
+								>
+									Chỉnh sửa lại
+								</Button>
+								<Button
+									onClick={() => {
+										setVisibleForm(false);
+									}}
+								>
+									Đóng
+								</Button>
+							</div>
+						</Col>
+					)}
 				</Row>
 			</Spin>
 			<Modal
@@ -186,7 +186,8 @@ const ChiTietKhaiBao = (props: IProps) => {
 								onClick={() => {
 									setVisibleDuyet(false);
 								}}
-							>Đóng
+							>
+								Đóng
 							</Button>
 						</div>
 					</Form.Item>

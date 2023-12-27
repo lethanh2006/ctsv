@@ -27,6 +27,7 @@ declare module KhaiBaoQuyTrinh {
 		ngayHenTraKetQua?: string;
 		thoiGianTraKetQua?: string;
 		hoTenNguoiTraKetQua?: string;
+		idHoaDon: string;
 		[key: string]: any;
 	}
 	export interface IDanhSachForm {

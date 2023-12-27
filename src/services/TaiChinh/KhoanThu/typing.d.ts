@@ -1,24 +1,19 @@
 declare module KhoanThu {
-	export interface IRecord {
+	export interface Record {
 		_id: string;
-		thuocTinhLoc: [];
+		ma: string;
 		name: string;
-		code: string;
-		dinhKy: null;
-		nguonThu: string;
+		thuocTinhLoc: EMaDoiTuongApDung[];
+		maNguonThu: string;
+		nguonThuChiTiet?: NguonThu.Record;
+		dinhKy?: EDinhKy | null;
 		thuTheoDot: boolean;
-		unitLabel: string;
-		loaiTinhThue: string;
-		xuatHoaDon: string;
-		active: boolean;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-		nguonThuChiTiet: {
-			_id: string;
-			name: string;
-		}[];
 
-		[key: string]: any;
+		// loaiTinhThue: EMaLoaiTinhThueKhoanThu;
+		// mucThue?: number;
+		// unitLabel?: string;
+		// xuatHoaDon: ELoaiXuatHoaDon;
+		// active: boolean;
+		// metaData: any;
 	}
 }

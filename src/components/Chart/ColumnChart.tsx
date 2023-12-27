@@ -8,7 +8,6 @@ import vi from './vi.json';
 
 const ColumnChart = (props: DataChartType) => {
 	const { title, xAxis, yAxis, yLabel, height, type, formatY, colors, otherOptions } = props;
-
 	const options: ApexOptions = {
 		chart: {
 			defaultLocale: 'vi',
@@ -70,6 +69,28 @@ const ColumnChart = (props: DataChartType) => {
 		},
 		xaxis: {
 			categories: xAxis || [],
+			labels: {
+				rotate: 0,
+				show: true,
+				rotateAlways: false,
+				hideOverlappingLabels: false,
+				showDuplicates: false,
+				trim: true,
+				minHeight: undefined,
+				maxHeight: 120,
+				style: {
+					colors: [],
+					fontSize: '12px',
+					fontFamily: 'Helvetica, Arial, sans-serif',
+					fontWeight: 400,
+					cssClass: 'apexcharts-xaxis-label',
+				},
+				offsetX: 0,
+				offsetY: 0,
+				format: undefined,
+				formatter: undefined,
+				datetimeUTC: true,
+			},
 		},
 		tooltip: {
 			y: {

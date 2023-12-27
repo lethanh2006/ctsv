@@ -9,7 +9,7 @@ import { ELoaiTinhTrangDon } from '@/services/QuyTrinhDong/constant';
 import { message } from 'antd';
 import fileDownload from 'js-file-download';
 import { useState } from 'react';
-import {QuyTrinh} from "@/services/QuyTrinhDong/typings";
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 
 export default () => {
 	const objInit = useInitModel<KhaiBaoQuyTrinh.IRecord>('don-quy-trinh-dong');
@@ -22,8 +22,9 @@ export default () => {
 	const [visibleFormKhaiBaoQuyTrinh, setVisibleFormKhaiBaoQuyTrinh] = useState<boolean>(false);
 	const [dataQuyTrinh, setDataQuyTrinh] = useState<KhaiBaoQuyTrinh.IRecord>();
 	const [loaiTinhTrangDon, setLoaiTinhTrangDon] = useState<ELoaiTinhTrangDon>(ELoaiTinhTrangDon.CAN_XU_LY);
+	const [maBuoc, setMaBuoc] = useState<string>();
 
-  //lay id quy trinh selected trong dieu phoi va xu ly don quy trinh
+	//lay id quy trinh selected trong dieu phoi va xu ly don quy trinh
 	const [quyTrinhSelect, setQuyTrinhSelect] = useState<QuyTrinh.IRecord>();
 	const getDataKhaiBaoUser = async () => getModel(undefined, undefined, undefined, undefined, undefined, 'user/page');
 	const getQuyTrinhChuyenVienModel = async (loaiXuLyDon: string, otherQuery?: any) => {
@@ -49,10 +50,10 @@ export default () => {
 		}
 	};
 
-	const exportMauDonTheoBuocModel = async (idDon: string, maBuoc: string, tenDon: string) => {
+	const exportMauDonTheoBuocModel = async (idDon: string, maBuocParam: string, tenDon: string) => {
 		try {
 			setLoading(true);
-			const res = await exportMauDonTheoBuoc(idDon, maBuoc);
+			const res = await exportMauDonTheoBuoc(idDon, maBuocParam);
 			fileDownload(res.data, `${tenDon}.doc`);
 			setLoading(false);
 		} catch (err) {
@@ -60,10 +61,10 @@ export default () => {
 		}
 	};
 
-	const exportMauTraKetQuaTheoBuocModel = async (idDon: string, maBuoc: string, tenDon: string) => {
+	const exportMauTraKetQuaTheoBuocModel = async (idDon: string, maBuocParam: string, tenDon: string) => {
 		try {
 			setLoading(true);
-			const res = await exportMauTraKetQuaTheoBuoc(idDon, maBuoc);
+			const res = await exportMauTraKetQuaTheoBuoc(idDon, maBuocParam);
 			fileDownload(res.data, `${tenDon}.doc`);
 			setLoading(false);
 		} catch (err) {
@@ -100,6 +101,10 @@ export default () => {
 		setLoaiTinhTrangDon,
 		exportMauDonTheoBuocModel,
 		exportMauTraKetQuaTheoBuocModel,
-		traKetQuaModel,quyTrinhSelect,setQuyTrinhSelect
+		traKetQuaModel,
+		quyTrinhSelect,
+		setQuyTrinhSelect,
+		maBuoc,
+		setMaBuoc,
 	};
 };

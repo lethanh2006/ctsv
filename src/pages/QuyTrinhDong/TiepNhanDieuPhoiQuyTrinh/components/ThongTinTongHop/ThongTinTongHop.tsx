@@ -1,17 +1,18 @@
-import DonutChart from '@/components/Chart/DonutChart';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
-import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
+
+import { useModel } from '@@/plugin-model/useModel';
 import { Button, Card, Col, Modal, Row, Spin, Tabs } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import Pane from 'react-split-pane/lib/Pane';
-import SplitPane from 'react-split-pane';
-import BlockSoLuongDon from './BlockSoLuongDon';
 import { useMediaQuery } from 'react-responsive';
-import DanhSachQuyTrinh from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/ThongTinTongHop/DanhSachQuyTrinh';
-import { useModel } from '@@/plugin-model/useModel';
-interface DataSoLuongDon {
+import SplitPane from 'react-split-pane';
+import Pane from 'react-split-pane/lib/Pane';
+import BlockSoLuongDon from './BlockSoLuongDon';
+import BlockSoLuongDonTheoBuoc from './BlockSoLuongDonTheoBuoc';
+import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
+import DanhSachQuyTrinh from './DanhSachQuyTrinh';
+export interface DataSoLuongDon {
 	_id: string;
 	sum: number;
 }
@@ -22,7 +23,7 @@ interface IProps {
 
 const ThongTinTongHop = (props: IProps) => {
 	const { type } = props;
-	const { quyTrinhSelect } = useModel('quytrinh.khaibaoquytrinh');
+	const { quyTrinhSelect, maBuoc } = useModel('quytrinh.khaibaoquytrinh');
 	const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 	const [paneSize, setPaneSize] = useState('25%');
 	const [donHomNay, setDonHomNay] = useState<DataSoLuongDon[]>();
@@ -203,7 +204,7 @@ const ThongTinTongHop = (props: IProps) => {
 		<>
 			<SplitPane split={isMobile ? 'horizontal' : 'vertical'} onChange={handlePaneSizeChange}>
 				<Pane initialSize={paneSize} minSize='10%'>
-					<Card title={'Danh sách quy trình'}>
+					<Card title={'Danh sách dịch vụ'}>
 						<DanhSachQuyTrinh type={type} />
 					</Card>
 				</Pane>
@@ -211,74 +212,71 @@ const ThongTinTongHop = (props: IProps) => {
 					<Card title={quyTrinhSelect?.ten}>
 						<Spin spinning={loadingData}>
 							<Row gutter={[20, 20]}>
-								<Col span={24}>
-									<Row gutter={[12, 12]}>
-										<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-											<BlockSoLuongDon title='Tổng số đơn' data={tongSoDon || []} />
+								{!maBuoc && (
+									<>
+										<Col span={24}>
+											<Row gutter={[12, 12]}>
+												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
+													<BlockSoLuongDon title='Tổng số đơn' data={tongSoDon || []} />
+												</Col>
+												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
+													<BlockSoLuongDon title='Số lượng đơn hôm nay' data={donHomNay || []} />
+												</Col>
+												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
+													<BlockSoLuongDon title='Số lượng đơn tuần này' data={donTuanNay || []} />
+												</Col>
+												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
+													<BlockSoLuongDon title='Số lượng đơn tháng này' data={donThangNay || []} />
+												</Col>
+											</Row>
 										</Col>
-										<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-											<BlockSoLuongDon title='Số lượng đơn hôm nay' data={donHomNay || []} />
+										<Col xs={24} md={24}>
+											<Card title={'Đơn quá hạn xử lý'}>
+												<Tabs
+													onChange={(val: any) => {
+														setTypeBuoc(val);
+													}}
+												>
+													<Tabs.TabPane tab='Theo tiến trình chung' key='BUOC_HIEN_TAI' />
+													<Tabs.TabPane tab='Theo bước' key='BUOC_BAT_KY' />
+												</Tabs>
+												<TableStaticData size={'small'} data={dataQuaHan} columns={columns} />
+											</Card>
 										</Col>
-										<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-											<BlockSoLuongDon title='Số lượng đơn tuần này' data={donTuanNay || []} />
+										{/* <Col xs={24} md={24} lg={12} xl={12}>
+											<Card
+												title={
+													<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+														<div>Số lượng đơn theo từng dịch vụ</div>
+														
+													</div>
+												}
+											>
+												<DonutChart
+													formatY={(vsl) => `${vsl} Đơn`}
+													showTotal={true}
+													xAxis={
+														tongSoDon?.map((item) => {
+														
+															return item?._id;
+														}) as string[]
+													}
+													height={300}
+													yAxis={[
+														tongSoDon?.map((item) => {
+															// @ts-ignore
+															return +item.sum;
+														}) as number[],
+													]}
+													yLabel={['']}
+												/>
+											</Card>
+										</Col> */}
+										<Col xs={24}>
+											<BlockSoLuongDonTheoBuoc />
 										</Col>
-										<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-											<BlockSoLuongDon title='Số lượng đơn tháng này' data={donThangNay || []} />
-										</Col>
-									</Row>
-								</Col>
-								<Col xs={24} md={24} lg={12} xl={12}>
-									<Card title={'Đơn quá hạn xử lý'}>
-										<Tabs
-											onChange={(val: any) => {
-												setTypeBuoc(val);
-											}}
-										>
-											<Tabs.TabPane tab='Theo tiến trình chung' key='BUOC_HIEN_TAI' />
-											<Tabs.TabPane tab='Theo bước' key='BUOC_BAT_KY' />
-										</Tabs>
-										<TableStaticData size={'small'} data={dataQuaHan} columns={columns} />
-									</Card>
-								</Col>
-								<Col xs={24} md={24} lg={12} xl={12}>
-									<Card
-										title={
-											<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-												<div>Số lượng đơn theo từng dịch vụ</div>
-												{/*<div>*/}
-												{/*	<SelectQuyTrinhChuyenVien*/}
-												{/*		style={{ width: 220 }}*/}
-												{/*		allowClear*/}
-												{/*		onChange={(val: any) => {*/}
-												{/*			setCurrentQuyTrinh(val);*/}
-												{/*		}}*/}
-												{/*		loaiXuLyDon={type}*/}
-												{/*	/>*/}
-												{/*</div>*/}
-											</div>
-										}
-									>
-										<DonutChart
-											formatY={(vsl) => `${vsl} Đơn`}
-											showTotal={true}
-											xAxis={
-												tongSoDon?.map((item) => {
-													// @ts-ignore
-													return item?._id;
-												}) as string[]
-											}
-											height={300}
-											// yAxis={[[111], [12], [1]]}
-											yAxis={[
-												tongSoDon?.map((item) => {
-													// @ts-ignore
-													return +item.sum;
-												}) as number[],
-											]}
-											yLabel={['']}
-										/>
-									</Card>
-								</Col>
+									</>
+								)}
 								<Col span={24}>{props?.children}</Col>
 							</Row>
 						</Spin>
