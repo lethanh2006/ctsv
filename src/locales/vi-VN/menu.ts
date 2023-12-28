@@ -84,10 +84,9 @@ export default {
 	'menu.TinTuc.TinTuc': 'Tin tức',
 
 	'menu.CauHoiThuongGap': 'Câu hỏi thường gặp',
-  //XỬ LÝ QUY TRÌNH
-  'menu.QuyTrinh': 'Xử lý quy trình',
-  'menu.QuyTrinh.ThongKe': 'Thống kê',
-  'menu.QuyTrinh.DieuPhoi': 'Điều phối',
-  'menu.QuyTrinh.TiepNhan': 'Tiếp nhận',
-
+	//XỬ LÝ QUY TRÌNH
+	'menu.QuyTrinh': 'Dịch vụ hành chính',
+	'menu.QuyTrinh.ThongKe': 'Thống kê',
+	'menu.QuyTrinh.DieuPhoi': 'Điều phối',
+	'menu.QuyTrinh.TiepNhan': 'Tiếp nhận',
 };
