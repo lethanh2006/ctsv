@@ -52,3 +52,5 @@ declare const APP_CONFIG_TITLE_QLKH: string;
 declare const APP_CONFIG_TITLE_VPS: string;
 declare const APP_CONFIG_TITLE_KHAO_THI: string;
 declare const APP_CONFIG_TITLE_CORE: string;
+declare const APP_CONFIG_INIT_TRINH_DO: string;
+declare const APP_CONFIG_INIT_HINH_THUC: string;

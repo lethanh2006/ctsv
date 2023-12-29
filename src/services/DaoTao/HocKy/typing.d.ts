@@ -1,4 +1,4 @@
-import { type HocPhan } from '@/services/DanhMucHeThong/HocPhan/typings';
+import { type HocPhan } from '@/services/DaoTaoV2/DanhMucHeThong/HocPhan/typings';
 import { type ELoaiThoiGianNhapDiem, type ELoaiHocLuc } from '../constant';
 
 declare module HocKy {
