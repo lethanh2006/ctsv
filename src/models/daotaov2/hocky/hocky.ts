@@ -1,10 +1,11 @@
 import useInitModel from '@/hooks/useInitModel';
 import { guiThongBaoPhanCongGiangDay } from '@/services/DaoTaoV2/HocKy/HocKy';
 import { type HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<HocKy.IRecord>('hoc-ky', undefined, undefined, undefined, { soThuTu: 1 });
+	const objInit = useInitModel<HocKy.IRecord>('hoc-ky', undefined, undefined, ipDaoTao, { soThuTu: 1 });
 
 	const { formSubmiting, setFormSubmiting } = objInit;
 
