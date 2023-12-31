@@ -1,5 +1,6 @@
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
-import { SelectHocKy } from '@/pages/DaoTao/HocKy/SelectHocKy';
+import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
+
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import { ELoaiThoiGianMienGiam } from '@/services/CheDoChinhSach/constant';
 import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';

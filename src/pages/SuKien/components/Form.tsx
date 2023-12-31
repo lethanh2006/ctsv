@@ -1,10 +1,5 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import TableStaticData from '@/components/Table/TableStaticData';
-import { SelectHocKy } from '@/pages/DaoTao/HocKy/SelectHocKy';
-import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
-import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
-import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
-import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
 import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
 import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
@@ -20,7 +15,7 @@ import {
 import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
-import {inputFormat, resetFieldsForm, tienVietNam} from '@/utils/utils';
+import { inputFormat, resetFieldsForm, tienVietNam } from '@/utils/utils';
 import {
 	Button,
 	Card,
@@ -43,9 +38,14 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormDuTruKinhPhi from './FormDuTruKinhPhi';
-import { IColumn } from '@/components/Table/typing';
+import type { IColumn } from '@/components/Table/typing';
 import ExpandText from '@/components/ExpandText';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
+import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
+import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 
 interface Props {
 	hideCard?: boolean;
@@ -200,7 +200,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 			dataIndex: 'luot',
 			width: 90,
 			align: 'center',
-      render:(val)=>inputFormat(+val)
+			render: (val) => inputFormat(+val),
 		},
 		{
 			title: 'Phòng',
@@ -213,14 +213,14 @@ const FormSuKien = ({ hideCard }: Props) => {
 			dataIndex: 'dinhMuc',
 			width: 90,
 			align: 'center',
-      render:(val)=>inputFormat(+val)
+			render: (val) => inputFormat(+val),
 		},
 		{
 			title: 'Dự toán',
 			dataIndex: 'duToan',
 			width: 120,
 			align: 'center',
-      render:(val)=>inputFormat(+val)
+			render: (val) => inputFormat(+val),
 		},
 		{
 			title: 'Phân bổ nguồn',
@@ -232,22 +232,22 @@ const FormSuKien = ({ hideCard }: Props) => {
 					title: 'NSNN',
 					dataIndex: 'nguonNSNN',
 					width: 100,
-          align: 'center',
-          render:(val)=>inputFormat(+val)
+					align: 'center',
+					render: (val) => inputFormat(+val),
 				},
 				{
 					title: 'Tự chủ',
 					dataIndex: 'nguonTuChu',
 					width: 100,
-          align: 'center',
-          render:(val)=>inputFormat(+val)
+					align: 'center',
+					render: (val) => inputFormat(+val),
 				},
 				{
 					title: 'Vận động tài trợ',
 					dataIndex: 'nguonTaiTro',
 					width: 100,
-          align: 'center',
-          render:(val)=>inputFormat(+val)
+					align: 'center',
+					render: (val) => inputFormat(+val),
 				},
 			],
 		},
@@ -470,9 +470,9 @@ const FormSuKien = ({ hideCard }: Props) => {
 									) : receiverType === EReceiverType.KhoaSinhVien ? (
 										<SelectKhoaSinhVien multiple />
 									) : receiverType === EReceiverType.LopHanhChinh ? (
-										<SelectLopHanhChinhDebounce multiple selectTen />
+										<SelectLopHanhChinhDebounce multiple selectMa />
 									) : receiverType === EReceiverType.LopHocPhan ? (
-										<SelectLopHocPhanDebounce multiple selectTen />
+										<SelectLopHocPhanDebounce multiple selectMa />
 									) : receiverType === EReceiverType.Nganh ? (
 										<SelectNganhCoSo multiple />
 									) : null}

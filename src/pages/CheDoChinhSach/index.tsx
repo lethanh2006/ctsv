@@ -3,14 +3,14 @@ import { type IColumn } from '@/components/Table/typing';
 import { ELoaiThoiGianMienGiam } from '@/services/CheDoChinhSach/constant';
 import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import {Button, Popconfirm, Select, Tooltip} from 'antd';
+import { Button, Popconfirm, Select, Tooltip } from 'antd';
 import { useModel } from 'umi';
-import { SelectHocKy } from '../DaoTao/HocKy/SelectHocKy';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import { toISOString } from '@/utils/utils';
 import { useEffect } from 'react';
 import FormCheDoChinhSach from './components/Form';
 import moment from 'moment';
+import SelectHocKy from '../DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 
 const CheDoChinhSachComponent = () => {
 	const {

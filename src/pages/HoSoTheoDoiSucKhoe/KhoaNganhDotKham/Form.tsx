@@ -1,4 +1,4 @@
-import SelectKhoaNganh from '@/pages/DaoTao/KhoaNganh/Select';
+import SelectKhoaNganh from '@/pages/DaoTaoV2/NamHoc/KhoaNganh/components/Select';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
@@ -11,7 +11,7 @@ const FormKhoaNganhDotKham = (props: any) => {
 		'hosotheodoisuckhoe.dotkhamkhoanganh',
 	);
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
-	const { danhSach: danhSachKhaoNganh } = useModel('daotao.khoanganh');
+	const { danhSach: danhSachKhaoNganh } = useModel('daotaov2.namhoc.khoanganh');
 	const { title } = props;
 
 	const getData = () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id });
@@ -46,7 +46,7 @@ const FormKhoaNganhDotKham = (props: any) => {
 
 					<Col xs={24}>
 						<Form.Item name='maKhoaNganh' label='Khóa ngành' rules={[...rules.required]}>
-							<SelectKhoaNganh multiple selectMa />
+							<SelectKhoaNganh multiple />
 						</Form.Item>
 					</Col>
 				</Row>

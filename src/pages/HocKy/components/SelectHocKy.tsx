@@ -1,4 +1,4 @@
-import type { HocKy } from '@/services/DaoTao/HocKy/typing';
+import type { HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
 import { useModel } from 'umi';

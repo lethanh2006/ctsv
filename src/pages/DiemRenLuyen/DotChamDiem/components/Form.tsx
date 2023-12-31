@@ -1,8 +1,9 @@
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
-import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
-import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
-import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
-import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
+import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
+
 import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
 import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
@@ -249,13 +250,13 @@ export const FormDotChamDiem = () => {
 								{receiverType === EReceiverType.Khoa ? (
 									<SelectDonVi readOnly={disabledForm} multiple selectMa />
 								) : receiverType === EReceiverType.KhoaSinhVien ? (
-									<SelectKhoaSinhVien readOnly={disabledForm} multiple />
+									<SelectKhoaSinhVien disabled={disabledForm} multiple />
 								) : receiverType === EReceiverType.LopHanhChinh ? (
-									<SelectLopHanhChinhDebounce readOnly={disabledForm} multiple selectTen />
+									<SelectLopHanhChinhDebounce disabled={disabledForm} multiple selectMa />
 								) : receiverType === EReceiverType.LopHocPhan ? (
-									<SelectLopHocPhanDebounce readOnly={disabledForm} multiple selectTen />
+									<SelectLopHocPhanDebounce disabled={disabledForm} multiple selectMa />
 								) : receiverType === EReceiverType.Nganh ? (
-									<SelectNganhCoSo readOnly={disabledForm} multiple />
+									<SelectNganhCoSo disabled={disabledForm} multiple />
 								) : null}
 							</Form.Item>
 						</Col>

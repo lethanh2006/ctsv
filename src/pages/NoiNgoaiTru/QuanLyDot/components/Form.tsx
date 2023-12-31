@@ -1,5 +1,5 @@
 import MyDatePicker from '@/components/MyDatePicker';
-import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
 import { ETrangThaiNoiNgoaiTru } from '@/services/NoiNgoaiTru/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';

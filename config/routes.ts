@@ -59,12 +59,12 @@
 					},
 				],
 			},
-			{
-				name: 'LopHanhChinh',
-				icon: 'appstore',
-				path: 'lop-hanh-chinh',
-				component: './DaoTao/LopHanhChinh',
-			},
+			// {
+			// 	name: 'LopHanhChinh',
+			// 	icon: 'appstore',
+			// 	path: 'lop-hanh-chinh',
+			// 	component: './DaoTao/LopHanhChinh',
+			// },
 
 			// {
 			//   name: 'LopHanhChinh',

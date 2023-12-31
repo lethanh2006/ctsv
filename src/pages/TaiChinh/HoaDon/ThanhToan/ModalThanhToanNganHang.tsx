@@ -6,9 +6,7 @@ import { useModel } from 'umi';
 const ModalThanhToanNganHang = (props: { visible: boolean; onOk: () => void }) => {
 	const { visible, onOk } = props;
 	const { record } = useModel('taichinh.giaodich');
-	// const { getMeModel: getLopHc, danhSach: danhSachLopHc } = useModel('daotao.lophanhchinh');
 	const { initialState } = useModel('@@initialState');
-	// const isPhanHieu = danhSachLopHc.some((item) => item.doiTuong === EDoiTuongLopHanhChinh.PH);
 	const userFullname =
 		record?.userFullname ??
 		(initialState?.currentUser?.family_name

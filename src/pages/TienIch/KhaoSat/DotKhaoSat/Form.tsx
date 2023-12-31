@@ -1,7 +1,3 @@
-import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
-import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
-import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
-import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import { ELoaiDoiTuong, ELoaiDot } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
@@ -12,6 +8,10 @@ import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectMauKhaoSat from '../components/Select';
 import GroupTagVaiTro from './GroupTagVaiTro';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
+import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
+import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 
 const FormDotKhaoSat = (props: any) => {
 	const [form] = Form.useForm();
@@ -211,7 +211,7 @@ const FormDotKhaoSat = (props: any) => {
 							label={isNguoiDungCuThe ? 'Lọc theo lớp hành chính' : 'Lớp hành chính'}
 							initialValue={isNguoiDungCuThe ? [] : record?.danhSachLopHanhChinh?.map((item) => item.name)}
 						>
-							<SelectLopHanhChinhDebounce multiple={true} selectTen={true} />
+							<SelectLopHanhChinhDebounce multiple={true} selectMa />
 						</Form.Item>
 						{/* {!isNguoiDungCuThe && renderButtonImportExcel('danhSachLopHanhChinh')} */}
 					</div>
@@ -225,7 +225,7 @@ const FormDotKhaoSat = (props: any) => {
 							label={isNguoiDungCuThe ? 'Lọc theo lớp tín chỉ' : 'Lớp tín chỉ'}
 							initialValue={isNguoiDungCuThe ? [] : record?.danhSachLopTinChi?.map((item) => item.name)}
 						>
-							<SelectLopHocPhanDebounce multiple selectTen={true} />
+							<SelectLopHocPhanDebounce multiple selectMa />
 						</Form.Item>
 						{/* {!isNguoiDungCuThe && renderButtonImportExcel('danhSachLopTinChi')} */}
 					</div>

@@ -1,15 +1,15 @@
 import TinyEditor from '@/components/TinyEditor';
-import SelectHinhThuc from '@/pages/DaoTao/HinhThucDaoTao/Select';
+import UploadFile from '@/components/Upload/UploadFile';
+import SelectHinhThuc from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/HinhThuc/components/Select';
+import SelectKhoanThu from '@/pages/DichVuMotCuaV2/KhoanThu/Select';
+import SelectMucThu from '@/pages/DichVuMotCuaV2/MucThu/Select';
 import { uploadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
-import { currencyFormat, renderFileListUrlWithName } from '@/utils/utils';
+import { renderFileListUrlWithName } from '@/utils/utils';
 import { ArrowRightOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import UploadFile from '@/components/Upload/UploadFile';
-import SelectMucThu from '@/pages/DichVuMotCuaV2/MucThu/Select';
-import SelectKhoanThu from '@/pages/DichVuMotCuaV2/KhoanThu/Select';
 
 const FormThongTinChung = () => {
 	const [form] = Form.useForm();

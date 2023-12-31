@@ -1,7 +1,3 @@
-import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
-import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
-import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
-import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
 import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
@@ -21,9 +17,13 @@ import { first } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Link, useModel } from 'umi';
-import { IColumn } from '@/components/Table/typing';
+import type { IColumn } from '@/components/Table/typing';
 import ExpandText from '@/components/ExpandText';
 import TableStaticData from '@/components/Table/TableStaticData';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
+import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
+import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 
 export const Detail = () => {
 	const { deleteModel, handleEdit, setIsVisibleFormDetail, record, isVisibleFormDetail, getModel } = useModel('sukien');
@@ -246,13 +246,13 @@ export const Detail = () => {
 							{record?.receiverType === EReceiverType.Khoa ? (
 								<SelectDonVi readOnly value={record.filter?.idKhoa} multiple selectMa />
 							) : record?.receiverType === EReceiverType.KhoaSinhVien ? (
-								<SelectKhoaSinhVien readOnly value={record.filter?.idKhoaSinhVien} multiple />
+								<SelectKhoaSinhVien disabled value={record.filter?.idKhoaSinhVien} multiple />
 							) : record?.receiverType === EReceiverType.LopHanhChinh ? (
-								<SelectLopHanhChinhDebounce readOnly value={record.filter?.idLopHanhChinh} multiple selectTen />
+								<SelectLopHanhChinhDebounce disabled value={record.filter?.idLopHanhChinh} multiple selectMa />
 							) : record?.receiverType === EReceiverType.LopHocPhan ? (
-								<SelectLopHocPhanDebounce readOnly value={record.filter?.idLopHocPhan} multiple selectTen />
+								<SelectLopHocPhanDebounce disabled value={record.filter?.idLopHocPhan} multiple selectMa />
 							) : record?.receiverType === EReceiverType.Nganh ? (
-								<SelectNganhCoSo readOnly value={record.filter?.idNganh} multiple />
+								<SelectNganhCoSo disabled value={record.filter?.idNganh} multiple />
 							) : null}
 						</Space>
 					</Descriptions.Item>
