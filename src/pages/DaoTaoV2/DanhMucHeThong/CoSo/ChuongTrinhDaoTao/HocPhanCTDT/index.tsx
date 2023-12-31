@@ -86,7 +86,7 @@ const HocPhanCTDT = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			params={{ khoiHpCtId: recKhoi?._id }}
-			modelName='chuongtrinhdaotao.hocphanctdt'
+			modelName='daotaov2.chuongtrinhdaotao.hocphanctdt'
 			title='Học phần tự chọn'
 			Form={FormHocPhanCTDT}
 			buttons={{ reload: false }}

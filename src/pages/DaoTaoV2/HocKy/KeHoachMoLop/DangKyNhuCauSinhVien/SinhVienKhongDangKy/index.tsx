@@ -61,7 +61,7 @@ const SinhVienChuaDangKyPage = () => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, recDotDangKy?._id, recordKyHoc?._id]}
-				modelName='hocky.sinhvienkhongdangky'
+				modelName='daotaov2.hocky.sinhvienkhongdangky'
 				hideCard
 				buttons={{ create: false, export: true }}
 			/>

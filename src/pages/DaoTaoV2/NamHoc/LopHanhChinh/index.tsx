@@ -123,7 +123,7 @@ const LopHanhChinhPage = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='namhoc.lophanhchinh'
+				modelName='daotaov2.namhoc.lophanhchinh'
 				title={intl.formatMessage({ id: 'namhoc.lophanhchinh.title' })}
 				Form={ModalLopHanhChinh}
 				widthDrawer={800}
@@ -151,7 +151,7 @@ const LopHanhChinhPage = () => {
 			) : null}
 
 			<ModalImport
-				modelName='namhoc.sinhvienlophanhchinh'
+				modelName='daotaov2.namhoc.sinhvienlophanhchinh'
 				onCancel={() => setVisibleImportSvLhc(false)}
 				visible={visibleImportSvLhc}
 				onOk={() => {

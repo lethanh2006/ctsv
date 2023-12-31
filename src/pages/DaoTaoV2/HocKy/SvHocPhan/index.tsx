@@ -76,7 +76,7 @@ const SinhVienHpHkPage = (props: { maKhoaNganh?: string; maHocPhan?: string; loa
 							? ETrangThaiThi.DU_DIEU_KIEN
 							: undefined,
 				}}
-				modelName='hocky.sinhvienhphk'
+				modelName='daotaov2.hocky.sinhvienhphk'
 				buttons={{ create: false, export: true }}
 				hideCard
 				otherProps={{ size: 'small' }}

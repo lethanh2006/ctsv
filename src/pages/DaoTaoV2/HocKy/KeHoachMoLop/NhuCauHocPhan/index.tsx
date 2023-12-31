@@ -121,7 +121,7 @@ const NhuCauHocPhanPage = (props: { maHocPhan?: string; maKhoaNganh?: string }) 
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, recHocKy?.ma, maKhoaNganh, maHocPhan, segmentSelected]}
-				modelName='hocky.nhucauhocphan'
+				modelName='daotaov2.hocky.nhucauhocphan'
 				formProps={{ getData }}
 				hideCard
 				buttons={{ create: false }}

@@ -422,7 +422,7 @@ const CardDiemThanhPhan = (getData: () => void) => {
 			/>
 
 			<ModalImport
-				modelName='ketquahoctap.importdiemthanhphan'
+				modelName='daotaov2.ketquahoctap.importdiemthanhphan'
 				onCancel={() => setVisibleImport(false)}
 				onOk={() => {
 					getDataInternal();

@@ -67,7 +67,7 @@ const TableChonChuongTrinh = () => {
 			columns={columns}
 			getData={getData}
 			dependencies={[page, limit, recDot?._id]}
-			modelName='chuongtrinhdaotao.chuongtrinh'
+			modelName='daotaov2.chuongtrinhdaotao.chuongtrinh'
 			hideCard
 			rowSelection
 			buttons={{ create: false }}

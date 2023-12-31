@@ -117,7 +117,7 @@ const KhoaSinhVien = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='namhoc.khoasinhvien'
+				modelName='daotaov2.namhoc.khoasinhvien'
 				title={intl.formatMessage({ id: 'namhoc.khoasinhvien.title' })}
 				widthDrawer={1000}
 				Form={ModalKhoaSinhVien}

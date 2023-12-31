@@ -112,7 +112,7 @@ const PhieuDangKyNhuCauPage = () => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, recDotDangKy?._id, recordKyHoc?.ma]}
-				modelName='hocky.dangkynhucau'
+				modelName='daotaov2.hocky.dangkynhucau'
 				title='Phiếu đăng ký nhu cầu'
 				Form={ModalNhuCauSinhVien}
 				formProps={{ getData }}

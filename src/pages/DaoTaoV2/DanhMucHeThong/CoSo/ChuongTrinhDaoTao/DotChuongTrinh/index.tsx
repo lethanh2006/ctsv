@@ -136,7 +136,7 @@ const DotChuongTrinhPage = () => {
 						columns={columns}
 						getData={getData}
 						dependencies={[page, limit, recDot._id]}
-						modelName='chuongtrinhdaotao.dotchuongtrinh'
+						modelName='daotaov2.chuongtrinhdaotao.dotchuongtrinh'
 						Form={edit ? Form : ModalThemMoi}
 						formProps={{ getData }}
 						widthDrawer={1000}

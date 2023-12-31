@@ -107,7 +107,7 @@ const ChuyenNganhLocal = (props: { hideCard?: boolean }) => {
 	return (
 		<>
 			<TableBase
-				modelName='danhmuc.chuyennganh'
+				modelName='daotaov2.danhmuc.chuyennganh'
 				modelImportName='danhmuc.chuyennganhimport'
 				columns={columns}
 				dependencies={[page, limit]}

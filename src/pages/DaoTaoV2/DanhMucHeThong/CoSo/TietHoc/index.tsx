@@ -75,7 +75,7 @@ const TietHoc = (props: { hideCard?: boolean }) => {
 				columns={columns}
 				dependencies={[page, limit, recNhomTietHoc?.ma]}
 				getData={getData}
-				modelName='danhmuc.tiethoc'
+				modelName='daotaov2.danhmuc.tiethoc'
 				title={intl.formatMessage({ id: 'danhmuchethong.coso.tiethoc.title' })}
 				Form={Form}
 				rowSelection

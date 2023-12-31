@@ -1,10 +1,11 @@
 import useInitModel from '@/hooks/useInitModel';
 import { postChungChiCTDTMany } from '@/services/DaoTaoV2/DanhMucHeThong/ChuongTrinhDaoTao';
 import type { ChuongTrinhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/ChuongTrinhDaoTao/typings';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<ChuongTrinhDaoTao.IChungChiCTDT>('chung-chi-ctdt');
+	const objInit = useInitModel<ChuongTrinhDaoTao.IChungChiCTDT>('chung-chi-ctdt', undefined, undefined, ipDaoTao);
 	const { formSubmiting, setFormSubmiting, getModel, setVisibleForm } = objInit;
 
 	const postChungChiCTDTManyModel = async (

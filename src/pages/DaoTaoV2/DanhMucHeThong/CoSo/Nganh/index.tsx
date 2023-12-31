@@ -118,7 +118,7 @@ const NganhCoSo = () => {
 				columns={columns}
 				params={{ maNganhGoc: null }}
 				dependencies={[page, limit]}
-				modelName='danhmuc.nganhdaotao'
+				modelName='daotaov2.danhmuc.nganhdaotao'
 				title={intl.formatMessage({ id: 'danhmuchethong.coso.nganh.title' })}
 				Form={ModalFormNganh}
 				widthDrawer={1000}

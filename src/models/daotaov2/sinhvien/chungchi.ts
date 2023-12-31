@@ -1,8 +1,9 @@
 import useInitModel from '@/hooks/useInitModel';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
+import { ipDaoTao } from '@/utils/ip';
 
 export default () => {
-	const objInit = useInitModel<SinhVien.IChungChiSinhVien>('chung-chi-sv');
+	const objInit = useInitModel<SinhVien.IChungChiSinhVien>('chung-chi-sv', undefined, undefined, ipDaoTao);
 
 	return {
 		...objInit,

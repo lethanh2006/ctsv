@@ -494,7 +494,7 @@ const KhoiHocPhanCTDTList = (props: { isKeHoach?: boolean }) => {
 			<PreviewKhungCTDT visble={visibleKhung} setVisible={setVisibleKhung} />
 
 			<ModalImport
-				modelName='chuongtrinhdaotao.khoihocphanctdt'
+				modelName='daotaov2.chuongtrinhdaotao.khoihocphanctdt'
 				onCancel={() => setVisibleImport(false)}
 				onOk={() => {
 					setVisibleImport(false);
@@ -506,7 +506,7 @@ const KhoiHocPhanCTDTList = (props: { isKeHoach?: boolean }) => {
 			/>
 
 			<ModalExport
-				modelName='chuongtrinhdaotao.khoihocphanctdt'
+				modelName='daotaov2.chuongtrinhdaotao.khoihocphanctdt'
 				onCancel={() => setVisibleExport(false)}
 				condition={{ maChuongTrinhDaoTao: recChuongTrinh?.ma ?? '' }}
 				visible={visibleExport}

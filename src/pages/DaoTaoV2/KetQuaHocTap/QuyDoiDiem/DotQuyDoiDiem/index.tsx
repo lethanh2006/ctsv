@@ -144,7 +144,7 @@ const DotQuyDoiDiemPage = () => {
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName='ketquahoctap.quydoidiem.dotquydoidiem'
+				modelName='daotaov2.ketquahoctap.quydoidiem.dotquydoidiem'
 				Form={Form}
 				formProps={{ getData }}
 				widthDrawer={800}

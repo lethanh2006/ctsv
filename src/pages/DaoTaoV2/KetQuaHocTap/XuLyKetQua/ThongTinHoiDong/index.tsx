@@ -86,7 +86,7 @@ const ThanhVienHoiDongTable = () => {
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName='ketquahoctap.xethocvu.thanhvienhoidong'
+				modelName='daotaov2.ketquahoctap.xethocvu.thanhvienhoidong'
 				title={intl.formatMessage({ id: 'ketquahoctap.xulyketqua.thongtinhoidong.title' })}
 				Form={Form}
 				hideCard

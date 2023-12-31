@@ -43,17 +43,17 @@ const HocTapSinhVienHienTaiPage = (props: { sinhVienSsoId?: string }) => {
 				</Col>
 				<Col span={24} md={8}>
 					<Form.Item label='Khoa'>
-						<Input disabled />
+						<Input disabled placeholder='Khoa' />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={8}>
 					<Form.Item label='Khoá sinh viên' name={['khoaSinhVien', 'ten']}>
-						<Input disabled />
+						<Input disabled placeholder='Khóa sinh viên' />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={8}>
 					<Form.Item label='Ngành đào tạo' name={['nganhDaoTao', 'ten']}>
-						<Input disabled />
+						<Input disabled placeholder='Ngành đào tạo' />
 					</Form.Item>
 				</Col>
 				{/* <Col span={24} md={8}>
@@ -68,17 +68,17 @@ const HocTapSinhVienHienTaiPage = (props: { sinhVienSsoId?: string }) => {
         </Col> */}
 				<Col span={24} md={8}>
 					<Form.Item label='Sinh viên năm thứ' name='sinhVienNamThu'>
-						<Input disabled />
+						<Input disabled placeholder='Sinh viên năm thứ' />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={8}>
 					<Form.Item label='Đào tạo từ năm' name={['khoaSinhVien', 'namHocBatDau']}>
-						<Input disabled />
+						<Input disabled placeholder='Đào tạo từ năm' />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={8}>
 					<Form.Item label='Số năm đào tạo' name={'soNamDaoTao'}>
-						<Input disabled />
+						<Input disabled placeholder='Số năm đào tạo' />
 					</Form.Item>
 				</Col>
 			</Row>

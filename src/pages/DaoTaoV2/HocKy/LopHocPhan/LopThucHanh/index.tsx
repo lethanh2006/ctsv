@@ -71,7 +71,7 @@ const LopThucHanhPage = () => {
 				columns={columns}
 				getData={() => getModel({ tenCha: recLopHocPhan?.ten })}
 				dependencies={[page, limit]}
-				modelName='hocky.lopthuchanh'
+				modelName='daotaov2.hocky.lopthuchanh'
 				title={intl.formatMessage({ id: 'kyhoc.lophocphan.lopthuchanh' })}
 				Form={FormLopThucHanh}
 				hideCard

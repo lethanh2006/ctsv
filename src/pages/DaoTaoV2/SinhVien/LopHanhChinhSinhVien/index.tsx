@@ -35,7 +35,7 @@ const LopHanhChinhSinhVien = () => {
 				columns={columns}
 				params={{ sinhVienSsoId: recSinhVien?.ssoId }}
 				dependencies={[page, limit, recSinhVien?.ssoId]}
-				modelName='namhoc.sinhvienlophanhchinh'
+				modelName='daotaov2.namhoc.sinhvienlophanhchinh'
 				buttons={{ create: false, reload: false }}
 				hideTotal
 				hideCard

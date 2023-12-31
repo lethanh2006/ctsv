@@ -275,7 +275,7 @@ const QuyDoiDiemSinhVienPage = () => {
 							columns={columns}
 							params={{ dotDangKyQuyDoiDiemId: recDot?._id, trangThai: trangThaiQuyDoiDiem }}
 							dependencies={[page, limit, recDot?._id, trangThaiQuyDoiDiem]}
-							modelName='ketquahoctap.quydoidiem.quydoidiemsinhvien'
+							modelName='daotaov2.ketquahoctap.quydoidiem.quydoidiemsinhvien'
 							Form={FormQuyDoiDiemSinhVien}
 							formProps={{ getData }}
 							widthDrawer={1000}

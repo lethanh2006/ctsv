@@ -20,7 +20,7 @@ const TrinhDoDTNhaNuoc = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.nhanuoc.trinhdo'
+			modelName='daotaov2.danhmuc.nhanuoc.trinhdo'
 			title={intl.formatMessage({ id: 'danhmuchethong.nhanuoc.trinhdo.title' })}
 			buttons={{ create: false }}
 		/>

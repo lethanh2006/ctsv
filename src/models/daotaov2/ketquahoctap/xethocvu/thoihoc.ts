@@ -8,10 +8,11 @@ import {
 } from '@/services/DaoTaoV2/KetQuaHocTap/XetHocVu';
 import { type XetHocVu } from '@/services/DaoTaoV2/KetQuaHocTap/XetHocVu/typing';
 import type { ETrangThaiDuyetCanhBao } from '@/services/DaoTaoV2/KetQuaHocTap/constant';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<XetHocVu.IRecord>('thoi-hoc');
+	const objInit = useInitModel<XetHocVu.IRecord>('thoi-hoc', undefined, undefined, ipDaoTao);
 	const { formSubmiting, setFormSubmiting } = objInit;
 
 	const khoiTaoCanhBaoSinhVienModel = async (hocKyId: string): Promise<XetHocVu.IRecord> => {

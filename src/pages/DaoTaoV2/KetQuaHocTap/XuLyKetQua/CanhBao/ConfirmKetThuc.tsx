@@ -10,7 +10,7 @@ const ConfirmKetThucDotCanhBao = (props: {
 }) => {
 	const { isThoiHoc, visibleForm, setVisibleForm } = props;
 	const { chotDanhSachCanhBaoSinhVienModel, formSubmiting } = useModel(
-		isThoiHoc ? 'ketquahoctap.xethocvu.thoihoc' : 'ketquahoctap.xethocvu.canhbao',
+		isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao',
 	);
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 

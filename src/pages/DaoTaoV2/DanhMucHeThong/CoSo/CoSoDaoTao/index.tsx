@@ -64,7 +64,7 @@ const CoSoDaoTao = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.cosodaotao'
+			modelName='daotaov2.danhmuc.cosodaotao'
 			title={intl.formatMessage({ id: 'danhmuchethong.coso.cosodaotao.title' })}
 			Form={Form}
 			// buttons={{ create: false }}

@@ -98,7 +98,7 @@ const DotNhapHoc = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='namhoc.dotnhaphoc'
+				modelName='daotaov2.namhoc.dotnhaphoc'
 				title={intl.formatMessage({ id: 'namhoc.dotnhaphoc.title' })}
 				Form={ModalDotNhapHoc}
 				widthDrawer={800}

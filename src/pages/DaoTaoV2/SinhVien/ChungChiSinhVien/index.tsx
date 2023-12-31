@@ -122,7 +122,7 @@ const ChungChiSinhVienPage = (props: { fromSinhVien?: boolean }) => {
 			columns={columns}
 			params={fromSinhVien ? { sinhVienSsoId: recSinhVien?.ssoId } : undefined}
 			dependencies={[page, limit, fromSinhVien, recSinhVien?.ssoId]}
-			modelName='sinhvien.chungchi'
+			modelName='daotaov2.sinhvien.chungchi'
 			hideCard={fromSinhVien}
 			Form={Form}
 			formProps={{ fromSinhVien }}

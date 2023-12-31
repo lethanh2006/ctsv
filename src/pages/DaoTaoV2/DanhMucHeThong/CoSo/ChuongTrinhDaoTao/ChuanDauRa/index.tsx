@@ -79,7 +79,7 @@ const ChuanDauRaPage = () => {
 								getData={getData}
 								columns={columns}
 								dependencies={[page, limit, recChuongTrinh?.ma]}
-								modelName='danhmuc.chungchidaura'
+								modelName='daotaov2.danhmuc.chungchidaura'
 								title='chứng chỉ'
 								widthDrawer={800}
 								Form={Form}

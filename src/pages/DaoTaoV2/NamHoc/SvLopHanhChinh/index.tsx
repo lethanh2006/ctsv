@@ -79,7 +79,7 @@ const SinhVienLopHanhChinh = (props: { hideCard?: boolean }) => {
 				columns={columns}
 				dependencies={[page, limit, recLopHanhChinh?._id]}
 				params={{ lopHanhChinhId: recLopHanhChinh?._id }}
-				modelName='namhoc.sinhvienlophanhchinh'
+				modelName='daotaov2.namhoc.sinhvienlophanhchinh'
 				title={intl.formatMessage({ id: 'namhoc.svlophanhchinh.title' })}
 				Form={Form}
 				hideCard={hideCard}

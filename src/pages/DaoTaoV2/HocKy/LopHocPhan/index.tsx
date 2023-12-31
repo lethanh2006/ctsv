@@ -150,7 +150,7 @@ const LopHocPhanPage = (props: { fromHocKy?: boolean; isKeHoach?: boolean }) => 
 								title='Lớp tín chỉ'
 								getData={getData}
 								dependencies={[page, limit, recHocKy?.ma, recHocPhan?.maHocPhan]}
-								modelName='hocky.lophocphan'
+								modelName='daotaov2.hocky.lophocphan'
 								modelImportName='hocky.lophocphanimport'
 								Form={ModalLopHocPhan}
 								widthDrawer={1000}
@@ -180,7 +180,7 @@ const LopHocPhanPage = (props: { fromHocKy?: boolean; isKeHoach?: boolean }) => 
 			</Card>
 
 			<ModalImport
-				modelName='hocky.sinhvienlophocphan'
+				modelName='daotaov2.hocky.sinhvienlophocphan'
 				onCancel={() => setVisibleImportSvLhp(false)}
 				visible={visibleImportSvLhp}
 				onOk={() => {

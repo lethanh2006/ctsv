@@ -123,7 +123,7 @@ const ModalYKien = (props: { visible: boolean; onCancel: () => void }) => {
 				getData={getData}
 				columns={columns}
 				dependencies={[page, limit, recNam?._id]}
-				modelName='namhoc.ykienkehoachnamhoc'
+				modelName='daotaov2.namhoc.ykienkehoachnamhoc'
 				buttons={{ create: false }}
 				hideCard
 			/>

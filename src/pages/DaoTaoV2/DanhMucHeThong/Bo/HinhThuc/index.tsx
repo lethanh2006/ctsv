@@ -28,7 +28,7 @@ const TrinhDoDTBo = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.dmhinhthuc'
+			modelName='daotaov2.danhmuc.dmhinhthuc'
 			title={intl.formatMessage({ id: 'danhmuchethong.bo.hinhthuc.title' })}
 			Form={Form}
 			buttons={{ create: false, export: true, import: true }}

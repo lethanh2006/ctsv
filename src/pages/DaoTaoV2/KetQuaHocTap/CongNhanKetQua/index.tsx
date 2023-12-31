@@ -105,7 +105,7 @@ const PageCongNhanKetQua = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='ketquahoctap.congnhan'
+			modelName='daotaov2.ketquahoctap.congnhan'
 			title={intl.formatMessage({ id: 'ketquahoctap.congnhanketqua.title' })}
 			Form={Form}
 			rowSelection

@@ -63,7 +63,7 @@ const GiangVienDeCuongPage = () => {
 				columns={columns}
 				dependencies={[page, limit]}
 				params={{ deCuongId: recDeCuong?._id }}
-				modelName='hocphan.giangviendecuong'
+				modelName='daotaov2.hocphan.giangviendecuong'
 				title='Giảng viên đề cương'
 				Form={Form}
 				hideCard

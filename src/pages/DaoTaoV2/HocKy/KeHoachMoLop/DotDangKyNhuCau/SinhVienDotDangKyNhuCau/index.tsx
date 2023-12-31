@@ -60,7 +60,7 @@ const SinhVienDotDangKyNhuCauPage = () => {
 				columns={columns}
 				params={{ dotDkNhuCauId: recDotDangKy?._id }}
 				dependencies={[page, limit]}
-				modelName='hocky.dangkynhucau'
+				modelName='daotaov2.hocky.dangkynhucau'
 				title='Sinh viên - Đợt đăng ký nhu cầu'
 				Form={FormSinhVienDotDangKy}
 				hideCard

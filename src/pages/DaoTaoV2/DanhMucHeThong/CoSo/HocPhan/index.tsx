@@ -145,7 +145,7 @@ const HocPhanPage = () => {
 				// Truyền vào base export
 				params={{ maDonVi: recDonVi?.maDonVi, maTrinhDoDaoTao: recTrinhDo?.ma }}
 				dependencies={[page, limit, recDonVi?.maDonVi, recTrinhDo?.ma]}
-				modelName='hocphan.hocphan'
+				modelName='daotaov2.hocphan.hocphan'
 				title={intl.formatMessage({ id: 'danhmuchethong.coso.hocphan.title' })}
 				Form={ModalHocPhan}
 				widthDrawer={1000}
@@ -184,7 +184,7 @@ const HocPhanPage = () => {
 			</TableBase>
 
 			<ModalImport
-				modelName='hocphan.decuonghocphan'
+				modelName='daotaov2.hocphan.decuonghocphan'
 				visible={visibleImportDeCuong}
 				onCancel={() => setVisibleImportDeCuong(false)}
 				onOk={() => {

@@ -71,7 +71,7 @@ const LogLopHocPhanPage = () => {
 				columns={columns}
 				dependencies={[page, limit, recLopHP?._id]}
 				params={{ idLopGoc: recLopHP?._id, loai: ELoaiLogLopHocPhan.THAY_DOI_HOC_VIEN }}
-				modelName='hocky.loglophocphan'
+				modelName='daotaov2.hocky.loglophocphan'
 				buttons={{ create: false, export: true }}
 				hideCard
 			/>

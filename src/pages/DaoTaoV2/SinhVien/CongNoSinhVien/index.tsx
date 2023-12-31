@@ -116,7 +116,7 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 				buttons={{ create: false, export: true }}
 				hideCard
 				dependencies={[page, limit]}
-				modelName='taichinh.hoadon'
+				modelName='daotaov2.taichinh.hoadon'
 			/>
 
 			<Modal

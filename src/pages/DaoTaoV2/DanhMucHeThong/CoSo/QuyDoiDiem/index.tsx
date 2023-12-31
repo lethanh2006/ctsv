@@ -67,7 +67,7 @@ const QuyDoiDiemPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.quydoidiem'
+			modelName='daotaov2.danhmuc.quydoidiem'
 			title={intl.formatMessage({ id: 'danhmuchethong.coso.quydoidiem.title' })}
 			Form={Form}
 			buttons={{ import: true, export: true }}

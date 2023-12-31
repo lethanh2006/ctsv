@@ -71,7 +71,7 @@ const TaiLieuHocVuPage = () => {
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName='ketquahoctap.xethocvu.tailieuhocvu'
+				modelName='daotaov2.ketquahoctap.xethocvu.tailieuhocvu'
 				title={intl.formatMessage({ id: 'ketquahoctap.xulyketqua.tailieuhocvu.title' })}
 				hideCard
 				Form={Form}

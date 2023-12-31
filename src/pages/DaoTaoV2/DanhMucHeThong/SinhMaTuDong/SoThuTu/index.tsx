@@ -71,7 +71,7 @@ const SoThuTuMaPage = () => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, source, recDonVi?.maDonVi, recTrinhDo?.ma]}
-				modelName='danhmuc.sothutuma'
+				modelName='daotaov2.danhmuc.sothutuma'
 				title={intl.formatMessage({ id: 'danhmuchethong.sothutuma.title' })}
 				Form={Form}
 				formProps={{ getData }}

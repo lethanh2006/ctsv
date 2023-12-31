@@ -16,6 +16,7 @@ import FormTotNghiepVanBang from './FormTotNghiepVanBang';
 
 const ModalSinhVien = (props: any) => {
 	const intl = useIntl();
+	debugger;
 	const { record, edit, setVisibleForm, handleView } = useModel('daotaov2.sinhvien.sinhvien');
 	const [currentStep, setCurrentStep] = useState<string>('0');
 	const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1200px)' });

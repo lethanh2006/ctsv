@@ -82,7 +82,7 @@ const NhanSuLopHocPhan = (props: { isView?: boolean }) => {
 			params={{ lopHocPhanId: recLopHP?._id }}
 			dependencies={[page, limit, recLopHP?._id]}
 			getData={getData}
-			modelName='hocky.nhansulophocphan'
+			modelName='daotaov2.hocky.nhansulophocphan'
 			title={intl.formatMessage({ id: 'kyhoc.nhansulophocphan.title' })}
 			Form={FormNsLopHocPhan}
 			buttons={{ create: !isView }}

@@ -7,7 +7,9 @@ import { useModel } from 'umi';
 
 const SinhVienCanhBaoTable = (props: { isThoiHoc?: boolean }) => {
 	const { isThoiHoc } = props;
-	const { getAllModel } = useModel(isThoiHoc ? 'ketquahoctap.xethocvu.thoihoc' : 'ketquahoctap.xethocvu.canhbao');
+	const { getAllModel } = useModel(
+		isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao',
+	);
 	const { record: recSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 	const [danhSach, setDanhSach] = useState<XetHocVu.IRecord[]>([]);
 

@@ -11,7 +11,7 @@ import { useModel } from 'umi';
 const StatSinhVienCanhBao = (props: { isThoiHoc?: boolean }) => {
 	const { isThoiHoc } = props;
 	const { setFilters, filters } = useModel(
-		isThoiHoc ? 'ketquahoctap.xethocvu.thoihoc' : 'ketquahoctap.xethocvu.canhbao',
+		isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao',
 	);
 	const { thongkeSinhVienCanhBaoModel, thongKe } = useModel('daotaov2.ketquahoctap.xethocvu.thongke');
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');

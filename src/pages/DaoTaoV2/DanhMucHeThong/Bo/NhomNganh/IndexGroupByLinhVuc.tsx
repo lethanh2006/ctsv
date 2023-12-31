@@ -48,7 +48,7 @@ const TrinhDoDTBo = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.dmnhomnganh'
+			modelName='daotaov2.danhmuc.dmnhomnganh'
 			getData={getData}
 			dataState='danhSachTheoLichVuc'
 			title={intl.formatMessage({ id: 'danhmuchethong.bo.nganh.title' })}

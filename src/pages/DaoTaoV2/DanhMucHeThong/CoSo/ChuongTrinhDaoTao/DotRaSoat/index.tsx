@@ -79,7 +79,7 @@ const CardDotRaSoatCTDT = () => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit]}
-				modelName='chuongtrinhdaotao.dotrasoat'
+				modelName='daotaov2.chuongtrinhdaotao.dotrasoat'
 				title='Đợt rà soát chương trình đào tạo'
 				Form={Form}
 				rowSelection

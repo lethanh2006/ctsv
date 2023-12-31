@@ -53,7 +53,7 @@ const KhenThuongSinhVienPage = () => {
 					getModel(undefined, undefined, undefined, undefined, undefined, `page/sso-id/${recSinhVien?.ssoId}`)
 				}
 				dependencies={[page, limit]}
-				modelName='sinhvien.khenthuong'
+				modelName='daotaov2.sinhvien.khenthuong'
 				hideCard
 				buttons={{ create: false }}
 			/>

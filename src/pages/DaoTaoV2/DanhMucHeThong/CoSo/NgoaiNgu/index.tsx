@@ -52,7 +52,7 @@ const NgoaiNguPage = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='danhmuc.ngoaingu'
+				modelName='daotaov2.danhmuc.ngoaingu'
 				title={intl.formatMessage({ id: 'danhmuchethong.ngoaingu.title' })}
 				Form={Form}
 				rowSelection

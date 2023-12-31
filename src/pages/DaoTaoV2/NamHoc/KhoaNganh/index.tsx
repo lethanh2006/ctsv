@@ -65,7 +65,7 @@ const KhoaNganhPage = (props: { hideCard?: boolean }) => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, recordKhoaSinhVien?.ma]}
-				modelName='namhoc.khoanganh'
+				modelName='daotaov2.namhoc.khoanganh'
 				title={intl.formatMessage({ id: 'namhoc.khoanganh.title' })}
 				Form={Form}
 				rowSelection

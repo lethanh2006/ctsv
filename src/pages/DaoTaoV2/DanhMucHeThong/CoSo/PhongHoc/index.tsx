@@ -126,7 +126,7 @@ const PhongHocPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.phonghoc'
+			modelName='daotaov2.danhmuc.phonghoc'
 			title={intl.formatMessage({ id: 'danhmuchethong.coso.phonghoc.title' })}
 			Form={Form}
 			widthDrawer={800}

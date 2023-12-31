@@ -76,7 +76,7 @@ const KyLuatPage = (props: { type: 'thi-ho' | 'no-hoc-phi' }) => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, type, recHocKy?.ma]}
-				modelName='ketquahoctap.xethocvu.kyluat'
+				modelName='daotaov2.ketquahoctap.xethocvu.kyluat'
 				buttons={{ create: false }}
 				otherButtons={[
 					<ButtonExtend

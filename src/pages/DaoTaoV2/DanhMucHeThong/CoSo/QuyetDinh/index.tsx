@@ -93,7 +93,7 @@ const QuyetDinhPage = () => {
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName='quyetdinh.quyetdinh'
+				modelName='daotaov2.quyetdinh.quyetdinh'
 				title={intl.formatMessage({ id: 'danhmuchethong.coso.quyetdinh.title' })}
 				Form={isView ? ViewQuyetDinh : CardFormQuyetDinh}
 				widthDrawer={1000}

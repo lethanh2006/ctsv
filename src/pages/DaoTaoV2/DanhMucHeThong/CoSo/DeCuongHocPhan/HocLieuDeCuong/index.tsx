@@ -109,7 +109,7 @@ const HocLieuDeCuongPage = () => {
 				columns={columns}
 				dependencies={[page, limit]}
 				params={{ deCuongId: recDeCuong?._id }}
-				modelName='hocphan.hoclieudecuong'
+				modelName='daotaov2.hocphan.hoclieudecuong'
 				title='Đề cương học liệu'
 				Form={Form}
 				hideCard

@@ -63,7 +63,7 @@ const KyLuatSinhVienPage = () => {
 				getData={() =>
 					getModel(undefined, undefined, undefined, undefined, undefined, `page/sso-id/${recSinhVien?.ssoId}`)
 				}
-				modelName='sinhvien.kyluat'
+				modelName='daotaov2.sinhvien.kyluat'
 				hideCard
 				buttons={{ create: false }}
 			/>

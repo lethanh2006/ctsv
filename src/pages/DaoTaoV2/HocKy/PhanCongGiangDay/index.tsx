@@ -205,7 +205,7 @@ const PhanCongGiangDayPage = () => {
 										columns={columns}
 										getData={getData}
 										dependencies={[page, limit, recHocKy?.ma, recHocPhan?.maHocPhan]}
-										modelName='hocky.lophocphan'
+										modelName='daotaov2.hocky.lophocphan'
 										Form={ModalPhanCongGiangDay}
 										formProps={{ getData }}
 										widthDrawer={1000}
@@ -236,7 +236,7 @@ const PhanCongGiangDayPage = () => {
 			</Card>
 
 			<ModalImport
-				modelName='hocky.nhansulophocphan'
+				modelName='daotaov2.hocky.nhansulophocphan'
 				onCancel={() => setVisibleImport(false)}
 				onOk={() => {
 					setVisibleImport(false);

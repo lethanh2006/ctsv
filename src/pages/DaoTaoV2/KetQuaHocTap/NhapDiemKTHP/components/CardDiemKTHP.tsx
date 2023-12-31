@@ -450,7 +450,7 @@ const CardDiemKTHP = (getData: () => void) => {
 			) : null}
 
 			<ModalImport
-				modelName='ketquahoctap.importdiemaq'
+				modelName='daotaov2.ketquahoctap.importdiemaq'
 				visible={visibleImport}
 				onOk={() => getDataInternal()}
 				onCancel={() => setVisibleImport(false)}

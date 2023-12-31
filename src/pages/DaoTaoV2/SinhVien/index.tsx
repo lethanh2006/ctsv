@@ -2,18 +2,17 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import moment from 'moment';
-import { useIntl, useModel } from 'umi';
+import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
 import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinhVien';
 import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
 
 const ViewSinhVien = () => {
-	const intl = useIntl();
-	const { getModel, page, limit, deleteModel, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
+	const { getModel, page, limit, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 
@@ -92,7 +91,7 @@ const ViewSinhVien = () => {
 					<Tooltip title='Xem chi tiết'>
 						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					{/* <Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, getData)}
 							title='Bạn có chắc chắn muốn xóa sinh viên này?'
@@ -100,7 +99,7 @@ const ViewSinhVien = () => {
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
 						</Popconfirm>
-					</Tooltip>
+					</Tooltip> */}
 				</>
 			),
 		},
@@ -112,14 +111,14 @@ const ViewSinhVien = () => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, recKhoa?.ma, recNganh?.ma]}
-				modelName='sinhvien.sinhvien'
-				title={intl.formatMessage({ id: 'sinhvien.title' })}
+				modelName='daotaov2.sinhvien.sinhvien'
+				title={'Danh sách sinh viên'}
 				Form={isView ? PreviewHoSo : ModalSinhVien}
 				formProps={{ hasEdit: true }}
 				widthDrawer={1100}
 				rowSelection
 				deleteMany
-				buttons={{ import: true, export: true }}
+				buttons={{ import: false, export: true, create: false }}
 			>
 				<div style={{ marginBottom: 12 }}>
 					<FilterKhoaSinhVien hasSelectNganh allowClear />

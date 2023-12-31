@@ -155,7 +155,7 @@ const CardLopHocPhan = (props: {
 									getData={getData}
 									columns={columns}
 									dependencies={[page, limit, recHocKy?.ma, recHocPhan?.ma]}
-									modelName='hocky.lophocphan'
+									modelName='daotaov2.hocky.lophocphan'
 									buttons={{ reload: false, create: false, filter: false }}
 									otherProps={{ size: 'small', scroll: { y: 600 } }}
 									// hideChildrenRows

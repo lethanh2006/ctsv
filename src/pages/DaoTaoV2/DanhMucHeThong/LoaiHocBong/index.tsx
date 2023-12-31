@@ -52,7 +52,7 @@ const LoaiHocBongPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.loaihocbong'
+			modelName='daotaov2.danhmuc.loaihocbong'
 			title={intl.formatMessage({ id: 'danhmuchethong.loaihocbong.title' })}
 			Form={Form}
 			rowSelection

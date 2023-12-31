@@ -1,11 +1,12 @@
 import useInitModel from '@/hooks/useInitModel';
 import { postManySinhVienLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
+import { ipDaoTao } from '@/utils/ip';
 import { chuanHoaObject } from '@/utils/utils';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<LopHanhChinh.IRecordSinhVien>('lop-hc-sv');
+	const objInit = useInitModel<LopHanhChinh.IRecordSinhVien>('lop-hc-sv', undefined, undefined, ipDaoTao);
 	const { formSubmiting, setFormSubmiting, setVisibleForm } = objInit;
 
 	const postManyModel = async (

@@ -74,7 +74,7 @@ export const CardFilterCTDT = () => {
 				columns={columnsChuongTrinh}
 				dependencies={[page, limit, chuongTrinhDaoTao]}
 				getData={getData}
-				modelName='chuongtrinhdaotao.chuongtrinh'
+				modelName='daotaov2.chuongtrinhdaotao.chuongtrinh'
 				buttons={{ create: false, filter: false, reload: false }}
 				addStt={false}
 				hideCard

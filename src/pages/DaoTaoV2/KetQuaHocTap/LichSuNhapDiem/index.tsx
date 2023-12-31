@@ -84,7 +84,7 @@ const ModalLichSuNhapDiem = (props: {
 				getData={getData}
 				columns={columns}
 				dependencies={[page, limit, lopHocPhanId, maHocPhan]}
-				modelName='ketquahoctap.lichsunhapdiem'
+				modelName='daotaov2.ketquahoctap.lichsunhapdiem'
 				buttons={{ create: false }}
 			/>
 		</Modal>

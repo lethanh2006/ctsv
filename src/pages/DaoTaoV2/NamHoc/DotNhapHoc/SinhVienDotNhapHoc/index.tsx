@@ -69,7 +69,7 @@ const SinhVienDotNhapHocPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='namhoc.sinhvienlophanhchinh'
+			modelName='daotaov2.namhoc.sinhvienlophanhchinh'
 			title={intl.formatMessage({ id: 'namhoc.dotnhaphoc.sinhviendotnhaphoc.title' })}
 			Form={Form}
 			hideCard

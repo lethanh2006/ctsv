@@ -236,7 +236,7 @@ const RaSoatDeCuong = () => {
 				getData={getData}
 				columns={columns}
 				dependencies={[page, limit, recDonVi?.maDonVi, activeKey, recHocKy?.ma]}
-				modelName='hocphan.hocphan'
+				modelName='daotaov2.hocphan.hocphan'
 				buttons={{ create: false }}
 				hideCard
 				otherButtons={[

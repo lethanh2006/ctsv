@@ -97,7 +97,7 @@ const DotDangKyNhuCauPage = () => {
 				columns={columns}
 				params={{ maHocKy: recordHocKy?.ma }}
 				dependencies={[page, limit, recordHocKy?.ma]}
-				modelName='hocky.dotdangkynhucau'
+				modelName='daotaov2.hocky.dotdangkynhucau'
 				title='Đợt đăng ký nhu cầu'
 				Form={ModalDotDangKyNhuCau}
 				widthDrawer={800}

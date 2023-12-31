@@ -264,7 +264,7 @@ const ChuongTrinhDaoTaoPage = (props: { isKeHoach?: boolean; trangThai?: ETrangT
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit, isKeHoach, trangThai]}
-				modelName='chuongtrinhdaotao.chuongtrinh'
+				modelName='daotaov2.chuongtrinhdaotao.chuongtrinh'
 				title={
 					!isKeHoach
 						? intl.formatMessage({ id: 'danhmuchethong.coso.chuongtrinhdaotao.chuongtrinhdaotaochuan' })

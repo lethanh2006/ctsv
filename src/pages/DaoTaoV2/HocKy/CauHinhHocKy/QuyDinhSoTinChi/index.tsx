@@ -74,7 +74,7 @@ const QuyDinhSoTinChiPage = () => {
 				columns={columns}
 				params={{ maHocKy: recordHocKy?.ma }}
 				dependencies={[page, limit, recordHocKy?.ma]}
-				modelName='hocky.quydinhsotinchi'
+				modelName='daotaov2.hocky.quydinhsotinchi'
 				title={intl.formatMessage({ id: 'kyhoc.cauhinhkyhoc.quydinhsotinchi.title' })}
 				Form={Form}
 				hideCard

@@ -12,7 +12,7 @@ const FormCanhBaoHocTap = (props: any) => {
 	const intl = useIntl();
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm, getModel } = useModel(
-		isThoiHoc ? 'ketquahoctap.xethocvu.thoihoc' : 'ketquahoctap.xethocvu.canhbao',
+		isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao',
 	);
 	const [form] = Form.useForm();
 

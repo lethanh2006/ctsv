@@ -116,7 +116,7 @@ const NamHocPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='namhoc.namhoc'
+			modelName='daotaov2.namhoc.namhoc'
 			title={intl.formatMessage({ id: 'namhoc.namhoc.title' })}
 			Form={ModalNamHoc}
 			widthDrawer={1100}

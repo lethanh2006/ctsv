@@ -96,7 +96,7 @@ const DeCuongHocPhanPage = () => {
 				columns={columns}
 				params={{ deCuongHpId: recDeCuong?._id }}
 				dependencies={[page, limit]}
-				modelName='hocphan.noidunghp'
+				modelName='daotaov2.hocphan.noidunghp'
 				title='Lịch trình chung'
 				Form={FormLichTrinhChung}
 				hideCard

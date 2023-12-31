@@ -108,7 +108,7 @@ const HocLieuPage = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='danhmuc.hoclieu'
+				modelName='daotaov2.danhmuc.hoclieu'
 				title={intl.formatMessage({ id: 'danhmuchethong.coso.hoclieu.title' })}
 				Form={Form}
 				rowSelection

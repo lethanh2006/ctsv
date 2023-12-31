@@ -160,7 +160,7 @@ const HocKyPage = (props: { fromNamHoc?: boolean }) => {
 				columns={columns}
 				getData={getData}
 				dependencies={[page, limit]}
-				modelName='hocky.hocky'
+				modelName='daotaov2.hocky.hocky'
 				title={intl.formatMessage({ id: 'kyhoc.kyhoc.title' })}
 				Form={ModalHocKy}
 				widthDrawer={1000}

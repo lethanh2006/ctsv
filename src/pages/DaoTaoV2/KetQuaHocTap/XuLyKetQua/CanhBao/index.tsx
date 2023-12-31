@@ -49,7 +49,7 @@ const CanhBaoHocTapTable = (props: { isKetQua?: boolean; isThoiHoc?: boolean }) 
 		duyetAllCanhBaoSinhVienModel,
 		guiThongBaoHocVuModel,
 		setFilters,
-	} = useModel(isThoiHoc ? 'ketquahoctap.xethocvu.thoihoc' : 'ketquahoctap.xethocvu.canhbao');
+	} = useModel(isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao');
 	const { thongkeSinhVienCanhBaoModel } = useModel('daotaov2.ketquahoctap.xethocvu.thongke');
 	const { handleView } = useModel('daotaov2.sinhvien.sinhvien');
 	const [viewChot, setViewChot] = useState<boolean>(false);
@@ -322,7 +322,7 @@ const CanhBaoHocTapTable = (props: { isKetQua?: boolean; isThoiHoc?: boolean }) 
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
-				modelName={isThoiHoc ? 'ketquahoctap.xethocvu.thoihoc' : 'ketquahoctap.xethocvu.canhbao'}
+				modelName={isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao'}
 				title={
 					isThoiHoc
 						? intl.formatMessage({ id: 'ketquahoctap.xulyketqua.thoihoc.title' })

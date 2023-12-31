@@ -88,7 +88,7 @@ const LoaiHocPhanPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='danhmuc.loaihocphan'
+			modelName='daotaov2.danhmuc.loaihocphan'
 			title={intl.formatMessage({ id: 'danhmuchethong.coso.loaihocphan.title' })}
 			Form={Form}
 			buttons={{ create: false }}

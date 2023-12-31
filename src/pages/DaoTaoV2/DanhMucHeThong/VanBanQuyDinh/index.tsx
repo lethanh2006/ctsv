@@ -86,7 +86,7 @@ const VanBanQuyDinh = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='danhmuc.vanbanquydinh'
+				modelName='daotaov2.danhmuc.vanbanquydinh'
 				title={intl.formatMessage({ id: 'danhmuchethong.vanbanquydinh.title' })}
 				Form={Form}
 				buttons={{ import: true, export: true }}

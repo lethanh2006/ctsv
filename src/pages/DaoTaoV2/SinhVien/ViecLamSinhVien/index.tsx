@@ -60,7 +60,7 @@ const ViecLamSinhVienPage = () => {
 				getData={() =>
 					getModel(undefined, undefined, undefined, undefined, undefined, `page/sso-id/${recSinhVien?.ssoId}`)
 				}
-				modelName='sinhvien.vieclam'
+				modelName='daotaov2.sinhvien.vieclam'
 				hideCard
 				buttons={{ create: false }}
 			/>

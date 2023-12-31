@@ -90,7 +90,7 @@ const HocBongSinhVienPage = () => {
 				columns={columns}
 				dependencies={[page, limit]}
 				params={{ sinhVienSsoId: recSinhVien?.ssoId }}
-				modelName='sinhvien.hocbong'
+				modelName='daotaov2.sinhvien.hocbong'
 				title={intl.formatMessage({ id: 'sinhvien.hocbongsinhvien.title' })}
 				Form={Form}
 				hideCard

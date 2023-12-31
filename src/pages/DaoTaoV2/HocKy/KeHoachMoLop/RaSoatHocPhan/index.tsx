@@ -244,7 +244,7 @@ const RaSoatHocPhanPage = () => {
 			</Space>
 
 			<TableBase
-				modelName='hocphan.decuonghphk'
+				modelName='daotaov2.hocphan.decuonghphk'
 				columns={columns}
 				dependencies={[page, limit, recordKyHoc?.ma, recDonVi?.maDonVi]}
 				params={{ maHocKy: recordKyHoc?.ma, maDonVi: recDonVi?.maDonVi }}

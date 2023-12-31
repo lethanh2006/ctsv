@@ -89,7 +89,7 @@ const NhomTietHocPage = () => {
 			<TableBase
 				columns={columns}
 				dependencies={[page, limit]}
-				modelName='danhmuc.nhomtiethoc'
+				modelName='daotaov2.danhmuc.nhomtiethoc'
 				title={intl.formatMessage({ id: 'danhmuchethong.coso.nhomtiethoc.title' })}
 				Form={ModalFormNhomTietHoc}
 				widthDrawer={800}
