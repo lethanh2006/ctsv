@@ -2,7 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import UploadFile from '@/components/Upload/UploadFile';
 import SelectCapKyLuat from '@/pages/DanhMuc/CapKyLuat/components/Select';
 import SelectHinhThucKyLuat from '@/pages/DanhMuc/HinhThucKyLuat/components/Select';
-import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import { type KyLuat } from '@/services/KhenThuongKyLuat/KyLuat/typing';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import rules from '@/utils/rules';

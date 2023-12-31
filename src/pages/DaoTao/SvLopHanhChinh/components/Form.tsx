@@ -1,4 +1,4 @@
-import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';

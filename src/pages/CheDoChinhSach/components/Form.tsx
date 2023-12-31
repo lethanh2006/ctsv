@@ -1,6 +1,6 @@
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import { SelectHocKy } from '@/pages/DaoTao/HocKy/SelectHocKy';
-import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import { ELoaiThoiGianMienGiam } from '@/services/CheDoChinhSach/constant';
 import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';
 import rules from '@/utils/rules';
@@ -32,7 +32,7 @@ const FormCheDoChinhSach = () => {
 	} = useModel('chedochinhsach.chedochinhsach');
 
 	const { danhSach: danhSachSinhVien } = useModel('sinhvien.sinhvien');
-	const { danhSach: danhSachHocKy } = useModel('daotao.hocky');
+	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 
 	const [sinhVien, setSinhVien] = useState<{
 		hoTen: string;

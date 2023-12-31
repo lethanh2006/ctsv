@@ -6,39 +6,39 @@ import { useModel } from 'umi';
  * Secect Căn cứ pháp lý để cho vào FormItem
  */
 const SelectHinhThuc = (props: {
-  value?: string;
-  onChange?: (id: string) => void;
-  multiple?: boolean;
-  allowClear?: boolean;
-  placeholder?: string;
-  style?: React.CSSProperties;
-  disabled?: boolean;
+	value?: string;
+	onChange?: (id: string) => void;
+	multiple?: boolean;
+	allowClear?: boolean;
+	placeholder?: string;
+	style?: React.CSSProperties;
+	disabled?: boolean;
 }) => {
-  const { value, onChange, multiple, allowClear, placeholder, style, disabled } = props;
-  const { danhSach, getAllModel, visibleForm } = useModel('daotao.hinhthucdaotao');
+	const { value, onChange, multiple, allowClear, placeholder, style, disabled } = props;
+	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.danhmuc.hinhthucdaotao');
 
-  useEffect(() => {
-    if (!visibleForm) getAllModel();
-  }, [visibleForm]);
+	useEffect(() => {
+		if (!visibleForm) getAllModel();
+	}, [visibleForm]);
 
-  return (
-    <Select
-      mode={multiple ? 'multiple' : undefined}
-      allowClear={allowClear}
-      value={value}
-      disabled={disabled}
-      onChange={onChange}
-      options={danhSach.map((item) => ({
-        key: item._id,
-        value: item._id,
-        label: `${item?.danhMucHTDT?.ten} (${item?.danhMucHTDT?.ma})`,
-      }))}
-      showSearch
-      optionFilterProp="label"
-      placeholder={placeholder ?? 'Chọn hình thức đào tạo'}
-      style={{ width: '100%', ...style }}
-    />
-  );
+	return (
+		<Select
+			mode={multiple ? 'multiple' : undefined}
+			allowClear={allowClear}
+			value={value}
+			disabled={disabled}
+			onChange={onChange}
+			options={danhSach.map((item) => ({
+				key: item._id,
+				value: item._id,
+				label: `${item?.danhMucHTDT?.ten} (${item?.danhMucHTDT?.ma})`,
+			}))}
+			showSearch
+			optionFilterProp='label'
+			placeholder={placeholder ?? 'Chọn hình thức đào tạo'}
+			style={{ width: '100%', ...style }}
+		/>
+	);
 };
 
 export default SelectHinhThuc;

@@ -1,6 +1,6 @@
 import SelectHinhThucKhenThuong from '@/pages/DanhMuc/HinhThucKhenThuong/components/Select';
 import SelectLoaiKhenThuong from '@/pages/DanhMuc/LoaiKhenThuong/components/Select';
-import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import { type QuyetDinhKhenThuong } from '@/services/KhenThuong/QuyetDinhKhenThuong/typing';
 import { ELoaiKhenThuong } from '@/services/KhenThuong/constants';
 import { type SinhVien } from '@/services/SinhVien/typings';

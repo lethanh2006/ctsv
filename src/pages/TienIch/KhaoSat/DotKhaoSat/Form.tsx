@@ -2,7 +2,7 @@ import SelectKhoaSinhVien from '@/pages/DaoTao/KhoaSinhVien/Select';
 import SelectLopHanhChinhDebounce from '@/pages/DaoTao/LopHanhChinh/Select';
 import SelectLopHocPhanDebounce from '@/pages/DaoTao/LopHocPhan/Select';
 import SelectNganhCoSo from '@/pages/DaoTao/Nganh/Select';
-import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import { ELoaiDoiTuong, ELoaiDot } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';

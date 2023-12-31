@@ -1,4 +1,4 @@
-import SelectSinhVienDebounce from '@/pages/SinhVien/component/Select';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import {
 	EChucVuThanhVienCauLacBo,
 	EVaiTroThanhVienPhongBan,
