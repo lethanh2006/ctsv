@@ -8,11 +8,12 @@ import {
 	putPhanCongGiangDay,
 } from '@/services/DaoTaoV2/HocKy/ThoiKhoaBieu';
 import { type ThoiKhoaBieu } from '@/services/DaoTaoV2/HocKy/ThoiKhoaBieu/typing';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 import fileDownload from 'js-file-download';
 
 export default () => {
-	const objInit = useInitModel<ThoiKhoaBieu.IRecord>('thoi-khoa-bieu');
+	const objInit = useInitModel<ThoiKhoaBieu.IRecord>('thoi-khoa-bieu', undefined, undefined, ipDaoTao);
 	const { formSubmiting, setFormSubmiting, setVisibleForm, setLoading } = objInit;
 
 	const importThoiKhoaBieuModel = async (payload: { file: Blob }): Promise<ThoiKhoaBieu.IImportResponse> => {

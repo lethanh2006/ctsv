@@ -1,7 +1,8 @@
 import useInitModel from '@/hooks/useInitModel';
+import { ipDaoTao } from '@/utils/ip';
 
 export default () => {
-	const objInit = useInitModel<TietHoc.IRecordCoSo>('tiet-hoc', undefined, undefined, undefined, { tietHoc: 1 });
+	const objInit = useInitModel<TietHoc.IRecordCoSo>('tiet-hoc', undefined, undefined, ipDaoTao, { tietHoc: 1 });
 	// const [danhSachTietHoc, setDanhSachTietHoc] = useState<TietHoc.IRecordCoSo[]>([]);
 	// const [editTietHoc, setEditTietHoc] = useState<boolean>(false);
 	// const [visibleFormTietHoc, setVisibleFormTietHoc] = useState<boolean>(false);

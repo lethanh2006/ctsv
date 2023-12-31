@@ -4,11 +4,12 @@ import { postKhoiTaoNamHoc } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc';
 import type { KeHoachNamHoc } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc/typings';
 import { chotKeHoachNamHoc, postNamHocFull } from '@/services/DaoTaoV2/NamHoc/NamHoc';
 import type { NamHoc } from '@/services/DaoTaoV2/NamHoc/NamHoc/typings';
+import { ipDaoTao } from '@/utils/ip';
 import { chuanHoaObject } from '@/utils/utils';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<NamHoc.IRecord>('nam-hoc', undefined, undefined, undefined, { ma: -1 });
+	const objInit = useInitModel<NamHoc.IRecord>('nam-hoc', undefined, undefined, ipDaoTao, { ma: -1 });
 	const { formSubmiting, setFormSubmiting, getModel, setVisibleForm, setLoading } = objInit;
 
 	const postFullModel = async (

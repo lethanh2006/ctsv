@@ -14,12 +14,13 @@ import {
 	type ETrangThaiDiemLop,
 	type ETrangThaiDuyetGiangDay,
 } from '@/services/DaoTaoV2/HocKy/constant';
+import { ipDaoTao } from '@/utils/ip';
 import { chuanHoaObject } from '@/utils/utils';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-	const objInit = useInitModel<LopHocPhan.IRecord>('lop-hoc-phan', undefined, undefined, undefined, { ten: 1 });
+	const objInit = useInitModel<LopHocPhan.IRecord>('lop-hoc-phan', undefined, undefined, ipDaoTao, { ten: 1 });
 	const [thongKeTrangThaiDiemLop, setThongKeTrangThaiDiemLop] = useState<Record<ETrangThaiDiemLop, number>>();
 	const [thongKeTrangThaiDuyetGiangDay, setThongKeTrangThaiDuyetGiangDay] =
 		useState<Record<ETrangThaiDuyetGiangDay, number>>();

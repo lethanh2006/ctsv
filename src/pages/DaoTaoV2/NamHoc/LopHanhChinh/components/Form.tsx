@@ -1,5 +1,4 @@
 import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
-import SelectNhanSuDebounce from '@/pages/DaoTaoV2/ToChucNhanSu/NhanSu/Select';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
@@ -8,6 +7,7 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectKhoaSinhVien from '../../KhoaSinhVien/components/Select';
 import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 
 const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => void }) => {
 	const intl = useIntl();

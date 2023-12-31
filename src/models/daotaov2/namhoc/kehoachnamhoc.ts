@@ -6,11 +6,12 @@ import {
 	putKeHoachTheoTuan,
 } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc';
 import type { KeHoachNamHoc } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc/typings';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-	const objInit = useInitModel<KeHoachNamHoc.IRecord>('ke-hoach-nam-hoc');
+	const objInit = useInitModel<KeHoachNamHoc.IRecord>('ke-hoach-nam-hoc', undefined, undefined, ipDaoTao);
 	const [recordKHTheoTuan, setRecordKHTheoTuan] = useState<KeHoachNamHoc.IKeHoachTheoTuan>();
 	const { formSubmiting, setFormSubmiting, setVisibleForm, condition, getAllModel, setLoading } = objInit;
 

@@ -7,11 +7,17 @@ import {
 	thongKeSinhVienQuyDoiDiem,
 } from '@/services/DaoTaoV2/KetQuaHocTap/DotQuyDoiDiem';
 import type { DotQuyDoiDiem } from '@/services/DaoTaoV2/KetQuaHocTap/DotQuyDoiDiem/typing';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 import { useState } from 'react';
 
 export default () => {
-	const objInit = useInitModel<DotQuyDoiDiem.IQuyDoiDiemSinhVien>('quy-doi-diem-sinh-vien');
+	const objInit = useInitModel<DotQuyDoiDiem.IQuyDoiDiemSinhVien>(
+		'quy-doi-diem-sinh-vien',
+		undefined,
+		undefined,
+		ipDaoTao,
+	);
 	const [thongKe, setThongKe] = useState<DotQuyDoiDiem.IThongKeSVQuyDoiDiem>();
 	const { formSubmiting, setFormSubmiting } = objInit;
 

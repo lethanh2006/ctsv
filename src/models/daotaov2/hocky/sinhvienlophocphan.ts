@@ -9,10 +9,11 @@ import {
 	putDiemThi,
 } from '@/services/DaoTaoV2/HocKy/LopHocPhan';
 import { type LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
+import { ipDaoTao } from '@/utils/ip';
 import { message } from 'antd';
 
 export default () => {
-	const objInit = useInitModel<LopHocPhan.IRecordSinhVienLopHP>('lop-hp-sv');
+	const objInit = useInitModel<LopHocPhan.IRecordSinhVienLopHP>('lop-hp-sv', undefined, undefined, ipDaoTao);
 	const { formSubmiting, setFormSubmiting, setLoading, setDanhSach } = objInit;
 
 	const duyetDiemLopHocPhanModel = async (type: 'chuyen-vien' | 'quan-ly', idLopHocPhan: string): Promise<any> => {

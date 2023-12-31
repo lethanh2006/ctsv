@@ -1,9 +1,10 @@
 import useInitModel from '@/hooks/useInitModel';
 import { getTheoLinhVuc } from '@/services/DaoTaoV2/DanhMucHeThong/NhomNganh';
+import { ipDaoTao } from '@/utils/ip';
 import { useState } from 'react';
 
 export default () => {
-	const objInit = useInitModel<NhomNganhDaoTao.IRecordBo>('dm-nhom-nganh', undefined, undefined, undefined, { ma: 1 });
+	const objInit = useInitModel<NhomNganhDaoTao.IRecordBo>('dm-nhom-nganh', undefined, undefined, ipDaoTao, { ma: 1 });
 	const [danhSachTheoLichVuc, setDanhSachTheoLichVuc] = useState<NhomNganhDaoTao.IRecordByLinhVuc[]>();
 	const { limit, page, setLoading, setTotal } = objInit;
 

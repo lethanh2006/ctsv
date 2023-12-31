@@ -10,6 +10,7 @@ const SelectNhanSuDebounce = (props: {
 	onChange?: (val: string | string[], option: any) => void;
 	multiple?: boolean;
 	placeholder?: string;
+	disabled?: boolean;
 }) => {
 	const { value, onChange, multiple, placeholder } = props;
 	const { danhSach, getModel, setFilters, filters, loading } = useModel('tochucnhansu.nhansu');
@@ -41,6 +42,7 @@ const SelectNhanSuDebounce = (props: {
 		<Select
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
+			disabled={props?.disabled}
 			onChange={onChange}
 			onSearch={(val) => searchDebounceSinhVien(val)}
 			notFoundContent={
