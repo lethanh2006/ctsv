@@ -9,7 +9,7 @@ import { useModel } from 'umi';
 const ModalYeuCauChinhSua = (props: { visibleForm: boolean; setVisibleForm: (val: boolean) => void }) => {
 	const [form] = Form.useForm();
 	const { record, putModel, getModel, formSubmiting } = useModel('noingoaitru.dotkhaibao');
-	const { record: recHocKy } = useModel('hocky.hocky');
+	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 	const { visibleForm, setVisibleForm } = props;
 
 	const getData = () => getModel({ maHocKy: recHocKy?.ma });

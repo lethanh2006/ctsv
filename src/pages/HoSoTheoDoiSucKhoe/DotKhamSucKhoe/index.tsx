@@ -17,7 +17,7 @@ const DotKhamSucKhoePage = () => {
 	const { page, limit, deleteModel, handleEdit, putModel, getModel, setRecord } = useModel(
 		'hosotheodoisuckhoe.dotkhamsuckhoe',
 	);
-	const { record: recHocKy, setRecord: retRecHocKy, danhSach: danhSachHocKy } = useModel('hocky.hocky');
+	const { record: recHocKy, setRecord: retRecHocKy, danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 	const [viewYeuCau, setViewYeuCau] = useState<boolean>(false);
 
 	const onCell = (record: DotKhamSucKhoe.IRecord) => ({

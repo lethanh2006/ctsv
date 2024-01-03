@@ -17,7 +17,7 @@ import Form from './components/Form';
 
 const DotKhaiBaoNoiNgoaiTruPage = () => {
 	const { page, limit, handleEdit, deleteModel, getModel, putModel, setRecord } = useModel('noingoaitru.dotkhaibao');
-	const { record: recHocKy, setRecord: retRecHocKy, danhSach: danhSachHocKy } = useModel('hocky.hocky');
+	const { record: recHocKy, setRecord: retRecHocKy, danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 	const [viewYeuCau, setViewYeuCau] = useState<boolean>(false);
 	const [viewChitiet, setViewChiTiet] = useState<boolean>(false);
 

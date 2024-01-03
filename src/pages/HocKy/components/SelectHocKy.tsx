@@ -18,7 +18,7 @@ const SelectHocKy = (props: {
 	selectMa?: boolean;
 }) => {
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, selectMa, disabled } = props;
-	const { danhSach, getAllModel, visibleForm, loading } = useModel('hocky.hocky');
+	const { danhSach, getAllModel, visibleForm, loading } = useModel('daotaov2.hocky.hocky');
 
 	useEffect(() => {
 		if (!visibleForm) getAllModel(!!isSetRecord, { ma: -1 }, condition);

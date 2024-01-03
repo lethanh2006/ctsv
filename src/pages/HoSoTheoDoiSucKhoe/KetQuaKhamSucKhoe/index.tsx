@@ -13,7 +13,7 @@ const KetQuaKhamSucKhoePage = () => {
 		record: recDot,
 	} = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
-	const { record: recHocKy, setRecord, danhSach: danhSachHocKy } = useModel('hocky.hocky');
+	const { record: recHocKy, setRecord, danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 
 	return (
 		<Card title='Kết quả khám sức khỏe'>

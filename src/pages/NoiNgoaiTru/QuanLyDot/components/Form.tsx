@@ -12,7 +12,7 @@ const FormDotKhaoBaoNoiNgoaiTru = (props: any) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, getModel, formSubmiting, visibleForm } =
 		useModel('noingoaitru.dotkhaibao');
-	const { record: recHocKy } = useModel('hocky.hocky');
+	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 	const thoiGianBatDau = Form.useWatch('thoiGianBatDau', form);
 	const { title } = props;
 
