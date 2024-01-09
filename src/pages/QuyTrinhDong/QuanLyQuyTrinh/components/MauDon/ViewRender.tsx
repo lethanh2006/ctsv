@@ -20,11 +20,11 @@ const ViewRender = (props: {
 
 	switch (cauHinh.kieuDuLieu) {
 		case EKieuDuLieu.TEXT:
-			value = <div>{recordSanPhamFinal?.[cauHinh.ma]}</div>;
+			value = <div>{recordSanPhamFinal?.[cauHinh.ma]?.value}</div>;
 			break;
 
 		case EKieuDuLieu.BOOLEAN:
-			value = <div>{recordSanPhamFinal?.[cauHinh.ma] ? 'Có' : 'Không'}</div>;
+			value = <div>{recordSanPhamFinal?.[cauHinh.ma]?.value ? 'Có' : 'Không'}</div>;
 			break;
 
 		case EKieuDuLieu.DANHMUC:
@@ -32,20 +32,20 @@ const ViewRender = (props: {
 				<div>
 					{
 						(value = cauHinh.laDangMang
-							? recordSanPhamFinal?.[cauHinh.ma]?.join(', ')
-							: recordSanPhamFinal?.[cauHinh.ma])
+							? recordSanPhamFinal?.[cauHinh.ma]?.value?.join(', ')
+							: recordSanPhamFinal?.[cauHinh.ma]?.value)
 					}
 				</div>
 			);
 
 			break;
 		case EKieuDuLieu.NUMBER:
-			value = recordSanPhamFinal?.[cauHinh.ma] ? (
+			value = recordSanPhamFinal?.[cauHinh.ma]?.value ? (
 				<div>
 					{
 						(value = cauHinh.laDangMang
-							? recordSanPhamFinal?.[cauHinh.ma]?.map((item: number) => item)?.join(', ')
-							: recordSanPhamFinal?.[cauHinh.ma])
+							? recordSanPhamFinal?.[cauHinh.ma]?.value?.map((item: number) => item)?.join(', ')
+							: recordSanPhamFinal?.[cauHinh.ma]?.value)
 					}
 				</div>
 			) : (
@@ -54,12 +54,12 @@ const ViewRender = (props: {
 
 			break;
 		case EKieuDuLieu.DECIMAL:
-			value = recordSanPhamFinal?.[cauHinh.ma] ? (
+			value = recordSanPhamFinal?.[cauHinh.ma]?.value ? (
 				<div>
 					{
 						(value = cauHinh.laDangMang
-							? recordSanPhamFinal?.[cauHinh.ma]?.join(', ')
-							: recordSanPhamFinal?.[cauHinh.ma])
+							? recordSanPhamFinal?.[cauHinh.ma]?.value?.join(', ')
+							: recordSanPhamFinal?.[cauHinh.ma]?.value)
 					}
 				</div>
 			) : (
@@ -69,20 +69,20 @@ const ViewRender = (props: {
 			break;
 
 		case EKieuDuLieu.HOUR:
-			value = <div>{moment(recordSanPhamFinal?.[cauHinh.ma]).format('HH:mm DD/MM/YYYY')}</div>;
+			value = <div>{moment(recordSanPhamFinal?.[cauHinh.ma]?.value).format('HH:mm DD/MM/YYYY')}</div>;
 			break;
 		case EKieuDuLieu.DATE:
-			value = <div>{moment(recordSanPhamFinal?.[cauHinh.ma]).format('DD/MM/YYYY')}</div>;
+			value = <div>{moment(recordSanPhamFinal?.[cauHinh.ma]?.value).format('DD/MM/YYYY')}</div>;
 			break;
 		case EKieuDuLieu.MONTH:
-			value = <div>{moment(recordSanPhamFinal?.[cauHinh.ma]).format('MM/YYYY')}</div>;
+			value = <div>{moment(recordSanPhamFinal?.[cauHinh.ma]?.value).format('MM/YYYY')}</div>;
 			break;
 		case EKieuDuLieu.FILE:
 			value = (
 				<div>
 					{recordSanPhamFinal[cauHinh.ma] &&
 						recordSanPhamFinal[cauHinh.ma].map &&
-						recordSanPhamFinal?.[cauHinh.ma]?.map((item: string) => (
+						recordSanPhamFinal?.[cauHinh.ma]?.value?.map((item: string) => (
 							<Tag color={'red'} key={cauHinh.ma}>
 								<a href={item} target='_blank' rel='noreferrer'>
 									Xem tập tin
