@@ -1,6 +1,6 @@
 import { AppModules, landingUrl } from '@/services/base/constant';
 import { currentRole, keycloakAuthEndpoint } from '@/utils/ip';
-import { GlobalOutlined, LogoutOutlined, SwapOutlined, UserOutlined } from '@ant-design/icons';
+import { FileWordOutlined, GlobalOutlined, LogoutOutlined, SwapOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import { type ItemType } from 'antd/lib/menu/hooks/useItems';
 import React from 'react';
@@ -35,14 +35,20 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 			icon: <UserOutlined />,
 			label: fullName ?? (initialState.currentUser?.preferred_username || ''),
 		},
+		// {
+		// 	key: 'password',
+		// 	icon: <SwapOutlined />,
+		// 	label: 'Đổi mật khẩu',
+		// 	onClick: () => {
+		// 		const redirect = window.location.href;
+		// 		window.location.href = `${keycloakAuthEndpoint}?client_id=${AppModules[currentRole].clientId}&redirect_uri=${redirect}&response_type=code&scope=openid&kc_action=UPDATE_PASSWORD`;
+		// 	},
+		// },
 		{
-			key: 'password',
-			icon: <SwapOutlined />,
-			label: 'Đổi mật khẩu',
-			onClick: () => {
-				const redirect = window.location.href;
-				window.location.href = `${keycloakAuthEndpoint}?client_id=${AppModules[currentRole].clientId}&redirect_uri=${redirect}&response_type=code&scope=openid&kc_action=UPDATE_PASSWORD`;
-			},
+			key: 'office',
+			icon: <FileWordOutlined />,
+			label: 'Office 365',
+			onClick: () => window.open('https://office.com/'),
 		},
 		{
 			key: 'portal',
@@ -61,17 +67,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 	];
 
 	if (menu && !initialState.currentUser.realm_access?.roles?.includes('QUAN_TRI_VIEN')) {
-		// items.splice(1, 0, {
-		//   key: 'password',
-		//   icon: <LockOutlined />,
-		//   label: 'Đổi mật khẩu',
-		//   onClick: () =>
-		//     window.open(
-		//       keycloakAuthority +
-		//         '/login-actions/required-action?execution=UPDATE_PASSWORD&client_id=' +
-		//         keycloakClientID,
-		//     ),
-		// });
 		// items.splice(1, 0, {
 		//   key: 'center',
 		//   icon: <UserOutlined />,
