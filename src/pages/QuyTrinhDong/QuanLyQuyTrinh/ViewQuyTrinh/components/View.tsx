@@ -247,10 +247,10 @@ const View = (props: Iprops) => {
 										.map((item) =>
 											!item?.truongThongTinLienQuan ||
 											(item?.truongThongTinLienQuan &&
-												(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan] === item?.giaTriLienQuan ||
+												(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan]?.value === item?.giaTriLienQuan ||
 													(item.giaTriLienQuan.includes &&
 														item?.giaTriLienQuan?.includes(
-															dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan],
+															dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan]?.value,
 														)))) ? (
 												<Descriptions.Item key={item.ma} span={item?.colspan ? item.colspan / 4 : 6} label={item?.ten}>
 													<ViewRender
