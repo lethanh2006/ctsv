@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import { useModel } from 'umi';
 import rules from '@/utils/rules';
-import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinh/KhaiBaoQuyTrinh/typings';
-import { userUpdateBuoc } from '@/services/QuyTrinh/KhaiBaoQuyTrinh/khaibaoquytrinh';
-import FormRender from '@/pages/QuanLyQuyTrinh/components/MauDon/FormRender';
+import { userUpdateBuoc } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
+import FormRender from '../../components/MauDon/FormRender';
+import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 
 const FormQuyTrinh = (props: { getData: () => void }) => {
 	const {
@@ -16,7 +16,11 @@ const FormQuyTrinh = (props: { getData: () => void }) => {
 		editFormKhaiBao,
 		recordFormKhaiBao,
 	} = useModel('quytrinh.khaibaoquytrinh');
-	const { record: recordSanPham, setRecord: setRecordSanPham } = useModel('quytrinh.quanlyquytrinh');
+	const {
+		record: recordSanPham,
+		setRecord: setRecordSanPham,
+		recordQuyTrinhForm,
+	} = useModel('quytrinh.quanlyquytrinh');
 	const [formValues, setFormValues] = useState<any>({});
 	const [loadingKhaiBao, setLoadingKhaiBao] = useState<boolean>(false);
 	const [danhSachDonViXuLy, setDanhSachDonViXuLy] = useState<KhaiBaoQuyTrinh.IDonViXuLy[]>([]);
@@ -33,7 +37,17 @@ const FormQuyTrinh = (props: { getData: () => void }) => {
 			}
 			delete values.maBoPhanXuLy;
 
-			const payload = { thongTinKhaiBao: { ...values, ...recordSanPham?.thongTinKhaiBao }, maBoPhanXuLy: maBoPhanXuLy };
+			const valuesFinal: any = {};
+			const valuesForm = { ...(recordQuyTrinhForm?.thongTinKhaiBao ?? {}), ...values };
+			Object.keys(valuesForm).map((item) => {
+				valuesFinal[item] = {
+					value: valuesForm[item],
+				};
+			});
+			const payload = {
+				thongTinKhaiBao: { ...recordSanPham?.thongTinKhaiBao, ...recordQuyTrinhForm?.thongTinKhaiBao, ...valuesFinal },
+				maBoPhanXuLy: maBoPhanXuLy,
+			};
 
 			const res = await userUpdateBuoc(dataQuyTrinh?._id ?? '', current?.ma ?? '', payload);
 

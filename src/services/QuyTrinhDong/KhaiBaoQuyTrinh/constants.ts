@@ -7,6 +7,7 @@ export enum TrangThaiTiepNhan {
 	DA_DUYET = 'Duyệt',
 	KHONG_DUYET = 'Không duyệt',
 	CHINH_SUA_LAI = 'Chỉnh sửa lại',
+	DA_CHINH_SUA_LAI = 'Đã chỉnh sửa lại',
 }
 
 export const MapColorTrangThaiTiepNhan = {
@@ -14,6 +15,7 @@ export const MapColorTrangThaiTiepNhan = {
 	[TrangThaiTiepNhan.DA_DUYET]: '#1fba36',
 	[TrangThaiTiepNhan.KHONG_DUYET]: '#dc3545',
 	[TrangThaiTiepNhan.CHINH_SUA_LAI]: '#ffca2c',
+	[TrangThaiTiepNhan.DA_CHINH_SUA_LAI]: '#0dcaf0',
 };
 export enum TrangThaiTiepNhanDon {
 	DUYET = 'Duyệt',

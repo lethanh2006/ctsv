@@ -21,7 +21,7 @@ export default () => {
 	const [editFormKhaiBao, setEditFormKhaiBao] = useState<boolean>(false);
 	const [visibleFormKhaiBaoQuyTrinh, setVisibleFormKhaiBaoQuyTrinh] = useState<boolean>(false);
 	const [dataQuyTrinh, setDataQuyTrinh] = useState<KhaiBaoQuyTrinh.IRecord>();
-	const [loaiTinhTrangDon, setLoaiTinhTrangDon] = useState<ELoaiTinhTrangDon>(ELoaiTinhTrangDon.CAN_XU_LY);
+	const [loaiTinhTrangDon, setLoaiTinhTrangDon] = useState<ELoaiTinhTrangDon>(ELoaiTinhTrangDon.TAT_CA);
 	const [maBuoc, setMaBuoc] = useState<string>();
 
 	//lay id quy trinh selected trong dieu phoi va xu ly don quy trinh

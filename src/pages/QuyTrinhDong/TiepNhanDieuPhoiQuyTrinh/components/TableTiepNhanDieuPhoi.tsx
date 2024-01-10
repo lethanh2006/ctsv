@@ -296,6 +296,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 	return (
 		<>
 			<TableBase
+				hideCard
 				otherProps={{ size: 'small' }}
 				title={
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>

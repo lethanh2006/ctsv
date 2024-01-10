@@ -10,6 +10,10 @@ import type {
 
 declare module LoaiHinh {
 	export interface Cot {
+		maFieldLayDefaultValue: string;
+		maFormLayDefaultValue: string;
+		layDuLieuTu: string;
+		truongLayDuLieu: string;
 		ten: string;
 		ma: string;
 		kieuDuLieu: EKieuDuLieu;
@@ -29,6 +33,10 @@ declare module LoaiHinh {
 	}
 
 	export interface TruongThongTin {
+		maFieldLayDefaultValue: string;
+		maFormLayDefaultValue: string;
+		layDuLieuTu: string;
+		truongLayDuLieu: string;
 		ten: string;
 		ma: string;
 		ghiChu: string;

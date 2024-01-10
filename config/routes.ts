@@ -319,12 +319,12 @@
 		path: './quy-trinh',
 		// component: './KhaiBaoQuyTrinh',
 		routes: [
-			{
-				name: 'DieuPhoi',
-				icon: 'AuditOutlined',
-				path: './dieu-phoi',
-				component: './QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/DieuPhoi',
-			},
+			// {
+			// 	name: 'DieuPhoi',
+			// 	icon: 'AuditOutlined',
+			// 	path: './dieu-phoi',
+			// 	component: './QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/DieuPhoi',
+			// },
 			{
 				name: 'TiepNhan',
 				icon: 'AuditOutlined',

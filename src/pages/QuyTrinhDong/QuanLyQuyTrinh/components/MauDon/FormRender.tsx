@@ -12,9 +12,13 @@ import FormTable from './FormTable';
 import ViewRender from './ViewRender';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { EKieuDuLieu, ELoaiThoiGianThucHien, ELoaiTruongThongTinTinh } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import {
+	EKieuDuLieu,
+	ELoaiThoiGianThucHien,
+	ELoaiTruongThongTinTinh,
+} from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import _ from 'lodash';
-import SelectNhanSuDebounce from "@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce";
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 
 const FormRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -94,7 +98,7 @@ const FormRender = (props: {
 					placeholder='Chọn giá trị'
 					options={danhSach
 						.find((item) => item.maDanhMuc === cauHinh.maDanhMuc)
-						?.danhSachGiaTri.map((item: any) => ({ value: item, label: item }))}
+						?.danhSachGiaTri.map((item: any) => ({ value: item.value, label: item.value }))}
 				/>
 			);
 			rule = [...(cauHinh.batBuoc ? rules.required : [])];

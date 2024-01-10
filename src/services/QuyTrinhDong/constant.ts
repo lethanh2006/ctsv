@@ -34,8 +34,8 @@ export enum EHocVi {
 }
 
 export enum ELoaiTinhTrangDon {
-	CAN_XU_LY = 'Cần xử lý',
 	TAT_CA = 'Tất cả',
+	CAN_XU_LY = 'Cần xử lý',
 	CHUA_TRA_KET_QUA = 'Chưa trả kết quả',
 	DA_TRA_KET_QUA = 'Đã trả kết quả',
 }
@@ -125,15 +125,15 @@ export enum EPhanHe {
 	QLDT = 'QLDT',
 }
 export const MapKeyPhanHe: any = {
-  [EPhanHe.VWA_CONNECT]: 'Cổng học viên',
-  [EPhanHe.CONG_CAN_BO]: 'Cổng cán bộ',
-  [EPhanHe.CONG_TAC_SINH_VIEN]: 'Công tác sinh viên',
-  [EPhanHe.VAN_PHONG_DIEU_HANH]: 'Văn phòng điều hành',
-  [EPhanHe.QUAN_LY_KHOA_HOC]: 'Quản lý khoa học',
-  [EPhanHe.TCNS]: 'Tổ chức nhân sự',
-  [EPhanHe.QLDT]: 'Quản lý đào tạo',
+	[EPhanHe.VWA_CONNECT]: 'Cổng học viên',
+	[EPhanHe.CONG_CAN_BO]: 'Cổng cán bộ',
+	[EPhanHe.CONG_TAC_SINH_VIEN]: 'Công tác sinh viên',
+	[EPhanHe.VAN_PHONG_DIEU_HANH]: 'Văn phòng điều hành',
+	[EPhanHe.QUAN_LY_KHOA_HOC]: 'Quản lý khoa học',
+	[EPhanHe.TCNS]: 'Tổ chức nhân sự',
+	[EPhanHe.QLDT]: 'Quản lý đào tạo',
 };
 export enum ENguonDot {
-  TU_TAO = 'Tự tạo',
-  PHAN_HE = 'Lấy từ phân hệ',
+	TU_TAO = 'Tự tạo',
+	PHAN_HE = 'Lấy từ phân hệ',
 }
