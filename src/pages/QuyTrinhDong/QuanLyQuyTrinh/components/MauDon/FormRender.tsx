@@ -307,7 +307,7 @@ const FormRender = (props: {
 					rules={rule}
 					initialValue={
 						recordDonQuyTrinh?.danhSachKhaiBao?.find((item) => item.ma === cauHinh?.maFormLayDefaultValue)
-							?.thongTinKhaiBao?.[cauHinh?.maFieldLayDefaultValue]
+							?.thongTinKhaiBao?.[cauHinh?.maFieldLayDefaultValue]?.value
 					}
 				>
 					{component}

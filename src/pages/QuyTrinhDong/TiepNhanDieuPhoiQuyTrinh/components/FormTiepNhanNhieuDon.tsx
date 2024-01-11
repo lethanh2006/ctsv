@@ -3,13 +3,13 @@ import { Button, Col, Form, Input, message, Modal, Row, Select, Spin, Tooltip } 
 import { useState } from 'react';
 import { useModel } from '@@/plugin-model/useModel';
 import TableStaticData from '@/components/Table/TableStaticData';
-import { IColumn } from '@/components/Table/typing';
+import type { IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
 import ImportExcel from '@/components/ImportExcel';
 import rules from '@/utils/rules';
-import {QuyTrinh} from "@/services/QuyTrinhDong/typings";
-import SelectQuyTrinh from "@/pages/QuyTrinhDong/QuanLyQuyTrinh/Select";
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
+import SelectQuyTrinh from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/Select';
 import { chuyenVienTiepNhanImport } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
 import { TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
@@ -101,7 +101,9 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 			newData
 				?.filter((item) => item?.[0] !== null && item?.[0] !== undefined)
 				?.map((item: any[]) =>
-					typeof item?.[0] === 'string' ? { id: nanoid(), ten: item?.[0]?.trim() ?? '' } : { id: nanoid(), ten: item?.[0] },
+					typeof item?.[0] === 'string'
+						? { id: nanoid(), ten: item?.[0]?.trim() ?? '' }
+						: { id: nanoid(), ten: item?.[0] },
 				),
 		);
 
@@ -318,7 +320,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 			>
 				<ImportExcel
 					handleData={handleData}
-					title={`Import `}
+					title={'Import '}
 					onCancel={() => {
 						setVisible(false);
 					}}
