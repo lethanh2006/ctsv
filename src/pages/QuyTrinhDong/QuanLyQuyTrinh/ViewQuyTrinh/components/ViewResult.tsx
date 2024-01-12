@@ -1,8 +1,8 @@
-import { Card, Form, Tag } from 'antd';
+import { TrangThaiKhaiBao } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
 import { useModel } from '@@/plugin-model/useModel';
+import { Card, Form, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import {TrangThaiKhaiBao} from "@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants";
-import {QuyTrinh} from "@/services/QuyTrinhDong/typings";
 import FormRender from '../../components/MauDon/FormRender';
 
 const ViewResult = (props: { danhSachKhaiBao: any; modelName: any; type?: 'dieu_phoi' | 'tiep_nhan' }) => {
@@ -41,7 +41,7 @@ const ViewResult = (props: { danhSachKhaiBao: any; modelName: any; type?: 'dieu_
 					}}
 					disabled={true}
 				>
-					{currentFormKhaiBao?.cauHinhLoaiHinh?.map((item: QuyTrinh.TruongThongTin | QuyTrinh.Cot) => (
+					{currentFormKhaiBao?.cauHinhLoaiHinh?.map((item: LoaiHinh.TruongThongTin | LoaiHinh.Cot) => (
 						<FormRender formValues={formValues} key={item.ma} cauHinh={item} />
 					))}
 				</Form>

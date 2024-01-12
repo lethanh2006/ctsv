@@ -30,7 +30,7 @@ declare module QuyTrinh {
 		soNgayHenTraKetQua?: number;
 		maFormHienThi: string;
 		maTruongHienThi: string;
-    linhVuc: string;
+		linhVuc: string;
 		choPhepGuiNhieuLan: boolean;
 		danhSachPhamViQuyTrinh: PhamViQuyTrinh[];
 		danhSachFormKhaiBao: IMauDon[];
@@ -114,39 +114,6 @@ declare module QuyTrinh {
 		ten: string;
 		ma: string;
 		cauHinhLoaiHinh: TruongThongTin[];
-	}
-	export interface TruongThongTin {
-		ten: string;
-		ma: string;
-		ghiChu: string;
-		kieuDuLieu: EKieuDuLieu;
-		maDanhMuc: string;
-		danhSachCot: Cot[];
-		kichHoat: boolean;
-		batBuoc: boolean;
-		truongThongTinLienQuan: string;
-		giaTriLienQuan: any;
-		colspan: number;
-		danhSachCotHienThi: string[];
-		laDangMang: boolean;
-		textarea: boolean;
-		loaiHinhNckhId: string;
-	}
-	export interface Cot {
-		ten: string;
-		ma: string;
-		kieuDuLieu: EKieuDuLieu;
-		maDanhMuc: string;
-		kichHoat: boolean;
-		batBuoc: boolean;
-		truongThongTinLienQuan: string;
-		giaTriLienQuan: any;
-		danhSachCot: Cot[];
-		laDangMang: boolean;
-		colspan: number;
-		danhSachCotHienThi: string[];
-		textarea: boolean;
-		loaiHinhNckhId: string;
 	}
 	export interface IBoPhanXuLy {
 		ten: string;

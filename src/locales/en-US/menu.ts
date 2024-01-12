@@ -28,6 +28,7 @@ export default {
 	'menu.DanhMuc.LoaiKyLuat': 'Loại kỷ luật',
 	'menu.DanhMuc.HinhThucKhenThuong': 'Hình thức khen thưởng',
 	'menu.DanhMuc.LoaiKhenThuong': 'Loại khen thưởng',
+	'menu.DanhMuc.DanhGiaRenLuyen': 'Đánh giá rèn luyện',
 
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
@@ -47,6 +48,7 @@ export default {
 
 	'menu.CheDoChinhSach.DiemRenLuyen': 'Đánh giá rèn luyện',
 	'menu.CheDoChinhSach.DiemRenLuyen.DotChamDiem': 'Đợt chấm điểm',
+	'menu.CheDoChinhSach.DiemRenLuyen.BieuMau': 'Biểu mẫu',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung': 'Quản lý minh chứng',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.NoiNgoaiTru': 'Nội ngoại trú',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.ThamGiaCongTacXaHoi': 'Tham gia công tác xã hội',
@@ -84,7 +86,6 @@ export default {
 	'menu.TinTuc.TinTuc': 'Tin tức',
 
 	'menu.CauHoiThuongGap': 'Câu hỏi thường gặp',
-
 	//XỬ LÝ QUY TRÌNH
 	'menu.QuyTrinh': 'Dịch vụ hành chính',
 	'menu.QuyTrinh.ThongKe': 'Thống kê',
