@@ -21,7 +21,7 @@ const SelectHocKy = (props: {
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('daotaov2.hocky.hocky');
 
 	useEffect(() => {
-		if (!visibleForm) getAllModel(!!isSetRecord, { ma: -1 }, condition);
+		if (!visibleForm && !danhSach.length) getAllModel(!!isSetRecord, { ma: -1 }, condition);
 	}, [visibleForm, JSON.stringify(condition)]);
 
 	return (

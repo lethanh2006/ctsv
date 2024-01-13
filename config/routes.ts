@@ -191,6 +191,7 @@
 					{
 						name: 'DotChamDiem',
 						path: 'dot-cham-diem',
+						component: './DiemRenLuyen/Dot',
 					},
 					{
 						name: 'BieuMau',

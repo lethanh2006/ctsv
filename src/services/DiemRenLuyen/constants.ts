@@ -27,3 +27,15 @@ export const MapKeyNameXepLoai = {
 	[EXepLoai.YEU]: 'Yếu',
 	[EXepLoai.KEM]: 'Kém',
 };
+
+export enum ELoaiDoiTuongChamDiem {
+	SINH_VIEN = 'SINH_VIEN',
+	CAN_SU = 'CAN_SU',
+	CVHT = 'CVHT',
+}
+
+export const MapKeyNameLoaiDoiTuongChamDiem = {
+	[ELoaiDoiTuongChamDiem.CAN_SU]: 'Ban cán sự lớp',
+	[ELoaiDoiTuongChamDiem.CVHT]: 'Cố vấn học tập',
+	[ELoaiDoiTuongChamDiem.SINH_VIEN]: 'Sinh viên',
+};
