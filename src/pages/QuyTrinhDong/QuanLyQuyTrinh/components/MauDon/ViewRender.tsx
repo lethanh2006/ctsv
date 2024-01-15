@@ -1,5 +1,6 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
+
 import { Modal, Tag } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';

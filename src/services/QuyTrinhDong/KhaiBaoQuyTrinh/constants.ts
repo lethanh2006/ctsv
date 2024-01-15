@@ -31,3 +31,19 @@ export const MapColorTrangThaiTiepNhanDon = {
 	[TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI]: '#0dcaf0',
 	[TrangThaiTiepNhanDon.KHONG_DUYET]: '#dc3545',
 };
+
+export enum ETienDoQuyTrinh {
+	QUA_HAN = 'Quá hạn',
+	DANG_DIEN_RA = 'Đang diễn ra',
+	SAP_TOI = 'Sắp tới',
+	CHUA_DIEN_RA = 'Chưa diễn ra',
+	DA_DIEN_RA = 'Đã diễn ra',
+}
+
+export const MapColorTienDoQuyTrinh = {
+	[ETienDoQuyTrinh.SAP_TOI]: '#ffca2c',
+	[ETienDoQuyTrinh.DANG_DIEN_RA]: '#0d6efd',
+	[ETienDoQuyTrinh.CHUA_DIEN_RA]: 'gray',
+	[ETienDoQuyTrinh.QUA_HAN]: '#dc3545',
+	[ETienDoQuyTrinh.DA_DIEN_RA]: '#1fba36',
+};
