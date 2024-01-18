@@ -269,18 +269,20 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 								</Dropdown>
 							</Tooltip>
 						)}
-						{buocHienTai?.laBuocCuoi && recordVal?.daTraKetQua === false && (
-							<Tooltip title={<div style={{ maxWidth: 100 }}>Trả kết quả</div>}>
-								<Button
-									loading={loading}
-									onClick={() => {
-										traKetQuaModel(recordVal._id, getData);
-									}}
-									type='link'
-									icon={<CheckOutlined />}
-								/>
-							</Tooltip>
-						)}
+						{buocHienTai?.laBuocCuoi &&
+							recordVal?.daTraKetQua === false &&
+							buocHienTai?.trangThaiTiepNhan === TrangThaiTiepNhan.DA_DUYET && (
+								<Tooltip title={<div style={{ maxWidth: 100 }}>Trả kết quả</div>}>
+									<Button
+										loading={loading}
+										onClick={() => {
+											traKetQuaModel(recordVal._id, getData);
+										}}
+										type='link'
+										icon={<CheckOutlined />}
+									/>
+								</Tooltip>
+							)}
 					</>
 				);
 			},

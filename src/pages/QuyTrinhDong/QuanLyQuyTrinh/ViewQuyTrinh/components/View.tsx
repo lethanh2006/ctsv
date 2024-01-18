@@ -49,7 +49,7 @@ const View = (props: Iprops) => {
 		setRecordFormKhaiBao,
 		currentFormKhaiBao,
 	} = model;
-
+	const [form] = Form.useForm();
 	const { danhSach: danhSachDotQuyTrinh } = useModel('quytrinh.dotquytrinh');
 	const { setRecordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
 	const [visibleViewDetailDot, setVisibleViewDetailDot] = useState<boolean>(false);
@@ -102,12 +102,19 @@ const View = (props: Iprops) => {
 			const val = { ...values };
 			delete val.ghiChu;
 			delete val.maVanBan;
+			const valuesFinal: any = {};
+			const valuesForm = { ...val };
+			Object.keys(valuesForm).map((item) => {
+				valuesFinal[item] = {
+					value: valuesForm[item],
+				};
+			});
 			const payload = {
 				maBuoc: current?.ma,
 				trangThaiTiepNhan: currentTypeDuyet,
 				ghiChu: values?.ghiChu ?? '',
 				maVanBan: values?.maVanBan ?? '',
-				thongTinTiepNhan: { ...val },
+				thongTinTiepNhan: { ...valuesFinal },
 				// maBoPhanXuLyBuocSau: 'string',
 			};
 			const res = await chuyenVienTiepNhanDuyet(dataQuyTrinh?._id, payload);
@@ -467,6 +474,7 @@ const View = (props: Iprops) => {
 				>
 					<Spin spinning={loadngDuyet}>
 						<Form
+							form={form}
 							onFinish={handleSubmitDon}
 							layout={'vertical'}
 							onValuesChange={(changedValues, values) => {
@@ -476,7 +484,7 @@ const View = (props: Iprops) => {
 							{type === 'tiep_nhan' && currentTypeDuyet === TrangThaiTiepNhanDon.DUYET && (
 								<Row gutter={[12, 0]}>
 									{dataFormTiepNhan?.map((item) => (
-										<FormRender formValues={formValues} key={item.ma} cauHinh={item} />
+										<FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />
 									))}
 								</Row>
 							)}

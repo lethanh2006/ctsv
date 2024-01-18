@@ -90,8 +90,7 @@ const FormRender = (props: {
 				});
 			} else if (cauHinh?.loaiDefaultValue === LoaiDefaultValue.LAY_TU_KHAI_BAO) {
 				const khaiBao = dataQuyTrinh?.danhSachKhaiBao.find((item) => item.ma === cauHinh.maFormLayDefaultValue)
-					?.thongTinKhaiBao?.[cauHinh.maFieldLayDefaultValue];
-
+					?.thongTinKhaiBao?.[cauHinh.maFieldLayDefaultValue]?.value;
 				form.setFieldsValue({
 					[cauHinh.ma]: khaiBao,
 				});

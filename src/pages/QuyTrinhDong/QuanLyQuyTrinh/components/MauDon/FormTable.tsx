@@ -70,7 +70,7 @@ const FormTable = (props: {
 			>
 				<Row gutter={[12, 0]}>
 					{props?.cauHinh?.danhSachCot?.map((item) => (
-						<FormRender formValues={formValues} key={item.ma} cauHinh={item} />
+						<FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />
 					))}
 				</Row>
 				<div className='form-footer'>

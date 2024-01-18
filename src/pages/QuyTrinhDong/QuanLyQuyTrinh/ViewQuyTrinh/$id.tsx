@@ -1,8 +1,8 @@
 import { useModel } from 'umi';
 import { useEffect, useState } from 'react';
-import { getDonByUserId } from '@/services/QuyTrinh/KhaiBaoQuyTrinh/khaibaoquytrinh';
-import View from '@/pages/QuanLyQuyTrinh/ViewQuyTrinh/components/View';
-import FormQuyTrinh from '@/pages/QuanLyQuyTrinh/ViewQuyTrinh/components/Form';
+import { getDonByUserId } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
+import FormQuyTrinh from './components/Form';
+import View from './components/View';
 
 const QuyTrinhView = ({
 	match: {
