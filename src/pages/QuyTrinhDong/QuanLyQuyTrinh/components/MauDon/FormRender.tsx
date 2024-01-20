@@ -19,8 +19,10 @@ import {
 	EKieuDuLieu,
 	ELoaiThoiGianThucHien,
 	ELoaiTruongThongTinTinh,
+	ETextDisplay,
 } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import TinyEditor from '@/components/TinyEditor';
 
 const FormRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -55,9 +57,21 @@ const FormRender = (props: {
 		if (props.form && listCauHinhPhuThuocDuLieu?.length) {
 			const objDuLieuPhuThuoc: any = {};
 			listCauHinhPhuThuocDuLieu.map((item) => {
-				objDuLieuPhuThuoc[item.ma] = item.truongLayDuLieu
-					? _.get(recNhanSu, item.truongLayDuLieu, undefined)
-					: recNhanSu;
+				if (item.truongLayDuLieu.includes('||')) {
+					let value: any;
+					const arrKey = item.truongLayDuLieu.split('||');
+					arrKey.map((ele) => {
+						const valueTemp = _.get(recNhanSu, ele, undefined);
+						if (!value && valueTemp) {
+							value = valueTemp;
+						}
+					});
+					objDuLieuPhuThuoc[item.ma] = value;
+				} else {
+					objDuLieuPhuThuoc[item.ma] = item.truongLayDuLieu
+						? _.get(recNhanSu, item.truongLayDuLieu, undefined)
+						: recNhanSu;
+				}
 			});
 			props.form.setFieldsValue(objDuLieuPhuThuoc);
 		}
@@ -99,8 +113,10 @@ const FormRender = (props: {
 	}, [cauHinh.ma]);
 	switch (cauHinh.kieuDuLieu) {
 		case EKieuDuLieu.TEXT:
-			if (cauHinh.textarea) {
+			if (cauHinh.textDisplay === ETextDisplay.TEXT_AREA) {
 				component = <Input.TextArea disabled={cauHinh?.readonly} placeholder={cauHinh.ten} />;
+			} else if (cauHinh.textDisplay === ETextDisplay.TEXT_EDITOR) {
+				component = <TinyEditor height={300} disabled={cauHinh?.readonly} />;
 			} else
 				component = cauHinh.laDangMang ? (
 					<Select disabled={cauHinh?.readonly} placeholder={cauHinh.ten} mode='tags' />

@@ -1,6 +1,21 @@
 import rules from '@/utils/rules';
 import { CheckOutlined, CloseOutlined, LeftOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Descriptions, Form, Input, Modal, Row, Select, Spin, Steps, Tag, message } from 'antd';
+import {
+	Button,
+	Card,
+	Col,
+	Collapse,
+	Descriptions,
+	Form,
+	Input,
+	Modal,
+	Row,
+	Select,
+	Spin,
+	Steps,
+	Tag,
+	message,
+} from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
@@ -65,7 +80,9 @@ const View = (props: Iprops) => {
 	const [formValues, setFormValues] = useState<any>({});
 
 	const dotCurrent = danhSachDotQuyTrinh?.find((item) => item._id === dataQuyTrinh?.dotQuyTrinhId);
-
+	const cauHinhThoiGianDotBuocHienTai = dotCurrent?.danhSachCauHinhThoiGianDot?.find(
+		(item: { maBuoc: string }) => item.maBuoc === current.ma,
+	);
 	const maFormTiepNhan = dataQuyTrinh?.quyTrinh?.danhSachBuocXuLy?.find(
 		(item) => item?.ma === current?.ma,
 	)?.maFormTiepNhan;
@@ -131,8 +148,18 @@ const View = (props: Iprops) => {
 			setLoadingDuyet(false);
 		}
 	};
-	const renderDescription = (value: any, tienDo?: ETienDoQuyTrinh) => {
-		// if (current) {
+	const renderDescription = (value: any, tienDo?: ETienDoQuyTrinh, isBuocNgoaiHeThong?: boolean) => {
+		if (isBuocNgoaiHeThong) {
+			return (
+				<div>
+					{tienDo && (
+						<div style={{ marginBottom: 8 }}>
+							<Tag color={MapColorTienDoQuyTrinh[tienDo]}>{tienDo}</Tag>
+						</div>
+					)}
+				</div>
+			);
+		}
 		if (value) {
 			return (
 				<>
@@ -157,7 +184,7 @@ const View = (props: Iprops) => {
 			return (
 				<>
 					<div style={{ marginBottom: 8 }}>
-						<Tag color={'blue'}>Chưa đến bước xử lý</Tag>
+						<Tag color={'gray'}>Chưa đến bước này </Tag>
 					</div>
 					{tienDo && (
 						<div style={{ marginBottom: 8 }}>
@@ -271,6 +298,7 @@ const View = (props: Iprops) => {
 											description={renderDescription(
 												dataQuyTrinh?.danhSachBuocXuLy?.find((item) => item?.ma === value?.ma),
 												tienDo,
+												cauHinhThoiGianDot?.tuDongChuyenBuocKhiHetHan,
 											)}
 											disabled={dataQuyTrinh?.danhSachBuocXuLy?.find((item) => item?.ma === value?.ma) === undefined}
 											title={
@@ -298,57 +326,68 @@ const View = (props: Iprops) => {
 						</Col>
 
 						<Col xs={24} sm={24} md={18} lg={18} xl={18}>
-							<div style={{ marginBottom: 16 }}>
-								<ThongTinTiepNhan data={current as KhaiBaoQuyTrinh.IBuocXuLy} modelName={modalName} />
-							</div>
-							<div>
-								<Descriptions labelStyle={{ maxWidth: 300 }} column={{ xs: 2, sm: 2, md: 4, lg: 6, xl: 6, xxl: 6 }}>
+							<ThongTinTiepNhan
+								isBuocNgoaiHeThong={cauHinhThoiGianDotBuocHienTai?.tuDongChuyenBuocKhiHetHan}
+								data={current as KhaiBaoQuyTrinh.IBuocXuLy}
+								modelName={modalName}
+							/>
+							<Collapse ghost defaultActiveKey={['viewkhaibao']}>
+								<Collapse.Panel
+									key={'viewkhaibao'}
+									header={<b>{dataQuyTrinh?.danhSachKhaiBao?.find((ele) => ele.ma === current.maFormKhaiBao)?.ten}</b>}
+								>
+									<Descriptions labelStyle={{ maxWidth: 300 }} column={{ xs: 2, sm: 2, md: 4, lg: 6, xl: 6, xxl: 6 }}>
+										{cauHinhForm?.cauHinhLoaiHinh
+											?.filter((item) => item.kieuDuLieu !== EKieuDuLieu.TABLE)
+											.map((item) =>
+												!item?.truongThongTinLienQuan ||
+												(item?.truongThongTinLienQuan &&
+													(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan] === item?.giaTriLienQuan ||
+														(item.giaTriLienQuan.includes &&
+															item?.giaTriLienQuan?.includes(
+																dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan],
+															)))) ? (
+													<Descriptions.Item
+														key={item.ma}
+														span={item?.colspan ? item.colspan / 4 : 6}
+														label={item?.ten}
+													>
+														<ViewRender
+															cauHinh={item}
+															recordSanPham={
+																{
+																	thongTinKhaiBao: dataForm?.thongTinKhaiBao,
+																} as any
+															}
+														/>
+													</Descriptions.Item>
+												) : null,
+											)}
+									</Descriptions>
 									{cauHinhForm?.cauHinhLoaiHinh
-										?.filter((item) => item.kieuDuLieu !== EKieuDuLieu.TABLE)
-										.map((item) =>
-											!item?.truongThongTinLienQuan ||
-											(item?.truongThongTinLienQuan &&
-												(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan] === item?.giaTriLienQuan ||
-													(item.giaTriLienQuan.includes &&
-														item?.giaTriLienQuan?.includes(
-															dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan],
-														)))) ? (
-												<Descriptions.Item key={item.ma} span={item?.colspan ? item.colspan / 4 : 6} label={item?.ten}>
-													<ViewRender
-														cauHinh={item}
-														recordSanPham={
-															{
-																thongTinKhaiBao: dataForm?.thongTinKhaiBao,
-															} as any
-														}
-													/>
-												</Descriptions.Item>
-											) : null,
-										)}
-								</Descriptions>
-								{cauHinhForm?.cauHinhLoaiHinh
-									.filter((item) => {
-										return item.kieuDuLieu === EKieuDuLieu.TABLE;
-									})
-									.map((item) => (
-										<>
-											<Descriptions>
-												<Descriptions.Item span={6} label={item.ten}>
-													{' '}
-												</Descriptions.Item>
-											</Descriptions>
-											<ViewRender
-												cauHinh={item}
-												recordSanPham={
-													{
-														thongTinKhaiBao: dataForm?.thongTinKhaiBao,
-													} as any
-												}
-											/>
-											<br />
-										</>
-									))}
-							</div>
+										.filter((item) => {
+											return item.kieuDuLieu === EKieuDuLieu.TABLE;
+										})
+										.map((item) => (
+											<>
+												<Descriptions>
+													<Descriptions.Item span={6} label={item.ten}>
+														{' '}
+													</Descriptions.Item>
+												</Descriptions>
+												<ViewRender
+													cauHinh={item}
+													recordSanPham={
+														{
+															thongTinKhaiBao: dataForm?.thongTinKhaiBao,
+														} as any
+													}
+												/>
+												<br />
+											</>
+										))}
+								</Collapse.Panel>
+							</Collapse>
 						</Col>
 						{type === 'tiep_nhan' && (
 							<Col xs={24} sm={24} md={24} lg={24} xl={24}>

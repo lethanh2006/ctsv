@@ -6,7 +6,7 @@ import moment from 'moment';
 import { useState } from 'react';
 import FormTable from './FormTable';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 
 const ViewRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -37,7 +37,12 @@ const ViewRender = (props: {
 	const valueFinal = isCot ? recordSanPhamFinal?.[cauHinh.ma] : recordSanPhamFinal?.[cauHinh.ma]?.value;
 	switch (cauHinh.kieuDuLieu) {
 		case EKieuDuLieu.TEXT:
-			value = <div>{valueFinal}</div>;
+			value =
+				cauHinh.textDisplay === ETextDisplay.TEXT_EDITOR ? (
+					<div dangerouslySetInnerHTML={{ __html: valueFinal }} />
+				) : (
+					<div>{valueFinal}</div>
+				);
 			break;
 
 		case EKieuDuLieu.BOOLEAN:
