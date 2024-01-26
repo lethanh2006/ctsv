@@ -1,37 +1,22 @@
+import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
+import {
+	ETienDoQuyTrinh,
+	MapColorTienDoQuyTrinh,
+	MapColorTrangThaiTiepNhanDon,
+	TrangThaiTiepNhanDon,
+} from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import { chuyenVienDieuPhoiDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
+import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
+import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import rules from '@/utils/rules';
 import { CheckOutlined, CloseOutlined, LeftOutlined, UndoOutlined } from '@ant-design/icons';
-import {
-	Button,
-	Card,
-	Col,
-	Collapse,
-	Descriptions,
-	Form,
-	Input,
-	Modal,
-	Row,
-	Select,
-	Spin,
-	Steps,
-	Tag,
-	message,
-} from 'antd';
+import { Button, Card, Col, Collapse, Form, Input, Modal, Row, Select, Spin, Steps, Tag, message } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import ViewDot from '../../components/DotQuyTrinh/ViewDot';
-import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
-import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
-import {
-	TrangThaiTiepNhanDon,
-	MapColorTrangThaiTiepNhanDon,
-	ETienDoQuyTrinh,
-	MapColorTienDoQuyTrinh,
-} from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
-import { chuyenVienDieuPhoiDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
-import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
-import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import FormRender from '../../components/MauDon/FormRender';
 import ViewRender from '../../components/MauDon/ViewRender';
 import ThongTinTiepNhan from './thongTinTiepNhan';
@@ -336,56 +321,46 @@ const View = (props: Iprops) => {
 									key={'viewkhaibao'}
 									header={<b>{dataQuyTrinh?.danhSachKhaiBao?.find((ele) => ele.ma === current.maFormKhaiBao)?.ten}</b>}
 								>
-									<Descriptions labelStyle={{ maxWidth: 300 }} column={{ xs: 2, sm: 2, md: 4, lg: 6, xl: 6, xxl: 6 }}>
-										{cauHinhForm?.cauHinhLoaiHinh
-											?.filter((item) => item.kieuDuLieu !== EKieuDuLieu.TABLE)
-											.map((item) =>
+									<Row gutter={[0, 10]}>
+										{cauHinhForm?.cauHinhLoaiHinh.map((item) => {
+											if (
 												!item?.truongThongTinLienQuan ||
 												(item?.truongThongTinLienQuan &&
-													(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan] === item?.giaTriLienQuan ||
+													(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan]?.value === item?.giaTriLienQuan ||
 														(item.giaTriLienQuan.includes &&
 															item?.giaTriLienQuan?.includes(
-																dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan],
-															)))) ? (
-													<Descriptions.Item
-														key={item.ma}
-														span={item?.colspan ? item.colspan / 4 : 6}
-														label={item?.ten}
-													>
-														<ViewRender
-															cauHinh={item}
-															recordSanPham={
-																{
-																	thongTinKhaiBao: dataForm?.thongTinKhaiBao,
-																} as any
-															}
-														/>
-													</Descriptions.Item>
-												) : null,
-											)}
-									</Descriptions>
-									{cauHinhForm?.cauHinhLoaiHinh
-										.filter((item) => {
-											return item.kieuDuLieu === EKieuDuLieu.TABLE;
-										})
-										.map((item) => (
-											<>
-												<Descriptions>
-													<Descriptions.Item span={6} label={item.ten}>
-														{' '}
-													</Descriptions.Item>
-												</Descriptions>
-												<ViewRender
-													cauHinh={item}
-													recordSanPham={
-														{
-															thongTinKhaiBao: dataForm?.thongTinKhaiBao,
-														} as any
-													}
-												/>
-												<br />
-											</>
-										))}
+																dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan]?.value,
+															))))
+											) {
+												const isTable =
+													item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH;
+												const isHtml =
+													item.kieuDuLieu === EKieuDuLieu.TEXT && item.textDisplay === ETextDisplay.TEXT_EDITOR;
+												return (
+													<Col key={item.ma} xs={24} sm={24} md={item.colspan || 24} lg={item.colspan || 24}>
+														<div
+															style={{
+																display: 'flex',
+																flexDirection: isHtml || isTable ? 'column' : 'row',
+															}}
+														>
+															<div style={{ marginRight: 4 }}>
+																<b>{item.ten}: </b>
+															</div>
+															<div>
+																<ViewRender
+																	cauHinh={item}
+																	recordSanPham={{
+																		thongTinKhaiBao: dataForm?.thongTinKhaiBao,
+																	}}
+																/>
+															</div>
+														</div>
+													</Col>
+												);
+											} else return null;
+										})}
+									</Row>
 								</Collapse.Panel>
 							</Collapse>
 						</Col>

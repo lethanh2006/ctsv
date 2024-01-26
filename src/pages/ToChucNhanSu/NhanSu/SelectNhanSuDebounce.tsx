@@ -11,7 +11,8 @@ const SelectNhanSuDebounce = (props: {
 	multiple?: boolean;
 	placeholder?: string;
 	disabled?: boolean;
-}) => {
+	isView?: boolean;
+}): any => {
 	const { value, onChange, multiple, placeholder } = props;
 	const { danhSach, getModel, setFilters, filters, loading } = useModel('tochucnhansu.nhansu');
 
@@ -38,7 +39,11 @@ const SelectNhanSuDebounce = (props: {
 		setFilters([{ active: true, field: 'ten', values: [val], operator: EOperatorType.CONTAIN }]);
 	}, 800);
 
-	return (
+	const dataView = danhSach.find((item) => item.ssoId === value);
+
+	return props.isView ? (
+		`${dataView?.hoDem ?? ''} ${dataView?.ten ?? ''} - ${dataView?.maCanBo ?? ''}`
+	) : (
 		<Select
 			mode={multiple ? 'multiple' : undefined}
 			value={value}

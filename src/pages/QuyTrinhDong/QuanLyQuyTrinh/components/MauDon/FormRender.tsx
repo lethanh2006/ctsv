@@ -23,6 +23,8 @@ import {
 } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 import TinyEditor from '@/components/TinyEditor';
+import { EOperatorType } from '@/components/Table/constant';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 
 const FormRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -39,7 +41,8 @@ const FormRender = (props: {
 	const { record: recordLoaiHinh } = useModel('quytrinh.loaihinh');
 	const { recordQuyTrinhForm, setRecordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
 	const { dataQuyTrinh } = useModel('quytrinh.khaibaoquytrinh');
-	const { danhSach: danhSachNhanSu } = useModel('tochucnhansu.nhansu');
+	const { danhSach: danhSachNhanSu, getModel: getCanBo } = useModel('tochucnhansu.nhansu');
+	const { danhSach: danhSachSinhVien, getModel: getSinhVien } = useModel('sinhvien.sinhvien');
 	let component = <div />;
 	let rule: any[] = [...rules.required];
 
@@ -51,9 +54,30 @@ const FormRender = (props: {
 
 	const listCauHinhPhuThuocDuLieu = cauHinhLoaiHinh?.filter((item) => item.layDuLieuTu === cauHinh.ma);
 
-	const onChangeNhanSu: any = (val: string) => {
+	const onChangeNhanSu: any = async (val: string, type: 'SV' | 'CB') => {
 		if (!val) return;
-		const recNhanSu: any = danhSachNhanSu.find((item) => item.ssoId === val);
+		let recNhanSu: any =
+			type === 'CB'
+				? danhSachNhanSu.find((item) => item.ssoId === val)
+				: danhSachSinhVien.find((item) => item.ssoId === val);
+		if (!recNhanSu) {
+			const getData: any = type === 'CB' ? getCanBo : getSinhVien;
+			const danhSachTemp: any[] = await getData(
+				undefined,
+				[
+					{
+						active: true,
+						field: 'ssoId',
+						values: Array.isArray(val) ? val : [val],
+						operator: EOperatorType.INCLUDE,
+					},
+				],
+				undefined,
+				1,
+				20,
+			);
+			recNhanSu = danhSachTemp.find((item) => item.ssoId === val);
+		}
 		if (props.form && listCauHinhPhuThuocDuLieu?.length) {
 			const objDuLieuPhuThuoc: any = {};
 			listCauHinhPhuThuocDuLieu.map((item) => {
@@ -128,7 +152,11 @@ const FormRender = (props: {
 
 		case EKieuDuLieu.CAN_BO:
 			rule = [...(cauHinh.batBuoc ? rules.required : [])];
-			component = <SelectNhanSuDebounce onChange={onChangeNhanSu} />;
+			component = <SelectNhanSuDebounce onChange={(val) => onChangeNhanSu(val, 'CB')} />;
+			break;
+		case EKieuDuLieu.SINH_VIEN:
+			rule = [...(cauHinh.batBuoc ? rules.required : [])];
+			component = <SelectSinhVienDebounce onChange={(val) => onChangeNhanSu(val, 'SV')} />;
 			break;
 
 		case EKieuDuLieu.BOOLEAN:

@@ -7,6 +7,9 @@ import { useState } from 'react';
 import FormTable from './FormTable';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
 import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import { currencyFormat } from '@/utils/utils';
 
 const ViewRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -45,6 +48,13 @@ const ViewRender = (props: {
 				);
 			break;
 
+		case EKieuDuLieu.CAN_BO:
+			value = <SelectNhanSuDebounce value={valueFinal} isView />;
+			break;
+		case EKieuDuLieu.SINH_VIEN:
+			value = <SelectSinhVienDebounce value={valueFinal} isView />;
+			break;
+
 		case EKieuDuLieu.BOOLEAN:
 			value = <div>{valueFinal ? 'Có' : 'Không'}</div>;
 			break;
@@ -55,7 +65,11 @@ const ViewRender = (props: {
 			break;
 		case EKieuDuLieu.NUMBER:
 			value = valueFinal ? (
-				<div>{(value = cauHinh.laDangMang ? valueFinal?.map((item: number) => item)?.join(', ') : valueFinal)}</div>
+				<div>
+					{currencyFormat(
+						(value = cauHinh.laDangMang ? valueFinal?.map((item: number) => item)?.join(', ') : valueFinal),
+					)}
+				</div>
 			) : (
 				<div />
 			);
