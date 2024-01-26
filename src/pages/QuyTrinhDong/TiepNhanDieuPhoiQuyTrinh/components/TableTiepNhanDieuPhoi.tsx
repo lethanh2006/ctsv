@@ -90,17 +90,17 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		style: { cursor: 'pointer' },
 	});
 	const columns: IColumn<KhaiBaoQuyTrinh.IRecord>[] = [
+		// {
+		// 	title: 'Tên quy trình',
+		// 	dataIndex: 'quyTrinh',
+		// 	width: 150,
+		// 	render: (val, recordVal) => {
+		// 		return recordVal?.quyTrinh?.ten;
+		// 	},
+		// 	onCell,
+		// },
 		{
-			title: 'Tên quy trình',
-			dataIndex: 'quyTrinh',
-			width: 150,
-			render: (val, recordVal) => {
-				return recordVal?.quyTrinh?.ten;
-			},
-			onCell,
-		},
-		{
-			title: 'Người khai',
+			title: 'Họ và tên',
 			dataIndex: 'nguoiKhaiBao.ten',
 			width: 150,
 			filterType: 'string',
@@ -111,7 +111,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			onCell,
 		},
 		{
-			title: 'Mã',
+			title: 'Mã sinh viên',
 			dataIndex: 'nguoiKhaiBao.ma',
 			width: 120,
 			filterType: 'string',
@@ -427,7 +427,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				title={record?.quyTrinh?.ten}
 				visible={visibleForm}
 				onCancel={() => setVisibleForm(false)}
-				width={1000}
+				width={1200}
 				footer={null}
 			>
 				{current && (
