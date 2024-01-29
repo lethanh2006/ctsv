@@ -53,6 +53,7 @@ const View = (props: Iprops) => {
 	const { danhSach: danhSachDotQuyTrinh } = useModel('quytrinh.dotquytrinh');
 	const { setRecordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
 	const [visibleViewDetailDot, setVisibleViewDetailDot] = useState<boolean>(false);
+	const { danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
 
 	// const { setRecord: setRecordSanPham } = useModel('quanlykhoahoc.sanphamnckh');
 	const [danhSachDonViXuLy, setDanhSachDonViXuLy] = useState<KhaiBaoQuyTrinh.IDonViXuLy[]>([]);
@@ -107,8 +108,21 @@ const View = (props: Iprops) => {
 			const valuesFinal: any = {};
 			const valuesForm = { ...val };
 			Object.keys(valuesForm).map((item) => {
+				const cauHinh = dataFormTiepNhan?.find((ele: { ma: string }) => ele.ma === item);
+				const isDanhMuc = cauHinh?.kieuDuLieu === EKieuDuLieu.DANHMUC;
+				const isDate = cauHinh?.kieuDuLieu === EKieuDuLieu.DATE;
+				const isMonth = cauHinh?.kieuDuLieu === EKieuDuLieu.MONTH;
+
 				valuesFinal[item] = {
-					value: valuesForm[item],
+					value:
+						(isDate || isMonth) && valuesForm
+							? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
+							: valuesForm[item],
+					info: isDanhMuc
+						? danhSachDanhMuc
+								?.find((ele) => ele.maDanhMuc === cauHinh.maDanhMuc)
+								?.danhSachGiaTri?.find((ele) => ele.value === valuesForm[item])?.info
+						: undefined,
 				};
 			});
 			const payload = {
@@ -336,6 +350,8 @@ const View = (props: Iprops) => {
 													item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH;
 												const isHtml =
 													item.kieuDuLieu === EKieuDuLieu.TEXT && item.textDisplay === ETextDisplay.TEXT_EDITOR;
+												const isDoanVanBan = item.kieuDuLieu === EKieuDuLieu.DOAN_VAN_BAN;
+
 												return (
 													<Col key={item.ma} xs={24} sm={24} md={item.colspan || 24} lg={item.colspan || 24}>
 														<div
@@ -348,12 +364,16 @@ const View = (props: Iprops) => {
 																<b>{item.ten}: </b>
 															</div>
 															<div>
-																<ViewRender
-																	cauHinh={item}
-																	recordSanPham={{
-																		thongTinKhaiBao: dataForm?.thongTinKhaiBao,
-																	}}
-																/>
+																{isDoanVanBan ? (
+																	item.ten
+																) : (
+																	<ViewRender
+																		cauHinh={item}
+																		recordSanPham={{
+																			thongTinKhaiBao: dataForm?.thongTinKhaiBao,
+																		}}
+																	/>
+																)}
 															</div>
 														</div>
 													</Col>

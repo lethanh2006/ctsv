@@ -216,10 +216,17 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				const formKhai = recordVal?.quyTrinh?.danhSachFormKhaiBao?.find(
 					(item) => item.ma === buocHienTai?.maFormKhaiBao,
 				);
+				const buocDaTiepNhan = recordVal?.danhSachBuocXuLy?.find(
+					(item) => item?.maFormTiepNhan && item?.thongTinTiepNhan,
+				);
 				const formTiepNhan = recordVal?.quyTrinh?.danhSachFormTiepNhan?.find(
+					(item) => item.ma === buocDaTiepNhan?.maFormTiepNhan,
+				);
+				const formTiepNhanBuocHienTai = recordVal?.quyTrinh?.danhSachFormTiepNhan?.find(
 					(item) => item.ma === buocHienTai?.maFormTiepNhan,
 				);
-
+				const buocFinal = buocHienTai?.thongTinTiepNhan ? buocHienTai : buocDaTiepNhan;
+				const formFinal = buocHienTai.thongTinTiepNhan ? formTiepNhanBuocHienTai : formTiepNhan;
 				return (
 					<>
 						<Tooltip title='Xem chi tiết'>
@@ -254,13 +261,11 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 											onClick={(val) => {
 												if (val.key === 'MAU_DON')
 													exportMauDonTheoBuocModel(recordVal._id, buocHienTai.ma, formKhai?.ten ?? '');
-												else exportMauTraKetQuaTheoBuocModel(recordVal._id, buocHienTai.ma, formTiepNhan?.ten ?? '');
+												else exportMauTraKetQuaTheoBuocModel(recordVal._id, buocFinal?.ma ?? '', formFinal?.ten ?? '');
 											}}
 										>
 											{formKhai?.fileId && <Menu.Item key={'MAU_DON'}>Mẫu đơn</Menu.Item>}
-											{formTiepNhan?.fileId && buocHienTai?.trangThaiTiepNhan === TrangThaiTiepNhan.DA_DUYET && (
-												<Menu.Item key={'MAU_TRA_KET_QUA'}>Mẫu trả kết quả</Menu.Item>
-											)}
+											{formFinal?.fileId && <Menu.Item key={'MAU_TRA_KET_QUA'}>Mẫu trả kết quả</Menu.Item>}
 										</Menu>
 									}
 									placement='bottomLeft'

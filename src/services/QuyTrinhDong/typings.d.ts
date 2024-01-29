@@ -30,7 +30,7 @@ declare module QuyTrinh {
 		soNgayHenTraKetQua?: number;
 		maFormHienThi: string;
 		maTruongHienThi: string;
-    linhVuc: string;
+		linhVuc: string;
 		choPhepGuiNhieuLan: boolean;
 		danhSachPhamViQuyTrinh: PhamViQuyTrinh[];
 		danhSachFormKhaiBao: IMauDon[];
@@ -51,6 +51,7 @@ declare module QuyTrinh {
 			maFormThamChieuSoLuongThanhToan: string;
 			maTruongThamChieuSoLuongThanhToan: string;
 		};
+		order: number;
 		[key: string]: any;
 	}
 	export interface ICauHinhDotQuyTrinh {

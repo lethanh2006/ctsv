@@ -4,6 +4,18 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import UploadFile from '@/components/Upload/UploadFile';
 
+import { EOperatorType } from '@/components/Table/constant';
+import TinyEditor from '@/components/TinyEditor';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import {
+	EKieuDuLieu,
+	ELoaiThoiGianThucHien,
+	ELoaiTruongThongTinTinh,
+	ETextDisplay,
+} from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
+import { LoaiDefaultValue } from '@/services/QuyTrinhDong/constant';
 import rules from '@/utils/rules';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import type { FormInstance } from 'antd';
@@ -13,18 +25,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import FormTable from './FormTable';
 import ViewRender from './ViewRender';
-import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { LoaiDefaultValue } from '@/services/QuyTrinhDong/constant';
-import {
-	EKieuDuLieu,
-	ELoaiThoiGianThucHien,
-	ELoaiTruongThongTinTinh,
-	ETextDisplay,
-} from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
-import TinyEditor from '@/components/TinyEditor';
-import { EOperatorType } from '@/components/Table/constant';
-import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 
 const FormRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -40,7 +40,7 @@ const FormRender = (props: {
 	const { danhSach } = useModel('quytrinh.danhmuc');
 	const { record: recordLoaiHinh } = useModel('quytrinh.loaihinh');
 	const { recordQuyTrinhForm, setRecordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
-	const { dataQuyTrinh } = useModel('quytrinh.khaibaoquytrinh');
+	const { dataQuyTrinh, editFormKhaiBao } = useModel('quytrinh.khaibaoquytrinh');
 	const { danhSach: danhSachNhanSu, getModel: getCanBo } = useModel('tochucnhansu.nhansu');
 	const { danhSach: danhSachSinhVien, getModel: getSinhVien } = useModel('sinhvien.sinhvien');
 	let component = <div />;
@@ -126,12 +126,24 @@ const FormRender = (props: {
 					...form.getFieldsValue(),
 					[cauHinh.kieuDuLieu !== EKieuDuLieu.TABLE ? cauHinh.ma : `table||${cauHinh.ma}`]: cauHinh?.customDefaultValue,
 				});
-			} else if (cauHinh?.loaiDefaultValue === LoaiDefaultValue.LAY_TU_KHAI_BAO) {
+			} else if (cauHinh?.loaiDefaultValue === LoaiDefaultValue.LAY_TU_KHAI_BAO && !editFormKhaiBao) {
 				const khaiBao = dataQuyTrinh?.danhSachKhaiBao.find((item) => item.ma === cauHinh.maFormLayDefaultValue)
 					?.thongTinKhaiBao?.[cauHinh.maFieldLayDefaultValue]?.value;
-				form.setFieldsValue({
-					[cauHinh.ma]: khaiBao,
-				});
+				if (cauHinh.kieuDuLieu !== EKieuDuLieu.TABLE) {
+					const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
+					const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
+					form.setFieldsValue({
+						[cauHinh.ma]: isDate || isMonth ? khaiBao?.split('/')?.reverse()?.join('-') : khaiBao,
+					});
+				} else {
+					setRecordQuyTrinhForm({
+						...(recordQuyTrinhForm || {}),
+						thongTinKhaiBao: {
+							...(recordQuyTrinhForm?.thongTinKhaiBao ?? {}),
+							[cauHinh.ma]: khaiBao,
+						},
+					});
+				}
 			}
 		}
 	}, [cauHinh.ma]);
@@ -413,23 +425,14 @@ const FormRender = (props: {
 	return checkTruongThongTinLienQuan ? (
 		<>
 			<Col xs={24} sm={24} md={cauHinh?.colspan}>
-				{cauHinh?.loaiDefaultValue ? (
-					<Form.Item
-						extra={cauHinh?.ghiChu ? <div>{cauHinh.ghiChu}</div> : null}
-						name={cauHinh.kieuDuLieu !== EKieuDuLieu.TABLE ? cauHinh.ma : `table||${cauHinh.ma}`}
-						label={cauHinh.ten}
-						rules={cauHinh?.readonly ? [] : rule}
-					>
-						{cauHinh.kieuDuLieu === EKieuDuLieu.TABLE ? (
-							{ component }
+				{cauHinh.kieuDuLieu === EKieuDuLieu.DOAN_VAN_BAN ? (
+					<>
+						{cauHinh.customDefaultValue ? (
+							<div dangerouslySetInnerHTML={{ __html: cauHinh.customDefaultValue }} />
 						) : (
-							<Input.TextArea
-								rows={cauHinh.textarea ? undefined : 1}
-								placeholder={cauHinh.ten}
-								disabled={cauHinh?.readonly}
-							/>
+							<div>{cauHinh.ten}</div>
 						)}
-					</Form.Item>
+					</>
 				) : (
 					<Form.Item
 						extra={cauHinh?.ghiChu ? <div>{cauHinh.ghiChu}</div> : null}

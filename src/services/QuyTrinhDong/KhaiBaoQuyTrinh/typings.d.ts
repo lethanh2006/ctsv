@@ -46,6 +46,7 @@ declare module KhaiBaoQuyTrinh {
 		ma: string;
 		maFormKhaiBao: string;
 		maFormTiepNhan: string;
+		thongTinTiepNhan: any;
 		ghiChu: string;
 		maBoPhanXuLy: string;
 		trangThaiTiepNhan: string;
