@@ -28,6 +28,7 @@ export default {
 	'menu.DanhMuc.LoaiKyLuat': 'Loại kỷ luật',
 	'menu.DanhMuc.HinhThucKhenThuong': 'Hình thức khen thưởng',
 	'menu.DanhMuc.LoaiKhenThuong': 'Loại khen thưởng',
+	'menu.DanhMuc.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
@@ -84,7 +85,6 @@ export default {
 	'menu.TinTuc.TinTuc': 'Tin tức',
 
 	'menu.CauHoiThuongGap': 'Câu hỏi thường gặp',
-
 	//XỬ LÝ QUY TRÌNH
 	'menu.QuyTrinh': 'Dịch vụ hành chính',
 	'menu.QuyTrinh.ThongKe': 'Thống kê',

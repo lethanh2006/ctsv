@@ -28,6 +28,7 @@ export default {
 	'menu.DanhMuc.LoaiKyLuat': 'Loại kỷ luật',
 	'menu.DanhMuc.HinhThucKhenThuong': 'Hình thức khen thưởng',
 	'menu.DanhMuc.LoaiKhenThuong': 'Loại khen thưởng',
+	'menu.DanhMuc.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 

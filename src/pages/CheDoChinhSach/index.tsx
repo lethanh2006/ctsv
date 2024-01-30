@@ -1,86 +1,53 @@
 import TableBase from '@/components/Table';
-import { type IColumn } from '@/components/Table/typing';
-import { ELoaiThoiGianMienGiam } from '@/services/CheDoChinhSach/constant';
-import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';
+import type { IColumn } from '@/components/Table/typing';
+import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
+import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Select, Tooltip } from 'antd';
+import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
-import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
-import { toISOString } from '@/utils/utils';
-import { useEffect } from 'react';
 import FormCheDoChinhSach from './components/Form';
-import moment from 'moment';
-import SelectHocKy from '../DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
+import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 
-const CheDoChinhSachComponent = () => {
-	const {
-		page,
-		limit,
-		handleEdit,
-		deleteModel,
-		getModel,
-		condition,
-		setCondition,
-		getDanhMucLoaiCheDoChinhSachModel,
-		danhMucLoaiCheDoChinhSach,
-	} = useModel('chedochinhsach.chedochinhsach');
+const CheDoSinhVienComponent = () => {
+	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm } =
+		useModel('chedochinhsach');
 
-	useEffect(() => {
-		getDanhMucLoaiCheDoChinhSachModel();
-	}, []);
+	const onCell = (record: CheDoSinhVien.IRecord) => ({
+		onClick: () => {
+			setRecord(record);
+			setVisibleViewForm(true);
+		},
+		style: { cursor: 'pointer' },
+	});
 
-	const columns: IColumn<CheDoChinhSach.IRecord>[] = [
+	const onCancelPreview = () => {
+		setVisibleViewForm(false);
+	};
+
+	const columns: IColumn<CheDoSinhVien.IRecord>[] = [
 		{
-			title: 'Họ tên',
-			dataIndex: 'hoTen',
-			filterType: 'string',
+			title: 'Tên',
+			dataIndex: 'ten',
 			width: 200,
-			align: 'center',
+			onCell,
+			filterType: 'string',
 		},
+
 		{
-			title: 'Mã sinh viên',
-			dataIndex: 'maDinhDanh',
-			filterType: 'string',
-			width: 200,
+			title: 'Loại',
+			dataIndex: 'loaiCheDoSinhVien',
+			width: 120,
 			align: 'center',
-		},
-		{
-			title: 'Đối tượng miễn giảm',
-			dataIndex: 'doiTuongMienGiam',
-			filterType: 'string',
-			width: 200,
-		},
-		{
-			title: 'Mức miễn giảm',
-			dataIndex: 'mucMienGiam',
-			filterType: 'string',
-			width: 200,
-			align: 'center',
-		},
-		{
-			title: 'Thời gian miễn giảm',
-			dataIndex: 'loaiThoiGianMienGiam',
-			filterType: 'string',
-			width: 200,
-			align: 'center',
-			render: (val: ELoaiThoiGianMienGiam, rec: CheDoChinhSach.IRecord) => {
-				return (
-					<div>
-						{val === ELoaiThoiGianMienGiam.HOC_KY
-							? rec.tenHocKyMienGiam
-							: `${moment(rec.thoiGianMienGiamBatDau).format('DD/MM/YYYY')} - ${moment(
-									rec.thoiGianMienGiamKetThuc,
-							  ).format('DD/MM/YYYY')}`}
-					</div>
-				);
-			},
+			filterType: 'select',
+			onCell,
+			filterData: Object.values(ELoaiCheDoSinhVien).map((item) => ({ value: item, label: item })),
 		},
 		{
 			title: 'Thao tác',
 			align: 'center',
 			width: 120,
 			fixed: 'right',
-			render: (record: CheDoChinhSach.IRecord) => (
+			render: (record: CheDoSinhVien.IRecord) => (
 				<>
 					<Tooltip title='Chỉnh sửa'>
 						<Button
@@ -110,65 +77,28 @@ const CheDoChinhSachComponent = () => {
 	return (
 		<>
 			<TableBase
-				title='Danh sách sinh viên được hưởng chế độ chính sách'
-				modelName='chedochinhsach.chedochinhsach'
-				columns={columns}
-				widthDrawer={500}
-				dependencies={[page, limit]}
+				widthDrawer={800}
 				Form={FormCheDoChinhSach}
-				otherButtons={[
-					<Select
-						onChange={(val) => {
-							setCondition({ ...condition, loaiCheDoChinhSach: val });
-						}}
-						placeholder='Chế độ chính sách'
-						allowClear
-						style={{ width: 250 }}
-						key={'0'}
-						options={danhMucLoaiCheDoChinhSach.map((item) => ({ value: item, label: item }))}
-					/>,
-					<Select
-						onChange={(val) =>
-							setCondition({
-								...condition,
-								loaiThoiGianMienGiam: val,
-								maHocKyMienGiam: undefined,
-								thoiGianMienGiamBatDau: undefined,
-								thoiGianMienGiamKetThuc: undefined,
-							})
-						}
-						placeholder='Thời gian miễn giảm'
-						options={Object.values(ELoaiThoiGianMienGiam).map((item) => ({ value: item, label: item }))}
-						key={'1'}
-						allowClear
-						style={{ width: 200 }}
-					/>,
-					<div key={'2'}>
-						{condition?.loaiThoiGianMienGiam === ELoaiThoiGianMienGiam.HOC_KY && (
-							<SelectHocKy
-								selectMa
-								style={{ width: 250 }}
-								allowClear
-								onChange={(val) => setCondition({ ...condition, maHocKyMienGiam: val })}
-							/>
-						)}
-						{condition?.loaiThoiGianMienGiam === ELoaiThoiGianMienGiam.THOI_GIAN && (
-							<MyDateRangePicker
-								allowClear
-								onChange={(val) => {
-									setCondition({
-										...condition,
-										thoiGianMienGiamBatDau: val ? { $lte: toISOString(val[1]) } : undefined,
-										thoiGianMienGiamKetThuc: val ? { $gte: toISOString(val[0]) } : undefined,
-									});
-								}}
-							/>
-						)}
-					</div>,
-				]}
+				title='Chế độ chính sách'
+				modelName={'chedochinhsach'}
+				columns={columns}
 			/>
+			<Modal
+				zIndex={1000}
+				bodyStyle={{ padding: 0 }}
+				footer={
+					<Button type='primary' onClick={onCancelPreview}>
+						OK
+					</Button>
+				}
+				width={900}
+				visible={visibleViewForm}
+				onCancel={onCancelPreview}
+			>
+				<FormGiaoNopSanPham isView getData={() => {}} />
+			</Modal>
 		</>
 	);
 };
 
-export default CheDoChinhSachComponent;
+export default CheDoSinhVienComponent;

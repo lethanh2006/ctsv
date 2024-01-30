@@ -16,6 +16,21 @@ const allCharacters =
 // CMND
 
 const rules = {
+	json: [
+		{
+			validator: (__, value, callback) => {
+				try {
+					if (value) {
+						JSON.parse(value);
+					}
+					callback();
+				} catch {
+					callback('');
+				}
+			},
+			message: 'Json không hợp lệ',
+		},
+	],
 	dacbiet: [
 		{
 			pattern: new RegExp(`^[0-9${allCharacters} \n]+$`),

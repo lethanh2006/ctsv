@@ -237,7 +237,7 @@
 					{
 						path: 'khen-thuong',
 						name: 'KhenThuong',
-						component: './KhenThuongKyLuat/KhenThuong',
+						component: './CheDoChinhSach/KhenThuong',
 					},
 					// {
 					// 	path: 'sang-kien',
@@ -247,14 +247,14 @@
 					{
 						path: 'ky-luat',
 						name: 'KyLuat',
-						component: './KhenThuongKyLuat/KyLuat',
+						component: './CheDoChinhSach/KyLuat',
 					},
 				],
 			},
 			{
 				name: 'CheDoChinhSach',
-				component: './CheDoChinhSach',
 				path: 'che-do-chinh-sach',
+				component: './CheDoChinhSach/CheDoChinhSach',
 			},
 		],
 	},
@@ -496,6 +496,16 @@
 				name: 'PhongKyTucXa',
 				path: 'phong-ky-tuc-xa',
 				component: './DiemRenLuyen/DanhMuc',
+			},
+			{
+				name: 'CheDoChinhSach',
+				component: './CheDoChinhSach',
+				path: 'che-do-chinh-sach',
+			},
+			{
+				name: 'Chung',
+				component: './DanhMuc/Chung',
+				path: 'chung',
 			},
 		],
 	},
