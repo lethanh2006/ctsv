@@ -8,7 +8,6 @@ export default function access(initialState: IInitialState) {
 	const scopes = initialState.authorizedPermissions?.find((item) => item.rsname === currentRole)?.scopes;
 	// const token=localStorage.getItem('token');
 	const vaiTro = initialState?.currentUser?.systemRole;
-	console.log('init', initialState);
 	return {
 		// canBoQLKH: token && vaiTro && vaiTro === 'can_bo_qlkh',
 		// lanhDao: token && vaiTro && vaiTro === 'lanh_dao',

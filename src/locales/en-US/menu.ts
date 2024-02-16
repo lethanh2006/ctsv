@@ -15,6 +15,7 @@ export default {
 	'menu.DichVuHanhChinh.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
 
 	'menu.DanhMuc': 'Danh mục',
+	'menu.DanhMuc.Chung': 'Chung',
 	'menu.DanhMuc.ChucVu': 'Chức vụ',
 	'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
 	'menu.DanhMuc.DanhHieu': 'Khen thưởng/kỷ luật',

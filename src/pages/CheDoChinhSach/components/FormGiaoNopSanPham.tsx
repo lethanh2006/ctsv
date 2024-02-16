@@ -95,7 +95,7 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 	};
 
 	return (
-		<Card title={`${!edit ? 'Thêm mới' : 'Chỉnh sửa'} ${record?.ten}`}>
+		<Card title={`${!edit ? 'Thêm mới' : 'Chỉnh sửa'} ${record?.ten ?? ''}`}>
 			<Form
 				scrollToFirstError
 				labelCol={{ span: 24 }}

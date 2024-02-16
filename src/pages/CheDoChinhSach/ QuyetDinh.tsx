@@ -1,6 +1,8 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
+import type { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
@@ -9,11 +11,10 @@ import { useModel } from 'umi';
 import ViewRender from '../QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
 import { buildFilter } from './components/BuildFilter';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
-import ViewQuyetDinh from './components/ViewQuyetDinh';
 import FormImport from './components/FormImport';
-import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
+import ViewQuyetDinh from './components/ViewQuyetDinh';
 
-const QuyetDinh = (props: { title: string }) => {
+const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien }) => {
 	const {
 		handleEdit,
 		deleteModel,
@@ -23,6 +24,7 @@ const QuyetDinh = (props: { title: string }) => {
 		getModel,
 		page,
 		limit,
+		setDanhSach,
 	} = useModel('quyetdinhchedosinhvien');
 	const { danhSach, getAllModel: getAllDanhMuc } = useModel('quytrinh.danhmuc');
 	const {
@@ -31,12 +33,17 @@ const QuyetDinh = (props: { title: string }) => {
 		getTemplateImportCheDoSinhVienModel,
 		visibleImport,
 		setVisibleImport,
+		getAllModel,
 	} = useModel('chedochinhsach');
+
+	useEffect(() => {
+		getAllModel(true, undefined, { loaiCheDoSinhVien: props.loaiCheDoSinhVien });
+	}, []);
 
 	const getData = () => {
 		if (recordCheDoChinhSach?._id) {
 			getModel({ cheDoSinhVienId: recordCheDoChinhSach?._id });
-		}
+		} else setDanhSach([]);
 	};
 
 	const onCancelView = () => {
@@ -107,6 +114,7 @@ const QuyetDinh = (props: { title: string }) => {
 	return (
 		<>
 			<TableBase
+				buttons={{ create: recordCheDoChinhSach?._id ? true : false }}
 				otherButtons={[
 					<Button
 						loading={loading}
@@ -117,7 +125,7 @@ const QuyetDinh = (props: { title: string }) => {
 						{' '}
 						Tải mẫu nhập dữ liệu
 					</Button>,
-					<Button loading={loading} key={'dowload'} onClick={() => setVisibleImport(true)} icon={<ImportOutlined />}>
+					<Button loading={loading} key={'import'} onClick={() => setVisibleImport(true)} icon={<ImportOutlined />}>
 						{' '}
 						Nhập dữ liệu
 					</Button>,

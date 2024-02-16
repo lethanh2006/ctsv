@@ -174,10 +174,11 @@ const DotKhaiBaoNoiNgoaiTruPage = () => {
 				otherButtons={[
 					<>
 						<SelectHocKy
+							allowClear
 							style={{ width: 250 }}
 							value={recHocKy?.ma}
 							onChange={(val) => {
-								retRecHocKy(danhSachHocKy.find((item) => item.ma === val));
+								retRecHocKy(danhSachHocKy?.find((item) => item.ma === val));
 							}}
 							isSetRecord
 							selectMa

@@ -2,14 +2,14 @@ import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormCheDoChinhSach from './components/Form';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 
 const CheDoSinhVienComponent = () => {
-	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm } =
+	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm, postModel } =
 		useModel('chedochinhsach');
 
 	const onCell = (record: CheDoSinhVien.IRecord) => ({
@@ -68,6 +68,15 @@ const CheDoSinhVienComponent = () => {
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
+					</Tooltip>
+					<Tooltip title='Sao chép'>
+						<Button
+							type='link'
+							icon={<CopyOutlined />}
+							onClick={() => {
+								postModel({ ...record, ten: record.ten + ' - sao chép' });
+							}}
+						/>
 					</Tooltip>
 				</>
 			),

@@ -5,7 +5,6 @@ import { useState } from 'react';
 export default () => {
 	const objInit = useInitModel<CheDoSinhVien.QuyetDinhCheDoSinhVien>('quyet-dinh-cdsv');
 	const [visibleView, setVisibleView] = useState<boolean>(false);
-
 	return {
 		...objInit,
 		visibleView,
