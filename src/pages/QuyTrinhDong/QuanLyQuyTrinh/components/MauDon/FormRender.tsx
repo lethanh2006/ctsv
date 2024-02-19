@@ -19,7 +19,20 @@ import { LoaiDefaultValue } from '@/services/QuyTrinhDong/constant';
 import rules from '@/utils/rules';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import type { FormInstance } from 'antd';
-import { Button, Col, Form, Input, InputNumber, Modal, Popconfirm, Radio, Select, Space, Tooltip } from 'antd';
+import {
+	AutoComplete,
+	Button,
+	Col,
+	Form,
+	Input,
+	InputNumber,
+	Modal,
+	Popconfirm,
+	Radio,
+	Select,
+	Space,
+	Tooltip,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
@@ -185,16 +198,29 @@ const FormRender = (props: {
 			break;
 
 		case EKieuDuLieu.DANHMUC:
-			component = (
-				<Select
-					mode={cauHinh.laDangMang ? 'multiple' : undefined}
-					allowClear
-					placeholder='Chọn giá trị'
-					options={danhSach
-						.find((item) => item.maDanhMuc === cauHinh.maDanhMuc)
-						?.danhSachGiaTri.map((item: { value: string }) => ({ value: item.value, label: item.value }))}
-				/>
-			);
+			if (cauHinh.laDangMang) {
+				component = (
+					<Select
+						mode={'multiple'}
+						allowClear
+						placeholder='Chọn giá trị'
+						options={danhSach
+							.find((item) => item.maDanhMuc === cauHinh.maDanhMuc)
+							?.danhSachGiaTri.map((item: { value: string }) => ({ value: item.value, label: item.value }))}
+					/>
+				);
+			} else {
+				component = (
+					<AutoComplete
+						allowClear
+						placeholder='Chọn giá trị'
+						options={danhSach
+							.find((item) => item.maDanhMuc === cauHinh.maDanhMuc)
+							?.danhSachGiaTri.map((item: { value: string }) => ({ value: item.value, label: item.value }))}
+					/>
+				);
+			}
+
 			rule = [...(cauHinh.batBuoc ? rules.required : [])];
 			break;
 		case EKieuDuLieu.NUMBER:

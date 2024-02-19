@@ -23,7 +23,7 @@ export const buildFilter = (
 			filterType = 'select';
 			filterData = danhMucChung
 				?.find((item) => item.maDanhMuc === cauHinh.maDanhMuc)
-				?.danhSachGiaTri.map((item) => ({ value: item, label: item }));
+				?.danhSachGiaTri.map((item) => ({ value: item?.value, label: item?.value }));
 			break;
 		case EKieuDuLieu.DECIMAL:
 			sortable = true;

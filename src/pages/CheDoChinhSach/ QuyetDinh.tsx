@@ -13,6 +13,7 @@ import { buildFilter } from './components/BuildFilter';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 import FormImport from './components/FormImport';
 import ViewQuyetDinh from './components/ViewQuyetDinh';
+import SelectCheDoChinhSach from './components/SelectCheDoChinhSach';
 
 const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien }) => {
 	const {
@@ -33,12 +34,9 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		getTemplateImportCheDoSinhVienModel,
 		visibleImport,
 		setVisibleImport,
-		getAllModel,
+		setRecord: setRecordCheDoChinhSach,
+		danhSach: danhSachCheDoChinhSach,
 	} = useModel('chedochinhsach');
-
-	useEffect(() => {
-		getAllModel(true, undefined, { loaiCheDoSinhVien: props.loaiCheDoSinhVien });
-	}, []);
 
 	const getData = () => {
 		if (recordCheDoChinhSach?._id) {
@@ -116,19 +114,32 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			<TableBase
 				buttons={{ create: recordCheDoChinhSach?._id ? true : false }}
 				otherButtons={[
-					<Button
-						loading={loading}
-						key={'dowload'}
-						onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}
-						icon={<DownloadOutlined />}
-					>
-						{' '}
-						Tải mẫu nhập dữ liệu
-					</Button>,
-					<Button loading={loading} key={'import'} onClick={() => setVisibleImport(true)} icon={<ImportOutlined />}>
-						{' '}
-						Nhập dữ liệu
-					</Button>,
+					<>
+						<Button
+							loading={loading}
+							key={'dowload'}
+							onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}
+							icon={<DownloadOutlined />}
+						>
+							{' '}
+							Tải mẫu nhập dữ liệu
+						</Button>
+						<Button loading={loading} key={'import'} onClick={() => setVisibleImport(true)} icon={<ImportOutlined />}>
+							{' '}
+							Nhập dữ liệu
+						</Button>
+
+						<SelectCheDoChinhSach
+							onChange={(val) => {
+								setRecordCheDoChinhSach(danhSachCheDoChinhSach.find((item) => item._id === val));
+							}}
+							style={{ width: 300 }}
+							isSetRecord
+							value={recordCheDoChinhSach?._id}
+							condition={{ loaiCheDoSinhVien: props.loaiCheDoSinhVien }}
+							key='filter'
+						/>
+					</>,
 				]}
 				getData={getData}
 				widthDrawer={800}
