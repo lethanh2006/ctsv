@@ -5,13 +5,21 @@ import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
-import FormCheDoChinhSach from './components/Form';
-import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
+import FormCheDoChinhSach from './Form';
+import FormGiaoNopSanPham from './FormGiaoNopSanPham';
+import { useCallback, useEffect } from 'react';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 
-const CheDoSinhVienComponent = () => {
+const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; title: string }) => {
 	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm, postModel } = useModel(
 		'chedochinhsach.chedochinhsach',
 	);
+
+	const { getAllModel: getAllDanhMucChung } = useModel('quytrinh.danhmuc');
+
+	useEffect(() => {
+		getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
+	}, []);
 
 	const onCell = (record: CheDoSinhVien.IRecord) => ({
 		onClick: () => {
@@ -23,6 +31,10 @@ const CheDoSinhVienComponent = () => {
 
 	const onCancelPreview = () => {
 		setVisibleViewForm(false);
+	};
+
+	const getData = () => {
+		getModel({ loaiCheDoSinhVien: props.loaiCheDoSinhVien });
 	};
 
 	const columns: IColumn<CheDoSinhVien.IRecord>[] = [
@@ -63,7 +75,7 @@ const CheDoSinhVienComponent = () => {
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => {
-								deleteModel(record._id, getModel);
+								deleteModel(record._id, getData);
 							}}
 							title='Bạn có chắc chắn muốn xóa?'
 						>
@@ -75,7 +87,7 @@ const CheDoSinhVienComponent = () => {
 							type='link'
 							icon={<CopyOutlined />}
 							onClick={() => {
-								postModel({ ...record, ten: record.ten + ' - sao chép' });
+								postModel({ ...record, ten: record.ten + ' - sao chép' }, getData);
 							}}
 						/>
 					</Tooltip>
@@ -84,12 +96,15 @@ const CheDoSinhVienComponent = () => {
 		},
 	];
 
+	const Form = useCallback(() => <FormCheDoChinhSach getData={getData} />, [props.loaiCheDoSinhVien]);
+
 	return (
 		<>
 			<TableBase
+				getData={getData}
 				widthDrawer={800}
-				Form={FormCheDoChinhSach}
-				title='Chế độ chính sách'
+				Form={Form}
+				title={props.title}
 				modelName={'chedochinhsach.chedochinhsach'}
 				columns={columns}
 			/>

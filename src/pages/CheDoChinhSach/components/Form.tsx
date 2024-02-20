@@ -6,7 +6,7 @@ import { Button, Card, Form, Input, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import TableCauHinh from './TableCauHinh';
 
-const FormCheDoChinhSach = () => {
+const FormCheDoChinhSach = (props: { getData: any }) => {
 	const [form] = Form.useForm();
 	const { visibleForm, record, formSubmiting, edit, setVisibleForm, putModel, postModel } = useModel(
 		'chedochinhsach.chedochinhsach',
@@ -25,9 +25,9 @@ const FormCheDoChinhSach = () => {
 		};
 
 		if (edit) {
-			putModel(record?._id ?? '', payload);
+			putModel(record?._id ?? '', payload, props.getData);
 		} else {
-			postModel(payload);
+			postModel(payload, props.getData);
 		}
 	};
 

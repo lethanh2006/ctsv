@@ -5,16 +5,22 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormHinhThucKhenThuong from './components/Form';
+import { useEffect } from 'react';
 
 const HinhThucKhenThuongPage = () => {
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('danhmuc.hinhthuckhenthuong');
+	const { danhSach, getAllModel } = useModel('danhmuc.loaikhenthuong');
+
+	useEffect(() => {
+		getAllModel();
+	}, []);
 
 	const columns: IColumn<HinhThucKhenThuong.IRecord>[] = [
 		{
 			title: 'Mã nội bộ',
 			dataIndex: 'ma',
 			// align: 'center',
-			width: 120,
+			width: 100,
 			filterType: 'string',
 			sortable: true,
 		},
@@ -22,7 +28,7 @@ const HinhThucKhenThuongPage = () => {
 		{
 			title: 'Tên hình thức khen thưởng',
 			dataIndex: 'ten',
-			width: 120,
+			width: 300,
 			filterType: 'string',
 			sortable: true,
 		},
@@ -31,7 +37,9 @@ const HinhThucKhenThuongPage = () => {
 			dataIndex: 'loaiKhenThuongId',
 			width: 120,
 			sortable: true,
-			render: (val, rec) => rec.loaiKhenThuong?.ten,
+			render: (val, rec) => danhSach.find((item) => item._id === val)?.ten,
+			filterType: 'select',
+			filterData: danhSach.map((item) => ({ value: item._id, label: item.ten })),
 		},
 		// {
 		// 	title: 'Hình thức khen thưởng tham khảo',
@@ -47,7 +55,7 @@ const HinhThucKhenThuongPage = () => {
 		{
 			title: 'Mô tả',
 			dataIndex: 'moTa',
-			width: 220,
+			width: 150,
 			filterType: 'string',
 			render: (val) => <ExpandText ellipsis={{ rows: 3 }}>{val}</ExpandText>,
 			sortable: true,

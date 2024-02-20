@@ -5,9 +5,15 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormHinhThucKyLuat from './components/Form';
+import { useEffect } from 'react';
 
 const HinhThucKyLuatPage = () => {
 	const { handleEdit, getModel, page, limit, deleteModel } = useModel('danhmuc.hinhthuckyluat');
+	const { danhSach, getAllModel } = useModel('danhmuc.capkyluat');
+
+	useEffect(() => {
+		getAllModel();
+	}, []);
 
 	const columns: IColumn<HinhThucKyLuat.IRecord>[] = [
 		{
@@ -29,8 +35,11 @@ const HinhThucKyLuatPage = () => {
 			title: 'Cấp kỷ luật',
 			dataIndex: 'capKyLuatId',
 			width: 120,
-			render: (val, rec) => rec.capKyLuat?.ten,
+			render: (val, rec) => danhSach.find((item) => item._id === val)?.ten,
 			sortable: true,
+			align: 'center',
+			filterType: 'select',
+			filterData: danhSach.map((item) => ({ value: item._id, label: item.ten })),
 		},
 		// {
 		// 	title: 'Hình thức kỷ luật tham khảo',
