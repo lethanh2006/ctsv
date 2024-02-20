@@ -26,21 +26,7 @@ import {
 	UndoOutlined,
 	UploadOutlined,
 } from '@ant-design/icons';
-import {
-	Button,
-	Card,
-	Col,
-	Divider,
-	Modal,
-	Popconfirm,
-	Popover,
-	Row,
-	Segmented,
-	Select,
-	Spin,
-	Tag,
-	Tooltip,
-} from 'antd';
+import { Button, Card, Col, Divider, Modal, Popconfirm, Popover, Row, Segmented, Spin, Tag, Tooltip } from 'antd';
 import { sum } from 'lodash';
 import moment, { type Moment } from 'moment';
 import { useEffect, useState } from 'react';

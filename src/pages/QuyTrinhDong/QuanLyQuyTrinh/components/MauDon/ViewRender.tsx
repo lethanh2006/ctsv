@@ -1,11 +1,15 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
+
 import { Modal, Tag } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import FormTable from './FormTable';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import { currencyFormat } from '@/utils/utils';
 
 const ViewRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -36,7 +40,19 @@ const ViewRender = (props: {
 	const valueFinal = isCot ? recordSanPhamFinal?.[cauHinh.ma] : recordSanPhamFinal?.[cauHinh.ma]?.value;
 	switch (cauHinh.kieuDuLieu) {
 		case EKieuDuLieu.TEXT:
-			value = <div>{valueFinal}</div>;
+			value =
+				cauHinh.textDisplay === ETextDisplay.TEXT_EDITOR ? (
+					<div dangerouslySetInnerHTML={{ __html: valueFinal }} />
+				) : (
+					<div>{valueFinal}</div>
+				);
+			break;
+
+		case EKieuDuLieu.CAN_BO:
+			value = <SelectNhanSuDebounce value={valueFinal} isView />;
+			break;
+		case EKieuDuLieu.SINH_VIEN:
+			value = <SelectSinhVienDebounce value={valueFinal} isView />;
 			break;
 
 		case EKieuDuLieu.BOOLEAN:
@@ -49,7 +65,11 @@ const ViewRender = (props: {
 			break;
 		case EKieuDuLieu.NUMBER:
 			value = valueFinal ? (
-				<div>{(value = cauHinh.laDangMang ? valueFinal?.map((item: number) => item)?.join(', ') : valueFinal)}</div>
+				<div>
+					{currencyFormat(
+						(value = cauHinh.laDangMang ? valueFinal?.map((item: number) => item)?.join(', ') : valueFinal),
+					)}
+				</div>
 			) : (
 				<div />
 			);
@@ -64,10 +84,12 @@ const ViewRender = (props: {
 			value = <div>{moment(valueFinal).format('HH:mm DD/MM/YYYY')}</div>;
 			break;
 		case EKieuDuLieu.DATE:
-			value = <div>{moment(valueFinal).format('DD/MM/YYYY')}</div>;
+			// value = <div>{moment(valueFinal).format('DD/MM/YYYY')}</div>;
+			value = <div>{valueFinal}</div>;
 			break;
 		case EKieuDuLieu.MONTH:
-			value = <div>{moment(valueFinal).format('MM/YYYY')}</div>;
+			// value = <div>{moment(valueFinal).format('MM/YYYY')}</div>;
+			value = <div>{valueFinal}</div>;
 			break;
 		case EKieuDuLieu.FILE:
 			value = (

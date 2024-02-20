@@ -16,7 +16,7 @@ const BieuMauDiemRenLuyen = () => {
 
 	useEffect(() => {
 		if (!danhSachDanhMucChung.length) {
-			getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.DIEM_REN_LUYEN });
+			getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
 		}
 	}, []);
 

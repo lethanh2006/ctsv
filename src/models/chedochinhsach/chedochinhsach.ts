@@ -1,42 +1,53 @@
 import useInitModel from '@/hooks/useInitModel';
-import {
-	getDanhMucDoiTuongMienGiam,
-	getDanhMucLoaiCheDoChinhSach,
-	getDanhMucMucMienGiam,
-} from '@/services/CheDoChinhSach/index';
-import type { CheDoChinhSach } from '@/services/CheDoChinhSach/typings';
+import { getTemplateImportCheDoSinhVien, importCheDoSinhVien } from '@/services/CheDoSinhVien';
+import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
+import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
 import { useState } from 'react';
+import fileDownload from 'js-file-download';
 
 export default () => {
-	const objInit = useInitModel<CheDoChinhSach.IRecord>('che-do-chinh-sach');
+	const objInit = useInitModel<CheDoSinhVien.IRecord>('che-do-sinh-vien');
+	const { setLoading } = objInit;
+	const [recordCauHinh, setRecordCauHinh] = useState<LoaiHinh.TruongThongTin>();
+	const [editCot, setEditCot] = useState<boolean>(false);
+	const [recordCot, setRecordCot] = useState<LoaiHinh.Cot>();
+	const [editCauHinh, setEditCauHinh] = useState<boolean>(false);
+	const [visibleViewForm, setVisibleViewForm] = useState<boolean>(false);
+	const [visibleImport, setVisibleImport] = useState<boolean>(false);
 
-	const [danhMucLoaiCheDoChinhSach, setDanhMucLoaiCheDoChinhSach] = useState<string[]>([]);
-	const [danhMucMucMienGiam, setDanhMucMucMienGiam] = useState<string[]>([]);
-	const [danhMucDoiTuongMienGiam, setDanhMucDoiTuongMienGiam] = useState<string[]>([]);
+	const getTemplateImportCheDoSinhVienModel = async (idCheDo: string) => {
+		setLoading(true);
+		const res = await getTemplateImportCheDoSinhVien(idCheDo);
+		fileDownload(res.data, 'Mẫu Import.xlsx');
+		setLoading(false);
+	};
 
-	const getDanhMucLoaiCheDoChinhSachModel = async () => {
-		const res = await getDanhMucLoaiCheDoChinhSach();
-		setDanhMucLoaiCheDoChinhSach(res?.data?.data ?? []);
-	};
-	const getDanhMucMucMienGiamModel = async (loaiCheDoChinhSach: string) => {
-		const res = await getDanhMucMucMienGiam(loaiCheDoChinhSach);
-		setDanhMucMucMienGiam(res?.data?.data ?? []);
-	};
-	const getDanhMucDoiTuongMienGiamModel = async (loaiCheDoChinhSach: string, loaiMucMienGiam: string) => {
-		const res = await getDanhMucDoiTuongMienGiam(loaiCheDoChinhSach, loaiMucMienGiam);
-		setDanhMucDoiTuongMienGiam(res?.data?.data ?? []);
+	const importCheDoSinhVienModel = async (idCheDo: string, payload: { file: any }, getData: any) => {
+		try {
+			setLoading(true);
+			await importCheDoSinhVien(idCheDo, payload);
+			if (getData) getData();
+			setLoading(false);
+		} catch (err) {
+			setLoading(false);
+		}
 	};
 
 	return {
 		...objInit,
-		danhMucDoiTuongMienGiam,
-		danhMucLoaiCheDoChinhSach,
-		danhMucMucMienGiam,
-		setDanhMucDoiTuongMienGiam,
-		setDanhMucLoaiCheDoChinhSach,
-		setDanhMucMucMienGiam,
-		getDanhMucDoiTuongMienGiamModel,
-		getDanhMucLoaiCheDoChinhSachModel,
-		getDanhMucMucMienGiamModel,
+		recordCauHinh,
+		setRecordCauHinh,
+		editCot,
+		setEditCot,
+		recordCot,
+		setRecordCot,
+		editCauHinh,
+		setEditCauHinh,
+		visibleViewForm,
+		setVisibleViewForm,
+		getTemplateImportCheDoSinhVienModel,
+		importCheDoSinhVienModel,
+		visibleImport,
+		setVisibleImport,
 	};
 };

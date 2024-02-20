@@ -1,16 +1,9 @@
-import {
-  adminGetSoDonDaXuLy,
-  adminGetSoDonHomNay,
-  adminGetTongSoDon,
-  chuyenVienDieuPhoiGetSoDonHomNay,
-  chuyenVienDieuPhoiGetTongSoDon,
-} from '@/services/Dashboard/dashboard';
+import DonutChart from '@/components/Chart/DonutChart';
 import { TrangThaiDonDVMC } from '@/services/DVMC/constants';
+import { adminGetSoDonDaXuLy, adminGetSoDonHomNay, adminGetTongSoDon } from '@/services/Dashboard/dashboard';
 import { Badge, Card, Col, Row, Select, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAccess, useModel } from 'umi';
-import DonutChart from '@/components/Chart/DonutChart';
-import numeral from 'numeral';
 
 interface DataSoLuongDon {
 	trangThai: string;
@@ -42,17 +35,17 @@ const ThongTinTongHop = () => {
 		const response = await adminGetTongSoDon({ loaiDichVu: 'DVMC' });
 		setTongSoDon(response?.data?.data ?? []);
 	};
-  const getTongSoDonDaXuLy = async () => {
-    // const response = access.admin
-    //   ? await adminGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' })
-    //   : await chuyenVienDieuPhoiGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' });
-    const response = await adminGetSoDonDaXuLy({ loaiDichVu: 'DVMC' });
-    setDonDaXuLy(response?.data?.data ?? []);
-  };
+	const getTongSoDonDaXuLy = async () => {
+		// const response = access.admin
+		//   ? await adminGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' })
+		//   : await chuyenVienDieuPhoiGetTongSoDon({ loaiDichVu: isDvmc ? 'DVMC' : 'VAN_PHONG_SO' });
+		const response = await adminGetSoDonDaXuLy({ loaiDichVu: 'DVMC' });
+		setDonDaXuLy(response?.data?.data ?? []);
+	};
 	useEffect(() => {
 		getDonHomNay();
 		getTongSoDon();
-    getTongSoDonDaXuLy();
+		getTongSoDonDaXuLy();
 
 		return () => {
 			setIdDichVu(undefined);
@@ -71,7 +64,8 @@ const ThongTinTongHop = () => {
 									return previousValue + currentValue?.soLuong;
 								}, 0)}
 							/>
-							<Badge style={{ marginRight: 8 }} color='blue' />Đang xử lý:
+							<Badge style={{ marginRight: 8 }} color='blue' />
+							Đang xử lý:
 							{tongSoDon?.find((item) => item.trangThai === 'PROCESSING')?.soLuong ?? 0}
 							<br />
 							<Badge style={{ marginRight: 8 }} color='green' />
@@ -99,14 +93,11 @@ const ThongTinTongHop = () => {
 							Không duyệt: {donHomNay?.find((item) => item.trangThai === 'NOT_OK')?.soLuong ?? 0}
 						</Card>
 					</Col>
-          <Col xs={24}>
-            <Card>
-              <Statistic
-                title={<div style={{ fontSize: 16 }}>Số lượng đơn đã xử lý</div>}
-                value={donDaXuLy}
-              />
-            </Card>
-          </Col>
+					<Col xs={24}>
+						<Card>
+							<Statistic title={<div style={{ fontSize: 16 }}>Số lượng đơn đã xử lý</div>} value={donDaXuLy} />
+						</Card>
+					</Col>
 				</Row>
 			</Col>
 			<Col xs={24} md={14} lg={16} xl={18}>
@@ -152,17 +143,19 @@ const ThongTinTongHop = () => {
 					{/*/>*/}
 
 					<DonutChart
-            formatY={(vsl)=>`${vsl} Đơn`}
-            showTotal={true}
+						formatY={(vsl) => `${vsl} Đơn`}
+						showTotal={true}
 						xAxis={recordTongSoDon?.map((item) => {
 							// @ts-ignore
 							return TrangThaiDonDVMC?.[item.trangThai];
 						})}
 						// yAxis={[[111], [12], [1]]}
-						yAxis={[recordTongSoDon?.map((item) => {
-              // @ts-ignore
-              return item.soLuong;
-            })]}
+						yAxis={[
+							recordTongSoDon?.map((item) => {
+								// @ts-ignore
+								return item.soLuong;
+							}),
+						]}
 						yLabel={['']}
 					/>
 				</Card>

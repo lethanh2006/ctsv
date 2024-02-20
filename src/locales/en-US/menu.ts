@@ -15,6 +15,7 @@ export default {
 	'menu.DichVuHanhChinh.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
 
 	'menu.DanhMuc': 'Danh mục',
+	'menu.DanhMuc.Chung': 'Chung',
 	'menu.DanhMuc.ChucVu': 'Chức vụ',
 	'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
 	'menu.DanhMuc.DanhHieu': 'Khen thưởng/kỷ luật',
@@ -29,6 +30,7 @@ export default {
 	'menu.DanhMuc.HinhThucKhenThuong': 'Hình thức khen thưởng',
 	'menu.DanhMuc.LoaiKhenThuong': 'Loại khen thưởng',
 	'menu.DanhMuc.DanhGiaRenLuyen': 'Đánh giá rèn luyện',
+	'menu.DanhMuc.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
@@ -67,6 +69,7 @@ export default {
 	'menu.CheDoChinhSach.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
 	'menu.CheDoChinhSach.KhenThuongKyLuat.KhenThuong': 'Khen thưởng',
 	'menu.CheDoChinhSach.KhenThuongKyLuat.KyLuat': 'Kỷ luật',
+	'menu.CheDoChinhSach.ThongKe': 'Thống kê',
 
 	'menu.LopHanhChinh': 'Lớp hành chính',
 

@@ -1,7 +1,7 @@
 import type { EKieuDuLieu } from '@/services/QuyTrinh/LoaiHinh/constants';
 import type { LoaiHinh } from '@/services/QuyTrinh/LoaiHinh/typing';
 import type { EDoiTuong, EVaiTro } from '@/services/QuyTrinh/constant';
-import type { EDoiTuongPhamViQuyTrinh, EVaiTroPhamViQuyTrinh } from './constant';
+import type { EDoiTuongPhamViQuyTrinh, EPhanHe, EVaiTroPhamViQuyTrinh } from './constant';
 
 declare module QuyTrinh {
 	export interface PhamViQuyTrinh {
@@ -51,6 +51,8 @@ declare module QuyTrinh {
 			maFormThamChieuSoLuongThanhToan: string;
 			maTruongThamChieuSoLuongThanhToan: string;
 		};
+		order: number;
+		phanHe: EPhanHe[];
 		[key: string]: any;
 	}
 	export interface ICauHinhDotQuyTrinh {

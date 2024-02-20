@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useModel } from 'umi';
 import Form from './components/Form';
 import ViewThongKe from './components/ViewThongKe';
+import { EPhanHe } from '@/services/QuyTrinhDong/constant';
 
 const ThongKeBaoCao = () => {
 	const {
@@ -27,7 +28,7 @@ const ThongKeBaoCao = () => {
 	} = useModel('quytrinh.quanlyquytrinh');
 
 	const getData = () => {
-		if (recordQuyTrinh?._id) getAllModel(true, undefined, { quyTrinhId: recordQuyTrinh?._id ?? '' });
+		getAllModel(true, undefined, { quyTrinhId: recordQuyTrinh?._id });
 	};
 
 	useEffect(() => {
@@ -42,13 +43,16 @@ const ThongKeBaoCao = () => {
 		<Card title='Thống kê'>
 			<div style={{ marginBottom: 8 }}>
 				<Select
+					allowClear
 					style={{ width: 300 }}
 					value={recordQuyTrinh?._id}
 					onChange={(val) => {
 						setRecord(danhSach.find((item) => item._id === val));
 					}}
-					placeholder={'Chọn quy trình'}
-					options={danhSach.map((item) => ({ value: item._id, label: item.ten }))}
+					placeholder={'Lọc theo dịch vụ'}
+					options={danhSach
+						.filter((item) => item.phanHe.includes(EPhanHe.CONG_TAC_SINH_VIEN))
+						.map((item) => ({ value: item._id, label: item.ten }))}
 				/>
 				<Button
 					onClick={() => {
@@ -136,7 +140,7 @@ const ThongKeBaoCao = () => {
 				bodyStyle={{ padding: 0 }}
 				visible={visibleForm}
 			>
-				<Form />
+				<Form isQuyTrinh modelName={'quytrinh.thongke'} />
 			</Modal>
 		</Card>
 	);

@@ -90,17 +90,17 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		style: { cursor: 'pointer' },
 	});
 	const columns: IColumn<KhaiBaoQuyTrinh.IRecord>[] = [
+		// {
+		// 	title: 'Tên quy trình',
+		// 	dataIndex: 'quyTrinh',
+		// 	width: 150,
+		// 	render: (val, recordVal) => {
+		// 		return recordVal?.quyTrinh?.ten;
+		// 	},
+		// 	onCell,
+		// },
 		{
-			title: 'Tên quy trình',
-			dataIndex: 'quyTrinh',
-			width: 150,
-			render: (val, recordVal) => {
-				return recordVal?.quyTrinh?.ten;
-			},
-			onCell,
-		},
-		{
-			title: 'Người khai',
+			title: 'Họ và tên',
 			dataIndex: 'nguoiKhaiBao.ten',
 			width: 150,
 			filterType: 'string',
@@ -111,7 +111,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			onCell,
 		},
 		{
-			title: 'Mã',
+			title: 'Mã sinh viên',
 			dataIndex: 'nguoiKhaiBao.ma',
 			width: 120,
 			filterType: 'string',
@@ -216,10 +216,17 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				const formKhai = recordVal?.quyTrinh?.danhSachFormKhaiBao?.find(
 					(item) => item.ma === buocHienTai?.maFormKhaiBao,
 				);
+				const buocDaTiepNhan = recordVal?.danhSachBuocXuLy?.find(
+					(item) => item?.maFormTiepNhan && item?.thongTinTiepNhan,
+				);
 				const formTiepNhan = recordVal?.quyTrinh?.danhSachFormTiepNhan?.find(
+					(item) => item.ma === buocDaTiepNhan?.maFormTiepNhan,
+				);
+				const formTiepNhanBuocHienTai = recordVal?.quyTrinh?.danhSachFormTiepNhan?.find(
 					(item) => item.ma === buocHienTai?.maFormTiepNhan,
 				);
-
+				const buocFinal = buocHienTai?.thongTinTiepNhan ? buocHienTai : buocDaTiepNhan;
+				const formFinal = buocHienTai.thongTinTiepNhan ? formTiepNhanBuocHienTai : formTiepNhan;
 				return (
 					<>
 						<Tooltip title='Xem chi tiết'>
@@ -254,13 +261,11 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 											onClick={(val) => {
 												if (val.key === 'MAU_DON')
 													exportMauDonTheoBuocModel(recordVal._id, buocHienTai.ma, formKhai?.ten ?? '');
-												else exportMauTraKetQuaTheoBuocModel(recordVal._id, buocHienTai.ma, formTiepNhan?.ten ?? '');
+												else exportMauTraKetQuaTheoBuocModel(recordVal._id, buocFinal?.ma ?? '', formFinal?.ten ?? '');
 											}}
 										>
 											{formKhai?.fileId && <Menu.Item key={'MAU_DON'}>Mẫu đơn</Menu.Item>}
-											{formTiepNhan?.fileId && buocHienTai?.trangThaiTiepNhan === TrangThaiTiepNhan.DA_DUYET && (
-												<Menu.Item key={'MAU_TRA_KET_QUA'}>Mẫu trả kết quả</Menu.Item>
-											)}
+											{formFinal?.fileId && <Menu.Item key={'MAU_TRA_KET_QUA'}>Mẫu trả kết quả</Menu.Item>}
 										</Menu>
 									}
 									placement='bottomLeft'
@@ -269,18 +274,20 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 								</Dropdown>
 							</Tooltip>
 						)}
-						{buocHienTai?.laBuocCuoi && recordVal?.daTraKetQua === false && (
-							<Tooltip title={<div style={{ maxWidth: 100 }}>Trả kết quả</div>}>
-								<Button
-									loading={loading}
-									onClick={() => {
-										traKetQuaModel(recordVal._id, getData);
-									}}
-									type='link'
-									icon={<CheckOutlined />}
-								/>
-							</Tooltip>
-						)}
+						{buocHienTai?.laBuocCuoi &&
+							recordVal?.daTraKetQua === false &&
+							buocHienTai?.trangThaiTiepNhan === TrangThaiTiepNhan.DA_DUYET && (
+								<Tooltip title={<div style={{ maxWidth: 100 }}>Trả kết quả</div>}>
+									<Button
+										loading={loading}
+										onClick={() => {
+											traKetQuaModel(recordVal._id, getData);
+										}}
+										type='link'
+										icon={<CheckOutlined />}
+									/>
+								</Tooltip>
+							)}
 					</>
 				);
 			},
@@ -425,7 +432,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				title={record?.quyTrinh?.ten}
 				visible={visibleForm}
 				onCancel={() => setVisibleForm(false)}
-				width={1000}
+				width={1200}
 				footer={null}
 			>
 				{current && (

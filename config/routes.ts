@@ -209,7 +209,7 @@
 					{
 						path: 'khen-thuong',
 						name: 'KhenThuong',
-						component: './KhenThuongKyLuat/KhenThuong',
+						component: './CheDoChinhSach/KhenThuong/QuyetDinhKhenThuong',
 					},
 					// {
 					// 	path: 'sang-kien',
@@ -219,14 +219,24 @@
 					{
 						path: 'ky-luat',
 						name: 'KyLuat',
-						component: './KhenThuongKyLuat/KyLuat',
+						component: './CheDoChinhSach/KyLuat/QuyetDinhKyLuat',
 					},
 				],
 			},
 			{
+				name: 'HocBong',
+				path: 'hoc-bong',
+				component: './CheDoChinhSach/HocBong/QuyetDinhHocBong',
+			},
+			{
 				name: 'CheDoChinhSach',
-				component: './CheDoChinhSach',
 				path: 'che-do-chinh-sach',
+				component: './CheDoChinhSach/CheDoChinhSach/QuyetDinhChinhSach',
+			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke',
+				component: './CheDoChinhSach/ThongKe',
 			},
 		],
 	},
@@ -419,24 +429,51 @@
 		icon: 'copy',
 		routes: [
 			{
-				name: 'LoaiKhenThuong',
-				path: 'loai-khen-thuong',
-				component: './DanhMuc/LoaiKhenThuong',
+				name: 'KhenThuong',
+				path: 'khen-thuong',
+				routes: [
+					{
+						name: 'LoaiKhenThuong',
+						path: 'loai-khen-thuong',
+						component: './DanhMuc/LoaiKhenThuong',
+					},
+					{
+						name: 'HinhThucKhenThuong',
+						path: 'hinh-thuc-khen-thuong',
+						component: './DanhMuc/HinhThucKhenThuong',
+					},
+					{
+						name: 'KhenThuong',
+						path: 'khen-thuong',
+						component: './CheDoChinhSach/KhenThuong/CheDoKhenThuong',
+					},
+				],
 			},
 			{
-				name: 'HinhThucKhenThuong',
-				path: 'hinh-thuc-khen-thuong',
-				component: './DanhMuc/HinhThucKhenThuong',
+				name: 'KyLuat',
+				path: 'ky-luat',
+				routes: [
+					{
+						name: 'CapKyLuat',
+						path: 'cap-ky-luat',
+						component: './DanhMuc/CapKyLuat',
+					},
+					{
+						name: 'HinhThucKyLuat',
+						path: 'hinh-thuc-ky-luat',
+						component: './DanhMuc/HinhThucKyLuat',
+					},
+					{
+						name: 'KyLuat',
+						path: 'ky-luat',
+						component: './CheDoChinhSach/KyLuat/CheDoKyLuat',
+					},
+				],
 			},
 			{
-				name: 'CapKyLuat',
-				path: 'cap-ky-luat',
-				component: './DanhMuc/CapKyLuat',
-			},
-			{
-				name: 'HinhThucKyLuat',
-				path: 'hinh-thuc-ky-luat',
-				component: './DanhMuc/HinhThucKyLuat',
+				name: 'HocBong',
+				path: 'hoc-bong',
+				component: './CheDoChinhSach/HocBong/CheDoHocBong',
 			},
 			{
 				name: 'DanhGiaRenLuyen',
@@ -454,6 +491,32 @@
 			// 	path: 'danh-hieu',
 			// 	component: './DanhMuc/DanhHieu',
 			// },
+			// {
+			// 	name: 'ThamGiaCongTacXaHoi',
+			// 	path: 'tham-gia-cong-tac-xa-hoi',
+			// 	component: './DiemRenLuyen/DanhMuc',
+			// },
+
+			// {
+			// 	name: 'KyTucXa',
+			// 	path: 'ky-tuc-xa',
+			// 	component: './DiemRenLuyen/DanhMuc',
+			// },
+			// {
+			// 	name: 'PhongKyTucXa',
+			// 	path: 'phong-ky-tuc-xa',
+			// 	component: './DiemRenLuyen/DanhMuc',
+			// },
+			{
+				name: 'CheDoChinhSach',
+				component: './CheDoChinhSach/CheDoChinhSach/CheDoChinhSach',
+				path: 'che-do-chinh-sach',
+			},
+			{
+				name: 'Chung',
+				component: './DanhMuc/Chung',
+				path: 'chung',
+			},
 		],
 	},
 

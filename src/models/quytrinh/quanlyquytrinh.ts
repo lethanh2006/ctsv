@@ -1,6 +1,6 @@
 import useInitModel from '@/hooks/useInitModel';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { DoiTuong } from '@/services/QuyTrinhDong/constant';
+import { DoiTuong, EPhanHe } from '@/services/QuyTrinhDong/constant';
 import {
 	activeQuyTrinhDong,
 	getAllQuyTrinhChiuTrachNhiem,
@@ -114,7 +114,11 @@ export default () => {
 	const getAllQuyTrinhChiuTrachNhiemModel = async (payload?: { condition?: any; filters?: string[] }) => {
 		const res = await getAllQuyTrinhChiuTrachNhiem(payload);
 		setDanhSach(res?.data?.data ?? []);
-		setRecord(res?.data?.data?.[0]);
+		// setRecord(
+		// 	res?.data?.data?.filter((item: { phanHe: string | EPhanHe[] }) =>
+		// 		item.phanHe.includes(EPhanHe.CONG_TAC_SINH_VIEN),
+		// 	)?.[0],
+		// );
 	};
 
 	return {

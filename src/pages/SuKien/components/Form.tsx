@@ -136,6 +136,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 		}
 		delete values.variantDanhSachThamGia;
 		values.kinhPhiDuTru = dataKinhPhi;
+
 		if (edit) {
 			putModel(record?._id ?? '', values, getModel)
 				.then()

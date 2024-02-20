@@ -16,6 +16,21 @@ const allCharacters =
 // CMND
 
 const rules = {
+	json: [
+		{
+			validator: (__, value, callback) => {
+				try {
+					if (value) {
+						JSON.parse(value);
+					}
+					callback();
+				} catch {
+					callback('');
+				}
+			},
+			message: 'Json không hợp lệ',
+		},
+	],
 	dacbiet: [
 		{
 			pattern: new RegExp(`^[0-9${allCharacters} \n]+$`),
@@ -195,7 +210,7 @@ const rules = {
 	truocHomNay: [
 		{
 			validator: (_, value, callback) => {
-				if (mo && value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
 				callback();
 			},
 			message: 'Không được sau thời điểm hiện tại',

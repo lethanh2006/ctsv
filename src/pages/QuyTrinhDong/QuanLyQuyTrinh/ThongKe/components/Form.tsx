@@ -14,10 +14,9 @@ import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
-const FormThongKe = () => {
+const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
-		useModel('quytrinh.thongke');
+	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } = useModel(props.modelName);
 
 	const { record: recordQuyTrinh } = useModel('quytrinh.quanlyquytrinh');
 
@@ -42,7 +41,7 @@ const FormThongKe = () => {
 		const payload = {
 			...record,
 			...values,
-			quyTrinhId: recordQuyTrinh?._id,
+			quyTrinhId: props.isQuyTrinh ? recordQuyTrinh?._id : undefined,
 			aggregationArray: JSON.parse(values?.aggregationArray),
 		};
 

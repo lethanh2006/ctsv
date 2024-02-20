@@ -5,15 +5,17 @@ import { Button, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import FormDanhMucChung from './components/Form';
+
 import { useCallback } from 'react';
-import type { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
+
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import type { DanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/typings';
 
-const DanhMucChungComponent = (props: { maModule: ELoaiDanhMucChung }) => {
+const DanhMucChungComponent = () => {
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('quytrinh.danhmuc');
 
 	const getData = () => {
-		getModel({ maModule: props.maModule });
+		getModel({ maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
 	};
 
 	const columns: IColumn<DanhMucChung.IRecord>[] = [
@@ -30,7 +32,9 @@ const DanhMucChungComponent = (props: { maModule: ELoaiDanhMucChung }) => {
 			render: (val: any[]) => (
 				<div>
 					{val.map((item) => (
-						<div key={item.value}>- {item.value}</div>
+						<div style={{ marginLeft: 4 }} key={item.value}>
+							- {item.value}
+						</div>
 					))}
 				</div>
 			),
@@ -68,12 +72,15 @@ const DanhMucChungComponent = (props: { maModule: ELoaiDanhMucChung }) => {
 		},
 	];
 
-	const Form = useCallback(() => <FormDanhMucChung maModule={props.maModule} getData={getData} />, [props.maModule]);
+	const Form = useCallback(
+		() => <FormDanhMucChung maModule={ELoaiDanhMucChung.CHE_DO_CHINH_SACH} getData={getData} />,
+		[],
+	);
 
 	return (
 		<TableBase
+			title='Danh mục chung'
 			getData={getData}
-			hideCard
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='quytrinh.danhmuc'

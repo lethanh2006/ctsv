@@ -6,6 +6,8 @@ import rules from '@/utils/rules';
 import { userUpdateBuoc } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
 import FormRender from '../../components/MauDon/FormRender';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
+import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import moment from 'moment';
 
 const FormQuyTrinh = (props: { getData: () => void }) => {
 	const {
@@ -21,6 +23,7 @@ const FormQuyTrinh = (props: { getData: () => void }) => {
 		setRecord: setRecordSanPham,
 		recordQuyTrinhForm,
 	} = useModel('quytrinh.quanlyquytrinh');
+	const { danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
 	const [formValues, setFormValues] = useState<any>({});
 	const [loadingKhaiBao, setLoadingKhaiBao] = useState<boolean>(false);
 	const [danhSachDonViXuLy, setDanhSachDonViXuLy] = useState<KhaiBaoQuyTrinh.IDonViXuLy[]>([]);
@@ -40,8 +43,20 @@ const FormQuyTrinh = (props: { getData: () => void }) => {
 			const valuesFinal: any = {};
 			const valuesForm = { ...(recordQuyTrinhForm?.thongTinKhaiBao ?? {}), ...values };
 			Object.keys(valuesForm).map((item) => {
+				const cauHinh = currentFormKhaiBao?.cauHinhLoaiHinh?.find((ele) => ele.ma === item);
+				const isDanhMuc = cauHinh?.kieuDuLieu === EKieuDuLieu.DANHMUC;
+				const isDate = cauHinh?.kieuDuLieu === EKieuDuLieu.DATE;
+				const isMonth = cauHinh?.kieuDuLieu === EKieuDuLieu.MONTH;
 				valuesFinal[item] = {
-					value: valuesForm[item],
+					value:
+						(isDate || isMonth) && valuesForm
+							? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
+							: valuesForm[item],
+					info: isDanhMuc
+						? danhSachDanhMuc
+								?.find((ele) => ele.maDanhMuc === cauHinh.maDanhMuc)
+								?.danhSachGiaTri?.find((ele) => ele.value === valuesForm[item])?.info
+						: undefined,
 				};
 			});
 			const payload = {
@@ -78,7 +93,16 @@ const FormQuyTrinh = (props: { getData: () => void }) => {
 	}, [dataQuyTrinh]);
 	useEffect(() => {
 		if (editFormKhaiBao && recordFormKhaiBao) {
-			form.setFieldsValue(recordFormKhaiBao);
+			const recordFormKhaiBaoFinal: any = {};
+			Object.keys(recordFormKhaiBao).map((key) => {
+				const cauHinh = currentFormKhaiBao?.cauHinhLoaiHinh?.find((item) => item.ma === key);
+				const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
+				const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
+				const khaiBao = recordFormKhaiBao[key];
+				recordFormKhaiBaoFinal[key] = isDate || isMonth ? khaiBao?.split('/')?.reverse()?.join('-') : khaiBao;
+			});
+
+			form.setFieldsValue(recordFormKhaiBaoFinal);
 		}
 	}, [editFormKhaiBao, recordFormKhaiBao]);
 	useEffect(() => {

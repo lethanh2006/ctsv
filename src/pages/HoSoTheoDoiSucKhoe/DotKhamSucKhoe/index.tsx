@@ -113,13 +113,13 @@ const DotKhamSucKhoePage = () => {
 									title='Bạn có chắc chắn muốn duyệt đợt khám sức khỏe?'
 									placement='topRight'
 								>
-									<ButtonExtend tooltip='Duyệt' type='link' className='btn-success' icon={<CheckOutlined />} />
+									<ButtonExtend tooltip='Duyệt' type='link' icon={<CheckOutlined />} />
 								</Popconfirm>
 								<ButtonExtend
 									onClick={() => (setViewYeuCau(true), setRecord(rec))}
 									tooltip='Yêu cầu chỉnh sửa'
 									type='link'
-									icon={<EditOutlined style={{ color: 'yellow' }} />}
+									icon={<EditOutlined />}
 								/>
 								<ButtonExtend tooltip='Tải biểu mẫu' type='link' icon={<ArrowDownOutlined />} />
 							</>

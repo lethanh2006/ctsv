@@ -11,7 +11,8 @@ const SelectSinhVienDebounce = (props: {
 	disabled?: boolean;
 	style?: React.CSSProperties;
 	selectMa?: boolean;
-}) => {
+	isView?: boolean;
+}): any => {
 	const { value, onChange, multiple, disabled, style, selectMa } = props;
 	const { danhSach, getModel, loading, searchSinhVienModel } = useModel('daotaov2.sinhvien.sinhvien');
 	const [keyword, setKeyword] = useState<string>();
@@ -51,7 +52,11 @@ const SelectSinhVienDebounce = (props: {
 		setKeyword(val);
 	}, 800);
 
-	return (
+	const dataView = danhSach.find((item) => item.ssoId === value);
+
+	return props.isView ? (
+		`${dataView?.ten ?? ''} - ${dataView?.ma ?? ''}`
+	) : (
 		<Select
 			mode={multiple ? 'multiple' : undefined}
 			value={value}

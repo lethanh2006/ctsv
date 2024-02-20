@@ -1,5 +1,5 @@
 import useInitModel from '@/hooks/useInitModel';
-import { QuyTrinh } from '@/services/QuyTrinhDong/typings';
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 
 export default () => {
 	const objInit = useInitModel<QuyTrinh.IRecord>('quy-trinh-dong/user');

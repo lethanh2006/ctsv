@@ -20,6 +20,7 @@ const ViewThongKe = (props: { idThongKe: string }) => {
 	const [data, setData] = useState<any[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const getData = async () => {
+		if (!props.idThongKe || !danhSach.map((item) => item._id).includes(props.idThongKe)) return;
 		setLoading(true);
 		const res = await getDataThongKeJson(props.idThongKe, { filters: filters });
 		setData(res?.data?.data?.data ?? []);

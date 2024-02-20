@@ -162,7 +162,7 @@ const FormCauHinh = (props: { onCancel: any; edit: boolean; setEdit: any }) => {
 								<Button
 									loading={loadingDanhMucChung}
 									onClick={() => {
-										getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.DIEM_REN_LUYEN });
+										getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
 									}}
 									style={{ padding: 0 }}
 									type='link'
@@ -174,7 +174,7 @@ const FormCauHinh = (props: { onCancel: any; edit: boolean; setEdit: any }) => {
 						}
 						rules={[...rules.required]}
 					>
-						<SelectDanhMuc hasCreate maModule={ELoaiDanhMucChung.DIEM_REN_LUYEN} />
+						<SelectDanhMuc hasCreate maModule={ELoaiDanhMucChung.CHE_DO_CHINH_SACH} />
 					</Form.Item>
 				)}
 

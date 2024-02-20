@@ -30,6 +30,8 @@ declare module LoaiHinh {
 		readonly: boolean;
 		loaiDefaultValue: string;
 		customDefaultValue: string;
+		ghiChu: string;
+		textDisplay: ETextDisplay;
 	}
 
 	export interface TruongThongTin {
@@ -54,6 +56,8 @@ declare module LoaiHinh {
 		readonly: boolean;
 		loaiDefaultValue: string;
 		customDefaultValue: string;
+		ghiChu: string;
+		textDisplay: ETextDisplay;
 	}
 
 	export interface TieuChi {

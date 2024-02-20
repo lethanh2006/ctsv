@@ -86,9 +86,9 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 				icon: <FolderOutlined />,
 				children: arrQuyTrinh
 					?.filter((item2) => item2?.linhVuc === item?.ten)
-					?.map((item3) => {
+					?.map((item3, index: number) => {
 						return {
-							title: item3.ten,
+							title: `${index + 1}. ${item3?.ten}`,
 							key: item3._id,
 							icon: <FileAddOutlined />,
 							children: item3?.danhSachBuocXuLy?.map((ele) => {

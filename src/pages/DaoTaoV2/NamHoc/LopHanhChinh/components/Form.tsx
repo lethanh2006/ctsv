@@ -71,7 +71,7 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 				</Col>
 				<Col xs={24} md={12}>
 					<Form.Item name='nhanSuSsoId' label='Cố vấn học tập'>
-						<SelectNhanSuDebounce disabled />
+						<SelectNhanSuDebounce />
 					</Form.Item>
 				</Col>
 			</Row>

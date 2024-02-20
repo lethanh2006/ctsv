@@ -230,7 +230,7 @@ const ThongTinTongHop = (props: IProps) => {
 												</Col>
 											</Row>
 										</Col>
-										<Col xs={24} md={24}>
+										{/* <Col xs={24} md={24}>
 											<Card title={'Đơn quá hạn xử lý'}>
 												<Tabs
 													onChange={(val: any) => {
@@ -242,7 +242,7 @@ const ThongTinTongHop = (props: IProps) => {
 												</Tabs>
 												<TableStaticData size={'small'} data={dataQuaHan} columns={columns} />
 											</Card>
-										</Col>
+										</Col> */}
 										{/* <Col xs={24} md={24} lg={12} xl={12}>
 											<Card
 												title={
