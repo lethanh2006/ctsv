@@ -10,7 +10,7 @@ import { useModel } from 'umi';
 
 const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 	const [form] = Form.useForm();
-	const { record } = useModel('chedochinhsach');
+	const { record } = useModel('chedochinhsach.chedochinhsach');
 	const {
 		edit,
 		formSubmiting,
@@ -21,7 +21,7 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 		postModel,
 		visibleForm,
 		setLoading,
-	} = useModel('quyetdinhchedosinhvien');
+	} = useModel('chedochinhsach.quyetdinhchedosinhvien');
 	const { danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
 
 	const [formValues, setFormValues] = useState<any>({

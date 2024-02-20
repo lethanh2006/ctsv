@@ -49,7 +49,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 		setRecordCot,
 		record,
 		setRecord,
-	} = useModel('chedochinhsach');
+	} = useModel('chedochinhsach.chedochinhsach');
 	const { getAllModel: getAllDanhMucChung, loading: loadingDanhMucChung, danhSach } = useModel('quytrinh.danhmuc');
 
 	const [kieuDuLieu, setKieuDuLieu] = useState<EKieuDuLieu>(recordCauHinh?.kieuDuLieu ?? EKieuDuLieu.BOOLEAN);

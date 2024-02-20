@@ -256,6 +256,11 @@
 				path: 'che-do-chinh-sach',
 				component: './CheDoChinhSach/CheDoChinhSach',
 			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke',
+				component: './CheDoChinhSach/ThongKe',
+			},
 		],
 	},
 

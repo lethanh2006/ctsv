@@ -4,8 +4,8 @@ import { Col, Row } from 'antd';
 import { useModel } from 'umi';
 
 const ViewQuyetDinh = () => {
-	const { record } = useModel('chedochinhsach');
-	const { record: recordQuyetDinh } = useModel('quyetdinhchedosinhvien');
+	const { record } = useModel('chedochinhsach.chedochinhsach');
+	const { record: recordQuyetDinh } = useModel('chedochinhsach.quyetdinhchedosinhvien');
 	return (
 		<Row gutter={[0, 10]}>
 			{record?.danhSachCauHinhThongTin.map((item) => {

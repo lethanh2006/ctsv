@@ -10,8 +10,9 @@ import { useModel } from 'umi';
 import FormCauHinh from './FormCauHinh';
 
 const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: string; dataSetState?: string }) => {
-	const { record, setRecord, setRecordCauHinh, loading, setEditCauHinh, setVisibleViewForm } =
-		useModel('chedochinhsach');
+	const { record, setRecord, setRecordCauHinh, loading, setEditCauHinh, setVisibleViewForm } = useModel(
+		'chedochinhsach.chedochinhsach',
+	);
 
 	const [visibleCauHinh, setVisibleCauHinh] = useState<boolean>(false);
 

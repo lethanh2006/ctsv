@@ -9,8 +9,9 @@ import FormCheDoChinhSach from './components/Form';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 
 const CheDoSinhVienComponent = () => {
-	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm, postModel } =
-		useModel('chedochinhsach');
+	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm, postModel } = useModel(
+		'chedochinhsach.chedochinhsach',
+	);
 
 	const onCell = (record: CheDoSinhVien.IRecord) => ({
 		onClick: () => {
@@ -89,7 +90,7 @@ const CheDoSinhVienComponent = () => {
 				widthDrawer={800}
 				Form={FormCheDoChinhSach}
 				title='Chế độ chính sách'
-				modelName={'chedochinhsach'}
+				modelName={'chedochinhsach.chedochinhsach'}
 				columns={columns}
 			/>
 			<Modal

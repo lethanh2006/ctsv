@@ -26,7 +26,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		page,
 		limit,
 		setDanhSach,
-	} = useModel('quyetdinhchedosinhvien');
+	} = useModel('chedochinhsach.quyetdinhchedosinhvien');
 	const { danhSach, getAllModel: getAllDanhMuc } = useModel('quytrinh.danhmuc');
 	const {
 		record: recordCheDoChinhSach,
@@ -36,7 +36,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		setVisibleImport,
 		setRecord: setRecordCheDoChinhSach,
 		danhSach: danhSachCheDoChinhSach,
-	} = useModel('chedochinhsach');
+	} = useModel('chedochinhsach.chedochinhsach');
 
 	const getData = () => {
 		if (recordCheDoChinhSach?._id) {
@@ -146,7 +146,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 				Form={Form}
 				dependencies={[page, limit, recordCheDoChinhSach?._id]}
 				title={props.title || 'Chế độ chính sách'}
-				modelName={'quyetdinhchedosinhvien'}
+				modelName={'chedochinhsach.quyetdinhchedosinhvien'}
 				columns={columns}
 			/>
 			<Modal destroyOnClose width={900} title='Chi tiết' footer={false} visible={visibleView} onCancel={onCancelView}>

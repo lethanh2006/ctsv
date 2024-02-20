@@ -1,10 +1,9 @@
 import { DeleteOutlined, EditOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Collapse, Empty, Modal, Popconfirm, Select, Spin, Tooltip } from 'antd';
+import { Button, Card, Collapse, Empty, Modal, Popconfirm, Spin, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
-import Form from './components/Form';
-import ViewThongKe from './components/ViewThongKe';
-import { EPhanHe } from '@/services/QuyTrinhDong/constant';
+import ViewThongKe from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/ViewThongKe';
+import Form from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/Form';
 
 const ThongKeBaoCao = () => {
 	const {
@@ -18,42 +17,19 @@ const ThongKeBaoCao = () => {
 		deleteModel,
 		getDataThongKeExcelModel,
 		loading,
-	} = useModel('quytrinh.thongke');
-
-	const {
-		getAllQuyTrinhChiuTrachNhiemModel,
-		record: recordQuyTrinh,
-		danhSach,
-		setRecord,
-	} = useModel('quytrinh.quanlyquytrinh');
+	} = useModel('chedochinhsach.thongke');
 
 	const getData = () => {
-		getAllModel(true, undefined, { quyTrinhId: recordQuyTrinh?._id });
+		getAllModel(false);
 	};
 
 	useEffect(() => {
 		getData();
-	}, [recordQuyTrinh?._id]);
-
-	useEffect(() => {
-		getAllQuyTrinhChiuTrachNhiemModel();
 	}, []);
 
 	return (
 		<Card title='Thống kê'>
 			<div style={{ marginBottom: 8 }}>
-				<Select
-					allowClear
-					style={{ width: 300 }}
-					value={recordQuyTrinh?._id}
-					onChange={(val) => {
-						setRecord(danhSach.find((item) => item._id === val));
-					}}
-					placeholder={'Lọc theo dịch vụ'}
-					options={danhSach
-						.filter((item) => item.phanHe.includes(EPhanHe.CONG_TAC_SINH_VIEN))
-						.map((item) => ({ value: item._id, label: item.ten }))}
-				/>
 				<Button
 					onClick={() => {
 						setEdit(false);
@@ -81,7 +57,7 @@ const ThongKeBaoCao = () => {
 													loading={loading}
 													onClick={(e) => {
 														e.stopPropagation();
-														getDataThongKeExcelModel(item.ten, { thongKeQuyTrinhDongIds: [item._id] });
+														getDataThongKeExcelModel(item.ten, { thongKeId: item._id, filters: [] });
 													}}
 													size='small'
 													icon={<ExportOutlined />}
@@ -140,7 +116,7 @@ const ThongKeBaoCao = () => {
 				bodyStyle={{ padding: 0 }}
 				visible={visibleForm}
 			>
-				<Form isQuyTrinh modelName={'quytrinh.thongke'} />
+				<Form modelName={'chedochinhsach.thongke'} />
 			</Modal>
 		</Card>
 	);

@@ -8,7 +8,9 @@ import TableCauHinh from './TableCauHinh';
 
 const FormCheDoChinhSach = () => {
 	const [form] = Form.useForm();
-	const { visibleForm, record, formSubmiting, edit, setVisibleForm, putModel, postModel } = useModel('chedochinhsach');
+	const { visibleForm, record, formSubmiting, edit, setVisibleForm, putModel, postModel } = useModel(
+		'chedochinhsach.chedochinhsach',
+	);
 	const [formValues, setFormValues] = useState<any>(record);
 
 	useEffect(() => {

@@ -6,7 +6,9 @@ import { useModel } from 'umi';
 
 const FormImport = (props: { getData: any }) => {
 	const [form] = Form.useForm();
-	const { record, importCheDoSinhVienModel, setVisibleImport, loading, formSubmiting } = useModel('chedochinhsach');
+	const { record, importCheDoSinhVienModel, setVisibleImport, loading, formSubmiting } = useModel(
+		'chedochinhsach.chedochinhsach',
+	);
 
 	return (
 		<Form

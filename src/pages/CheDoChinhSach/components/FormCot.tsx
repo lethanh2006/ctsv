@@ -11,7 +11,9 @@ import FormGiaTriLienQuan from './FormGiaTriLienQuan';
 
 const FormCot = (props: { onCancel: any }) => {
 	const [form] = Form.useForm();
-	const { formSubmiting, recordCauHinh, setRecordCauHinh, editCot, recordCot } = useModel('chedochinhsach');
+	const { formSubmiting, recordCauHinh, setRecordCauHinh, editCot, recordCot } = useModel(
+		'chedochinhsach.chedochinhsach',
+	);
 	const [truongThongTinLienQuan, setTruongThongTinLienQuan] = useState<LoaiHinh.Cot | undefined>(
 		recordCauHinh?.danhSachCot?.find((item: { ma: any }) => item.ma === recordCot?.truongThongTinLienQuan),
 	);

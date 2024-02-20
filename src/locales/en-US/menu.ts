@@ -67,6 +67,7 @@ export default {
 	'menu.CheDoChinhSach.KhenThuongKyLuat': 'Khen thưởng kỷ luật',
 	'menu.CheDoChinhSach.KhenThuongKyLuat.KhenThuong': 'Khen thưởng',
 	'menu.CheDoChinhSach.KhenThuongKyLuat.KyLuat': 'Kỷ luật',
+	'menu.CheDoChinhSach.ThongKe': 'Thống kê',
 
 	'menu.LopHanhChinh': 'Lớp hành chính',
 

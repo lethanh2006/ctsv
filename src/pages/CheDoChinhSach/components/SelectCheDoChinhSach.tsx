@@ -15,7 +15,7 @@ const SelectCheDoChinhSach = (props: {
 	placeHolder?: string;
 }) => {
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, disabled, placeHolder } = props;
-	const { danhSach, getAllModel, visibleForm, loading } = useModel('chedochinhsach');
+	const { danhSach, getAllModel, visibleForm, loading } = useModel('chedochinhsach.chedochinhsach');
 
 	useEffect(() => {
 		if (!visibleForm) getAllModel(!!isSetRecord, undefined, condition);
