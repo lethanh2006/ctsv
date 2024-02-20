@@ -66,7 +66,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		if (item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH) return;
 		columns.push({
 			title: item.ten,
-			dataIndex: `thongTinQuyetDinh.${item.ma}`,
+			dataIndex: `thongTinQuyetDinh.${item.ma}.value`,
 			width: 200,
 			align: 'center',
 			specialFilter: true,

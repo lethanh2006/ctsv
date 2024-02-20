@@ -15,8 +15,8 @@ const FormImport = (props: { getData: any }) => {
 			scrollToFirstError
 			form={form}
 			onFinish={async (values) => {
-				if (record?._id) importCheDoSinhVienModel(record?._id, values, props.getData);
-				return;
+				if (record?._id)
+					importCheDoSinhVienModel(record?._id, { file: values?.file?.fileList?.[0]?.originFileObj }, props.getData);
 			}}
 		>
 			<Form.Item rules={[...rules.required]} name='file' label='File dữ liệu'>

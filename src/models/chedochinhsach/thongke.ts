@@ -7,10 +7,10 @@ export default () => {
 	const objInit = useInitModel<ThongKeQuyTrinhDong.IRecord>('thong-ke-cdsv');
 	const { setLoading } = objInit;
 
-	const getDataThongKeExcelModel = async (tenThongKe: string, payload?: { thongKeId: string; filters: string[] }) => {
+	const getDataThongKeExcelModel = async (tenThongKe: string, id: string, payload?: { filters: string[] }) => {
 		try {
 			setLoading(true);
-			const res = await getDataThongKeExcel(payload);
+			const res = await getDataThongKeExcel(id, payload);
 			fileDownload(res.data, `${tenThongKe}.xlsx`);
 			setLoading(false);
 		} catch (err) {

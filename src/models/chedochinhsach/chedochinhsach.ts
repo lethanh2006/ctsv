@@ -4,6 +4,7 @@ import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
 import { useState } from 'react';
 import fileDownload from 'js-file-download';
+import { message } from 'antd';
 
 export default () => {
 	const objInit = useInitModel<CheDoSinhVien.IRecord>('che-do-sinh-vien');
@@ -26,6 +27,8 @@ export default () => {
 		try {
 			setLoading(true);
 			await importCheDoSinhVien(idCheDo, payload);
+			message.success('Import thành công');
+			setVisibleImport(false);
 			if (getData) getData();
 			setLoading(false);
 		} catch (err) {

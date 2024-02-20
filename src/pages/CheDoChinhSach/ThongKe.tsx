@@ -57,7 +57,7 @@ const ThongKeBaoCao = () => {
 													loading={loading}
 													onClick={(e) => {
 														e.stopPropagation();
-														getDataThongKeExcelModel(item.ten, { thongKeId: item._id, filters: [] });
+														getDataThongKeExcelModel(item.ten, item._id, { filters: [] });
 													}}
 													size='small'
 													icon={<ExportOutlined />}
@@ -98,7 +98,7 @@ const ThongKeBaoCao = () => {
 									header={item.ten}
 									key={item._id}
 								>
-									<ViewThongKe idThongKe={item._id} />
+									<ViewThongKe type='CheDoChinhSach' idThongKe={item._id} />
 								</Collapse.Panel>
 							);
 						})}

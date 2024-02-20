@@ -122,7 +122,7 @@ const ThongKeBaoCao = () => {
 									header={item.ten}
 									key={item._id}
 								>
-									<ViewThongKe idThongKe={item._id} />
+									<ViewThongKe type='QuyTrinhDong' idThongKe={item._id} />
 								</Collapse.Panel>
 							);
 						})}

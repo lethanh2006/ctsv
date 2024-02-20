@@ -348,7 +348,7 @@
 	{
 		name: 'NoiNgoaiTru',
 		path: 'noi-ngoai-tru',
-		icon: 'DeploymentUnitOutlined',
+		icon: 'BankOutlined',
 		routes: [
 			{
 				name: 'DotKhaiBaoNoiNgoaitru',
@@ -475,11 +475,11 @@
 				path: 'hoc-bong',
 				component: './CheDoChinhSach/HocBong/CheDoHocBong',
 			},
-			{
-				name: 'DanhGiaRenLuyen',
-				path: 'diem-ren-luyen',
-				component: './DanhMuc/Chung/DiemRenLuyen',
-			},
+			// {
+			// 	name: 'DanhGiaRenLuyen',
+			// 	path: 'diem-ren-luyen',
+			// 	component: './DanhMuc/Chung/DiemRenLuyen',
+			// },
 
 			// {
 			// 	name: 'LoaiDanhHieu',

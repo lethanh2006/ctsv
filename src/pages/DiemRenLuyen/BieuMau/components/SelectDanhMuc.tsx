@@ -42,8 +42,8 @@ const SelectDanhMuc = (props: {
 								placement='left'
 								content={
 									<div>
-										{item.danhSachGiaTri.map((giaTri: string) => (
-											<div key={giaTri}>- {giaTri}</div>
+										{item.danhSachGiaTri.map((giaTri) => (
+											<div key={giaTri?.value}>- {giaTri?.value}</div>
 										))}
 									</div>
 								}

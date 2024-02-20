@@ -1,5 +1,5 @@
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
-import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import { EKieuDuLieu, ETextDisplay, MapKeyNameTextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
 import rules from '@/utils/rules';
 import { removeVietnameseTones } from '@/utils/utils';
@@ -140,13 +140,14 @@ const FormCauHinh = (props: { onCancel: any; edit: boolean; setEdit: any }) => {
 						</Form.Item>
 					</Col>
 					{kieuDuLieu === EKieuDuLieu.TEXT && (
-						<Col span={12}>
-							<Form.Item name='textarea' label='Text area' rules={[...rules.required]}>
-								<Radio.Group
-									options={[
-										{ value: true, label: 'Có' },
-										{ value: false, label: 'Không' },
-									]}
+						<Col span={24}>
+							<Form.Item name='textDisplay' label='Kiểu hiển thị đặc biệt (nếu có)'>
+								<Select
+									placeholder='Chọn kiểu hiển thị'
+									options={Object.values(ETextDisplay).map((item) => ({
+										value: item,
+										label: MapKeyNameTextDisplay[item],
+									}))}
 								/>
 							</Form.Item>
 						</Col>

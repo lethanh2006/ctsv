@@ -4,7 +4,7 @@ import { ELoaiSoLuong, EPhanBoNguon } from '@/services/SuKien/constant';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import { nanoid } from 'nanoid';
-import {inputFormat, inputParse} from "@/utils/utils";
+import { inputFormat, inputParse } from '@/utils/utils';
 
 interface Props {
 	hideCard?: boolean;
@@ -41,7 +41,7 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 		if (editKinhPhi) {
 			form.setFieldsValue({ ...recordKinhPhi });
 		} else {
-			form.setFieldsValue({ hoanThanh: false, loaiSoLuong: ELoaiSoLuong.NGUOI, phanBoNguon: EPhanBoNguon.NGAN_SACH });
+			form.setFieldsValue(form);
 		}
 	}, [recordKinhPhi, editKinhPhi]);
 	const renderContent = () => {
@@ -87,7 +87,7 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Form.Item rules={[...rules.required]} name='soLuong' label='Số lượng'>
 								<InputNumber
 									formatter={inputFormat}
-                    parser={inputParse}
+									parser={inputParse}
 									style={{ width: '100%' }}
 									min={1}
 									placeholder='Số lượng'
@@ -98,7 +98,7 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Form.Item rules={[...rules.required]} name='luot' label='Lượt'>
 								<InputNumber
 									formatter={inputFormat}
-                    parser={inputParse}
+									parser={inputParse}
 									style={{ width: '100%' }}
 									min={1}
 									placeholder='Lượt'
@@ -109,7 +109,7 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Form.Item rules={[...rules.required]} name='dinhMuc' label='Định mức'>
 								<InputNumber
 									formatter={inputFormat}
-                    parser={inputParse}
+									parser={inputParse}
 									style={{ width: '100%' }}
 									min={1}
 									placeholder='Định mức'
@@ -129,8 +129,9 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Col xs={12}>
 								<Form.Item rules={[...rules.required]} name='nguonNSNN' label='Số tiền nguồn NSNN'>
 									<InputNumber
+										addonAfter='VNĐ'
 										formatter={inputFormat}
-                    parser={inputParse}
+										parser={inputParse}
 										style={{ width: '100%' }}
 										min={1}
 										placeholder='Số tiền nguồn NSNN'
@@ -142,8 +143,9 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Col xs={12}>
 								<Form.Item rules={[...rules.required]} name='nguonTuChu' label='Số tiền nguồn tự chủ'>
 									<InputNumber
+										addonAfter='VNĐ'
 										formatter={inputFormat}
-                    parser={inputParse}
+										parser={inputParse}
 										style={{ width: '100%' }}
 										min={1}
 										placeholder='Số tiền nguồn tự chủ'
@@ -155,8 +157,9 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 							<Col xs={12}>
 								<Form.Item rules={[...rules.required]} name='nguonTaiTro' label='Số tiền nguồn tài trợ'>
 									<InputNumber
+										addonAfter='VNĐ'
 										formatter={inputFormat}
-                    parser={inputParse}
+										parser={inputParse}
 										style={{ width: '100%' }}
 										min={1}
 										placeholder='Số tiền nguồn tài trợ'
@@ -166,10 +169,6 @@ const FormDuTruKinhPhi = ({ hideCard, setData, setVisibleForm }: Props) => {
 						)}
 						<Col xs={24}>
 							<Form.Item rules={[...rules.required]} name='hoanThanh' label='Tiến độ hoàn thành'>
-								{/*<Radio.Group>*/}
-								{/*	<Radio value={true}>Hoàn thành</Radio>*/}
-								{/*	<Radio value={false}>Chưa hoàn thành</Radio>*/}
-								{/*</Radio.Group>*/}
 								<Input.TextArea placeholder={'Tiến độ hoàn thành'} rows={2} />
 							</Form.Item>
 						</Col>

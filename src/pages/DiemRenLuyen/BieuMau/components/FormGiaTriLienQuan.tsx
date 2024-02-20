@@ -52,7 +52,7 @@ const FormGiaTriLienQuan = (props: {
 					}
 					options={danhSach
 						?.find((item) => item.maDanhMuc === props.truongThongTinLienQuan.maDanhMuc)
-						?.danhSachGiaTri?.map((item: any) => ({ value: item, label: item }))}
+						?.danhSachGiaTri?.map((item: any) => ({ value: item?.value, label: item?.value }))}
 				/>
 			);
 			break;
