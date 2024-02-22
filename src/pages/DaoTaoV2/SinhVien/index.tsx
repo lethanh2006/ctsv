@@ -3,16 +3,16 @@ import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
 import { EyeOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, Tag } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
 import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinhVien';
 import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
+import { ETrangThaiHocSv, colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 
 const ViewSinhVien = () => {
-	debugger;
 	const { getModel, page, limit, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
@@ -83,6 +83,16 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
+			title: 'Trạng thái học',
+			dataIndex: 'trangThaiHoc',
+			align: 'center',
+			width: 120,
+			filterType: 'select',
+			filterData: Object.values(ETrangThaiHocSv),
+			render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
+			onCell,
+		},
+		{
 			title: 'Thao tác',
 			align: 'center',
 			width: 90,
@@ -120,11 +130,8 @@ const ViewSinhVien = () => {
 				rowSelection
 				deleteMany
 				buttons={{ import: false, export: true, create: false }}
-			>
-				<div style={{ marginBottom: 12 }}>
-					<FilterKhoaSinhVien hasSelectNganh allowClear />
-				</div>
-			</TableBase>
+				otherButtons={[<FilterKhoaSinhVien key={'filter'} hasSelectNganh allowClear />]}
+			/>
 		</>
 	);
 };
