@@ -4,7 +4,6 @@ import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import { resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Row } from 'antd';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
@@ -63,13 +62,14 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 			Object.keys(valuesForm).map((item) => {
 				const cauHinh = record?.danhSachCauHinhThongTin?.find((ele) => ele.ma === item);
 				const isDanhMuc = cauHinh?.kieuDuLieu === EKieuDuLieu.DANHMUC;
-				const isDate = cauHinh?.kieuDuLieu === EKieuDuLieu.DATE;
-				const isMonth = cauHinh?.kieuDuLieu === EKieuDuLieu.MONTH;
+				// const isDate = cauHinh?.kieuDuLieu === EKieuDuLieu.DATE;
+				// const isMonth = cauHinh?.kieuDuLieu === EKieuDuLieu.MONTH;
 				thongTinQuyetDinh[item] = {
 					value:
-						(isDate || isMonth) && valuesForm
-							? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
-							: valuesForm[item],
+						// (isDate || isMonth) && valuesForm
+						// 	? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
+						// 	:
+						valuesForm[item],
 					info: isDanhMuc
 						? danhSachDanhMuc
 								?.find((ele) => ele.maDanhMuc === cauHinh.maDanhMuc)

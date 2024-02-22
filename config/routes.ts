@@ -41,6 +41,7 @@
 				name: 'DanhSachSinhVien',
 				path: 'danh-sach-sinh-vien',
 				component: './DaoTaoV2/SinhVien',
+				// component: './TrangChu',
 			},
 			{
 				name: 'HoSoTheoDoiSucKhoe',

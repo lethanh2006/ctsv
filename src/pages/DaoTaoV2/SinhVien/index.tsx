@@ -12,6 +12,7 @@ import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
 
 const ViewSinhVien = () => {
+	debugger;
 	const { getModel, page, limit, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
