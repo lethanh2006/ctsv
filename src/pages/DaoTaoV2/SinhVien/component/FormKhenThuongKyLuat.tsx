@@ -1,21 +1,36 @@
+import QuyetDinh from '@/pages/CheDoChinhSach/QuyetDinh';
+import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import { Collapse } from 'antd';
-import KhenThuongSinhVienPage from '../KhenThuongSinhVien';
-import KyLuatSinhVienPage from '../KyLuatSinhVien';
+import { useModel } from 'umi';
 
 const FormKhenThuongKyLuat = () => {
-  return (
-    <>
-      <Collapse>
-        <Collapse.Panel header="Thông tin khen thưởng" key={'1'}>
-          <KhenThuongSinhVienPage />
-        </Collapse.Panel>
+	const { record } = useModel('daotaov2.sinhvien.sinhvien');
 
-        <Collapse.Panel header="Thông tin kỷ luật" key={'2'}>
-          <KyLuatSinhVienPage />
-        </Collapse.Panel>
-      </Collapse>
-    </>
-  );
+	return (
+		<>
+			<Collapse destroyInactivePanel accordion>
+				<Collapse.Panel header='Thông tin khen thưởng' key={'1'}>
+					{/* <KhenThuongSinhVienPage/> */}
+					<QuyetDinh
+						filterWidth={600}
+						ssoId={record?.ssoId}
+						loaiCheDoSinhVien={ELoaiCheDoSinhVien.KHEN_THUONG}
+						title='Danh sách sinh viên được khen thưởng'
+					/>
+				</Collapse.Panel>
+
+				<Collapse.Panel header='Thông tin kỷ luật' key={'2'}>
+					{/* <KyLuatSinhVienPage /> */}
+					<QuyetDinh
+						filterWidth={200}
+						ssoId={record?.ssoId}
+						loaiCheDoSinhVien={ELoaiCheDoSinhVien.KY_LUAT}
+						title='Danh sách sinh viên được khen thưởng'
+					/>
+				</Collapse.Panel>
+			</Collapse>
+		</>
+	);
 };
 
 export default FormKhenThuongKyLuat;

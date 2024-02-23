@@ -126,7 +126,7 @@ const ViewSinhVien = () => {
 				title={'Danh sách sinh viên'}
 				Form={isView ? PreviewHoSo : ModalSinhVien}
 				formProps={{ hasEdit: true }}
-				widthDrawer={1100}
+				widthDrawer={1200}
 				rowSelection
 				deleteMany
 				buttons={{ import: false, export: true, create: false }}

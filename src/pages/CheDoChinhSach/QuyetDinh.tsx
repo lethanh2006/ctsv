@@ -17,7 +17,12 @@ import FormImport from './components/FormImport';
 import SelectCheDoChinhSach from './components/SelectCheDoChinhSach';
 import ViewQuyetDinh from './components/ViewQuyetDinh';
 
-const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien }) => {
+const QuyetDinh = (props: {
+	title: string;
+	loaiCheDoSinhVien: ELoaiCheDoSinhVien;
+	ssoId?: string;
+	filterWidth?: number;
+}) => {
 	const {
 		handleEdit,
 		deleteModel,
@@ -42,7 +47,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 
 	const getData = () => {
 		if (recordCheDoChinhSach?._id) {
-			getModel({ cheDoSinhVienId: recordCheDoChinhSach?._id });
+			getModel({ cheDoSinhVienId: recordCheDoChinhSach?._id, ssoId: props?.ssoId });
 		} else setDanhSach([]);
 	};
 
@@ -70,6 +75,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			align: 'center',
 			filterType: 'string',
 			onCell,
+			hide: props.ssoId ? true : false,
 		},
 		{
 			title: 'Mã SV',
@@ -78,6 +84,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			align: 'center',
 			filterType: 'string',
 			onCell,
+			hide: props.ssoId ? true : false,
 		},
 		{
 			title: 'Lớp',
@@ -86,7 +93,8 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			align: 'center',
 			filterType: 'string',
 			onCell,
-			render: (val, rec) => rec.lop.ten,
+			render: (val, rec) => rec?.lop?.ten,
+			hide: props.ssoId ? true : false,
 		},
 		{
 			title: 'Ngành',
@@ -95,7 +103,8 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			align: 'center',
 			onCell,
 			filterType: 'string',
-			render: (val, rec) => rec.nganh.ten,
+			render: (val, rec) => rec?.nganh?.ten,
+			hide: props.ssoId ? true : false,
 		},
 		{
 			title: 'Ngày sinh',
@@ -104,6 +113,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			align: 'center',
 			render: (val) => (val ? moment(val).format('DD/MM/YYYY') : ''),
 			onCell,
+			hide: props.ssoId ? true : false,
 		},
 		{
 			title: 'Giới tính',
@@ -111,6 +121,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			width: 100,
 			align: 'center',
 			onCell,
+			hide: props.ssoId ? true : false,
 		},
 		{
 			title: 'Dân tộc',
@@ -119,6 +130,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 			align: 'center',
 			onCell,
 			filterType: 'string',
+			hide: props.ssoId ? true : false,
 		},
 	];
 
@@ -167,11 +179,15 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		},
 	});
 
-	const Form = useCallback(() => <FormGiaoNopSanPham getData={getData} />, [recordCheDoChinhSach?._id]);
+	const Form = useCallback(
+		() => <FormGiaoNopSanPham ssoId={props.ssoId} getData={getData} />,
+		[recordCheDoChinhSach?._id, props.ssoId, props.loaiCheDoSinhVien],
+	);
 
 	return (
 		<>
 			<TableBase
+				hideCard={props.ssoId ? true : false}
 				buttons={{ create: recordCheDoChinhSach?._id ? true : false }}
 				otherButtons={[
 					<>
@@ -194,7 +210,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 							onChange={(val) => {
 								setRecordCheDoChinhSach(danhSachCheDoChinhSach.find((item) => item._id === val));
 							}}
-							style={{ width: 400 }}
+							style={{ width: props?.filterWidth ?? 400 }}
 							isSetRecord
 							value={recordCheDoChinhSach?._id}
 							condition={{ loaiCheDoSinhVien: props.loaiCheDoSinhVien }}
@@ -205,7 +221,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 				getData={getData}
 				widthDrawer={800}
 				Form={Form}
-				dependencies={[page, limit, recordCheDoChinhSach?._id]}
+				dependencies={[page, limit, recordCheDoChinhSach?._id, props.loaiCheDoSinhVien]}
 				title={props.title || 'Chế độ chính sách'}
 				modelName={'chedochinhsach.quyetdinhchedosinhvien'}
 				columns={columns}

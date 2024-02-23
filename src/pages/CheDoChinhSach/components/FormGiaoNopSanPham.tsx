@@ -9,7 +9,7 @@ import { Button, Card, Col, Form, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
-const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
+const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; ssoId?: string }) => {
 	const [form] = Form.useForm();
 	const { record } = useModel('chedochinhsach.chedochinhsach');
 	const {
@@ -83,7 +83,7 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 				...recordQuyetDinh,
 				thongTinQuyetDinh,
 				cheDoSinhVienId: record?._id ?? '',
-				ssoId: formValuesFinal?.ssoId ?? '',
+				ssoId: props.ssoId || formValuesFinal?.ssoId || '',
 			};
 
 			let res;
@@ -112,11 +112,13 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 				}}
 			>
 				<Row gutter={[12, 0]}>
-					<Col span={24}>
-						<Form.Item rules={[...rules.required]} name='ssoId' label='Sinh viên'>
-							<SelectSinhVienDebounce />
-						</Form.Item>
-					</Col>
+					{!props.ssoId && (
+						<Col span={24}>
+							<Form.Item rules={[...rules.required]} name='ssoId' label='Sinh viên'>
+								<SelectSinhVienDebounce />
+							</Form.Item>
+						</Col>
+					)}
 					{record?.danhSachCauHinhThongTin?.map((item) => (
 						<FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />
 					))}

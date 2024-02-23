@@ -11,6 +11,7 @@ export default {
 	'sinhvien.tab9': 'Tốt nghiệp & Văn bằng',
 	'sinhvien.tab10': 'Việc làm',
 	'sinhvien.tab11': 'Cảnh báo học tập, thôi học',
+	'sinhvien.tab12': 'Chế độ, chính sách',
 	'sinhvien.thongtinchung': 'Thông tin chung',
 	'sinhvien.thongtinchung.chitiet': 'Thông tin cá nhân chi tiết',
 	'sinhvien.thongtinchung.giadinh': 'Thông tin gia đình',
