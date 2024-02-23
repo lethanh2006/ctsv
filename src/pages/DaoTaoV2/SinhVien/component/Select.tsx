@@ -73,7 +73,7 @@ const SelectSinhVienDebounce = (props: {
 			options={danhSach.map((item) => ({
 				key: item?.ssoId,
 				value: selectMa ? item.ma : item?.ssoId,
-				label: `${item.ten} - ${item.ma}`,
+				label: `${item.ten} - ${item.ma} - ${item.khoaSinhVien.ten}`,
 			}))}
 			showSearch
 			optionFilterProp='label'

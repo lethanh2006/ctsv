@@ -1,13 +1,49 @@
 import ViewRender from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
 import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { Col, Row } from 'antd';
+import moment from 'moment';
 import { useModel } from 'umi';
 
 const ViewQuyetDinh = () => {
 	const { record } = useModel('chedochinhsach.chedochinhsach');
 	const { record: recordQuyetDinh } = useModel('chedochinhsach.quyetdinhchedosinhvien');
+
+	const buildItem = (label: string, value: any) => (
+		<div
+			style={{
+				display: 'flex',
+			}}
+		>
+			<div style={{ marginRight: 4 }}>
+				<b>{label}: </b>
+			</div>
+			<div>{value}</div>
+		</div>
+	);
+
 	return (
 		<Row gutter={[0, 10]}>
+			<Col sm={12} md={8}>
+				{buildItem('Họ và tên', recordQuyetDinh?.hoVaTen)}
+			</Col>
+			<Col sm={12} md={8}>
+				{buildItem('Mã SV', recordQuyetDinh?.maSinhVien)}
+			</Col>
+			<Col sm={12} md={8}>
+				{buildItem('Lớp', recordQuyetDinh?.lop.ten)}
+			</Col>
+			<Col sm={12} md={8}>
+				{buildItem('Ngành', recordQuyetDinh?.nganh.ten)}
+			</Col>
+			<Col sm={12} md={8}>
+				{buildItem('Ngày sinh', recordQuyetDinh?.ngaySinh ? moment(recordQuyetDinh.ngaySinh).format('DD/MM/YYYY') : '')}
+			</Col>
+			<Col sm={12} md={8}>
+				{buildItem('Giới tính', recordQuyetDinh?.gioiTinh)}
+			</Col>
+			<Col sm={12} md={8}>
+				{buildItem('Dân tộc', recordQuyetDinh?.danToc)}
+			</Col>
 			{record?.danhSachCauHinhThongTin.map((item) => {
 				if (
 					!item?.truongThongTinLienQuan ||

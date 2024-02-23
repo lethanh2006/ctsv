@@ -1,19 +1,21 @@
 import TableBase from '@/components/Table';
+import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
 import type { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import { DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Menu, Modal, Popconfirm, Tooltip } from 'antd';
+import moment from 'moment';
 import { useCallback, useEffect } from 'react';
 import { useModel } from 'umi';
 import ViewRender from '../QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
 import { buildFilter } from './components/BuildFilter';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 import FormImport from './components/FormImport';
-import ViewQuyetDinh from './components/ViewQuyetDinh';
 import SelectCheDoChinhSach from './components/SelectCheDoChinhSach';
+import ViewQuyetDinh from './components/ViewQuyetDinh';
 
 const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien }) => {
 	const {
@@ -60,7 +62,65 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		getAllDanhMuc(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
 	}, []);
 
-	const columns: IColumn<CheDoSinhVien.QuyetDinhCheDoSinhVien>[] = [];
+	const columns: IColumn<CheDoSinhVien.QuyetDinhCheDoSinhVien>[] = [
+		{
+			title: 'Họ và tên',
+			dataIndex: 'hoVaTen',
+			width: 150,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Mã SV',
+			dataIndex: 'maSinhVien',
+			width: 120,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Lớp',
+			dataIndex: 'lop.ten',
+			width: 100,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+			render: (val, rec) => rec.lop.ten,
+		},
+		{
+			title: 'Ngành',
+			dataIndex: 'nganh.ten',
+			width: 200,
+			align: 'center',
+			onCell,
+			filterType: 'string',
+			render: (val, rec) => rec.nganh.ten,
+		},
+		{
+			title: 'Ngày sinh',
+			dataIndex: 'ngaySinh',
+			width: 100,
+			align: 'center',
+			render: (val) => (val ? moment(val).format('DD/MM/YYYY') : ''),
+			onCell,
+		},
+		{
+			title: 'Giới tính',
+			dataIndex: 'gioiTinh',
+			width: 100,
+			align: 'center',
+			onCell,
+		},
+		{
+			title: 'Dân tộc',
+			dataIndex: 'danToc',
+			width: 100,
+			align: 'center',
+			onCell,
+			filterType: 'string',
+		},
+	];
 
 	recordCheDoChinhSach?.danhSachCauHinhThongTin?.map((item) => {
 		if (item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH) return;
@@ -115,25 +175,26 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 				buttons={{ create: recordCheDoChinhSach?._id ? true : false }}
 				otherButtons={[
 					<>
-						<Button
-							loading={loading}
-							key={'dowload'}
-							onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}
-							icon={<DownloadOutlined />}
+						<Dropdown
+							overlay={
+								<Menu>
+									<Menu.Item onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}>
+										Tải mẫu nhập dữ liệu
+									</Menu.Item>
+									<Menu.Item onClick={() => setVisibleImport(true)}>Nhập dữ liệu</Menu.Item>
+								</Menu>
+							}
 						>
-							{' '}
-							Tải mẫu nhập dữ liệu
-						</Button>
-						<Button loading={loading} key={'import'} onClick={() => setVisibleImport(true)} icon={<ImportOutlined />}>
-							{' '}
-							Nhập dữ liệu
-						</Button>
+							<ButtonExtend loading={loading} icon={<ImportOutlined />}>
+								Nhập dữ liệu
+							</ButtonExtend>
+						</Dropdown>
 
 						<SelectCheDoChinhSach
 							onChange={(val) => {
 								setRecordCheDoChinhSach(danhSachCheDoChinhSach.find((item) => item._id === val));
 							}}
-							style={{ width: 300 }}
+							style={{ width: 400 }}
 							isSetRecord
 							value={recordCheDoChinhSach?._id}
 							condition={{ loaiCheDoSinhVien: props.loaiCheDoSinhVien }}

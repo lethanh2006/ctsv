@@ -1,9 +1,11 @@
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import FormRender from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/FormRender';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
+import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Row } from 'antd';
+import { Button, Card, Col, Form, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
@@ -81,6 +83,7 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 				...recordQuyetDinh,
 				thongTinQuyetDinh,
 				cheDoSinhVienId: record?._id ?? '',
+				ssoId: formValuesFinal?.ssoId ?? '',
 			};
 
 			let res;
@@ -109,6 +112,11 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any }) => {
 				}}
 			>
 				<Row gutter={[12, 0]}>
+					<Col span={24}>
+						<Form.Item rules={[...rules.required]} name='ssoId' label='Sinh viên'>
+							<SelectSinhVienDebounce />
+						</Form.Item>
+					</Col>
 					{record?.danhSachCauHinhThongTin?.map((item) => (
 						<FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />
 					))}
