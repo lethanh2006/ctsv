@@ -1,6 +1,7 @@
 import QuyetDinh from '@/pages/CheDoChinhSach/QuyetDinh';
 import KetQuaToanKhoaSinhVien from '@/pages/DaoTaoV2/KetQuaHocTap/KetQuaToanKhoa/KetQuaToanKhoaSinhVien';
 import SinhVienHocVuPage from '@/pages/DaoTaoV2/SinhVien/XetHocVu';
+import PhieuDiemRenLuyenComponent from '@/pages/DiemRenLuyen/PhieuDiem';
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import { Button, Card, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
@@ -66,6 +67,9 @@ const ModalSinhVien = (props: any) => {
 						ssoId={record?.ssoId}
 						title='Danh sách sinh viên được cấp Học bổng'
 					/>
+				</Tabs.TabPane>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab13' })} key={'13'} disabled={!record?.ssoId}>
+					<PhieuDiemRenLuyenComponent ssoId={record?.ssoId} hideCard />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab6' })} key={'7'} disabled={!record?.ssoId}>
 					<CongNoSinhVienPage sinhVienSsoId={record?.ssoId} />

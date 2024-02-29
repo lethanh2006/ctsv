@@ -12,11 +12,24 @@ import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/components/SelectDot';
 import FormPhieuDiem from './components/Form';
+import { useCallback } from 'react';
 
-const PhieuDiemRenLuyenComponent = () => {
-	const { handleEdit, deleteModel, page, limit, condition, setCondition } = useModel('diemrenluyen.phieudiem');
+const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean }) => {
+	const { handleEdit, deleteModel, page, limit, condition, setCondition, getModel } =
+		useModel('diemrenluyen.phieudiem');
+	const { danhSach } = useModel('diemrenluyen.dot');
+	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
+	const getData = () => {
+		getModel({ 'thongTinNguoiTao.ssoId': props?.ssoId });
+	};
 
 	const column: IColumn<PhieuDiemRenLuyen.IRecord>[] = [
+		{
+			title: 'Học kỳ',
+			dataIndex: 'dotDrlId',
+			width: 150,
+			render: (val) => danhSachHocKy.find((item) => item.ma === danhSach.find((ele) => ele._id === val)?.maHocKy)?.ten,
+		},
 		{
 			title: 'Họ và tên',
 			dataIndex: ['thongTinNguoiTao', 'ten'],
@@ -26,7 +39,7 @@ const PhieuDiemRenLuyenComponent = () => {
 		{
 			title: 'Mã sinh viên',
 			dataIndex: ['thongTinNguoiTao', 'ma'],
-			width: 100,
+			width: 120,
 			filterType: 'string',
 		},
 		{
@@ -89,7 +102,7 @@ const PhieuDiemRenLuyenComponent = () => {
 
 					<Tooltip title='Xóa'>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id)}
+							onConfirm={() => deleteModel(record._id, getData)}
 							title='Bạn có chắc chắn muốn xóa?'
 							placement='topLeft'
 						>
@@ -101,11 +114,16 @@ const PhieuDiemRenLuyenComponent = () => {
 		},
 	];
 
+	const Form = useCallback(() => <FormPhieuDiem ssoId={props.ssoId} />, [props.ssoId]);
+
 	return (
 		<>
 			<TableBase
+				hideCard={props?.hideCard}
+				getData={getData}
 				otherButtons={[
 					<SelectDotDiemRenLuyen
+						allowClear
 						style={{ width: 250 }}
 						onChange={(val) => {
 							setCondition({ ...condition, dotDrlId: val });
@@ -114,7 +132,7 @@ const PhieuDiemRenLuyenComponent = () => {
 					/>,
 				]}
 				widthDrawer={700}
-				Form={FormPhieuDiem}
+				Form={Form}
 				title='Kết quả rèn luyện'
 				columns={column}
 				modelName={'diemrenluyen.phieudiem'}

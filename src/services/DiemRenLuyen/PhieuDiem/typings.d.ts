@@ -29,5 +29,6 @@ declare module PhieuDiemRenLuyen {
 		'thongTinNguoiTao.ten': string;
 		'thongTinNguoiTao.ma': string;
 		'thongTinNguoiTao.donVi': string;
+		'thongTinNguoiTao.ssoId': string;
 	}
 }

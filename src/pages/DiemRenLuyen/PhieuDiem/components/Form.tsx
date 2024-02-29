@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../../Dot/components/SelectDot';
 import { ETrangThaiChamDiem, MapKeyNameTrangThaiChamDiem } from '@/services/DiemRenLuyen/constants';
 
-const FormPhieuDiem = () => {
+const FormPhieuDiem = (props: { ssoId?: string }) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
 		useModel('diemrenluyen.phieudiem');
@@ -20,6 +20,9 @@ const FormPhieuDiem = () => {
 				ssoId: record?.thongTinNguoiTao?.ssoId,
 			});
 		else form.resetFields();
+		if (props.ssoId) {
+			form.setFieldsValue({ ssoId: props?.ssoId });
+		}
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: any) => {
