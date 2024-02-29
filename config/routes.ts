@@ -199,6 +199,16 @@
 						path: 'bieu-mau',
 						component: './DiemRenLuyen/BieuMau',
 					},
+					{
+						name: 'PhieuDiem',
+						path: 'phieu-diem',
+						component: './DiemRenLuyen/PhieuDiem',
+					},
+					{
+						name: 'ThongKe',
+						path: 'thong-ke',
+						component: './DiemRenLuyen/ThongKe',
+					},
 				],
 			},
 			// Khen thưởng kỷ luật

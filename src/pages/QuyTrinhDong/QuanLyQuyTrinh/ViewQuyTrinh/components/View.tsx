@@ -115,15 +115,19 @@ const View = (props: Iprops) => {
 
 				valuesFinal[item] = {
 					value:
-						(isDate || isMonth) && valuesForm
-							? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
-							: valuesForm[item],
+						// (isDate || isMonth) && valuesForm
+						// 	? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
+						// 	:
+						valuesForm[item],
 					info: isDanhMuc
 						? danhSachDanhMuc
 								?.find((ele) => ele.maDanhMuc === cauHinh.maDanhMuc)
 								?.danhSachGiaTri?.find((ele) => ele.value === valuesForm[item])?.info
 						: undefined,
 				};
+				if (isDate || isMonth) {
+					valuesFinal[`${item}Date`] = { value: moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY') };
+				}
 			});
 			const payload = {
 				maBuoc: current?.ma,
@@ -236,14 +240,7 @@ const View = (props: Iprops) => {
 
 	return (
 		<>
-			<Card
-				title={
-					<div>
-						{dataQuyTrinh?.quyTrinh?.ten} (<a onClick={() => setVisibleViewDetailDot(true)}>{dotCurrent?.ten}</a>)
-					</div>
-				}
-				bordered={false}
-			>
+			<Card title={<div>{dataQuyTrinh?.quyTrinh?.ten}</div>} bordered={false}>
 				<Spin spinning={type ? false : loadingForm}>
 					{!type && (
 						<Button
@@ -360,12 +357,20 @@ const View = (props: Iprops) => {
 																flexDirection: isHtml || isTable ? 'column' : 'row',
 															}}
 														>
-															<div style={{ marginRight: 4 }}>
-																<b>{item.ten}: </b>
-															</div>
+															{!isDoanVanBan && (
+																<div style={{ marginRight: 4 }}>
+																	<b>{item.ten}: </b>
+																</div>
+															)}
 															<div>
 																{isDoanVanBan ? (
-																	item.ten
+																	<div>
+																		{item.customDefaultValue ? (
+																			<div dangerouslySetInnerHTML={{ __html: item.customDefaultValue }} />
+																		) : (
+																			<div>{item.ten}</div>
+																		)}
+																	</div>
 																) : (
 																	<ViewRender
 																		cauHinh={item}

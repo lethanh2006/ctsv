@@ -106,7 +106,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			filterType: 'string',
 			align: 'center',
 			render: (val, recordVal) => {
-				return recordVal?.nguoiKhaiBao?.ten ? recordVal?.nguoiKhaiBao?.ten : 'Không có dữ liệu';
+				return recordVal?.nguoiKhaiBao?.ten ? recordVal?.nguoiKhaiBao?.ten : recordVal.moTa;
 			},
 			onCell,
 		},
