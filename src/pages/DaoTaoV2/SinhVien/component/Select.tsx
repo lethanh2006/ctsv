@@ -20,19 +20,20 @@ const SelectSinhVienDebounce = (props: {
 	useEffect(() => {
 		// Nếu trong danh sách đã có 1 giá trị trong `value` rồi thì ko get lại data nữa
 		// Nhưng `có thể` bug khi lần đầu render
-		const gotData = danhSach.some((item) =>
-			Array.isArray(value)
-				? value.includes(selectMa ? item.ma : item.ssoId)
-				: value === selectMa
-				? item.ma
-				: item.ssoId,
-		);
+
+		// const gotData = danhSach.some((item) =>
+		// 	Array.isArray(value)
+		// 		? value.includes(selectMa ? item.ma : item.ssoId)
+		// 		: value === selectMa
+		// 		? item.ma
+		// 		: item.ssoId,
+		// );
 
 		if (keyword) searchSinhVienModel(keyword);
 		else
 			getModel(
 				undefined,
-				value && !gotData
+				value
 					? [
 							{
 								active: true,
@@ -73,7 +74,7 @@ const SelectSinhVienDebounce = (props: {
 			options={danhSach.map((item) => ({
 				key: item?.ssoId,
 				value: selectMa ? item.ma : item?.ssoId,
-				label: `${item.ten} - ${item.ma}`,
+				label: `${item.ten} - ${item.ma} - ${item.khoaSinhVien.ten}`,
 			}))}
 			showSearch
 			optionFilterProp='label'

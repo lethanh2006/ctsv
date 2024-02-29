@@ -1,12 +1,14 @@
 import KetQuaToanKhoaSinhVien from '@/pages/DaoTaoV2/KetQuaHocTap/KetQuaToanKhoa/KetQuaToanKhoaSinhVien';
 import { formatPhoneNumber } from '@/utils/utils';
 import { MenuOutlined, PrinterOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Empty, Image, Row, Spin } from 'antd';
+import { Button, Card, Col, Empty, Image, Row, Spin, Tag } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import ChartCongNoSinhVien from '../CongNoSinhVien/ChartCongNo';
 import { exportLyLich } from '@/services/DaoTaoV2/SinhVien';
 import fileDownload from 'js-file-download';
+import type { ETrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import { colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 
 type DescriptionItem = {
 	label?: string;
@@ -69,7 +71,11 @@ const PreviewHoSo = (props: any) => {
 			md: 8,
 		},
 		{ label: 'Email', content: record?.email, md: 16 },
-		{ label: 'Trạng thái học', content: record?.trangThaiHoc, md: 8 },
+		{
+			label: 'Trạng thái học',
+			content: <Tag color={colorTrangThaiHocSv[record?.trangThaiHoc as ETrangThaiHocSv]}>{record?.trangThaiHoc}</Tag>,
+			md: 8,
+		},
 		{
 			label: 'Khóa ngành',
 			content: record?.khoaNganh?.ten ?? '',

@@ -1,21 +1,28 @@
 import TableBase from '@/components/Table';
+import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
 import type { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import { DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Menu, Modal, Popconfirm, Tooltip } from 'antd';
+import moment from 'moment';
 import { useCallback, useEffect } from 'react';
 import { useModel } from 'umi';
 import ViewRender from '../QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
 import { buildFilter } from './components/BuildFilter';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 import FormImport from './components/FormImport';
-import ViewQuyetDinh from './components/ViewQuyetDinh';
 import SelectCheDoChinhSach from './components/SelectCheDoChinhSach';
+import ViewQuyetDinh from './components/ViewQuyetDinh';
 
-const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien }) => {
+const QuyetDinh = (props: {
+	title: string;
+	loaiCheDoSinhVien: ELoaiCheDoSinhVien;
+	ssoId?: string;
+	filterWidth?: number;
+}) => {
 	const {
 		handleEdit,
 		deleteModel,
@@ -40,7 +47,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 
 	const getData = () => {
 		if (recordCheDoChinhSach?._id) {
-			getModel({ cheDoSinhVienId: recordCheDoChinhSach?._id });
+			getModel({ cheDoSinhVienId: recordCheDoChinhSach?._id, ssoId: props?.ssoId });
 		} else setDanhSach([]);
 	};
 
@@ -60,7 +67,72 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		getAllDanhMuc(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
 	}, []);
 
-	const columns: IColumn<CheDoSinhVien.QuyetDinhCheDoSinhVien>[] = [];
+	const columns: IColumn<CheDoSinhVien.QuyetDinhCheDoSinhVien>[] = [
+		{
+			title: 'Họ và tên',
+			dataIndex: 'hoVaTen',
+			width: 150,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+			hide: props.ssoId ? true : false,
+		},
+		{
+			title: 'Mã SV',
+			dataIndex: 'maSinhVien',
+			width: 120,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+			hide: props.ssoId ? true : false,
+		},
+		{
+			title: 'Lớp',
+			dataIndex: 'lop.ten',
+			width: 100,
+			align: 'center',
+			filterType: 'string',
+			onCell,
+			render: (val, rec) => rec?.lop?.ten,
+			hide: props.ssoId ? true : false,
+		},
+		{
+			title: 'Ngành',
+			dataIndex: 'nganh.ten',
+			width: 200,
+			align: 'center',
+			onCell,
+			filterType: 'string',
+			render: (val, rec) => rec?.nganh?.ten,
+			hide: props.ssoId ? true : false,
+		},
+		{
+			title: 'Ngày sinh',
+			dataIndex: 'ngaySinh',
+			width: 100,
+			align: 'center',
+			render: (val) => (val ? moment(val).format('DD/MM/YYYY') : ''),
+			onCell,
+			hide: props.ssoId ? true : false,
+		},
+		{
+			title: 'Giới tính',
+			dataIndex: 'gioiTinh',
+			width: 100,
+			align: 'center',
+			onCell,
+			hide: props.ssoId ? true : false,
+		},
+		{
+			title: 'Dân tộc',
+			dataIndex: 'danToc',
+			width: 100,
+			align: 'center',
+			onCell,
+			filterType: 'string',
+			hide: props.ssoId ? true : false,
+		},
+	];
 
 	recordCheDoChinhSach?.danhSachCauHinhThongTin?.map((item) => {
 		if (item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH) return;
@@ -107,33 +179,38 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 		},
 	});
 
-	const Form = useCallback(() => <FormGiaoNopSanPham getData={getData} />, [recordCheDoChinhSach?._id]);
+	const Form = useCallback(
+		() => <FormGiaoNopSanPham ssoId={props.ssoId} getData={getData} />,
+		[recordCheDoChinhSach?._id, props.ssoId, props.loaiCheDoSinhVien],
+	);
 
 	return (
 		<>
 			<TableBase
+				hideCard={props.ssoId ? true : false}
 				buttons={{ create: recordCheDoChinhSach?._id ? true : false }}
 				otherButtons={[
 					<>
-						<Button
-							loading={loading}
-							key={'dowload'}
-							onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}
-							icon={<DownloadOutlined />}
+						<Dropdown
+							overlay={
+								<Menu>
+									<Menu.Item onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}>
+										Tải mẫu nhập dữ liệu
+									</Menu.Item>
+									<Menu.Item onClick={() => setVisibleImport(true)}>Nhập dữ liệu</Menu.Item>
+								</Menu>
+							}
 						>
-							{' '}
-							Tải mẫu nhập dữ liệu
-						</Button>
-						<Button loading={loading} key={'import'} onClick={() => setVisibleImport(true)} icon={<ImportOutlined />}>
-							{' '}
-							Nhập dữ liệu
-						</Button>
+							<ButtonExtend loading={loading} icon={<ImportOutlined />}>
+								Nhập dữ liệu
+							</ButtonExtend>
+						</Dropdown>
 
 						<SelectCheDoChinhSach
 							onChange={(val) => {
 								setRecordCheDoChinhSach(danhSachCheDoChinhSach.find((item) => item._id === val));
 							}}
-							style={{ width: 300 }}
+							style={{ width: props?.filterWidth ?? 400 }}
 							isSetRecord
 							value={recordCheDoChinhSach?._id}
 							condition={{ loaiCheDoSinhVien: props.loaiCheDoSinhVien }}
@@ -144,7 +221,7 @@ const QuyetDinh = (props: { title: string; loaiCheDoSinhVien: ELoaiCheDoSinhVien
 				getData={getData}
 				widthDrawer={800}
 				Form={Form}
-				dependencies={[page, limit, recordCheDoChinhSach?._id]}
+				dependencies={[page, limit, recordCheDoChinhSach?._id, props.loaiCheDoSinhVien]}
 				title={props.title || 'Chế độ chính sách'}
 				modelName={'chedochinhsach.quyetdinhchedosinhvien'}
 				columns={columns}

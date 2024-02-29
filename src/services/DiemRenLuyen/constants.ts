@@ -39,3 +39,19 @@ export const MapKeyNameLoaiDoiTuongChamDiem = {
 	[ELoaiDoiTuongChamDiem.CVHT]: 'Cố vấn học tập',
 	[ELoaiDoiTuongChamDiem.SINH_VIEN]: 'Sinh viên',
 };
+
+export enum ETrangThaiChamDiem {
+	DANG_CHAM = 'DANG_CHAM',
+	DA_CHAM_XONG = 'DA_CHAM_XONG',
+	DA_NIEM_YET = 'DA_NIEM_YET',
+	DANG_XU_LY_KHIEU_NAI = 'DANG_XU_LY_KHIEU_NAI',
+	DA_CONG_BO = 'DA_CONG_BO',
+}
+
+export const MapKeyNameTrangThaiChamDiem = {
+	[ETrangThaiChamDiem.DANG_CHAM]: 'Đang chấm',
+	[ETrangThaiChamDiem.DANG_XU_LY_KHIEU_NAI]: 'Đang xử lý khiếu nại',
+	[ETrangThaiChamDiem.DA_CHAM_XONG]: 'Đã chấm xong',
+	[ETrangThaiChamDiem.DA_CONG_BO]: 'Đã công bố',
+	[ETrangThaiChamDiem.DA_NIEM_YET]: 'Đã niêm yết',
+};

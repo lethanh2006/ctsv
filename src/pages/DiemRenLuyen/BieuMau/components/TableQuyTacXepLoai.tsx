@@ -7,6 +7,8 @@ import { Button, Modal, Popconfirm, Space, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTacXepLoai from './FormQuyTacXepLoai';
+import type { EXepLoai } from '@/services/DiemRenLuyen/constants';
+import { MapKeyNameXepLoai } from '@/services/DiemRenLuyen/constants';
 
 const TableQuyTacXepLoai = () => {
 	const { record, loading, setRecord, setRecordQuyTacXepLoai } = useModel('diemrenluyen.bieumau');
@@ -32,6 +34,7 @@ const TableQuyTacXepLoai = () => {
 			dataIndex: 'xepLoai',
 			width: 170,
 			filterType: 'string',
+			render: (val: EXepLoai) => MapKeyNameXepLoai[val],
 		},
 		{
 			title: 'Thang điểm',

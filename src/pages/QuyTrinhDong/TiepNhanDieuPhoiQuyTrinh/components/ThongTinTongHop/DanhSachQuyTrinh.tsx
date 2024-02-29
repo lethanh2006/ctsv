@@ -124,7 +124,7 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 	}, [props?.type]);
 
 	useEffect(() => {
-		if (dataLinhVuc?.length > 0 && dataLinhVuc?.length > 0) {
+		if (dataLinhVuc?.length > 0) {
 			convertList(dataLinhVuc, dataQuyTrinh);
 			setselectedKeys([dataQuyTrinh?.[0]?._id]);
 			setQuyTrinhSelect(dataQuyTrinh?.[0]);

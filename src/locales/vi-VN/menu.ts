@@ -59,14 +59,16 @@ export default {
 	'menu.VanHoaVanNgheTheThao.SuKien': 'Sự kiện',
 
 	'menu.CheDoChinhSach.DiemRenLuyen': 'Đánh giá rèn luyện',
-	'menu.CheDoChinhSach.DiemRenLuyen.DotChamDiem': 'Đợt chấm điểm',
-	'menu.CheDoChinhSach.DiemRenLuyen.BieuMau': 'Biểu mẫu',
+	'menu.CheDoChinhSach.DiemRenLuyen.DotChamDiem': 'Đợt đánh giá',
+	'menu.CheDoChinhSach.DiemRenLuyen.BieuMau': 'Mẫu phiếu đánh giá',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung': 'Quản lý minh chứng',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.NoiNgoaiTru': 'Nội ngoại trú',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.ThamGiaCongTacXaHoi': 'Tham gia công tác xã hội',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.TuyenTruyen': 'Tuyên truyền tích cực về Trường/Khoa',
 	'menu.CheDoChinhSach.DiemRenLuyen.QuanLyMinhChung.DacBiet': 'Thành tích đặc biệt',
 	'menu.CheDoChinhSach.DiemRenLuyen.TongHopDuLieu': 'Tổng hợp dữ liệu',
+	'menu.CheDoChinhSach.DiemRenLuyen.PhieuDiem': 'Điểm rèn luyện',
+	'menu.CheDoChinhSach.DiemRenLuyen.ThongKe': 'Thống kê',
 	'menu.CheDoChinhSach.CheDoChinhSach': 'Chế độ chính sách',
 
 	'menu.NoiNgoaiTru': 'Nội trú, ngoại trú',

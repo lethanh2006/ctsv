@@ -1,6 +1,6 @@
 import useInitModel from '@/hooks/useInitModel';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { DoiTuong, EPhanHe } from '@/services/QuyTrinhDong/constant';
+import { DoiTuong } from '@/services/QuyTrinhDong/constant';
 import {
 	activeQuyTrinhDong,
 	getAllQuyTrinhChiuTrachNhiem,
@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 export default () => {
 	const objInit = useInitModel<QuyTrinh.IRecord>('quy-trinh-dong');
-	const { getModel, setDanhSach, setRecord, setLoading } = objInit;
+	const { getModel, setDanhSach, setLoading } = objInit;
 	const [current, setCurrent] = useState<number>(0);
 	const [dataSending, setDataSending] = useState<QuyTrinh.IRecord>();
 
@@ -107,12 +107,13 @@ export default () => {
 	const getDataByChuyenVien = async (loaiXuLyDon: string, currentRoles: string) => {
 		const res = await getQuyTrinhChuyenVien(loaiXuLyDon, currentRoles);
 		if (res) {
-			setDataQuyTrinh(res?.data?.data);
+			setDataQuyTrinh(res?.data?.data?.sort((a: { order: number }, b: { order: number }) => b.order - a.order));
 		}
 	};
 
 	const getAllQuyTrinhChiuTrachNhiemModel = async (payload?: { condition?: any; filters?: string[] }) => {
 		const res = await getAllQuyTrinhChiuTrachNhiem(payload);
+
 		setDanhSach(res?.data?.data ?? []);
 		// setRecord(
 		// 	res?.data?.data?.filter((item: { phanHe: string | EPhanHe[] }) =>
