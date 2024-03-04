@@ -391,7 +391,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<Input placeholder='Địa điểm' />
 							</Form.Item>
 						</Col>
-						{getSuKienType() !== ESuKienType.TUAN_LE_CONG_DAN && (
+						{/* {getSuKienType() !== ESuKienType.TUAN_LE_CONG_DAN && (
 							<Col xs={24} md={12}>
 								<Form.Item rules={[...rules.number(Number.MAX_SAFE_INTEGER, 0)]} name='kinhPhi' label='Kinh phí'>
 									<InputNumber
@@ -405,17 +405,19 @@ const FormSuKien = ({ hideCard }: Props) => {
 									/>
 								</Form.Item>
 							</Col>
-						)}
+						)} */}
 
 						<Col span={24} md={8}>
 							<Form.Item name='receiverType' label='Đối tượng tham gia' rules={[...rules.required]}>
 								<Select
-									options={Object.entries(LoaiDoiTuongThamGia).map(([value, label]) => ({
-										key: value,
-										value,
-										label,
-										disabled: value === EReceiverType.User,
-									}))}
+									options={Object.entries(LoaiDoiTuongThamGia)
+										.filter(([value, label]) => value !== EReceiverType.User)
+										.map(([value, label]) => ({
+											key: value,
+											value,
+											label,
+											disabled: value === EReceiverType.User,
+										}))}
 									placeholder='Đối tượng tham gia'
 									onChange={() => {
 										form.setFieldsValue({
@@ -428,24 +430,26 @@ const FormSuKien = ({ hideCard }: Props) => {
 								/>
 							</Form.Item>
 						</Col>
-						<Col span={24} md={8}>
-							<Form.Item name={['filter', 'roles']} label='Thành phần' rules={[...rules.required]}>
-								<GroupTagVaiTro
-									onChange={(arr) => {
-										setActiveKey(arr?.[0]);
-										if (!arr.includes(EVaiTroBieuMau.SINH_VIEN)) setDanhSachSinhVien([]);
-										if (!arr.includes(EVaiTroBieuMau.NHAN_VIEN)) setDanhSachNhanSu([]);
-									}}
-									listVaiTro={
-										[EReceiverType.KhoaSinhVien, EReceiverType.Nganh].includes(receiverType)
-											? [EVaiTroBieuMau.SINH_VIEN]
-											: receiverType === EReceiverType.Khoa
-											? [EVaiTroBieuMau.NHAN_VIEN]
-											: undefined
-									}
-								/>
-							</Form.Item>
-						</Col>
+						{receiverType !== EReceiverType.Khac && (
+							<Col span={24} md={8}>
+								<Form.Item name={['filter', 'roles']} label='Thành phần' rules={[...rules.required]}>
+									<GroupTagVaiTro
+										onChange={(arr) => {
+											setActiveKey(arr?.[0]);
+											if (!arr.includes(EVaiTroBieuMau.SINH_VIEN)) setDanhSachSinhVien([]);
+											if (!arr.includes(EVaiTroBieuMau.NHAN_VIEN)) setDanhSachNhanSu([]);
+										}}
+										listVaiTro={
+											[EReceiverType.KhoaSinhVien, EReceiverType.Nganh].includes(receiverType)
+												? [EVaiTroBieuMau.SINH_VIEN]
+												: receiverType === EReceiverType.Khoa
+												? [EVaiTroBieuMau.NHAN_VIEN]
+												: undefined
+										}
+									/>
+								</Form.Item>
+							</Col>
+						)}
 						{roles?.length ? (
 							<Col span={24} md={8}>
 								<Form.Item name='variantDanhSachThamGia' label='Danh sách người tham gia'>
@@ -463,7 +467,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 							</Col>
 						) : null}
 
-						{receiverType !== EReceiverType.All ? (
+						{receiverType !== EReceiverType.All && receiverType !== EReceiverType.Khac ? (
 							<Col span={24}>
 								<Form.Item name='danhSachDoiTuong' requiredMark>
 									{receiverType === EReceiverType.Khoa ? (

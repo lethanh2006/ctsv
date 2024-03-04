@@ -31,5 +31,6 @@ export default {
 
 	//Sinh viên/ Lịch sử cảnh báo
 	'sinhvien.lichsucanhbao.hoctap': 'Lịch sử cảnh báo học tập',
-	'sinhvien.lichsucanhbao.thoihoc': 'Lịch sử thôi học',
+	'sinhvien.lichsucanhbao.ketqua': 'Kết quả học tập',
+	'sinhvien.lichsucanhbao.thoihoc': 'Lịch sử buộc thôi học',
 };

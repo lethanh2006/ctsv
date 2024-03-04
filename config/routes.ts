@@ -381,12 +381,12 @@
 	//   path: './khaibaosuckhoe',
 	//   component: './BieuMau/KhaiBaoSucKhoe',
 	// },
-	{
-		name: 'CauHoiThuongGap',
-		path: 'cau-hoi-thuong-gap',
-		icon: 'QuestionCircleOutlined',
-		component: './TienIch/CauHoiThuongGap',
-	},
+	// {
+	// 	name: 'CauHoiThuongGap',
+	// 	path: 'cau-hoi-thuong-gap',
+	// 	icon: 'QuestionCircleOutlined',
+	// 	component: './TienIch/CauHoiThuongGap',
+	// },
 
 	// {
 	//   name: 'TienIch',

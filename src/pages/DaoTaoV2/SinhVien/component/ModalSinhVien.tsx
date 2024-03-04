@@ -1,5 +1,4 @@
 import QuyetDinh from '@/pages/CheDoChinhSach/QuyetDinh';
-import KetQuaToanKhoaSinhVien from '@/pages/DaoTaoV2/KetQuaHocTap/KetQuaToanKhoa/KetQuaToanKhoaSinhVien';
 import SinhVienHocVuPage from '@/pages/DaoTaoV2/SinhVien/XetHocVu';
 import PhieuDiemRenLuyenComponent from '@/pages/DiemRenLuyen/PhieuDiem';
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
@@ -46,7 +45,8 @@ const ModalSinhVien = (props: any) => {
 					<FormQuaTrinhHocTap />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab3' })} key={'kqht'} disabled={!record?.ssoId}>
-					<KetQuaToanKhoaSinhVien sinhVienSsoId={record?.ssoId} />
+					{/* <KetQuaToanKhoaSinhVien sinhVienSsoId={record?.ssoId} /> */}
+					<SinhVienHocVuPage />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab4' })} key={'hb'} disabled={!record?.ssoId}>
 					{/* <HocBongSinhVienPage /> */}
@@ -77,9 +77,9 @@ const ModalSinhVien = (props: any) => {
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab7' })} key={'4'} disabled={!record?.ssoId}>
 					<NoiNgoaiTruSinhVienPage />
 				</Tabs.TabPane>
-				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab11' })} key={'9'} disabled={!record?.ssoId}>
+				{/* <Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab11' })} key={'9'} disabled={!record?.ssoId}>
 					<SinhVienHocVuPage />
-				</Tabs.TabPane>
+				</Tabs.TabPane> */}
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab8' })} key={'8'} disabled={!record?.ssoId}>
 					<ChungChiSinhVienPage fromSinhVien />
 				</Tabs.TabPane>
