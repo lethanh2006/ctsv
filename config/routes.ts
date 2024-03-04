@@ -324,11 +324,11 @@
 				path: './tiep-nhan',
 				component: './QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/TiepNhan',
 			},
-			{
-				name: 'ThongKe',
-				path: './thong-ke',
-				component: './QuyTrinhDong/QuanLyQuyTrinh/ThongKe',
-			},
+			// {
+			// 	name: 'ThongKe',
+			// 	path: './thong-ke',
+			// 	component: './QuyTrinhDong/QuanLyQuyTrinh/ThongKe',
+			// },
 		],
 	},
 
