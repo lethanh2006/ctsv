@@ -57,6 +57,7 @@ export default {
 	'menu.VanHoaVanNgheTheThao.HoatDongCauLacBo': 'Hoạt động câu lạc bộ',
 	'menu.VanHoaVanNgheTheThao.QuanLyCauLacBo': 'Quản lý câu lạc bộ',
 	'menu.VanHoaVanNgheTheThao.SuKien': 'Sự kiện',
+	'menu.VanHoaVanNgheTheThao.ThongKe': 'Thống kê',
 
 	'menu.CheDoChinhSach.DiemRenLuyen': 'Đánh giá rèn luyện',
 	'menu.CheDoChinhSach.DiemRenLuyen.DotChamDiem': 'Đợt đánh giá',

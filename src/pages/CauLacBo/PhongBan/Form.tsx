@@ -7,7 +7,7 @@ import { useModel } from 'umi';
 
 const FormPhongBan = () => {
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
+	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm, getModel } =
 		useModel('caulacbo.phongban');
 	const { record: recordCLB } = useModel('caulacbo.caulacbo');
 	useEffect(() => {
@@ -19,6 +19,10 @@ const FormPhongBan = () => {
 		}
 	}, [record?._id, visibleForm]);
 
+	const getData = () => {
+		getModel({ cauLacBoId: recordCLB?._id });
+	};
+
 	const onFinish = async (values: CauLacBo.PhongBan) => {
 		if (!recordCLB?._id) return;
 		const payload = {
@@ -27,9 +31,9 @@ const FormPhongBan = () => {
 			cauLacBoId: recordCLB._id,
 		};
 		if (edit) {
-			putModel(record?._id ?? '', payload);
+			putModel(record?._id ?? '', payload, getData);
 		} else {
-			postModel(payload);
+			postModel(payload, getData);
 		}
 	};
 

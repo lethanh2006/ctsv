@@ -13,8 +13,12 @@ import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 
 const HoatDongCauLacBo = () => {
 	const { handleEdit, deleteModel, getModel, setRecord, setCondition, condition } = useModel('caulacbo.hoatdong');
-
+	const { record: recCauLacBo } = useModel('caulacbo.caulacbo');
 	const [visible, setVisible] = useState<boolean>(false);
+
+	const getData = () => {
+		getModel({ idCauLacBo: recCauLacBo?._id });
+	};
 
 	const onCell = (record: CauLacBo.HoatDong) => ({
 		onClick: () => {
@@ -71,7 +75,7 @@ const HoatDongCauLacBo = () => {
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => {
-								deleteModel(record._id, getModel);
+								deleteModel(record._id, getData);
 							}}
 							title='Bạn có chắc chắn muốn xóa?'
 						>
@@ -86,10 +90,12 @@ const HoatDongCauLacBo = () => {
 	return (
 		<>
 			<TableBase
-				getData={getModel}
+				destroyModal
+				getData={getData}
 				otherProps={{
 					size: 'small',
 				}}
+				dependencies={[recCauLacBo?._id]}
 				hideCard
 				widthDrawer={1000}
 				Form={FormHoatDong}

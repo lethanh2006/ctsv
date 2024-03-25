@@ -1,38 +1,42 @@
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import {
 	EChucVuThanhVienCauLacBo,
+	ETrangThaiThanhVien,
 	EVaiTroThanhVienPhongBan,
 	MapKeyChucVuThanhVienCLB,
+	MapKeyColorTrangThaiThanhVienCLB,
 	MapKeyVaiTroThanhVienPhongBanCLB,
 } from '@/services/CauLacBo/constant';
 import type { CauLacBo } from '@/services/CauLacBo/typings';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Row, Select } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Card, Col, Form, Row, Select, Tag } from 'antd';
+import { useEffect } from 'react';
 import { useModel } from 'umi';
 
 const FormThanhVienCLB = () => {
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
+	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm, getModel } =
 		useModel('caulacbo.thanhvien');
 	const { record: recordCLB } = useModel('caulacbo.caulacbo');
 	const { danhSach: danhSachPhongBan } = useModel('caulacbo.phongban');
 
-	const { danhSach: danhSachSinhVien } = useModel('sinhvien.sinhvien');
-
-	const [sinhVien, setSinhVien] = useState<{ hoTen: string; maSinhVien: string }>();
+	const { danhSach: danhSachSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 
 	const banBoPhanId = Form.useWatch('banBoPhanId', form);
+
+	const getData = () => {
+		getModel({ cauLacBoId: recordCLB?._id });
+	};
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 		else if (record?._id) {
-			form.setFieldsValue({
-				...record,
-				banBoPhanId: record.danhSachBanBoPhan.map((item) => item.banBoPhanId),
+			const initData: any = { ...record, banBoPhanId: record.danhSachBanBoPhan.map((item) => item.banBoPhanId) };
+			record.danhSachBanBoPhan.map((item) => {
+				initData[item.banBoPhanId] = item.vaiTroThanhVienBanBoPhan;
 			});
-			setSinhVien({ hoTen: record.hoTen, maSinhVien: record.maSinhVien });
+			form.setFieldsValue(initData);
 		}
 	}, [record?._id, visibleForm]);
 
@@ -40,17 +44,18 @@ const FormThanhVienCLB = () => {
 		values: CauLacBo.ThanhVien & { banBoPhanId: string[]; vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan[] },
 	) => {
 		if (!recordCLB?._id) return;
-
+		const recSinhVien = danhSachSinhVien.find((item) => item.ssoId === values?.sinhVienSsoId);
 		const payload: any = {
 			...record,
 			...values,
 			cauLacBoId: recordCLB._id,
-			...sinhVien,
+			hoTen: recSinhVien?.ten,
+			maSinhVien: recSinhVien?.ma,
 			namHoc: new Date().getFullYear().toString(),
 			chucVuThanhVienCauLacBo: values?.chucVuThanhVienCauLacBo ?? null,
 			danhSachBanBoPhan:
-				values?.banBoPhanId?.map((item, index) => ({
-					vaiTroThanhVienBanBoPhan: values?.vaiTroThanhVienBanBoPhan?.[index] ?? null,
+				values?.banBoPhanId?.map((item) => ({
+					vaiTroThanhVienBanBoPhan: values?.[item] ?? null,
 					banBoPhanId: item,
 				})) ?? [],
 			vaiTroThanhVienBanBoPhan: undefined,
@@ -58,9 +63,9 @@ const FormThanhVienCLB = () => {
 		};
 
 		if (edit) {
-			putModel(record?._id ?? '', payload);
+			putModel(record?._id ?? '', payload, getData);
 		} else {
-			postModel(payload);
+			postModel(payload, getData);
 		}
 	};
 
@@ -70,15 +75,23 @@ const FormThanhVienCLB = () => {
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24} md={24}>
 						<Form.Item name='sinhVienSsoId' label='Sinh viên' rules={[...rules.required, ...rules.text]}>
-							<SelectSinhVienDebounce
-								onChange={(val) => {
-									const recSinhVien = danhSachSinhVien.find((item) => item.ssoId === val);
-									setSinhVien({ hoTen: recSinhVien?.ten ?? '', maSinhVien: recSinhVien?.ma ?? '' });
-								}}
+							<SelectSinhVienDebounce />
+						</Form.Item>
+					</Col>
+
+					<Col xs={24} md={12}>
+						<Form.Item rules={[...rules.required]} name='trangThai' label='Trạng thái'>
+							<Select
+								allowClear
+								placeholder='Trạng thái'
+								options={Object.values(ETrangThaiThanhVien).map((item) => ({
+									value: item,
+									label: <Tag color={MapKeyColorTrangThaiThanhVienCLB[item]}>{item}</Tag>,
+								}))}
 							/>
 						</Form.Item>
 					</Col>
-					<Col xs={24} md={24}>
+					<Col xs={24} md={12}>
 						<Form.Item name='chucVuThanhVienCauLacBo' label='Vai trò trong ban chủ nhiệm câu lạc bộ'>
 							<Select
 								allowClear
@@ -103,12 +116,9 @@ const FormThanhVienCLB = () => {
 							/>
 						</Form.Item>
 					</Col>
-					{banBoPhanId?.map((item: string, index: number) => (
+					{banBoPhanId?.map((item: string) => (
 						<Col key={item} xs={24} md={24}>
-							<Form.Item
-								name={['vaiTroThanhVienBanBoPhan', index]}
-								label={`Vai trò trong ${danhSachPhongBan.find((ele) => ele._id === item)?.ten}`}
-							>
+							<Form.Item name={item} label={`Vai trò trong ${danhSachPhongBan.find((ele) => ele._id === item)?.ten}`}>
 								<Select
 									allowClear
 									placeholder='Chọn vai trò'
