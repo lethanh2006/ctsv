@@ -31,3 +31,13 @@ export const MapKeyColorTrangThaiHoatDongCLB = {
 	[ETrangThaiHoatDong.CHUA_THUC_HIEN]: '#1890ff',
 	[ETrangThaiHoatDong.HUY]: '#ff4d4f',
 };
+
+export enum ETrangThaiThanhVien {
+	DANG_HOAT_DONG = 'Đang hoạt động',
+	NGUNG_HOAT_DONG = 'Ngừng hoạt động',
+}
+
+export const MapKeyColorTrangThaiThanhVienCLB = {
+	[ETrangThaiThanhVien.DANG_HOAT_DONG]: '#28a745',
+	[ETrangThaiThanhVien.NGUNG_HOAT_DONG]: '#ff4d4f',
+};

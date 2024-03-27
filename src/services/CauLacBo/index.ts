@@ -10,3 +10,7 @@ export const updateTrangThaiHoatDongCLB = (
 		trangThai: ETrangThaiHoatDong;
 	},
 ) => axios.put(`${ip3}/ke-hoach-hoat-dong-clb/${idHoatDong}/trang-thai`, payload);
+
+export const thongKeChung = () => {
+	return axios.get(`${ip3}/cau-lac-bo/thong-ke-chung`);
+};

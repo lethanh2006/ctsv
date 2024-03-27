@@ -7,13 +7,36 @@ import { useModel } from 'umi';
 import FormCauLacBo from './components/Form';
 import { useEffect, useState } from 'react';
 import ViewDetailCLB from './components/ViewDetail';
+import { thongKeChung } from '@/services/CauLacBo';
+import { ETrangThaiHoatDong } from '@/services/CauLacBo/constant';
+import { ETrangThaiThanhVien } from '@/services/CauLacBo/constant';
 
 const CauLacBoComponent = () => {
 	const { handleEdit, deleteModel, getModel, setRecord, record: recordCLB } = useModel('caulacbo.caulacbo');
 	const { danhSach, getAllModel } = useModel('tochucnhansu.donvi');
 	const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
+	const [dataThongKe, setDataThongKe] = useState<
+		{
+			cauLacBo: string;
+			thanhVien: {
+				[ETrangThaiThanhVien.DANG_HOAT_DONG]: number;
+				[ETrangThaiThanhVien.NGUNG_HOAT_DONG]: number;
+			};
+			tongSoHoatDong: {
+				[ETrangThaiHoatDong.CHUA_THUC_HIEN]: number;
+				[ETrangThaiHoatDong.DA_THUC_HIEN]: number;
+				[ETrangThaiHoatDong.HUY]: number;
+			};
+		}[]
+	>([]);
+	const getThongKe = async () => {
+		const res = await thongKeChung();
+		setDataThongKe(res?.data?.data ?? []);
+	};
+
 	useEffect(() => {
 		getAllModel(false);
+		getThongKe();
 	}, []);
 
 	const onCell = (record: CauLacBo.IRecord) => ({
@@ -46,6 +69,43 @@ const CauLacBoComponent = () => {
 			render: (val: string) => danhSach.find((item) => item._id === val)?.ten,
 			align: 'center',
 			onCell,
+		},
+		{
+			title: 'Thành viên',
+			width: 150,
+			onCell,
+			align: 'center',
+			render: (rec) => {
+				const recThongKe = dataThongKe.find((item) => item.cauLacBo === rec.ten);
+				return recThongKe ? (
+					<div>
+						{recThongKe?.thanhVien[ETrangThaiThanhVien.DANG_HOAT_DONG] +
+							recThongKe?.thanhVien[ETrangThaiThanhVien.NGUNG_HOAT_DONG]}{' '}
+						thành viên
+					</div>
+				) : (
+					''
+				);
+			},
+		},
+		{
+			title: 'Hoạt động',
+			width: 150,
+			onCell,
+			align: 'center',
+			render: (rec) => {
+				const recThongKe = dataThongKe.find((item) => item.cauLacBo === rec.ten);
+				return recThongKe ? (
+					<div>
+						{recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.CHUA_THUC_HIEN] +
+							recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.DA_THUC_HIEN] +
+							recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.HUY]}{' '}
+						hoạt động
+					</div>
+				) : (
+					''
+				);
+			},
 		},
 		{
 			title: 'Nội quy, quy chế',
@@ -121,7 +181,8 @@ const CauLacBoComponent = () => {
 				columns={columns}
 			/>
 			<Modal
-				width={1000}
+				bodyStyle={{ paddingTop: 4 }}
+				width={1100}
 				footer={
 					<Button
 						onClick={() => {
@@ -135,7 +196,7 @@ const CauLacBoComponent = () => {
 				visible={visibleDetail}
 				onCancel={() => setVisibleDetail(false)}
 			>
-				<ViewDetailCLB />
+				<ViewDetailCLB dataThongKe={dataThongKe.find((item) => item.cauLacBo === recordCLB?.ten) as any} />
 			</Modal>
 		</>
 	);

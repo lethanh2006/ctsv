@@ -2,24 +2,56 @@ import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import {
 	EChucVuThanhVienCauLacBo,
+	ETrangThaiThanhVien,
 	MapKeyChucVuThanhVienCLB,
 	MapKeyVaiTroThanhVienPhongBanCLB,
 } from '@/services/CauLacBo/constant';
 import type { CauLacBo } from '@/services/CauLacBo/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip } from 'antd';
+import { Button, Popconfirm, Switch, Tooltip } from 'antd';
+import { useEffect } from 'react';
 import { useModel } from 'umi';
 import FormThanhVienCLB from './Form';
 
 const ThanhVienCauLacBo = () => {
-	const { handleEdit, deleteModel, getModel } = useModel('caulacbo.thanhvien');
-	const { danhSach } = useModel('caulacbo.phongban');
+	const { handleEdit, deleteModel, getModel, putModel } = useModel('caulacbo.thanhvien');
+	const { danhSach, getAllModel } = useModel('caulacbo.phongban');
+	const { record: recCLB } = useModel('caulacbo.caulacbo');
+	const getData = () => {
+		getModel({ cauLacBoId: recCLB?._id });
+	};
+	useEffect(() => {
+		if (!danhSach.length) getAllModel(false, undefined, { cauLacBoId: recCLB?._id });
+	}, []);
 
 	const columns: IColumn<CauLacBo.ThanhVien>[] = [
+		{
+			title: 'Trạng thái',
+			dataIndex: 'trangThai',
+			width: 150,
+			filterType: 'select',
+			align: 'center',
+			filterData: Object.values(ETrangThaiThanhVien).map((item) => ({ value: item, label: item })),
+			render: (val, rec) => (
+				<Switch
+					size='small'
+					checkedChildren='Đang hoạt động'
+					unCheckedChildren='Đang hoạt động'
+					checked={val === ETrangThaiThanhVien.DANG_HOAT_DONG ? true : false}
+					onChange={(checked) =>
+						putModel(rec._id, {
+							...rec,
+							trangThai: checked ? ETrangThaiThanhVien.DANG_HOAT_DONG : ETrangThaiThanhVien.NGUNG_HOAT_DONG,
+						} as CauLacBo.ThanhVien)
+					}
+				/>
+			),
+		},
 		{
 			title: 'Họ tên',
 			dataIndex: 'hoTen',
 			width: 200,
+			align: 'center',
 			filterType: 'string',
 		},
 
@@ -95,7 +127,7 @@ const ThanhVienCauLacBo = () => {
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => {
-								deleteModel(record._id, getModel);
+								deleteModel(record._id, getData);
 							}}
 							title='Bạn có chắc chắn muốn xóa?'
 						>
@@ -109,6 +141,8 @@ const ThanhVienCauLacBo = () => {
 
 	return (
 		<TableBase
+			buttons={{ import: true }}
+			getData={getData}
 			otherProps={{ size: 'small' }}
 			hideCard
 			widthDrawer={600}
@@ -116,6 +150,7 @@ const ThanhVienCauLacBo = () => {
 			title='Quản lý câu lạc bộ'
 			modelName={'caulacbo.thanhvien'}
 			columns={columns}
+			dependencies={[recCLB?._id]}
 		/>
 	);
 };

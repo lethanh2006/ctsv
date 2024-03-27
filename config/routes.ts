@@ -174,6 +174,11 @@
 				path: 'su-kien',
 				component: './SuKien',
 			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke',
+				component: './CauLacBo/ThongKe',
+			},
 		],
 	},
 

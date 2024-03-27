@@ -11,10 +11,12 @@ import { useModel } from 'umi';
 
 const FormHoatDong = () => {
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
+	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm, getModel } =
 		useModel('caulacbo.hoatdong');
 	const { record: recordCLB } = useModel('caulacbo.caulacbo');
-
+	const getData = () => {
+		getModel({ idCauLacBo: recordCLB?._id });
+	};
 	const trangThai = Form.useWatch('trangThai', form);
 
 	useEffect(() => {
@@ -22,6 +24,7 @@ const FormHoatDong = () => {
 		else if (record?._id) {
 			form.setFieldsValue({
 				...record,
+				minhChung: record.fileDinhKem[0],
 			});
 		}
 	}, [record?._id, visibleForm]);
@@ -35,12 +38,13 @@ const FormHoatDong = () => {
 			...record,
 			...values,
 			idCauLacBo: recordCLB._id,
-			minhChung,
+			fileDinhKem: minhChung ? [minhChung] : [],
+			minhChung: undefined,
 		};
 		if (edit) {
-			putModel(record?._id ?? '', payload);
+			putModel(record?._id ?? '', payload, getData);
 		} else {
-			postModel(payload);
+			postModel(payload, getData);
 		}
 	};
 

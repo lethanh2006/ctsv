@@ -9,11 +9,11 @@ import { EOperatorType } from '@/components/Table/constant';
 
 const PhongBanCauLacBo = () => {
 	const { handleEdit, deleteModel, getModel } = useModel('caulacbo.phongban');
-
+	const { record: recCLB } = useModel('caulacbo.caulacbo');
 	const { filters, setFilters } = useModel('caulacbo.thanhvien');
 
 	const getData = () => {
-		getModel(undefined, undefined, undefined, 1, 100);
+		getModel({ cauLacBoId: recCLB?._id });
 	};
 
 	const onCell = (record: CauLacBo.PhongBan) => ({
@@ -32,6 +32,7 @@ const PhongBanCauLacBo = () => {
 			dataIndex: 'ten',
 			width: 200,
 			onCell,
+			filterType: 'string',
 		},
 
 		{
@@ -85,14 +86,9 @@ const PhongBanCauLacBo = () => {
 	return (
 		<TableBase
 			getData={getData}
+			addStt
 			otherProps={{
 				size: 'small',
-				pagination: false,
-				rowClassName: (rec: CauLacBo.PhongBan, index: number) => {
-					if (filters.find((item) => item.field === 'danhSachBanBoPhan.banBoPhanId')?.values?.includes(rec._id))
-						return 'row-selected';
-					return '';
-				},
 			}}
 			hideCard
 			widthDrawer={600}
@@ -100,6 +96,7 @@ const PhongBanCauLacBo = () => {
 			title='Quản lý câu lạc bộ'
 			modelName={'caulacbo.phongban'}
 			columns={columns}
+			dependencies={[recCLB?._id]}
 		/>
 	);
 };
