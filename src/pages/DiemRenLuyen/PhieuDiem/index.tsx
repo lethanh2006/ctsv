@@ -17,7 +17,7 @@ import { useCallback } from 'react';
 const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean }) => {
 	const { handleEdit, deleteModel, page, limit, condition, setCondition, getModel } =
 		useModel('diemrenluyen.phieudiem');
-	const { danhSach } = useModel('diemrenluyen.dot');
+	const { danhSach, record } = useModel('diemrenluyen.dot');
 	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 	const getData = () => {
 		getModel({ 'thongTinNguoiTao.ssoId': props?.ssoId });
@@ -119,11 +119,14 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 	return (
 		<>
 			<TableBase
+				params={{ dotDrlId: record?._id }}
+				buttons={{ import: true }}
 				hideCard={props?.hideCard}
 				getData={getData}
 				otherButtons={[
 					<SelectDotDiemRenLuyen
-						allowClear
+						value={record?._id}
+						isSetRecord
 						style={{ width: 250 }}
 						onChange={(val) => {
 							setCondition({ ...condition, dotDrlId: val });
