@@ -141,6 +141,7 @@ const ThanhVienCauLacBo = () => {
 
 	return (
 		<TableBase
+			buttons={{ import: true }}
 			getData={getData}
 			otherProps={{ size: 'small' }}
 			hideCard
