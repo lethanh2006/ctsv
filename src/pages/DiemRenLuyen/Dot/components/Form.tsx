@@ -68,7 +68,7 @@ const FormDot = () => {
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name='thoiGianDot' label='Thời gian bắt đầu - kết thúc' rules={[...rules.required]}>
+						<Form.Item name='thoiGianDot' label='Thời gian sinh viên phản hồi' rules={[...rules.required]}>
 							<MyDateRangePicker placeholder={['Từ', 'đến']} format={'DD/MM/YYYY'} />
 						</Form.Item>
 					</Col>
