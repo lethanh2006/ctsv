@@ -1,14 +1,14 @@
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
-import type { DotDiemRenLuyen } from '@/services/DiemRenLuyen/Dot/typings';
 import { ELoaiDoiTuongChamDiem, MapKeyNameLoaiDoiTuongChamDiem } from '@/services/DiemRenLuyen/constants';
 import rules from '@/utils/rules';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Divider, Form, Row, Select } from 'antd';
+import moment from 'moment';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import SelectBieuMau from '../../BieuMau/components/SelectBieuMau';
-import moment from 'moment';
+import { toISOString } from '@/utils/utils';
 
 const FormDot = () => {
 	const [form] = Form.useForm();
@@ -19,6 +19,7 @@ const FormDot = () => {
 		if (record?._id)
 			form.setFieldsValue({
 				...record,
+				thoiGianDot: [moment(record.thoiGianBatDau), moment(record.thoiGianKetThuc)],
 				danhSachDoiTuongChamDiem: record?.danhSachDoiTuongChamDiem?.map((item) => ({
 					...item,
 					thoiGian: [moment(item.thoiGianBatDauCham), moment(item.thoiGianKetThucCham)],
@@ -27,11 +28,14 @@ const FormDot = () => {
 		else form.resetFields();
 	}, [record?._id, visibleForm]);
 
-	const onFinish = async (values: DotDiemRenLuyen.IRecord) => {
+	const onFinish = async (values: any) => {
 		const payload = {
 			...record,
 			...values,
-			danhSachDoiTuongChamDiem: values?.danhSachDoiTuongChamDiem?.map((item) => ({
+			thoiGianBatDau: toISOString(values.thoiGianDot[0]),
+			thoiGianKetThuc: toISOString(values.thoiGianDot[1]),
+			thoiGianDot: undefined,
+			danhSachDoiTuongChamDiem: values?.danhSachDoiTuongChamDiem?.map((item: { thoiGian: any[] }) => ({
 				...item,
 				thoiGianBatDauCham: item.thoiGian[0],
 				thoiGianKetThucCham: item.thoiGian[1],
@@ -61,6 +65,11 @@ const FormDot = () => {
 					<Col span={24}>
 						<Form.Item name='mauDrlId' label='Biểu mẫu áp dụng cho đợt này' rules={[...rules.required]}>
 							<SelectBieuMau />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name='thoiGianDot' label='Thời gian bắt đầu - kết thúc' rules={[...rules.required]}>
+							<MyDateRangePicker placeholder={['Từ', 'đến']} format={'DD/MM/YYYY'} />
 						</Form.Item>
 					</Col>
 				</Row>
