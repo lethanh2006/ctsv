@@ -15,5 +15,7 @@ declare module DotDiemRenLuyen {
 		danhSachDoiTuongChamDiem: DoiTuongChamDiem[];
 		mauDrlId: string;
 		mauDrl: MauDiemRenLuyen.IRecord;
+		thoiGianBatDau: string;
+		thoiGianKetThuc: string;
 	}
 }
