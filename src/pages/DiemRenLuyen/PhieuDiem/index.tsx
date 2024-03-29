@@ -125,7 +125,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 				getData={getData}
 				otherButtons={[
 					<SelectDotDiemRenLuyen
-						value={record?._id}
+						value={condition?.dotDrlId}
 						isSetRecord
 						style={{ width: 250 }}
 						onChange={(val) => {

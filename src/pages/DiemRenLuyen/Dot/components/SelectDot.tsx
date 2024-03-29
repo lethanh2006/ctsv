@@ -22,7 +22,7 @@ const SelectDotDiemRenLuyen = (props: {
 	}, []);
 
 	useEffect(() => {
-		getAllModel(isSetRecord);
+		getAllModel(isSetRecord, { maHocKy: -1 });
 	}, []);
 
 	return (
