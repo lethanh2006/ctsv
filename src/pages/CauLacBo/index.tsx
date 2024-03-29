@@ -77,14 +77,14 @@ const CauLacBoComponent = () => {
 			align: 'center',
 			render: (rec) => {
 				const recThongKe = dataThongKe.find((item) => item.cauLacBo === rec.ten);
-				return recThongKe ? (
+				return recThongKe?.thanhVien ? (
 					<div>
 						{recThongKe?.thanhVien[ETrangThaiThanhVien.DANG_HOAT_DONG] +
 							recThongKe?.thanhVien[ETrangThaiThanhVien.NGUNG_HOAT_DONG]}{' '}
 						thành viên
 					</div>
 				) : (
-					''
+					'Chưa có thành viên'
 				);
 			},
 		},
@@ -95,7 +95,7 @@ const CauLacBoComponent = () => {
 			align: 'center',
 			render: (rec) => {
 				const recThongKe = dataThongKe.find((item) => item.cauLacBo === rec.ten);
-				return recThongKe ? (
+				return recThongKe?.tongSoHoatDong ? (
 					<div>
 						{recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.CHUA_THUC_HIEN] +
 							recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.DA_THUC_HIEN] +
@@ -103,7 +103,7 @@ const CauLacBoComponent = () => {
 						hoạt động
 					</div>
 				) : (
-					''
+					'Chưa có hoạt động'
 				);
 			},
 		},
