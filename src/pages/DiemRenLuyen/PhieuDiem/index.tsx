@@ -119,7 +119,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 	return (
 		<>
 			<TableBase
-				params={{ dotDrlId: record?._id }}
+				params={{ dotDrlId: condition?.dotDrlId }}
 				buttons={{ import: true }}
 				hideCard={props?.hideCard}
 				getData={getData}
