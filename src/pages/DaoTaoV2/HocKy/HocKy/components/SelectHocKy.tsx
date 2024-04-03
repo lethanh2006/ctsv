@@ -16,8 +16,10 @@ const SelectHocKy = (props: {
 	style?: React.CSSProperties;
 	isSetRecord?: boolean;
 	selectMa?: boolean;
+	placeHolder?: string;
 }) => {
-	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, selectMa, disabled } = props;
+	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, selectMa, disabled, placeHolder } =
+		props;
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('daotaov2.hocky.hocky');
 
 	useEffect(() => {
@@ -37,7 +39,7 @@ const SelectHocKy = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn học kỳ'
+			placeholder={placeHolder || 'Chọn học kỳ'}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			loading={loading}

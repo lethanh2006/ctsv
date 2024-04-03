@@ -17,7 +17,7 @@ import { useCallback } from 'react';
 const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean }) => {
 	const { handleEdit, deleteModel, page, limit, condition, setCondition, getModel } =
 		useModel('diemrenluyen.phieudiem');
-	const { danhSach, record } = useModel('diemrenluyen.dot');
+	const { danhSach } = useModel('diemrenluyen.dot');
 	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 	const getData = () => {
 		getModel({ 'thongTinNguoiTao.ssoId': props?.ssoId });
@@ -88,21 +88,20 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			render: (val: EXepLoai) => MapKeyNameXepLoai[val],
 			align: 'center',
 		},
-
 		{
 			title: 'Thao tác',
 			align: 'center',
 			width: 90,
 			fixed: 'right',
-			render: (record: PhieuDiemRenLuyen.IRecord) => (
+			render: (rec: PhieuDiemRenLuyen.IRecord) => (
 				<>
 					<Tooltip title='Chỉnh sửa'>
-						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+						<Button onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 
 					<Tooltip title='Xóa'>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id, getData)}
+							onConfirm={() => deleteModel(rec._id, getData)}
 							title='Bạn có chắc chắn muốn xóa?'
 							placement='topLeft'
 						>

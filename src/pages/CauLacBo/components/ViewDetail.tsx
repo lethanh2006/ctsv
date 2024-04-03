@@ -1,7 +1,7 @@
 import { primaryColor } from '@/services/base/constant';
 import { Col, Descriptions, Row, Tabs, Tag } from 'antd';
 import { useModel } from 'umi';
-import HoatDongCauLacBo from '../HoatDong';
+import HoatDongCauLacBo from '@/pages/HoatDongChung/CauLacBo';
 import PhongBanCauLacBo from '../PhongBan';
 import ThanhVienCauLacBo from '../ThanhVien';
 import { ETrangThaiThanhVien, ETrangThaiHoatDong } from '@/services/CauLacBo/constant';
@@ -95,7 +95,15 @@ const ViewDetailCLB = (props: {
 				<ThanhVienCauLacBo />
 			</Tabs.TabPane>
 			<Tabs.TabPane key={'4'} tab='Hoạt động của CLB'>
-				<HoatDongCauLacBo />
+				<HoatDongCauLacBo
+					hideCard
+					paramCondition={{
+						info: {
+							type: 'CAU_LAC_BO',
+							refId: record?._id,
+						},
+					}}
+				/>
 			</Tabs.TabPane>
 		</Tabs>
 	);

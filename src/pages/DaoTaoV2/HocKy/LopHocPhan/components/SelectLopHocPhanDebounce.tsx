@@ -14,8 +14,9 @@ const SelectLopHocPhanDebounce = (props: {
 	multiple?: boolean;
 	disabled?: boolean;
 	selectMa?: boolean;
+	style?: React.CSSProperties;
 }) => {
-	const { value, onChange, multiple, disabled, selectMa } = props;
+	const { value, onChange, multiple, disabled, selectMa, style } = props;
 	const { danhSach, filters, setFilters, getModel, loading } = useModel('daotaov2.hocky.lophocphan');
 
 	useEffect(() => {
@@ -26,7 +27,7 @@ const SelectLopHocPhanDebounce = (props: {
 		);
 		getModel(
 			{ loai: ELoaiLopHocPhan.CHINH },
-			(!filters || !filters.length) && value && !gotData
+			(!filters || !filters.length) && ((!props.multiple && value) || (props.multiple && value?.length)) && !gotData
 				? [
 						{
 							active: true,
@@ -62,6 +63,7 @@ const SelectLopHocPhanDebounce = (props: {
 			showSearch
 			optionFilterProp='label'
 			placeholder='Chọn lớp tín chỉ'
+			style={{ width: '100%', ...style }}
 		/>
 	);
 };
