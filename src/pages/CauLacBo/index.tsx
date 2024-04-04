@@ -181,6 +181,7 @@ const CauLacBoComponent = () => {
 				columns={columns}
 			/>
 			<Modal
+				destroyOnClose
 				bodyStyle={{ paddingTop: 4 }}
 				width={1100}
 				footer={

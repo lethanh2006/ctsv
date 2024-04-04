@@ -104,12 +104,19 @@
 			{
 				name: 'TuanLeCongDan',
 				path: 'tuan-le-cong-dan',
-				component: './SuKien',
+				// component: './SuKien',
+				component: './HoatDongChung/TuanSinhHoatCongDan',
 			},
 			{
 				name: 'CacHoatDongChoSinhVien',
 				path: 'cac-hoat-dong-cho-sinh-vien',
-				component: './SuKien',
+				// component: './SuKien',
+				component: './HoatDongChung/HuongNghiepViecLam',
+			},
+			{
+				name: 'DanhGiaKetQua',
+				path: 'danh-gia-ket-qua',
+				component: './CheDoChinhSach/GiaoDucChinhTriTuTuong/QuyetDinhGDCTTT',
 			},
 		],
 	},
@@ -128,27 +135,32 @@
 			{
 				name: 'DaoTaoBoiDuong',
 				path: 'dao-tao-boi-duong',
-				component: './SuKien',
+				component: './HoatDongChung/DaoTaoBoiDuong',
+				// component: './SuKien',
 			},
 			{
 				name: 'HopTacNghienCuuChuyenGiao',
 				path: 'hop-tac-nghien-cuu-chuyen-giao',
-				component: './SuKien',
+				// component: './SuKien',
+				component: './HoatDongChung/HopTacQuocTe',
 			},
 			{
 				name: 'ThucThiChinhSach',
 				path: 'thuc-thi-chinh-sach',
-				component: './SuKien',
+				// component: './SuKien',
+				component: './HoatDongChung/ThucThiChinhSach',
 			},
 			{
 				name: 'HoatDongXaHoi',
 				path: 'hoat-dong-xa-hoi',
-				component: './SuKien',
+				// component: './SuKien',
+				component: './HoatDongChung/HoatDongXaHoi',
 			},
 			{
 				name: 'Khac',
 				path: 'khac',
-				component: './SuKien',
+				component: './HoatDongChung/DonViNgoaiHocVien',
+				// component: './SuKien',
 			},
 		],
 	},
@@ -167,12 +179,14 @@
 			{
 				name: 'HoatDongCauLacBo',
 				path: 'hoat-dong-cau-lac-bo',
-				component: './SuKien',
+				component: './HoatDongChung/CauLacBo',
+				// component: './SuKien',
 			},
 			{
 				name: 'SuKien',
 				path: 'su-kien',
-				component: './SuKien',
+				component: './HoatDongChung/VanHoaTheThao',
+				// component: './SuKien',
 			},
 			{
 				name: 'ThongKe',
@@ -527,6 +541,11 @@
 				name: 'CheDoChinhSach',
 				component: './CheDoChinhSach/CheDoChinhSach/CheDoChinhSach',
 				path: 'che-do-chinh-sach',
+			},
+			{
+				name: 'GiaoDucChinhTriTuTuong',
+				component: './CheDoChinhSach/GiaoDucChinhTriTuTuong/CheDoGDCTTT',
+				path: 'giao-duc-chinh-tri-tu-tuong',
 			},
 			{
 				name: 'Chung',

@@ -365,54 +365,6 @@ const SuKienPage = () => {
 				</Row>
 			</Col>
 		);
-		// return (
-		// 	<>
-		// 		<Col xs={24} md={10} lg={8} xl={6}>
-		// 			<Card loading={isLoadingThongKeTheoNam}>
-		// 				<Statistic
-		// 					title='Tổng số hoạt động'
-		// 					value={sum([
-		// 						thongKeTheoNamData?.suKienChuaDienRa ?? 0,
-		// 						thongKeTheoNamData?.suKienDangDienRa ?? 0,
-		// 						thongKeTheoNamData?.suKienDaDienRa ?? 0,
-		// 					])}
-		// 				/>
-		// 				<Space direction='vertical'>
-		// 					{Object.values(ETrangThaiDienRa).map((item) => {
-		// 						const key = ETrangThaiDienRaMappingToThongKeKey[item];
-		// 						if (thongKeTheoNamData?.[key] !== undefined) {
-		// 							return (
-		// 								<Space key={item}>
-		// 									<Badge color={ETrangThaiDienRaMappingToTagColor[item]} />
-		// 									<div>{ETrangThaiDienRaMappingToTagLabel[item]}</div>: {thongKeTheoNamData?.[key]}
-		// 								</Space>
-		// 							);
-		// 						}
-		// 						return null;
-		// 					})}
-		// 				</Space>
-		// 			</Card>
-		// 		</Col>
-		// 		<Col xs={24} md={14} lg={16} xl={18}>
-		// 			<Card>
-		// 				<Spin spinning={isLoadingThongKeTheoNam}>
-		// 					<DonutChart
-		// 						yAxis={[
-		// 							[
-		// 								thongKeTheoNamData?.suKienChuaDienRa ?? 0,
-		// 								thongKeTheoNamData?.suKienDangDienRa ?? 0,
-		// 								thongKeTheoNamData?.suKienDaDienRa ?? 0,
-		// 							],
-		// 						]}
-		// 						xAxis={[ETrangThaiDienRa.CHUA_DIEN_RA, ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA]}
-		// 						yLabel={[]}
-		// 						formatY={(vsl) => vsl.toString()}
-		// 					/>
-		// 				</Spin>
-		// 			</Card>
-		// 		</Col>
-		// 	</>
-		// );
 	};
 
 	return (

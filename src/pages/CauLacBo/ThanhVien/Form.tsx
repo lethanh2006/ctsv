@@ -1,3 +1,4 @@
+import MyDatePicker from '@/components/MyDatePicker';
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import {
 	EChucVuThanhVienCauLacBo,
@@ -24,7 +25,7 @@ const FormThanhVienCLB = () => {
 	const { danhSach: danhSachSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 
 	const banBoPhanId = Form.useWatch('banBoPhanId', form);
-
+	const trangThai = Form.useWatch('trangThai', form);
 	const getData = () => {
 		getModel({ cauLacBoId: recordCLB?._id });
 	};
@@ -79,7 +80,7 @@ const FormThanhVienCLB = () => {
 						</Form.Item>
 					</Col>
 
-					<Col xs={24} md={12}>
+					<Col xs={24}>
 						<Form.Item rules={[...rules.required]} name='trangThai' label='Trạng thái'>
 							<Select
 								allowClear
@@ -91,7 +92,21 @@ const FormThanhVienCLB = () => {
 							/>
 						</Form.Item>
 					</Col>
-					<Col xs={24} md={12}>
+
+					<Col xs={24}>
+						<Form.Item rules={[...rules.required]} name='thoiGianBatDau' label='Thời gian bắt đầu hoạt động'>
+							<MyDatePicker format='DD/MM/YYYY' />
+						</Form.Item>
+					</Col>
+					{trangThai === ETrangThaiThanhVien.NGUNG_HOAT_DONG && (
+						<Col xs={24}>
+							<Form.Item rules={[...rules.required]} name='thoiGianKetThuc' label='Thời gian ngừng hoạt động'>
+								<MyDatePicker format='DD/MM/YYYY' />
+							</Form.Item>
+						</Col>
+					)}
+
+					<Col xs={24}>
 						<Form.Item name='chucVuThanhVienCauLacBo' label='Vai trò trong ban chủ nhiệm câu lạc bộ'>
 							<Select
 								allowClear

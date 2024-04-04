@@ -21,8 +21,8 @@ const ThanhVienCauLacBo = () => {
 		getModel({ cauLacBoId: recCLB?._id });
 	};
 	useEffect(() => {
-		if (!danhSach.length) getAllModel(false, undefined, { cauLacBoId: recCLB?._id });
-	}, []);
+		getAllModel(false, undefined, { cauLacBoId: recCLB?._id });
+	}, [recCLB?._id]);
 
 	const columns: IColumn<CauLacBo.ThanhVien>[] = [
 		{
@@ -141,6 +141,7 @@ const ThanhVienCauLacBo = () => {
 
 	return (
 		<TableBase
+			params={{ cauLacBoId: recCLB?._id }}
 			buttons={{ import: true }}
 			getData={getData}
 			otherProps={{ size: 'small' }}

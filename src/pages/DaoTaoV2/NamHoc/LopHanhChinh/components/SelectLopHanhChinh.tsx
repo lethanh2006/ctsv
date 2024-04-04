@@ -14,8 +14,9 @@ const SelectLopHanhChinhDebounce = (props: {
 	disabled?: boolean;
 	selectMa?: boolean;
 	allowClear?: boolean;
+	style?: React.CSSProperties;
 }) => {
-	const { value, onChange, multiple, disabled, selectMa, allowClear } = props;
+	const { value, onChange, multiple, disabled, selectMa, allowClear, style } = props;
 	const { danhSach, getModel, setFilters, filters, loading } = useModel('daotaov2.namhoc.lophanhchinh');
 
 	useEffect(() => {
@@ -24,9 +25,10 @@ const SelectLopHanhChinhDebounce = (props: {
 		const gotData = danhSach.some((item) =>
 			Array.isArray(value) ? value.includes(selectMa ? item.ten : item._id) : value === selectMa ? item.ten : item._id,
 		);
+
 		getModel(
 			undefined,
-			(!filters || !filters.length) && value && !gotData
+			(!filters || !filters.length) && ((!props.multiple && value) || (props.multiple && value?.length)) && !gotData
 				? [
 						{
 							active: true,
@@ -69,6 +71,7 @@ const SelectLopHanhChinhDebounce = (props: {
 			optionFilterProp='label'
 			placeholder='Chọn lớp hành chính (tìm kiếm theo tên)'
 			showArrow
+			style={{ width: '100%', ...style }}
 			allowClear={allowClear}
 		/>
 	);

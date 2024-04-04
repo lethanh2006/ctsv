@@ -13,8 +13,10 @@ const SelectCLB = (props: {
 	style?: React.CSSProperties;
 	isSetRecord?: boolean;
 	keyValue?: string;
+	placeHolder?: string;
 }) => {
-	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, keyValue, disabled } = props;
+	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, keyValue, disabled, placeHolder } =
+		props;
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('caulacbo.caulacbo');
 
 	useEffect(() => {
@@ -34,7 +36,7 @@ const SelectCLB = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Lọc theo câu lạc bộ'
+			placeholder={placeHolder || 'Lọc theo câu lạc bộ'}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			loading={loading}
