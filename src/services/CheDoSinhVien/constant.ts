@@ -3,4 +3,5 @@ export enum ELoaiCheDoSinhVien {
 	KHEN_THUONG = 'Khen thưởng',
 	KY_LUAT = 'Kỷ luật',
 	HOC_BONG = 'Học bổng',
+	GDCT_TU_TUONG = 'Giáo dục chính trị tư tưởng',
 }

@@ -42,11 +42,13 @@ export default {
 	'menu.DanhMuc.KhenThuong.LoaiKhenThuong': 'Loại khen thưởng',
 	'menu.DanhMuc.CheDoChinhSach': 'Chế độ, chính sách',
 	'menu.DanhMuc.HocBong': 'Học bổng',
+	'menu.DanhMuc.GiaoDucChinhTriTuTuong': 'Giáo dục chính trị tư tưởng',
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.SuKien': 'Giáo dục chính trị tư tưởng',
 	'menu.SuKien.TuanLeCongDan': 'Tuần sinh hoạt công dân',
 	'menu.SuKien.CacHoatDongChoSinhVien': 'Hướng nghiệp - việc làm',
+	'menu.SuKien.DanhGiaKetQua': 'Đánh giá kết quả',
 	'menu.HoatDongKetNoiVaPhucVuCongDong': 'Phục vụ cộng đồng',
 	'menu.HoatDongKetNoiVaPhucVuCongDong.DaoTaoBoiDuong': 'Đào tạo, bồi dưỡng',
 	'menu.HoatDongKetNoiVaPhucVuCongDong.HopTacNghienCuuChuyenGiao': 'Hợp tác quốc tế, NCKH và chuyển giao công nghệ',

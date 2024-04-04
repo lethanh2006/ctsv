@@ -26,6 +26,18 @@ export enum EHoatDongChungType1 {
 	VAN_HOA_THE_THAO = 'Văn hóa, thể thao',
 }
 
+export const MapKeyLabelTrangThaiThongKe: any = {
+	chuaDienRa: 'Chưa diễn ra',
+	dangDienRa: 'Đang diễn ra',
+	daDienRa: 'Đã diễn ra',
+};
+
+export const MapKeyColorTrangThaiThongKe: any = {
+	chuaDienRa: '#d46b08',
+	dangDienRa: '#096dd9',
+	daDienRa: '#389e0d',
+};
+
 //Dự toán kinh phí
 export enum EDonViTinh {
 	NGUOI = 'NGUOI',

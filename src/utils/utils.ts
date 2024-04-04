@@ -110,7 +110,7 @@ export function trim(str: string) {
 }
 
 export function currencyFormat(num?: number) {
-	if (!num) return '0';
+	if (!num || !num.toFixed) return '0';
 	return num?.toFixed(0)?.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') ?? '0';
 }
 

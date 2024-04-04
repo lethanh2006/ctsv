@@ -33,6 +33,8 @@ declare module CauLacBo {
 		cauLacBoId: string;
 		chucVuThanhVienCauLacBo: EChucVuThanhVienCauLacBo;
 		namHoc: string;
+		thoiGianBatDau: string;
+		thoiGianKetThuc: string;
 		danhSachBanBoPhan: { vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan; banBoPhanId: string }[];
 		trangThai: ETrangThaiThanhVien;
 		[x: string]: string;

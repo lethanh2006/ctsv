@@ -113,6 +113,11 @@
 				// component: './SuKien',
 				component: './HoatDongChung/HuongNghiepViecLam',
 			},
+			{
+				name: 'DanhGiaKetQua',
+				path: 'danh-gia-ket-qua',
+				component: './CheDoChinhSach/GiaoDucChinhTriTuTuong/QuyetDinhGDCTTT',
+			},
 		],
 	},
 	{
@@ -536,6 +541,11 @@
 				name: 'CheDoChinhSach',
 				component: './CheDoChinhSach/CheDoChinhSach/CheDoChinhSach',
 				path: 'che-do-chinh-sach',
+			},
+			{
+				name: 'GiaoDucChinhTriTuTuong',
+				component: './CheDoChinhSach/GiaoDucChinhTriTuTuong/CheDoGDCTTT',
+				path: 'giao-duc-chinh-tri-tu-tuong',
 			},
 			{
 				name: 'Chung',
