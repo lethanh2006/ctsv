@@ -166,7 +166,7 @@ const FormHoatDongChung = (props: {
 																	name={[index, 'loaiDoiTuong']}
 																	validateTrigger={['onChange', 'onBlur']}
 																	rules={[...rules.required]}
-																	noStyle
+																	label='Loại'
 																>
 																	<Select
 																		style={{ width: '100%' }}
@@ -185,7 +185,7 @@ const FormHoatDongChung = (props: {
 																		name={[index, 'danhSachLoaiVaiTro']}
 																		validateTrigger={['onChange', 'onBlur']}
 																		rules={[...rules.required]}
-																		noStyle
+																		label='Vai trò'
 																	>
 																		<Select
 																			mode='multiple'

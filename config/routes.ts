@@ -118,6 +118,11 @@
 				path: 'danh-gia-ket-qua',
 				component: './CheDoChinhSach/GiaoDucChinhTriTuTuong/QuyetDinhGDCTTT',
 			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke',
+				component: './HoatDongChung/ThongKeGiaoDucChinhTriTuTuong',
+			},
 		],
 	},
 	{

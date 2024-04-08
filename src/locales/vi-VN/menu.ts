@@ -46,10 +46,12 @@ export default {
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.SuKien': 'Giáo dục chính trị tư tưởng',
+	'menu.SuKien.ThongKe': 'Thống kê',
 	'menu.SuKien.TuanLeCongDan': 'Tuần sinh hoạt công dân',
 	'menu.SuKien.CacHoatDongChoSinhVien': 'Hướng nghiệp - việc làm',
 	'menu.SuKien.DanhGiaKetQua': 'Đánh giá kết quả',
 	'menu.HoatDongKetNoiVaPhucVuCongDong': 'Phục vụ cộng đồng',
+	'menu.HoatDongKetNoiVaPhucVuCongDong.ThongKe': 'Thống kê',
 	'menu.HoatDongKetNoiVaPhucVuCongDong.DaoTaoBoiDuong': 'Đào tạo, bồi dưỡng',
 	'menu.HoatDongKetNoiVaPhucVuCongDong.HopTacNghienCuuChuyenGiao': 'Hợp tác quốc tế, NCKH và chuyển giao công nghệ',
 	'menu.HoatDongKetNoiVaPhucVuCongDong.ThucThiChinhSach': 'Thực thi, phát triển chính sách',
