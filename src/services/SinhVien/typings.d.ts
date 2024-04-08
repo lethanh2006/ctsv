@@ -208,4 +208,21 @@ declare module SinhVien {
 		soTienPhaiNop: number;
 		soTienDaNop: number;
 	}
+
+	export interface IDiemHocPhanSv extends Omit<LopHocPhan.IDiemTongKet, 'diemKthp'> {
+		_id: string;
+		sinhVienSsoId: string;
+		sinhVien?: IRecord;
+		maHocPhan: string;
+		hocPhan?: HocPhan.IRecord;
+		maKhoaNganh: string;
+
+		soLanHoc: number;
+		trangThaiThi: ETrangThaiThi;
+		soThuTuKyKeHoach: number;
+		maHocKyKeHoach: string;
+		trangThai: ETrangThaiDiemHocPhanSv;
+		maSvHp: string;
+		lopHpSvList?: LopHocPhan.IRecordSinhVienLopHP[];
+	}
 }

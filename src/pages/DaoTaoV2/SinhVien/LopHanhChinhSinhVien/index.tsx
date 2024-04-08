@@ -9,7 +9,7 @@ const LopHanhChinhSinhVien = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecordSinhVien>[] = [
 		{
-			title: 'Mã lớp hành chính',
+			title: 'Tên lớp',
 			width: 120,
 			render: (_, rec) => rec.lopHanhChinh?.ten,
 		},
@@ -21,11 +21,16 @@ const LopHanhChinhSinhVien = () => {
 		},
 		{
 			title: 'Cố vấn học tập',
-			width: 220,
+			width: 180,
 			render: (_, rec) =>
 				`${rec.lopHanhChinh?.nhanSu?.hoDem ?? ''} ${rec.lopHanhChinh?.nhanSu?.ten ?? ''} - ${
 					rec.lopHanhChinh?.nhanSu?.maCanBo ?? ''
 				}`,
+		},
+		{
+			title: 'Ngành đào tạo',
+			width: 140,
+			render: (_, rec) => rec.lopHanhChinh?.nganh?.ten,
 		},
 	];
 

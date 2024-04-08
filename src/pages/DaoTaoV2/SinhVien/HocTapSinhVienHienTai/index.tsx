@@ -1,90 +1,73 @@
 import { getHocTapHienTai } from '@/services/DaoTaoV2/SinhVien';
-import { Col, Divider, Form, Input, Row } from 'antd';
-import { useEffect } from 'react';
+import type { ETrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import { colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import type { SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
+import { Col, Descriptions, Divider, Form, Row, Spin, Tag } from 'antd';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'umi';
 
 const HocTapSinhVienHienTaiPage = (props: { sinhVienSsoId?: string }) => {
 	const intl = useIntl();
 	const { sinhVienSsoId } = props;
 	const [form] = Form.useForm();
+	const [thongTinDaoTaoSinhVien, setThongTinDaoTaoSinhVien] = useState<SinhVien.IThongTinDaoTaoSinhVien>();
+	const [loading, setLoading] = useState<boolean>(false);
 
-	const fetchData = async () =>
-		sinhVienSsoId &&
-		getHocTapHienTai(sinhVienSsoId)
-			.then((res) => form.setFieldsValue(res.data?.data))
-			.catch((er) => console.log(er));
+	const fetchData = async () => {
+		if (sinhVienSsoId) {
+			setLoading(true);
+
+			getHocTapHienTai(sinhVienSsoId)
+				.then((res) => {
+					setThongTinDaoTaoSinhVien(res.data?.data);
+					setLoading(false);
+				})
+				.catch((er) => console.log(er));
+		}
+	};
 
 	useEffect(() => {
 		if (sinhVienSsoId) fetchData();
 	}, [sinhVienSsoId]);
 
-	return (
-		<Form form={form} layout='vertical'>
-			<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.title' })}</Divider>
-			<Row gutter={[12, 0]}>
-				<Col span={24} md={8}>
-					<Form.Item label='Trạng thái sinh viên' name='trangThaiSinhVien'>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				{/* <Col span={24} md={8}>
-					<Form.Item label='Loại học viên' name='loaiHocVien'>
-						<Input disabled />
-					</Form.Item>
-				</Col> */}
-				<Col span={24} md={8}>
-					<Form.Item label='Chương trình đào tạo' name={['chuongTrinhDaoTao', 'ten']}>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={8}>
-					<Form.Item label='Hình thức đào tạo' name={['hinhThucDaoTao', 'ten']}>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={8}>
-					<Form.Item label='Khoa'>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={8}>
-					<Form.Item label='Khoá sinh viên' name={['khoaSinhVien', 'ten']}>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={8}>
-					<Form.Item label='Ngành đào tạo' name={['nganhDaoTao', 'ten']}>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				{/* <Col span={24} md={8}>
-					<Form.Item label='Chuyên ngành'>
-						<Input disabled />
-					</Form.Item>
-				</Col> */}
-				{/* <Col span={24} md={8}>
-          <Form.Item label="Lớp hành chính" name={['lopHanhChinh', 'ten']}>
-            <Input disabled />
-          </Form.Item>
-        </Col> */}
-				<Col span={24} md={8}>
-					<Form.Item label='Sinh viên năm thứ' name='sinhVienNamThu'>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={8}>
-					<Form.Item label='Đào tạo từ năm' name={['khoaSinhVien', 'namHocBatDau']}>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={8}>
-					<Form.Item label='Số năm đào tạo' name={'soNamDaoTao'}>
-						<Input disabled />
-					</Form.Item>
-				</Col>
-			</Row>
+	const CardThongTinDaoTao = (rec?: SinhVien.IThongTinHocTapHienTai) => (
+		<Row gutter={[12, 0]}>
+			<Col span={24}>
+				<Descriptions column={{ xs: 1, sm: 1, md: 2 }}>
+					<Descriptions.Item label='Trạng thái sinh viên'>
+						{(
+							<Tag color={colorTrangThaiHocSv[rec?.trangThaiSinhVien as ETrangThaiHocSv]}>{rec?.trangThaiSinhVien}</Tag>
+						) ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label='Hình thức đào tạo'>{rec?.hinhThucDaoTao?.ten ?? '--'}</Descriptions.Item>
+					<Descriptions.Item label='Khoa'>{'--'}</Descriptions.Item>
+					<Descriptions.Item label='Khoá sinh viên'>{rec?.khoaSinhVien?.ten ?? ''}</Descriptions.Item>
+					<Descriptions.Item span={2} label='Chương trình đào tạo'>
+						{rec?.chuongTrinhDaoTao?.ten ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label='Ngành đào tạo'>{rec?.nganhDaoTao?.ten ?? ''}</Descriptions.Item>
+					<Descriptions.Item label='Sinh viên năm thứ'>{rec?.sinhVienNamThu ?? ''}</Descriptions.Item>
+					<Descriptions.Item label='Đào tạo từ năm'>{rec?.khoaSinhVien?.namHocBatDau ?? ''}</Descriptions.Item>
+					<Descriptions.Item label='Số năm đào tạo'>{rec?.soNamDaoTao ?? '--'} năm</Descriptions.Item>
+				</Descriptions>
+			</Col>
+		</Row>
+	);
 
-			{/* <Divider orientation='center'>Thông tin kết quả học tập</Divider>
+	return (
+		<Spin spinning={loading}>
+			<Form form={form} layout='vertical'>
+				<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.title' })}</Divider>
+				{CardThongTinDaoTao(thongTinDaoTaoSinhVien?.thongTinNganhChinh)}
+
+				{thongTinDaoTaoSinhVien?.thongTinNganh2 ? (
+					<>
+						<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.hoctapsinhviennganh2.title' })}</Divider>
+						{CardThongTinDaoTao(thongTinDaoTaoSinhVien?.thongTinNganh2)}
+					</>
+				) : null}
+
+				{/* <Divider orientation='center'>Thông tin kết quả học tập</Divider>
 			<Row gutter={[12, 0]}>
 				<Col span={24} md={8}>
 					<Form.Item label='Điểm TBTL hệ 10' name={'diemTbtl10'}>
@@ -102,7 +85,8 @@ const HocTapSinhVienHienTaiPage = (props: { sinhVienSsoId?: string }) => {
 					</Form.Item>
 				</Col>
 			</Row> */}
-		</Form>
+			</Form>
+		</Spin>
 	);
 };
 

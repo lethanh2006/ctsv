@@ -14,4 +14,9 @@ declare module KhoaNganh {
 		createdAt?: string;
 		updatedAt?: string;
 	}
+
+	export type TKhoaNganhSv = {
+		khoaNganhChinh: IRecord;
+		khoaNganhPhu?: IRecord;
+	};
 }

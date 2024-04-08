@@ -4,7 +4,7 @@ import SinhVienCanhBaoTable from './Table';
 import KetQuaToanKhoaSinhVien from '../../KetQuaHocTap/KetQuaToanKhoa/KetQuaToanKhoaSinhVien';
 
 const SinhVienHocVuPage = () => {
-	const { record } = useModel('sinhvien.sinhvien');
+	const { record } = useModel('daotaov2.sinhvien.sinhvien');
 	const intl = useIntl();
 
 	return (

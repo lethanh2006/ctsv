@@ -276,4 +276,9 @@ declare module SinhVien {
 		thoiHoc: number;
 		totNghiep: number;
 	};
+	export interface IThongTinDaoTaoSinhVien {
+		loaiHocVien: ELoaiSinhVien;
+		thongTinNganhChinh: IThongTinHocTapHienTai;
+		thongTinNganh2: IThongTinHocTapHienTai;
+	}
 }

@@ -12,6 +12,7 @@ declare module KetQuaHocKy {
 		maHocKy: string;
 		hocKy?: HocKy.IRecord;
 		maSvHk: string;
+		maKhoaNganh: string;
 
 		// Học kỳ
 		trungBinhHocKy: number; //TBC học kỳ (hệ 10)

@@ -1,6 +1,6 @@
 import { EOperatorType } from '@/components/Table/constant';
 import useInitModel from '@/hooks/useInitModel';
-import { getThongKeTrangThaiSv, getTienTrinhSinhVien } from '@/services/DaoTaoV2/SinhVien';
+import { getKhoaNganhSinhVien, getThongKeTrangThaiSv, getTienTrinhSinhVien } from '@/services/DaoTaoV2/SinhVien';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { ipDaoTao } from '@/utils/ip';
 import type { AxiosResponse } from 'axios';
@@ -12,6 +12,7 @@ export default () => {
 	const [tienTrinhTotNghiep, setTienTrinhTotNghiep] = useState<SinhVien.ITienTrinhTotNghiep>();
 	const [thongKeTrangThai, setThongKeTrangThai] = useState<SinhVien.TThongKeTrangThai>();
 	const { setLoading, getModel, getService, setDanhSach } = objInit;
+	const [khoaNganhSv, setKhoaNganhSv] = useState<KhoaNganh.TKhoaNganhSv>();
 
 	const getTienTrinhTotNghiepModel = async (sinhVienSsoId: string): Promise<SinhVien.ITienTrinhTotNghiep> => {
 		setLoading(true);
@@ -77,6 +78,19 @@ export default () => {
 		}
 	};
 
+	const getKhoaNganhSvModel = async (sinhVienSsoId: string): Promise<KhoaNganh.TKhoaNganhSv> => {
+		setLoading(true);
+		try {
+			const response = await getKhoaNganhSinhVien(sinhVienSsoId);
+			setKhoaNganhSv(response?.data?.data ?? null);
+			return response?.data?.data;
+		} catch (er) {
+			return Promise.reject(er);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return {
 		...objInit,
 		getTienTrinhTotNghiepModel,
@@ -85,5 +99,8 @@ export default () => {
 		thongKeTrangThai,
 		getThongKeTrangThaiModel,
 		searchSinhVienModel,
+		getKhoaNganhSvModel,
+		khoaNganhSv,
+		setKhoaNganhSv,
 	};
 };

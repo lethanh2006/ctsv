@@ -1,6 +1,7 @@
 import { type PhieuDangKyTinChi } from '@/services/DangKyTinChi/PhieuDangKyTinChi/typing';
-import { type HocPhan } from '@/services/DaoTaoV2/DanhMucHeThong/HocPhan/typings';
+import { type HocPhan } from '@/services/DanhMucHeThong/HocPhan/typings';
 import type { ETrangThaiDotThanhToan } from '@/services/HocPhi/constant';
+import type { DotQuyDoiDiem } from '@/services/KetQuaHocTap/DotQuyDoiDiem/typing';
 import { type ELoaiDiemChu } from '@/services/KetQuaHocTap/constant';
 import type { LopHanhChinh } from '@/services/NamHoc/LopHanhChinh/typings';
 import type { EDoiTuongLopHanhChinh } from '@/services/NamHoc/constant';
@@ -21,7 +22,7 @@ import type {
 	ETrangThaiDuyetGiangDay,
 	ETrangThaiLopHocPhan,
 	ETrangThaiThi,
-} from '@/services/constant';
+} from '../constant';
 
 declare module LopHocPhan {
 	export interface IRecord {
@@ -64,7 +65,18 @@ declare module LopHocPhan {
 		// Populated
 		deCuong?: Partial<HocPhan.IDeCuongHocPhanHocKy>;
 		nhanSuList?: IRecordNhanSuLopHP[];
+
+		//Lớp nhu cầu
+		lopNhuCau: boolean;
+		dotDangKyNhuCauId: string;
+		danhSachLhpSv: ISinhVienNhuCau[];
 	}
+
+	export type ISinhVienNhuCau = {
+		lopHocPhanId?: string;
+		sinhVienSsoId: string;
+		maKhoaNganh: string;
+	};
 
 	export type TMaHoaLichHoc = {
 		id?: string; // Fake id
@@ -92,7 +104,7 @@ declare module LopHocPhan {
 		soTiet: number;
 	};
 
-	export interface IRecordSinhVienLopHP extends IDiemThanhPhan, IDiemThi, IDiemTongKet, IHocPhi {
+	export interface IRecordSinhVienLopHP extends IHocPhi {
 		_id: string;
 		lopHocPhanId: string;
 		lopHocPhan?: IRecord;
@@ -100,23 +112,47 @@ declare module LopHocPhan {
 		sinhVien?: SinhVien.IRecord;
 		maKhoaNganh?: string;
 
-		// khoa: boolean;
-		// khoaDiemThi: boolean;
-		// nopDiem: boolean;
-		public?: boolean;
-		trangThaiDuyetDiemThanhPhan?: ETrangThaiDuyetDiem;
-		trangThaiDuyet?: ETrangThaiDuyetDiem;
-
 		maSvHk?: string; // {ssoId}|{maHocKy}
 		idPhieuDktc?: string;
 		// phieuDktc: ;
-
 		loai?: ELoaiHocPhanDangKyTinChi;
-		createdAt: string;
+
+		diemHpSvHk?: IDiemHpSvHk;
+		createdAt?: string;
 
 		// temp for đăng ký tín chỉ
 		// lopChuyenToi?: IRecord; // Temp
 		// trangThaiChuyenLop?: { success: boolean; reason: string };
+	}
+
+	export interface IDiemHpSvHk extends IDiemThanhPhan, IDiemThi, IDiemTongKet {
+		_id: string;
+		sinhVienSsoId: string;
+		maSinhVien: string;
+		sinhVien?: SinhVien.IRecord;
+		maHocPhan: string;
+		hocPhan?: HocPhan.IRecord;
+		maHocKy: string;
+		hocKy?: HocKy.IRecord;
+
+		// Điểm có từ lớp học phần?
+		tenLopHocPhan?: string;
+		lopHocPhan?: IRecord;
+
+		// Điểm có từ quy đổi điểm?
+		dotDangKyQuyDoiDiemId: string;
+		dotDangKyQuyDoiDiem?: DotQuyDoiDiem.IRecord;
+		isCongNhanQuyDoiDiem?: boolean;
+
+		trangThaiDuyetDiemThanhPhan?: ETrangThaiDuyetDiem;
+		trangThaiDuyet?: ETrangThaiDuyetDiem;
+
+		khoa: boolean; // Khóa điểm thành phần
+		khoaDiemThi: boolean; // Khóa điểm thi
+		public: boolean;
+
+		maKhoaNganh: string;
+		khoaNganh: KhoaNganh.IRecord;
 	}
 
 	export interface IDiemThanhPhan {
@@ -208,5 +244,10 @@ declare module LopHocPhan {
 		lopHocPhan?: IRecord;
 		maLopHc: string;
 		lopHanhChinh?: LopHanhChinh.IRecord;
+	}
+
+	export interface IThongKeTyLeNhapDiem {
+		chuaNhap: number;
+		daNhap: number;
 	}
 }

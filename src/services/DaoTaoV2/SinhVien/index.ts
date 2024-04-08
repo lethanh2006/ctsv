@@ -22,3 +22,28 @@ export async function getTrangThaiNoNghiaVu(dotXetTotNghiepId: string, sinhVienS
 export async function getThongKeTrangThaiSv() {
 	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/trang-thai`);
 }
+
+export async function getKhoaNganhSinhVien(sinhVienSsoId: string) {
+	return axios.get(`${ipDaoTao}/sinh-vien/chuyen-vien/sinh-vien/${sinhVienSsoId}/khoa-nganh`);
+}
+
+export async function exportKQHTHocKy(ssoId: string, params?: { condition?: any }) {
+	return axios.get(`${ipDaoTao}/diem-hp-sv-hk/chuyen-vien/sinh-vien/${ssoId}/kqht-hoc-ky/export`, {
+		responseType: 'arraybuffer',
+		params,
+	});
+}
+
+export async function exportPhuLucVanBang(ssoId: string, params?: { condition?: any }) {
+	return axios.get(`${ipDaoTao}/diem-hoc-phan/chuyen-vien/sinh-vien/${ssoId}/phu-luc-van-bang/export`, {
+		responseType: 'arraybuffer',
+		params,
+	});
+}
+
+export async function exportKetQuaHocTap(ssoId: string, params?: { condition?: any }) {
+	return axios.get(`${ipDaoTao}/diem-hoc-phan/chuyen-vien/sinh-vien/${ssoId}/ket-qua-hoc-tap/export`, {
+		responseType: 'arraybuffer',
+		params,
+	});
+}

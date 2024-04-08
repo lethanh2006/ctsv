@@ -2,10 +2,10 @@ import PrintTemplate from '@/components/PrintTemplate';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
-import { type LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
-import { ELoaiDiemChu } from '@/services/DaoTaoV2/KetQuaHocTap/constant';
+
 import { ExportOutlined, PrinterOutlined } from '@ant-design/icons';
-import { Space, message } from 'antd';
+import { Space, Tooltip } from 'antd';
+import fileDownload from 'js-file-download';
 import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
@@ -13,12 +13,13 @@ import { useModel } from 'umi';
 import ViewDiemLopHocPhan from '../../DiemLopHocPhan/components/ViewDiemLopHocPhan';
 import TitlePrintKQHT from './TitlePrintKQHT';
 import './style.less';
+import type { LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
+import { exportKQHTHocKy } from '@/services/DaoTaoV2/SinhVien';
+import { ELoaiDiemChu } from '@/services/DaoTaoV2/KetQuaHocTap/constant';
 
-interface DataType extends LopHocPhan.IRecordSinhVienLopHP {
+interface DataType extends LopHocPhan.IDiemHpSvHk {
 	title?: string;
-	maHocPhan?: string;
 	tenHocPhan?: string;
-	maHocKy?: string;
 }
 
 const TableDiemHocPhan = (props: {
@@ -26,54 +27,54 @@ const TableDiemHocPhan = (props: {
 	maHocKy?: string;
 	namHocId?: string;
 	hideTitle?: boolean;
+	maKhoaNganh?: string;
 }) => {
 	const { danhSach: danhSachKQHK } = useModel('daotaov2.ketquahoctap.ketquahocky');
-	const { getAllModel, getByHocPhanNamHocModel, setRecord } = useModel('daotaov2.hocky.sinhvienlophocphan');
+	const { getAllModel, setRecord, getByHocPhanNamHocModel } = useModel('daotaov2.ketquahoctap.diemhpsvhk');
+	const { record } = useModel('daotaov2.namhoc.sinhvienlophanhchinh');
+	const { record: recSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 	const [data, setData] = useState<DataType[]>([]);
 	const [visibleChiTietDiem, setVisibleChiTietDiem] = useState(false);
+	const [loadingExport, seLoadingExport] = useState<boolean>(false);
 	const componentRef = useRef(null);
-	const { sinhVienSsoId, maHocKy, namHocId, hideTitle } = props;
+	const { sinhVienSsoId, maHocKy, namHocId, hideTitle, maKhoaNganh } = props;
 
 	/** Get Data theo điều kiện: Học kỳ, Năm học hoặc Toàn khóa */
-	const getData = (): Promise<LopHocPhan.IRecordSinhVienLopHP[]> => {
+	const getData = (): Promise<LopHocPhan.IDiemHpSvHk[]> => {
 		if (sinhVienSsoId) {
-			if (maHocKy) return getAllModel(false, undefined, { maSvHk: `${sinhVienSsoId}|${maHocKy}` });
-			else if (namHocId) return getByHocPhanNamHocModel(sinhVienSsoId, { namHocId });
-			else return getAllModel(false, undefined, { sinhVienSsoId });
+			if (namHocId) return getByHocPhanNamHocModel(sinhVienSsoId, { namHocId, maKhoaNganh });
+			else return getAllModel(false, undefined, { sinhVienSsoId, maHocKy, maKhoaNganh });
 		}
 		return Promise.reject('Invalid sinhVien');
 	};
 
 	useEffect(() => {
 		getData().then((da) => {
-			const res: DataType[] = [];
-			const gHocKy = _.groupBy(da, (item) => item.lopHocPhan?.hocKy?.ma); // Nhóm theo học kỳ
+			const res: any[] = [];
+			const gHocKy = _.groupBy(da, (item) => item.maHocKy); // Nhóm theo học kỳ
 			const aHocKy = Object.entries(gHocKy).sort(([a], [b]) => (a > b ? -1 : 1)); // Sắp xếp tăng dần học kỳ
-			aHocKy.forEach(([mahk, lopHpSvList]) => {
+			aHocKy.forEach(([mahk, diemHpHkList]) => {
+				const kqhk = danhSachKQHK.find((j) => j.maHocKy === mahk);
+				let tenHocPhan = diemHpHkList[0]?.hocKy?.ten ?? `Học kỳ ${mahk}`;
+				if (kqhk)
+					tenHocPhan += ` (TB học kỳ: ${kqhk.trungBinhHocKy ?? '--'}, số TC đạt: ${
+						kqhk.tongSoTinChiHocKy ?? '--'
+					}, tổng số TC tích lũy: ${kqhk.tongSoTinChiTichLuyToanKhoa ?? '--'})`;
 				// Thêm 1 hàng trống => Tên học kỳ
-				if (lopHpSvList[0].lopHocPhan?.hocKy?.ten)
-					res.push({
-						_id: '-1',
-						idPhieuDktc: '-1',
-						lopHocPhanId: '-1',
-						sinhVienSsoId: '-1',
-						tenHocPhan: lopHpSvList[0].lopHocPhan?.hocKy?.ten,
-						maHocKy: mahk,
-					});
+				res.push({ _id: '-1', tenHocPhan, maHocKy: mahk });
 				// Thêm các hàng lớp trong kỳ, mỗi hàng có số thứ tự trong kỳ
 				res.push(
-					...lopHpSvList.map((lop, index) => ({
-						...lop,
+					...diemHpHkList.map((diem, index) => ({
+						...diem,
 						title: `${index + 1}`,
-						maHocPhan: lop.lopHocPhan?.hocPhan?.ma,
-						tenHocPhan: lop.lopHocPhan?.hocPhan?.ten,
+						tenHocPhan: diem.hocPhan?.ten,
 					})),
 				);
 			});
 
 			setData(res);
 		});
-	}, [sinhVienSsoId, maHocKy, namHocId]);
+	}, [sinhVienSsoId, maHocKy, namHocId, maKhoaNganh]);
 
 	const reactToPrintContent = useCallback(() => componentRef.current, [componentRef.current]);
 
@@ -82,7 +83,24 @@ const TableDiemHocPhan = (props: {
 		[],
 	);
 
-	const onCell = (rec: DataType) => ({
+	const onExportKetQuaHocTap = (): void => {
+		seLoadingExport(true);
+		exportKQHTHocKy(sinhVienSsoId ?? '', {
+			condition: {
+				maKhoaNganh,
+			},
+		}).then((res) => {
+			fileDownload(
+				res.data,
+				`Kết quả học tập - ${record?.sinhVien?.ma ?? recSinhVien?.ma} - ${
+					record?.sinhVien?.ten ?? recSinhVien?.ten
+				}.pdf`,
+			);
+			seLoadingExport(false);
+		});
+	};
+
+	const onCell = (rec: LopHocPhan.IDiemHpSvHk) => ({
 		onClick: () => {
 			if (rec._id !== '-1') {
 				setRecord(rec);
@@ -127,18 +145,18 @@ const TableDiemHocPhan = (props: {
 			title: 'Số TC',
 			width: 80,
 			align: 'center',
-			render: (val, rec) => rec.lopHocPhan?.hocPhan?.soTinChi,
+			render: (val, rec) => rec?.hocPhan?.soTinChi,
 			onCell,
 		},
 		{
-			title: 'Điểm thang 10',
+			title: 'Điểm hệ 10',
 			dataIndex: 'diemTongKet',
 			width: 80,
 			align: 'center',
 			onCell,
 		},
 		{
-			title: 'Điểm thang 4',
+			title: 'Điểm hệ 4',
 			dataIndex: 'diemThang4',
 			width: 80,
 			align: 'center',
@@ -149,23 +167,16 @@ const TableDiemHocPhan = (props: {
 			dataIndex: 'diemChu',
 			width: 80,
 			align: 'center',
+			render: (val, rec) => (
+				<>
+					{val} {rec?.isCongNhanQuyDoiDiem && <Tooltip title='Điểm quy đổi'>(R)</Tooltip>}
+				</>
+			),
 			filterType: 'select',
 			filterData: Object.values(ELoaiDiemChu),
 			onCell,
 		},
 	];
-
-	const dataDisplay = data.map((item) => {
-		if (item._id === '-1' && danhSachKQHK.length > 1) {
-			const kqhk = danhSachKQHK.find((j) => j.maHocKy === item.maHocKy);
-			if (kqhk)
-				return {
-					...item,
-					tenHocPhan: `${item.tenHocPhan} (TB học kỳ: ${kqhk.trungBinhHocKy}, số TC đạt: ${kqhk.tongSoTinChiHocKy}, tổng số TC tích lũy: ${kqhk.tongSoTinChiTichLuyToanKhoa})`,
-				};
-		}
-		return item;
-	});
 
 	return (
 		<>
@@ -175,13 +186,8 @@ const TableDiemHocPhan = (props: {
 				</div>
 			) : null}
 			<Space wrap>
-				<ButtonExtend
-					icon={<ExportOutlined />}
-					onClick={() => {
-						message.warn('Đang phát triển...');
-					}}
-				>
-					Xuất dữ liệu
+				<ButtonExtend loading={loadingExport} icon={<ExportOutlined />} onClick={() => onExportKetQuaHocTap()}>
+					Xuất bảng điểm
 				</ButtonExtend>
 				<ReactToPrint
 					content={reactToPrintContent}
@@ -193,15 +199,15 @@ const TableDiemHocPhan = (props: {
 
 			<TableStaticData
 				columns={columns}
-				data={dataDisplay}
+				data={data}
 				size='small'
 				otherProps={{ pagination: false, scroll: { y: 600 } }}
 			/>
 
-			<PrintTemplate ref={componentRef}>
+			<PrintTemplate ref={componentRef} tenPhongBan={'Phòng Đào tạo'}>
 				<TitlePrintKQHT />
 				<div className='to-print'>
-					<TableStaticData columns={columns} data={dataDisplay} size='small' otherProps={{ pagination: false }} />
+					<TableStaticData columns={columns} data={data} size='small' otherProps={{ pagination: false }} />
 				</div>
 			</PrintTemplate>
 
