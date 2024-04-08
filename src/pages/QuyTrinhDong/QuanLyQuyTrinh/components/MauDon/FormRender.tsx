@@ -298,7 +298,7 @@ const FormRender = (props: {
 				<UploadFile
 					maxCount={cauHinh.laDangMang ? 5 : 1}
 					otherProps={{
-						accept: '.docx, .pdf',
+						accept: '.docx, .pdf, .png, .jpg, .jpeg',
 						showUploadList: { showDownloadIcon: false },
 					}}
 				/>
