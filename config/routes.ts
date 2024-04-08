@@ -162,6 +162,11 @@
 				component: './HoatDongChung/DonViNgoaiHocVien',
 				// component: './SuKien',
 			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke',
+				component: './HoatDongChung/ThongKePhucVuCongDong',
+			},
 		],
 	},
 

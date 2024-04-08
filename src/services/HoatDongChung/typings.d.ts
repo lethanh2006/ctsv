@@ -37,6 +37,7 @@ declare module HoatDongChung {
 		danhSachDuToanKinhPhi: IDuToanKinhPhi[];
 		danhSachPhamVi: PhamViHoatDong[];
 		diaDiem: string;
+		soLuongThamGia: number;
 		info: {
 			type: string;
 			refId: string;

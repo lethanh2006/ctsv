@@ -15,7 +15,7 @@ import {
 import { ETuanLeCongDan } from '@/services/SuKien/constant';
 import rules from '@/utils/rules';
 import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -94,9 +94,14 @@ const FormHoatDongChung = (props: {
 							</Form.Item>
 						</Col>
 					)}
-					<Col xs={24}>
+					<Col xs={12}>
 						<Form.Item rules={[...rules.required, ...rules.text, ...rules.length(250)]} name='maHocKy' label='Học kỳ'>
 							<SelectHocKy selectMa />
+						</Form.Item>
+					</Col>
+					<Col xs={12}>
+						<Form.Item rules={[...rules.required]} name='soLuongThamGia' label='Số lượng tham gia'>
+							<InputNumber style={{ width: '100%' }} placeholder='Số lượng tham gia' addonAfter='Người' />
 						</Form.Item>
 					</Col>
 					{props.phanLoaiCap2 === EHoatDongChungType2.HUONG_NGHIEP_VIEC_LAM && (
@@ -118,11 +123,7 @@ const FormHoatDongChung = (props: {
 					)}
 
 					<Col xs={24} md={12}>
-						<Form.Item
-							rules={[...rules.required, ...(edit ? [] : rules.sauHomNay)]}
-							name='thoiGianBatDau'
-							label='Thời gian bắt đầu'
-						>
+						<Form.Item rules={[...rules.required]} name='thoiGianBatDau' label='Thời gian bắt đầu'>
 							<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
 						</Form.Item>
 					</Col>
@@ -144,6 +145,7 @@ const FormHoatDongChung = (props: {
 							<Input.TextArea placeholder='Địa điểm' />
 						</Form.Item>
 					</Col>
+
 					<Col span={24}>
 						<>
 							<div style={{ marginBottom: 4, display: 'flex', alignItems: 'center' }}>

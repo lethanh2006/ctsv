@@ -19,8 +19,8 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 	const donViTinh: EDonViTinh = useWatch('donViTinh', form);
 
 	useEffect(() => {
-		form.setFieldsValue(props.record);
-	}, [props.record]);
+		form.setFieldsValue(props.edit ? props.record : form);
+	}, [props.record, props.edit]);
 
 	const onFinish = async (values: any) => {
 		const tepDinhKem = await buildUpLoadMultiFile(values, 'tepDinhKem');
