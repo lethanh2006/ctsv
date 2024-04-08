@@ -31,6 +31,7 @@ const FormPhieuDiem = (props: { ssoId?: string }) => {
 			...record,
 			...values,
 			thongTinNguoiTao: {
+				...(record?.thongTinNguoiTao ?? {}),
 				...recSinhVien,
 			},
 		};
