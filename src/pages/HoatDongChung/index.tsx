@@ -11,7 +11,7 @@ import SelectHocKy from '../DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import FormHoatDongChung from './Form';
 import type { HoatDongChung } from '@/services/HoatDongChung/typings';
 import { thongKe } from '@/services/HoatDongChung';
-import ThongKe from './ThongKe';
+import ThongKe from './ThongKeSoLuong';
 import SelectCLB from '../CauLacBo/components/SelectCLB';
 
 const HoatDongChungPage = (props: {
