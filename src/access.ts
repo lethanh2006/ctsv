@@ -1,13 +1,14 @@
 import type { IInitialState } from './services/base/typing';
-import { currentRole } from './utils/ip';
+// import { currentRole } from './utils/ip';
 
 /**
  * @see https://umijs.org/zh-CN/plugins/plugin-access
  * */
 export default function access(initialState: IInitialState) {
-	const scopes = initialState.authorizedPermissions?.find((item) => item.rsname === currentRole)?.scopes;
-	// const token=localStorage.getItem('token');
-	const vaiTro = initialState?.currentUser?.systemRole;
+	// const scopes = initialState.authorizedPermissions?.find((item) => item.rsname === currentRole)?.scopes;
+	const scopes = initialState.authorizedPermissions?.map((item) => item.scopes).flat();
+	// const vaiTro = initialState?.currentUser?.systemRole;
+
 	return {
 		// canBoQLKH: token && vaiTro && vaiTro === 'can_bo_qlkh',
 		// lanhDao: token && vaiTro && vaiTro === 'lanh_dao',
@@ -15,8 +16,8 @@ export default function access(initialState: IInitialState) {
 		// adminVaCanBoQLKH: token && vaiTro && ['Admin', 'can_bo_qlkh'].includes(vaiTro),
 		// nhanVienVaCanBoQLKH: token && vaiTro && ['nhan_vien', 'can_bo_qlkh'].includes(vaiTro),
 		// adminVaQuanTri: token && vaiTro && ['Admin', 'quan_tri'].includes(vaiTro),
-		admin: (vaiTro && vaiTro === 'Admin') || false,
-		user: (vaiTro && vaiTro === 'User') || false,
+		// admin: (vaiTro && vaiTro === 'Admin') || false,
+		// user: (vaiTro && vaiTro === 'User') || false,
 		// nhanVien: (token && vaiTro && vaiTro === 'nhan_vien') || false,
 		// keToan: (token && vaiTro && vaiTro === 'ke_toan') || false,
 		// sinhVien: (token && vaiTro && vaiTro === 'sinh_vien') || false,
