@@ -17,6 +17,7 @@ import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/Tai
 import moment from 'moment';
 import { toISOString } from '@/utils/utils';
 import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
+import _ from 'lodash';
 
 interface IProps {
 	type: 'dieu_phoi' | 'tiep_nhan';
@@ -225,8 +226,15 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				const formTiepNhanBuocHienTai = recordVal?.quyTrinh?.danhSachFormTiepNhan?.find(
 					(item) => item.ma === buocHienTai?.maFormTiepNhan,
 				);
-				const buocFinal = buocHienTai?.thongTinTiepNhan ? buocHienTai : buocDaTiepNhan;
-				const formFinal = buocHienTai.thongTinTiepNhan ? formTiepNhanBuocHienTai : formTiepNhan;
+				const buocFinal =
+					buocHienTai?.thongTinTiepNhan && _.isEmpty(buocHienTai.thongTinTiepNhan) !== true
+						? buocHienTai
+						: buocDaTiepNhan;
+				const formFinal =
+					buocHienTai.thongTinTiepNhan && _.isEmpty(buocHienTai.thongTinTiepNhan) !== true
+						? formTiepNhanBuocHienTai
+						: formTiepNhan;
+				debugger;
 				return (
 					<>
 						<Tooltip title='Xem chi tiết'>
