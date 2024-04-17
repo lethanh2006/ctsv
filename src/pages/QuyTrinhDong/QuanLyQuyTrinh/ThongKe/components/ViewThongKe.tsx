@@ -1,14 +1,13 @@
 import { EOperatorType } from '@/components/Table/constant';
-import { ELoaiFilterThongKe } from '@/services/QuyTrinhDong/ThongKe/constant';
-import { getDataThongKeJson as getDataThongKeJsonQuyTrinhDong } from '@/services/QuyTrinhDong/ThongKe/thongke';
 import { getDataThongKeJson as getDataThongKeJsonCheDoChinhSach } from '@/services/CheDoSinhVien/index';
+import { getDataThongKeJson as getDataThongKeJsonQuyTrinhDong } from '@/services/QuyTrinhDong/ThongKe/thongke';
 
+import { ELoaiBoLoc } from '@/services/CheDoSinhVien/constant';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { ReloadOutlined } from '@ant-design/icons';
-import { Button, Input, Spin, Tabs, Tooltip } from 'antd';
-import type { Key } from 'react';
+import { Button, Input, Select, Spin, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import SelectDotKhaiBao from '../../components/DotKhaiBao/Select';
 import ViewColumnThongKe from './ViewColumn';
 import ViewDonutThongKe from './ViewDonut';
 import ViewTableThongKe from './ViewTable';
@@ -19,7 +18,8 @@ const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTr
 		props.type === 'CheDoChinhSach' ? getDataThongKeJsonCheDoChinhSach : getDataThongKeJsonQuyTrinhDong;
 	const [filters, setFilters] = useState<any[]>([]);
 
-	const { record: recordQuyTrinh } = useModel('quytrinh.quanlyquytrinh');
+	const { danhSach: danhSachDanhMuc, getAllModel: getAllDanhMuc } = useModel('quytrinh.danhmuc');
+
 	const recordThongKe = danhSach.find((item: { _id: string }) => item._id === props.idThongKe);
 	const [data, setData] = useState<any[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -35,12 +35,16 @@ const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTr
 		getData();
 	}, [props.idThongKe, filters]);
 
+	useEffect(() => {
+		getAllDanhMuc(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
+	}, []);
+
 	return (
 		<Spin spinning={loading}>
 			<Tabs
 				tabBarExtraContent={
 					<>
-						{recordThongKe?.danhSachFilterThongKe?.find(
+						{/* {recordThongKe?.danhSachFilterThongKe?.find(
 							(item: { loaiFilterThongKe: ELoaiFilterThongKe }) => item.loaiFilterThongKe === ELoaiFilterThongKe.DOT,
 						)?.tenThongKe && (
 							<SelectDotKhaiBao
@@ -58,9 +62,9 @@ const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTr
 									);
 								}}
 							/>
-						)}
+						)} */}
 						<div style={{ display: 'flex', alignItems: 'center' }}>
-							{recordThongKe?.danhSachFilterThongKe
+							{/* {recordThongKe?.danhSachFilterThongKe
 								?.filter(
 									(item: { loaiFilterThongKe: ELoaiFilterThongKe }) =>
 										item.loaiFilterThongKe === ELoaiFilterThongKe.TRUONG_THONG_TIN,
@@ -81,7 +85,51 @@ const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTr
 										placeholder={`Lọc theo ${item.tenThongKe}`}
 										key={item.tenThongKe}
 									/>
-								))}
+								))} */}
+							{recordThongKe?.danhSachFilterThongKe?.map(
+								(item: {
+									tenThongKe: any;
+									loai: ELoaiBoLoc;
+									truongThongTinThongKe: any;
+									danhSachGiaTri: any[];
+									maDanhMuc: any;
+									maModule: any;
+								}) => (
+									<>
+										{item.loai === ELoaiBoLoc.GIA_TRI ? (
+											<Input.Search placeholder={item.tenThongKe} />
+										) : (
+											<Select
+												mode='multiple'
+												onChange={(val) => {
+													if (!val?.length) {
+														setFilters(filters?.filter((ft) => ft.field !== item.truongThongTinThongKe) ?? []);
+													} else
+														setFilters([
+															...(filters?.filter((ft) => ft.field !== item.truongThongTinThongKe) ?? []),
+															{
+																field: item.truongThongTinThongKe,
+																active: true,
+																values: val,
+																operator: EOperatorType.INCLUDE,
+															},
+														] as any);
+												}}
+												style={{ width: 250, marginLeft: 8 }}
+												allowClear
+												placeholder={`Lọc theo ${item.tenThongKe}`}
+												options={
+													item.loai === ELoaiBoLoc.MANG
+														? item.danhSachGiaTri.map((gt) => ({ value: gt, label: gt }))
+														: danhSachDanhMuc
+																.find((dm) => dm.maDanhMuc === item.maDanhMuc && dm.maModule === item.maModule)
+																?.danhSachGiaTri.map((gt) => ({ value: gt?.value, label: gt?.value }))
+												}
+											/>
+										)}
+									</>
+								),
+							)}
 							<Tooltip title='Làm mới dữ liệu'>
 								<Button loading={loading} onClick={getData} size='small' type='link' icon={<ReloadOutlined />} />
 							</Tooltip>

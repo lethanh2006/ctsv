@@ -1,3 +1,4 @@
+import type { ELoaiBoLoc } from '@/services/CheDoSinhVien/constant';
 import type { QuyTrinh } from '../typings';
 import type { ELoaiBieuDoThongKe, ELoaiFilterThongKe, ELoaiThongKeQuyTrinhDong } from './constant';
 
@@ -6,6 +7,10 @@ declare module ThongKeQuyTrinhDong {
 		tenThongKe: string;
 		loaiFilterThongKe: ELoaiFilterThongKe;
 		truongThongTinThongKe: string;
+		loai: ELoaiBoLoc;
+		danhSachGiaTri: string;
+		maModule: string;
+		maDanhMuc: string;
 	}
 	export interface IRecord {
 		_id: string;

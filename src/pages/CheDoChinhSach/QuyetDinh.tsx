@@ -1,12 +1,12 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
-import type { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
+import { ELoaiBoLoc, type ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { DeleteOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, Modal, Popconfirm, Tooltip } from 'antd';
+import { Button, Dropdown, Input, Menu, Modal, Popconfirm, Select, Tooltip } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect } from 'react';
 import { useModel } from 'umi';
@@ -16,6 +16,7 @@ import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 import FormImport from './components/FormImport';
 import SelectCheDoChinhSach from './components/SelectCheDoChinhSach';
 import ViewQuyetDinh from './components/ViewQuyetDinh';
+import { EOperatorType } from '@/components/Table/constant';
 
 const QuyetDinh = (props: {
 	title: string;
@@ -33,6 +34,8 @@ const QuyetDinh = (props: {
 		page,
 		limit,
 		setDanhSach,
+		filters,
+		setFilters,
 	} = useModel('chedochinhsach.quyetdinhchedosinhvien');
 	const { danhSach, getAllModel: getAllDanhMuc } = useModel('quytrinh.danhmuc');
 	const {
@@ -205,7 +208,36 @@ const QuyetDinh = (props: {
 								Nhập dữ liệu
 							</ButtonExtend>
 						</Dropdown>
-
+						{recordCheDoChinhSach?.danhSachBoLoc?.map((item) => (
+							<>
+								{item.loai === ELoaiBoLoc.GIA_TRI ? (
+									<Input.Search placeholder={item.ten} />
+								) : (
+									<Select
+										mode='multiple'
+										onChange={(val) => {
+											if (!val?.length) {
+												setFilters(filters?.filter((ft) => ft.field !== item.path) ?? []);
+											} else
+												setFilters([
+													...(filters?.filter((ft) => ft.field !== item.path) ?? []),
+													{ field: item.path, active: true, values: val, operator: EOperatorType.INCLUDE },
+												] as any);
+										}}
+										style={{ width: 250 }}
+										allowClear
+										placeholder={`Lọc theo ${item.ten}`}
+										options={
+											item.loai === ELoaiBoLoc.MANG
+												? item.danhSachGiaTri.map((gt) => ({ value: gt, label: gt }))
+												: danhSach
+														.find((dm) => dm.maDanhMuc === item.maDanhMuc && dm.maModule === item.maModule)
+														?.danhSachGiaTri.map((gt) => ({ value: gt?.value, label: gt?.value }))
+										}
+									/>
+								)}
+							</>
+						))}
 						<SelectCheDoChinhSach
 							onChange={(val) => {
 								setRecordCheDoChinhSach(danhSachCheDoChinhSach.find((item) => item._id === val));

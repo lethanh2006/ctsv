@@ -1,4 +1,6 @@
 import JsonEditor from '@/components/JsonEditor';
+import { ELoaiBoLoc } from '@/services/CheDoSinhVien/constant';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import {
 	ELoaiBieuDoThongKe,
 	ELoaiFilterThongKe,
@@ -10,14 +12,14 @@ import type { ThongKeQuyTrinhDong } from '@/services/QuyTrinhDong/ThongKe/typing
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, Popover, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
 const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } = useModel(props.modelName);
-
+	const { getAllModel: getAllDanhMucChung, loading: loadingDanhMucChung, danhSach } = useModel('quytrinh.danhmuc');
 	const { record: recordQuyTrinh } = useModel('quytrinh.quanlyquytrinh');
 
 	const danhSachFilterThongKe = Form.useWatch('danhSachFilterThongKe', form);
@@ -43,6 +45,10 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 			...values,
 			quyTrinhId: props.isQuyTrinh ? recordQuyTrinh?._id : undefined,
 			aggregationArray: JSON.parse(values?.aggregationArray),
+			danhSachFilterThongKe: values?.danhSachFilterThongKe?.map((item) => ({
+				...item,
+				loaiFilterThongKe: ELoaiFilterThongKe.TRUONG_THONG_TIN,
+			})),
 		};
 
 		if (edit) {
@@ -113,10 +119,116 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 										</div>
 									}
 								>
-									<Form.Item {...field} rules={[...rules.required]} label={'Tên bộ lọc'} name={[index, 'tenThongKe']}>
-										<Input placeholder='Tên bộ lọc' />
-									</Form.Item>
-									<Form.Item
+									<Row gutter={[8, 0]}>
+										<Col span={16}>
+											<Form.Item
+												{...field}
+												rules={[...rules.required]}
+												label={'Tên bộ lọc'}
+												name={[index, 'tenThongKe']}
+											>
+												<Input placeholder='Tên bộ lọc' />
+											</Form.Item>
+										</Col>
+										<Col span={8}>
+											<Form.Item {...field} rules={[...rules.required]} label='Loại bộ lọc' name={[index, 'loai']}>
+												<Select
+													placeholder='Loại bộ lọc'
+													options={Object.values(ELoaiBoLoc).map((item) => ({ value: item, label: item }))}
+												/>
+											</Form.Item>
+										</Col>
+										<Col span={24}>
+											<Form.Item
+												{...field}
+												rules={[...rules.required]}
+												label={'Path'}
+												name={[index, 'truongThongTinThongKe']}
+											>
+												<Input placeholder='Path' />
+											</Form.Item>
+										</Col>
+										{danhSachFilterThongKe[index]?.loai === ELoaiBoLoc.MANG && (
+											<Col span={24}>
+												<Form.Item
+													{...field}
+													rules={[...rules.required]}
+													label='Danh sách giá trị'
+													name={[index, 'danhSachGiaTri']}
+												>
+													<Select placeholder='Danh sách giá trị' mode='tags' />
+												</Form.Item>
+											</Col>
+										)}
+										{danhSachFilterThongKe[index]?.loai === ELoaiBoLoc.DANH_MUC && (
+											<>
+												<Col span={12}>
+													<Form.Item
+														{...field}
+														rules={[...rules.required]}
+														label='Mã Module danh mục'
+														name={[index, 'maModule']}
+													>
+														<Select
+															placeholder='Mã module'
+															options={Object.values(ELoaiDanhMucChung).map((item) => ({ value: item, label: item }))}
+														/>
+													</Form.Item>
+												</Col>
+												<Col span={12}>
+													<Form.Item
+														{...field}
+														style={{ marginTop: -10 }}
+														rules={[...rules.required]}
+														label={
+															<span>
+																Danh mục (
+																<Button
+																	loading={loadingDanhMucChung}
+																	onClick={() => {
+																		getAllDanhMucChung(false, undefined, {
+																			maModule: danhSachFilterThongKe[index]?.maModule,
+																		});
+																	}}
+																	style={{ padding: 0 }}
+																	type='link'
+																>
+																	Làm mới
+																</Button>
+																)
+															</span>
+														}
+														name={[index, 'maDanhMuc']}
+													>
+														<Select
+															showSearch
+															options={danhSach.map((item) => ({
+																label: (
+																	<Popover
+																		placement='left'
+																		content={() => {
+																			return (
+																				<div>
+																					{item.danhSachGiaTri.map((giaTri: { value: string }) => (
+																						<div key={giaTri.value}>- {giaTri.value}</div>
+																					))}
+																				</div>
+																			);
+																		}}
+																	>
+																		{item.maDanhMuc}
+																	</Popover>
+																),
+																value: item.maDanhMuc,
+															}))}
+															placeholder='Danh mục'
+														/>
+													</Form.Item>
+												</Col>
+											</>
+										)}
+
+										{/* <Form.Item
 										{...field}
 										rules={[...rules.required]}
 										label='Loại bộ lọc'
@@ -136,7 +248,8 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 										>
 											<Input placeholder='Trường thông tin thống kê' />
 										</Form.Item>
-									)}
+									)} */}
+									</Row>
 								</Card>
 							))}
 							<Form.Item>

@@ -93,6 +93,13 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
+			title: 'Cập nhật lúc',
+			dataIndex: 'updatedAt',
+			width: 100,
+			sortable: true,
+			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+		},
+		{
 			title: 'Thao tác',
 			align: 'center',
 			width: 90,

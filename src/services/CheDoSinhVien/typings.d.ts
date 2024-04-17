@@ -1,12 +1,22 @@
 import type { LoaiHinh } from '../QuyTrinhDong/LoaiHinh/typing';
-import type { ELoaiCheDoSinhVien } from './constant';
+import type { ELoaiBoLoc, ELoaiCheDoSinhVien } from './constant';
 
 declare module CheDoSinhVien {
+	export interface BoLoc {
+		ten: string;
+		path: string;
+		loai: ELoaiBoLoc;
+		danhSachGiaTri: string[];
+		maModule: string;
+		maDanhMuc: string;
+	}
+
 	export interface IRecord {
 		_id: string;
 		ten: string;
 		loaiCheDoSinhVien: ELoaiCheDoSinhVien;
 		danhSachCauHinhThongTin: LoaiHinh.TruongThongTin[];
+		danhSachBoLoc: BoLoc[];
 	}
 
 	export interface QuyetDinhCheDoSinhVien {

@@ -1,10 +1,12 @@
-import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
+import { ELoaiBoLoc, ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { useModel } from '@@/plugin-model/useModel';
-import { Button, Card, Form, Input, Select } from 'antd';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Form, Input, Popover, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import TableCauHinh from './TableCauHinh';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 
 const FormCheDoChinhSach = (props: { getData: any }) => {
 	const [form] = Form.useForm();
@@ -12,6 +14,8 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 		'chedochinhsach.chedochinhsach',
 	);
 	const [formValues, setFormValues] = useState<any>(record);
+	const { getAllModel: getAllDanhMucChung, loading: loadingDanhMucChung, danhSach } = useModel('quytrinh.danhmuc');
+	const danhSachBoLoc = Form.useWatch('danhSachBoLoc', form);
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -50,6 +54,133 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 						options={Object.values(ELoaiCheDoSinhVien).map((item) => ({ value: item, label: item }))}
 					/>
 				</Form.Item>
+
+				<div>Danh sách bộ lọc</div>
+				<Form.List name='danhSachBoLoc'>
+					{(fields, { add, remove }, { errors }) => (
+						<>
+							{fields.map((field, index) => (
+								<Card
+									style={{ margin: '8px 0px' }}
+									key={index}
+									size='small'
+									title={
+										<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+											<div>Bộ lọc {index + 1}</div>
+											<div>
+												<CloseOutlined className='dynamic-delete-button' onClick={() => remove(field.name)} />
+											</div>{' '}
+										</div>
+									}
+								>
+									<Row gutter={[8, 0]}>
+										<Col span={16}>
+											<Form.Item {...field} rules={[...rules.required]} label={'Tên bộ lọc'} name={[index, 'ten']}>
+												<Input placeholder='Tên bộ lọc' />
+											</Form.Item>
+										</Col>
+										<Col span={8}>
+											<Form.Item {...field} rules={[...rules.required]} label='Loại bộ lọc' name={[index, 'loai']}>
+												<Select
+													placeholder='Loại bộ lọc'
+													options={Object.values(ELoaiBoLoc).map((item) => ({ value: item, label: item }))}
+												/>
+											</Form.Item>
+										</Col>
+										<Col span={24}>
+											<Form.Item {...field} rules={[...rules.required]} label={'Path'} name={[index, 'path']}>
+												<Input placeholder='Path' />
+											</Form.Item>
+										</Col>
+										{danhSachBoLoc[index]?.loai === ELoaiBoLoc.MANG && (
+											<Col span={24}>
+												<Form.Item
+													{...field}
+													rules={[...rules.required]}
+													label='Danh sách giá trị'
+													name={[index, 'danhSachGiaTri']}
+												>
+													<Select placeholder='Danh sách giá trị' mode='tags' />
+												</Form.Item>
+											</Col>
+										)}
+										{danhSachBoLoc[index]?.loai === ELoaiBoLoc.DANH_MUC && (
+											<>
+												<Col span={12}>
+													<Form.Item
+														{...field}
+														rules={[...rules.required]}
+														label='Mã Module danh mục'
+														name={[index, 'maModule']}
+													>
+														<Select
+															placeholder='Mã module'
+															options={Object.values(ELoaiDanhMucChung).map((item) => ({ value: item, label: item }))}
+														/>
+													</Form.Item>
+												</Col>
+												<Col span={12}>
+													<Form.Item
+														{...field}
+														style={{ marginTop: -10 }}
+														rules={[...rules.required]}
+														label={
+															<span>
+																Danh mục (
+																<Button
+																	loading={loadingDanhMucChung}
+																	onClick={() => {
+																		getAllDanhMucChung(false, undefined, { maModule: danhSachBoLoc[index]?.maModule });
+																	}}
+																	style={{ padding: 0 }}
+																	type='link'
+																>
+																	Làm mới
+																</Button>
+																)
+															</span>
+														}
+														name={[index, 'maDanhMuc']}
+													>
+														<Select
+															showSearch
+															options={danhSach.map((item) => ({
+																label: (
+																	<Popover
+																		placement='left'
+																		content={() => {
+																			return (
+																				<div>
+																					{item.danhSachGiaTri.map((giaTri: { value: string }) => (
+																						<div key={giaTri.value}>- {giaTri.value}</div>
+																					))}
+																				</div>
+																			);
+																		}}
+																	>
+																		{item.maDanhMuc}
+																	</Popover>
+																),
+																value: item.maDanhMuc,
+															}))}
+															placeholder='Danh mục'
+														/>
+													</Form.Item>
+												</Col>
+											</>
+										)}
+									</Row>
+								</Card>
+							))}
+							<Form.Item>
+								<Button type='dashed' onClick={() => add()} style={{ width: '100%' }} icon={<PlusOutlined />}>
+									Thêm bộ lọc
+								</Button>
+								<Form.ErrorList errors={errors} />
+							</Form.Item>
+						</>
+					)}
+				</Form.List>
 
 				<TableCauHinh form={form} formValues={formValues} />
 				{/* <Form.Item

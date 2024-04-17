@@ -5,3 +5,9 @@ export enum ELoaiCheDoSinhVien {
 	HOC_BONG = 'Học bổng',
 	GDCT_TU_TUONG = 'Giáo dục chính trị tư tưởng',
 }
+
+export enum ELoaiBoLoc {
+	GIA_TRI = 'Giá trị',
+	MANG = 'Mảng',
+	DANH_MUC = 'Danh mục',
+}

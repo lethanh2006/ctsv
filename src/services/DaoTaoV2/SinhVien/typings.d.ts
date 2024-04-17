@@ -17,6 +17,7 @@ import type {
 declare module SinhVien {
 	export interface IRecord {
 		_id: string;
+		updatedAt: string;
 		ssoId: string;
 		trangThaiHoc?: string;
 		anhDaiDienUrl?: string | null;
