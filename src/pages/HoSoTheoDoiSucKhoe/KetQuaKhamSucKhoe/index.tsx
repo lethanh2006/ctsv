@@ -32,7 +32,6 @@ const KetQuaKhamSucKhoePage = () => {
 					onChange={(val) => setRecordDotKham(danhSachDotKham.find((item) => item._id === val))}
 					style={{ width: 250 }}
 					value={recDot?._id}
-					allowClear
 					isSetRecord
 				/>
 			</div>
@@ -51,7 +50,7 @@ const KetQuaKhamSucKhoePage = () => {
 					<SinhVienDotKhamPage isKetQua />
 				</>
 			) : (
-				<Empty description='Chưa chọn đợt đăng ký' style={{ marginTop: 50, marginBottom: 32 }} />
+				<Empty description='Chưa chọn đợt' style={{ marginTop: 50, marginBottom: 32 }} />
 			)}
 		</Card>
 	);

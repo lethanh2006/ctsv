@@ -1,7 +1,12 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import ModalChiTietSinhVien from '@/pages/DaoTaoV2/SinhVien/component/ModalChiTietSinhVien';
-import { ETinhTrangSucKhoe, colorETinhTrangSucKhoe } from '@/services/DotKhamSuKhoe/constant';
+import {
+	EPhanLoaiSucKhoe,
+	ETinhTrangSucKhoe,
+	MapKeyNameTinhTrangSuckhoe,
+	colorETinhTrangSucKhoe,
+} from '@/services/DotKhamSuKhoe/constant';
 import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tag, Tooltip } from 'antd';
@@ -43,13 +48,45 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 			onCell,
 		},
 		{
-			title: 'Tình trạng sức khỏe',
+			title: 'Phân loại sức khỏe',
+			dataIndex: 'phanLoaiSucKhoe',
+			width: 120,
+			filterType: 'select',
+			onCell,
+			align: 'center',
+			filterData: Object.values(EPhanLoaiSucKhoe).map((item) => ({ value: item, label: item })),
+		},
+		{
+			title: 'Bệnh/tật',
+			dataIndex: 'benhTat',
+			width: 170,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Tư vấn',
+			dataIndex: 'tuVan',
+			width: 170,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Ghi chú',
+			dataIndex: 'ghiChu',
+			width: 170,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Kết luận',
 			dataIndex: 'tinhTrangSucKhoe',
 			align: 'center',
 			width: 170,
 			filterType: 'select',
 			filterData: Object.values(ETinhTrangSucKhoe),
-			render: (val, rec) => <Tag color={colorETinhTrangSucKhoe[val as ETinhTrangSucKhoe]}>{val}</Tag>,
+			render: (val: ETinhTrangSucKhoe, rec) => (
+				<Tag color={colorETinhTrangSucKhoe[val]}>{MapKeyNameTinhTrangSuckhoe[val]}</Tag>
+			),
 			onCell,
 		},
 		{
@@ -73,7 +110,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 					</Tooltip>
 				</>
 			),
-			hide: isKetQua,
+			// hide: isKetQua,
 		},
 	];
 
@@ -89,7 +126,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 				hideCard
 				rowSelection={isKetQua ? false : true}
 				deleteMany={isKetQua ? false : true}
-				buttons={{ import: !isKetQua ? true : false, create: true }}
+				buttons={{ import: true, create: true, export: true }}
 			/>
 
 			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasDetail />

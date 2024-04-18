@@ -14,6 +14,7 @@ const FormSinhVienDotKham = (props: any) => {
 	);
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { title } = props;
+	const { danhSach: danhSachSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 
 	const getData = () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id });
 
@@ -23,9 +24,13 @@ const FormSinhVienDotKham = (props: any) => {
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: DotKhamSucKhoe.ISucKhoeSinhVien) => {
+		const recSinhVien = danhSachSinhVien.find((item) => item.ssoId === values?.sinhVienSsoId);
 		const data = {
+			...record,
 			...values,
 			dotKhamSucKhoeId: recDotKhaiBao?._id ?? '',
+			hoTen: recSinhVien?.ten,
+			maSinhVien: recSinhVien?.ma,
 		};
 		if (edit) {
 			putModel(record?._id ?? '', data, getData)
