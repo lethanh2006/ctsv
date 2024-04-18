@@ -14,6 +14,7 @@ import FormSinhVien from './Form';
 import FormKhenThuongKyLuat from './FormKhenThuongKyLuat';
 import FormQuaTrinhHocTap from './FormQuaTrinhHocTap';
 import FormTotNghiepVanBang from './FormTotNghiepVanBang';
+import SinhVienDotKhamPage from '@/pages/HoSoTheoDoiSucKhoe/SinhVienDotKham';
 
 const ModalSinhVien = (props: any) => {
 	const intl = useIntl();
@@ -81,6 +82,9 @@ const ModalSinhVien = (props: any) => {
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab6' })} key={'7'} disabled={!record?.ssoId}>
 					<CongNoSinhVienPage sinhVienSsoId={record?.ssoId} />
+				</Tabs.TabPane>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab15' })} key={'15'} disabled={!record?.ssoId}>
+					<SinhVienDotKhamPage ssoId={record?.ssoId} />
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab7' })} key={'4'} disabled={!record?.ssoId}>
 					<NoiNgoaiTruSinhVienPage />

@@ -14,16 +14,18 @@ import { useState } from 'react';
 import { useModel } from 'umi';
 import FormSinhVienDotKham from './Form';
 
-const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
+const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 	const { isKetQua } = props;
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
-	const { handleView: handleViewSinhVien } = useModel('sinhvien.sinhvien');
+	const { handleView: handleViewSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 	const [sinhVienSsoId, setSinhVienSsoId] = useState<string>();
-
+	const getData = () => {
+		getModel({ sinhVienSsoId: props?.ssoId });
+	};
 	const onCell = (rec: DotKhamSucKhoe.ISucKhoeSinhVien) => ({
 		onClick: () => {
-			if (rec.sinhVienSsoId) {
+			if (rec.sinhVienSsoId && !props.ssoId) {
 				setSinhVienSsoId(rec.sinhVienSsoId);
 				handleViewSinhVien();
 			}
@@ -110,26 +112,31 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 					</Tooltip>
 				</>
 			),
-			// hide: isKetQua,
+			hide: props.ssoId ? true : false,
 		},
 	];
 
 	return (
 		<>
 			<TableBase
+				getData={getData}
 				columns={columns}
 				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
-				dependencies={[page, limit]}
+				dependencies={[page, limit, recDotKhaiBao?._id, props.ssoId]}
 				modelName='hosotheodoisuckhoe.suckhoesinhvien'
 				title='Sinh viên đợt khám sức khỏe'
 				Form={FormSinhVienDotKham}
 				hideCard
-				rowSelection={isKetQua ? false : true}
+				rowSelection={isKetQua || props.ssoId ? false : true}
 				deleteMany={isKetQua ? false : true}
-				buttons={{ import: true, create: true, export: true }}
+				buttons={{
+					import: props.ssoId ? false : true,
+					create: true,
+					export: props.ssoId ? false : true,
+				}}
 			/>
 
-			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasDetail />
+			{!props.ssoId && <ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasDetail />}
 		</>
 	);
 };
