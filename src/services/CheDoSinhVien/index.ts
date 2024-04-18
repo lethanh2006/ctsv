@@ -18,3 +18,11 @@ export const getDataThongKeJson = (idThongKe: string, payload: { filters: any })
 export const getDataThongKeExcel = (id: string, payload?: { filters: string[] }) => {
 	return axios.get(`${ip3}/thong-ke-cdsv/${id}/execute/excel`, { responseType: 'arraybuffer', params: payload });
 };
+
+export const exportCheDoSinhVien = (
+	idCheDo: string,
+	payload: {
+		condition: any;
+		filters: any[];
+	},
+) => axios.get(`${ip3}/quyet-dinh-cdsv/export/cdsv/${idCheDo}`, { responseType: 'arraybuffer', params: payload });

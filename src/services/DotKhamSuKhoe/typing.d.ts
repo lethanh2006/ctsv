@@ -1,4 +1,4 @@
-import type { ETinhTrangSucKhoe, ETrangThaiKhamSucKhoe } from './constant';
+import type { EPhanLoaiSucKhoe, ETinhTrangSucKhoe, ETrangThaiKhamSucKhoe } from './constant';
 
 declare module DotKhamSucKhoe {
 	export interface IRecord {
@@ -30,6 +30,11 @@ declare module DotKhamSucKhoe {
 		sinhVienSsoId: string;
 		hoTen: string;
 		tinhTrangSucKhoe: ETinhTrangSucKhoe;
+		maXetNghiem: string;
+		benhTat: string;
+		tuVan: string;
+		phanLoaiSucKhoe: EPhanLoaiSucKhoe;
+		ghiChu: string;
 	}
 
 	export interface IThongKeSucKhoeSinhVien {

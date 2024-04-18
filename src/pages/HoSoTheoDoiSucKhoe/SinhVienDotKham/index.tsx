@@ -89,7 +89,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean }) => {
 				hideCard
 				rowSelection={isKetQua ? false : true}
 				deleteMany={isKetQua ? false : true}
-				buttons={{ import: !isKetQua ? true : false, create: false }}
+				buttons={{ import: !isKetQua ? true : false, create: true }}
 			/>
 
 			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} hasDetail />

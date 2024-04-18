@@ -121,11 +121,12 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 		<>
 			<TableBase
 				params={{ dotDrlId: condition?.dotDrlId }}
-				buttons={{ import: true }}
+				buttons={{ import: true, export: true }}
 				hideCard={props?.hideCard}
 				getData={getData}
 				otherButtons={[
 					<SelectDotDiemRenLuyen
+						allowClear
 						value={condition?.dotDrlId}
 						isSetRecord
 						style={{ width: 250 }}

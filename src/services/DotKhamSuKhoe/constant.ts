@@ -18,6 +18,12 @@ export enum ETinhTrangSucKhoe {
 	CHUA_CO_KET_QUA = 'Chưa có kết quả',
 }
 
+export const MapKeyNameTinhTrangSuckhoe = {
+	[ETinhTrangSucKhoe.BINH_THUONG]: 'Đủ sức khỏe học tập - làm việc',
+	[ETinhTrangSucKhoe.CAN_LUU_Y]: 'Cần lưu ý',
+	[ETinhTrangSucKhoe.CHUA_CO_KET_QUA]: 'Chưa có kết quả',
+};
+
 export const colorETinhTrangSucKhoe: Record<ETinhTrangSucKhoe, string> = {
 	[ETinhTrangSucKhoe.BINH_THUONG]: 'green',
 	[ETinhTrangSucKhoe.CAN_LUU_Y]: 'red',
@@ -29,3 +35,11 @@ export const fieldTinhTrangSucKhoe: Record<ETinhTrangSucKhoe, keyof DotKhamSucKh
 	[ETinhTrangSucKhoe.CAN_LUU_Y]: 'coBenh',
 	[ETinhTrangSucKhoe.CHUA_CO_KET_QUA]: 'chuaDanhGia',
 };
+
+export enum EPhanLoaiSucKhoe {
+	I = 'I',
+	II = 'II',
+	III = 'III',
+	IV = 'IV',
+	V = 'V',
+}

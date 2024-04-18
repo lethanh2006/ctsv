@@ -93,7 +93,7 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 
 			<div className='form-footer'>
 				<Button loading={formSubmiting} htmlType='submit' type='primary'>
-					{!edit ? 'Thêm mới' : 'Chỉnh sửa'}
+					{!edit ? 'Thêm mới' : 'Lưu lại'}
 				</Button>
 				<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
 			</div>

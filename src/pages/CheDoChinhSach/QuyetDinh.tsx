@@ -5,7 +5,7 @@ import { ELoaiBoLoc, type ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/co
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import { DeleteOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Input, Menu, Modal, Popconfirm, Select, Tooltip } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect } from 'react';
@@ -36,6 +36,7 @@ const QuyetDinh = (props: {
 		setDanhSach,
 		filters,
 		setFilters,
+		exportCheDoSinhVienModel,
 	} = useModel('chedochinhsach.quyetdinhchedosinhvien');
 	const { danhSach, getAllModel: getAllDanhMuc } = useModel('quytrinh.danhmuc');
 	const {
@@ -208,6 +209,13 @@ const QuyetDinh = (props: {
 								Nhập dữ liệu
 							</ButtonExtend>
 						</Dropdown>
+						<ButtonExtend
+							onClick={() => exportCheDoSinhVienModel(props.title, recordCheDoChinhSach?._id ?? '')}
+							loading={loading}
+							icon={<ExportOutlined />}
+						>
+							Xuất dữ liệu
+						</ButtonExtend>
 						{recordCheDoChinhSach?.danhSachBoLoc?.map((item) => (
 							<>
 								{item.loai === ELoaiBoLoc.GIA_TRI ? (

@@ -147,6 +147,11 @@ const HoatDongChungPage = (props: {
 			</div>
 
 			<TableBase
+				params={{
+					phanLoaiCap1: props.phanLoaiCap1,
+					phanLoaiCap2: props.phanLoaiCap2,
+					maHocKy: condition?.maHocKy,
+				}}
 				buttons={{ import: true, export: true }}
 				hideCard={props?.hideCard ?? false}
 				getData={getData}
