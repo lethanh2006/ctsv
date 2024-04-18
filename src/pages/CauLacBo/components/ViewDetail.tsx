@@ -33,6 +33,10 @@ const ViewDetailCLB = (props: {
 		const res = await thongKe({
 			condition: {
 				...condition,
+				info: {
+					type: 'CAU_LAC_BO',
+					refId: record?._id,
+				},
 				phanLoaiCap1: EHoatDongChungType1.VAN_HOA_THE_THAO,
 				phanLoaiCap2: EHoatDongChungType2.HOAT_DONG_CAU_LAC_BO,
 			},
@@ -43,7 +47,7 @@ const ViewDetailCLB = (props: {
 
 	useEffect(() => {
 		getThongKe();
-	}, [condition]);
+	}, [condition, record?._id]);
 	return (
 		<Tabs>
 			<Tabs.TabPane key={'1'} tab='Thông tin chung'>
