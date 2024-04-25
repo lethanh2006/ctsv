@@ -568,6 +568,13 @@
 	},
 
 	{
+		name: 'ThongBao',
+		icon: 'bell',
+		path: './thong-bao',
+		component: './ThongBao',
+	},
+
+	{
 		path: '/notification',
 		routes: [
 			{

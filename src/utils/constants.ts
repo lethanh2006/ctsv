@@ -15,6 +15,11 @@ export enum EChucNangSuDung {
 	KET_QUA_HOC_TAP = 'KET_QUA_HOC_TAP',
 }
 
+export enum EVaiTroBieuMau {
+	SINH_VIEN = 'sinh_vien',
+	NHAN_VIEN = 'nhan_vien',
+}
+
 export enum EThoiGianDot {
 	CHUA_DIEN_RA = 'CHUA_DIEN_RA',
 	DANG_DIEN_RA = 'DANG_DIEN_RA',

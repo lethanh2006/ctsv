@@ -112,4 +112,5 @@ export default {
 	'menu.QuyTrinh.ThongKe': 'Thống kê',
 	'menu.QuyTrinh.DieuPhoi': 'Điều phối',
 	'menu.QuyTrinh.TiepNhan': 'Tiếp nhận',
+	'menu.ThongBao': 'Thông báo',
 };

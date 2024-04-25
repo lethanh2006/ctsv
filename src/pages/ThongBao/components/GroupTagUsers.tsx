@@ -10,10 +10,10 @@ const GroupTagUsers = (props: { users?: ThongBao.IUser[]; setUsers?: (users: Tho
 	};
 
 	return (
-		<Space wrap>
+		<Space wrap style={{ marginTop: 6 }}>
 			{users?.map((item) => (
 				<Tag key={item.code} closable onClose={() => onClose(item.code)}>
-					{item.lastname} {item.firstname} - {item.code}
+          {`${item.fullname?`${item.fullname} - `:''}`} {item.code}
 				</Tag>
 			))}
 		</Space>
