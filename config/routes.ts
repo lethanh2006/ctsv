@@ -274,6 +274,11 @@
 				component: './CheDoChinhSach/CheDoChinhSach/QuyetDinhChinhSach',
 			},
 			{
+				name: 'BaoHiemXaHoi',
+				path: 'bao-hiem-xa-hoi',
+				component: './CheDoChinhSach/BaoHiem/QuyetDinhBaoHiem',
+			},
+			{
 				name: 'ThongKe',
 				path: 'thong-ke',
 				component: './CheDoChinhSach/ThongKe',
@@ -516,6 +521,11 @@
 				name: 'HocBong',
 				path: 'hoc-bong',
 				component: './CheDoChinhSach/HocBong/CheDoHocBong',
+			},
+			{
+				name: 'BaoHiemXaHoi',
+				path: 'bao-hiem',
+				component: './CheDoChinhSach/BaoHiem/CheDoBaoHiem',
 			},
 			// {
 			// 	name: 'DanhGiaRenLuyen',

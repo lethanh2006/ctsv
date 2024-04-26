@@ -86,6 +86,14 @@ const ModalSinhVien = (props: any) => {
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab15' })} key={'15'} disabled={!record?.ssoId}>
 					<SinhVienDotKhamPage ssoId={record?.ssoId} />
 				</Tabs.TabPane>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab16' })} key={'16'} disabled={!record?.ssoId}>
+					<QuyetDinh
+						filterWidth={250}
+						loaiCheDoSinhVien={ELoaiCheDoSinhVien.BAO_HIEM}
+						ssoId={record?.ssoId}
+						title='Danh sách sinh viên được cấp Học bổng'
+					/>
+				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab7' })} key={'4'} disabled={!record?.ssoId}>
 					<NoiNgoaiTruSinhVienPage />
 				</Tabs.TabPane>

@@ -15,6 +15,7 @@ export default {
 	'sinhvien.tab13': 'Đánh giá rèn luyện',
 	'sinhvien.tab14': 'Giáo dục chính trị tư tưởng',
 	'sinhvien.tab15': 'Kết quả khám sức khỏe',
+	'sinhvien.tab16': 'Bảo hiểm xã hội',
 	'sinhvien.thongtinchung': 'Thông tin chung',
 	'sinhvien.thongtinchung.chitiet': 'Thông tin cá nhân chi tiết',
 	'sinhvien.thongtinchung.giadinh': 'Thông tin gia đình',
