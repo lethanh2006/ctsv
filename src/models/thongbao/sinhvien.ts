@@ -17,7 +17,6 @@ export default () => {
 		try {
 			const payload = { role: EVaiTroBieuMau.SINH_VIEN, ...(danhSachDoiTuong ?? {}) };
 			const params = { page, limit, filters };
-			debugger;
 			const response = await postReceiver(payload, params);
 			setDanhSach(response?.data?.data?.result ?? []);
 			setTotal(response?.data?.data?.total ?? 0);

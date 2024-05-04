@@ -234,7 +234,6 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 					buocHienTai.thongTinTiepNhan && _.isEmpty(buocHienTai.thongTinTiepNhan) !== true
 						? formTiepNhanBuocHienTai
 						: formTiepNhan;
-				debugger;
 				return (
 					<>
 						<Tooltip title='Xem chi tiết'>

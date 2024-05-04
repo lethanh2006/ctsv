@@ -56,6 +56,7 @@ declare module KhaiBaoQuyTrinh {
 		daDienThongTin: boolean;
 		laBuocHienTai: boolean;
 		danhSachMaBoPhanXuLy: string[];
+		danhSachThanhVienXuLy: IThanhVienXuLy[];
 		laBuocCuoi: boolean;
 		laBuocHienTai: boolean;
 	}

@@ -37,6 +37,7 @@ interface Iprops {
 }
 const View = (props: Iprops) => {
 	const { dataQuyTrinh, current, loadingForm, modalName, FormModal, formProps, type, getData } = props;
+	debugger;
 	const model = useModel(modalName);
 	// const { record: recordQuyTrinh } = useModel('quanlykhoahoc.quytrinh.quytrinh');
 	const {
@@ -54,6 +55,7 @@ const View = (props: Iprops) => {
 	const { setRecordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
 	const [visibleViewDetailDot, setVisibleViewDetailDot] = useState<boolean>(false);
 	const { danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
+	const { initialState } = useModel('@@initialState');
 
 	// const { setRecord: setRecordSanPham } = useModel('quanlykhoahoc.sanphamnckh');
 	const [danhSachDonViXuLy, setDanhSachDonViXuLy] = useState<KhaiBaoQuyTrinh.IDonViXuLy[]>([]);
@@ -171,11 +173,11 @@ const View = (props: Iprops) => {
 							{value?.trangThaiTiepNhan}
 						</Tag>
 					</div>
-					<div style={{ marginBottom: 8 }}>
+					{/* <div style={{ marginBottom: 8 }}>
 						<Tag color={value?.coKhaiBao ? '#1fba36' : '#ffca2c'}>
 							{value?.coKhaiBao ? 'Đã thực hiện' : 'Chưa thực hiện'}
 						</Tag>
-					</div>
+					</div> */}
 					{tienDo && (
 						<div style={{ marginBottom: 8 }}>
 							<Tag color={MapColorTienDoQuyTrinh[tienDo]}>{tienDo}</Tag>
@@ -392,54 +394,61 @@ const View = (props: Iprops) => {
 						{type === 'tiep_nhan' && (
 							<Col xs={24} sm={24} md={24} lg={24} xl={24}>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									<Button
-										disabled={
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
-										}
-										style={{ marginRight: 8 }}
-										type={'primary'}
-										icon={<CheckOutlined />}
-										onClick={() => {
-											setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
-											setVisibleDuyet(true);
-										}}
-									>
-										Duyệt
-									</Button>
-									<Button
-										disabled={
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
-										}
-										style={{ marginRight: 8 }}
-										icon={<UndoOutlined />}
-										onClick={() => {
-											setCurrentTypeDuyet(TrangThaiTiepNhanDon.CHINH_SUA_LAI);
-											setVisibleDuyet(true);
-										}}
-									>
-										Yêu cầu chỉnh sửa
-									</Button>
-									<Button
-										disabled={
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
-											current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
-										}
-										style={{ marginRight: 8 }}
-										danger
-										type='primary'
-										icon={<CloseOutlined />}
-										onClick={() => {
-											setCurrentTypeDuyet(TrangThaiTiepNhanDon.KHONG_DUYET);
-											setVisibleDuyet(true);
-										}}
-									>
-										Không duyệt
-									</Button>
+									{((current.danhSachThanhVienXuLy.length &&
+										current?.danhSachThanhVienXuLy?.find((item) => item.ssoId === initialState?.currentUser?.ssoId)
+											?.ssoId) ||
+										!current.danhSachThanhVienXuLy.length) && (
+										<>
+											<Button
+												disabled={
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+												}
+												style={{ marginRight: 8 }}
+												type={'primary'}
+												icon={<CheckOutlined />}
+												onClick={() => {
+													setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
+													setVisibleDuyet(true);
+												}}
+											>
+												{current.ten}
+											</Button>
+											<Button
+												disabled={
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+												}
+												style={{ marginRight: 8 }}
+												icon={<UndoOutlined />}
+												onClick={() => {
+													setCurrentTypeDuyet(TrangThaiTiepNhanDon.CHINH_SUA_LAI);
+													setVisibleDuyet(true);
+												}}
+											>
+												Yêu cầu chỉnh sửa
+											</Button>
+											{/* <Button
+												disabled={
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+												}
+												style={{ marginRight: 8 }}
+												danger
+												type='primary'
+												icon={<CloseOutlined />}
+												onClick={() => {
+													setCurrentTypeDuyet(TrangThaiTiepNhanDon.KHONG_DUYET);
+													setVisibleDuyet(true);
+												}}
+											>
+												Không duyệt
+											</Button> */}
+										</>
+									)}
 
 									<Button
 										danger
