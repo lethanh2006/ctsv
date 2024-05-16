@@ -85,7 +85,7 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 				key: item?.id,
 				icon: <FolderOutlined />,
 				children: arrQuyTrinh
-					?.filter((item2) => item2?.linhVuc === item?.ten)
+					?.filter((item2) => item2?.linhVuc === item?.ten && item2.active)
 					?.map((item3, index: number) => {
 						return {
 							title: `${index + 1}. ${item3?.ten}`,

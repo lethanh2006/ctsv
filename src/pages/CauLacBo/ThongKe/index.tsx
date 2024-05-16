@@ -107,7 +107,7 @@ const ThongKeCLB = () => {
 				<Col span={24}>
 					<SelectCLB allowClear onChange={(val) => setClb(val)} keyValue='ten' style={{ width: 250 }} />
 				</Col>
-				<Col span={12}>
+				{/* <Col span={12}>
 					<DonutChart
 						showTotal
 						formatY={(val) => `${val} hoạt động`}
@@ -116,8 +116,8 @@ const ThongKeCLB = () => {
 						xAxis={Object.values(MapKeyLabelTrangThaiThongKe)}
 						yAxis={[[dataHoatDong?.chuaDienRa ?? 0, dataHoatDong?.dangDienRa ?? 0, dataHoatDong?.daDienRa ?? 0]]}
 					/>
-				</Col>
-				<Col span={12}>
+				</Col> */}
+				<Col span={24}>
 					<DonutChart
 						formatY={(val) => `${val} thành viên`}
 						height={250}
