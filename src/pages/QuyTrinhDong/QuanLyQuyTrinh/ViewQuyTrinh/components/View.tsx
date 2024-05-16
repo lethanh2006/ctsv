@@ -37,7 +37,6 @@ interface Iprops {
 }
 const View = (props: Iprops) => {
 	const { dataQuyTrinh, current, loadingForm, modalName, FormModal, formProps, type, getData } = props;
-	debugger;
 	const model = useModel(modalName);
 	// const { record: recordQuyTrinh } = useModel('quanlykhoahoc.quytrinh.quytrinh');
 	const {
@@ -52,9 +51,10 @@ const View = (props: Iprops) => {
 	} = model;
 	const [form] = Form.useForm();
 	const { danhSach: danhSachDotQuyTrinh } = useModel('quytrinh.dotquytrinh');
-	const { setRecordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
+	const { setRecordQuyTrinhForm, recordQuyTrinhForm } = useModel('quytrinh.quanlyquytrinh');
 	const [visibleViewDetailDot, setVisibleViewDetailDot] = useState<boolean>(false);
 	const { danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
+	const { getAllModel, setVisibleForm: setVisibleModalSinhVien, loading } = useModel('daotaov2.sinhvien.sinhvien');
 	const { initialState } = useModel('@@initialState');
 
 	// const { setRecord: setRecordSanPham } = useModel('quanlykhoahoc.sanphamnckh');
@@ -115,22 +115,22 @@ const View = (props: Iprops) => {
 				const isDate = cauHinh?.kieuDuLieu === EKieuDuLieu.DATE;
 				const isMonth = cauHinh?.kieuDuLieu === EKieuDuLieu.MONTH;
 
-				valuesFinal[item] = {
-					value:
-						// (isDate || isMonth) && valuesForm
-						// 	? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
-						// 	:
-						valuesForm[item],
+				valuesFinal[item?.includes('table||') ? item.replace('table||', '') : item] = {
+					value: item?.includes('table||')
+						? recordQuyTrinhForm?.thongTinKhaiBao?.[item.replace('table||', '')]
+						: valuesForm[item],
 					info: isDanhMuc
 						? danhSachDanhMuc
 								?.find((ele) => ele.maDanhMuc === cauHinh.maDanhMuc)
 								?.danhSachGiaTri?.find((ele) => ele.value === valuesForm[item])?.info
 						: undefined,
 				};
+
 				if (isDate || isMonth) {
 					valuesFinal[`${item}Date`] = { value: moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY') };
 				}
 			});
+
 			const payload = {
 				maBuoc: current?.ma,
 				trangThaiTiepNhan: currentTypeDuyet,
@@ -139,6 +139,7 @@ const View = (props: Iprops) => {
 				thongTinTiepNhan: { ...valuesFinal },
 				// maBoPhanXuLyBuocSau: 'string',
 			};
+
 			const res = await chuyenVienTiepNhanDuyet(dataQuyTrinh?._id, payload);
 			if (res) {
 				message.success('Xử lý thành công');
@@ -146,6 +147,7 @@ const View = (props: Iprops) => {
 				setVisibleForm(false);
 				// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 				getData && getData();
+				setRecordQuyTrinhForm(undefined);
 			}
 		} catch (e) {
 			console.log(e);
@@ -512,7 +514,22 @@ const View = (props: Iprops) => {
 				)}
 				<Modal
 					width={700}
-					title={'Xử lý đơn'}
+					zIndex={100}
+					title={
+						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<div>Xử lý đơn</div>
+							<Button
+								loading={loading}
+								onClick={async () => {
+									await getAllModel(true, undefined, { ssoId: dataQuyTrinh?.nguoiKhaiBao?.ssoId });
+									setVisibleModalSinhVien(true);
+								}}
+								type='link'
+							>
+								Xem thông tin sinh viên
+							</Button>
+						</div>
+					}
 					visible={visibleDuyet}
 					onCancel={() => {
 						setVisibleDuyet(false);

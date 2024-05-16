@@ -18,6 +18,7 @@ import moment from 'moment';
 import { toISOString } from '@/utils/utils';
 import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
 import _ from 'lodash';
+import ModalSinhVien from '@/pages/DaoTaoV2/SinhVien/component/ModalSinhVien';
 
 interface IProps {
 	type: 'dieu_phoi' | 'tiep_nhan';
@@ -50,6 +51,12 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 
 	const { getAllModel: getAllDanhMucChung } = useModel('quytrinh.danhmuc');
 	const { record: recordChiTietThu, getByIdModel } = useModel('taichinh.hoadon');
+	const {
+		visibleForm: visibleModalSinhVien,
+		setVisibleForm: setVisibleModalSinhVien,
+		getAllModel,
+	} = useModel('daotaov2.sinhvien.sinhvien');
+
 	const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -107,9 +114,23 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			filterType: 'string',
 			align: 'center',
 			render: (val, recordVal) => {
-				return recordVal?.nguoiKhaiBao?.ten ? recordVal?.nguoiKhaiBao?.ten : recordVal.moTa;
+				return (
+					<div>
+						{recordVal?.nguoiKhaiBao?.ten ? recordVal?.nguoiKhaiBao?.ten : recordVal.moTa}
+						<Button
+							onClick={async () => {
+								await getAllModel(true, undefined, { ssoId: recordVal?.nguoiKhaiBao?.ssoId });
+								setVisibleModalSinhVien(true);
+							}}
+							style={{ padding: 0 }}
+							type='link'
+						>
+							Chi tiết
+						</Button>
+					</div>
+				);
 			},
-			onCell,
+			// onCell,
 		},
 		{
 			title: 'Mã sinh viên',
@@ -436,6 +457,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				</Tabs>
 			</TableBase>
 			<Modal
+				zIndex={100}
 				title={record?.quyTrinh?.ten}
 				visible={visibleForm}
 				onCancel={() => setVisibleForm(false)}
@@ -477,6 +499,16 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				destroyOnClose
 			>
 				{recordChiTietThu?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
+			</Modal>
+			<Modal
+				footer={false}
+				bodyStyle={{ padding: 0 }}
+				width={1200}
+				visible={visibleModalSinhVien}
+				onCancel={() => setVisibleModalSinhVien(false)}
+				zIndex={101}
+			>
+				<ModalSinhVien />
 			</Modal>
 		</>
 	);

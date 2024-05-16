@@ -43,6 +43,7 @@ export default {
 	'menu.DanhMuc.CheDoChinhSach': 'Chế độ, chính sách',
 	'menu.DanhMuc.HocBong': 'Học bổng',
 	'menu.DanhMuc.GiaoDucChinhTriTuTuong': 'Giáo dục chính trị tư tưởng',
+	'menu.DanhMuc.BaoHiemXaHoi': 'Bảo hiểm xã hội',
 	'menu.CheDoChinhSach': 'Chế độ, chính sách',
 
 	'menu.SuKien': 'Giáo dục chính trị tư tưởng',
