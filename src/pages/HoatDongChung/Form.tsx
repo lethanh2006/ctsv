@@ -14,18 +14,20 @@ import {
 } from '@/services/QuyTrinhDong/constant';
 import { ETuanLeCongDan } from '@/services/SuKien/constant';
 import rules from '@/utils/rules';
-import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Form, Input, InputNumber, Row, Select, message } from 'antd';
+import _ from 'lodash';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
+import SelectCLB from '../CauLacBo/components/SelectCLB';
+import SelectNguonKinhPhi from '../DanhMuc/NguonKinhPhi/Select';
 import SelectNganhCoSo from '../DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 import SelectLopHocPhanDebounce from '../DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
 import SelectKhoaSinhVien from '../DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
 import SelectLopHanhChinhDebounce from '../DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import SelectDonVi from '../ToChucNhanSu/DonVi/Select';
 import TableDuToanKinhPhi from './DuToanKinhPhi/TableDuToanKinhPhi';
-import SelectCLB from '../CauLacBo/components/SelectCLB';
 
 const FormHoatDongChung = (props: {
 	phanLoaiCap1: EHoatDongChungType1;
@@ -34,6 +36,7 @@ const FormHoatDongChung = (props: {
 }) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } = useModel('hoatdongchung');
+	const { danhSach: danhSachNguonKinhPhi } = useModel('danhmuc.nguonkinhphi');
 	const title = props?.phanLoaiCap2 ?? '';
 
 	useEffect(() => {
@@ -46,6 +49,15 @@ const FormHoatDongChung = (props: {
 	useEffect(() => {
 		if (!visibleForm) form.resetFields();
 	}, [visibleForm]);
+
+	const onChangNguonKinhPhi = (ma: string, index: number) => {
+		const ns = danhSachNguonKinhPhi.find((item) => item?.ma === ma);
+		form.setFieldsValue({
+			['thongTinPhanBoNguonKinhPhi']: form
+				.getFieldValue('thongTinPhanBoNguonKinhPhi')
+				.map((item: any, i: number) => (i === index ? { ...item, tenNguonKinhPhi: ns?.ten } : item)),
+		});
+	};
 
 	const onFinish = async (values: any) => {
 		const payload = {
@@ -60,6 +72,16 @@ const FormHoatDongChung = (props: {
 				  }
 				: undefined,
 		};
+
+		//Check phân bổ dự toán kinh phí
+		const tongTienDuToan = _.sumBy(
+			payload?.danhSachDuToanKinhPhi,
+			(item: any) => (item?.soLuongNguoi ?? 1) * (item?.soLuongNgay ?? 1) * (item?.soLuongKhac ?? 1) * item?.dinhMuc,
+		);
+		const tongTienPhanBo = _.sumBy(payload?.thongTinPhanBoNguonKinhPhi, (item: any) => item?.kinhPhiPhanBo);
+		if (tongTienDuToan !== tongTienPhanBo) {
+			return message.error('Thông tin phân bổ kinh phí không khớp với tổng tiền dự toán kinh phí');
+		}
 
 		if (edit) {
 			putModel(record?._id ?? '', payload, props.getData)
@@ -276,8 +298,60 @@ const FormHoatDongChung = (props: {
 						</>
 					</Col>
 					<Col span={24}>
-						<div>Dự toán kinh phí</div>
+						<div style={{ marginBottom: 8 }}>Dự toán kinh phí</div>
 						<TableDuToanKinhPhi />
+					</Col>
+					<Col span={24}>
+						<div style={{ marginBottom: 8, marginTop: 4 }}>Phân bổ nguồn kinh phí</div>
+						<Form.List name='thongTinPhanBoNguonKinhPhi'>
+							{(fields, { add, remove }, { errors }) => (
+								<>
+									{fields.map((field, index) => (
+										<Row gutter={[12, 0]} key={field.key}>
+											<Col span={11}>
+												<Form.Item label='Nguồn kinh phí' name={[index, 'maNguonKinhPhi']} rules={[...rules.required]}>
+													<SelectNguonKinhPhi selectMa onChange={(val) => onChangNguonKinhPhi(val, index)} />
+												</Form.Item>
+												<Form.Item name={[index, 'tenNguonKinhPhi']} hidden />
+											</Col>
+											<Col span={10}>
+												<Form.Item label='Kinh phí phân bổ' name={[index, 'kinhPhiPhanBo']} rules={[...rules.required]}>
+													<InputNumber
+														formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+														min={1}
+														style={{ width: '100%' }}
+														placeholder='Nhập kinh phí'
+														addonAfter='VNĐ'
+													/>
+												</Form.Item>
+											</Col>
+
+											<Col span={3}>
+												<Button
+													danger
+													type='link'
+													title='Xóa thông tin'
+													icon={<DeleteOutlined />}
+													onClick={() => remove(field.name)}
+													style={{ marginTop: 30 }}
+												/>
+											</Col>
+											<Form.ErrorList errors={errors} />
+										</Row>
+									))}
+									<Form.ErrorList errors={errors} />
+									<Button
+										onClick={() => add()}
+										icon={<PlusOutlined />}
+										size='small'
+										type='default'
+										style={{ marginBottom: 8 }}
+									>
+										Phân bổ nguồn kinh phí
+									</Button>
+								</>
+							)}
+						</Form.List>
 					</Col>
 				</Row>
 

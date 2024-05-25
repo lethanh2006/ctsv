@@ -4,16 +4,22 @@ import type { EDonViTinh, ELoaiDoiTuong } from './constants';
 declare module HoatDongChung {
 	export interface IDuToanKinhPhi {
 		_id: string;
+		soThuTu: number;
 		keHoachHoatDongNamId: string;
 		hoatDong: string;
-		donViTinh: EDonViTinh;
+		donViTinh: string;
 		donViTinhKhac: string;
 		soLuong: number;
+		soLuongNguoi: number;
+		soLuongNgay: number;
+		soLuongKhac: number;
 		dinhMuc: number;
 		ghiChu: string;
 		tienDoHoanThanh: string;
 		tepDinhKem: string[] | null;
 		chungTuYeuCau: string;
+		info: string;
+
 		//fake data
 		index: number;
 	}
