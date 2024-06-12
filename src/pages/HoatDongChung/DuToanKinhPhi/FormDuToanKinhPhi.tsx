@@ -1,10 +1,9 @@
 import UploadFile from '@/components/Upload/UploadFile';
-import { EDonViTinh, mapDonViTinh } from '@/services/HoatDongChung/constants';
 import type { HoatDongChung } from '@/services/HoatDongChung/typings';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { inputFormat } from '@/utils/utils';
-import { Button, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -14,9 +13,10 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 
 	const { setRecord, record } = useModel('hoatdongchung');
 
-	const soLuong: number = useWatch('soLuong', form);
+	const soLuongNguoi: number = useWatch('soLuongNguoi', form);
+	const soLuongNgay: number = useWatch('soLuongNgay', form);
+	const soLuongKhac: number = useWatch('soLuongKhac', form);
 	const dinhMuc: number = useWatch('dinhMuc', form);
-	const donViTinh: EDonViTinh = useWatch('donViTinh', form);
 
 	useEffect(() => {
 		form.setFieldsValue(props.edit ? props.record : form);
@@ -48,26 +48,32 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='donViTinh' label='Đơn vị tính' rules={[...rules.required]}>
-							<Select
-								placeholder='Chọn đơn vị tính'
-								options={Object.values(EDonViTinh).map((item) => ({
-									key: item,
-									value: item,
-									label: mapDonViTinh[item],
-								}))}
+						<Form.Item name='donViTinh' label='Đơn vị tính'>
+							<Input placeholder='Nhập đơn vị tính' />
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={8}>
+						<Form.Item name='soLuongNguoi' label='Số lượng người'>
+							<InputNumber
+								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+								style={{ width: '100%' }}
+								placeholder='Nhập số lượng'
+								min={0}
 							/>
 						</Form.Item>
 					</Col>
-					{donViTinh === EDonViTinh.KHAC ? (
-						<Col xs={24}>
-							<Form.Item name='donViTinhKhac' label='Đơn vị tính khác' rules={[...rules.required]}>
-								<Input placeholder='Nhập đơn vị tính khác' />
-							</Form.Item>
-						</Col>
-					) : null}
-					<Col xs={24} md={12}>
-						<Form.Item name='soLuong' label='Số lượng' rules={[...rules.required]}>
+					<Col xs={24} md={8}>
+						<Form.Item name='soLuongNgay' label='Số lượng ngày'>
+							<InputNumber
+								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+								style={{ width: '100%' }}
+								placeholder='Nhập số lượng'
+								min={0}
+							/>
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={8}>
+						<Form.Item name='soLuongKhac' label='Số lượng khác'>
 							<InputNumber
 								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 								style={{ width: '100%' }}
@@ -88,7 +94,12 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 					</Col>
 					<Col xs={24} md={12}>
 						<Form.Item label='Thành tiền (VNĐ)'>
-							<Input value={soLuong && dinhMuc ? inputFormat(soLuong * dinhMuc) : 0} disabled />
+							<Input
+								value={
+									dinhMuc ? inputFormat((soLuongNguoi ?? 1) * (soLuongNgay ?? 1) * (soLuongKhac ?? 1) * dinhMuc) : 0
+								}
+								disabled
+							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>

@@ -8,10 +8,9 @@ import { inputFormat } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Modal, Popconfirm, Table } from 'antd';
 import _ from 'lodash';
+import { useState } from 'react';
 import { useModel } from 'umi';
 import FormDuToanKinhPhi from './FormDuToanKinhPhi';
-import { EDonViTinh, mapDonViTinh } from '@/services/HoatDongChung/constants';
-import { useState } from 'react';
 
 const TableDuToanKinhPhi = () => {
 	const { record: recHoatDong, setRecord: setRecHoatDong } = useModel('hoatdongchung');
@@ -40,24 +39,36 @@ const TableDuToanKinhPhi = () => {
 			title: 'ĐVT',
 			dataIndex: 'donViTinh',
 			align: 'center',
-			width: 100,
-			filterType: 'select',
-			filterData: Object.values(EDonViTinh).map((item) => ({
-				label: mapDonViTinh[item as EDonViTinh],
-				value: item,
-			})),
-			render: (val, rec) =>
-				val === EDonViTinh.KHAC ? <>Khác ({rec?.donViTinhKhac})</> : mapDonViTinh[val as EDonViTinh],
+			width: 120,
 			onCell,
 		},
 		{
-			title: 'SL',
-			dataIndex: 'soLuong',
-			align: 'center',
-			width: 100,
-			filterType: 'number',
-			sortable: true,
-			onCell,
+			title: 'Số lượng',
+			width: 260,
+			children: [
+				{
+					title: 'Người',
+					dataIndex: 'soLuongNguoi',
+					align: 'center',
+					width: 80,
+					onCell,
+				},
+				{
+					title: 'Ngày',
+					dataIndex: 'soLuongNgay',
+					align: 'center',
+					width: 80,
+					onCell,
+				},
+				{
+					title: 'Khác',
+					dataIndex: 'soLuongKhac',
+					align: 'center',
+					width: 80,
+
+					onCell,
+				},
+			],
 		},
 		{
 			title: 'Định mức (VNĐ)',
@@ -73,7 +84,10 @@ const TableDuToanKinhPhi = () => {
 			title: 'Thành tiền (VNĐ)',
 			align: 'center',
 			width: 120,
-			render: (val, rec) => inputFormat(rec.dinhMuc * rec.soLuong),
+			render: (val, rec) =>
+				rec?.dinhMuc
+					? inputFormat((rec?.soLuongNguoi ?? 1) * (rec?.soLuongNgay ?? 1) * (rec?.soLuongKhac ?? 1) * rec?.dinhMuc)
+					: 0,
 			onCell,
 		},
 		{
@@ -143,19 +157,23 @@ const TableDuToanKinhPhi = () => {
 					pagination: false,
 					scroll: { y: 250 },
 					summary: (pageData: HoatDongChung.IDuToanKinhPhi[]) => {
-						const tongTien = _.sumBy(pageData, (item) => item.dinhMuc * item.soLuong);
+						const tongTien = _.sumBy(
+							pageData,
+							(item) => (item?.soLuongNguoi ?? 1) * (item?.soLuongNgay ?? 1) * (item?.soLuongKhac ?? 1) * item?.dinhMuc,
+						);
 						return (
 							<Table.Summary fixed>
 								<Table.Summary.Row>
-									<Table.Summary.Cell align='center' index={0} colSpan={5}>
+									<Table.Summary.Cell align='center' index={0} colSpan={7}>
 										<b>Tổng tiền</b>
 									</Table.Summary.Cell>
 									<Table.Summary.Cell align='right' index={1}>
-										<b> {inputFormat(tongTien ?? 0)} VND</b>
+										<b> {inputFormat(tongTien ?? 0)} VNĐ</b>
 									</Table.Summary.Cell>
 									<Table.Summary.Cell index={2} />
 									<Table.Summary.Cell index={3} />
 									<Table.Summary.Cell index={4} />
+									<Table.Summary.Cell index={5} />
 								</Table.Summary.Row>
 							</Table.Summary>
 						);
