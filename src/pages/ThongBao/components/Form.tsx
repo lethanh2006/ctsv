@@ -4,7 +4,7 @@ import UploadFile from '@/components/Upload/UploadFile';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import { EReceiverType, LoaiDoiTuongThongBao } from '@/services/ThongBao/constant';
 import { type ThongBao } from '@/services/ThongBao/typing';
-import { buildUpLoadFile } from '@/services/uploadFile';
+import { buildUpLoadFile, buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Modal, Row, Segmented, Select, Tabs, message } from 'antd';
@@ -18,22 +18,14 @@ import SelectKhoaSinhVien from './SelectKhoaSinhVien';
 import SelectLopHanhChinhDebounce from './SelectLopHanhChinh';
 import SelectLopHocPhanDebounce from './SelectLopHocPhan';
 import SelectNganhCoSo from './SelectNganhCoSo';
+import MyDatePicker from '@/components/MyDatePicker';
 
-const FormThongBao = (props: { title: string; getData: any }) => {
+const FormThongBao = (props: any) => {
 	const [form] = Form.useForm();
-	const {
-		record,
-		setFormSubmiting,
-		setVisibleForm,
-		edit,
-		postModel,
-		formSubmiting,
-		visibleForm,
-		sortTime,
-		getModel,
-		putModel,
-	} = useModel('thongbao.thongbao');
-	const { title } = props;
+	const { record, setFormSubmiting, setVisibleForm, edit, postModel, formSubmiting, visibleForm, putModel } =
+		useModel('thongbao.thongbao');
+	const { setDanhSachCanBo } = useModel('thongbao.nhansu');
+	const { title, getData } = props;
 	const [activeKey, setActiveKey] = useState<string>();
 	const [danhSachNhanSu, setDanhSachNhanSu] = useState<ThongBao.IUser[]>([]);
 	const [danhSachSinhVien, setDanhSachSinhVien] = useState<ThongBao.IUser[]>([]);
@@ -43,8 +35,10 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 	const danhSachDoiTuong: string[] = Form.useWatch('danhSachDoiTuong', form);
 
 	useEffect(() => {
-		if (!visibleForm) resetFieldsForm(form);
-		else if (record?._id) form.setFieldsValue(record);
+		if (!visibleForm) {
+			resetFieldsForm(form);
+			setDanhSachCanBo([]);
+		} else if (record?._id) form.setFieldsValue(record);
 		else {
 			setActiveKey(roles?.[0]);
 			form.setFieldsValue({
@@ -60,7 +54,9 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 		try {
 			FormWaiting('Đang xử lý dữ liệu');
 			const imageUrl = await buildUpLoadFile(values, 'imageUrl');
+			const taiLieuDinhKem = await buildUpLoadMultiFile(values, 'taiLieuDinhKem');
 			values.imageUrl = imageUrl;
+			values.taiLieuDinhKem = taiLieuDinhKem;
 			setFormSubmiting(false);
 
 			if (receiverType !== EReceiverType.All) values.filter[`id${receiverType}`] = values.danhSachDoiTuong;
@@ -78,14 +74,17 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 				}
 				// delete values.filter;
 			}
+			values.notificationInternal = false;
 			delete values.loaiNguoiDung;
 
 			if (edit) {
-				putModel(record?._id ?? '', values, props.getData)
+				putModel(record?._id ?? '', values, getData)
 					.then()
 					.catch((er) => console.log(er));
 			} else {
-				await postModel(values, props.getData)
+				await postModel(values, () => {
+					getData();
+				})
 					.then(() => {
 						setDanhSachNhanSu([]);
 						setDanhSachSinhVien([]);
@@ -154,7 +153,9 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 						<Form.Item name={['filter', 'roles']} label='Vai trò' rules={[...rules.required]}>
 							<GroupTagVaiTro
 								onChange={(arr) => {
-									setActiveKey(arr?.[0]);
+									setActiveKey(
+										arr?.length === 2 && loaiNguoiDung === EReceiverType.All ? EVaiTroBieuMau.SINH_VIEN : arr?.[0],
+									);
 									if (!arr.includes(EVaiTroBieuMau.SINH_VIEN)) setDanhSachSinhVien([]);
 									if (!arr.includes(EVaiTroBieuMau.NHAN_VIEN)) setDanhSachNhanSu([]);
 								}}
@@ -172,6 +173,7 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 						<Col span={24} md={8}>
 							<Form.Item name='loaiNguoiDung' label='Danh sách người dùng'>
 								<Segmented
+									onChange={() => setDanhSachNhanSu([])}
 									options={[
 										{ value: EReceiverType.All, label: 'Tất cả' },
 										{ value: EReceiverType.User, label: 'Người dùng cụ thể' },
@@ -189,9 +191,9 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 								) : receiverType === EReceiverType.KhoaSinhVien ? (
 									<SelectKhoaSinhVien multiple />
 								) : receiverType === EReceiverType.LopHanhChinh ? (
-									<SelectLopHanhChinhDebounce multiple selectTen />
+									<SelectLopHanhChinhDebounce multiple selectMa />
 								) : receiverType === EReceiverType.LopHocPhan ? (
-									<SelectLopHocPhanDebounce multiple selectTen />
+									<SelectLopHocPhanDebounce multiple selectMa />
 								) : receiverType === EReceiverType.Nganh ? (
 									<SelectNganhCoSo multiple />
 								) : null}
@@ -215,6 +217,7 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 											selectedUsers={danhSachSinhVien}
 											setSelectedUsers={setDanhSachSinhVien}
 											danhSachDoiTuong={{ [`id${receiverType}`]: danhSachDoiTuong }}
+											receiverType={receiverType}
 										/>
 									) : activeKey === EVaiTroBieuMau.NHAN_VIEN ? (
 										<TableSelectUser
@@ -222,12 +225,24 @@ const FormThongBao = (props: { title: string; getData: any }) => {
 											selectedUsers={danhSachNhanSu}
 											setSelectedUsers={setDanhSachNhanSu}
 											danhSachDoiTuong={{ [`id${receiverType}`]: danhSachDoiTuong }}
+											receiverType={receiverType}
 										/>
 									) : null}
 								</Col>
 							) : null}
 						</>
 					) : null}
+
+					<Col span={24} md={12}>
+						<Form.Item name='taiLieuDinhKem' label='Tệp đính kèm'>
+							<UploadFile maxCount={5} />
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='thoiGianHieuLuc' label='Hiệu lực thông báo'>
+							<MyDatePicker />
+						</Form.Item>
+					</Col>
 				</Row>
 
 				<Form.Item name='content' label='Nội dung chi tiết thông báo' rules={[...rules.requiredHtml]}>

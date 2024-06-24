@@ -36,6 +36,10 @@ declare module ThongBao {
 		urlFile?: string[];
 		createdAt: string; // '2023-06-27T07:47:29.693Z';
 		read: boolean;
+
+		notificationInternal: boolean;
+		thoiGianHieuLuc: Date;
+		taiLieuDinhKem: string[];
 	}
 	export interface IThongKe {
 		tatCa: 20;

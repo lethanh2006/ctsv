@@ -1,5 +1,6 @@
 import axios from '@/utils/axios';
 import { ipNotif } from '@/utils/ip';
+import { buildFormData } from '@/utils/utils';
 
 export async function postReceiver(payload: any, params: { page: number; limit: number }) {
 	return axios.post(`${ipNotif}/notification/receiver/page`, payload, { params });
@@ -16,6 +17,13 @@ export async function deleteThongBao(id: string) {
 }
 export async function thongKeNotificationNguoiNhan(id: string) {
 	return axios.get(`${ipNotif}/notification/${id}/receiver/thong-ke`);
+}
+export async function importNguoiNhanThongBao(payload: any, role: any) {
+	const formData = buildFormData(payload);
+	return axios.post(`${ipNotif}/notification/receiver/many/import/${role}`, formData);
+}
+export async function dowLoadBieuMauNguoiNhan() {
+	return axios.get(`${ipNotif}/notification/import/template/xlsx`, { responseType: 'arraybuffer' });
 }
 
 export async function getThongBao(payload: {
