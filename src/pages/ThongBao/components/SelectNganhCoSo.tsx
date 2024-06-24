@@ -1,4 +1,3 @@
-import { EOperatorType } from '@/components/Table/constant';
 import type { NganhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/Nganh/typings';
 import { Select } from 'antd';
 import { useEffect } from 'react';
@@ -9,70 +8,32 @@ import { useModel } from 'umi';
  */
 const SelectNganhCoSo = (props: {
 	value?: string;
-	onChange?: (val: string | string[] | null) => void;
+	onChange?: (val: string) => void;
 	multiple?: boolean;
 	allowClear?: boolean;
 	hasDefault?: boolean;
-	maKhoaSinhVien?: string;
 	style?: React.CSSProperties;
 	selectMa?: boolean;
 	condition?: Partial<NganhDaoTao.IRecordCoSo>;
 	disabled?: boolean;
-	loadData?: boolean;
-	isSetRecord?: boolean;
-	placeholder?: string;
-	except?: string[];
+	readOnly?: boolean;
 }) => {
-	const {
-		value,
-		onChange,
-		multiple,
-		allowClear,
-		hasDefault,
-		maKhoaSinhVien,
-		style,
-		selectMa,
-		condition,
-		disabled,
-		loadData,
-		isSetRecord,
-		placeholder,
-		except,
-	} = props;
-	const { danhSach, getAllModel, loading } = useModel('daotaov2.danhmuc.nganhdaotao');
-	const { getAllModel: getKhoaNganh } = useModel('daotaov2.namhoc.khoanganh');
+	const { value, onChange, multiple, allowClear, hasDefault, style, selectMa, condition, disabled, readOnly } = props;
+	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.danhmuc.nganhdaotao');
 
 	const getData = async () => {
-		let allowList: string[] = [];
-		if (maKhoaSinhVien) {
-			const res = await getKhoaNganh(isSetRecord, undefined, { maKhoaSinhVien });
-			allowList = res.map((item) => item.maNganh);
+		if (!visibleForm) {
+			getAllModel(false, undefined, { ...condition, parentId: null }).then((data) => {
+				// Nếu chưa chọn giá trị và (sau khi thêm mới hoặc data chỉ có 1 phần tử)
+				// Thì chọn phần tử đầu tiên
+				if (hasDefault && !!onChange) onChange(selectMa ? data?.[0]?.ma : data?.[0]?._id);
+			});
 		}
-
-		getAllModel(
-			isSetRecord,
-			undefined,
-			{ ...condition, maNganhGoc: null },
-			allowList.length
-				? [
-						{
-							active: true,
-							field: 'ma',
-							values: allowList,
-							operator: EOperatorType.INCLUDE,
-						},
-				  ]
-				: undefined,
-		).then((data) => {
-			// Nếu chưa chọn giá trị và (sau khi thêm mới hoặc data chỉ có 1 phần tử)
-			// Thì chọn phần tử đầu tiên
-			if (hasDefault && !!onChange) onChange(selectMa ? data?.[0]?.ma : data?.[0]?._id);
-		});
 	};
 
 	useEffect(() => {
-		if (loadData !== false) getData();
-	}, [maKhoaSinhVien, JSON.stringify(condition)]);
+		getData();
+	}, [visibleForm, JSON.stringify(condition)]);
 
 	return (
 		<Select
@@ -80,20 +41,17 @@ const SelectNganhCoSo = (props: {
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
 			onChange={onChange}
-			options={danhSach
-				.filter((item) => !except || !except.includes(item.ma))
-				.map((item) => ({
-					key: item.ma ?? item._id,
-					value: selectMa ? item.ma : item._id,
-					label: `${item.dmNganh?.ten ?? item.ten ?? ''} (${item.ma ?? ''})`,
-				}))}
+			options={danhSach.map((item) => ({
+				key: item._id,
+				value: selectMa ? item.ma : item._id,
+				label: `${item?.ten} (${item.ma})`,
+			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn ngành đào tạo'}
+			placeholder='Chọn ngành đào tạo'
 			allowClear={allowClear ?? false}
-			style={{ width: '100%', ...style }}
-			showArrow
-			loading={loading}
+			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined, ...style }}
+			removeIcon={readOnly ? null : undefined}
 		/>
 	);
 };

@@ -26,6 +26,7 @@ declare module NganhDaoTao {
 		canCu?: VanBanQuyDinh.IRecord;
 		maNganhGoc?: string | null;
 		nganhGoc?: IRecordCoSo;
+		parentId?: string | null;
 
 		maDonVi?: string;
 		donVi?: ToChucNhanSu.IDonVi;
