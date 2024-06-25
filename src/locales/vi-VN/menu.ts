@@ -94,6 +94,7 @@ export default {
 	'menu.LopHanhChinh': 'Lớp hành chính',
 
 	'menu.SinhVien': 'Quản lý thông tin người học',
+	'menu.SinhVien.DotCapNhatHoSo': 'Đợt cập nhật hồ sơ',
 	'menu.SinhVien.DanhSachSinhVien': 'Hồ sơ người học',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
