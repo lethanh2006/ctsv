@@ -1,13 +1,13 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip } from 'antd';
+import { Button, Popconfirm, Switch, Tooltip } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import FormThemDot from './components/form';
 
 const DotCapNhatHoSoPage = () => {
-	const { handleEdit, getModel, page, limit, deleteModel } = useModel('daotaov2.sinhvien.dotcapnhathoso');
+	const { handleEdit, getModel, page, limit, deleteModel, putModel } = useModel('daotaov2.sinhvien.dotcapnhathoso');
 
 	const getData = () => {
 		try {
@@ -41,6 +41,22 @@ const DotCapNhatHoSoPage = () => {
 			filterType: 'date',
 			sortable: true,
 			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+		},
+		{
+			width: 160,
+			title: 'Kích hoạt',
+			dataIndex: 'kichHoat',
+			align: 'center',
+			render: (val, recordVal) => {
+				return (
+					<Switch
+						checked={val}
+						onChange={(checked: boolean) => {
+							putModel(recordVal._id, { ...recordVal, kichHoat: checked }, getData);
+						}}
+					/>
+				);
+			},
 		},
 		{
 			title: 'Thao tác',
