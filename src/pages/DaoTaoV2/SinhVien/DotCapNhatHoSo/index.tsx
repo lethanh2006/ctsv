@@ -1,14 +1,18 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Switch, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Modal, Popconfirm, Switch, Tooltip } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import FormThemDot from './components/form';
+import { useState } from 'react';
+import DanhSachChuaKhaiBao from '@/pages/DaoTaoV2/SinhVien/DotCapNhatHoSo/components/DanhSachChuaKhaiBao';
 
 const DotCapNhatHoSoPage = () => {
-	const { handleEdit, getModel, page, limit, deleteModel, putModel } = useModel('daotaov2.sinhvien.dotcapnhathoso');
-
+	const { handleEdit, getModel, page, limit, deleteModel, putModel, setRecord, record } = useModel(
+		'daotaov2.sinhvien.dotcapnhathoso',
+	);
+	const [visibleDanhSachChuaKhaiBao, setVisibleDanhSachChuaKhaiBao] = useState<boolean>(false);
 	const getData = () => {
 		try {
 			getModel();
@@ -63,19 +67,36 @@ const DotCapNhatHoSoPage = () => {
 			align: 'center',
 			width: 90,
 			fixed: 'right',
-			render: (record: DotCapNhatHoSo.IRecord) => (
+			render: (recordVal: DotCapNhatHoSo.IRecord) => (
 				<>
 					<Tooltip title='Chỉnh sửa'>
-						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+						<Button onClick={() => handleEdit(recordVal)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 					<Tooltip title='Xóa'>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id, () => getData())}
-							title='Bạn có chắc chắn muốn xóa học bổng này?'
+							onConfirm={() => deleteModel(recordVal._id, () => getData())}
+							title='Bạn có chắc chắn muốn xóa đợt này?'
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
 						</Popconfirm>
+					</Tooltip>
+					<Tooltip
+						title={
+							<>
+								Danh sách sinh viên
+								<br /> chưa khai báo
+							</>
+						}
+					>
+						<Button
+							onClick={() => {
+								setRecord(recordVal);
+								setVisibleDanhSachChuaKhaiBao(true);
+							}}
+							type='link'
+							icon={<UserOutlined />}
+						/>
 					</Tooltip>
 				</>
 			),
@@ -94,6 +115,23 @@ const DotCapNhatHoSoPage = () => {
 				deleteMany
 				formProps={{ getData: getData }}
 			/>
+			<Modal
+				visible={visibleDanhSachChuaKhaiBao}
+				onCancel={() => {
+					setVisibleDanhSachChuaKhaiBao(false);
+				}}
+				width={700}
+				footer={null}
+				title={'Danh sách sinh viên chưa khai báo'}
+        destroyOnClose
+			>
+				<DanhSachChuaKhaiBao
+					data={record}
+					onCancel={() => {
+						setVisibleDanhSachChuaKhaiBao(false);
+					}}
+				/>
+			</Modal>
 		</>
 	);
 };
