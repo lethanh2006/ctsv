@@ -1,5 +1,6 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
+import { currencyFormat } from '@/utils/utils';
 
 const ViewTableThongKe = (props: { data: any[] }) => {
 	let columns: IColumn<any>[] = [];
@@ -10,18 +11,21 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 			if (key.includes(' - ')) {
 				const arrKey = key.split(' - ');
 				const existColumn = columns.find((col: any) => col?.title?.includes(arrKey[0]));
+
 				if (!existColumn) {
 					columns.push({
 						title: arrKey[0],
 						width: 200,
 						align: 'center',
 						filterType: 'string',
+						render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 						children: [
 							{
 								title: arrKey[1],
 								dataIndex: arrKey.length > 2 ? undefined : key,
 								width: 200,
 								align: 'center',
+								render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 								children:
 									arrKey.length > 2
 										? [
@@ -30,6 +34,7 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 													dataIndex: key,
 													width: 200,
 													align: 'center',
+													render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 												},
 										  ]
 										: undefined,
@@ -38,7 +43,6 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 					});
 				} else {
 					const existChildren = existColumn?.children?.find((child: any) => child?.title?.includes(arrKey[1]));
-					debugger;
 					columns = [
 						...columns.filter((col) => col.title !== arrKey[0]),
 						{
@@ -46,6 +50,7 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 							width: 200,
 							align: 'center',
 							filterType: 'string',
+							render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 							children: !existChildren
 								? [
 										...(existColumn?.children ?? []),
@@ -54,6 +59,7 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 											dataIndex: arrKey.length === 3 ? undefined : key,
 											width: 200,
 											align: 'center',
+											render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 											children:
 												arrKey.length === 3
 													? [
@@ -62,15 +68,15 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 																dataIndex: key,
 																width: 200,
 																align: 'center',
+																render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 															},
 													  ]
 													: undefined,
 										},
 								  ]
 								: existColumn?.children?.map((children) => {
-										const existChild = children?.children?.find((child: any) => child?.title?.includes(arrKey[2]));
-										debugger;
-										if (arrKey.length === 3) {
+										const existChild = children?.children?.find((child: any) => child?.dataIndex?.includes(key));
+										if (arrKey.length === 3 && children?.title === arrKey[1]) {
 											return {
 												title: arrKey[1],
 												width: 200,
@@ -83,6 +89,7 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 																dataIndex: key,
 																width: 200,
 																align: 'center',
+																render: (val) => (typeof val === 'number' && val >= 1000 ? currencyFormat(val) : val),
 															},
 													  ]
 													: children?.children ?? [],
@@ -104,9 +111,9 @@ const ViewTableThongKe = (props: { data: any[] }) => {
 		});
 	});
 
-	console.log(columns);
+	// console.log(columns);
 
-	return <TableStaticData addStt columns={columns} data={props?.data ?? []} />;
+	return <TableStaticData otherProps={{ pagination: false }} addStt columns={columns} data={props?.data ?? []} />;
 	// return <div />;
 };
 
