@@ -98,6 +98,7 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 			{/*	setShowEdit={(val) => {}}*/}
 			{/*/>*/}
 			<TableBase
+        hideCard
 				buttons={{ create: false }}
 				getData={handleGetDanhSach}
 				modelName={'daotaov2.sinhvien.danhsachsinhviencuadot'}
