@@ -11,16 +11,16 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 	const [loading, setLoading] = useState<boolean>(false);
 	const handleGetDanhSach = async (id: string) => {
 		try {
-      setLoading(true)
+			setLoading(true);
 			const res = await getDanhSachChuaKhaiBao(id);
 			if (res) {
 				setDanhSachChuaKhaiBao(res?.data?.data ?? []);
 			}
 		} catch (e) {
 			console.log(e);
-		}finally {
-      setLoading(false)
-    }
+		} finally {
+			setLoading(false);
+		}
 	};
 	const columns: IColumn<DotCapNhatHoSo.IThongTinSinhVien>[] = [
 		{
@@ -32,29 +32,38 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 		{
 			title: 'CMT/CCCD',
 			dataIndex: 'cccd',
-      filterType: 'string',
+			filterType: 'string',
 			width: 150,
 		},
 		{
 			title: 'Email',
 			dataIndex: 'email',
-      filterType: 'string',
+			filterType: 'string',
 			width: 120,
+		},
+		{
+			title: 'Lớp hành chính',
+			dataIndex: 'lopHanhChinh',
+			filterType: 'string',
+			width: 120,
+			render: (value) => {
+				return value
+			},
 		},
 	];
 
 	useEffect(() => {
 		if (props?.data?._id) handleGetDanhSach(props?.data?._id);
 	}, [props?.data, page, limit]);
-
+	console.log('dđ', danhSachChuaKhaiBao);
 	return (
 		<>
 			<TableStaticData
-        loading={loading}
+				loading={loading}
 				otherProps={{ size: 'small' }}
 				addStt
 				size={'small'}
-				data={danhSachChuaKhaiBao}
+				data={danhSachChuaKhaiBao?.map((val)=>({...val,lopHanhChinh:val?.lopHanhChinhList?.[0]?.ten}))}
 				columns={columns}
 				setShowEdit={(val) => {}}
 			/>

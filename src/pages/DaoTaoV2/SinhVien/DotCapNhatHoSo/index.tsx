@@ -120,7 +120,7 @@ const DotCapNhatHoSoPage = () => {
 				onCancel={() => {
 					setVisibleDanhSachChuaKhaiBao(false);
 				}}
-				width={700}
+				width={900}
 				footer={null}
 				title={'Danh sách sinh viên chưa khai báo'}
         destroyOnClose

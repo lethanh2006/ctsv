@@ -16,30 +16,30 @@ declare module DotCapNhatHoSo {
 		ssoId: string;
 		soDienThoai: null;
 		email: string;
-		lopHanhChinhList: [
-			{
-				siSo: 0;
+    lopHanhChinh: string;
+		lopHanhChinhList: {
+			siSo: 0;
+			_id: string;
+			ma: string;
+			ten: string;
+			maNganh: string;
+			nhanSuSsoId: null;
+			siSoToiDa: 166;
+			doiTuong: string;
+			createdAt: string;
+			updatedAt: string;
+			maKhoaNganh: string;
+			idDotNhapHoc: null;
+			maKhoaSinhVien: string;
+			LopHcSvModel: {
 				_id: string;
-				ma: string;
-				ten: string;
-				maNganh: string;
-				nhanSuSsoId: null;
-				siSoToiDa: 166;
-				doiTuong: string;
 				createdAt: string;
 				updatedAt: string;
-				maKhoaNganh: string;
-				idDotNhapHoc: null;
-				maKhoaSinhVien: string;
-				LopHcSvModel: {
-					_id: string;
-					createdAt: string;
-					updatedAt: string;
-					lopHanhChinhId: string;
-					sinhVienSsoId: string;
-				};
-			},
-		];
+				lopHanhChinhId: string;
+				sinhVienSsoId: string;
+			};
+		}[];
+
 		nganh: {
 			tenVietTat: string;
 			_id: string;
