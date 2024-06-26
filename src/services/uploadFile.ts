@@ -7,14 +7,18 @@ export enum EFileScope {
 	PRIVATE = 'Private',
 }
 
-const handleSingleFile = async (file: any, scope: EFileScope = EFileScope.PUBLIC): Promise<string | null> => {
+const handleSingleFile = async (
+	file: any,
+	scope: EFileScope = EFileScope.PUBLIC,
+	returnResponse?: boolean,
+): Promise<string | null> => {
 	if (file?.originFileObj) {
 		try {
 			const response = await uploadFile({
 				file: file?.originFileObj,
 				scope,
 			});
-			return response?.data?.data?.url;
+			return returnResponse ? response : response?.data?.data?.url;
 		} catch (er) {
 			return Promise.reject(er);
 		}
@@ -39,11 +43,12 @@ export const buildUpLoadFile = async (
 	values: any,
 	fieldName: string,
 	scope: EFileScope = EFileScope.PUBLIC,
-): Promise<string | null> => {
+	returnResponse?: boolean,
+): Promise<string | null | any> => {
 	// File updload chưa onChange => value vẫn là string
 	if (typeof values?.[fieldName] === 'string') return values[fieldName];
 	else if (values?.[fieldName]?.fileList?.[0]) {
-		return handleSingleFile(values?.[fieldName]?.fileList?.[0], scope);
+		return handleSingleFile(values?.[fieldName]?.fileList?.[0], scope, returnResponse);
 	}
 	return null;
 };

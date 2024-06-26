@@ -4,6 +4,7 @@ import { type AxiosResponse } from 'axios';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
+import { ip3 } from './ip';
 
 const reg =
 	/(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -468,6 +469,10 @@ export const compareFullname = (a: any, b: any): number => {
 
 	return compareTen === 0 ? a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()) : compareTen;
 };
+
+export function renderUrlWithFileId(fileId: string): string {
+	return `${ip3}/file/${fileId}`;
+}
 
 /**
  * Xóa tiếng Việt

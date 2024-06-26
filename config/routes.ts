@@ -71,7 +71,12 @@
 				path: 'lop-hanh-chinh',
 				component: './DaoTaoV2/NamHoc/LopHanhChinh',
 			},
-
+			{
+				name: 'ThongKe',
+				path: 'thong-ke-sinh-vien',
+				component: './DaoTaoV2/SinhVien/ThongKe',
+				// component: './TrangChu',
+			},
 			// {
 			//   name: 'LopHanhChinh',
 			//   path: 'lop-hanh-chinh',

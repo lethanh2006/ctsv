@@ -2,8 +2,8 @@ import { DeleteOutlined, EditOutlined, ExportOutlined, PlusOutlined } from '@ant
 import { Button, Card, Collapse, Empty, Modal, Popconfirm, Spin, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
-import ViewThongKe from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/ViewThongKe';
 import Form from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/Form';
+import ViewThongKe from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/ViewThongKe';
 
 const ThongKeBaoCao = () => {
 	const {
@@ -16,6 +16,7 @@ const ThongKeBaoCao = () => {
 		handleEdit,
 		deleteModel,
 		getDataThongKeExcelModel,
+		getDataThongKeDocxModel,
 		loading,
 	} = useModel('chedochinhsach.thongke');
 
@@ -52,12 +53,13 @@ const ThongKeBaoCao = () => {
 									style={{ border: 'none', backgroundColor: '#f2f2f2', marginBottom: 8, borderRadius: 10 }}
 									extra={
 										<div style={{ display: 'flex', width: 100, justifyContent: 'space-between' }}>
-											<Tooltip title='Xuất excel'>
+											<Tooltip title='Xuất dữ liệu'>
 												<Button
 													loading={loading}
 													onClick={(e) => {
 														e.stopPropagation();
-														getDataThongKeExcelModel(item.ten, item._id, { filters: [] });
+														if (item.fileId) getDataThongKeDocxModel(item.ten, item._id, { filters: [] });
+														else getDataThongKeExcelModel(item.ten, item._id, { filters: [] });
 													}}
 													size='small'
 													icon={<ExportOutlined />}
