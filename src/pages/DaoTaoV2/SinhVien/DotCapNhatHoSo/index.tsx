@@ -85,7 +85,6 @@ const DotCapNhatHoSoPage = () => {
 						title={
 							<>
 								Danh sách sinh viên
-								<br /> chưa khai báo
 							</>
 						}
 					>
@@ -122,7 +121,7 @@ const DotCapNhatHoSoPage = () => {
 				}}
 				width={900}
 				footer={null}
-				title={'Danh sách sinh viên chưa khai báo'}
+				title={'Danh sách sinh viên'}
         destroyOnClose
 			>
 				<DanhSachChuaKhaiBao
