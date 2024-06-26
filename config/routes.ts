@@ -37,6 +37,12 @@
 		path: '/sinh-vien',
 		icon: 'contacts',
 		routes: [
+      {
+        name: 'DotCapNhatHoSo',
+        path: 'dot-cap-nhat-ho-so',
+        component: './DaoTaoV2/SinhVien/DotCapNhatHoSo',
+        // component: './TrangChu',
+      },
 			{
 				name: 'DanhSachSinhVien',
 				path: 'danh-sach-sinh-vien',
