@@ -4,8 +4,16 @@ import { ipDaoTao } from '@/utils/ip';
 export async function getDanhSachChuaKhaiBao(idDot: string) {
 	return axios.get(`${ipDaoTao}/dot-cap-nhat-ho-so/chua-dang-ky/many/${idDot}`);
 }
-export async function getDanhSachChuaKhaiBaoPage(idDot: string, page: number, limit: number) {
+export async function getDanhSachChuaKhaiBaoPage(idDot: string, page: number, limit: number, condition?: any,filter?:any) {
 	return axios.get(`${ipDaoTao}/dot-cap-nhat-ho-so/chua-dang-ky/page/${idDot}`, {
-		params: { page: page, limit: limit },
+		params: { page: page, limit: limit,condition:{...condition},filters:filter },
+	});
+}
+export async function getDanhSachDaKhaiBao(idDot: string) {
+	return axios.get(`${ipDaoTao}/dot-cap-nhat-ho-so/da-dang-ky/many/${idDot}`);
+}
+export async function getDanhSachDaKhaiBaoPage(idDot: string, page: number, limit: number, condition?: any,filter?:any) {
+	return axios.get(`${ipDaoTao}/dot-cap-nhat-ho-so/da-dang-ky/page/${idDot}`, {
+		params: { page: page, limit: limit,condition:{...condition},filters:filter },
 	});
 }
