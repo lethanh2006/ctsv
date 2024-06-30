@@ -151,7 +151,7 @@ const ViewSinhVien = () => {
 							}
               onConfirm={()=>{
                 if (record?.choPhepSua) {
-                  handleLockHoSo(record?._id);
+                  handleLockHoSoModel(record?._id);
                 } else {
                   handleUnLockHoSoModel(record?._id);
                 }
