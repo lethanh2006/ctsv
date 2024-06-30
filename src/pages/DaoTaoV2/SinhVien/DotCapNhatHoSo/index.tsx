@@ -81,13 +81,7 @@ const DotCapNhatHoSoPage = () => {
 							<Button danger type='link' icon={<DeleteOutlined />} />
 						</Popconfirm>
 					</Tooltip>
-					<Tooltip
-						title={
-							<>
-								Danh sách sinh viên
-							</>
-						}
-					>
+					<Tooltip title={<>Danh sách sinh viên</>}>
 						<Button
 							onClick={() => {
 								setRecord(recordVal);
@@ -119,10 +113,10 @@ const DotCapNhatHoSoPage = () => {
 				onCancel={() => {
 					setVisibleDanhSachChuaKhaiBao(false);
 				}}
-				width={900}
+				width={1200}
 				footer={null}
 				title={'Danh sách sinh viên'}
-        destroyOnClose
+				destroyOnClose
 			>
 				<DanhSachChuaKhaiBao
 					data={record}

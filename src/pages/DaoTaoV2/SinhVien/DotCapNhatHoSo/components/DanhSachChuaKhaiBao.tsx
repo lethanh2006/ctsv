@@ -1,20 +1,18 @@
-import TableStaticData from '@/components/Table/TableStaticData';
-import { IColumn } from '@/components/Table/typing';
-import { useEffect, useState } from 'react';
-import {
-	getDanhSachChuaKhaiBao,
-	getDanhSachChuaKhaiBaoPage,
-	getDanhSachDaKhaiBao,
-	getDanhSachDaKhaiBaoPage,
-} from '@/services/DaoTaoV2/DotCapNhatHoSo';
-import { Button, Tabs } from 'antd';
 import TableBase from '@/components/Table';
+import type { IColumn } from '@/components/Table/typing';
+import { getDanhSachChuaKhaiBaoPage, getDanhSachDaKhaiBaoPage } from '@/services/DaoTaoV2/DotCapNhatHoSo';
+import { ExportOutlined } from '@ant-design/icons';
+import { Button, Tabs } from 'antd';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
 const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: () => void }) => {
 	const { setDanhSach, condition, page, limit, setTotal, filters, setFilters } = useModel(
 		'daotaov2.sinhvien.danhsachsinhviencuadot',
 	);
+
+	const { exportDanhSachKhaiBaoModel, loading: loadingExport } = useModel('daotaov2.sinhvien.dotcapnhathoso');
+
 	const [danhSachChuaKhaiBao, setDanhSachChuaKhaiBao] = useState<DotCapNhatHoSo.IThongTinSinhVien[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [currentTabs, setCurrentTabs] = useState<string>('1');
@@ -85,20 +83,30 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 					setCurrentTabs(val);
 				}}
 			>
-				<Tabs.TabPane tab='Danh sách sinh viên đã khai báo' key='1'></Tabs.TabPane>
-				<Tabs.TabPane tab='Danh sách sinh viên chưa khai báo' key='2'></Tabs.TabPane>
+				<Tabs.TabPane tab='Danh sách sinh viên đã khai báo' key='1' />
+				<Tabs.TabPane tab='Danh sách sinh viên chưa khai báo' key='2' />
 			</Tabs>
-			{/*<TableStaticData*/}
-			{/*	loading={loading}*/}
-			{/*	otherProps={{ size: 'small' }}*/}
-			{/*	addStt*/}
-			{/*	size={'small'}*/}
-			{/*	data={danhSachChuaKhaiBao?.map((val) => ({ ...val, lopHanhChinh: val?.lopHanhChinhList?.[0]?.ten }))}*/}
-			{/*	columns={columns}*/}
-			{/*	setShowEdit={(val) => {}}*/}
-			{/*/>*/}
 			<TableBase
-        hideCard
+				hideCard
+				otherButtons={[
+					<Button
+						type='primary'
+						icon={<ExportOutlined />}
+						loading={loadingExport}
+						onClick={() => {
+							if (!props.data) return;
+							exportDanhSachKhaiBaoModel(
+								currentTabs === '1' ? 'da-dang-ky' : 'chua-dang-ky',
+								props.data?._id,
+								undefined,
+								filters,
+							);
+						}}
+						key={'export'}
+					>
+						Xuất danh sách
+					</Button>,
+				]}
 				buttons={{ create: false }}
 				getData={handleGetDanhSach}
 				modelName={'daotaov2.sinhvien.danhsachsinhviencuadot'}

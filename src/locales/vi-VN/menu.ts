@@ -104,6 +104,7 @@ export default {
 	'menu.SinhVien.ChuyenTruong': 'Chuyển trường',
 	'menu.SinhVien.KhenThuong': 'Khen thưởng',
 	'menu.SinhVien.KyLuat': 'Kỷ luật',
+	'menu.SinhVien.ThongKe': 'Thống kê',
 
 	'menu.TinTuc': 'Tin tức',
 	'menu.TinTuc.ChuDe': 'Chủ đề',

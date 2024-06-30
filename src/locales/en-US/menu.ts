@@ -94,6 +94,7 @@ export default {
 	'menu.LopHanhChinh': 'Lớp hành chính',
 
 	'menu.SinhVien': 'Quản lý thông tin người học',
+	'menu.SinhVien.DotCapNhatHoSo': 'Đợt cập nhật hồ sơ',
 	'menu.SinhVien.DanhSachSinhVien': 'Hồ sơ người học',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
@@ -103,6 +104,7 @@ export default {
 	'menu.SinhVien.ChuyenTruong': 'Chuyển trường',
 	'menu.SinhVien.KhenThuong': 'Khen thưởng',
 	'menu.SinhVien.KyLuat': 'Kỷ luật',
+	'menu.SinhVien.ThongKe': 'Thống kê',
 
 	'menu.TinTuc': 'Tin tức',
 	'menu.TinTuc.ChuDe': 'Chủ đề',

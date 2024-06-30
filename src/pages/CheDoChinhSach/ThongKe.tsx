@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExportOutlined, FileOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Collapse, Empty, Modal, Popconfirm, Spin, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -53,19 +53,32 @@ const ThongKeBaoCao = () => {
 									style={{ border: 'none', backgroundColor: '#f2f2f2', marginBottom: 8, borderRadius: 10 }}
 									extra={
 										<div style={{ display: 'flex', width: 100, justifyContent: 'space-between' }}>
-											<Tooltip title='Xuất dữ liệu'>
+											<Tooltip title='Xuất excel'>
 												<Button
 													loading={loading}
 													onClick={(e) => {
 														e.stopPropagation();
-														if (item.fileId) getDataThongKeDocxModel(item.ten, item._id, { filters: [] });
-														else getDataThongKeExcelModel(item.ten, item._id, { filters: [] });
+														getDataThongKeExcelModel(item.ten, item._id, { filters: [] });
 													}}
 													size='small'
 													icon={<ExportOutlined />}
 													type='link'
 												/>
 											</Tooltip>
+											{item.fileId && (
+												<Tooltip title='Xuất docx'>
+													<Button
+														loading={loading}
+														onClick={(e) => {
+															e.stopPropagation();
+															getDataThongKeDocxModel(item.ten, item._id, { filters: [] });
+														}}
+														size='small'
+														icon={<FileOutlined />}
+														type='link'
+													/>
+												</Tooltip>
+											)}
 											<Tooltip title='Chỉnh sửa'>
 												<Button
 													onClick={(e) => {
