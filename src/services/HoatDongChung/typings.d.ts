@@ -49,4 +49,15 @@ declare module HoatDongChung {
 			refId: string;
 		};
 	}
+
+	export interface DanhSachSinhVienThamGia {
+		_id: string;
+		hoatDongCtsvId: string;
+		ma: string;
+		maNganh: string;
+		ssoId: string;
+		ten: string;
+		tenNganh: string;
+		trangThaiThamGia: string;
+	}
 }
