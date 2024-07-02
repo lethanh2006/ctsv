@@ -6,3 +6,14 @@ export const thongKe = async (payload: { condition?: any; filters?: any[] }) =>
 
 export const thongKeChung = async (payload: { condition?: any; filters?: any[] }) =>
 	axios.get(`${ip3}/hoat-dong-ctsv/thong-ke/chung`, { params: payload });
+
+export const importDanhSachSinhVien = async (idSuKien: string, file: any) => {
+	const form = new FormData();
+	form.append('file', file);
+	return axios.post(`${ip3}/sv-hd-ctsv/import/sv/hoat-dong-ctsv/${idSuKien}`, form);
+};
+export const importDanhSachSinhVienThamGia = async (idSuKien: string, trangThai: string, file: any) => {
+	const form = new FormData();
+	form.append('file', file);
+	return axios.put(`${ip3}/sv-hd-ctsv/import/sv/hoat-dong-ctsv/${idSuKien}/trang-thai/${trangThai}`, form);
+};

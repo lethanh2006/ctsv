@@ -7,6 +7,9 @@ export const getThongKeDanTocSinhVien = (maHocKy: string) => {
 export const getThongKeHoKhauSinhVien = (maHocKy: string) => {
 	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/ho-khau/hoc-ky/${maHocKy}`);
 };
+export const getThongKeCoVanHocTap = (maHocKy: string) => {
+	return axios.get(`${ipDaoTao}/lop-hanh-chinh/tong-hop/co-van/hoc-ky/${maHocKy}`);
+};
 export const getThongKeTonGiaoSinhVien = (maHocKy: string) => {
 	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/ton-giao/hoc-ky/${maHocKy}`);
 };
