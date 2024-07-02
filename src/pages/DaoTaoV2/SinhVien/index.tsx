@@ -2,8 +2,8 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
-import { EyeOutlined } from '@ant-design/icons';
-import { Button, Tooltip, Tag } from 'antd';
+import { EyeOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import { Button, Tooltip, Tag, message, Popconfirm } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
@@ -11,6 +11,7 @@ import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinh
 import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
 import { ETrangThaiHocSv, colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import { handleLockHoSo, handleUnLockHoSo } from '@/services/DaoTaoV2/SinhVien';
 
 const ViewSinhVien = () => {
 	const { getModel, page, limit, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
@@ -18,6 +19,30 @@ const ViewSinhVien = () => {
 	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 
 	const getData = () => getModel({ maKhoaSinhVien: recKhoa?.ma, maNganh: recNganh?.ma });
+
+	const handleLockHoSoModel = async (id: string) => {
+		try {
+			const res = await handleLockHoSo(id);
+			if (res) {
+				message.success('Khoá hồ sơ thành công');
+				getData();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	const handleUnLockHoSoModel = async (id: string) => {
+		try {
+			const res = await handleUnLockHoSo(id);
+			if (res) {
+				message.success('Mở khoá hồ sơ thành công');
+				getData();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 	const onCell = (rec: SinhVien.IRecord) => ({
 		onClick: () => handleView(rec),
@@ -100,6 +125,14 @@ const ViewSinhVien = () => {
 			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
 		},
 		{
+			title: 'Trạng thái',
+			dataIndex: 'choPhepSua',
+			width: 100,
+			align: 'center',
+			fixed: 'right',
+			render: (val) => (val ? <Tag color='green'>Chưa khoá</Tag> : <Tag color='red'>Khoá</Tag>),
+		},
+		{
 			title: 'Thao tác',
 			align: 'center',
 			width: 90,
@@ -108,6 +141,34 @@ const ViewSinhVien = () => {
 				<>
 					<Tooltip title='Xem chi tiết'>
 						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
+					</Tooltip>
+					<Tooltip title={record?.choPhepSua ? 'Khoá hồ sơ' : 'Mở khoá hồ sơ'}>
+						<Popconfirm
+							title={
+								record?.choPhepSua
+									? 'Bạn có chắc chắn muốn khoá chỉnh sửa hồ sơ này?'
+									: 'Bạn có chắc chắn muốn mở khoá chỉnh sửa hồ sơ này?'
+							}
+              onConfirm={()=>{
+                if (record?.choPhepSua) {
+                  handleLockHoSoModel(record?._id);
+                } else {
+                  handleUnLockHoSoModel(record?._id);
+                }
+              }}
+						>
+							<Button
+								// onClick={() => {
+								// 	if (record?.choPhepSua) {
+								// 		handleLockHoSo(record?._id);
+								// 	} else {
+								// 		handleUnLockHoSoModel(record?._id);
+								// 	}
+								// }}
+								type='link'
+								icon={record?.choPhepSua ? <LockOutlined /> : <UnlockOutlined />}
+							/>
+						</Popconfirm>
 					</Tooltip>
 					{/* <Tooltip title='Xóa'>
 						<Popconfirm
