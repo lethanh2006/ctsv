@@ -127,10 +127,15 @@ const ViewSinhVien = () => {
 		{
 			title: 'Trạng thái',
 			dataIndex: 'choPhepSua',
-			width: 100,
+			width: 120,
 			align: 'center',
 			fixed: 'right',
-			render: (val) => (val ? <Tag color='green'>Chưa khoá</Tag> : <Tag color='red'>Khoá</Tag>),
+			render: (val) => (val ? <Tag color='green'>Mở khóa</Tag> : <Tag color='red'>Khóa</Tag>),
+			filterType: 'select',
+			filterData: [
+				{ value: true, label: 'Mở khóa' },
+				{ value: false, label: 'Khóa' },
+			],
 		},
 		{
 			title: 'Thao tác',
@@ -149,13 +154,13 @@ const ViewSinhVien = () => {
 									? 'Bạn có chắc chắn muốn khoá chỉnh sửa hồ sơ này?'
 									: 'Bạn có chắc chắn muốn mở khoá chỉnh sửa hồ sơ này?'
 							}
-              onConfirm={()=>{
-                if (record?.choPhepSua) {
-                  handleLockHoSoModel(record?._id);
-                } else {
-                  handleUnLockHoSoModel(record?._id);
-                }
-              }}
+							onConfirm={() => {
+								if (record?.choPhepSua) {
+									handleLockHoSoModel(record?._id);
+								} else {
+									handleUnLockHoSoModel(record?._id);
+								}
+							}}
 						>
 							<Button
 								// onClick={() => {
