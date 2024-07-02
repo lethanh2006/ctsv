@@ -63,3 +63,11 @@ export async function exportKetQuaHocTap(ssoId: string, params?: { condition?: a
 		params,
 	});
 }
+
+export async function handleLockHoSo(hoSoId: string) {
+  return axios.put(`${ipDaoTao}/sinh-vien/khoa/${hoSoId}`);
+}
+
+export async function handleUnLockHoSo(hoSoId: string) {
+  return axios.put(`${ipDaoTao}/sinh-vien/mo-khoa/${hoSoId}`);
+}
