@@ -14,3 +14,5 @@ export const updateTrangThaiHoatDongCLB = (
 export const thongKeChung = () => {
 	return axios.get(`${ip3}/cau-lac-bo/thong-ke-chung`);
 };
+
+export const thongKeTongHop = (maHocKy: string) => axios.get(`${ip3}/cau-lac-bo/thong-ke/tong-hop/hoc-ky/${maHocKy}`);
