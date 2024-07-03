@@ -9,7 +9,9 @@ import { useModel } from 'umi';
 const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 
-	const [data, setData] = useState<{ danToc: string; tongSoSv: number; gioiTinh: number }[]>([]);
+	const [data, setData] = useState<
+		{ danToc: string; tongSoSv: number; nu: number; nam: number; noInfoGioiTinh: number }[]
+	>([]);
 
 	const getData = async () => {
 		if (!recHocKy) return;
@@ -21,7 +23,7 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 		getData();
 	}, [recHocKy?.ma]);
 
-	const columns: IColumn<{ danToc: string; tongSoSv: number; gioiTinh: number }>[] = [
+	const columns: IColumn<{ danToc: string; tongSoSv: number; nu: number; nam: number; noInfoGioiTinh: number }>[] = [
 		{
 			title: 'Dân tộc',
 			dataIndex: 'danToc',
@@ -39,7 +41,21 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 		},
 		{
 			title: 'Nữ',
-			dataIndex: 'gioiTinh',
+			dataIndex: 'nu',
+			width: 200,
+			sortable: true,
+			align: 'center',
+		},
+		{
+			title: 'Nam',
+			dataIndex: 'nam',
+			width: 200,
+			sortable: true,
+			align: 'center',
+		},
+		{
+			title: 'Không có thông tin',
+			dataIndex: 'noInfoGioiTinh',
 			width: 200,
 			sortable: true,
 			align: 'center',
@@ -50,24 +66,34 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 		<TableStaticData addStt columns={columns} data={data} />
 	) : (
 		<Row>
-			<Col span={12}>
+			<Col md={12} lg={8}>
 				<DonutChart
 					showTotal
 					formatY={(val) => `${val} sinh viên`}
-					height={320}
+					height={220}
 					yLabel={['Sinh viên']}
 					xAxis={data.map((item) => (item.danToc ? item.danToc : 'Không có thông tin'))}
 					yAxis={[data.map((item) => item.tongSoSv)]}
 				/>
 			</Col>
-			<Col span={12}>
+			<Col md={12} lg={8}>
 				<DonutChart
 					showTotal
-					formatY={(val) => `${val} sinh viên nữ`}
-					height={320}
+					formatY={(val) => `${val} nữ`}
+					height={220}
 					yLabel={['Sinh viên nữ']}
 					xAxis={data.map((item) => (item.danToc ? item.danToc : 'Không có thông tin'))}
-					yAxis={[data.map((item) => item.gioiTinh)]}
+					yAxis={[data.map((item) => item?.nu)]}
+				/>
+			</Col>
+			<Col md={12} lg={8}>
+				<DonutChart
+					showTotal
+					formatY={(val) => `${val} nam`}
+					height={220}
+					yLabel={['Sinh viên nữ']}
+					xAxis={data.map((item) => (item.danToc ? item.danToc : 'Không có thông tin'))}
+					yAxis={[data.map((item) => item?.nam)]}
 				/>
 			</Col>
 		</Row>

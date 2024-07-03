@@ -1,7 +1,12 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
-import { ELoaiBoLoc, type ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
+import {
+	ELoaiBoLoc,
+	arrSpecialColumn,
+	arrSpecialDataIndex,
+	type ELoaiCheDoSinhVien,
+} from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
@@ -140,16 +145,31 @@ const QuyetDinh = (props: {
 
 	recordCheDoChinhSach?.danhSachCauHinhThongTin?.map((item) => {
 		if (item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH) return;
-		columns.push({
-			title: item.ten,
-			dataIndex: `thongTinQuyetDinh.${item.ma}.value`,
-			width: 200,
-			align: 'center',
-			specialFilter: true,
-			onCell,
-			render: (val, rec) => <ViewRender cauHinh={item} recordSanPham={{ thongTinKhaiBao: rec.thongTinQuyetDinh }} />,
-			...buildFilter(item, danhSach),
-		});
+		if (arrSpecialColumn.includes(item.ten) && columns.map((ele) => ele.title).includes('Đối tượng miễn giảm')) return;
+		if (arrSpecialColumn.includes(item.ten)) {
+			columns.push({
+				title: 'Đối tượng miễn giảm',
+				// dataIndex: `thongTinQuyetDinh.${item.ma}.value`,
+				width: 200,
+				// align: 'center',
+				// specialFilter: true,
+				onCell,
+				render: (val, rec) => (
+					<div>{arrSpecialDataIndex?.map((ele) => rec?.thongTinQuyetDinh?.[ele]?.value)?.filter((ele) => ele)}</div>
+				),
+				// filterType: 'string',
+			});
+		} else
+			columns.push({
+				title: item.ten,
+				dataIndex: `thongTinQuyetDinh.${item.ma}.value`,
+				width: 200,
+				align: 'center',
+				specialFilter: true,
+				onCell,
+				render: (val, rec) => <ViewRender cauHinh={item} recordSanPham={{ thongTinKhaiBao: rec.thongTinQuyetDinh }} />,
+				...buildFilter(item, danhSach),
+			});
 	});
 
 	columns.push({

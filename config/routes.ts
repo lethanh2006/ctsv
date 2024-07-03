@@ -37,12 +37,12 @@
 		path: '/sinh-vien',
 		icon: 'contacts',
 		routes: [
-      {
-        name: 'DotCapNhatHoSo',
-        path: 'dot-cap-nhat-ho-so',
-        component: './DaoTaoV2/SinhVien/DotCapNhatHoSo',
-        // component: './TrangChu',
-      },
+			{
+				name: 'DotCapNhatHoSo',
+				path: 'dot-cap-nhat-ho-so',
+				component: './DaoTaoV2/SinhVien/DotCapNhatHoSo',
+				// component: './TrangChu',
+			},
 			{
 				name: 'DanhSachSinhVien',
 				path: 'danh-sach-sinh-vien',
@@ -125,6 +125,12 @@
 				component: './HoatDongChung/HuongNghiepViecLam',
 			},
 			{
+				name: 'HoatDongHuyDongGiaoDucTuTuongChinhTri',
+				path: 'huy-dong-giao-duc-tu-tuong-chinh-tri',
+				// component: './SuKien',
+				component: './HoatDongChung/HoatDongHuyDongGiaoDucTuTuongChinhTri',
+			},
+			{
 				name: 'DanhGiaKetQua',
 				path: 'danh-gia-ket-qua',
 				component: './CheDoChinhSach/GiaoDucChinhTriTuTuong/QuyetDinhGDCTTT',
@@ -181,7 +187,7 @@
 			{
 				name: 'ThongKe',
 				path: 'thong-ke',
-				component: './HoatDongChung/ThongKePhucVuCongDong',
+				// component: './HoatDongChung/ThongKeChung',
 			},
 		],
 	},
@@ -212,7 +218,8 @@
 			{
 				name: 'ThongKe',
 				path: 'thong-ke',
-				component: './CauLacBo/ThongKe',
+				// component: './CauLacBo/ThongKe',
+				component: './HoatDongChung/ThongKeVanHoaTheThao',
 			},
 		],
 	},

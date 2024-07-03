@@ -49,6 +49,7 @@ export default {
 	'menu.SuKien': 'Giáo dục chính trị tư tưởng',
 	'menu.SuKien.ThongKe': 'Thống kê',
 	'menu.SuKien.TuanLeCongDan': 'Tuần sinh hoạt công dân',
+	'menu.SuKien.HoatDongHuyDongGiaoDucTuTuongChinhTri': 'Hoạt động huy động giáo dục tư tưởng chính trị',
 	'menu.SuKien.CacHoatDongChoSinhVien': 'Hướng nghiệp - việc làm',
 	'menu.SuKien.DanhGiaKetQua': 'Đánh giá kết quả',
 	'menu.HoatDongKetNoiVaPhucVuCongDong': 'Phục vụ cộng đồng',

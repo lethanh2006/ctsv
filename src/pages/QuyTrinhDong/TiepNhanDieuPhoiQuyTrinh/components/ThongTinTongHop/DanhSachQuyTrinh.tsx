@@ -1,16 +1,16 @@
+import { getCountDonChuaXuLy } from '@/services/QuyTrinhDong/ThongKe/thongke';
+import { MapCurrentRoles } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
+import { getQuyTrinhLinhVuc } from '@/services/QuyTrinhDong/quytrinh';
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
+import { currentRole } from '@/utils/ip';
+import { useModel } from '@@/plugin-model/useModel';
 import { DownOutlined, FileAddOutlined, FolderOutlined } from '@ant-design/icons';
 import type { TreeProps } from 'antd';
-import { Input } from 'antd';
-import { Tree } from 'antd';
+import { Input, Tree } from 'antd';
+import { type DataNode } from 'antd/lib/tree';
+import { nanoid } from 'nanoid';
 import { useEffect, useMemo, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { type DataNode } from 'antd/lib/tree';
-import { getQuyTrinhLinhVuc } from '@/services/QuyTrinhDong/quytrinh';
-import { useModel } from '@@/plugin-model/useModel';
-import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
-import { nanoid } from 'nanoid';
-import { currentRole } from '@/utils/ip';
-import { MapCurrentRoles } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
 const DanhSachQuyTrinh = (props: { type: string }) => {
 	const { dataQuyTrinh, getDataByChuyenVien } = useModel('quytrinh.quanlyquytrinh');
 	const { setQuyTrinhSelect, setMaBuoc } = useModel('quytrinh.khaibaoquytrinh');
@@ -22,6 +22,16 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 	const [searchValue, setSearchValue] = useState('');
 	const [dataLinhVuc, setDataLinhVuc] = useState<any>();
 	const [includeSearch, setIncludeSearch] = useState<string>('');
+
+	const [countDonChuaXuLy, setCountDonChuaXuLy] = useState<
+		{ quyTrinh: string; quyTrinhId: string; soLuongCanXuLy: number }[]
+	>([]);
+
+	const getCountDonCanXuLy = async () => {
+		const res = await getCountDonChuaXuLy();
+		setCountDonChuaXuLy(res?.data?.data ?? []);
+	};
+
 	const onExpand: TreeProps['onExpand'] = (expandKeys) => {
 		setExpandedKeys(expandKeys);
 		setAutoExpandParent(false);
@@ -87,8 +97,13 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 				children: arrQuyTrinh
 					?.filter((item2) => item2?.linhVuc === item?.ten && item2.active)
 					?.map((item3, index: number) => {
+						const count = countDonChuaXuLy?.find((ele) => ele.quyTrinhId === item3._id)?.soLuongCanXuLy ?? 0;
 						return {
-							title: `${index + 1}. ${item3?.ten}`,
+							title: (
+								<div>
+									{index + 1}. {item3?.ten} <b style={{ color: count > 0 ? 'red' : 'black' }}>({count})</b>
+								</div>
+							),
 							key: item3._id,
 							icon: <FileAddOutlined />,
 							children: item3?.danhSachBuocXuLy?.map((ele) => {
@@ -130,6 +145,10 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 			setQuyTrinhSelect(dataQuyTrinh?.[0]);
 		}
 	}, [dataQuyTrinh, dataLinhVuc]);
+
+	useEffect(() => {
+		getCountDonCanXuLy();
+	}, []);
 
 	return (
 		<>

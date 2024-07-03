@@ -7,6 +7,7 @@ import ThongKeNganh from './Nganh';
 import ThongKeHoKhau from './HoKhau';
 import { useState } from 'react';
 import { PieChartOutlined, TableOutlined } from '@ant-design/icons';
+import CoVanHocTap from '@/pages/DaoTaoV2/SinhVien/ThongKe/CoVanHocTap';
 
 const ThongKeSinhVien = () => {
 	const { record: recHocKy, setRecord: setRecHocKy, danhSach } = useModel('daotaov2.hocky.hocky');
@@ -37,6 +38,9 @@ const ThongKeSinhVien = () => {
 				</Collapse.Panel>
 				<Collapse.Panel header='Thống kê sinh viên theo hộ khẩu' key={'hokhau'}>
 					<ThongKeHoKhau mode={mode} />
+				</Collapse.Panel>
+				<Collapse.Panel header='Cố vấn học tập' key={'cvht'}>
+					<CoVanHocTap mode={mode} />
 				</Collapse.Panel>
 			</Collapse>
 		</Card>

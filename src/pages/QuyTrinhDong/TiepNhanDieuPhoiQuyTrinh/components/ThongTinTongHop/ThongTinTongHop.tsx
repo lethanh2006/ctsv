@@ -1,8 +1,9 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 
+import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
 import { useModel } from '@@/plugin-model/useModel';
-import { Button, Card, Col, Modal, Row, Spin, Tabs } from 'antd';
+import { Button, Card, Col, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
@@ -10,7 +11,6 @@ import SplitPane from 'react-split-pane';
 import Pane from 'react-split-pane/lib/Pane';
 import BlockSoLuongDon from './BlockSoLuongDon';
 import BlockSoLuongDonTheoBuoc from './BlockSoLuongDonTheoBuoc';
-import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
 import DanhSachQuyTrinh from './DanhSachQuyTrinh';
 export interface DataSoLuongDon {
 	_id: string;
@@ -38,6 +38,7 @@ const ThongTinTongHop = (props: IProps) => {
 	const handlePaneSizeChange = (size: any) => {
 		setPaneSize(size[0]);
 	};
+
 	const getDonHomNay = async (mode: 'day' | 'week' | 'month', quyTrinhId?: string) => {
 		const res = await thongKeDon(type, {
 			startDate: moment().startOf(mode).toISOString(),
@@ -100,6 +101,7 @@ const ThongTinTongHop = (props: IProps) => {
 	useEffect(() => {
 		getTongSoDonQuaHan(typeBuoc);
 	}, [typeBuoc]);
+
 	const columns: IColumn<any>[] = [
 		{
 			title: 'Tên đơn',

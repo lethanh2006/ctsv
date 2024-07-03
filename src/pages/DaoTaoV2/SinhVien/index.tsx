@@ -2,8 +2,8 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
-import { EyeOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
-import { Button, Tooltip, Tag, message, Popconfirm } from 'antd';
+import { EyeOutlined, FileImageOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import { Button, Tooltip, Tag, message, Popconfirm, Modal } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
@@ -12,9 +12,12 @@ import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
 import { ETrangThaiHocSv, colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 import { handleLockHoSo, handleUnLockHoSo } from '@/services/DaoTaoV2/SinhVien';
+import FormCapNhatAnhSV from './components/FormCapNhatAnhSV';
+import KetQuaCapNhatAnhSV from './components/KetQuaCapNhatAnhSV';
 
 const ViewSinhVien = () => {
-	const { getModel, page, limit, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
+	const { getModel, page, limit, isView, handleView, visibleFormCapNhatAnh, setvisibleFormCapNhatAnh } =
+		useModel('daotaov2.sinhvien.sinhvien');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 
@@ -53,7 +56,7 @@ const ViewSinhVien = () => {
 		{
 			title: 'Mã sinh viên',
 			dataIndex: 'ma',
-			width: 120,
+			width: 140,
 			sortable: true,
 			filterType: 'string',
 			align: 'center',
@@ -111,7 +114,7 @@ const ViewSinhVien = () => {
 			title: 'Trạng thái học',
 			dataIndex: 'trangThaiHoc',
 			align: 'center',
-			width: 120,
+			width: 140,
 			filterType: 'select',
 			filterData: Object.values(ETrangThaiHocSv),
 			render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
@@ -120,7 +123,7 @@ const ViewSinhVien = () => {
 		{
 			title: 'Cập nhật lúc',
 			dataIndex: 'updatedAt',
-			width: 100,
+			width: 120,
 			sortable: true,
 			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
 		},
@@ -203,8 +206,29 @@ const ViewSinhVien = () => {
 				rowSelection
 				deleteMany
 				buttons={{ import: false, export: true, create: false }}
-				otherButtons={[<FilterKhoaSinhVien key={'filter'} hasSelectNganh allowClear />]}
+				otherButtons={[
+					<FilterKhoaSinhVien key={'filter'} hasSelectNganh allowClear />,
+					<Button
+						onClick={() => {
+							setvisibleFormCapNhatAnh(true);
+						}}
+						icon={<FileImageOutlined />}
+						key={'image'}
+						type='primary'
+					>
+						Cập nhật ảnh thẻ SV
+					</Button>,
+				]}
 			/>
+			<Modal
+				visible={visibleFormCapNhatAnh}
+				onCancel={() => setvisibleFormCapNhatAnh(false)}
+				bodyStyle={{ padding: 0 }}
+				footer={false}
+			>
+				<FormCapNhatAnhSV getData={getData} />
+			</Modal>
+			<KetQuaCapNhatAnhSV />
 		</>
 	);
 };

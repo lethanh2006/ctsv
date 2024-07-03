@@ -1,5 +1,6 @@
 import type {
 	EChucVuThanhVienCauLacBo,
+	ELoaiThanhVienCauLacBo,
 	ETrangThaiHoatDong,
 	ETrangThaiThanhVien,
 	EVaiTroThanhVienPhongBan,
@@ -37,6 +38,7 @@ declare module CauLacBo {
 		thoiGianKetThuc: string;
 		danhSachBanBoPhan: { vaiTroThanhVienBanBoPhan: EVaiTroThanhVienPhongBan; banBoPhanId: string }[];
 		trangThai: ETrangThaiThanhVien;
+		loaiThanhVien: ELoaiThanhVienCauLacBo;
 		[x: string]: string;
 	}
 

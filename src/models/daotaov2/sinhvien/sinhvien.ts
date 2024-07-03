@@ -1,8 +1,14 @@
 import { EOperatorType } from '@/components/Table/constant';
 import useInitModel from '@/hooks/useInitModel';
-import { getKhoaNganhSinhVien, getThongKeTrangThaiSv, getTienTrinhSinhVien } from '@/services/DaoTaoV2/SinhVien';
+import {
+	getKhoaNganhSinhVien,
+	getThongKeTrangThaiSv,
+	getTienTrinhSinhVien,
+	uploadAnhTheSinhVien,
+} from '@/services/DaoTaoV2/SinhVien';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { ipDaoTao } from '@/utils/ip';
+import { message } from 'antd';
 import type { AxiosResponse } from 'axios';
 import _ from 'lodash';
 import { useState } from 'react';
@@ -13,7 +19,11 @@ export default () => {
 	const [thongKeTrangThai, setThongKeTrangThai] = useState<SinhVien.TThongKeTrangThai>();
 	const { setLoading, getModel, getService, setDanhSach } = objInit;
 	const [khoaNganhSv, setKhoaNganhSv] = useState<KhoaNganh.TKhoaNganhSv>();
-
+	const [visibleFormCapNhatAnh, setvisibleFormCapNhatAnh] = useState<boolean>(false);
+	const [listImageError, setListImageError] = useState<{ filename: string; reason: string }[]>([]);
+	const [listImageSuccess, setListImageSuccess] = useState<{ filename: string; reason: string }[]>([]);
+	const [listImageNotfound, setListImageNotfound] = useState<{ filename: string; reason: string }[]>([]);
+	const [visibleKetQuaImportAnh, setVisibleKetQuaImportAnh] = useState<boolean>(false);
 	const getTienTrinhTotNghiepModel = async (sinhVienSsoId: string): Promise<SinhVien.ITienTrinhTotNghiep> => {
 		setLoading(true);
 		try {
@@ -91,8 +101,30 @@ export default () => {
 		}
 	};
 
+	const uploadAnhTheSinhVienModel = async (payload: { file: string | Blob }, getData: any) => {
+		setLoading(true);
+		const res = await uploadAnhTheSinhVien(payload);
+		message.success('Xử lý thành công');
+		setListImageError(res?.data?.data?.errors ?? []);
+		setListImageNotfound(res?.data?.data?.notFounds ?? []);
+		setListImageSuccess(res?.data?.data?.successes ?? []);
+		getData();
+		setVisibleKetQuaImportAnh(true);
+		setvisibleFormCapNhatAnh(false);
+		setLoading(false);
+	};
+
 	return {
 		...objInit,
+		listImageError,
+		setListImageError,
+		setListImageSuccess,
+		listImageSuccess,
+		setListImageNotfound,
+		listImageNotfound,
+		visibleKetQuaImportAnh,
+		setVisibleKetQuaImportAnh,
+		uploadAnhTheSinhVienModel,
 		getTienTrinhTotNghiepModel,
 		tienTrinhTotNghiep,
 		raSoatTienDoModel,
@@ -102,5 +134,7 @@ export default () => {
 		getKhoaNganhSvModel,
 		khoaNganhSv,
 		setKhoaNganhSv,
+		visibleFormCapNhatAnh,
+		setvisibleFormCapNhatAnh,
 	};
 };

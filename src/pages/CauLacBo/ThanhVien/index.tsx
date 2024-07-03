@@ -2,6 +2,7 @@ import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import {
 	EChucVuThanhVienCauLacBo,
+	ELoaiThanhVienCauLacBo,
 	ETrangThaiThanhVien,
 	MapKeyChucVuThanhVienCLB,
 	MapKeyVaiTroThanhVienPhongBanCLB,
@@ -80,6 +81,17 @@ const ThanhVienCauLacBo = () => {
 			filterData: Object.values(EChucVuThanhVienCauLacBo).map((item) => ({
 				value: item,
 				label: MapKeyChucVuThanhVienCLB[item],
+			})),
+		},
+		{
+			title: 'Loại',
+			width: 200,
+			align: 'center',
+			dataIndex: 'loaiThanhVien',
+			filterType: 'select',
+			filterData: Object.values(ELoaiThanhVienCauLacBo).map((item) => ({
+				value: item,
+				label: item,
 			})),
 		},
 		{
