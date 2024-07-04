@@ -22,7 +22,7 @@ const TinyEditor = (props: {
 		const input = document.createElement('input');
 		// Tạo input file và click luôn
 		input.setAttribute('type', 'file');
-		input.setAttribute('accept', 'image/*');
+		input.setAttribute('accept', 'image/*, .pdf, .docx, .doc, .xlsx');
 		input.click();
 		// eslint-disable-next-line func-names
 		input.onchange = async function () {
@@ -48,9 +48,9 @@ const TinyEditor = (props: {
 		<>
 			<Editor
 				// apiKey='ihu6rlypska4k9h96g5x752rocpj133f20q41afy85shcrc5'
-        tinymceScriptSrc='/tinymce/tinymce.min.js'
-        //@ts-ignore
-        licenseKey='gpl'
+				tinymceScriptSrc='/tinymce/tinymce.min.js'
+				//@ts-ignore
+				licenseKey='gpl'
 				// apiKey='vrh3rpim05kai51zg4tcenfbzwhl243use11yolfq6d9ufvw'
 				value={value}
 				disabled={disabled}

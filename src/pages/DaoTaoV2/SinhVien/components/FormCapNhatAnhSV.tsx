@@ -30,7 +30,7 @@ const FormCapNhatAnhSV = (props: { getData: any }) => {
 							label='File ảnh sinh viên'
 							rules={[...rules.fileRequired]}
 						>
-							<UploadFile accept='.zip' maxCount={1} />
+							<UploadFile maxSize={25} accept='.zip' maxCount={1} />
 						</Form.Item>
 					</Col>
 				</Row>

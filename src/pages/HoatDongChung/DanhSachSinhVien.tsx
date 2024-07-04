@@ -169,7 +169,22 @@ const DanhSachSinhVien = (props: IProps) => {
 						}
 					}}
 				>
-					<Form.Item name='file' rules={[...rules.required, ...rules.fileRequired]}>
+					<Form.Item
+						extra={
+							<div>
+								Xem file mẫu{' '}
+								<a
+									target='_blank'
+									href='https://ais.aisenote.com/slink/file/6686d9120b258de8a715f4f9/DSSV.xlsx'
+									rel='noreferrer'
+								>
+									tại đây
+								</a>
+							</div>
+						}
+						name='file'
+						rules={[...rules.required, ...rules.fileRequired]}
+					>
 						<UploadFile accept='.xlsx' drag />
 					</Form.Item>
 					<div className='form-footer'>
