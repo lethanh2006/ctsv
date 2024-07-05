@@ -1,4 +1,5 @@
 import type { EVaiTroBieuMau } from '../TienIch/constant';
+import type { ENotificationSource, ESourceTypeNotification } from './constant';
 import { type EReceiverType } from './constant';
 
 declare module ThongBao {
@@ -8,17 +9,9 @@ declare module ThongBao {
 		senderName: string;
 		sender?: string;
 		description?: string;
-		type?: string;
 		content?: string;
 		imageUrl?: string;
-		idTagEmail?: string;
 
-		tagEmail: {
-			_id: '65582e549dcae9f3309e415e';
-			ten: 'Thông báo trúng tuyển';
-			moTa: 'Đây là thông báo trúng tuyển';
-			__v: 0;
-		};
 		filter?: {
 			roles: EVaiTroBieuMau[];
 			idKhoaSinhVien: string;
@@ -28,15 +21,25 @@ declare module ThongBao {
 			idLopTinChi: string;
 		};
 		receiverType: EReceiverType;
-		topics?: string[];
 		users?: string[];
 
-		data?: any;
-		oneSignalData?: any;
-		urlFile?: string[];
+		// oneSignalData?: any;
+		taiLieuDinhKem?: string[];
 		createdAt: string; // '2023-06-27T07:47:29.693Z';
 		read: boolean;
+
+		sourceType?: ESourceTypeNotification;
+		notificationInternal: boolean;
+		thoiGianHieuLuc: Date;
+
+		metadata?: TNotificationSource;
 	}
+
+	export type TNotificationSource = {
+		entityId?: string;
+		entitySource?: ENotificationSource;
+	} & Record<string, any>;
+
 	export interface IThongKe {
 		tatCa: 20;
 		theoKhoaSinhVien: 4;
