@@ -13,7 +13,7 @@ const SelectLopHanhChinhCondition = (props: {
 	disabled?: boolean;
 	style?: React.CSSProperties;
 	isSetRecord?: boolean;
-	condition: Partial<LopHanhChinh.IRecord>;
+	condition?: Partial<LopHanhChinh.IRecord>;
 	selectMa?: boolean;
 }) => {
 	const { value, onChange, multiple, disabled, style, isSetRecord, condition, selectMa } = props;
@@ -25,6 +25,7 @@ const SelectLopHanhChinhCondition = (props: {
 
 	return (
 		<Select
+			allowClear
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
 			onChange={onChange}

@@ -72,6 +72,11 @@
 				component: './DaoTaoV2/NamHoc/LopHanhChinh',
 			},
 			{
+				name: 'BanCanSuLop',
+				path: 'ban-can-su-lop',
+				component: './DaoTaoV2/NamHoc/SvLopHanhChinhNamHoc',
+			},
+			{
 				name: 'ThongKe',
 				path: 'thong-ke-sinh-vien',
 				component: './DaoTaoV2/SinhVien/ThongKe',

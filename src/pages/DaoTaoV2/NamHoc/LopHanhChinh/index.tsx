@@ -1,37 +1,31 @@
 import TableBase from '@/components/Table';
-import { EOperatorType } from '@/components/Table/constant';
+import ButtonExtend from '@/components/Table/ButtonExtend';
+import ModalImport from '@/components/Table/Import';
 import { type IColumn } from '@/components/Table/typing';
-import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
+import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
 import { DeleteOutlined, EditOutlined, TeamOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
+import SelectNganhCoSo from '../../DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 import FilterKhoaSinhVien from '../KhoaSinhVien/components/FilterKhoaSinhVien';
 import ModalChiTietKhoaSinhVien from '../KhoaSinhVien/components/ModalChiTiet';
 import SelectKhoaSinhVien from '../KhoaSinhVien/components/Select';
 import ModalLopHanhChinh from './components/ModalLopHanhChinh';
-import ModalImport from '@/components/Table/Import';
-import ButtonExtend from '@/components/Table/ButtonExtend';
-import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
 
 const LopHanhChinhPage = () => {
 	const intl = useIntl();
-	const { getModel, page, limit, deleteModel, handleEdit, setFilters, filters } =
-		useModel('daotaov2.namhoc.lophanhchinh');
+	const { getModel, page, limit, deleteModel, handleEdit } = useModel('daotaov2.namhoc.lophanhchinh');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
+	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
+
 	const [visibleKhoaSv, setVisibleKhoaSv] = useState<boolean>(false);
 	const [maKhoaSinhVien, setMaKhoaSinhVien] = useState<string>();
 	const [visibleImportSvLhc, setVisibleImportSvLhc] = useState<boolean>(false);
 
-	useEffect(() => {
-		if (recKhoa?.ma)
-			setFilters([
-				...(filters ?? []).filter((item) => item.field !== 'maKhoaSinhVien'),
-				{ active: true, field: 'maKhoaSinhVien', values: [recKhoa?.ma], operator: EOperatorType.INCLUDE },
-			]);
-		else if (filters) setFilters([...filters].filter((item) => item.field !== 'maKhoaSinhVien'));
-	}, [recKhoa?.ma]);
+	const getData = () => getModel({ maKhoaSinhVien: recKhoa?.ma, maNganh: recNganh?.ma });
 
 	const onCell = (record: LopHanhChinh.IRecord) => ({
 		onClick: () => handleEdit(record),
@@ -40,7 +34,7 @@ const LopHanhChinhPage = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecord>[] = [
 		{
-			title: 'Mã lớp',
+			title: 'Tên lớp',
 			dataIndex: 'ten',
 			width: 120,
 			filterType: 'string',
@@ -84,6 +78,7 @@ const LopHanhChinhPage = () => {
 		},
 		{
 			title: 'Đối tượng',
+			align: 'center',
 			width: 100,
 			dataIndex: 'doiTuong',
 			render: (val: EDoiTuongLopHanhChinh) => val && doiTuongLopHanhChinh[val],
@@ -92,6 +87,15 @@ const LopHanhChinhPage = () => {
 				label: doiTuongLopHanhChinh[item],
 				value: item,
 			})),
+			onCell,
+		},
+		{
+			title: 'Cố vấn',
+			width: 160,
+			dataIndex: 'nhanSuSsoId',
+			render: (val, rec) => `${rec.nhanSu?.hoDem ?? ''} ${rec.nhanSu?.ten ?? ''}`,
+			filterType: 'customselect',
+			filterCustomSelect: <SelectNhanSuDebounce multiple />,
 			onCell,
 		},
 		{
@@ -106,7 +110,7 @@ const LopHanhChinhPage = () => {
 					</Tooltip>
 					<Tooltip title='Xóa'>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id)}
+							onConfirm={() => deleteModel(record._id, getData)}
 							title='Bạn có chắc chắn muốn xóa lớp hành chính này?'
 							placement='topRight'
 						>
@@ -121,8 +125,9 @@ const LopHanhChinhPage = () => {
 	return (
 		<>
 			<TableBase
+				getData={getData}
 				columns={columns}
-				dependencies={[page, limit]}
+				dependencies={[page, limit, recKhoa?.ma, recNganh?.ma]}
 				modelName='daotaov2.namhoc.lophanhchinh'
 				title={intl.formatMessage({ id: 'namhoc.lophanhchinh.title' })}
 				Form={ModalLopHanhChinh}
@@ -137,7 +142,7 @@ const LopHanhChinhPage = () => {
 				]}
 			>
 				<div style={{ marginBottom: 12 }}>
-					<FilterKhoaSinhVien allowClear />
+					<FilterKhoaSinhVien hasSelectNganh allowClear />
 				</div>
 			</TableBase>
 
@@ -155,7 +160,7 @@ const LopHanhChinhPage = () => {
 				onCancel={() => setVisibleImportSvLhc(false)}
 				visible={visibleImportSvLhc}
 				onOk={() => {
-					getModel();
+					getData();
 					setVisibleImportSvLhc(false);
 				}}
 				titleTemplate='Biểu mẫu Sinh viên - Lớp hành chính.xlsx'

@@ -1,19 +1,31 @@
 import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
+import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectKhoaSinhVien from '../../KhoaSinhVien/components/Select';
-import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
-import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 
 const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => void }) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, setRecord, setEdit, visibleForm } =
-		useModel('daotaov2.namhoc.lophanhchinh');
+	const {
+		record,
+		setVisibleForm,
+		edit,
+		postModel,
+		putModel,
+		formSubmiting,
+		setRecord,
+		setEdit,
+		visibleForm,
+		getModel,
+	} = useModel('daotaov2.namhoc.lophanhchinh');
+	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
+	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 	const maKhoaSinhVien = Form.useWatch('maKhoaSinhVien', form);
 	const { afterAddNew } = props;
 
@@ -22,13 +34,15 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 		else if (record?._id) form.setFieldsValue(record);
 	}, [record?._id, visibleForm]);
 
+	const getData = () => getModel({ maKhoaSinhVien: recKhoa?.ma, maNganh: recNganh?.ma });
+
 	const onFinish = async (values: LopHanhChinh.IRecord) => {
 		if (edit) {
-			putModel(record?._id ?? '', values, undefined, undefined, false)
+			putModel(record?._id ?? '', values, getData, undefined, false)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, undefined, false)
+			postModel(values, getData, false)
 				.then((rec) => {
 					setRecord(rec);
 					setEdit(true);
