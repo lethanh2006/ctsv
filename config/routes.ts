@@ -77,6 +77,11 @@
 				component: './DaoTaoV2/NamHoc/SvLopHanhChinhNamHoc',
 			},
 			{
+				name: 'CoVanHocTap',
+				path: 'co-van-hoc-tap',
+				component: './DaoTaoV2/NamHoc/CoVanLopHanhChinhNamHoc',
+			},
+			{
 				name: 'ThongKe',
 				path: 'thong-ke-sinh-vien',
 				component: './DaoTaoV2/SinhVien/ThongKe',

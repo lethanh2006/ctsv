@@ -15,8 +15,9 @@ const SelectLopHanhChinhCondition = (props: {
 	isSetRecord?: boolean;
 	condition?: Partial<LopHanhChinh.IRecord>;
 	selectMa?: boolean;
+	keyName?: string;
 }) => {
-	const { value, onChange, multiple, disabled, style, isSetRecord, condition, selectMa } = props;
+	const { value, onChange, multiple, disabled, style, isSetRecord, condition, selectMa, keyName } = props;
 	const { danhSach, getAllModel } = useModel('daotaov2.namhoc.lophanhchinh');
 
 	useEffect(() => {
@@ -30,9 +31,9 @@ const SelectLopHanhChinhCondition = (props: {
 			value={value}
 			onChange={onChange}
 			disabled={disabled}
-			options={danhSach.map((item) => ({
+			options={danhSach.map((item: any) => ({
 				key: item._id,
-				value: selectMa ? item.ten : item._id,
+				value: selectMa ? item.ten : keyName ? item[keyName] : item._id,
 				label: `${item.ten}`,
 			}))}
 			showSearch

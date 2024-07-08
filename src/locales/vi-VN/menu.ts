@@ -98,6 +98,7 @@ export default {
 	'menu.SinhVien.DotCapNhatHoSo': 'Đợt cập nhật hồ sơ',
 	'menu.SinhVien.DanhSachSinhVien': 'Hồ sơ người học',
 	'menu.SinhVien.BanCanSuLop': 'Ban cán sự lớp',
+	'menu.SinhVien.CoVanHocTap': 'Cố vấn học tập',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe.KetQuaKhamSucKhoe': 'Kết quả khám sức khỏe',
