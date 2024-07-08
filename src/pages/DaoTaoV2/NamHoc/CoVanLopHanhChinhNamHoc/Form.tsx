@@ -21,7 +21,7 @@ const FormBanCanSuLop = (props: { getData: any }) => {
 		else {
 			form.setFieldsValue({
 				...record,
-				tenLopHc: recLopHanhChinh?.ten,
+				tenLopHc: record?.tenLopHc || recLopHanhChinh?.ten,
 				maNamHoc: record?.maNamHoc || recNamHoc?.ma,
 			});
 		}

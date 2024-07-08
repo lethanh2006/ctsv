@@ -141,7 +141,7 @@ export type TableBaseProps = {
 };
 
 export type TFilter<T> = {
-	field: keyof T | [keyof T, string];
+	field: keyof T | string[];
 	operator?: EOperatorType;
 	values: (string | number)[];
 	active?: boolean;

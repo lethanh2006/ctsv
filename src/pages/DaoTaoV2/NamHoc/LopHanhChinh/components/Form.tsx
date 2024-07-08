@@ -31,18 +31,23 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
-		else if (record?._id) form.setFieldsValue(record);
+		else if (record?._id) form.setFieldsValue({ ...record });
 	}, [record?._id, visibleForm]);
 
 	const getData = () => getModel({ maKhoaSinhVien: recKhoa?.ma, maNganh: recNganh?.ma });
 
 	const onFinish = async (values: LopHanhChinh.IRecord) => {
+		const payload: any = {
+			...values,
+			nhanSuSsoId: values?.nhanSuSsoId ?? null,
+		};
+
 		if (edit) {
-			putModel(record?._id ?? '', values, getData, undefined, false)
+			putModel(record?._id ?? '', payload, getData, undefined, false)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, getData, false)
+			postModel(payload, getData, false)
 				.then((rec) => {
 					setRecord(rec);
 					setEdit(true);
@@ -83,11 +88,11 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 						/>
 					</Form.Item>
 				</Col>
-				<Col xs={24} md={12}>
+				{/* <Col xs={24} md={12}>
 					<Form.Item name='nhanSuSsoId' label='Cố vấn học tập'>
 						<SelectNhanSuDebounce />
 					</Form.Item>
-				</Col>
+				</Col> */}
 			</Row>
 
 			<div className='form-footer'>

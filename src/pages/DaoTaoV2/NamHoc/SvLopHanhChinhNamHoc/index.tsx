@@ -33,16 +33,20 @@ const SinhVienLopHanhChinhNamHoc = () => {
 		style: { cursor: 'pointer' },
 	});
 
-	// useEffect(() => {
-	// 	setFilters([
-	// 		...filters,
-	// 		{
-	// 			path: ['lopHcSv', 'lopHanhChinh', '_id'],
-	// 			operator: EOperatorType.EQUAL,
-	// 			values: [recLopHanhChinh?._id ?? ''],
-	// 		},
-	// 	]);
-	// }, [recLopHanhChinh?._id]);
+	useEffect(() => {
+		setFilters(
+			recLopHanhChinh?._id
+				? [
+						...filters?.filter((item) => !item.field?.includes('lopHcSv')),
+						{
+							field: ['lopHcSv', 'lopHanhChinh', '_id'],
+							operator: EOperatorType.EQUAL,
+							values: [recLopHanhChinh?._id ?? ''],
+						},
+				  ]
+				: filters?.filter((item) => !item.field?.includes('lopHcSv')),
+		);
+	}, [recLopHanhChinh?._id]);
 
 	const getData = () => {
 		getModel({ maNamHoc: recNamHoc?.ma });
