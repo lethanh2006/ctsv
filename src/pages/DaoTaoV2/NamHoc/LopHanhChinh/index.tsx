@@ -131,7 +131,7 @@ const LopHanhChinhPage = () => {
 				modelName='daotaov2.namhoc.lophanhchinh'
 				title={intl.formatMessage({ id: 'namhoc.lophanhchinh.title' })}
 				Form={ModalLopHanhChinh}
-				widthDrawer={800}
+				widthDrawer={1000}
 				rowSelection
 				deleteMany
 				buttons={{ import: true, export: true }}

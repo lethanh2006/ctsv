@@ -39,7 +39,7 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 	const onFinish = async (values: LopHanhChinh.IRecord) => {
 		const payload: any = {
 			...values,
-			nhanSuSsoId: values?.nhanSuSsoId ?? null,
+			// nhanSuSsoId: values?.nhanSuSsoId ?? null,
 		};
 
 		if (edit) {

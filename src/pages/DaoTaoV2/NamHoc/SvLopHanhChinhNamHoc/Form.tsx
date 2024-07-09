@@ -1,18 +1,18 @@
 import {
 	EVaiTroBanCanSuLop,
-	MapKeyColorVaiTroBanCanSuLop,
 	MapKeyNameVaiTroBanCanSuLop,
 } from '@/services/DaoTaoV2/LopHanhChinhSinhVienNamHoc/constants';
+import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Form, Select, Tag } from 'antd';
+import { Button, Card, Form, Select } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectLopHanhChinhCondition from '../LopHanhChinh/components/SelectLopHanhChinhCondition';
 import SelectNamHoc from '../NamHoc/components/Select';
 import SelectSinhVienLopHC from '../SvLopHanhChinh/components/Select';
 
-const FormBanCanSuLop = (props: { getData: any }) => {
+const FormBanCanSuLop = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRecord }) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, visibleForm, setVisibleForm, edit, postModel, putModel, formSubmiting } = useModel(
@@ -33,10 +33,15 @@ const FormBanCanSuLop = (props: { getData: any }) => {
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: any) => {
+		const payload = {
+			...values,
+			lopHanhChinhId: props?.lopHanhChinh?._id || values?.lopHanhChinhId,
+		};
+
 		if (edit) {
-			putModel(record?._id ?? '', values, props.getData);
+			putModel(record?._id ?? '', payload, props.getData);
 		} else {
-			postModel(values, props.getData);
+			postModel(payload, props.getData);
 		}
 	};
 
@@ -46,17 +51,23 @@ const FormBanCanSuLop = (props: { getData: any }) => {
 				<Form.Item rules={[...rules.required]} name='maNamHoc' label='Năm học'>
 					<SelectNamHoc selectMa />
 				</Form.Item>
-				<Form.Item rules={[...rules.required]} name='lopHanhChinhId' label='Lớp hành chính'>
-					<SelectLopHanhChinhCondition
-						onChange={(val) => {
-							form.setFieldsValue({
-								lopHcSvId: undefined,
-							});
-						}}
-					/>
-				</Form.Item>
+				{!props?.lopHanhChinh?._id && (
+					<Form.Item rules={[...rules.required]} name='lopHanhChinhId' label='Lớp hành chính'>
+						<SelectLopHanhChinhCondition
+							onChange={(val) => {
+								form.setFieldsValue({
+									lopHcSvId: undefined,
+								});
+							}}
+						/>
+					</Form.Item>
+				)}
 				<Form.Item rules={[...rules.required]} name='lopHcSvId' label='Sinh viên'>
-					<SelectSinhVienLopHC keyName='_id' hasCreate={false} lopHanhChinhId={lopHanhChinhId} />
+					<SelectSinhVienLopHC
+						keyName='_id'
+						hasCreate={false}
+						lopHanhChinhId={props?.lopHanhChinh?._id || lopHanhChinhId}
+					/>
 				</Form.Item>
 				<Form.Item rules={[...rules.required]} name='vaiTro' label='Vai trò'>
 					<Select

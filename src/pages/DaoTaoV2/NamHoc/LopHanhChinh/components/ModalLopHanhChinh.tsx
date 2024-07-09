@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import SinhVienLopHanhChinh from '../../SvLopHanhChinh';
 import FormLopHanhChinh from './Form';
+import CoVanLopHanhChinhNamHoc from '../../CoVanLopHanhChinhNamHoc';
+import SinhVienLopHanhChinhNamHoc from '../../SvLopHanhChinhNamHoc';
 
 const ModalLopHanhChinh = (props: any) => {
 	const intl = useIntl();
@@ -28,13 +30,19 @@ const ModalLopHanhChinh = (props: any) => {
 			>
 				<Steps.Step title={intl.formatMessage({ id: 'namhoc.namhoc.step1' })} />
 				<Steps.Step title={intl.formatMessage({ id: 'namhoc.lophanhchinh.tab2' })} disabled={!record?._id} />
+				<Steps.Step title={'Cố vấn học tập'} disabled={!record?._id} />
+				<Steps.Step title={'Ban cán sự lớp'} disabled={!record?._id} />
 			</Steps>
 
 			{currentStep === 0 ? (
 				<FormLopHanhChinh afterAddNew={() => setCurrentStep(1)} />
 			) : currentStep === 1 ? (
 				<SinhVienLopHanhChinh hideCard />
-			) : null}
+			) : currentStep === 2 ? (
+				<CoVanLopHanhChinhNamHoc lopHanhChinh={record} />
+			) : (
+				<SinhVienLopHanhChinhNamHoc lopHanhChinh={record} />
+			)}
 		</Card>
 	);
 };

@@ -6,8 +6,9 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectLopHanhChinhCondition from '../LopHanhChinh/components/SelectLopHanhChinhCondition';
 import SelectNamHoc from '../NamHoc/components/Select';
+import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 
-const FormBanCanSuLop = (props: { getData: any }) => {
+const FormCoVanHocTap = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRecord }) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, visibleForm, setVisibleForm, edit, postModel, putModel, formSubmiting } = useModel(
@@ -33,6 +34,7 @@ const FormBanCanSuLop = (props: { getData: any }) => {
 			...values,
 			maNhanSu: recNhanSu?.maCanBo,
 			hoTenNhanSu: recNhanSu?.hoTen,
+			tenLopHc: props?.lopHanhChinh?.ten || values?.tenLopHc,
 		};
 		if (edit) {
 			putModel(record?._id ?? '', payload, props.getData);
@@ -47,9 +49,11 @@ const FormBanCanSuLop = (props: { getData: any }) => {
 				<Form.Item rules={[...rules.required]} name='maNamHoc' label='Năm học'>
 					<SelectNamHoc selectMa />
 				</Form.Item>
-				<Form.Item rules={[...rules.required]} name='tenLopHc' label='Lớp hành chính'>
-					<SelectLopHanhChinhCondition keyName='ten' />
-				</Form.Item>
+				{!props.lopHanhChinh?._id && (
+					<Form.Item rules={[...rules.required]} name='tenLopHc' label='Lớp hành chính'>
+						<SelectLopHanhChinhCondition keyName='ten' />
+					</Form.Item>
+				)}
 				<Form.Item rules={[...rules.required]} name='nhanSuSsoId' label='Cán bộ/giảng viên'>
 					<SelectNhanSuDebounce />
 				</Form.Item>
@@ -67,4 +71,4 @@ const FormBanCanSuLop = (props: { getData: any }) => {
 	);
 };
 
-export default FormBanCanSuLop;
+export default FormCoVanHocTap;

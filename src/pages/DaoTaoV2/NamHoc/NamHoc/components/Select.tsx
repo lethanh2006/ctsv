@@ -20,7 +20,7 @@ const SelectNamHoc = (props: {
 	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.namhoc.namhoc');
 
 	useEffect(() => {
-		if (!visibleForm)
+		if (!visibleForm && !danhSach.length)
 			getAllModel(isSetRecord, { ma: -1 }).then((res) => {
 				if (hasDefault && onChange) onChange(selectMa ? res?.[0]?.ma : res?.[0]?._id);
 			});

@@ -1,26 +1,25 @@
 import TableBase from '@/components/Table';
+import { EOperatorType } from '@/components/Table/constant';
 import { type IColumn } from '@/components/Table/typing';
 import ModalChiTietSinhVien from '@/pages/DaoTaoV2/SinhVien/component/ModalChiTietSinhVien';
+import {
+	EVaiTroBanCanSuLop,
+	MapKeyColorVaiTroBanCanSuLop,
+	MapKeyNameVaiTroBanCanSuLop,
+} from '@/services/DaoTaoV2/LopHanhChinhSinhVienNamHoc/constants';
 import type { LopHanhChinhSinhVienNamHoc } from '@/services/DaoTaoV2/LopHanhChinhSinhVienNamHoc/typings';
+import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tag, Tooltip } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useModel } from 'umi';
 import FilterLopHanhChinh from '../LopHanhChinh/components/FilterLopHanhChinh';
 import SelectNamHoc from '../NamHoc/components/Select';
 import FormBanCanSuLop from './Form';
-import { EVaiTroBanCanSuLop } from '@/services/DaoTaoV2/LopHanhChinhSinhVienNamHoc/constants';
-import {
-	MapKeyColorVaiTroBanCanSuLop,
-	MapKeyNameVaiTroBanCanSuLop,
-} from '@/services/DaoTaoV2/LopHanhChinhSinhVienNamHoc/constants';
-import { EOperatorType } from '@/components/Table/constant';
 
-const SinhVienLopHanhChinhNamHoc = () => {
+const SinhVienLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 	const { danhSach: danhSachNamHoc, setRecord: setRecNamHoc, record: recNamHoc } = useModel('daotaov2.namhoc.namhoc');
-	const { getModel, page, limit, deleteModel, setFilters, filters, handleEdit } = useModel(
-		'daotaov2.lophcsvnamhoc.lophcsvnamhoc',
-	);
+	const { getModel, page, limit, deleteModel, handleEdit } = useModel('daotaov2.lophcsvnamhoc.lophcsvnamhoc');
 	const { record: recLopHanhChinh } = useModel('daotaov2.namhoc.lophanhchinh');
 	const { handleView: handleViewSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 	const [sinhVienSsoId, setSinhVienSsoId] = useState<string>();
@@ -33,23 +32,19 @@ const SinhVienLopHanhChinhNamHoc = () => {
 		style: { cursor: 'pointer' },
 	});
 
-	useEffect(() => {
-		setFilters(
-			recLopHanhChinh?._id
+	const getData = () => {
+		getModel(
+			{ maNamHoc: recNamHoc?.ma },
+			props?.lopHanhChinh?._id || recLopHanhChinh?._id
 				? [
-						...filters?.filter((item) => !item.field?.includes('lopHcSv')),
 						{
 							field: ['lopHcSv', 'lopHanhChinh', '_id'],
 							operator: EOperatorType.EQUAL,
-							values: [recLopHanhChinh?._id ?? ''],
+							values: [props?.lopHanhChinh?._id || recLopHanhChinh?._id || ''],
 						},
 				  ]
-				: filters?.filter((item) => !item.field?.includes('lopHcSv')),
+				: undefined,
 		);
-	}, [recLopHanhChinh?._id]);
-
-	const getData = () => {
-		getModel({ maNamHoc: recNamHoc?.ma });
 	};
 
 	const columns: IColumn<LopHanhChinhSinhVienNamHoc.IRecord>[] = [
@@ -122,15 +117,19 @@ const SinhVienLopHanhChinhNamHoc = () => {
 		},
 	];
 
-	const Form = useCallback(() => <FormBanCanSuLop getData={getData} />, [recLopHanhChinh?._id, recNamHoc?.ma]);
+	const Form = useCallback(
+		() => <FormBanCanSuLop lopHanhChinh={props?.lopHanhChinh} getData={getData} />,
+		[recLopHanhChinh?._id, recNamHoc?.ma, props?.lopHanhChinh?._id],
+	);
 
 	return (
 		<>
 			<TableBase
+				hideCard={props?.lopHanhChinh?._id ? true : false}
 				columns={columns}
 				buttons={{ import: true }}
 				otherButtons={[
-					<FilterLopHanhChinh key={'lop-hanh-chinh'} />,
+					<>{!props.lopHanhChinh?._id && <FilterLopHanhChinh key={'lop-hanh-chinh'} />}</>,
 					<SelectNamHoc
 						allowClear
 						selectMa
@@ -145,7 +144,6 @@ const SinhVienLopHanhChinhNamHoc = () => {
 				modelName='daotaov2.lophcsvnamhoc.lophcsvnamhoc'
 				title={'Danh sách ban cán sự lớp'}
 				Form={Form}
-				// hideCard={hideCard}
 			/>
 			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} />
 		</>

@@ -1,14 +1,15 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
+import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { useCallback } from 'react';
 import { useModel } from 'umi';
 import FilterLopHanhChinh from '../LopHanhChinh/components/FilterLopHanhChinh';
 import SelectNamHoc from '../NamHoc/components/Select';
-import FormBanCanSuLop from './Form';
+import FormCoVanHocTap from './Form';
 
-const SinhVienLopHanhChinhNamHoc = () => {
+const CoVanLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 	const { danhSach: danhSachNamHoc, setRecord: setRecNamHoc, record: recNamHoc } = useModel('daotaov2.namhoc.namhoc');
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('daotaov2.lophcnsnamhoc.lophcnsnamhoc');
 	const { record: recLopHanhChinh } = useModel('daotaov2.namhoc.lophanhchinh');
@@ -25,7 +26,7 @@ const SinhVienLopHanhChinhNamHoc = () => {
 	// }, [recLopHanhChinh?._id]);
 
 	const getData = () => {
-		getModel({ tenLopHc: recLopHanhChinh?.ten, maNamHoc: recNamHoc?.ma });
+		getModel({ tenLopHc: props?.lopHanhChinh?.ten || recLopHanhChinh?.ten, maNamHoc: recNamHoc?.ma });
 	};
 
 	const columns: IColumn<LopHanhChinhNhanSuNamHoc.IRecord>[] = [
@@ -81,15 +82,19 @@ const SinhVienLopHanhChinhNamHoc = () => {
 		},
 	];
 
-	const Form = useCallback(() => <FormBanCanSuLop getData={getData} />, [recLopHanhChinh?._id, recNamHoc?.ma]);
+	const Form = useCallback(
+		() => <FormCoVanHocTap lopHanhChinh={props?.lopHanhChinh} getData={getData} />,
+		[recLopHanhChinh?._id, recNamHoc?.ma, props?.lopHanhChinh?._id],
+	);
 
 	return (
 		<>
 			<TableBase
+				hideCard={props.lopHanhChinh?._id ? true : false}
 				columns={columns}
 				buttons={{ import: true }}
 				otherButtons={[
-					<FilterLopHanhChinh key={'lop-hanh-chinh'} />,
+					<>{!props?.lopHanhChinh && <FilterLopHanhChinh key={'lop-hanh-chinh'} />}</>,
 					<SelectNamHoc
 						allowClear
 						selectMa
@@ -99,7 +104,7 @@ const SinhVienLopHanhChinhNamHoc = () => {
 						key={'namhoc'}
 					/>,
 				]}
-				dependencies={[page, limit, recLopHanhChinh?._id, recNamHoc?.ma]}
+				dependencies={[page, limit, recLopHanhChinh?._id, recNamHoc?.ma, props?.lopHanhChinh?._id]}
 				getData={getData}
 				modelName='daotaov2.lophcnsnamhoc.lophcnsnamhoc'
 				title={'Danh sách cố vấn học tập'}
@@ -110,4 +115,4 @@ const SinhVienLopHanhChinhNamHoc = () => {
 	);
 };
 
-export default SinhVienLopHanhChinhNamHoc;
+export default CoVanLopHanhChinhNamHoc;

@@ -174,16 +174,16 @@ const ThongKeVanHoaTheThao = () => {
 								width: 150,
 								children: [
 									{
-										title: 'Nguồn  do Học viện phân bổ (VNĐ)',
+										title: 'Nguồn do Học viện phân bổ (VNĐ)',
 										align: 'center',
 										width: 150,
-										// dataIndex: 'thanhVienChinhThuc',
+										dataIndex: 'kinhPhiHv',
 									},
 									{
 										title: 'Nguồn khác(VNĐ)',
 										align: 'center',
 										width: 150,
-										// dataIndex: 'congTacVien',
+										dataIndex: 'kinhPhiKhac',
 									},
 								],
 							},
