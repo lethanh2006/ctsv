@@ -8,6 +8,7 @@ import {
 import { chuyenVienDieuPhoiDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import { checkRuleXuLyDon } from '@/services/QuyTrinhDong/quytrinh';
 import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
 import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import rules from '@/utils/rules';
@@ -66,6 +67,8 @@ const View = (props: Iprops) => {
 	const [visibleDieuPhoi, setVisibleDieuPhoi] = useState<boolean>(false);
 	const [currentStep, setCurrentStep] = useState<number>(0);
 	const [formValues, setFormValues] = useState<any>({});
+	const [loadingCheckValidate, setLoadingValidate] = useState<boolean>(false);
+	const [rulesXuLy, setRulesXuLy] = useState<boolean>(false);
 
 	const dotCurrent = danhSachDotQuyTrinh?.find((item) => item._id === dataQuyTrinh?.dotQuyTrinhId);
 	const cauHinhThoiGianDotBuocHienTai = dotCurrent?.danhSachCauHinhThoiGianDot?.find(
@@ -77,9 +80,28 @@ const View = (props: Iprops) => {
 	const dataFormTiepNhan = dataQuyTrinh?.quyTrinh?.danhSachFormTiepNhan?.find(
 		(item) => item?.ma === maFormTiepNhan,
 	)?.cauHinhLoaiHinh;
+	const currentBoPhanXuLy = dataQuyTrinh?.quyTrinh?.danhSachBoPhanXuLy?.find(
+		(item: { ma: string }) => item?.ma === current?.maBoPhanXuLy,
+	);
+
 	const onChange = (val: number) => {
 		setCurrentStep(val);
 	};
+
+	const handleCheckRule = async () => {
+		try {
+			setLoadingValidate(true);
+			const res = await checkRuleXuLyDon(currentBoPhanXuLy);
+			if (res) {
+				setRulesXuLy(res?.data?.data);
+			}
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setLoadingValidate(false);
+		}
+	};
+
 	const handleSubmitDieuPhoi = async (values: any) => {
 		try {
 			setLoadingDieuPhoi(true);
@@ -236,6 +258,7 @@ const View = (props: Iprops) => {
 				setRecordFormKhaiBao(valuesFormKhaiBao);
 				setEditFormKhaiBao(true);
 			}
+			if (currentBoPhanXuLy) handleCheckRule();
 		}
 	}, [current]);
 
@@ -396,43 +419,44 @@ const View = (props: Iprops) => {
 						{type === 'tiep_nhan' && (
 							<Col xs={24} sm={24} md={24} lg={24} xl={24}>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									{((current.danhSachThanhVienXuLy.length &&
-										current?.danhSachThanhVienXuLy?.find((item) => item.ssoId === initialState?.currentUser?.ssoId)
-											?.ssoId) ||
-										!current.danhSachThanhVienXuLy.length) && (
-										<>
-											<Button
-												disabled={
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
-												}
-												style={{ marginRight: 8 }}
-												type={'primary'}
-												icon={<CheckOutlined />}
-												onClick={() => {
-													setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
-													setVisibleDuyet(true);
-												}}
-											>
-												{current.ten}
-											</Button>
-											<Button
-												disabled={
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
-												}
-												style={{ marginRight: 8 }}
-												icon={<UndoOutlined />}
-												onClick={() => {
-													setCurrentTypeDuyet(TrangThaiTiepNhanDon.CHINH_SUA_LAI);
-													setVisibleDuyet(true);
-												}}
-											>
-												Yêu cầu chỉnh sửa
-											</Button>
-											{/* <Button
+									{rulesXuLy &&
+										((current.danhSachThanhVienXuLy.length &&
+											current?.danhSachThanhVienXuLy?.find((item) => item.ssoId === initialState?.currentUser?.ssoId)
+												?.ssoId) ||
+											!current.danhSachThanhVienXuLy.length) && (
+											<>
+												<Button
+													disabled={
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+													}
+													style={{ marginRight: 8 }}
+													type={'primary'}
+													icon={<CheckOutlined />}
+													onClick={() => {
+														setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
+														setVisibleDuyet(true);
+													}}
+												>
+													{current.ten}
+												</Button>
+												<Button
+													disabled={
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+													}
+													style={{ marginRight: 8 }}
+													icon={<UndoOutlined />}
+													onClick={() => {
+														setCurrentTypeDuyet(TrangThaiTiepNhanDon.CHINH_SUA_LAI);
+														setVisibleDuyet(true);
+													}}
+												>
+													Yêu cầu chỉnh sửa
+												</Button>
+												{/* <Button
 												disabled={
 													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
 													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
@@ -449,8 +473,8 @@ const View = (props: Iprops) => {
 											>
 												Không duyệt
 											</Button> */}
-										</>
-									)}
+											</>
+										)}
 
 									<Button
 										danger
