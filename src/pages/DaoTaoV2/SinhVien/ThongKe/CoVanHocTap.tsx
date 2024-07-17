@@ -2,10 +2,11 @@ import ColumnChart from '@/components/Chart/ColumnChart';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { getThongKeCoVanHocTap } from '@/services/DaoTaoV2/SinhVien';
-import { inputFormat } from '@/utils/utils';
+import { inputFormat, jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
 import { useModel } from '@@/plugin-model/useModel';
-import { Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
+import { ExportOutlined } from '@ant-design/icons';
 
 interface IThongKeCoVan {
 	_id: string;
@@ -92,14 +93,41 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 		},
 	];
 
+	const handleExportDuLieu = async () => {
+		try {
+			const payload = transformDataColumnsTableToJson(columns, data);
+			jsonToXlsx(payload, 'Thống kê sinh viên theo hộ khẩu');
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
 	useEffect(() => {
 		getData();
 	}, [recHocKy?.ma]);
 
 	return mode === 'table' ? (
-		<TableStaticData addStt columns={columns} data={data} />
+		<>
+			<Button
+				icon={<ExportOutlined />}
+				onClick={() => {
+					handleExportDuLieu();
+				}}
+			>
+				Xuất dữ liệu
+			</Button>
+			<TableStaticData addStt columns={columns} data={data} />
+		</>
 	) : (
 		<Row>
+			<Button
+				icon={<ExportOutlined />}
+				onClick={() => {
+					handleExportDuLieu();
+				}}
+			>
+				Xuất dữ liệu
+			</Button>
 			<Col span={24}>
 				<ColumnChart
 					height={500}

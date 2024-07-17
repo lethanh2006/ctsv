@@ -2,9 +2,11 @@ import DonutChart from '@/components/Chart/DonutChart';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { getThongKeHoKhauSinhVien } from '@/services/DaoTaoV2/SinhVien';
-import { Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import { ExportOutlined } from '@ant-design/icons';
+import { jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
 
 const ThongKeHoKhau = (props: { mode: 'table' | 'donut' }) => {
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
@@ -62,10 +64,37 @@ const ThongKeHoKhau = (props: { mode: 'table' | 'donut' }) => {
 		},
 	];
 
+	const handleExportDuLieu = async () => {
+		try {
+			const payload = transformDataColumnsTableToJson(columns, data);
+			jsonToXlsx(payload, 'Thống kê sinh viên theo hộ khẩu');
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
 	return props.mode === 'table' ? (
-		<TableStaticData addStt columns={columns} data={data} />
+		<>
+			<Button
+				icon={<ExportOutlined />}
+				onClick={() => {
+					handleExportDuLieu();
+				}}
+			>
+				Xuất dữ liệu
+			</Button>
+			<TableStaticData addStt columns={columns} data={data} />
+		</>
 	) : (
 		<Row>
+			<Button
+				icon={<ExportOutlined />}
+				onClick={() => {
+					handleExportDuLieu();
+				}}
+			>
+				Xuất dữ liệu
+			</Button>
 			<Col md={12} lg={8}>
 				<DonutChart
 					showTotal
