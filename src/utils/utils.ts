@@ -515,3 +515,27 @@ export function removeVietnameseTones(str: string, removeSpecial: boolean = fals
 
 	return strTemp;
 }
+
+
+export const transformDataColumnsTableToJson = (columnsArr: any[], arr: any[]) => {
+  return arr.map((item) => {
+    const transformedItem = {};
+    columnsArr.forEach((col) => {
+      // @ts-ignore
+      transformedItem[col?.title] = item[col?.dataIndex] || 'Không có dữ liệu';
+    });
+    return transformedItem;
+  });
+};
+
+export const jsonToXlsx = (jsonData: any[], tenFile?: string) => {
+  // Convert JSON data to worksheet
+  const worksheet = XLSX.utils.json_to_sheet(jsonData);
+
+  // Create a new workbook and append the worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  // Write the workbook to a file
+  XLSX.writeFile(workbook, tenFile ? `${tenFile}.xlsx` : 'tai_lieu.xlsx');
+};
