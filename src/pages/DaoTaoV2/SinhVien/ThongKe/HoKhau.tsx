@@ -2,7 +2,7 @@ import DonutChart from '@/components/Chart/DonutChart';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { getThongKeHoKhauSinhVien } from '@/services/DaoTaoV2/SinhVien';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import { ExportOutlined } from '@ant-design/icons';
@@ -76,6 +76,7 @@ const ThongKeHoKhau = (props: { mode: 'table' | 'donut' }) => {
 	return props.mode === 'table' ? (
 		<>
 			<Button
+				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
 					handleExportDuLieu();
@@ -83,11 +84,40 @@ const ThongKeHoKhau = (props: { mode: 'table' | 'donut' }) => {
 			>
 				Xuất dữ liệu
 			</Button>
-			<TableStaticData addStt columns={columns} data={data} />
+			<TableStaticData
+				otherProps={{
+					summary: (pageData: any[]) => {
+						let allSoLuong = 0;
+						let allNu = 0;
+						let allNam = 0;
+						let allKhongThongTin = 0;
+						pageData.map((item) => {
+							allSoLuong += item?.tongSoSv ?? 0;
+							allNu += item?.nu ?? 0;
+							allNam += item?.nam ?? 0;
+							allKhongThongTin += item?.noInfoGioiTinh ?? 0;
+						});
+						return (
+							<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+								<Table.Summary.Cell index={0} />
+								<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
+								<Table.Summary.Cell index={2}>{allSoLuong}</Table.Summary.Cell>
+								<Table.Summary.Cell index={3}>{allNu}</Table.Summary.Cell>
+								<Table.Summary.Cell index={4}>{allNam}</Table.Summary.Cell>
+								<Table.Summary.Cell index={5}>{allKhongThongTin}</Table.Summary.Cell>
+							</Table.Summary.Row>
+						);
+					},
+				}}
+				addStt
+				columns={columns}
+				data={data}
+			/>
 		</>
 	) : (
 		<Row>
 			<Button
+				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
 					handleExportDuLieu();

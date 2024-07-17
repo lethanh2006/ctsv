@@ -3,7 +3,7 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { getThongKeDanTocSinhVien } from '@/services/DaoTaoV2/SinhVien';
 import { ExportOutlined } from '@ant-design/icons';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import { jsonToXlsx } from '@/utils/utils';
@@ -82,6 +82,7 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 	return props.mode === 'table' ? (
 		<>
 			<Button
+				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
 					handleExportDuLieu();
@@ -89,11 +90,40 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 			>
 				Xuất dữ liệu
 			</Button>
-			<TableStaticData addStt columns={columns} data={data} />
+			<TableStaticData
+				otherProps={{
+					summary: (pageData: any[]) => {
+						let allSoLuong = 0;
+						let allNu = 0;
+						let allNam = 0;
+						let allKhongThongTin = 0;
+						pageData.map((item) => {
+							allSoLuong += item?.tongSoSv ?? 0;
+							allNu += item?.nu ?? 0;
+							allNam += item?.nam ?? 0;
+							allKhongThongTin += item?.noInfoGioiTinh;
+						});
+						return (
+							<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+								<Table.Summary.Cell index={0} />
+								<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
+								<Table.Summary.Cell index={2}>{allSoLuong}</Table.Summary.Cell>
+								<Table.Summary.Cell index={3}>{allNu}</Table.Summary.Cell>
+								<Table.Summary.Cell index={4}>{allNam}</Table.Summary.Cell>
+								<Table.Summary.Cell index={5}>{allKhongThongTin}</Table.Summary.Cell>
+							</Table.Summary.Row>
+						);
+					},
+				}}
+				addStt
+				columns={columns}
+				data={data}
+			/>
 		</>
 	) : (
 		<Row>
 			<Button
+				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
 					handleExportDuLieu();

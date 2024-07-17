@@ -1,13 +1,12 @@
-import { Card, Collapse, Tabs } from 'antd';
-import ThongKeDanToc from './DanToc';
-import SelectHocKy from '../../HocKy/HocKy/components/SelectHocKy';
-import { useModel } from 'umi';
-import ThongKeTonGiao from './TonGiao';
-import ThongKeNganh from './Nganh';
-import ThongKeHoKhau from './HoKhau';
-import { useState } from 'react';
 import { PieChartOutlined, TableOutlined } from '@ant-design/icons';
-import CoVanHocTap from '@/pages/DaoTaoV2/SinhVien/ThongKe/CoVanHocTap';
+import { Card, Collapse, Tabs } from 'antd';
+import { useState } from 'react';
+import { useModel } from 'umi';
+import SelectHocKy from '../../HocKy/HocKy/components/SelectHocKy';
+import ThongKeDanToc from './DanToc';
+import ThongKeHoKhau from './HoKhau';
+import ThongKeNganh from './Nganh';
+import ThongKeTonGiao from './TonGiao';
 
 const ThongKeSinhVien = () => {
 	const { record: recHocKy, setRecord: setRecHocKy, danhSach } = useModel('daotaov2.hocky.hocky');
@@ -39,9 +38,9 @@ const ThongKeSinhVien = () => {
 				<Collapse.Panel header='Thống kê sinh viên theo hộ khẩu' key={'hokhau'}>
 					<ThongKeHoKhau mode={mode} />
 				</Collapse.Panel>
-				<Collapse.Panel header='Cố vấn học tập' key={'cvht'}>
+				{/* <Collapse.Panel header='Cố vấn học tập' key={'cvht'}>
 					<CoVanHocTap mode={mode} />
-				</Collapse.Panel>
+				</Collapse.Panel> */}
 			</Collapse>
 		</Card>
 	);

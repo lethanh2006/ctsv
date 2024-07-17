@@ -96,7 +96,7 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 	const handleExportDuLieu = async () => {
 		try {
 			const payload = transformDataColumnsTableToJson(columns, data);
-			jsonToXlsx(payload, 'Thống kê sinh viên theo hộ khẩu');
+			jsonToXlsx(payload, 'Thống kê cố vấn học tập');
 		} catch (e) {
 			console.log(e);
 		}
@@ -109,6 +109,7 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 	return mode === 'table' ? (
 		<>
 			<Button
+				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
 					handleExportDuLieu();
@@ -121,6 +122,7 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 	) : (
 		<Row>
 			<Button
+				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
 					handleExportDuLieu();
