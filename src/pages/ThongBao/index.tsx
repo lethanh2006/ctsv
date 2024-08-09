@@ -1,44 +1,31 @@
 import ExpandText from '@/components/ExpandText';
+import MyDatePicker from '@/components/MyDatePicker';
 import TableBase from '@/components/Table';
-import { type IColumn } from '@/components/Table/typing';
-import { thongKeNotification } from '@/services/ThongBao';
-import {
-	ColorLoaiDoiTuongThongBao,
-	EReceiverType,
-	FieldLoaiDoiTuongThongBao,
-	LoaiDoiTuongThongBao,
-} from '@/services/ThongBao/constant';
-import { type ThongBao } from '@/services/ThongBao/typing';
-import { inputFormat } from '@/utils/utils';
-import { DeleteOutlined, EditOutlined, EyeOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, Modal, Popconfirm, Row, Tabs, Tooltip } from 'antd';
-import moment from 'moment';
-import { useCallback, useEffect, useState } from 'react';
-import { useModel } from 'umi';
-import news from '../../assets/new6.gif';
-import ViewThongBao from './ViewThongBao/CardView';
-import Form from './components/Form';
+import ButtonExtend from '@/components/Table/ButtonExtend';
 import { EOperatorType } from '@/components/Table/constant';
+import { type IColumn } from '@/components/Table/typing';
+import { type ThongBao } from '@/services/ThongBao/typing';
+import { DeleteOutlined, EyeOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { Button, Modal, Popconfirm, Segmented, Space, Tabs } from 'antd';
+import moment from 'moment';
+import { useState } from 'react';
+import { useModel } from 'umi';
+import ViewThongBao from './ViewThongBao/CardView';
+import TableReceiverThongBao from './ViewThongBao/TableReceiver';
+import Form from './components/Form';
+import { ESourceTypeNotification, NotificationType } from '@/services/ThongBao/constant';
+
 const ThongBaoPage = () => {
-	const { page, limit, setRecord, record, getModel, deleteModel, setSortTime, setEdit, setVisibleForm } =
-		useModel('thongbao.thongbao');
-	const { initialState } = useModel('@@initialState');
-	const [visible, setVisible] = useState<boolean>(false);
+	const { page, limit, setRecord, record, getModel, deleteModel, setSortTime } = useModel('thongbao.thongbao');
+	const [visibleView, setVisibleView] = useState<boolean>(false);
+	const [visibleNguoiNhan, setVisibleNguoiNhan] = useState<boolean>(false);
 	const [type, setType] = useState<string>('MONTH');
+	const [activeKey, setActiveKey] = useState('ban_hanh');
 	const [startDate, setStartDate] = useState<any>(moment());
 	const startDay = startDate?.format('DD/MM');
 	const endDay = startDate.clone()?.add(6, 'day')?.format('DD/MM');
-	const [dataThongKe, setDataThongKe] = useState<ThongBao.IThongKe>();
-	const onCell = (recordThongBao: ThongBao.IRecord) => ({
-		onClick: () => {
-			setVisible(true);
-			setRecord(recordThongBao);
-		},
-		style: { cursor: 'pointer' },
-	});
-	const getData = () => {
-		if (!initialState?.currentUser?.ssoId) return;
 
+	const getData = () => {
 		const value =
 			type === 'DAY'
 				? [moment(startDate)?.startOf('days').toISOString(), moment(startDate)?.endOf('days').toISOString()]
@@ -53,10 +40,27 @@ const ThongBaoPage = () => {
 				  ];
 		setSortTime([{ field: 'createdAt', operator: 'between', values: value }]);
 
-		getModel({ sender: initialState?.currentUser?.ssoId }, [
-			{ field: 'createdAt', operator: EOperatorType.BETWEEN, values: value, active: true },
-		]);
+		//@ts-ignore
+		getModel(
+			{
+				notificationInternal: activeKey === 'tu_dong',
+				type: NotificationType.ONESIGNAL,
+				sourceType: ESourceTypeNotification.CTSV,
+			},
+			[{ active: true, field: 'createdAt', operator: EOperatorType.BETWEEN, values: value }],
+		);
 	};
+
+	const handleView = (rec: ThongBao.IRecord) => {
+		setRecord(rec);
+		setVisibleView(true);
+	};
+
+	const onCell = (rec: ThongBao.IRecord) => ({
+		onClick: () => handleView(rec),
+		style: { cursor: 'pointer' },
+	});
+
 	const columns: IColumn<ThongBao.IRecord>[] = [
 		{
 			title: 'Người gửi',
@@ -70,39 +74,29 @@ const ThongBaoPage = () => {
 			dataIndex: 'title',
 			width: 200,
 			filterType: 'string',
-			onCell,
-			render: (val, recordVal) => (
-				<>
-					<ExpandText>
-						{val}{' '}
-						{moment().diff(moment(recordVal?.createdAt), 'days') < 3 ? (
-							<img style={{ width: 30, height: 20 }} src={news} />
-						) : (
-							''
-						)}
-					</ExpandText>
-				</>
-			),
+			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
 			title: 'Mô tả',
 			dataIndex: 'description',
 			width: 280,
-			filterType: 'string',
-			onCell,
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Đối tượng nhận thông báo',
-			dataIndex: 'receiverType',
-			width: 140,
-			filterType: 'select',
-			filterData: Object.values(EReceiverType).map((value) => ({
-				value,
-				label: LoaiDoiTuongThongBao?.[value] ?? '',
-			})),
-			onCell,
-			render: (val: EReceiverType) => LoaiDoiTuongThongBao?.[val],
+			title: 'Người nhận',
+			align: 'center',
+			width: 90,
+			render: (val, rec) => (
+				<a
+					href='#'
+					onClick={() => {
+						setRecord(rec);
+						setVisibleNguoiNhan(true);
+					}}
+				>
+					Xem chi tiết
+				</a>
+			),
 		},
 		{
 			title: 'Thời gian gửi',
@@ -112,71 +106,42 @@ const ThongBaoPage = () => {
 			filterType: 'datetime',
 			sortable: true,
 			onCell,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Thao tác',
 			align: 'center',
 			width: 90,
 			fixed: 'right',
-			render: (recordThongBao: ThongBao.IRecord) => (
+			render: (val, rec) => (
 				<>
-					<Tooltip title='Xem chi tiết'>
-						<Button
-							onClick={() => {
-								setRecord(recordThongBao);
-								setVisible(true);
-							}}
-							type='link'
-							icon={<EyeOutlined />}
-						/>
-					</Tooltip>
-					<Tooltip title='Sửa'>
-						<Button
-							onClick={() => {
-								setRecord(recordThongBao);
-								setEdit(true);
-								setVisibleForm(true);
-							}}
-							shape='circle'
-							type={'link'}
-							icon={<EditOutlined />}
-						/>
-					</Tooltip>
+					<ButtonExtend tooltip='Xem chi tiết' onClick={() => handleView(rec)} type='link' icon={<EyeOutlined />} />
 
-					<Tooltip title='Xóa'>
-						<Popconfirm
-							onConfirm={() => {
-								deleteModel(recordThongBao._id, getData);
-							}}
-							title='Bạn có chắc chắn muốn xóa?'
-						>
-							<Button shape='circle' type='link' danger icon={<DeleteOutlined />} />
-						</Popconfirm>
-					</Tooltip>
+					{/* <ButtonExtend
+						tooltip='Chỉnh sửa'
+						disabled={activeKey === 'tu_dong'}
+						onClick={() => handleEdit(rec)}
+						type='link'
+						icon={<EditOutlined />}
+					/> */}
+
+					<Popconfirm
+						disabled={activeKey === 'tu_dong'}
+						onConfirm={() => deleteModel(rec._id, getData)}
+						title='Bạn có chắc chắn muốn xóa?'
+					>
+						<ButtonExtend
+							tooltip='Xóa'
+							disabled={activeKey === 'tu_dong'}
+							type='link'
+							danger
+							icon={<DeleteOutlined />}
+						/>
+					</Popconfirm>
 				</>
 			),
 		},
 	];
-	const getDataThongKe = async () => {
-		try {
-			const res = await thongKeNotification();
-			if (res) {
-				setDataThongKe(res?.data?.data);
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
-	useEffect(() => {
-		getDataThongKe();
-	}, []);
-
-	const FormThongBao = useCallback(
-		() => <Form getData={getData} title='thông báo' />,
-		[startDate, type, initialState?.currentUser?.ssoId],
-	);
 
 	return (
 		<>
@@ -185,100 +150,60 @@ const ThongBaoPage = () => {
 				columns={columns}
 				modelName='thongbao.thongbao'
 				widthDrawer={1000}
-				dependencies={[page, limit, type, startDate, initialState?.currentUser?.ssoId]}
-				Form={FormThongBao}
+				dependencies={[page, limit, type, startDate, activeKey]}
+				Form={Form}
 				getData={getData}
+				formProps={{ getData }}
 				destroyModal
-				otherButtons={[<></>]}
+				buttons={{ create: activeKey === 'ban_hanh' ? true : false }}
 			>
-				<div style={{ marginBottom: 16 }}>
-					<Row gutter={[8, 8]}>
-						{Object.entries(FieldLoaiDoiTuongThongBao)?.map(([val, field]) => (
-							<Col span={12} md={8} key={val}>
-								<Card className='card-stat-small'>
-									<span className='num' style={{ color: ColorLoaiDoiTuongThongBao?.[val as EReceiverType] }}>
-										{inputFormat(dataThongKe?.[field] ?? 0)}
-									</span>
-									<span>Thông báo {LoaiDoiTuongThongBao?.[val as EReceiverType]}</span>
-								</Card>
-							</Col>
-						))}
-					</Row>
-				</div>
+				<Tabs onChange={(key: any) => setType(key)} activeKey={type} defaultActiveKey='MONTH'>
+					<Tabs.TabPane tab='Theo tháng' key='MONTH' />
+					<Tabs.TabPane tab='Theo tuần' key='WEEK' />
+					<Tabs.TabPane tab='Theo ngày' key='DAY' />
+				</Tabs>
 
-				<div>
-					<Tabs
-						onChange={(key: any) => {
-							if (key === 'WEEK') {
-								setStartDate(moment().startOf('week'));
-							}
-							if (key === 'DAY') {
-								setStartDate(moment());
-							}
-							if (key === 'MONTH') {
-								setStartDate(moment());
-							}
-							setType(key);
-						}}
-						activeKey={type}
-						defaultActiveKey='MONTH'
-					>
-						<Tabs.TabPane tab='Theo tháng' key='MONTH' />
-						<Tabs.TabPane tab='Theo tuần' key='WEEK' />
-						<Tabs.TabPane tab='Theo ngày' key='DAY' />
-					</Tabs>
-					{type === 'WEEK' && (
-						<div>
-							<div
-								style={{
-									marginBottom: 16,
-									display: 'flex',
-									alignItems: 'center',
-									gap: 24,
-									textAlign: 'center',
-								}}
-							>
-								<Button onClick={() => setStartDate(startDate.clone().subtract(7, 'day'))}>
-									<LeftOutlined /> Tuần trước
-								</Button>
-								<span>
-									Tuần: {startDay} - {endDay}
-								</span>
-								<Button onClick={() => setStartDate(startDate.clone().add(7, 'day'))}>
-									Tuần sau <RightOutlined />
-								</Button>
-								<a onClick={() => setStartDate(moment().startOf('week'))}>Tuần này</a>
-							</div>
-						</div>
+				<Space wrap style={{ marginBottom: 12 }}>
+					<Segmented
+						value={activeKey}
+						onChange={(value) => setActiveKey(value.toString())}
+						options={[
+							{ value: 'ban_hanh', label: 'Ban hành thông báo' },
+							{ value: 'tu_dong', label: 'Thông báo tự động' },
+						]}
+					/>
+
+					{type === 'WEEK' ? (
+						<>
+							<Button onClick={() => setStartDate(startDate.clone().subtract(7, 'day'))}>
+								<LeftOutlined /> Tuần trước
+							</Button>
+							<span>
+								Tuần: {startDay} - {endDay}
+							</span>
+							<Button onClick={() => setStartDate(startDate.clone().add(7, 'day'))}>
+								Tuần sau <RightOutlined />
+							</Button>
+							<a onClick={() => setStartDate(moment().startOf('week'))}>Tuần này</a>
+						</>
+					) : type === 'DAY' ? (
+						<MyDatePicker
+							allowClear={false}
+							style={{ width: 150 }}
+							value={moment(startDate)}
+							onChange={(val) => setStartDate(moment(val))}
+						/>
+					) : (
+						<MyDatePicker
+							allowClear={false}
+							pickerStyle='month'
+							format='MM/YYYY'
+							style={{ width: 150 }}
+							value={moment(startDate)}
+							onChange={(val) => setStartDate(moment(val))}
+						/>
 					)}
-					{type === 'DAY' && (
-						<div style={{ marginBottom: 16 }}>
-							<DatePicker
-								allowClear={false}
-								format={'DD/MM/YYYY'}
-								style={{ width: 300 }}
-								value={moment(startDate)}
-								onChange={(val) => {
-									setStartDate(val);
-								}}
-							/>
-						</div>
-					)}
-					{type === 'MONTH' && (
-						<div style={{ marginBottom: 16 }}>
-							<DatePicker
-								allowClear={false}
-								picker={'month'}
-								format={'MM/YYYY'}
-								style={{ width: 300 }}
-								value={moment(startDate)}
-								onChange={(val) => {
-									setStartDate(val);
-								}}
-							/>
-						</div>
-					)}
-				</div>
+				</Space>
 			</TableBase>
 
 			<Modal
@@ -286,11 +211,23 @@ const ThongBaoPage = () => {
 				bodyStyle={{ padding: 0 }}
 				okButtonProps={{ hidden: true }}
 				cancelText='Đóng'
-				visible={visible}
-				onCancel={() => setVisible(false)}
+				visible={visibleView}
+				onCancel={() => setVisibleView(false)}
 				destroyOnClose
 			>
 				<ViewThongBao record={record} />
+			</Modal>
+
+			<Modal
+				title='Danh sách người nhận'
+				width={800}
+				okButtonProps={{ hidden: true }}
+				cancelText='Đóng'
+				visible={visibleNguoiNhan}
+				onCancel={() => setVisibleNguoiNhan(false)}
+				destroyOnClose
+			>
+				<TableReceiverThongBao record={record} />
 			</Modal>
 		</>
 	);

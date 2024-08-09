@@ -72,4 +72,10 @@ declare module ThongBao {
 		fullname: string;
 		read?: boolean;
 	};
+
+	export type TNotificationSource = {
+		entityId?: string;
+		entitySource?: ENotificationSource;
+		pathWeb?: string;
+	} & Record<string, any>;
 }

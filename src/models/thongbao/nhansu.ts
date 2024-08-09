@@ -7,6 +7,7 @@ import { useState } from 'react';
 export default () => {
 	const [loading, setLoading] = useState<boolean>();
 	const [danhSach, setDanhSach] = useState<ThongBao.IUser[]>([]);
+	const [danhSachCanBo, setDanhSachCanBo] = useState<ThongBao.IUser[]>([]);
 	const [page, setPage] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(10);
 	const [total, setTotal] = useState<number>(0);
@@ -29,11 +30,29 @@ export default () => {
 		}
 	};
 
+	const getCanBoChuChotModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
+		setLoading(true);
+		try {
+			const payload = { role: EVaiTroBieuMau.NHAN_VIEN, canBoChuChot: true, ...(danhSachDoiTuong ?? {}) };
+			const params = { page, limit: 100, filters };
+			const response = await postReceiver(payload, params);
+			setDanhSachCanBo(response?.data?.data?.result ?? []);
+
+			return response?.data?.data?.result;
+		} catch (er) {
+			return Promise.reject(er);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return {
 		loading,
 		setLoading,
 		danhSach,
 		setDanhSach,
+		danhSachCanBo,
+		setDanhSachCanBo,
 		page,
 		setPage,
 		limit,
@@ -43,5 +62,6 @@ export default () => {
 		filters,
 		setFilters,
 		getModel,
+		getCanBoChuChotModel,
 	};
 };
