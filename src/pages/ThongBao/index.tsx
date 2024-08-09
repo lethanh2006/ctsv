@@ -13,6 +13,7 @@ import { useModel } from 'umi';
 import ViewThongBao from './ViewThongBao/CardView';
 import TableReceiverThongBao from './ViewThongBao/TableReceiver';
 import Form from './components/Form';
+import { ESourceTypeNotification, NotificationType } from '@/services/ThongBao/constant';
 
 const ThongBaoPage = () => {
 	const { page, limit, setRecord, record, getModel, deleteModel, setSortTime } = useModel('thongbao.thongbao');
@@ -43,6 +44,8 @@ const ThongBaoPage = () => {
 		getModel(
 			{
 				notificationInternal: activeKey === 'tu_dong',
+				type: NotificationType.ONESIGNAL,
+				sourceType: ESourceTypeNotification.CTSV,
 			},
 			[{ active: true, field: 'createdAt', operator: EOperatorType.BETWEEN, values: value }],
 		);

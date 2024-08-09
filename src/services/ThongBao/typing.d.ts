@@ -1,5 +1,5 @@
 import type { EVaiTroBieuMau } from '../TienIch/constant';
-import { type EReceiverType } from './constant';
+import { type ESourceTypeNotification, type EReceiverType } from './constant';
 
 declare module ThongBao {
 	export interface IRecord {
@@ -37,6 +37,7 @@ declare module ThongBao {
 		createdAt: string; // '2023-06-27T07:47:29.693Z';
 		read: boolean;
 
+		sourceType?: ESourceTypeNotification;
 		notificationInternal: boolean;
 		thoiGianHieuLuc: Date;
 		taiLieuDinhKem: string[];

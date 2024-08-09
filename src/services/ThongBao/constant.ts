@@ -40,3 +40,15 @@ export enum NotificationType {
 	ONESIGNAL = 'OneSignalService',
 	EMAIL = 'Email',
 }
+
+export enum ESourceTypeNotification {
+	SLINK = 'SLINK',
+	TAI_CHINH = 'TAI_CHINH',
+	QLDT = 'QLDT',
+	VPS = 'VAN_PHONG_SO',
+	CTSV = 'CONG_TAC_SINH_VIEN',
+	TCNS = 'TCNS',
+	KHAO_THI = 'KHAO_THI',
+	NOTIFICATION = 'NOTIFICATION',
+	PORTAL = 'PORTAL',
+}

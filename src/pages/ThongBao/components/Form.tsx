@@ -2,7 +2,12 @@ import FormWaiting from '@/components/Loading/FormWaiting';
 import TinyEditor from '@/components/TinyEditor';
 import UploadFile from '@/components/Upload/UploadFile';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
-import { EReceiverType, LoaiDoiTuongThongBao } from '@/services/ThongBao/constant';
+import {
+	EReceiverType,
+	ESourceTypeNotification,
+	LoaiDoiTuongThongBao,
+	NotificationType,
+} from '@/services/ThongBao/constant';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { buildUpLoadFile, buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
@@ -75,6 +80,8 @@ const FormThongBao = (props: any) => {
 				// delete values.filter;
 			}
 			values.notificationInternal = false;
+			values.type = NotificationType.ONESIGNAL;
+			values.sourceType = ESourceTypeNotification.CTSV;
 			delete values.loaiNguoiDung;
 
 			if (edit) {
