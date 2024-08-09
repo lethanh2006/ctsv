@@ -41,6 +41,8 @@ declare module ThongBao {
 		notificationInternal: boolean;
 		thoiGianHieuLuc: Date;
 		taiLieuDinhKem: string[];
+
+		metadata?: TNotificationSource;
 	}
 	export interface IThongKe {
 		tatCa: 20;
@@ -74,4 +76,10 @@ declare module ThongBao {
 		fullname: string;
 		read?: boolean;
 	};
+
+	export type TNotificationSource = {
+		entityId?: string;
+		entitySource?: ENotificationSource;
+		pathWeb?: string;
+	} & Record<string, any>;
 }
