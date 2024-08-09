@@ -12,3 +12,17 @@ export enum ELoaiBoLoc {
 	MANG = 'Mảng',
 	DANH_MUC = 'Danh mục',
 }
+
+export const arrSpecialColumn = [
+	'Đối tượng miễn học phí',
+	'Đối tượng miễn giảm 70%',
+	'Đối tượng miễn giảm 50%',
+	'Đối tượng miễn giảm 15%',
+];
+
+export const arrSpecialDataIndex = [
+	'doiTuongMienHocPhi',
+	'doiTuongGiamBayMuoi',
+	'doiTuongGiamNamMuoi',
+	'doiTuongMienGiam15',
+];

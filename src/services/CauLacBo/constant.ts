@@ -41,3 +41,8 @@ export const MapKeyColorTrangThaiThanhVienCLB = {
 	[ETrangThaiThanhVien.DANG_HOAT_DONG]: '#28a745',
 	[ETrangThaiThanhVien.NGUNG_HOAT_DONG]: '#ff4d4f',
 };
+
+export enum ELoaiThanhVienCauLacBo {
+	CHINH_THUC = 'Chính thức',
+	CTV = 'Cộng tác viên',
+}

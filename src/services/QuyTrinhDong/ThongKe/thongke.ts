@@ -22,3 +22,5 @@ export const getDataThongKeExcel = (payload?: { thongKeQuyTrinhDongIds?: string[
 
 export const thongKeDonTheoBuoc = (idQuyTrinh: string) =>
 	axios.get(`${ip3}/thong-ke-quy-trinh-dong/general/quy-trinh/${idQuyTrinh}`);
+
+export const getCountDonChuaXuLy = () => axios.get(`${ip3}/thong-ke-quy-trinh-dong/count/don-chua-xu-ly`);

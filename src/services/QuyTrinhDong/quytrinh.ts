@@ -21,6 +21,11 @@ export async function getQuyTrinhLinhVuc() {
 	return axios.get(`${ip3}/quy-trinh-dong/linh-vuc`);
 }
 
+export async function checkRuleXuLyDon(dataBoPhanXuLy: any) {
+  return axios.post(`${ip3}/don-quy-trinh-dong/user/validate/access/bo-phan-xu-ly`, { ...dataBoPhanXuLy });
+}
+
+
 export const activeQuyTrinhDong = (idQuyTrinh: string) => {
 	return axios.put(`${ip3}/quy-trinh-dong/${idQuyTrinh}/switch-active`);
 };

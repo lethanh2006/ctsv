@@ -2,8 +2,8 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
-import { EyeOutlined } from '@ant-design/icons';
-import { Button, Tooltip, Tag } from 'antd';
+import { EyeOutlined, FileImageOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import { Button, Tooltip, Tag, message, Popconfirm, Modal } from 'antd';
 import moment from 'moment';
 import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
@@ -11,13 +11,41 @@ import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinh
 import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
 import { ETrangThaiHocSv, colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import { handleLockHoSo, handleUnLockHoSo } from '@/services/DaoTaoV2/SinhVien';
+import FormCapNhatAnhSV from './components/FormCapNhatAnhSV';
+import KetQuaCapNhatAnhSV from './components/KetQuaCapNhatAnhSV';
 
 const ViewSinhVien = () => {
-	const { getModel, page, limit, isView, handleView } = useModel('daotaov2.sinhvien.sinhvien');
+	const { getModel, page, limit, isView, handleView, visibleFormCapNhatAnh, setvisibleFormCapNhatAnh } =
+		useModel('daotaov2.sinhvien.sinhvien');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 
 	const getData = () => getModel({ maKhoaSinhVien: recKhoa?.ma, maNganh: recNganh?.ma });
+
+	const handleLockHoSoModel = async (id: string) => {
+		try {
+			const res = await handleLockHoSo(id);
+			if (res) {
+				message.success('Khoá hồ sơ thành công');
+				getData();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	const handleUnLockHoSoModel = async (id: string) => {
+		try {
+			const res = await handleUnLockHoSo(id);
+			if (res) {
+				message.success('Mở khoá hồ sơ thành công');
+				getData();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 	const onCell = (rec: SinhVien.IRecord) => ({
 		onClick: () => handleView(rec),
@@ -28,7 +56,7 @@ const ViewSinhVien = () => {
 		{
 			title: 'Mã sinh viên',
 			dataIndex: 'ma',
-			width: 120,
+			width: 140,
 			sortable: true,
 			filterType: 'string',
 			align: 'center',
@@ -86,7 +114,7 @@ const ViewSinhVien = () => {
 			title: 'Trạng thái học',
 			dataIndex: 'trangThaiHoc',
 			align: 'center',
-			width: 120,
+			width: 140,
 			filterType: 'select',
 			filterData: Object.values(ETrangThaiHocSv),
 			render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
@@ -95,9 +123,22 @@ const ViewSinhVien = () => {
 		{
 			title: 'Cập nhật lúc',
 			dataIndex: 'updatedAt',
-			width: 100,
+			width: 120,
 			sortable: true,
 			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+		},
+		{
+			title: 'Trạng thái',
+			dataIndex: 'choPhepSua',
+			width: 120,
+			align: 'center',
+			fixed: 'right',
+			render: (val) => (val ? <Tag color='green'>Mở khóa</Tag> : <Tag color='red'>Khóa</Tag>),
+			filterType: 'select',
+			filterData: [
+				{ value: true, label: 'Mở khóa' },
+				{ value: false, label: 'Khóa' },
+			],
 		},
 		{
 			title: 'Thao tác',
@@ -108,6 +149,34 @@ const ViewSinhVien = () => {
 				<>
 					<Tooltip title='Xem chi tiết'>
 						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
+					</Tooltip>
+					<Tooltip title={record?.choPhepSua ? 'Khoá hồ sơ' : 'Mở khoá hồ sơ'}>
+						<Popconfirm
+							title={
+								record?.choPhepSua
+									? 'Bạn có chắc chắn muốn khoá chỉnh sửa hồ sơ này?'
+									: 'Bạn có chắc chắn muốn mở khoá chỉnh sửa hồ sơ này?'
+							}
+							onConfirm={() => {
+								if (record?.choPhepSua) {
+									handleLockHoSoModel(record?._id);
+								} else {
+									handleUnLockHoSoModel(record?._id);
+								}
+							}}
+						>
+							<Button
+								// onClick={() => {
+								// 	if (record?.choPhepSua) {
+								// 		handleLockHoSo(record?._id);
+								// 	} else {
+								// 		handleUnLockHoSoModel(record?._id);
+								// 	}
+								// }}
+								type='link'
+								icon={record?.choPhepSua ? <LockOutlined /> : <UnlockOutlined />}
+							/>
+						</Popconfirm>
 					</Tooltip>
 					{/* <Tooltip title='Xóa'>
 						<Popconfirm
@@ -137,8 +206,29 @@ const ViewSinhVien = () => {
 				rowSelection
 				deleteMany
 				buttons={{ import: false, export: true, create: false }}
-				otherButtons={[<FilterKhoaSinhVien key={'filter'} hasSelectNganh allowClear />]}
+				otherButtons={[
+					<FilterKhoaSinhVien key={'filter'} hasSelectNganh allowClear />,
+					<Button
+						onClick={() => {
+							setvisibleFormCapNhatAnh(true);
+						}}
+						icon={<FileImageOutlined />}
+						key={'image'}
+						type='primary'
+					>
+						Cập nhật ảnh thẻ SV
+					</Button>,
+				]}
 			/>
+			<Modal
+				visible={visibleFormCapNhatAnh}
+				onCancel={() => setvisibleFormCapNhatAnh(false)}
+				bodyStyle={{ padding: 0 }}
+				footer={false}
+			>
+				<FormCapNhatAnhSV getData={getData} />
+			</Modal>
+			<KetQuaCapNhatAnhSV />
 		</>
 	);
 };

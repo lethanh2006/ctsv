@@ -4,6 +4,7 @@ import { type AxiosResponse } from 'axios';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
+import { ip3 } from './ip';
 
 const reg =
 	/(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -469,6 +470,10 @@ export const compareFullname = (a: any, b: any): number => {
 	return compareTen === 0 ? a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()) : compareTen;
 };
 
+export function renderUrlWithFileId(fileId: string): string {
+	return `${ip3}/file/${fileId}`;
+}
+
 /**
  * Xóa tiếng Việt
  * @param str
@@ -510,3 +515,26 @@ export function removeVietnameseTones(str: string, removeSpecial: boolean = fals
 
 	return strTemp;
 }
+
+export const transformDataColumnsTableToJson = (columnsArr: any[], arr: any[], valueNoData?: string | number) => {
+	return arr.map((item) => {
+		const transformedItem = {};
+		columnsArr.forEach((col) => {
+			// @ts-ignore
+			transformedItem[col?.title] = item[col?.dataIndex] || valueNoData;
+		});
+		return transformedItem;
+	});
+};
+
+export const jsonToXlsx = (jsonData: any[], tenFile?: string) => {
+	// Convert JSON data to worksheet
+	const worksheet = XLSX.utils.json_to_sheet(jsonData);
+
+	// Create a new workbook and append the worksheet
+	const workbook = XLSX.utils.book_new();
+	XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+	// Write the workbook to a file
+	XLSX.writeFile(workbook, tenFile ? `${tenFile}.xlsx` : 'tai_lieu.xlsx');
+};

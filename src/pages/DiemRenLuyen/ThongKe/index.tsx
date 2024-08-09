@@ -41,12 +41,95 @@ const ThongKePhieuDiem = () => {
 		getData();
 	}, [record?.maHocKy]);
 
-	const column: IColumn<Data>[] = Object.keys(data?.[0] ?? {}).map((key: any) => ({
-		title: key,
-		dataIndex: key,
-		width: 150,
-		align: 'center',
-	}));
+	const columnFinal: IColumn<any>[] = [
+		{
+			title: 'Ngành',
+			dataIndex: 'Ngành',
+			width: 200,
+			render: (val) => <div style={{ fontWeight: val === 'Tổng cộng' ? 'bold' : undefined }}>{val}</div>,
+		},
+		{
+			title: 'Tổng số sinh viên',
+			width: 120,
+			align: 'center',
+		},
+		{
+			title: 'Số sinh viên được đánh giá',
+			width: 150,
+			dataIndex: 'Tổng số sinh viên',
+			align: 'center',
+		},
+		{
+			title: 'Xuất sắc',
+			width: 150,
+			dataIndex: 'Phân loại XS',
+			align: 'center',
+			render: (val, rec) =>
+				rec?.['Tổng số sinh viên'] ? (
+					<div>
+						{val} ({((val / rec['Tổng số sinh viên']) * 100).toFixed(2)}%)
+					</div>
+				) : (
+					<div>{val}</div>
+				),
+		},
+		{
+			title: 'Tốt',
+			width: 150,
+			dataIndex: 'Phân loại Tốt',
+			align: 'center',
+			render: (val, rec) =>
+				rec?.['Tổng số sinh viên'] ? (
+					<div>
+						{val} ({((val / rec['Tổng số sinh viên']) * 100).toFixed(2)}%)
+					</div>
+				) : (
+					<div>{val}</div>
+				),
+		},
+		{
+			title: 'Khá',
+			width: 150,
+			dataIndex: 'Phân loại Khá',
+			align: 'center',
+			render: (val, rec) =>
+				rec?.['Tổng số sinh viên'] ? (
+					<div>
+						{val} ({((val / rec['Tổng số sinh viên']) * 100).toFixed(2)}%)
+					</div>
+				) : (
+					<div>{val}</div>
+				),
+		},
+		{
+			title: 'Trung bình',
+			width: 150,
+			dataIndex: 'Phân loại Trung bình',
+			align: 'center',
+			render: (val, rec) =>
+				rec?.['Tổng số sinh viên'] ? (
+					<div>
+						{val} ({((val / rec['Tổng số sinh viên']) * 100).toFixed(2)}%)
+					</div>
+				) : (
+					<div>{val}</div>
+				),
+		},
+		{
+			title: 'Yếu/Kém',
+			width: 150,
+			dataIndex: 'Phân loại Yếu/Kém',
+			align: 'center',
+			render: (val, rec) =>
+				rec?.['Tổng số sinh viên'] ? (
+					<div>
+						{val} ({((val / rec['Tổng số sinh viên']) * 100).toFixed(2)}%)
+					</div>
+				) : (
+					<div>{val}</div>
+				),
+		},
+	];
 
 	return (
 		<Card title='Thống kê'>
@@ -95,7 +178,34 @@ const ThongKePhieuDiem = () => {
 					</div>
 				</Col>
 			</Row>
-			<TableStaticData data={data} columns={column} />
+			<TableStaticData
+				otherProps={{ pagination: false }}
+				data={[
+					...data,
+					{
+						Ngành: 'Tổng cộng',
+						'Phân loại Khá': data.reduce((pre, cur) => {
+							return pre + cur?.['Phân loại Khá'] ?? 0;
+						}, 0),
+						'Phân loại Trung bình': data.reduce((pre, cur) => {
+							return pre + cur?.['Phân loại Trung bình'] ?? 0;
+						}, 0),
+						'Phân loại Tốt': data.reduce((pre, cur) => {
+							return pre + cur?.['Phân loại Tốt'] ?? 0;
+						}, 0),
+						'Phân loại XS': data.reduce((pre, cur) => {
+							return pre + cur?.['Phân loại XS'] ?? 0;
+						}, 0),
+						'Phân loại Yếu/Kém': data.reduce((pre, cur) => {
+							return pre + cur?.['Phân loại Yếu/Kém'] ?? 0;
+						}, 0),
+						'Tổng số sinh viên': data.reduce((pre, cur) => {
+							return pre + cur?.['Tổng số sinh viên'] ?? 0;
+						}, 0),
+					},
+				]}
+				columns={columnFinal}
+			/>
 		</Card>
 	);
 };

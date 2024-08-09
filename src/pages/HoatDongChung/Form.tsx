@@ -1,6 +1,10 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
-import type { EHoatDongChungType1 } from '@/services/HoatDongChung/constants';
+import {
+	ECapHoatDongHuyDongGiaoDucTuTuongChinhTri,
+	EHoatDongChungType1,
+	ELoaiDonViPhoiHop,
+} from '@/services/HoatDongChung/constants';
 import {
 	EHoatDongChungType2,
 	ELoaiDoiTuong,
@@ -18,7 +22,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, DeleteOutlined, Plus
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select, message } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectCLB from '../CauLacBo/components/SelectCLB';
 import SelectNguonKinhPhi from '../DanhMuc/NguonKinhPhi/Select';
@@ -28,6 +32,8 @@ import SelectKhoaSinhVien from '../DaoTaoV2/NamHoc/KhoaSinhVien/components/Selec
 import SelectLopHanhChinhDebounce from '../DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import SelectDonVi from '../ToChucNhanSu/DonVi/Select';
 import TableDuToanKinhPhi from './DuToanKinhPhi/TableDuToanKinhPhi';
+import type { DonViHanhChinh } from '@/services/Core/DonViHanhChinh/typing';
+import { getTinhThanhPho } from '@/services/Core/DonViHanhChinh';
 
 const FormHoatDongChung = (props: {
 	phanLoaiCap1: EHoatDongChungType1;
@@ -39,6 +45,9 @@ const FormHoatDongChung = (props: {
 	const { danhSach: danhSachNguonKinhPhi } = useModel('danhmuc.nguonkinhphi');
 	const title = props?.phanLoaiCap2 ?? '';
 
+	const [listTinh, setListTinh] = useState<DonViHanhChinh.IRecord[]>([]);
+	const loaidonViChuTri = Form.useWatch('loaidonViChuTri', form);
+	const loaiDonViPhoiHop = Form.useWatch('loaiDonViPhoiHop', form);
 	useEffect(() => {
 		if (record?._id) form.setFieldsValue(record);
 		else form.resetFields();
@@ -49,6 +58,13 @@ const FormHoatDongChung = (props: {
 	useEffect(() => {
 		if (!visibleForm) form.resetFields();
 	}, [visibleForm]);
+
+	useEffect(() => {
+		if (props.phanLoaiCap1 === EHoatDongChungType1.PHUC_VU_CONG_DONG && listTinh?.length === 0)
+			getTinhThanhPho().then((data) => {
+				setListTinh(data.data.data);
+			});
+	}, [props.phanLoaiCap1]);
 
 	const onChangNguonKinhPhi = (ma: string, index: number) => {
 		const ns = danhSachNguonKinhPhi.find((item) => item?.ma === ma);
@@ -122,16 +138,60 @@ const FormHoatDongChung = (props: {
 						</Form.Item>
 					</Col>
 					<Col xs={12}>
-						<Form.Item rules={[...rules.required]} name='soLuongThamGia' label='Số lượng tham gia'>
-							<InputNumber style={{ width: '100%' }} placeholder='Số lượng tham gia' addonAfter='Người' />
+						<Form.Item
+							rules={[...rules.required]}
+							name='soLuongThamGia'
+							label={
+								props.phanLoaiCap1 === EHoatDongChungType1.PHUC_VU_CONG_DONG
+									? 'Số sinh viên tham gia'
+									: 'Số lượng tham gia'
+							}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								placeholder={
+									props.phanLoaiCap1 === EHoatDongChungType1.PHUC_VU_CONG_DONG
+										? 'Số sinh viên tham gia'
+										: 'Số lượng tham gia'
+								}
+								addonAfter='Người'
+							/>
 						</Form.Item>
 					</Col>
+
+					{props.phanLoaiCap1 === EHoatDongChungType1.PHUC_VU_CONG_DONG && (
+						<>
+							<Col xs={12}>
+								<Form.Item rules={[...rules.required]} name='soLuongThamGiaGv' label='Số CB, GV tham gia'>
+									<InputNumber style={{ width: '100%' }} placeholder='Số CB, GV tham gia' addonAfter='Người' />
+								</Form.Item>
+							</Col>
+							<Col xs={12}>
+								<Form.Item rules={[...rules.required]} name='soLuongTiepCan' label='Số lượng tiếp cận'>
+									<InputNumber style={{ width: '100%' }} placeholder='Số lượng tiếp cận' addonAfter='Người' />
+								</Form.Item>
+							</Col>
+						</>
+					)}
 					{props.phanLoaiCap2 === EHoatDongChungType2.HUONG_NGHIEP_VIEC_LAM && (
 						<Col xs={24}>
 							<Form.Item rules={[...rules.required]} name='loai' label='Loại'>
 								<Select
 									options={Object.values(ELoaiSuKienSinhVien).map((item) => ({ label: item, value: item }))}
 									placeholder='Loại'
+								/>
+							</Form.Item>
+						</Col>
+					)}
+					{props.phanLoaiCap2 === EHoatDongChungType2.HOAT_DONG_HUY_DONG_GIAO_DUC_TU_TUONG_CHINH_TRI && (
+						<Col xs={24}>
+							<Form.Item rules={[...rules.required]} name='cap' label='Cấp'>
+								<Select
+									options={Object.values(ECapHoatDongHuyDongGiaoDucTuTuongChinhTri).map((item) => ({
+										label: item,
+										value: item,
+									}))}
+									placeholder='Cấp'
 								/>
 							</Form.Item>
 						</Col>
@@ -166,6 +226,76 @@ const FormHoatDongChung = (props: {
 						<Form.Item rules={[...rules.text]} name='diaDiem' label='Địa điểm'>
 							<Input.TextArea placeholder='Địa điểm' />
 						</Form.Item>
+					</Col>
+					{props.phanLoaiCap1 === EHoatDongChungType1.PHUC_VU_CONG_DONG && (
+						<>
+							<Col xs={24}>
+								<Form.Item rules={[...rules.text, ...rules.required]} name='tinh' label='Tỉnh/Thành phố'>
+									<Select
+										placeholder='Tỉnh/thành phố'
+										options={listTinh?.map((item) => ({
+											key: item.ma,
+											value: item.tenDonVi,
+											label: item.tenDonVi,
+										}))}
+									/>
+								</Form.Item>
+							</Col>
+						</>
+					)}
+					<Col span={24}>
+						<div>Đơn vị chủ trì</div>
+						<Row gutter={[12, 0]}>
+							<Col span={8}>
+								<Form.Item name='loaidonViChuTri'>
+									<Select
+										allowClear
+										placeholder='Loại đơn vị chủ trì'
+										options={Object.values(ELoaiDonViPhoiHop)?.map((item) => ({
+											key: item,
+											value: item,
+											label: item,
+										}))}
+									/>
+								</Form.Item>
+							</Col>
+							<Col span={16}>
+								<Form.Item rules={loaidonViChuTri ? [...rules.required] : undefined} name='donViChuTri'>
+									{loaidonViChuTri === ELoaiDonViPhoiHop.HOC_VIEN ? (
+										<SelectDonVi />
+									) : (
+										<Input placeholder='Đơn vị chủ trì' />
+									)}
+								</Form.Item>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<div>Đơn vị phối hợp</div>
+						<Row gutter={[12, 0]}>
+							<Col span={8}>
+								<Form.Item name='loaiDonViPhoiHop'>
+									<Select
+										allowClear
+										placeholder='Loại đơn vị phối hợp'
+										options={Object.values(ELoaiDonViPhoiHop)?.map((item) => ({
+											key: item,
+											value: item,
+											label: item,
+										}))}
+									/>
+								</Form.Item>
+							</Col>
+							<Col span={16}>
+								<Form.Item rules={loaiDonViPhoiHop ? [...rules.required] : undefined} name='donViPhoiHop'>
+									{loaiDonViPhoiHop === ELoaiDonViPhoiHop.HOC_VIEN ? (
+										<SelectDonVi />
+									) : (
+										<Input placeholder='Đơn vị phối hợp' />
+									)}
+								</Form.Item>
+							</Col>
+						</Row>
 					</Col>
 
 					<Col span={24}>

@@ -7,7 +7,7 @@ import './style.less';
 import vi from './vi.json';
 
 const ColumnChart = (props: DataChartType) => {
-	const { title, xAxis, yAxis, yLabel, height, type, formatY, colors, otherOptions } = props;
+	const { title, xAxis, yAxis, yLabel, height, type, formatY, colors, otherOptions, otherOptionsChart } = props;
 	const options: ApexOptions = {
 		chart: {
 			defaultLocale: 'vi',
@@ -28,6 +28,7 @@ const ColumnChart = (props: DataChartType) => {
 					},
 				},
 			},
+			...otherOptionsChart,
 		},
 		title: {
 			text: title ?? yLabel[0],

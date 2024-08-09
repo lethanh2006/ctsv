@@ -1,6 +1,22 @@
 import axios from '@/utils/axios';
 import { ipDaoTao } from '@/utils/ip';
 
+export const getThongKeDanTocSinhVien = (maHocKy: string) => {
+	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/dan-toc/hoc-ky/${maHocKy}`);
+};
+export const getThongKeHoKhauSinhVien = (maHocKy: string) => {
+	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/ho-khau/hoc-ky/${maHocKy}`);
+};
+export const getThongKeCoVanHocTap = (maHocKy: string) => {
+	return axios.get(`${ipDaoTao}/lop-hanh-chinh/tong-hop/co-van/hoc-ky/${maHocKy}`);
+};
+export const getThongKeTonGiaoSinhVien = (maHocKy: string) => {
+	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/ton-giao/hoc-ky/${maHocKy}`);
+};
+export const getThongKeNganhSinhVien = (maHocKy: string) => {
+	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/nganh/hoc-ky/${maHocKy}`);
+};
+
 export async function getHocTapHienTai(sinhVienSsoId: string) {
 	return axios.get(`${ipDaoTao}/sinh-vien/${sinhVienSsoId}/thong-tin-hoc-tap-hien-tai`);
 }
@@ -47,3 +63,17 @@ export async function exportKetQuaHocTap(ssoId: string, params?: { condition?: a
 		params,
 	});
 }
+
+export async function handleLockHoSo(hoSoId: string) {
+	return axios.put(`${ipDaoTao}/sinh-vien/khoa/${hoSoId}`);
+}
+
+export async function handleUnLockHoSo(hoSoId: string) {
+	return axios.put(`${ipDaoTao}/sinh-vien/mo-khoa/${hoSoId}`);
+}
+
+export const uploadAnhTheSinhVien = (payload: { file: string | Blob }) => {
+	const form = new FormData();
+	form.append('file', payload?.file);
+	return axios.put(`${ipDaoTao}/sinh-vien/pfp/zip`, form);
+};

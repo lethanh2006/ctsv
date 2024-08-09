@@ -19,8 +19,20 @@ const UploadFile = (props: {
 	otherProps?: UploadProps;
 	isAvatar?: boolean;
 	isAvatarSmall?: boolean;
+	maxSize?: number;
 }) => {
-	const { value, onChange, otherProps, drag, buttonSize, buttonDescription, accept, isAvatar, isAvatarSmall } = props;
+	const {
+		value,
+		onChange,
+		otherProps,
+		drag,
+		buttonSize,
+		buttonDescription,
+		accept,
+		isAvatar,
+		isAvatarSmall,
+		maxSize = 5,
+	} = props;
 	const limit = props.maxCount || 1;
 	const [fileList, setFileList] = useState<any[]>();
 	const [previewOpen, setPreviewOpen] = useState(false);
@@ -48,14 +60,14 @@ const UploadFile = (props: {
 
 	const handleChange = (val: any) => {
 		const fil = val.fileList;
-		const findLargeFile = fil?.find((file: any) => file.size / 1024 / 1024 > 5);
+		const findLargeFile = fil?.find((file: any) => file.size / 1024 / 1024 > maxSize);
 		const findWrongTypeFile = fil?.find((file: any) => {
 			const arrFileName = file.name.split('.');
 			return file?.remote !== true && !otherProps?.accept?.includes(arrFileName?.[arrFileName.length - 1]);
 		});
 
 		if (findLargeFile) {
-			message.error('Tập tin không được quá 5Mb');
+			message.error(`Tập tin không được quá ${maxSize}Mb`);
 			return;
 		}
 		if (findWrongTypeFile && otherProps?.accept) {
@@ -78,7 +90,9 @@ const UploadFile = (props: {
 	const Extra = () =>
 		otherProps?.disabled ? null : (
 			<small style={{ color: '#999' }}>
-				<i>Tối đa {limit} mục, dung lượng mỗi file không được quá 5Mb</i>
+				<i>
+					Tối đa {limit} mục, dung lượng mỗi file không được quá {maxSize}Mb
+				</i>
 			</small>
 		);
 

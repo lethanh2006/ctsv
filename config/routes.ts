@@ -38,6 +38,12 @@
 		icon: 'contacts',
 		routes: [
 			{
+				name: 'DotCapNhatHoSo',
+				path: 'dot-cap-nhat-ho-so',
+				component: './DaoTaoV2/SinhVien/DotCapNhatHoSo',
+				// component: './TrangChu',
+			},
+			{
 				name: 'DanhSachSinhVien',
 				path: 'danh-sach-sinh-vien',
 				component: './DaoTaoV2/SinhVien',
@@ -65,7 +71,22 @@
 				path: 'lop-hanh-chinh',
 				component: './DaoTaoV2/NamHoc/LopHanhChinh',
 			},
-
+			{
+				name: 'BanCanSuLop',
+				path: 'ban-can-su-lop',
+				component: './DaoTaoV2/NamHoc/SvLopHanhChinhNamHoc',
+			},
+			{
+				name: 'CoVanHocTap',
+				path: 'co-van-hoc-tap',
+				component: './DaoTaoV2/NamHoc/CoVanLopHanhChinhNamHoc',
+			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke-sinh-vien',
+				component: './DaoTaoV2/SinhVien/ThongKe',
+				// component: './TrangChu',
+			},
 			// {
 			//   name: 'LopHanhChinh',
 			//   path: 'lop-hanh-chinh',
@@ -112,6 +133,12 @@
 				path: 'cac-hoat-dong-cho-sinh-vien',
 				// component: './SuKien',
 				component: './HoatDongChung/HuongNghiepViecLam',
+			},
+			{
+				name: 'HoatDongHuyDongGiaoDucTuTuongChinhTri',
+				path: 'huy-dong-giao-duc-tu-tuong-chinh-tri',
+				// component: './SuKien',
+				component: './HoatDongChung/HoatDongHuyDongGiaoDucTuTuongChinhTri',
 			},
 			{
 				name: 'DanhGiaKetQua',
@@ -170,7 +197,7 @@
 			{
 				name: 'ThongKe',
 				path: 'thong-ke',
-				component: './HoatDongChung/ThongKePhucVuCongDong',
+				// component: './HoatDongChung/ThongKeChung',
 			},
 		],
 	},
@@ -201,7 +228,8 @@
 			{
 				name: 'ThongKe',
 				path: 'thong-ke',
-				component: './CauLacBo/ThongKe',
+				// component: './CauLacBo/ThongKe',
+				component: './HoatDongChung/ThongKeVanHoaTheThao',
 			},
 		],
 	},
@@ -390,18 +418,18 @@
 	// },
 
 	//Nội ngoại trú
-	{
-		name: 'NoiNgoaiTru',
-		path: 'noi-ngoai-tru',
-		icon: 'BankOutlined',
-		routes: [
-			{
-				name: 'DotKhaiBaoNoiNgoaitru',
-				path: 'dot-khai-bao-noi-ngoai-tru',
-				component: './NoiNgoaiTru/QuanLyDot',
-			},
-		],
-	},
+	// {
+	// 	name: 'NoiNgoaiTru',
+	// 	path: 'noi-ngoai-tru',
+	// 	icon: 'BankOutlined',
+	// 	routes: [
+	// 		{
+	// 			name: 'DotKhaiBaoNoiNgoaitru',
+	// 			path: 'dot-khai-bao-noi-ngoai-tru',
+	// 			component: './NoiNgoaiTru/QuanLyDot',
+	// 		},
+	// 	],
+	// },
 
 	//Khai báo sức khỏe
 

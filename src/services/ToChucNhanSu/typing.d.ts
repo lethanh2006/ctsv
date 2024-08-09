@@ -33,6 +33,7 @@ declare module ToChucNhanSu {
 		_id: string;
 		ssoId: string;
 		maCanBo: string;
+		hoTen: string;
 		hoDem: string;
 		ten: string;
 		// tenGoiKhac: string;

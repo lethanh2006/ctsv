@@ -7,21 +7,24 @@ import {
 	MapKeyNameTrangThaiChamDiem,
 	MapKeyNameXepLoai,
 } from '@/services/DiemRenLuyen/constants';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip } from 'antd';
+import { CheckOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Modal, Popconfirm, Tooltip } from 'antd';
+import { useCallback, useState } from 'react';
 import { useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/components/SelectDot';
 import FormPhieuDiem from './components/Form';
-import { useCallback } from 'react';
+import FormCapNhatTrangThai from './components/FormCapNhatTrangThai';
 
 const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean }) => {
-	const { handleEdit, deleteModel, page, limit, condition, setCondition, getModel } =
+	const { handleEdit, deleteModel, page, limit, condition, setCondition, getModel, doiTrangThaiPhieuDiemModel } =
 		useModel('diemrenluyen.phieudiem');
 	const { danhSach } = useModel('diemrenluyen.dot');
 	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 	const getData = () => {
 		getModel({ 'thongTinNguoiTao.ssoId': props?.ssoId });
 	};
+
+	const [visibleFormDoiTrangThai, setVisibleFormDoiTrangThai] = useState(false);
 
 	const column: IColumn<PhieuDiemRenLuyen.IRecord>[] = [
 		{
@@ -135,6 +138,18 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 						}}
 						key={'dot'}
 					/>,
+					<Tooltip title={!condition?.dotDrlId ? 'Vui lòng chọn một học kỳ' : ''} key={'trangthai'}>
+						<Button
+							disabled={!condition?.dotDrlId}
+							onClick={() => {
+								setVisibleFormDoiTrangThai(true);
+							}}
+							type='primary'
+							icon={<CheckOutlined />}
+						>
+							Cập nhật trạng thái
+						</Button>
+					</Tooltip>,
 				]}
 				widthDrawer={700}
 				Form={Form}
@@ -143,6 +158,16 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 				modelName={'diemrenluyen.phieudiem'}
 				dependencies={[page, limit]}
 			/>
+			<Modal
+				visible={visibleFormDoiTrangThai}
+				onCancel={() => {
+					setVisibleFormDoiTrangThai(false);
+				}}
+				footer={false}
+				bodyStyle={{ padding: 0 }}
+			>
+				<FormCapNhatTrangThai getData={getData} onCancel={() => setVisibleFormDoiTrangThai(false)} />
+			</Modal>
 		</>
 	);
 };

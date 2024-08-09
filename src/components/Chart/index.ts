@@ -20,4 +20,5 @@ export type DataChartType = {
 	showTotal?: boolean;
 
 	otherOptions?: ApexOptions;
+	otherOptionsChart?: ApexChart;
 };

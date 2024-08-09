@@ -2,8 +2,8 @@ import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import type { EHoatDongChungType1 } from '@/services/HoatDongChung/constants';
 import { EHoatDongChungType2 } from '@/services/HoatDongChung/constants';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -13,6 +13,7 @@ import type { HoatDongChung } from '@/services/HoatDongChung/typings';
 import { thongKe } from '@/services/HoatDongChung';
 import ThongKe from './ThongKeSoLuong';
 import SelectCLB from '../CauLacBo/components/SelectCLB';
+import DanhSachSinhVien from '@/pages/HoatDongChung/DanhSachSinhVien';
 
 const HoatDongChungPage = (props: {
 	phanLoaiCap1: EHoatDongChungType1;
@@ -21,10 +22,13 @@ const HoatDongChungPage = (props: {
 	hideCard?: boolean;
 	paramCondition?: any;
 }) => {
-	const { getModel, condition, setCondition, handleEdit, deleteModel, filters } = useModel('hoatdongchung');
+	const { getModel, condition, setCondition, handleEdit, deleteModel, filters, setRecord, record } =
+		useModel('hoatdongchung');
+
 	const { danhSach: danhSachCauLacBo } = useModel('caulacbo.caulacbo');
 	const { danhSach } = useModel('daotaov2.hocky.hocky');
 	const [dataThongKe, setDataThongKe] = useState<any>();
+	const [visibleDanhSach, setVisibleDanhSach] = useState<boolean>(false);
 	const getData = () => {
 		getModel({ phanLoaiCap1: props.phanLoaiCap1, phanLoaiCap2: props.phanLoaiCap2, ...(props?.paramCondition ?? {}) });
 	};
@@ -98,12 +102,12 @@ const HoatDongChungPage = (props: {
 			align: 'center',
 			width: 120,
 			fixed: 'right',
-			render: (record: HoatDongChung.IRecord) => (
+			render: (recordVal: HoatDongChung.IRecord) => (
 				<>
 					<Tooltip title='Chỉnh sửa'>
 						<Button
 							onClick={() => {
-								handleEdit(record);
+								handleEdit(recordVal);
 							}}
 							type='link'
 							icon={<EditOutlined />}
@@ -113,12 +117,22 @@ const HoatDongChungPage = (props: {
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => {
-								deleteModel(record._id, getData);
+								deleteModel(recordVal._id, getData);
 							}}
 							title='Bạn có chắc chắn muốn xóa?'
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
+					</Tooltip>
+					<Tooltip title='Danh sách sinh viên'>
+						<Button
+							onClick={() => {
+								setRecord(recordVal);
+								setVisibleDanhSach(true);
+							}}
+							type='link'
+							icon={<UserOutlined />}
+						/>
 					</Tooltip>
 					{/* <Tooltip title='Xem chi tiết'>
 						<Button
@@ -191,6 +205,21 @@ const HoatDongChungPage = (props: {
 				modelName='hoatdongchung'
 				title={props?.title ?? props.phanLoaiCap2}
 			/>
+
+			<Modal
+				bodyStyle={{
+					paddingTop: 4,
+				}}
+				title={'Danh sách sinh viên'}
+				visible={visibleDanhSach}
+				onCancel={() => {
+					setVisibleDanhSach(false);
+				}}
+				width={900}
+				footer={null}
+			>
+				<DanhSachSinhVien hoatDongCtsvId={record?._id ?? ''} />
+			</Modal>
 		</>
 	);
 };

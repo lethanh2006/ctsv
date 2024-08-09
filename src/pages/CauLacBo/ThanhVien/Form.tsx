@@ -2,6 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import {
 	EChucVuThanhVienCauLacBo,
+	ELoaiThanhVienCauLacBo,
 	ETrangThaiThanhVien,
 	EVaiTroThanhVienPhongBan,
 	MapKeyChucVuThanhVienCLB,
@@ -80,7 +81,7 @@ const FormThanhVienCLB = () => {
 						</Form.Item>
 					</Col>
 
-					<Col xs={24}>
+					<Col xs={12}>
 						<Form.Item rules={[...rules.required]} name='trangThai' label='Trạng thái'>
 							<Select
 								allowClear
@@ -88,6 +89,18 @@ const FormThanhVienCLB = () => {
 								options={Object.values(ETrangThaiThanhVien).map((item) => ({
 									value: item,
 									label: <Tag color={MapKeyColorTrangThaiThanhVienCLB[item]}>{item}</Tag>,
+								}))}
+							/>
+						</Form.Item>
+					</Col>
+					<Col xs={12}>
+						<Form.Item rules={[...rules.required]} name='loaiThanhVien' label='Loại thành viên'>
+							<Select
+								allowClear
+								placeholder='Loại thành viên'
+								options={Object.values(ELoaiThanhVienCauLacBo).map((item) => ({
+									value: item,
+									label: item,
 								}))}
 							/>
 						</Form.Item>

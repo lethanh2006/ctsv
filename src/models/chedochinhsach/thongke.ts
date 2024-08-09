@@ -1,5 +1,5 @@
 import useInitModel from '@/hooks/useInitModel';
-import { getDataThongKeExcel } from '@/services/CheDoSinhVien';
+import { getDataThongKeDocx, getDataThongKeExcel } from '@/services/CheDoSinhVien';
 import type { ThongKeQuyTrinhDong } from '@/services/QuyTrinhDong/ThongKe/typings';
 import fileDownload from 'js-file-download';
 
@@ -17,9 +17,20 @@ export default () => {
 			setLoading(false);
 		}
 	};
+	const getDataThongKeDocxModel = async (tenThongKe: string, id: string, payload?: { filters: string[] }) => {
+		try {
+			setLoading(true);
+			const res = await getDataThongKeDocx(id, payload);
+			fileDownload(res.data, `${tenThongKe}.docx`);
+			setLoading(false);
+		} catch (err) {
+			setLoading(false);
+		}
+	};
 
 	return {
 		...objInit,
 		getDataThongKeExcelModel,
+		getDataThongKeDocxModel,
 	};
 };

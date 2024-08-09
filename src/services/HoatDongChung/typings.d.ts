@@ -1,5 +1,10 @@
 import type { EVaiTroPhamViQuyTrinh } from '../QuyTrinhDong/constant';
-import type { EDonViTinh, ELoaiDoiTuong } from './constants';
+import type {
+	ECapHoatDongHuyDongGiaoDucTuTuongChinhTri,
+	EDonViTinh,
+	ELoaiDoiTuong,
+	ELoaiDonViPhoiHop,
+} from './constants';
 
 declare module HoatDongChung {
 	export interface IDuToanKinhPhi {
@@ -31,6 +36,12 @@ declare module HoatDongChung {
 		danhSachMaThamChieu: string[];
 	}
 
+	export interface ThongTinPhanBoNguonKinhPhi {
+		maNguonKinhPhi: string;
+		tenNguonKinhPhi: string;
+		kinhPhiPhanBo: number;
+	}
+
 	export interface IRecord {
 		_id: string;
 		phanLoaiCap1: string;
@@ -44,9 +55,30 @@ declare module HoatDongChung {
 		danhSachPhamVi: PhamViHoatDong[];
 		diaDiem: string;
 		soLuongThamGia: number;
+		soLuongThamGiaGv: number;
+		soLuongTiepCan: number;
+		soLuongThamGiaNgoaiHocVien: number;
+		tinh: string;
+		donViPhoiHop: string;
+		donViChuTri: string;
+		loaiDonViPhoiHop: ELoaiDonViPhoiHop;
+		loaiDonViChuTri: ELoaiDonViPhoiHop;
+		thongTinPhanBoNguonKinhPhi: ThongTinPhanBoNguonKinhPhi[];
+		cap: ECapHoatDongHuyDongGiaoDucTuTuongChinhTri;
 		info: {
 			type: string;
 			refId: string;
 		};
+	}
+
+	export interface DanhSachSinhVienThamGia {
+		_id: string;
+		hoatDongCtsvId: string;
+		ma: string;
+		maNganh: string;
+		ssoId: string;
+		ten: string;
+		tenNganh: string;
+		trangThaiThamGia: string;
 	}
 }

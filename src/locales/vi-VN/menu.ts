@@ -49,6 +49,7 @@ export default {
 	'menu.SuKien': 'Giáo dục chính trị tư tưởng',
 	'menu.SuKien.ThongKe': 'Thống kê',
 	'menu.SuKien.TuanLeCongDan': 'Tuần sinh hoạt công dân',
+	'menu.SuKien.HoatDongHuyDongGiaoDucTuTuongChinhTri': 'Hoạt động huy động giáo dục tư tưởng chính trị',
 	'menu.SuKien.CacHoatDongChoSinhVien': 'Hướng nghiệp - việc làm',
 	'menu.SuKien.DanhGiaKetQua': 'Đánh giá kết quả',
 	'menu.HoatDongKetNoiVaPhucVuCongDong': 'Phục vụ cộng đồng',
@@ -94,7 +95,10 @@ export default {
 	'menu.LopHanhChinh': 'Lớp hành chính',
 
 	'menu.SinhVien': 'Quản lý thông tin người học',
+	'menu.SinhVien.DotCapNhatHoSo': 'Đợt cập nhật hồ sơ',
 	'menu.SinhVien.DanhSachSinhVien': 'Hồ sơ người học',
+	'menu.SinhVien.BanCanSuLop': 'Ban cán sự lớp',
+	'menu.SinhVien.CoVanHocTap': 'Cố vấn học tập',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe': 'Hồ sơ theo dõi sức khỏe',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe.DotKhamSucKhoe': 'Đợt khám sức khỏe',
 	'menu.SinhVien.HoSoTheoDoiSucKhoe.KetQuaKhamSucKhoe': 'Kết quả khám sức khỏe',
@@ -103,6 +107,7 @@ export default {
 	'menu.SinhVien.ChuyenTruong': 'Chuyển trường',
 	'menu.SinhVien.KhenThuong': 'Khen thưởng',
 	'menu.SinhVien.KyLuat': 'Kỷ luật',
+	'menu.SinhVien.ThongKe': 'Thống kê',
 
 	'menu.TinTuc': 'Tin tức',
 	'menu.TinTuc.ChuDe': 'Chủ đề',

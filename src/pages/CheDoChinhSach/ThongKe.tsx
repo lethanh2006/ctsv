@@ -1,9 +1,9 @@
-import { DeleteOutlined, EditOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExportOutlined, FileOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Collapse, Empty, Modal, Popconfirm, Spin, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
-import ViewThongKe from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/ViewThongKe';
 import Form from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/Form';
+import ViewThongKe from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/ViewThongKe';
 
 const ThongKeBaoCao = () => {
 	const {
@@ -16,6 +16,7 @@ const ThongKeBaoCao = () => {
 		handleEdit,
 		deleteModel,
 		getDataThongKeExcelModel,
+		getDataThongKeDocxModel,
 		loading,
 	} = useModel('chedochinhsach.thongke');
 
@@ -64,6 +65,20 @@ const ThongKeBaoCao = () => {
 													type='link'
 												/>
 											</Tooltip>
+											{item.fileId && (
+												<Tooltip title='Xuất docx'>
+													<Button
+														loading={loading}
+														onClick={(e) => {
+															e.stopPropagation();
+															getDataThongKeDocxModel(item.ten, item._id, { filters: [] });
+														}}
+														size='small'
+														icon={<FileOutlined />}
+														type='link'
+													/>
+												</Tooltip>
+											)}
 											<Tooltip title='Chỉnh sửa'>
 												<Button
 													onClick={(e) => {

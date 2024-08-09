@@ -11,6 +11,7 @@ export enum EHoatDongChungType2 {
 	HOAT_DONG_CAU_LAC_BO = 'Hoạt động câu lạc bộ',
 	KHAC = 'Khác',
 	HUONG_NGHIEP_VIEC_LAM = 'Hướng nghiệp - việc làm',
+	HOAT_DONG_HUY_DONG_GIAO_DUC_TU_TUONG_CHINH_TRI = 'Hoạt động huy động giáo dục tư tưởng chính trị',
 	NGOAI_HOC_VIEN = 'Ngoài Học viện',
 }
 
@@ -18,6 +19,12 @@ export enum ELoaiSuKienSinhVien {
 	NGAY_HOI_VIEC_LAM = 'Ngày hội việc làm',
 	HOI_THAO_CHUYEN_DE_VIEC_LAM = 'Hội thảo, nói chuyện chuyên đề về việc làm',
 	DAO_TAO_KY_NANG_MEM = 'Đào tạo kỹ năng mềm',
+}
+
+export enum ECapHoatDongHuyDongGiaoDucTuTuongChinhTri {
+	TW = 'Cấp Trung ương Hội/Bộ GD&ĐT và tương đương',
+	HV = 'Cấp Học viện',
+	KHOA = 'Cấp Khoa',
 }
 
 export enum EHoatDongChungType1 {
@@ -70,3 +77,8 @@ export const MapKeyLabelLoaiDoiTuong = {
 	[ELoaiDoiTuong.NGANH]: 'Ngành',
 	[ELoaiDoiTuong.TAT_CA]: 'Toàn Học viện',
 };
+
+export enum ELoaiDonViPhoiHop {
+	HOC_VIEN = 'Học viện',
+	NGOAI_HOC_VIEN = 'Ngoài Học viện',
+}

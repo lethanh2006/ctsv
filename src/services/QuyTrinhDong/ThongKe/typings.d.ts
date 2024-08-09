@@ -19,6 +19,7 @@ declare module ThongKeQuyTrinhDong {
 		ten: string;
 		ma: string;
 		loaiThongKe: ELoaiThongKeQuyTrinhDong;
+		fileId: string;
 		loaiBieuDoThongKe: ELoaiBieuDoThongKe;
 		aggregationArray: string;
 		danhSachFilterThongKe: FilterThongKe[];

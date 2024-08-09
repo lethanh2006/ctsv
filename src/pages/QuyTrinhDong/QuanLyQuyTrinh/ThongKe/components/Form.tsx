@@ -1,4 +1,5 @@
 import JsonEditor from '@/components/JsonEditor';
+import UploadFile from '@/components/Upload/UploadFile';
 import { ELoaiBoLoc } from '@/services/CheDoSinhVien/constant';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import {
@@ -8,9 +9,10 @@ import {
 	MapKeyLoaiThongKe,
 } from '@/services/QuyTrinhDong/ThongKe/constant';
 import type { ThongKeQuyTrinhDong } from '@/services/QuyTrinhDong/ThongKe/typings';
+import { buildUpLoadFile } from '@/services/uploadFile';
 
 import rules from '@/utils/rules';
-import { resetFieldsForm } from '@/utils/utils';
+import { renderUrlWithFileId, resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Input, Popover, Row, Select } from 'antd';
 import { useEffect } from 'react';
@@ -31,6 +33,7 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 			form.setFieldsValue({
 				...record,
 				aggregationArray: JSON.stringify(record?.aggregationArray ?? {}, undefined, 2),
+				fileId: record?.fileId ? renderUrlWithFileId(record.fileId) : undefined,
 			});
 		} else {
 			form.setFieldsValue({
@@ -40,6 +43,8 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: ThongKeQuyTrinhDong.IRecord) => {
+		const fileId = await buildUpLoadFile(values, 'fileId', undefined, true);
+
 		const payload = {
 			...record,
 			...values,
@@ -49,6 +54,7 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 				...item,
 				loaiFilterThongKe: ELoaiFilterThongKe.TRUONG_THONG_TIN,
 			})),
+			fileId: fileId ? (typeof fileId === 'string' ? fileId?.split('/')?.pop() : fileId?.data?.data?.file?._id) : null,
 		};
 
 		if (edit) {
@@ -97,6 +103,18 @@ const FormThongKe = (props: { isQuyTrinh?: boolean; modelName: any }) => {
 					<Col span={24}>
 						<Form.Item label='Cấu hình biểu mẫu' name={'aggregationArray'} rules={[...rules.required, ...rules.json]}>
 							<JsonEditor />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item label={'Mẫu xuất dữ liệu'} name={'fileId'}>
+							<UploadFile
+								maxCount={1}
+								accept='.docx'
+								otherProps={{
+									multiple: false,
+									showUploadList: { showDownloadIcon: false },
+								}}
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
