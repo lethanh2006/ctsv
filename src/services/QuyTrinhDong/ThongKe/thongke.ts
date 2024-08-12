@@ -26,4 +26,8 @@ export const thongKeDonTheoBuoc = (idQuyTrinh: string) =>
 export const getCountDonChuaXuLy = () => axios.get(`${ip3}/thong-ke-quy-trinh-dong/count/don-chua-xu-ly`);
 
 export const thongKeLuotGiaiQuyetDon = (maHocKy: string) =>
-	axios.get(`${ip3}/thong-ke-quy-trinh-dong/thong-ke-luot-giai-quyet-sv/hoc-ky/${maHocKy}`);
+	axios.get(`${ip3}/thong-ke-quy-trinh-dong/thong-ke-luot-giai-quyet-sv/hoc-ky/${maHocKy}/raw`);
+export const exportThongKeLuotGiaiQuyetDon = (maHocKy: string) =>
+	axios.get(`${ip3}/thong-ke-quy-trinh-dong/thong-ke-luot-giai-quyet-sv/hoc-ky/${maHocKy}`, {
+		responseType: 'arraybuffer',
+	});
