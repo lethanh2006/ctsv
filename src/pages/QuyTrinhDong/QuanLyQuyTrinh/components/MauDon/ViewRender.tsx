@@ -94,8 +94,8 @@ const ViewRender = (props: {
 		case EKieuDuLieu.FILE:
 			value = (
 				<div>
-					{recordSanPhamFinal[cauHinh.ma] &&
-						recordSanPhamFinal[cauHinh.ma].map &&
+					{valueFinal &&
+						valueFinal.map &&
 						valueFinal?.map((item: string) => (
 							<Tag color={'red'} key={cauHinh.ma}>
 								<a href={item} target='_blank' rel='noreferrer'>
