@@ -7,6 +7,9 @@ export const thongKe = async (payload: { condition?: any; filters?: any[] }) =>
 export const thongKeChung = async (payload: { condition?: any; filters?: any[] }) =>
 	axios.get(`${ip3}/hoat-dong-ctsv/thong-ke/chung`, { params: payload });
 
+export const thongKeChungV2 = async (payload: { condition?: any; filters?: any[] }) =>
+	axios.get(`${ip3}/hoat-dong-ctsv/thong-ke/chung/v2`, { params: payload });
+
 export const importDanhSachSinhVien = async (idSuKien: string, file: any) => {
 	const form = new FormData();
 	form.append('file', file);

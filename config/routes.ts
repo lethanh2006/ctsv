@@ -197,7 +197,7 @@
 			{
 				name: 'ThongKe',
 				path: 'thong-ke',
-				// component: './HoatDongChung/ThongKeChung',
+				component: './HoatDongChung/ThongKePhucVuCongDong',
 			},
 		],
 	},
@@ -386,11 +386,11 @@
 				path: './tiep-nhan',
 				component: './QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/TiepNhan',
 			},
-			// {
-			// 	name: 'ThongKe',
-			// 	path: './thong-ke',
-			// 	component: './QuyTrinhDong/QuanLyQuyTrinh/ThongKe',
-			// },
+			{
+				name: 'ThongKe',
+				path: './thong-ke',
+				component: './QuyTrinhDong/QuanLyQuyTrinh/ThongKe/indexv2',
+			},
 		],
 	},
 

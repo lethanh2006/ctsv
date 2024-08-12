@@ -82,3 +82,11 @@ export enum ELoaiDonViPhoiHop {
 	HOC_VIEN = 'Học viện',
 	NGOAI_HOC_VIEN = 'Ngoài Học viện',
 }
+
+export const MapKeyNameHoatDongPhucVuCongDong: any = {
+	[EHoatDongChungType2.DAO_TAO_BOI_DUONG]: 'Đào tạo, bồi dưỡng',
+	[EHoatDongChungType2.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'Hợp tác quốc tế, NCKH và chyển giao công nghệ',
+	[EHoatDongChungType2.HOAT_DONG_XA_HOI]: 'Tình nguyện, nhân đạo và từ thiện',
+	[EHoatDongChungType2.THUC_THI_CHINH_SACH]: 'Truyền thông, tư vấn và đề xuất chính sách',
+	[EHoatDongChungType2.NGOAI_HOC_VIEN]: 'Hỗ trợ người học',
+};

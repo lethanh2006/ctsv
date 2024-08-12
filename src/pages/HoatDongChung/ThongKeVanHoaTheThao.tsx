@@ -234,7 +234,6 @@ const ThongKeVanHoaTheThao = () => {
 					<TableStaticData
 						otherProps={{
 							pagination: false,
-
 							summary: (pageData: any[]) => {
 								let thanhVienChinhThuc = 0;
 								let congTacVien = 0;
