@@ -90,3 +90,8 @@ export const MapKeyNameHoatDongPhucVuCongDong: any = {
 	[EHoatDongChungType2.THUC_THI_CHINH_SACH]: 'Truyền thông, tư vấn và đề xuất chính sách',
 	[EHoatDongChungType2.NGOAI_HOC_VIEN]: 'Hỗ trợ người học',
 };
+
+export enum TrangThaiThamGia {
+	THAM_GIA = 'Tham gia',
+	KHONG_THAM_GIA = 'Không tham gia',
+}

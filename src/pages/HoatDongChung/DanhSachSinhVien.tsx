@@ -1,24 +1,22 @@
-import { useModel } from '@@/plugin-model/useModel';
-import TableBase from '@/components/Table';
-import type { IColumn } from '@/components/Table/typing';
-import type { HoatDongChung } from '@/services/HoatDongChung/typings';
-import { Button, Form, message, Modal, Popconfirm, Space, Spin, Tabs } from 'antd';
-import { DeleteOutlined, ImportOutlined } from '@ant-design/icons';
-import ButtonExtend from '@/components/Table/ButtonExtend';
-import { useState } from 'react';
-import UploadFile from '@/components/Upload/UploadFile';
-import rules from '@/utils/rules';
-import { importDanhSachSinhVien, importDanhSachSinhVienThamGia } from '@/services/HoatDongChung';
 import formWaiting from '@/components/Loading/FormWaiting';
+import TableBase from '@/components/Table';
+import ButtonExtend from '@/components/Table/ButtonExtend';
+import type { IColumn } from '@/components/Table/typing';
+import UploadFile from '@/components/Upload/UploadFile';
+import { importDanhSachSinhVien, importDanhSachSinhVienThamGia } from '@/services/HoatDongChung';
+import type { HoatDongChung } from '@/services/HoatDongChung/typings';
+import rules from '@/utils/rules';
+import { useModel } from '@@/plugin-model/useModel';
+import { DeleteOutlined, ImportOutlined } from '@ant-design/icons';
+import { Button, Form, message, Modal, Popconfirm, Space, Spin, Tabs } from 'antd';
+import { useCallback, useState } from 'react';
+import FormDanhSachSinhVien from './FormDanhSachSinhVien';
+import { TrangThaiThamGia } from '@/services/HoatDongChung/constants';
 
 interface IProps {
 	hoatDongCtsvId: string;
 }
 
-enum TrangThaiThamGia {
-	THAM_GIA = 'Tham gia',
-	KHONG_THAM_GIA = 'Không tham gia',
-}
 const DanhSachSinhVien = (props: IProps) => {
 	const { hoatDongCtsvId } = props;
 	const { getModel, condition, page, limit, loading, deleteModel } = useModel('danhsachsinhvienhoatdong');
@@ -111,21 +109,28 @@ const DanhSachSinhVien = (props: IProps) => {
 		},
 	];
 
+	const FormSV = useCallback(
+		() => <FormDanhSachSinhVien trangThai={currentTabs} hoatDongCtsvId={props.hoatDongCtsvId} getData={getData} />,
+		[props.hoatDongCtsvId, currentTabs],
+	);
+
 	return (
 		<>
 			<Spin spinning={loading}>
 				<TableBase
+					params={{ hoatDongCtsvId: props.hoatDongCtsvId }}
+					Form={FormSV}
 					hideCard
 					getData={getData}
 					dependencies={[condition, limit, page, hoatDongCtsvId, currentTabs]}
 					modelName={'danhsachsinhvienhoatdong'}
 					columns={column}
 					title='Danh sách sinh viên'
-					buttons={{ create: false }}
+					buttons={{ create: true, export: true }}
 					otherButtons={[
 						<>
 							<ButtonExtend
-								type='primary'
+								// type='primary'
 								icon={<ImportOutlined />}
 								onClick={() => {
 									setVisibleImport(true);

@@ -456,23 +456,23 @@ const View = (props: Iprops) => {
 												>
 													Yêu cầu chỉnh sửa
 												</Button>
-												{/* <Button
-												disabled={
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
-													current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
-												}
-												style={{ marginRight: 8 }}
-												danger
-												type='primary'
-												icon={<CloseOutlined />}
-												onClick={() => {
-													setCurrentTypeDuyet(TrangThaiTiepNhanDon.KHONG_DUYET);
-													setVisibleDuyet(true);
-												}}
-											>
-												Không duyệt
-											</Button> */}
+												<Button
+													disabled={
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+													}
+													style={{ marginRight: 8 }}
+													danger
+													type='primary'
+													icon={<CloseOutlined />}
+													onClick={() => {
+														setCurrentTypeDuyet(TrangThaiTiepNhanDon.KHONG_DUYET);
+														setVisibleDuyet(true);
+													}}
+												>
+													Không duyệt
+												</Button>
 											</>
 										)}
 
