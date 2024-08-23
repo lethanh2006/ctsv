@@ -120,4 +120,7 @@ export default {
 	'menu.QuyTrinh.DieuPhoi': 'Điều phối',
 	'menu.QuyTrinh.TiepNhan': 'Tiếp nhận',
 	'menu.ThongBao': 'Thông báo',
+
+	'menu.ThongKe': 'Thống kê báo cáo',
+	'menu.ThongKe.SoLuongSinhVien': 'Số lượng sinh viên',
 };

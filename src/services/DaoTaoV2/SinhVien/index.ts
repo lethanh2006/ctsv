@@ -77,3 +77,10 @@ export const uploadAnhTheSinhVien = (payload: { file: string | Blob }) => {
 	form.append('file', payload?.file);
 	return axios.put(`${ipDaoTao}/sinh-vien/pfp/zip`, form);
 };
+
+export async function exportSoLuongSinhVienLhc(params?: any) {
+  return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/so-luong-sinh-vien-lhc/export`, {
+    responseType: 'arraybuffer',
+    params,
+  });
+}

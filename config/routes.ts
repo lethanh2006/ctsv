@@ -605,6 +605,18 @@
 		],
 	},
 
+  // THONG KE BAO CAO
+  {
+    name: 'ThongKe',
+    path: '/thong-ke',
+    icon: 'PieChartOutlined',
+    // access: 'accessFilter',
+    // maChucNang: 'qldt|thong-ke-bao-cao',
+    routes: [
+      { name: 'SoLuongSinhVien', path: './so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' },
+    ],
+  },
+
 	{
 		name: 'ThongBao',
 		icon: 'bell',
