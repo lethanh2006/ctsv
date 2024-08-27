@@ -79,8 +79,8 @@ export const uploadAnhTheSinhVien = (payload: { file: string | Blob }) => {
 };
 
 export async function exportSoLuongSinhVienLhc(params?: any) {
-  return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/so-luong-sinh-vien-lhc/export`, {
-    responseType: 'arraybuffer',
-    params,
-  });
+	return axios.get(`${ipDaoTao}/sinh-vien/thong-ke/so-luong-sinh-vien-lhc/export`, {
+		responseType: 'arraybuffer',
+		params,
+	});
 }

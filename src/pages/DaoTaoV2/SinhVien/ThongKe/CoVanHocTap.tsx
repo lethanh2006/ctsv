@@ -1,12 +1,11 @@
-import ColumnChart from '@/components/Chart/ColumnChart';
-import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
-import { getThongKeCoVanHocTap } from '@/services/DaoTaoV2/SinhVien';
-import { inputFormat, jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
+import { exportSoLuongSinhVienLhc, getThongKeCoVanHocTap } from '@/services/DaoTaoV2/SinhVien';
+import { jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
 import { useModel } from '@@/plugin-model/useModel';
-import { Button, Col, Row } from 'antd';
-import { useEffect, useState } from 'react';
 import { ExportOutlined } from '@ant-design/icons';
+import { Button, Row } from 'antd';
+import fileDownload from 'js-file-download';
+import { useEffect, useState } from 'react';
 
 interface IThongKeCoVan {
 	_id: string;
@@ -28,6 +27,23 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 	const { mode } = props;
 	const [data, setData] = useState<IThongKeCoVan[]>([]);
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
+	const [loading, setLoading] = useState<boolean>(false);
+
+	const reportSoLuongSinhVienLhcModel = async (params: {
+		maTrinhDo?: string;
+		maHinhThuc?: string;
+		maHocKy?: string;
+	}): Promise<any> => {
+		setLoading(true);
+		try {
+			const res = await exportSoLuongSinhVienLhc(params);
+			fileDownload(res.data as ArrayBuffer, 'TK Số lượng sinh viên LHC.xlsx');
+		} catch (error) {
+			return Promise.reject(error);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	const getData = async () => {
 		try {
@@ -109,28 +125,30 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 	return mode === 'table' ? (
 		<>
 			<Button
+				loading={loading}
 				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
-					handleExportDuLieu();
+					reportSoLuongSinhVienLhcModel({ maTrinhDo: '7', maHinhThuc: '1', maHocKy: recHocKy?.ma ?? '' });
 				}}
 			>
 				Xuất dữ liệu
 			</Button>
-			<TableStaticData addStt columns={columns} data={data} />
+			{/* <TableStaticData addStt columns={columns} data={data} /> */}
 		</>
 	) : (
 		<Row>
 			<Button
+				loading={loading}
 				type='primary'
 				icon={<ExportOutlined />}
 				onClick={() => {
-					handleExportDuLieu();
+					reportSoLuongSinhVienLhcModel({ maTrinhDo: '7', maHinhThuc: '1', maHocKy: recHocKy?.ma ?? '' });
 				}}
 			>
 				Xuất dữ liệu
 			</Button>
-			<Col span={24}>
+			{/* <Col span={24}>
 				<ColumnChart
 					height={500}
 					title=''
@@ -151,7 +169,7 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 						}),
 					]}
 				/>
-			</Col>
+			</Col> */}
 		</Row>
 	);
 };
