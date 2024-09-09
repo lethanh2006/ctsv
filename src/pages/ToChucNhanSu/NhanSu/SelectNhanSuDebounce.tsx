@@ -36,7 +36,7 @@ const SelectNhanSuDebounce = (props: {
 	}, [filters, value]);
 
 	const searchDebounceSinhVien = _.debounce((val) => {
-		setFilters([{ active: true, field: 'ten', values: [val], operator: EOperatorType.CONTAIN }]);
+		setFilters([{ active: true, field: 'hoTen', values: [val], operator: EOperatorType.CONTAIN }]);
 	}, 800);
 
 	const dataView = danhSach.find((item) => item.ssoId === value);
