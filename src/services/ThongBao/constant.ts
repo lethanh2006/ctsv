@@ -46,7 +46,7 @@ export enum ESourceTypeNotification {
 	TAI_CHINH = 'Tài chính',
 	QLDT = 'QLDT',
 	VPS = 'Văn phòng số',
-	CTSV = 'Công tác sinh viên',
+	CTSV = 'CONG_TAC_SINH_VIEN',
 	TCNS = 'TCNS',
 	KHAO_THI = 'Khảo thí',
 }
