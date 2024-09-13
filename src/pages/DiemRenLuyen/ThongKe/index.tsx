@@ -17,6 +17,7 @@ type Data = {
 	'Phân loại Tốt': number;
 	'Phân loại XS': number;
 	'Phân loại Yếu/Kém': number;
+	'Không tham gia': number;
 	'Tổng số sinh viên': number;
 };
 
@@ -34,6 +35,7 @@ const ThongKePhieuDiem = () => {
 			Khá: res?.data?.data?.map((item: Data) => item['Phân loại Khá']),
 			'Trung bình': res?.data?.data?.map((item: Data) => item['Phân loại Trung bình']),
 			'Yếu/kém': res?.data?.data?.map((item: Data) => item['Phân loại Yếu/Kém']),
+			'Không tham gia đánh giá': res?.data?.data?.map((item: Data) => item['Không tham gia']),
 		});
 	};
 
@@ -129,6 +131,20 @@ const ThongKePhieuDiem = () => {
 					<div>{val}</div>
 				),
 		},
+		{
+			title: 'Không tham gia đánh giá',
+			width: 150,
+			align: 'center',
+			dataIndex: 'Không tham gia',
+			render: (val, rec) =>
+				rec?.['Tổng số sinh viên'] ? (
+					<div>
+						{val} ({((val / rec['Tổng số sinh viên']) * 100).toFixed(2)}%)
+					</div>
+				) : (
+					<div>{val}</div>
+				),
+		},
 	];
 
 	return (
@@ -144,8 +160,8 @@ const ThongKePhieuDiem = () => {
 					<ColumnChart
 						height={500}
 						title=''
-						yLabel={['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu/kém']}
-						colors={['#1fba36', '#0d6efd', '#0dcaf0', '#ffca2c', '#dc3545']}
+						yLabel={['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu/kém', 'Không tham gia đánh giá']}
+						colors={['#1fba36', '#0d6efd', '#0dcaf0', '#ffca2c', '#dc3545', '#ccc']}
 						xAxis={data.map((item) => item.Ngành)}
 						formatY={(val) => inputFormat(val ?? 0) + ''}
 						yAxis={[
@@ -154,6 +170,7 @@ const ThongKePhieuDiem = () => {
 							dataBieuDo?.['Khá'],
 							dataBieuDo?.['Trung bình'],
 							dataBieuDo?.['Yếu/kém'],
+							dataBieuDo?.['Không tham gia đánh giá'],
 						]}
 					/>
 				</Col>
@@ -198,6 +215,9 @@ const ThongKePhieuDiem = () => {
 						}, 0),
 						'Phân loại Yếu/Kém': data.reduce((pre, cur) => {
 							return pre + cur?.['Phân loại Yếu/Kém'] ?? 0;
+						}, 0),
+						'Không tham gia': data.reduce((pre, cur) => {
+							return pre + cur?.['Không tham gia'] ?? 0;
 						}, 0),
 						'Tổng số sinh viên': data.reduce((pre, cur) => {
 							return pre + cur?.['Tổng số sinh viên'] ?? 0;

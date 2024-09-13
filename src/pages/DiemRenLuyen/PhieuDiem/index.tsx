@@ -16,8 +16,16 @@ import FormPhieuDiem from './components/Form';
 import FormCapNhatTrangThai from './components/FormCapNhatTrangThai';
 
 const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean }) => {
-	const { handleEdit, deleteModel, page, limit, condition, setCondition, getModel, doiTrangThaiPhieuDiemModel } =
-		useModel('diemrenluyen.phieudiem');
+	const {
+		handleEdit,
+		deleteModel,
+		page,
+		limit,
+		condition,
+		setCondition,
+		getModel,
+		danhSach: danhSachPhieuDiem,
+	} = useModel('diemrenluyen.phieudiem');
 	const { danhSach } = useModel('diemrenluyen.dot');
 	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 	const getData = () => {
@@ -92,6 +100,19 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			})),
 			render: (val: EXepLoai) => MapKeyNameXepLoai[val],
 			align: 'center',
+		},
+		{
+			title: 'Điểm trung bình',
+			width: 150,
+			dataIndex: 'diemSo',
+			align: 'center',
+			hide: props.ssoId ? false : true,
+			render: (val, rec, index) => {
+				return (
+					danhSachPhieuDiem?.filter((item, ind) => ind <= index)?.reduce((pre, cur) => pre + cur?.diemSo ?? 0, 0) /
+					(index + 1)
+				).toFixed(2);
+			},
 		},
 		{
 			title: 'Thao tác',

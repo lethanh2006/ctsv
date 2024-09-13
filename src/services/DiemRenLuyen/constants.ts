@@ -17,6 +17,7 @@ export enum EXepLoai {
 	TRUNG_BINH = 'TRUNG_BINH',
 	YEU = 'YEU',
 	KEM = 'KEM',
+	KHONG_THAM_GIA = 'KHONG_THAM_GIA',
 }
 
 export const MapKeyNameXepLoai = {
@@ -26,6 +27,7 @@ export const MapKeyNameXepLoai = {
 	[EXepLoai.TRUNG_BINH]: 'Trung bình',
 	[EXepLoai.YEU]: 'Yếu',
 	[EXepLoai.KEM]: 'Kém',
+	[EXepLoai.KHONG_THAM_GIA]: 'Không tham gia đánh giá',
 };
 
 export enum ELoaiDoiTuongChamDiem {
@@ -46,6 +48,7 @@ export enum ETrangThaiChamDiem {
 	DANG_NIEM_YET = 'DANG_NIEM_YET',
 	DANG_XU_LY_KHIEU_NAI = 'DANG_XU_LY_KHIEU_NAI',
 	DA_CONG_BO = 'DA_CONG_BO',
+	KHONG_THAM_GIA = 'KHONG_THAM_GIA',
 }
 
 export const MapKeyNameTrangThaiChamDiem = {
@@ -54,4 +57,5 @@ export const MapKeyNameTrangThaiChamDiem = {
 	[ETrangThaiChamDiem.DA_CHAM_XONG]: 'Đã chấm xong',
 	[ETrangThaiChamDiem.DA_CONG_BO]: 'Đã công bố',
 	[ETrangThaiChamDiem.DANG_NIEM_YET]: 'Đang niêm yết',
+	[ETrangThaiChamDiem.KHONG_THAM_GIA]: 'Không tham gia đánh giá',
 };

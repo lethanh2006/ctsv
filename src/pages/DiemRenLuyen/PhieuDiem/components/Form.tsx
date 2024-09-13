@@ -10,7 +10,7 @@ const FormPhieuDiem = (props: { ssoId?: string }) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
 		useModel('diemrenluyen.phieudiem');
-
+	const trangThai = Form.useWatch('trangThai', form);
 	const { danhSach: danhSachSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 
 	useEffect(() => {
@@ -72,7 +72,11 @@ const FormPhieuDiem = (props: { ssoId?: string }) => {
 						</Form.Item>
 					</Col>
 					<Col md={12}>
-						<Form.Item name='diemSo' label='Điểm rèn luyện' rules={[...rules.required]}>
+						<Form.Item
+							name='diemSo'
+							label='Điểm rèn luyện'
+							rules={trangThai === ETrangThaiChamDiem.KHONG_THAM_GIA ? undefined : [...rules.required]}
+						>
 							<InputNumber style={{ width: '100%' }} placeholder='Nhập điểm' addonAfter='Điểm' min={0} max={100} />
 						</Form.Item>
 					</Col>
