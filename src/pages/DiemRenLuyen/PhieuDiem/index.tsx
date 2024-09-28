@@ -43,14 +43,14 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 		},
 		{
 			title: 'Họ và tên',
-			dataIndex: 'thongTinNguoiTao.ten',
+			dataIndex: ['thongTinNguoiTao', 'ten'],
 			width: 150,
 			filterType: 'string',
 			render: (val, rec) => rec.thongTinNguoiTao.ten,
 		},
 		{
 			title: 'Mã sinh viên',
-			dataIndex: 'thongTinNguoiTao.ma',
+			dataIndex: ['thongTinNguoiTao', 'ma'],
 			width: 120,
 			filterType: 'string',
 			render: (val, rec) => rec.thongTinNguoiTao.ma,

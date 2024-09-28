@@ -94,6 +94,8 @@ const useInitModel = <T,>(
 			...(otherQuery ?? {}),
 		};
 
+		debugger;
+
 		try {
 			const response = await getService(payload, path ?? 'page', isAbsolutePath ?? false);
 			const tempData: T[] = response?.data?.data?.result ?? [];
