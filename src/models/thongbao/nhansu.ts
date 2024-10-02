@@ -1,4 +1,6 @@
+import { EOperatorType } from '@/components/Table/constant';
 import type { TFilter } from '@/components/Table/typing';
+import { ETrangThaiNhanSu } from '@/services/constant';
 import { postReceiver } from '@/services/ThongBao';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
@@ -17,7 +19,19 @@ export default () => {
 		setLoading(true);
 		try {
 			const payload = { role: EVaiTroBieuMau.NHAN_VIEN, ...(danhSachDoiTuong ?? {}) };
-			const params = { page, limit, filters };
+			const params = {
+				page,
+				limit,
+				filters: [
+					...filters,
+					{
+						active: true,
+						field: 'trangThai',
+						operator: EOperatorType.INCLUDE,
+						values: [ETrangThaiNhanSu.DANG_LAM_VIEC, ETrangThaiNhanSu.DA_BIET_PHAI],
+					},
+				],
+			};
 			const response = await postReceiver(payload, params);
 			setDanhSach(response?.data?.data?.result ?? []);
 			setTotal(response?.data?.data?.total ?? 0);
@@ -34,7 +48,19 @@ export default () => {
 		setLoading(true);
 		try {
 			const payload = { role: EVaiTroBieuMau.NHAN_VIEN, canBoChuChot: true, ...(danhSachDoiTuong ?? {}) };
-			const params = { page, limit: 100, filters };
+			const params = {
+				page,
+				limit: 100,
+				filters: [
+					...filters,
+					{
+						active: true,
+						field: 'trangThai',
+						operator: EOperatorType.INCLUDE,
+						values: [ETrangThaiNhanSu.DANG_LAM_VIEC, ETrangThaiNhanSu.DA_BIET_PHAI],
+					},
+				],
+			};
 			const response = await postReceiver(payload, params);
 			setDanhSachCanBo(response?.data?.data?.result ?? []);
 

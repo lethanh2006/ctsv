@@ -1,4 +1,6 @@
+import { EOperatorType } from '@/components/Table/constant';
 import type { TFilter } from '@/components/Table/typing';
+import { ETrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 import { postReceiver } from '@/services/ThongBao';
 import { type ThongBao } from '@/services/ThongBao/typing';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
@@ -16,7 +18,19 @@ export default () => {
 		setLoading(true);
 		try {
 			const payload = { role: EVaiTroBieuMau.SINH_VIEN, ...(danhSachDoiTuong ?? {}) };
-			const params = { page, limit, filters };
+			const params = {
+				page,
+				limit,
+				filters: [
+					...filters,
+					{
+						active: true,
+						field: 'trangThaiHoc',
+						operator: EOperatorType.NOT_INCLUDE,
+						values: [ETrangThaiHocSv.THOI_HOC, ETrangThaiHocSv.BUOC_THOI_HOC],
+					},
+				],
+			};
 			const response = await postReceiver(payload, params);
 			setDanhSach(response?.data?.data?.result ?? []);
 			setTotal(response?.data?.data?.total ?? 0);
