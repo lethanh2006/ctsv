@@ -108,6 +108,7 @@ const useInitModel = <T,>(
 			} else {
 				if (isSetDanhSach !== false) setDanhSach(tempData);
 				setTotal(tempTotal);
+
 				return tempData;
 			}
 		} catch (er) {
