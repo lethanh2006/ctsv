@@ -34,6 +34,7 @@ import {
 	Tooltip,
 } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import FormTable from './FormTable';
@@ -143,12 +144,13 @@ const FormRender = (props: {
 				const khaiBao = dataQuyTrinh?.danhSachKhaiBao.find((item) => item.ma === cauHinh.maFormLayDefaultValue)
 					?.thongTinKhaiBao?.[cauHinh.maFieldLayDefaultValue]?.value;
 				if (cauHinh.kieuDuLieu !== EKieuDuLieu.TABLE) {
-					// const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
-					// const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
+					const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
+					const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
 					form.setFieldsValue({
 						[cauHinh.ma]:
-							// isDate || isMonth ? khaiBao?.split('/')?.reverse()?.join('-') :
-							khaiBao,
+							isDate || isMonth
+								? moment(khaiBao, khaiBao?.includes('/') ? (isDate ? 'DD/MM/YYYY' : 'MM/YYYY') : undefined)
+								: khaiBao,
 					});
 				} else {
 					setRecordQuyTrinhForm({
