@@ -1,6 +1,6 @@
 import { type SinhVien } from '@/services/SinhVien/typings';
-import { type ToChucNhanSu } from '@/services/ToChucNhanSu/typing';
 import type { EDoiTuongLopHanhChinh } from '@/services/constant';
+import type { HocKy } from '../../HocKy/HocKy/typing';
 
 declare module LopHanhChinh {
 	export interface IRecord {
@@ -24,5 +24,19 @@ declare module LopHanhChinh {
 		lopHanhChinh?: IRecord;
 		sinhVienSsoId: string;
 		sinhVien?: SinhVien.IRecord;
+	}
+
+	export interface INhanSuHocKy {
+		_id: string;
+		maHocKy: string;
+		hocKy?: HocKy.IRecord;
+
+		nhanSuSsoId: string;
+		hoTenNhanSu: string;
+		maNhanSu: string;
+		nhanSu?: ToChucNhanSu.INhanSu;
+
+		tenLopHc: string;
+		lopHc?: IRecord;
 	}
 }

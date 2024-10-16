@@ -2,7 +2,6 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import ModalImport from '@/components/Table/Import';
 import { type IColumn } from '@/components/Table/typing';
-import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
 import { DeleteOutlined, EditOutlined, TeamOutlined } from '@ant-design/icons';
@@ -24,6 +23,7 @@ const LopHanhChinhPage = () => {
 	const [visibleKhoaSv, setVisibleKhoaSv] = useState<boolean>(false);
 	const [maKhoaSinhVien, setMaKhoaSinhVien] = useState<string>();
 	const [visibleImportSvLhc, setVisibleImportSvLhc] = useState<boolean>(false);
+	const [visibleImportNsLhc, setVisibleImportNsLhc] = useState<boolean>(false);
 
 	const getData = () => getModel({ maKhoaSinhVien: recKhoa?.ma, maNganh: recNganh?.ma });
 
@@ -139,6 +139,9 @@ const LopHanhChinhPage = () => {
 					<ButtonExtend key={'svlhc'} onClick={() => setVisibleImportSvLhc(true)} icon={<TeamOutlined />}>
 						Nhập DS sinh viên
 					</ButtonExtend>,
+					<ButtonExtend key={'nslhc'} onClick={() => setVisibleImportNsLhc(true)} icon={<TeamOutlined />}>
+						Nhập DS CVHT
+					</ButtonExtend>,
 				]}
 			>
 				<div style={{ marginBottom: 12 }}>
@@ -156,7 +159,7 @@ const LopHanhChinhPage = () => {
 			) : null}
 
 			<ModalImport
-				modelName='daotaov2.namhoc.sinhvienlophanhchinh'
+				modelName='daotaov2.hocky.sinhvienhocky'
 				onCancel={() => setVisibleImportSvLhc(false)}
 				visible={visibleImportSvLhc}
 				onOk={() => {
@@ -164,6 +167,17 @@ const LopHanhChinhPage = () => {
 					setVisibleImportSvLhc(false);
 				}}
 				titleTemplate='Biểu mẫu Sinh viên - Lớp hành chính.xlsx'
+			/>
+
+			<ModalImport
+				modelName='daotaov2.hocky.nhansuhocky'
+				onCancel={() => setVisibleImportNsLhc(false)}
+				visible={visibleImportNsLhc}
+				onOk={() => {
+					getData();
+					setVisibleImportNsLhc(false);
+				}}
+				titleTemplate='Biểu mẫu Nhân sự - Lớp hành chính.xlsx'
 			/>
 		</>
 	);

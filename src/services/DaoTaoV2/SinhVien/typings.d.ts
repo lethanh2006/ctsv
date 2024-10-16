@@ -1,6 +1,7 @@
 import type { ChungChi } from '../DanhMucHeThong/ChungChi/typing';
 import { type ChuongTrinhDaoTao } from '../DanhMucHeThong/ChuongTrinhDaoTao/typings';
 import type { NganhDaoTao } from '../DanhMucHeThong/Nganh/typings';
+import type { HocKy } from '../HocKy/HocKy/typing';
 import type { KetQuaHocKy } from '../KetQuaHocTap/KetQuaHocKy/typing';
 import { type ELoaiDiemChu } from '../KetQuaHocTap/constant';
 import { type LopHanhChinh } from '../NamHoc/LopHanhChinh/typings';
@@ -10,7 +11,9 @@ import type {
 	ELoaiNoiSinh,
 	ELoaiThanhVienGiaDinh,
 	ENoiNgoaiTru,
+	ETrangThaiHocSv,
 	ETrangThaiThanhVienGiaDinh,
+	EVaiTroSvLhc,
 	EViTriViecLam,
 } from './constant';
 
@@ -27,7 +30,7 @@ declare module SinhVien {
 		lastName: string;
 		gioiTinh: EGioiTinh;
 
-    choPhepSua: string;
+		choPhepSua: string;
 		quocTich: string;
 		danToc: string;
 		tonGiao: string;
@@ -282,5 +285,19 @@ declare module SinhVien {
 		loaiHocVien: ELoaiSinhVien;
 		thongTinNganhChinh: IThongTinHocTapHienTai;
 		thongTinNganh2: IThongTinHocTapHienTai;
+	}
+
+	export interface ISinhVienHocKy {
+		_id: string;
+		lopHanhChinhId: string;
+		sinhVienSsoId: string;
+		sinhVien?: IRecord;
+		lopHanhChinh?: LopHanhChinh.IRecord;
+		maHocKy: string;
+		hocKy?: HocKy.IRecord;
+
+		vaiTro?: EVaiTroSvLhc;
+		trangThaiHoc?: ETrangThaiHocSv;
+		ghiChuHocKy?: string;
 	}
 }
