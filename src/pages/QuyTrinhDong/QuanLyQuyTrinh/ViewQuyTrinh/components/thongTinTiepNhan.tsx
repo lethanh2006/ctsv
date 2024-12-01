@@ -1,19 +1,28 @@
-import { Button, Collapse, Descriptions, Modal, Tag } from 'antd';
-import { useModel } from '@@/plugin-model/useModel';
-import type { TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
-import { MapColorTrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
+import { MapColorTrangThaiTiepNhanDon, TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
+import { useModel } from '@@/plugin-model/useModel';
+import { Button, Collapse, Descriptions, Modal, Tag } from 'antd';
 import { useState } from 'react';
-import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
+import ViewFromCauHinh from './ViewFromCauHinh';
 
 const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: any; isBuocNgoaiHeThong?: boolean }) => {
 	const { data, modelName } = props;
 	const model = useModel(modelName);
 	const { dataQuyTrinh } = model;
 	const [visibleModal, setVisibleModal] = useState<boolean>(false);
+	const [visibleThongTinDuyet, setVisibleThongTinDuyet] = useState<boolean>(false);
 	const { record, getByIdModel } = useModel('taichinh.hoadon');
 	const buocHienTai = dataQuyTrinh?.quyTrinh?.danhSachBuocXuLy?.find((item: { ma: string }) => item?.ma === data?.ma);
+	const maFormTiepNhan = buocHienTai?.maFormTiepNhan;
+	const cauHinhFormTiepNhan = dataQuyTrinh?.quyTrinh?.danhSachFormTiepNhan?.find(
+		(item: { ma: string }) => item?.ma === maFormTiepNhan,
+	)?.cauHinhLoaiHinh;
+	const dataFormTiepNhan = dataQuyTrinh?.danhSachBuocXuLy?.find(
+		(item: { ma: string }) => item.ma === buocHienTai?.ma,
+	)?.thongTinTiepNhan;
+
 	return (
 		<>
 			<Collapse defaultActiveKey={['thongtinchung']} ghost>
@@ -55,6 +64,19 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 									>
 										{data?.trangThaiTiepNhan}
 									</Tag>
+									{data?.trangThaiTiepNhan === TrangThaiTiepNhanDon.DUYET && maFormTiepNhan ? (
+										<Button
+											onClick={() => {
+												setVisibleThongTinDuyet(true);
+											}}
+											type='link'
+											size='small'
+										>
+											(Xem chi tiết)
+										</Button>
+									) : (
+										''
+									)}
 								</Descriptions.Item>
 
 								{dataQuyTrinh?.idHoaDon && (
@@ -106,6 +128,16 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 				destroyOnClose
 			>
 				{record?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
+			</Modal>
+			<Modal
+				title='Thông tin xử lý'
+				visible={visibleThongTinDuyet}
+				onCancel={() => setVisibleThongTinDuyet(false)}
+				footer={null}
+				width={1000}
+				destroyOnClose
+			>
+				<ViewFromCauHinh cauHinhLoaiHinh={cauHinhFormTiepNhan} thongTinKhaiBao={dataFormTiepNhan} />
 			</Modal>
 		</>
 	);

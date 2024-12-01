@@ -21,6 +21,7 @@ import ViewDot from '../../components/DotQuyTrinh/ViewDot';
 import FormRender from '../../components/MauDon/FormRender';
 import ViewRender from '../../components/MauDon/ViewRender';
 import ThongTinTiepNhan from './thongTinTiepNhan';
+import ViewFromCauHinh from './ViewFromCauHinh';
 
 const { TextArea } = Input;
 const { Step } = Steps;
@@ -360,58 +361,10 @@ const View = (props: Iprops) => {
 									header={<b>{dataQuyTrinh?.danhSachKhaiBao?.find((ele) => ele.ma === current.maFormKhaiBao)?.ten}</b>}
 								>
 									<Row gutter={[0, 10]}>
-										{cauHinhForm?.cauHinhLoaiHinh.map((item) => {
-											if (
-												!item?.truongThongTinLienQuan ||
-												(item?.truongThongTinLienQuan &&
-													(dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan]?.value === item?.giaTriLienQuan ||
-														(item.giaTriLienQuan.includes &&
-															item?.giaTriLienQuan?.includes(
-																dataForm?.thongTinKhaiBao?.[item?.truongThongTinLienQuan]?.value,
-															))))
-											) {
-												const isTable =
-													item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH;
-												const isHtml =
-													item.kieuDuLieu === EKieuDuLieu.TEXT && item.textDisplay === ETextDisplay.TEXT_EDITOR;
-												const isDoanVanBan = item.kieuDuLieu === EKieuDuLieu.DOAN_VAN_BAN;
-
-												return (
-													<Col key={item.ma} xs={24} sm={24} md={item.colspan || 24} lg={item.colspan || 24}>
-														<div
-															style={{
-																display: 'flex',
-																flexDirection: isHtml || isTable ? 'column' : 'row',
-															}}
-														>
-															{!isDoanVanBan && (
-																<div style={{ marginRight: 4 }}>
-																	<b>{item.ten}: </b>
-																</div>
-															)}
-															<div>
-																{isDoanVanBan ? (
-																	<div>
-																		{item.customDefaultValue ? (
-																			<div dangerouslySetInnerHTML={{ __html: item.customDefaultValue }} />
-																		) : (
-																			<div>{item.ten}</div>
-																		)}
-																	</div>
-																) : (
-																	<ViewRender
-																		cauHinh={item}
-																		recordSanPham={{
-																			thongTinKhaiBao: dataForm?.thongTinKhaiBao,
-																		}}
-																	/>
-																)}
-															</div>
-														</div>
-													</Col>
-												);
-											} else return null;
-										})}
+										<ViewFromCauHinh
+											cauHinhLoaiHinh={cauHinhForm?.cauHinhLoaiHinh ?? []}
+											thongTinKhaiBao={dataForm?.thongTinKhaiBao ?? {}}
+										/>
 									</Row>
 								</Collapse.Panel>
 							</Collapse>
