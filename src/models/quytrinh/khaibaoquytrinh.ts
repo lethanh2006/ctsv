@@ -6,10 +6,10 @@ import {
 } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { ELoaiTinhTrangDon } from '@/services/QuyTrinhDong/constant';
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import { message } from 'antd';
 import fileDownload from 'js-file-download';
 import { useState } from 'react';
-import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 
 export default () => {
 	const objInit = useInitModel<KhaiBaoQuyTrinh.IRecord>('don-quy-trinh-dong');
@@ -23,14 +23,19 @@ export default () => {
 	const [dataQuyTrinh, setDataQuyTrinh] = useState<KhaiBaoQuyTrinh.IRecord>();
 	const [loaiTinhTrangDon, setLoaiTinhTrangDon] = useState<ELoaiTinhTrangDon>(ELoaiTinhTrangDon.TAT_CA);
 	const [maBuoc, setMaBuoc] = useState<string>();
+	const [selectedIdsMauTiepNhan, setSelectedIdsMauTiepNhan] = useState<string[]>([]);
 
 	//lay id quy trinh selected trong dieu phoi va xu ly don quy trinh
 	const [quyTrinhSelect, setQuyTrinhSelect] = useState<QuyTrinh.IRecord>();
 	const getDataKhaiBaoUser = async () => getModel(undefined, undefined, undefined, undefined, undefined, 'user/page');
-	const getQuyTrinhChuyenVienModel = async (loaiXuLyDon: string, otherQuery?: any) => {
+	const getQuyTrinhChuyenVienModel = async (
+		loaiXuLyDon: string,
+		otherQuery?: any,
+	): Promise<KhaiBaoQuyTrinh.IRecord[]> => {
 		try {
 			setLoading(true);
-			getModel(
+			let dataDanhSach: KhaiBaoQuyTrinh.IRecord[] = [];
+			await getModel(
 				undefined,
 				undefined,
 				undefined,
@@ -42,9 +47,13 @@ export default () => {
 						: ELoaiTinhTrangDon.TAT_CA
 				}`,
 				otherQuery,
-			);
+			).then((data) => {
+				dataDanhSach = data;
+			});
+			return dataDanhSach;
 		} catch (e) {
 			console.log(e);
+			return [];
 		} finally {
 			setLoading(false);
 		}
@@ -106,5 +115,7 @@ export default () => {
 		setQuyTrinhSelect,
 		maBuoc,
 		setMaBuoc,
+		setSelectedIdsMauTiepNhan,
+		selectedIdsMauTiepNhan,
 	};
 };

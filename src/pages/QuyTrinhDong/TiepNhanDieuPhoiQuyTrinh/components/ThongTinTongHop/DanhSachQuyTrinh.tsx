@@ -13,7 +13,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 const DanhSachQuyTrinh = (props: { type: string }) => {
 	const { dataQuyTrinh, getDataByChuyenVien } = useModel('quytrinh.quanlyquytrinh');
-	const { setQuyTrinhSelect, setMaBuoc } = useModel('quytrinh.khaibaoquytrinh');
+	const { setQuyTrinhSelect, setMaBuoc, setSelectedIds, setSelectedIdsMauTiepNhan } =
+		useModel('quytrinh.khaibaoquytrinh');
 	const [selectedKey, setselectedKeys] = useState<any>([]);
 	const [checkedKey, setCheckedKey] = useState<any>([]);
 	const [expandedKeys, setExpandedKeys] = useState<any>([]);
@@ -31,7 +32,6 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 		const res = await getCountDonChuaXuLy();
 		setCountDonChuaXuLy(res?.data?.data ?? []);
 	};
-
 	const onExpand: TreeProps['onExpand'] = (expandKeys) => {
 		setExpandedKeys(expandKeys);
 		setAutoExpandParent(false);
@@ -42,6 +42,8 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 		if (dataQuyTrinh?.find((val) => val?._id === selectedKeys?.[0]))
 			setQuyTrinhSelect(dataQuyTrinh?.find((val) => val?._id === selectedKeys?.[0]));
 		setMaBuoc(isBuoc ? selectedKeys?.[0]?.toString()?.replace('buoc||', '') : undefined);
+		setSelectedIds([]);
+		setSelectedIdsMauTiepNhan([]);
 	};
 	const onCheck: TreeProps['onCheck'] = (checkedKeys: any, info) => {
 		setCheckedKey(checkedKeys);

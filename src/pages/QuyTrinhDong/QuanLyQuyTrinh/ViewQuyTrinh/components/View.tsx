@@ -1,4 +1,5 @@
 import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
+import TinyEditor from '@/components/TinyEditor';
 import {
 	ETienDoQuyTrinh,
 	MapColorTienDoQuyTrinh,
@@ -7,21 +8,21 @@ import {
 } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import { chuyenVienDieuPhoiDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
-import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { checkRuleXuLyDon } from '@/services/QuyTrinhDong/quytrinh';
 import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
 import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import rules from '@/utils/rules';
-import { CheckOutlined, CloseOutlined, LeftOutlined, UndoOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, LeftOutlined, PrinterOutlined, UndoOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Collapse, Form, Input, Modal, Row, Select, Spin, Steps, Tag, message } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import ViewDot from '../../components/DotQuyTrinh/ViewDot';
 import FormRender from '../../components/MauDon/FormRender';
-import ViewRender from '../../components/MauDon/ViewRender';
 import ThongTinTiepNhan from './thongTinTiepNhan';
 import ViewFromCauHinh from './ViewFromCauHinh';
+import FormInHoSo from './FormInHoSo';
 
 const { TextArea } = Input;
 const { Step } = Steps;
@@ -35,7 +36,7 @@ interface Iprops {
 	FormModal?: React.FC;
 	formProps?: any;
 	type?: 'dieu_phoi' | 'tiep_nhan';
-	getData?: () => void;
+	getData?: (id?: string) => void;
 }
 const View = (props: Iprops) => {
 	const { dataQuyTrinh, current, loadingForm, modalName, FormModal, formProps, type, getData } = props;
@@ -58,6 +59,11 @@ const View = (props: Iprops) => {
 	const { danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
 	const { getAllModel, setVisibleForm: setVisibleModalSinhVien, loading } = useModel('daotaov2.sinhvien.sinhvien');
 	const { initialState } = useModel('@@initialState');
+	const {
+		exportMauDonTheoBuocModel,
+		exportMauTraKetQuaTheoBuocModel,
+		loading: loadingExport,
+	} = useModel('quytrinh.khaibaoquytrinh');
 
 	// const { setRecord: setRecordSanPham } = useModel('quanlykhoahoc.sanphamnckh');
 	const [danhSachDonViXuLy, setDanhSachDonViXuLy] = useState<KhaiBaoQuyTrinh.IDonViXuLy[]>([]);
@@ -70,6 +76,14 @@ const View = (props: Iprops) => {
 	const [formValues, setFormValues] = useState<any>({});
 	const [loadingCheckValidate, setLoadingValidate] = useState<boolean>(false);
 	const [rulesXuLy, setRulesXuLy] = useState<boolean>(false);
+	const [isPrint, setIsPrint] = useState<boolean>(false);
+	const [visibleFormPrint, setVisibleFormPrint] = useState(false);
+	const [fixedCurrent, setFixedCurrent] = useState<number | undefined>(0);
+	const buocHienTai = dataQuyTrinh?.danhSachBuocXuLy?.[dataQuyTrinh?.danhSachBuocXuLy?.length - 1];
+	const formKhai = dataQuyTrinh?.quyTrinh?.danhSachFormKhaiBao?.find((item) => item.ma === buocHienTai?.maFormKhaiBao);
+	const formTiepNhan = dataQuyTrinh?.quyTrinh?.danhSachFormTiepNhan?.find(
+		(item) => item.ma === buocHienTai?.maFormTiepNhan,
+	);
 
 	const dotCurrent = danhSachDotQuyTrinh?.find((item) => item._id === dataQuyTrinh?.dotQuyTrinhId);
 	const cauHinhThoiGianDotBuocHienTai = dotCurrent?.danhSachCauHinhThoiGianDot?.find(
@@ -114,9 +128,18 @@ const View = (props: Iprops) => {
 			if (res) {
 				message.success('Điều phối thành công');
 				setVisibleDieuPhoi(false);
-				setVisibleForm(false);
+				if (isPrint && formKhai?.fileId && formTiepNhan?.fileId) {
+					setVisibleFormPrint(true);
+				} else if (isPrint && formKhai?.fileId) {
+					await exportMauDonTheoBuocModel(dataQuyTrinh._id, buocHienTai.ma, formKhai?.ten ?? '');
+				} else if (isPrint && formTiepNhan?.fileId) {
+					await exportMauTraKetQuaTheoBuocModel(dataQuyTrinh._id, buocHienTai.ma, formTiepNhan?.ten ?? '');
+				} else {
+					setVisibleForm(false);
+				}
+
 				// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-				getData && getData();
+				getData && getData(dataQuyTrinh?._id);
 			}
 		} catch (e) {
 			console.log(e);
@@ -390,10 +413,63 @@ const View = (props: Iprops) => {
 													onClick={() => {
 														setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
 														setVisibleDuyet(true);
+														setIsPrint(false);
+														form.setFieldsValue({
+															ghiChu: undefined,
+															maVanBan: undefined,
+														});
 													}}
 												>
 													{current.ten}
 												</Button>
+												{(formKhai?.fileId || formTiepNhan?.fileId) && (
+													<Button
+														loading={loading}
+														disabled={
+															current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
+															current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHINH_SUA_LAI &&
+															current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.DA_CHINH_SUA_LAI
+														}
+														type={'primary'}
+														icon={<CheckOutlined />}
+														onClick={() => {
+															setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
+															setVisibleDuyet(true);
+															setIsPrint(true);
+															setFixedCurrent(currentStep);
+															form.setFieldsValue({
+																ghiChu: undefined,
+																maVanBan: undefined,
+															});
+														}}
+													>
+														Duyệt và in
+													</Button>
+												)}
+												{(formKhai?.fileId || formTiepNhan?.fileId) && (
+													<Button
+														loading={loading}
+														type={'primary'}
+														icon={<PrinterOutlined />}
+														onClick={() => {
+															setCurrentTypeDuyet(TrangThaiTiepNhanDon.DUYET);
+															if (formKhai?.fileId && formTiepNhan?.fileId) {
+																setVisibleFormPrint(true);
+															} else if (formKhai?.fileId) {
+																exportMauDonTheoBuocModel(dataQuyTrinh._id, buocHienTai.ma, formKhai?.ten ?? '');
+															} else if (formTiepNhan?.fileId) {
+																exportMauTraKetQuaTheoBuocModel(
+																	dataQuyTrinh._id,
+																	buocHienTai.ma,
+																	formTiepNhan?.ten ?? '',
+																);
+															}
+														}}
+													>
+														In
+													</Button>
+												)}
+
 												<Button
 													disabled={
 														current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
@@ -534,9 +610,9 @@ const View = (props: Iprops) => {
 							<Form.Item
 								label={'Ghi chú'}
 								name={'ghiChu'}
-								rules={currentTypeDuyet !== TrangThaiTiepNhanDon.DUYET ? [...rules.required] : []}
+								rules={currentTypeDuyet !== TrangThaiTiepNhanDon.DUYET ? [...rules.requiredHtml] : []}
 							>
-								<TextArea rows={4} placeholder='Nhập ghi chú' />
+								<TinyEditor />
 							</Form.Item>
 							{currentTypeDuyet === TrangThaiTiepNhanDon.DUYET && (
 								<Form.Item
@@ -621,6 +697,23 @@ const View = (props: Iprops) => {
 					onCancel={() => setVisibleViewDetailDot(false)}
 				>
 					{dotCurrent && dataQuyTrinh.quyTrinh && <ViewDot recDot={dotCurrent} recQuyTrinh={dataQuyTrinh.quyTrinh} />}
+				</Modal>
+				<Modal
+					destroyOnClose
+					footer={false}
+					visible={visibleFormPrint}
+					onCancel={() => {
+						setVisibleFormPrint(false);
+						setFixedCurrent(undefined);
+					}}
+					title='In hồ sơ'
+				>
+					<FormInHoSo
+						setFixedCurrent={setFixedCurrent}
+						fixedCurrent={fixedCurrent}
+						currentStep={currentStep}
+						handleCancel={() => setVisibleFormPrint(false)}
+					/>
 				</Modal>
 			</Card>
 		</>

@@ -1,5 +1,6 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
+import formWaiting from '@/components/Loading/FormWaiting';
 import { useModel } from '@@/plugin-model/useModel';
 import { CheckOutlined, DollarCircleOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Dropdown, Menu, Modal, Select, Tabs, Tag, Tooltip } from 'antd';
@@ -47,6 +48,11 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		traKetQuaModel,
 		quyTrinhSelect,
 		maBuoc,
+		selectedIds,
+		setSelectedIds,
+		selectedIdsMauTiepNhan,
+		setSelectedIdsMauTiepNhan,
+		danhSach,
 	} = useModel('quytrinh.khaibaoquytrinh');
 
 	const { getAllModel: getAllDanhMucChung } = useModel('quytrinh.danhmuc');
@@ -78,13 +84,24 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		setCurrentFormKhaiBao(obj);
 	};
 
-	const getData = async () => {
+	const getData = async (idRecord?: string) => {
 		if (quyTrinhSelect?._id)
 			getQuyTrinhChuyenVienModel(type, {
 				quyTrinhId: quyTrinhSelect?._id,
 				maBuoc,
-				trangThaiTiepNhan,
+				trangThaiTiepNhan: idRecord ? undefined : trangThaiTiepNhan,
 				dotQuyTrinhId,
+			}).then((danhSachRes) => {
+				if (idRecord) {
+					const recordRes = danhSachRes?.find((item) => item?._id === idRecord);
+					if (recordRes) {
+						setCurrentRecord(recordRes);
+						setDataQuyTrinh(recordRes);
+						handleSetData(recordRes);
+					}
+					return recordRes;
+				}
+				return null;
 			});
 	};
 
@@ -322,6 +339,60 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		},
 	];
 
+	const handleDownloadMauDon = async () => {
+		try {
+			if (selectedIds && selectedIds?.length > 0) {
+				formWaiting('Hệ thống đang xử lý');
+				await Promise.all(
+					selectedIds?.map((val) => {
+						const dataDon = danhSach?.find((item) => item?._id === val);
+						const buocHienTai = dataDon?.danhSachBuocXuLy?.[dataDon?.danhSachBuocXuLy?.length - 1];
+						const formKhai = dataDon?.quyTrinh?.danhSachFormKhaiBao?.find(
+							(item) => item.ma === buocHienTai?.maFormKhaiBao,
+						);
+
+						return exportMauDonTheoBuocModel(val, buocHienTai?.ma ?? '', formKhai?.ten ?? '');
+					}),
+				).then((res) => {});
+			}
+		} catch (e) {
+			console.log(e);
+		} finally {
+			Modal.destroyAll();
+		}
+	};
+
+	const handleDownloadMauDonTiepNhan = async () => {
+		try {
+			if (selectedIdsMauTiepNhan && selectedIdsMauTiepNhan?.length > 0) {
+				formWaiting('Hệ thống đang xử lý');
+				await Promise.all(
+					selectedIdsMauTiepNhan?.map((val: string) => {
+						const dataDon = danhSach?.find((item) => item?._id === val);
+
+						const buocHienTai = dataDon?.danhSachBuocXuLy?.[dataDon?.danhSachBuocXuLy?.length - 1];
+						const buocDaTiepNhan = dataDon?.danhSachBuocXuLy?.find(
+							(item) => item?.maFormTiepNhan && item?.thongTinTiepNhan,
+						);
+						const formKhai = dataDon?.quyTrinh?.danhSachFormKhaiBao?.find(
+							(item) => item.ma === buocHienTai?.maFormKhaiBao,
+						);
+						const buocFinal =
+							buocHienTai?.thongTinTiepNhan && _.isEmpty(buocHienTai.thongTinTiepNhan) !== true
+								? buocHienTai
+								: buocDaTiepNhan;
+
+						return exportMauTraKetQuaTheoBuocModel(val, buocFinal?.ma ?? '', formKhai?.ten ?? '');
+					}),
+				).then((res) => {});
+			}
+		} catch (e) {
+			console.log(e);
+		} finally {
+			Modal.destroyAll();
+		}
+	};
+
 	useEffect(() => {
 		return () => {
 			setDataQuyTrinh(undefined);
@@ -331,6 +402,66 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 	return (
 		<>
 			<TableBase
+				rowSelection
+				detailRow={{
+					getCheckboxProps: (rec: KhaiBaoQuyTrinh.IRecord) => {
+						const buocHienTai = rec?.danhSachBuocXuLy?.[rec?.danhSachBuocXuLy?.length - 1];
+						const buocDaTiepNhan = rec?.danhSachBuocXuLy?.find(
+							(item) => item?.maFormTiepNhan && item?.thongTinTiepNhan,
+						);
+						const formKhai = rec?.quyTrinh?.danhSachFormKhaiBao?.find((item) => item.ma === buocHienTai?.maFormKhaiBao);
+						const formTiepNhan = rec?.quyTrinh?.danhSachFormTiepNhan?.find(
+							(item) => item.ma === buocDaTiepNhan?.maFormTiepNhan,
+						);
+
+						const formTiepNhanBuocHienTai = rec?.quyTrinh?.danhSachFormTiepNhan?.find(
+							(item) => item.ma === buocHienTai?.maFormTiepNhan,
+						);
+						const formFinal =
+							buocHienTai.thongTinTiepNhan && _.isEmpty(buocHienTai.thongTinTiepNhan) !== true
+								? formTiepNhanBuocHienTai
+								: formTiepNhan;
+						return {
+							disabled: formKhai?.fileId || formFinal?.fileId ? false : true,
+							name: rec.name,
+						};
+					},
+					selectedRowKeys: [...(selectedIds || []), ...(selectedIdsMauTiepNhan || [])],
+					onChange: (selectedRowKeys: string[], data: KhaiBaoQuyTrinh.IRecord[]) => {
+						const idMauDon: string[] = [];
+						const idMauTiepNhan: string[] = [];
+						data.map((rec) => {
+							const buocHienTai = rec?.danhSachBuocXuLy?.[rec?.danhSachBuocXuLy?.length - 1];
+
+							const buocDaTiepNhan = rec?.danhSachBuocXuLy?.find(
+								(item) => item?.maFormTiepNhan && item?.thongTinTiepNhan,
+							);
+							const formKhai = rec?.quyTrinh?.danhSachFormKhaiBao?.find(
+								(item) => item.ma === buocHienTai?.maFormKhaiBao,
+							);
+							const formTiepNhan = rec?.quyTrinh?.danhSachFormTiepNhan?.find(
+								(item) => item.ma === buocDaTiepNhan?.maFormTiepNhan,
+							);
+
+							const formTiepNhanBuocHienTai = rec?.quyTrinh?.danhSachFormTiepNhan?.find(
+								(item) => item.ma === buocHienTai?.maFormTiepNhan,
+							);
+							const formFinal =
+								buocHienTai.thongTinTiepNhan && _.isEmpty(buocHienTai.thongTinTiepNhan) !== true
+									? formTiepNhanBuocHienTai
+									: formTiepNhan;
+
+							if (formKhai?.fileId) {
+								idMauDon.push(rec._id);
+							}
+							if (formFinal?.fileId) {
+								idMauTiepNhan.push(rec._id);
+							}
+						});
+						setSelectedIds(idMauDon);
+						setSelectedIdsMauTiepNhan(idMauTiepNhan);
+					},
+				}}
 				hideCard
 				otherProps={{ size: 'small' }}
 				title={
@@ -433,6 +564,30 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 							format={'DD/MM/YYYY'}
 							placeholder={['Từ ngày', 'đến ngày']}
 						/>
+						{selectedIds && selectedIds?.length > 0 && (
+							<Button
+								type='primary'
+								size={'small'}
+								icon={<ExportOutlined />}
+								onClick={() => {
+									handleDownloadMauDon();
+								}}
+							>
+								Xuất mẫu đơn ({selectedIds?.length})
+							</Button>
+						)}
+						{selectedIdsMauTiepNhan && selectedIdsMauTiepNhan?.length > 0 && (
+							<Button
+								type='primary'
+								size={'small'}
+								icon={<ExportOutlined />}
+								onClick={() => {
+									handleDownloadMauDonTiepNhan();
+								}}
+							>
+								Xuất mẫu trả kết quả ({selectedIdsMauTiepNhan?.length})
+							</Button>
+						)}
 					</>,
 				]}
 			>
