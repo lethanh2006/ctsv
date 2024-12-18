@@ -133,15 +133,15 @@ const FormDeCuong = (props: { afterAddNew: (rec: HocPhan.IDeCuongHocPhan) => voi
 			{/* Dùng CSS để show/hide các div, tránh trường hợp un-render */}
 			<div style={{ display: activeKey === '1' ? 'block' : 'none' }}>
 				<Form.Item name='mucTieuHocPhan' label='' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar />
+					<TinyEditor hideMenubar miniToolbar stickyToolbar={false} />
 				</Form.Item>
 			</div>
 			<div style={{ display: activeKey === '2' ? 'block' : 'none' }}>
 				<Form.Item name='noiDungTomTat' label='Nội dung tóm tắt' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar />
+					<TinyEditor hideMenubar miniToolbar stickyToolbar={false} />
 				</Form.Item>
 				<Form.Item name='noiDungChiTiet' label='Nội dung chi tiết' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar />
+					<TinyEditor hideMenubar miniToolbar stickyToolbar={false} />
 				</Form.Item>
 			</div>
 

@@ -504,7 +504,7 @@ const FormThongTinChung = () => {
 							rules={[...rules.text, ...rules.length(550)]}
 						>
 							{/*<Input placeholder="Đơn vị thực hiện" />*/}
-							<TinyEditor height={300} />
+							<TinyEditor height={300} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 				</Row>
@@ -517,7 +517,7 @@ const FormThongTinChung = () => {
 							initialValue={recordDichVu?.thongTinHoSo ?? ''}
 							// rules={[...rules.text]}
 						>
-							<TinyEditor height={350} />
+							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 				</Row>
@@ -530,7 +530,7 @@ const FormThongTinChung = () => {
 							initialValue={recordDichVu?.thongTinQuyTrinh ?? ''}
 							// rules={[...rules.text]}
 						>
-							<TinyEditor height={350} />
+							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 				</Row>
@@ -543,7 +543,7 @@ const FormThongTinChung = () => {
 							initialValue={recordDichVu?.thongTinYeuCau ?? ''}
 							// rules={[...rules.text]}
 						>
-							<TinyEditor height={350} />
+							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 				</Row>

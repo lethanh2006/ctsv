@@ -63,12 +63,12 @@ const FormCauLacBo = () => {
 					</Col>
 					<Col xs={24} md={24}>
 						<Form.Item name='mucDich' label='Mục đích' rules={[...rules.required]}>
-							<TinyEditor height={350} />
+							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
 						<Form.Item name='yNghia' label='Ý nghĩa' rules={[...rules.required]}>
-							<TinyEditor height={350} />
+							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>

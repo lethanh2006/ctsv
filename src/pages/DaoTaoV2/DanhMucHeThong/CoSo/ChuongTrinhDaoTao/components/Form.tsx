@@ -195,22 +195,22 @@ const FormChuongTrinhDaoTao = (props: {
 			{/* Dùng CSS để show/hide các div, tránh trường hợp un-render */}
 			<div style={{ display: activeKey === '1' ? 'block' : 'none' }}>
 				<Form.Item name='mucTieuDaoTao' label='' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} />
+					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} stickyToolbar={false} />
 				</Form.Item>
 			</div>
 			<div style={{ display: activeKey === '2' ? 'block' : 'none' }}>
 				<Form.Item name='chuanDauVao' label='' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} />
+					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} stickyToolbar={false} />
 				</Form.Item>
 			</div>
 			<div style={{ display: activeKey === '3' ? 'block' : 'none' }}>
 				<Form.Item name='chuanDauRa' label='' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} />
+					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} stickyToolbar={false} />
 				</Form.Item>
 			</div>
 			<div style={{ display: activeKey === '4' ? 'block' : 'none' }}>
 				<Form.Item name='viTriLamViec' label='' initialValue=''>
-					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} />
+					<TinyEditor hideMenubar miniToolbar disabled={isDisabled} stickyToolbar={false} />
 				</Form.Item>
 			</div>
 
