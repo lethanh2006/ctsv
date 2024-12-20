@@ -1,4 +1,5 @@
 import { EDinhDangFile } from '@/services/base/constant';
+import type { IFile } from '@/services/base/typing';
 import { getFileInfo } from '@/services/uploadFile';
 import { ip3 } from '@/utils/ip';
 import { getFileType, getNameFile } from '@/utils/utils';
@@ -30,7 +31,12 @@ const PreviewFile = (props: {
 		try {
 			if (idFile) {
 				const result = await getFileInfo(idFile, ip);
-				mime = result?.data?.file?.mimetype || EDinhDangFile.UNKNOWN;
+				const fileInFo: IFile = result?.data;
+				if (fileInFo?.file?.mimetype) {
+					mime = fileInFo?.file?.mimetype;
+				} else {
+					mime = getFileExtension(url) || EDinhDangFile.UNKNOWN;
+				}
 			} else {
 				mime = getFileExtension(url) || EDinhDangFile.UNKNOWN;
 			}
