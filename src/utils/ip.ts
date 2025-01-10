@@ -27,10 +27,6 @@ const keycloakUserInfoEndpoint = APP_CONFIG_KEYCLOAK_AUTHORITY + '/protocol/open
 const sentryDSN = APP_CONFIG_SENTRY_DSN;
 const oneSignalClient = APP_CONFIG_ONE_SIGNAL_ID;
 
-
-
-
-
 export {
 	ipTaiChinh,
 	ipNhanSu,

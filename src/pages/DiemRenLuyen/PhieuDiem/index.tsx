@@ -24,7 +24,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 		condition,
 		setCondition,
 		getModel,
-		danhSach: danhSachPhieuDiem,
+		// danhSach: danhSachPhieuDiem,
 	} = useModel('diemrenluyen.phieudiem');
 	const { danhSach } = useModel('diemrenluyen.dot');
 	const { danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
@@ -86,7 +86,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			title: 'Điểm',
 			dataIndex: 'diemSo',
 			width: 100,
-			filterType: 'string',
+			sortable: true,
 			align: 'center',
 		},
 		{
@@ -104,15 +104,16 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 		{
 			title: 'Điểm trung bình',
 			width: 150,
-			dataIndex: 'diemSo',
+			dataIndex: 'diemTrungBinh',
 			align: 'center',
-			hide: props.ssoId ? false : true,
-			render: (val, rec, index) => {
-				return (
-					danhSachPhieuDiem?.filter((item, ind) => ind <= index)?.reduce((pre, cur) => pre + cur?.diemSo ?? 0, 0) /
-					(index + 1)
-				).toFixed(2);
-			},
+			// hide: props.ssoId ? false : true,
+			// sortable: true,
+			// render: (val, rec, index) => {
+			// 	return (
+			// 		danhSachPhieuDiem?.filter((item, ind) => ind <= index)?.reduce((pre, cur) => pre + cur?.diemSo ?? 0, 0) /
+			// 		(index + 1)
+			// 	).toFixed(2);
+			// },
 		},
 		{
 			title: 'Thao tác',

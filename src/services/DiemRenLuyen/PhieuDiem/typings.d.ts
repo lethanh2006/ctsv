@@ -20,6 +20,7 @@ declare module PhieuDiemRenLuyen {
 		danhSachChamDiem: ChamDiem[];
 		trangThai: ETrangThaiChamDiem;
 		diemSo: number;
+		diemTrungBinh: number;
 		xepLoai: EXepLoai;
 		nganh: NganhDaoTao.IRecordCoSo;
 		donVi: {
