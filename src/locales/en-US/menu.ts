@@ -16,6 +16,8 @@ export default {
 
 	'menu.DanhMuc': 'Danh mục',
 	'menu.DanhMuc.Chung': 'Danh mục chung',
+	'menu.DanhMuc.PhieuDiemRenLuyen': 'Phiếu điểm rèn luyện',
+	'menu.DanhMuc.MinhChungDiemRenLuyen': 'Minh chứng điểm rèn luyện',
 	'menu.DanhMuc.ChucVu': 'Chức vụ',
 	'menu.DanhMuc.LoaiDanhHieu': 'Loại khen thưởng/kỷ luật',
 	'menu.DanhMuc.DanhHieu': 'Khen thưởng/kỷ luật',
@@ -91,7 +93,9 @@ export default {
 	'menu.CheDoChinhSach.HocBong': 'Học bổng',
 	'menu.CheDoChinhSach.BaoHiemXaHoi': 'Bảo hiểm xã hội',
 	'menu.CheDoChinhSach.ThongKe': 'Thống kê',
+
 	'menu.LopHanhChinh': 'Lớp hành chính',
+
 	'menu.SinhVien': 'Quản lý thông tin người học',
 	'menu.SinhVien.DotCapNhatHoSo': 'Đợt cập nhật hồ sơ',
 	'menu.SinhVien.DanhSachSinhVien': 'Hồ sơ người học',
@@ -118,4 +122,30 @@ export default {
 	'menu.QuyTrinh.DieuPhoi': 'Điều phối',
 	'menu.QuyTrinh.TiepNhan': 'Tiếp nhận',
 	'menu.ThongBao': 'Thông báo',
+
+	//DEM REN LUYEN
+	'menu.SuKienDRL': 'Sự kiện',
+	'menu.DiemRenLuyen': 'Điểm rèn luyện',
+	'menu.DiemRenLuyenCVHT': 'Chấm điểm rèn luyện',
+	'menu.DiemRenLuyen.Dot': 'Đợt',
+	'menu.DiemRenLuyen.CoVanHocTap': 'Cố vấn học tập',
+	'menu.DiemRenLuyen.CoVanHocTap.MinhChung': 'Minh chứng',
+	'menu.DiemRenLuyen.CoVanHocTap.MinhChung.DanhSachKhaiBao': 'Danh sách khai báo',
+	'menu.DiemRenLuyen.CoVanHocTap.PhieuDiem': 'Phiếu điểm',
+	'menu.DiemRenLuyen.BieuMau': 'Biểu mẫu',
+	'menu.DiemRenLuyen.MinhChung': 'Minh chứng',
+	'menu.DiemRenLuyenCVHT.MinhChung': 'Minh chứng',
+	'menu.DiemRenLuyen.MinhChung.CauHinh': 'Cấu hình',
+	'menu.DiemRenLuyen.MinhChung.DanhSachKhaiBao': 'Danh sách khai báo',
+	'menu.DiemRenLuyen.MinhChung.ThongKe': 'Thống kê',
+	'menu.DiemRenLuyen.PhieuDiem': 'Phiếu điểm',
+	'menu.DiemRenLuyen.LopHanhChinh': 'Lớp hành chính',
+	'menu.DiemRenLuyen.BienBanHop': 'Biên bản họp',
+	'menu.DiemRenLuyen.DonKhieuNai': 'Đơn khiếu nại',
+	'menu.DiemRenLuyen.ThongKe': 'Thống kê',
+	'menu.DiemRenLuyenCVHT.MinhChung.DanhSachKhaiBao': 'Danh sách khai báo',
+	'menu.DiemRenLuyenCVHT.PhieuDiem': 'Phiếu điểm',
+
+	'menu.ThongKe': 'Thống kê báo cáo',
+	'menu.ThongKe.SoLuongSinhVien': 'Số lượng sinh viên',
 };

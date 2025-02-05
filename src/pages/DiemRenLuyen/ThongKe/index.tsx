@@ -4,11 +4,12 @@ import { thongKePhieuDiem } from '@/services/DiemRenLuyen/PhieuDiem';
 import { Card, Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import SelectDotDiemRenLuyen from '../Dot/components/SelectDot';
+
 import ColumnChart from '@/components/Chart/ColumnChart';
 import { inputFormat } from '@/utils/utils';
 import styles from './style.less';
 import numeral from 'numeral';
+import SelectDotDiemRenLuyen from '../DotVWA/components/SelectDot';
 
 type Data = {
 	Ngành: string;
@@ -22,7 +23,7 @@ type Data = {
 };
 
 const ThongKePhieuDiem = () => {
-	const { record, setRecord, danhSach } = useModel('diemrenluyen.dot');
+	const { record, setRecord, danhSach } = useModel('diemrenluyen.dotvwa');
 	const [data, setData] = useState<Data[]>([]);
 	const [dataBieuDo, setDataBieuDo] = useState<any>();
 	const getData = async () => {
@@ -50,11 +51,11 @@ const ThongKePhieuDiem = () => {
 			width: 200,
 			render: (val) => <div style={{ fontWeight: val === 'Tổng cộng' ? 'bold' : undefined }}>{val}</div>,
 		},
-		{
-			title: 'Tổng số sinh viên',
-			width: 120,
-			align: 'center',
-		},
+		// {
+		// 	title: 'Tổng số sinh viên',
+		// 	width: 120,
+		// 	align: 'center',
+		// },
 		{
 			title: 'Số sinh viên được đánh giá',
 			width: 150,
@@ -202,25 +203,25 @@ const ThongKePhieuDiem = () => {
 					{
 						Ngành: 'Tổng cộng',
 						'Phân loại Khá': data.reduce((pre, cur) => {
-							return pre + cur?.['Phân loại Khá'] ?? 0;
+							return pre + (cur?.['Phân loại Khá'] ?? 0);
 						}, 0),
 						'Phân loại Trung bình': data.reduce((pre, cur) => {
-							return pre + cur?.['Phân loại Trung bình'] ?? 0;
+							return pre + (cur?.['Phân loại Trung bình'] ?? 0);
 						}, 0),
 						'Phân loại Tốt': data.reduce((pre, cur) => {
-							return pre + cur?.['Phân loại Tốt'] ?? 0;
+							return pre + (cur?.['Phân loại Tốt'] ?? 0);
 						}, 0),
 						'Phân loại XS': data.reduce((pre, cur) => {
-							return pre + cur?.['Phân loại XS'] ?? 0;
+							return pre + (cur?.['Phân loại XS'] ?? 0);
 						}, 0),
 						'Phân loại Yếu/Kém': data.reduce((pre, cur) => {
-							return pre + cur?.['Phân loại Yếu/Kém'] ?? 0;
+							return pre + (cur?.['Phân loại Yếu/Kém'] ?? 0);
 						}, 0),
 						'Không tham gia': data.reduce((pre, cur) => {
-							return pre + cur?.['Không tham gia'] ?? 0;
+							return pre + (cur?.['Không tham gia'] ?? 0);
 						}, 0),
 						'Tổng số sinh viên': data.reduce((pre, cur) => {
-							return pre + cur?.['Tổng số sinh viên'] ?? 0;
+							return pre + (cur?.['Tổng số sinh viên'] ?? 0);
 						}, 0),
 					},
 				]}

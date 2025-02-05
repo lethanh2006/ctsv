@@ -1,53 +1,98 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
-import type { IColumn } from '@/components/Table/typing';
-import type { MauDiemRenLuyen } from '@/services/DiemRenLuyen/BieuMau/typings';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Tooltip, Button, Popconfirm, Modal } from 'antd';
+import { type IColumn } from '@/components/Table/typing';
+import { type BieuMau } from '@/services/KhaoSat/BieuMau/typing';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Tooltip, Switch } from 'antd';
 import { useModel } from 'umi';
-import FormBieuMau from './components/Form';
-import { useEffect } from 'react';
-import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
-import FormGiaoNopMinhChung from '../MinhChung/components/FormGiaoNopMinhChung';
+import FormViewDetailKhaoSat from './components/FormViewDetailKhaoSat';
+import Form from './components/Modal';
+import { ELoaiBieuMau } from '@/services/KhaoSat/constant';
+import ViewDetailDanhGiaCanBo from './components/FormViewDetailDanhGiaCanBo';
+import ViewDetailDiemRenLuyen from './components/FormViewDetailDiemRenLuyen';
 
-const BieuMauDiemRenLuyen = () => {
-	const { handleEdit, deleteModel, page, limit, recordTieuChi, visiblePreview, setVisiblePreview } =
-		useModel('diemrenluyen.bieumau');
-	const { getAllModel: getAllDanhMucChung, danhSach: danhSachDanhMucChung } = useModel('quytrinh.danhmuc');
+const KhaoSatPage = () => {
+	const {
+		page,
+		limit,
+		deleteModel,
+		handleEdit,
+		handleView,
+		isView,
+		kichHoatBieuMauModel,
+		record: recordBieuMau,
+		getModel,
+	} = useModel('khaosat.bieumau');
 
-	useEffect(() => {
-		if (!danhSachDanhMucChung.length) {
-			getAllDanhMucChung(false, undefined, { maModule: ELoaiDanhMucChung.CHE_DO_CHINH_SACH });
-		}
-	}, []);
-
-	const onCancelPreview = () => {
-		setVisiblePreview(false);
+	const getData = () => {
+		getModel({ loai: ELoaiBieuMau.CHAM_DIEM_REN_LUYEN });
 	};
 
-	const column: IColumn<MauDiemRenLuyen.IRecord>[] = [
+	const handleChangeStatus = (rec: BieuMau.IRecord) =>
+		kichHoatBieuMauModel({ id: rec._id, data: { kichHoat: !rec.kichHoat } }, getData);
+
+	const onCell = (record: BieuMau.IRecord) => ({
+		onClick: () => handleView(record),
+		style: { cursor: 'pointer' },
+	});
+
+	const columns: IColumn<BieuMau.IRecord>[] = [
 		{
-			title: 'Tên biểu mẫu',
-			dataIndex: 'ten',
-			width: 300,
+			title: 'Tiêu đề',
+			dataIndex: 'tieuDe',
+			width: 200,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Mô tả',
+			dataIndex: 'moTa',
+			width: 250,
+			filterType: 'string',
+			render: (val) => <ExpandText>{val}</ExpandText>,
+			onCell,
+		},
+		// {
+		// 	title: 'Loại biểu mẫu',
+		// 	dataIndex: 'loai',
+		// 	width: 120,
+		// 	filterType: 'select',
+		// 	filterData: Object.values(ELoaiBieuMau),
+		// 	onCell,
+		// },
+		{
+			title: 'Trạng thái',
+			dataIndex: 'kichHoat',
+			width: 60,
+			fixed: 'right',
+			align: 'center',
+			render: (val, record) => (
+				<Switch checked={record.kichHoat} onChange={() => handleChangeStatus(record)} size='small' />
+			),
 		},
 		{
 			title: 'Thao tác',
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
-			render: (record: MauDiemRenLuyen.IRecord) => (
+			render: (record: BieuMau.IRecord) => (
 				<>
+					<Tooltip title='Xem trước'>
+						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
+					</Tooltip>
+
 					<Tooltip title='Chỉnh sửa'>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 
 					<Tooltip title='Xóa'>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id)}
-							title='Bạn có chắc chắn muốn xóa?'
-							placement='topLeft'
+							// disabled={!canDelete}
+							onConfirm={() => deleteModel(record._id, getData)}
+							title='Bạn có chắc chắn muốn xóa khảo sát này?'
+							placement='topRight'
 						>
-							<Button danger type='link' icon={<DeleteOutlined />} />
+							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
 					</Tooltip>
 				</>
@@ -56,32 +101,25 @@ const BieuMauDiemRenLuyen = () => {
 	];
 
 	return (
-		<>
-			<TableBase
-				widthDrawer={1000}
-				Form={FormBieuMau}
-				title='Biểu mẫu đánh giá'
-				columns={column}
-				modelName={'diemrenluyen.bieumau'}
-				dependencies={[page, limit]}
-			/>
-			<Modal
-				destroyOnClose
-				title={recordTieuChi?.ten}
-				zIndex={1001}
-				footer={
-					<Button type='primary' onClick={onCancelPreview}>
-						OK
-					</Button>
-				}
-				width={800}
-				visible={visiblePreview}
-				onCancel={onCancelPreview}
-			>
-				<FormGiaoNopMinhChung isView getData={() => {}} />
-			</Modal>
-		</>
+		<TableBase
+			columns={columns}
+			dependencies={[page, limit]}
+			modelName='khaosat.bieumau'
+			title='Biểu mẫu'
+			widthDrawer={800}
+			getData={getData}
+			formProps={{ getData: getData }}
+			Form={
+				(isView
+					? recordBieuMau?.loai === ELoaiBieuMau.KHAO_SAT
+						? FormViewDetailKhaoSat
+						: recordBieuMau?.loai === ELoaiBieuMau.DANH_GIA_CAN_BO
+						? ViewDetailDanhGiaCanBo
+						: ViewDetailDiemRenLuyen
+					: Form) as any
+			}
+		/>
 	);
 };
 
-export default BieuMauDiemRenLuyen;
+export default KhaoSatPage;

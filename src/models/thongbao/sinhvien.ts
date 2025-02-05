@@ -13,6 +13,7 @@ export default () => {
 	const [limit, setLimit] = useState<number>(10);
 	const [total, setTotal] = useState<number>(0);
 	const [filters, setFilters] = useState<TFilter<ThongBao.IUser>[]>([]);
+	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
 	const getModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
 		setLoading(true);
@@ -57,5 +58,7 @@ export default () => {
 		filters,
 		setFilters,
 		getModel,
+		selectedIds,
+		setSelectedIds,
 	};
 };

@@ -159,6 +159,127 @@
 		hideInMenu: true,
 	},
 
+	// SU KIEN V2
+	{
+		name: 'SuKienDRL',
+		icon: 'calendar',
+		path: '/su-kien-v2',
+		component: './SuKienV2',
+		// access: 'accessFilter',
+		// maChucNang: 'ctsv|su-kien-drl',
+	},
+
+	{
+		path: `/qr-su-kien-v2/:id`,
+		component: './SuKienV2/QRCode',
+		layout: false,
+		hideInMenu: true,
+	},
+	{
+		path: `/qr-tham-gia/:id`,
+		component: './SuKienV2/QRCode/ThamGia',
+		layout: false,
+		hideInMenu: true,
+	},
+
+	// quy trinh diem ren luyen ptit
+
+	{
+		name: 'DiemRenLuyen',
+		icon: 'FileOutlined',
+		path: '/diem-ren-luyen',
+		routes: [
+			{
+				name: 'BieuMau',
+				path: 'bieu-mau',
+				component: './DiemRenLuyen/BieuMau',
+			},
+			{
+				name: 'Dot',
+				path: 'dot',
+				component: './DiemRenLuyen/Dot',
+				access: 'accessFilter',
+				maChucNang: 'ctsv|diem-ren-luyen|dot',
+			},
+			{
+				name: 'LopHanhChinh',
+				path: 'lop-hanh-chinh',
+				access: 'accessFilter',
+				maChucNang: 'ctsv|diem-ren-luyen|dot',
+				routes: [
+					{
+						path: './',
+						hideInMenu: true,
+						component: './DiemRenLuyen/LopHanhChinh',
+						exact: true,
+					},
+					{
+						path: './:id',
+						component: './DiemRenLuyen/LopHanhChinh/$id',
+						hideInMenu: true,
+						exact: true,
+					},
+				],
+			},
+			{
+				name: 'MinhChung',
+				path: 'minh-chung',
+				routes: [
+					{
+						name: 'CauHinh',
+						path: 'cau-hinh',
+						component: './DiemRenLuyen/MinhChung/CauHinh',
+					},
+					{
+						name: 'DanhSachKhaiBao',
+						path: 'danh-sach-khai-bao',
+						access: 'accessFilter',
+						maChucNang: 'ctsv|diem-ren-luyen|minh-chung|khai-bao',
+						routes: [
+							{
+								path: './',
+								component: './DiemRenLuyen/MinhChung/DanhSachKhaiBao',
+								hideInMenu: true,
+							},
+						],
+					},
+					{
+						name: 'ThongKe',
+						path: 'thong-ke',
+						component: './DiemRenLuyen/MinhChung/ThongKe',
+					},
+				],
+			},
+
+			{
+				name: 'PhieuDiem',
+				path: 'phieu-diem',
+				component: './DiemRenLuyen/PhieuDiem',
+				access: 'accessFilter',
+				maChucNang: 'ctsv|diem-ren-luyen|phieu-diem',
+			},
+			{
+				name: 'BienBanHop',
+				path: 'bien-ban-hop',
+				component: './DiemRenLuyen/BienBanHop',
+				access: 'accessFilter',
+				maChucNang: 'ctsv|diem-ren-luyen|phieu-diem',
+			},
+			{
+				name: 'DonKhieuNai',
+				path: 'don-khieu-nai',
+				component: './DiemRenLuyen/DonKhieuNai',
+				access: 'accessFilter',
+				maChucNang: 'ctsv|diem-ren-luyen|phieu-diem',
+			},
+			{
+				name: 'ThongKe',
+				path: 'thong-ke',
+				component: './DiemRenLuyen/ThongKe',
+			},
+		],
+	},
+
 	{
 		name: 'HoatDongKetNoiVaPhucVuCongDong',
 		path: 'hoat-dong-ket-noi-va-phuc-vu-cong-dong',
@@ -249,7 +370,7 @@
 					{
 						name: 'DotChamDiem',
 						path: 'dot-cham-diem',
-						component: './DiemRenLuyen/Dot',
+						component: './DiemRenLuyen/DotVWA',
 					},
 					// {
 					// 	name: 'BieuMau',
@@ -259,7 +380,7 @@
 					{
 						name: 'PhieuDiem',
 						path: 'phieu-diem',
-						component: './DiemRenLuyen/PhieuDiem',
+						component: './DiemRenLuyen/PhieuDiemVWA',
 					},
 					{
 						name: 'ThongKe',
@@ -555,38 +676,6 @@
 				path: 'bao-hiem',
 				component: './CheDoChinhSach/BaoHiem/CheDoBaoHiem',
 			},
-			// {
-			// 	name: 'DanhGiaRenLuyen',
-			// 	path: 'diem-ren-luyen',
-			// 	component: './DanhMuc/Chung/DiemRenLuyen',
-			// },
-
-			// {
-			// 	name: 'LoaiDanhHieu',
-			// 	path: 'loai-danh-hieu',
-			// 	component: './DanhMuc/LoaiDanhHieu',
-			// },
-			// {
-			// 	name: 'DanhHieu',
-			// 	path: 'danh-hieu',
-			// 	component: './DanhMuc/DanhHieu',
-			// },
-			// {
-			// 	name: 'ThamGiaCongTacXaHoi',
-			// 	path: 'tham-gia-cong-tac-xa-hoi',
-			// 	component: './DiemRenLuyen/DanhMuc',
-			// },
-
-			// {
-			// 	name: 'KyTucXa',
-			// 	path: 'ky-tuc-xa',
-			// 	component: './DiemRenLuyen/DanhMuc',
-			// },
-			// {
-			// 	name: 'PhongKyTucXa',
-			// 	path: 'phong-ky-tuc-xa',
-			// 	component: './DiemRenLuyen/DanhMuc',
-			// },
 			{
 				name: 'CheDoChinhSach',
 				component: './CheDoChinhSach/CheDoChinhSach/CheDoChinhSach',
@@ -605,17 +694,15 @@
 		],
 	},
 
-  // THONG KE BAO CAO
-  {
-    name: 'ThongKe',
-    path: '/thong-ke',
-    icon: 'PieChartOutlined',
-    // access: 'accessFilter',
-    // maChucNang: 'qldt|thong-ke-bao-cao',
-    routes: [
-      { name: 'SoLuongSinhVien', path: './so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' },
-    ],
-  },
+	// THONG KE BAO CAO
+	{
+		name: 'ThongKe',
+		path: '/thong-ke',
+		icon: 'PieChartOutlined',
+		// access: 'accessFilter',
+		// maChucNang: 'qldt|thong-ke-bao-cao',
+		routes: [{ name: 'SoLuongSinhVien', path: './so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' }],
+	},
 
 	{
 		name: 'ThongBao',

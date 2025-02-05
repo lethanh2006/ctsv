@@ -36,7 +36,7 @@ export enum ELoaiDoiTuongChamDiem {
 	CVHT = 'CVHT',
 }
 
-export const MapKeyNameLoaiDoiTuongChamDiem = {
+export const MapKeyNameLoaiDoiTuongChamDiem: any = {
 	[ELoaiDoiTuongChamDiem.CAN_SU]: 'Ban cán sự lớp',
 	[ELoaiDoiTuongChamDiem.CVHT]: 'Cố vấn học tập',
 	[ELoaiDoiTuongChamDiem.SINH_VIEN]: 'Sinh viên',

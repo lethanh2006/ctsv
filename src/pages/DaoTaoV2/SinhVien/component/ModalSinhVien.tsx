@@ -1,6 +1,6 @@
 import QuyetDinh from '@/pages/CheDoChinhSach/QuyetDinh';
 import SinhVienHocVuPage from '@/pages/DaoTaoV2/SinhVien/XetHocVu';
-import PhieuDiemRenLuyenComponent from '@/pages/DiemRenLuyen/PhieuDiem';
+import PhieuDiemRenLuyenComponent from '@/pages/DiemRenLuyen/PhieuDiemVWA';
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import { Button, Card, Tabs } from 'antd';
 import { useEffect, useState } from 'react';

@@ -15,8 +15,9 @@ const SelectLopHanhChinhDebounce = (props: {
 	selectMa?: boolean;
 	allowClear?: boolean;
 	style?: React.CSSProperties;
+	maNganh?: string;
 }) => {
-	const { value, onChange, multiple, disabled, selectMa, allowClear, style } = props;
+	const { value, onChange, multiple, disabled, selectMa, allowClear, style, maNganh } = props;
 	const { danhSach, getModel, setFilters, filters, loading } = useModel('daotaov2.namhoc.lophanhchinh');
 
 	useEffect(() => {
@@ -27,7 +28,7 @@ const SelectLopHanhChinhDebounce = (props: {
 		);
 
 		getModel(
-			undefined,
+			{ maNganh: maNganh },
 			(!filters || !filters.length) && ((!props.multiple && value) || (props.multiple && value?.length)) && !gotData
 				? [
 						{
@@ -42,7 +43,7 @@ const SelectLopHanhChinhDebounce = (props: {
 			1,
 			20,
 		);
-	}, [filters, value]);
+	}, [filters, value, maNganh]);
 
 	const searchDebounceLopHanhChinh = _.debounce((val) => {
 		setFilters([{ active: true, field: 'ten', values: [val], operator: EOperatorType.CONTAIN }]);
@@ -66,6 +67,7 @@ const SelectLopHanhChinhDebounce = (props: {
 				key: item._id,
 				value: selectMa ? item.ten : item._id,
 				label: `${item.ten}`,
+				rawData: item,
 			}))}
 			showSearch
 			optionFilterProp='label'
