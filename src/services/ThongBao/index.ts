@@ -26,6 +26,27 @@ export async function dowLoadBieuMauNguoiNhan() {
 	return axios.get(`${ipNotif}/notification/import/template/xlsx`, { responseType: 'arraybuffer' });
 }
 
+export async function guiThongBaoDanhSach(payload: {
+	file: string | Blob;
+	loai: string;
+	title: string;
+	content: string;
+	senderName: string;
+	vaiTroNguoiNhan: string;
+	gui: string;
+}) {
+	const form = new FormData();
+	form.append('file', payload?.file);
+	form.append('loai', payload?.loai);
+	form.append('title', payload?.title);
+	form.append('content', payload?.content);
+	form.append('senderName', payload?.senderName);
+	form.append('vaiTroNguoiNhan', payload?.vaiTroNguoiNhan);
+	form.append('gui', payload?.gui);
+
+	return axios.post(`${ipNotif}/notification/send`, form);
+}
+
 export async function getThongBao(payload: {
 	page: number;
 	limit: number;

@@ -1,18 +1,17 @@
-import { TenVaiTroBieuMau, EVaiTroBieuMau } from '@/services/TienIch/constant';
+import { EVaiTroKhaoSat, TenVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { Space, Tag } from 'antd';
-import _ from 'lodash';
 const { CheckableTag } = Tag;
 
 const GroupTagVaiTro = (props: {
-	value?: EVaiTroBieuMau[];
-	onChange?: (arr: EVaiTroBieuMau[]) => void;
-	listVaiTro?: EVaiTroBieuMau[];
+	value?: EVaiTroKhaoSat[];
+	onChange?: (arr: EVaiTroKhaoSat[]) => void;
+	listVaiTro?: EVaiTroKhaoSat[];
 	disabled?: boolean;
 }) => {
 	const { value, onChange, disabled } = props;
-	const listVaiTro = props.listVaiTro ?? Object.values(EVaiTroBieuMau);
+	const listVaiTro = props.listVaiTro ?? Object.values(EVaiTroKhaoSat);
 
-	const handleChange = (val: EVaiTroBieuMau, checked: boolean) => {
+	const handleChange = (val: EVaiTroKhaoSat, checked: boolean) => {
 		if (disabled) {
 			return;
 		}
@@ -37,7 +36,7 @@ const GroupTagVaiTro = (props: {
 					onChange={(checked) => handleChange(item, checked)}
 					style={{ pointerEvents: disabled ? 'none' : undefined }}
 				>
-					{TenVaiTroBieuMau[item]}
+					{TenVaiTroKhaoSat[item]}
 				</CheckableTag>
 			))}
 		</Space>

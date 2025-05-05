@@ -2,7 +2,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { type ThongBao } from '@/services/ThongBao/typing';
-import { EVaiTroBieuMau } from '@/services/TienIch/constant';
+import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { CloseOutlined } from '@ant-design/icons';
 
 const GroupTagUsers = (props: {
@@ -12,15 +12,15 @@ const GroupTagUsers = (props: {
 }) => {
 	const { users, setUsers, type } = props;
 
-	const onClose = (code: string) => {
-		const tmp = users?.filter((item) => item.code !== code) ?? [];
+	const onClose = (username: string) => {
+		const tmp = users?.filter((item) => item.username !== username) ?? [];
 		if (setUsers) setUsers(tmp);
 	};
 
 	const columns: IColumn<ThongBao.IUser>[] = [
 		{
-			title: type === EVaiTroBieuMau.SINH_VIEN ? 'Mã sinh viên' : 'Mã cán bộ',
-			dataIndex: 'code',
+			title: type === EVaiTroKhaoSat.SINH_VIEN ? 'Mã sinh viên' : 'Mã cán bộ',
+			dataIndex: 'username',
 			width: 100,
 			filterType: 'string',
 		},
@@ -35,20 +35,12 @@ const GroupTagUsers = (props: {
 			align: 'center',
 			width: 60,
 			render: (val, rec) => (
-				<ButtonExtend onClick={() => onClose(rec?.code)} type='link' danger icon={<CloseOutlined />} />
+				<ButtonExtend onClick={() => onClose(rec?.username)} type='link' danger icon={<CloseOutlined />} />
 			),
 		},
 	];
 
 	return (
-		// <Space wrap style={{ marginTop: 6 }}>
-		// 	{users?.map((item) => (
-		// 		<Tag key={item.code} closable onClose={() => onClose(item.code)}>
-		//       {`${item.fullname?`${item.fullname} - `:''}`} {item.code}
-		// 		</Tag>
-		// 	))}
-		// </Space>
-
 		<TableStaticData
 			data={users ?? []}
 			columns={columns}

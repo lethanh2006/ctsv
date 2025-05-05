@@ -13,7 +13,14 @@ export default () => {
 	const [page, setPage] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(10);
 	const [total, setTotal] = useState<number>(0);
-	const [filters, setFilters] = useState<TFilter<ThongBao.IUser>[]>([]);
+	const [filters, setFilters] = useState<TFilter<ThongBao.IUser>[]>([
+		// Nên để mặc đinh trang thái nhân sự là Đang làm việc
+		{
+			field: 'trangThai',
+			operator: EOperatorType.INCLUDE,
+			values: [ETrangThaiNhanSu.DANG_LAM_VIEC, ETrangThaiNhanSu.DA_BIET_PHAI],
+		},
+	]);
 
 	const getModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
 		setLoading(true);
@@ -22,15 +29,7 @@ export default () => {
 			const params = {
 				page,
 				limit,
-				filters: [
-					...filters,
-					{
-						active: true,
-						field: 'trangThai',
-						operator: EOperatorType.INCLUDE,
-						values: [ETrangThaiNhanSu.DANG_LAM_VIEC, ETrangThaiNhanSu.DA_BIET_PHAI],
-					},
-				],
+				filters: [...(filters || [])],
 			};
 			const response = await postReceiver(payload, params);
 			setDanhSach(response?.data?.data?.result ?? []);
@@ -50,16 +49,8 @@ export default () => {
 			const payload = { role: EVaiTroBieuMau.NHAN_VIEN, canBoChuChot: true, ...(danhSachDoiTuong ?? {}) };
 			const params = {
 				page,
-				limit: 100,
-				filters: [
-					...filters,
-					{
-						active: true,
-						field: 'trangThai',
-						operator: EOperatorType.INCLUDE,
-						values: [ETrangThaiNhanSu.DANG_LAM_VIEC, ETrangThaiNhanSu.DA_BIET_PHAI],
-					},
-				],
+				limit: 150,
+				filters: [...(filters || [])],
 			};
 			const response = await postReceiver(payload, params);
 			setDanhSachCanBo(response?.data?.data?.result ?? []);

@@ -1,10 +1,8 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
-import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
-import { EReceiverType } from '@/services/ThongBao/constant';
+import { EReceiverType, EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { type ThongBao } from '@/services/ThongBao/typing';
-import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { ImportOutlined } from '@ant-design/icons';
 import { Checkbox, Col, Empty, Row } from 'antd';
 import _ from 'lodash';
@@ -14,21 +12,20 @@ import GroupTagUsers from './GroupTagUsers';
 import ModalImport from './ModalImport';
 
 const TableSelectUser = (props: {
-	type: EVaiTroBieuMau;
+	type: EVaiTroKhaoSat;
 	selectedUsers?: ThongBao.IUser[];
 	setSelectedUsers?: (val: ThongBao.IUser[]) => void;
 	danhSachDoiTuong?: Record<string, string[]>;
-	readOnly?: boolean;
 	receiverType?: EReceiverType;
 }) => {
-	const { selectedUsers = [], setSelectedUsers, danhSachDoiTuong, readOnly, type, receiverType } = props;
-	const { page, limit } = useModel(type === EVaiTroBieuMau.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu');
+	const { selectedUsers = [], setSelectedUsers, danhSachDoiTuong, type, receiverType } = props;
+	const { page, limit } = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu');
 	const { getCanBoChuChotModel, danhSachCanBo, loading } = useModel('thongbao.nhansu');
 	const [checked, setChecked] = useState<boolean>(false);
 	const [visibleImport, setVisibleImport] = useState<boolean>(false);
 
 	const allCanBoInSelected = danhSachCanBo.length
-		? danhSachCanBo.every((canBo) => selectedUsers.some((user) => user.code === canBo.code))
+		? danhSachCanBo.every((canBo) => selectedUsers.some((user) => user.username === canBo.username))
 		: false;
 
 	useEffect(() => {
@@ -43,11 +40,11 @@ const TableSelectUser = (props: {
 		if (setSelectedUsers) {
 			if (checked === true) {
 				const newSelectedUsers = [...selectedUsers, ...danhSachCanBo];
-				setSelectedUsers(_.uniqBy(newSelectedUsers, (item) => item.code));
+				setSelectedUsers(_.uniqBy(newSelectedUsers, (item) => item.username));
 			} else {
 				if (allCanBoInSelected) {
 					const updatedSelectedUsers = selectedUsers.filter(
-						(user) => !danhSachCanBo.some((item) => item.code === user.code),
+						(user) => !danhSachCanBo.some((item) => item.username === user.username),
 					);
 					setSelectedUsers(updatedSelectedUsers);
 				}
@@ -64,27 +61,21 @@ const TableSelectUser = (props: {
 	const onChange = (keys?: string[], rows?: ThongBao.IUser[]) => {
 		const arr = [...selectedUsers, ...(rows ?? [])]?.filter((item) => item !== undefined);
 		const obj = arr?.filter((item) => {
-			return keys?.includes(item.code);
+			return keys?.includes(item?.username);
 		});
 
-		const selected =
-			rows?.map((item) => ({
-				...item,
-				vaiTro: type,
-			})) ?? [];
-
-		if (setSelectedUsers) setSelectedUsers(type === EVaiTroBieuMau.SINH_VIEN ? selected : _.uniqBy(obj, 'code'));
+		if (setSelectedUsers) setSelectedUsers(_.uniqBy(obj, 'username'));
 	};
 
 	const onCell = (recordVal: ThongBao.IUser) => ({
 		onClick: () => {
 			const arr = [...selectedUsers];
 			const obj = arr?.find((item) => {
-				return item?.code === recordVal?.code;
+				return item?.username === recordVal?.username;
 			});
 			if (obj) {
 				arr.forEach((item, index) => {
-					if (item?.code === recordVal?.code) {
+					if (item?.username === recordVal?.username) {
 						arr.splice(index, 1);
 					}
 				});
@@ -101,10 +92,11 @@ const TableSelectUser = (props: {
 
 	const columns: IColumn<ThongBao.IUser>[] = [
 		{
-			title: type === EVaiTroBieuMau.SINH_VIEN ? 'Mã sinh viên' : 'Mã cán bộ',
+			title: type === EVaiTroKhaoSat.SINH_VIEN ? 'Mã sinh viên' : 'Mã cán bộ',
 			dataIndex: 'code',
 			filterType: 'string',
 			width: 80,
+			render: (val, rec) => rec?.username,
 			onCell,
 		},
 		{
@@ -114,67 +106,85 @@ const TableSelectUser = (props: {
 			width: 180,
 			onCell,
 		},
+		type === EVaiTroKhaoSat.SINH_VIEN
+			? {
+					title: 'Trạng thái học',
+					dataIndex: 'trangThaiSinhVien',
+					align: 'center',
+					width: 120,
+					// filterType: 'select',
+					// filterData: Object.values(ETrangThaiHocSv),
+					// render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
+					onCell,
+			  }
+			: {
+					title: 'Trạng thái',
+					dataIndex: 'trangThai',
+					align: 'center',
+					width: 120,
+					// filterType: 'select',
+					// filterData: Object.values(ETrangThaiNhanSu),
+					// render: (val, rec) => <Tag color={MapColorETrangThaiNhanSu[val as ETrangThaiNhanSu]}>{val}</Tag>,
+					onCell,
+			  },
 	];
 
 	return (
 		<>
-			{readOnly ? (
-				<TableStaticData hasTotal size='small' addStt columns={columns} data={selectedUsers} />
-			) : (
-				<Row gutter={[12, 12]}>
-					<Col span={24} md={12}>
-						<TableBase
-							columns={columns}
-							dependencies={[page, limit, JSON.stringify(danhSachDoiTuong), type]}
-							params={danhSachDoiTuong}
-							modelName={type === EVaiTroBieuMau.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu'}
-							hideCard
-							buttons={{ create: false, reload: false }}
-							otherProps={{
-								size: 'small',
-								rowKey: 'code',
-								rowSelection: {
-									selectedRowKeys: selectedUsers?.map((item) => item.code),
-									onChange,
-									preserveSelectedRowKeys: true,
-								},
-							}}
-							otherButtons={[
-								type === EVaiTroBieuMau.NHAN_VIEN && receiverType === EReceiverType.All ? (
-									<Checkbox
-										key='check'
-										disabled={loading}
-										checked={checked}
-										onChange={(e) => handleCheckBox(e.target.checked)}
-									>
-										Cán bộ chủ chốt
-									</Checkbox>
-								) : (
-									<></>
-								),
-								<ButtonExtend
-									key='import'
-									icon={<ImportOutlined />}
-									onClick={() => setVisibleImport(true)}
-									type='default'
-									size='small'
+			<Row gutter={[12, 12]}>
+				<Col md={12}>
+					<TableBase
+						columns={columns}
+						dependencies={[page, limit, JSON.stringify(danhSachDoiTuong), type]}
+						params={danhSachDoiTuong}
+						modelName={type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu'}
+						hideCard
+						buttons={{ create: false, reload: false }}
+						otherProps={{
+							size: 'small',
+							rowKey: 'username',
+							rowSelection: {
+								selectedRowKeys: selectedUsers?.map((item) => item.username),
+								onChange,
+								preserveSelectedRowKeys: true,
+							},
+						}}
+						otherButtons={[
+							type === EVaiTroKhaoSat.NHAN_VIEN && receiverType === EReceiverType.All ? (
+								<Checkbox
+									key='check'
+									disabled={loading}
+									checked={checked}
+									onChange={(e) => handleCheckBox(e.target.checked)}
 								>
-									Nhập dữ liệu
-								</ButtonExtend>,
-							]}
-						/>
-					</Col>
-					<Col span={24} md={12}>
-						<div style={{ marginBottom: 12 }}>
-							{!readOnly && selectedUsers?.length ? (
-								<GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} type={type} />
+									Cán bộ chủ chốt
+								</Checkbox>
 							) : (
-								<Empty style={{ marginTop: 32, marginBottom: 32 }} description='Không có dữ liệu' />
-							)}
-						</div>
-					</Col>
-				</Row>
-			)}
+								<></>
+							),
+							<ButtonExtend
+								key='import'
+								icon={<ImportOutlined />}
+								onClick={() => setVisibleImport(true)}
+								type='default'
+								size='small'
+							>
+								Nhập dữ liệu
+							</ButtonExtend>,
+						]}
+					/>
+				</Col>
+				<Col md={12}>
+					<div style={{ marginBottom: 12 }}>
+						{selectedUsers?.length ? (
+							<GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} type={type} />
+						) : (
+							<Empty style={{ marginTop: 32, marginBottom: 32 }} description='Không có dữ liệu' />
+						)}
+					</div>
+				</Col>
+			</Row>
+
 			<ModalImport
 				visible={visibleImport}
 				setVisible={setVisibleImport}

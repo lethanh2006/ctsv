@@ -15,6 +15,7 @@ const ipTaiChinh = ipRoot + 'tai-chinh-api-v2';
 const ipSlink = ipRoot + 'slink'; // ip dev
 
 const currentRole = EModuleKey.CTSV;
+const replaceRole: EModuleKey | undefined = undefined; //EModuleKey.CONG_CAN_BO; // Thay đổi theo từng phân hệ
 const oneSignalRole = EModuleKey.CONG_CAN_BO;
 
 // DO NOT TOUCH
@@ -32,17 +33,18 @@ export {
 	ipNhanSu,
 	ipDaoTao,
 	ipCore,
+	currentRole,
+	replaceRole,
 	ip3,
 	ipNotif,
 	ipSlink,
-	currentRole,
-	oneSignalRole,
-	keycloakClientID,
-	resourceServerClientId,
 	keycloakAuthEndpoint,
+	keycloakAuthority,
+	keycloakClientID,
 	keycloakTokenEndpoint,
 	keycloakUserInfoEndpoint,
-	keycloakAuthority,
-	sentryDSN,
 	oneSignalClient,
+	oneSignalRole,
+	resourceServerClientId,
+	sentryDSN,
 };

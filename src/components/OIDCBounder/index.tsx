@@ -1,20 +1,22 @@
 import { useAuthActions } from '@/hooks/useAuthActions';
 import { getPermission, getUserInfo } from '@/services/base/api';
+import { AppModules, primaryColor } from '@/services/base/constant';
 import { type Login } from '@/services/base/typing';
 import axios from '@/utils/axios';
-import { currentRole } from '@/utils/ip';
+import { currentRole, replaceRole } from '@/utils/ip';
 import { oidcConfig } from '@/utils/oidcConfig';
-import { notification } from 'antd';
+import { ConfigProvider, notification } from 'antd';
 import queryString from 'query-string';
 import { useEffect, type FC } from 'react';
 import { AuthProvider, hasAuthParams, useAuth } from 'react-oidc-context';
-import { history, useModel } from 'umi';
+import { history, useIntl, useModel } from 'umi';
 import LoadingPage from '../Loading';
 import { unAuthPaths, unCheckPermissionPaths } from './constant';
 
 let OIDCBounderHandlers: ReturnType<typeof useAuthActions> | null = null;
 
 const OIDCBounder_: FC = ({ children }) => {
+	const intl = useIntl();
 	const { setInitialState, initialState } = useModel('@@initialState');
 	const auth = useAuth();
 	const actions = useAuthActions();
@@ -60,6 +62,13 @@ const OIDCBounder_: FC = ({ children }) => {
 				});
 
 				if (!isUncheckPath && currentRole && permissions.length && !hasRole) {
+					const hasReplaceRole = permissions.some((item) => item.rsname === replaceRole);
+					const linkReplace = !!replaceRole && AppModules[replaceRole]?.url;
+
+					if (!!linkReplace && hasReplaceRole) {
+						window.location.replace(linkReplace);
+						return;
+					}
 					history.replace('/403');
 				} else {
 					if (window.location.pathname === '/' || window.location.pathname === '/user/login') redirectLocation();
@@ -68,8 +77,8 @@ const OIDCBounder_: FC = ({ children }) => {
 				if (auth.isAuthenticated) auth.removeUser();
 				else {
 					notification.warn({
-						message: 'Xác thực người dùng',
-						description: 'Vui lòng đợi trong giây lát. Đang chuyển hướng...',
+						message: intl.formatMessage({ id: 'global.OIDCBounder.message' }),
+						description: intl.formatMessage({ id: 'global.OIDCBounder.description' }),
 					});
 					history.replace('/user/login');
 				}
@@ -82,11 +91,15 @@ const OIDCBounder_: FC = ({ children }) => {
 		// history.replace('/hold-on');
 		// return;
 
-		if (isUnauth || auth.isLoading) return;
+		// Trong trường hợp các trang Public muốn đăng nhập thì dùng
+		// <Button onClick={() => signinPopup()}>Đăng nhập</Button>
+		// Sau khi đăng nhập popup sẽ nhảy về đây và xử lý như bình thường
+
+		if (auth.isLoading) return;
 
 		// Chưa login + chưa có auth params ==> Cần redirect keycloak để lấy auth params + cookie
-		if (!hasAuthParams() && !auth.isAuthenticated) {
-			auth.signinRedirect();
+		if (!hasAuthParams() && !auth.isAuthenticated && initialState?.permissionLoading) {
+			if (!isUnauth) auth.signinRedirect();
 			return;
 		}
 
@@ -113,6 +126,11 @@ const OIDCBounder_: FC = ({ children }) => {
 	useEffect(() => {
 		OIDCBounderHandlers = actions;
 	}, [actions]);
+
+	useEffect(() => {
+		// Đổi màu real time => Hỗ trợ đổi tenant
+		ConfigProvider.config({ theme: { primaryColor } });
+	}, []);
 
 	return <>{(auth.isLoading || initialState?.permissionLoading) && !isUnauth ? <LoadingPage /> : children}</>;
 };

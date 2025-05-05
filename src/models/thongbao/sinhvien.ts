@@ -12,8 +12,15 @@ export default () => {
 	const [page, setPage] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(10);
 	const [total, setTotal] = useState<number>(0);
-	const [filters, setFilters] = useState<TFilter<ThongBao.IUser>[]>([]);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
+	const [filters, setFilters] = useState<TFilter<ThongBao.IUser>[]>([
+		// Nên để mặc đinh trang thái nhân sự là Đang học
+		{
+			field: 'trangThaiHoc',
+			operator: EOperatorType.NOT_INCLUDE,
+			values: [ETrangThaiHocSv.THOI_HOC, ETrangThaiHocSv.BUOC_THOI_HOC],
+		},
+	]);
 
 	const getModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
 		setLoading(true);
@@ -22,15 +29,7 @@ export default () => {
 			const params = {
 				page,
 				limit,
-				filters: [
-					...filters,
-					{
-						active: true,
-						field: 'trangThaiHoc',
-						operator: EOperatorType.NOT_INCLUDE,
-						values: [ETrangThaiHocSv.THOI_HOC, ETrangThaiHocSv.BUOC_THOI_HOC],
-					},
-				],
+				filters: [...(filters || [])],
 			};
 			const response = await postReceiver(payload, params);
 			setDanhSach(response?.data?.data?.result ?? []);

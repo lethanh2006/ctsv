@@ -44,28 +44,10 @@ const TableReceiverThongBao = (props: { record?: ThongBao.IRecord }) => {
 			dataIndex: 'read',
 			width: 100,
 			align: 'center',
-			// filterType:'customselect',
-			// filterCustomSelect:<Select
-			//   mode={'multiple'}
-			//   options={[
-			//     { value: 1, label: 'Đã đọc' },
-			//     { value: 0, label: 'Chưa đọc' },
-			//   ]}
-			// />,
 			render: (val) => {
 				return <>{val ? <Tag color={'green'}>Đã đọc</Tag> : <Tag color={'red'}>Chưa đọc</Tag>}</>;
 			},
 		},
-		// {
-		// 	title: 'Thời gian gửi',
-		// 	dataIndex: 'createdAt',
-		// 	width: 120,
-		// 	align: 'center',
-		// 	filterType: 'datetime',
-		// 	sortable: true,
-		// 	onCell,
-		// 	render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
-		// },
 	];
 
 	useEffect(() => {
@@ -82,7 +64,7 @@ const TableReceiverThongBao = (props: { record?: ThongBao.IRecord }) => {
 				buttons={{ create: false }}
 				otherButtons={[
 					<Select
-						key={'tt'}
+						key={'1'}
 						placeholder={'Chọn trạng thái'}
 						onChange={(val) => {
 							setTrangThaiSelect(val);
@@ -98,7 +80,6 @@ const TableReceiverThongBao = (props: { record?: ThongBao.IRecord }) => {
 			>
 				{dataThongKeNguoiNhan && (
 					<div style={{ marginBottom: 16 }}>
-						{/*Tỉ lệ (Đã đọc/ Tổng số):{' '}*/}
 						Tỉ lệ :{' '}
 						<b>
 							{dataThongKeNguoiNhan?.daDoc}/{+dataThongKeNguoiNhan?.daDoc + +dataThongKeNguoiNhan?.chuaDoc}

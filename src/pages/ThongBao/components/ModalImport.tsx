@@ -37,7 +37,7 @@ const ModalImport = (props: {
 
 		importNguoiNhanThongBaoModel(values, role)
 			.then((res: any) => {
-				const newSelectedUsers = [...selectedUsers, ...res] ?? [];
+				const newSelectedUsers = [...selectedUsers, ...res];
 				setSelectedUsers(_.uniqBy(newSelectedUsers, (item) => item.code));
 				setVisible(false);
 			})
