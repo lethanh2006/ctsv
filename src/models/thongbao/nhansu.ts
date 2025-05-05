@@ -2,8 +2,8 @@ import { EOperatorType } from '@/components/Table/constant';
 import type { TFilter } from '@/components/Table/typing';
 import { ETrangThaiNhanSu } from '@/services/constant';
 import { postReceiver } from '@/services/ThongBao';
+import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { type ThongBao } from '@/services/ThongBao/typing';
-import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { useState } from 'react';
 
 export default () => {
@@ -25,7 +25,7 @@ export default () => {
 	const getModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
 		setLoading(true);
 		try {
-			const payload = { role: EVaiTroBieuMau.NHAN_VIEN, ...(danhSachDoiTuong ?? {}) };
+			const payload = { role: EVaiTroKhaoSat.NHAN_VIEN, ...(danhSachDoiTuong ?? {}) };
 			const params = {
 				page,
 				limit,
@@ -46,7 +46,7 @@ export default () => {
 	const getCanBoChuChotModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
 		setLoading(true);
 		try {
-			const payload = { role: EVaiTroBieuMau.NHAN_VIEN, canBoChuChot: true, ...(danhSachDoiTuong ?? {}) };
+			const payload = { role: EVaiTroKhaoSat.NHAN_VIEN, canBoChuChot: true, ...(danhSachDoiTuong ?? {}) };
 			const params = {
 				page,
 				limit: 150,

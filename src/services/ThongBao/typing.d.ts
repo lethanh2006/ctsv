@@ -1,5 +1,4 @@
-import type { EVaiTroBieuMau } from '../TienIch/constant';
-import type { ENotificationSource, ESourceTypeNotification } from './constant';
+import type { ENotificationSource, ESourceTypeNotification, EVaiTroKhaoSat } from './constant';
 import { type EReceiverType } from './constant';
 
 declare module ThongBao {
@@ -129,7 +128,7 @@ declare module ThongBao {
 		username: string;
 		maKhoaSinhVien: string;
 		maNganh: string;
-		vaiTro?: EVaiTroBieuMau;
+		vaiTro?: EVaiTroKhaoSat;
 	}
 
 	export type TReceiver = {

@@ -2,8 +2,8 @@ import { EOperatorType } from '@/components/Table/constant';
 import type { TFilter } from '@/components/Table/typing';
 import { ETrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 import { postReceiver } from '@/services/ThongBao';
+import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { type ThongBao } from '@/services/ThongBao/typing';
-import { EVaiTroBieuMau } from '@/services/TienIch/constant';
 import { useState } from 'react';
 
 export default () => {
@@ -25,7 +25,7 @@ export default () => {
 	const getModel = async (danhSachDoiTuong?: Record<string, string[]>): Promise<ThongBao.IUser[]> => {
 		setLoading(true);
 		try {
-			const payload = { role: EVaiTroBieuMau.SINH_VIEN, ...(danhSachDoiTuong ?? {}) };
+			const payload = { role: EVaiTroKhaoSat.SINH_VIEN, ...(danhSachDoiTuong ?? {}) };
 			const params = {
 				page,
 				limit,
