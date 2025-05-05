@@ -51,6 +51,9 @@ declare module LopHocPhan {
 		maLopHpHcList?: string[];
 		doiTuongLopHanhChinh?: EDoiTuongLopHanhChinh;
 
+		/** Danh sách khóa ngành định hướng cho lớp học phần này */
+		listLopHpKn?: ILopHpKhoaNganh[];
+
 		dotHuyId?: string;
 		trangThaiLop: ETrangThaiLopHocPhan;
 		trangThaiDiemLop: ETrangThaiDiemLop;
@@ -61,6 +64,9 @@ declare module LopHocPhan {
 		cauHinhTkb?: TCauHinhGiaiDoan[];
 		maHoaLichHoc?: TMaHoaLichHoc[];
 		thoiKhoaBieuList?: ThoiKhoaBieu.IRecord[];
+		/** Lớp ghép thời khóa biểu cùng */
+		tenLopGhepTkb?: string;
+		lopGhepTkb?: IRecord;
 
 		// Populated
 		deCuong?: Partial<HocPhan.IDeCuongHocPhanHocKy>;
