@@ -95,3 +95,7 @@ export async function getSinhVienHocPhanNamHoc(
 ) {
 	return axios.get(`${ipDaoTao}/diem-hp-sv-hk/sinh-vien/${ssoId}`, { params });
 }
+
+export async function getLopHpSvBySinhVien(ssoId: string) {
+	return axios.get(`${ipDaoTao}/sinh-vien/lich-hoc/${ssoId}`);
+}

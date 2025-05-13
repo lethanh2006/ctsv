@@ -1,7 +1,6 @@
 import ExpandText from '@/components/ExpandText';
 import PrintTemplate from '@/components/PrintTemplate';
 import TableStaticData from '@/components/Table/TableStaticData';
-import { EOperatorType } from '@/components/Table/constant';
 import { type IColumn } from '@/components/Table/typing';
 import type { HocPhan } from '@/services/DaoTaoV2/DanhMucHeThong/HocPhan/typings';
 import type { HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
@@ -19,14 +18,14 @@ import ReactToPrint from 'react-to-print';
 import { useModel } from 'umi';
 import RenderLichHoc from '../../HocKy/LopHocPhan/components/RenderLichHoc';
 import ViewDiemLopHocPhan from '../../KetQuaHocTap/DiemLopHocPhan/components/ViewDiemLopHocPhan';
-import TitlePrintLopTinChi from './TitlePrintLopTinChi';
 import ModalLichHocSinhVien from '../../ThoiKhoaBieu/ModalLichHoc';
+import TitlePrintLopTinChi from './TitlePrintLopTinChi';
 
 type TData = LopHocPhan.IRecordSinhVienLopHP & Partial<HocPhan.IRecord> & { title?: string; maHocKy?: string };
 
 const LopTinChiSinhVien = () => {
-	const { getAllModel, loading } = useModel('daotaov2.hocky.sinhvienlophocphan');
-	const { getAllModel: getLopHp, loading: loadLop } = useModel('daotaov2.hocky.lophocphan');
+	const { getLopHpSvBySinhVienModel, loading } = useModel('daotaov2.hocky.sinhvienlophocphan');
+	// const { getAllModel: getLopHp, loading: loadLop } = useModel('daotaov2.hocky.lophocphan');
 	const { loading: loadDiem } = useModel('daotaov2.ketquahoctap.diemhpsvhk');
 	const { record: recSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 	const [recHocKy, setHocKy] = useState<HocKy.IRecord>();
@@ -43,7 +42,7 @@ const LopTinChiSinhVien = () => {
 
 	const getData = () =>
 		recSinhVien?.ssoId &&
-		getAllModel(undefined, undefined, { sinhVienSsoId: recSinhVien?.ssoId }).then(async (da) => {
+		getLopHpSvBySinhVienModel(recSinhVien?.ssoId).then(async (da) => {
 			// Danh sách học phần đã đăng ký có cả lớp Chính và lớp thực hành
 			const hocPhanCoLopThucHanh = da
 				.filter((item) => !!item?.lopHocPhan?.tenCha)
@@ -57,13 +56,13 @@ const LopTinChiSinhVien = () => {
 				)
 				.map((item) => ({ ...item.lopHocPhan?.hocPhan, maHocKy: item.lopHocPhan?.maHocKy, ...item }));
 			// Get chi tiết lớp học phần (để lấy thông tin mã hóa lịch học)
-			const lopHpIdList = danhSachLopHienThi.map((item) => item.lopHocPhanId);
-			const lopHpList = await getLopHp(undefined, undefined, undefined, [
-				{ active: true, field: '_id', values: lopHpIdList, operator: EOperatorType.INCLUDE },
-			]);
-			danhSachLopHienThi.map((item) =>
-				Object.assign(item, { lopHocPhan: lopHpList.find((i) => i._id === item.lopHocPhanId) }),
-			);
+			// const lopHpIdList = danhSachLopHienThi.map((item) => item.lopHocPhanId);
+			// const lopHpList = await getLopHp(undefined, undefined, undefined, [
+			// 	{ active: true, field: '_id', values: lopHpIdList, operator: EOperatorType.INCLUDE },
+			// ]);
+			// danhSachLopHienThi.map((item) =>
+			// 	Object.assign(item, { lopHocPhan: lopHpList.find((i) => i._id === item.lopHocPhanId) }),
+			// );
 			setDataLop(danhSachLopHienThi);
 
 			// Lấy dữ liệu lúc in: Nhóm theo học kỳ, thêm 1 hàng học kỳ
@@ -278,9 +277,10 @@ const LopTinChiSinhVien = () => {
 				data={dataHienThi}
 				addStt
 				hasTotal
-				loading={loading || loadLop || loadDiem}
+				loading={loading || loadDiem}
 				size='small'
 				otherProps={{ pagination: false, scroll: { y: 350 } }}
+				onReload={getData}
 			>
 				<Space wrap>
 					<Select
@@ -291,7 +291,7 @@ const LopTinChiSinhVien = () => {
 						options={danhSachHocKy.map((item) => ({ key: item.ma, value: item.ma, label: item.ten }))}
 						size='small'
 						placeholder='Chọn kỳ học'
-						loading={loadLop}
+						loading={loading}
 					/>
 					<Button icon={<CalendarOutlined />} onClick={() => setVisibleLichHoc(true)} size='small'>
 						Xem lịch học
