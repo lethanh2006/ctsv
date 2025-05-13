@@ -3,6 +3,7 @@ import useInitModel from '@/hooks/useInitModel';
 import {
 	duyetDiemKTHocPhan,
 	duyetDiemLopHocPhan,
+	getLopHpSvBySinhVien,
 	getSinhVienLopHocPhan,
 	huyDuyetDiemLopHocPhan,
 	putDiemLopHocPhan,
@@ -126,6 +127,20 @@ export default () => {
 		}
 	};
 
+	const getLopHpSvBySinhVienModel = async (ssoId: string): Promise<LopHocPhan.IRecordSinhVienLopHP[]> => {
+		setLoading(true);
+		try {
+			const response = await getLopHpSvBySinhVien(ssoId);
+			const data: LopHocPhan.IRecordSinhVienLopHP[] = response?.data?.data?.danhSachLopHocPhan ?? [];
+
+			return data;
+		} catch (er) {
+			return Promise.reject(er);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return {
 		...objInit,
 		duyetDiemLopHocPhanModel,
@@ -134,5 +149,6 @@ export default () => {
 		duyetDiemKTHocPhanModel,
 		putDiemThiModel,
 		getByHocPhanNamHocModel,
+		getLopHpSvBySinhVienModel,
 	};
 };
