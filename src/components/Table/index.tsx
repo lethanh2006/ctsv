@@ -409,16 +409,11 @@ const TableBase = (props: TableBaseProps) => {
 			
 			// Field từ table => nếu dataIndex là Array => field1.subfield
 			const dataIndex = field.includes('.') ? field.split('.') : field;
-			
-			const col = allColumns.find((item) => {
-				return JSON.stringify(item.dataIndex) === JSON.stringify(dataIndex);
-			});
+
+			const col = allColumns.find((item) => JSON.stringify(item.dataIndex) === JSON.stringify(dataIndex));
 
 			if (col?.filterType === 'select') handleFilter(dataIndex, values as any);
-			else if (col?.filterType === 'string'){ 
-				handleSearch(dataIndex, values?.[0] as any);
-				
-			}
+			else if (col?.filterType === 'string') handleSearch(dataIndex, values?.[0] as any);
 			else if (col?.filterType === 'customselect') handleFilter(dataIndex, values as any);
 		});
 

@@ -162,7 +162,7 @@ const QuyetDinh = (props: {
 		} else
 			columns.push({
 				title: item.ten,
-				dataIndex: ['thongTinQuyetDinh',item.ma, 'value'],
+				dataIndex: ['thongTinQuyetDinh', item.ma, 'value'],
 				width: 200,
 				align: 'center',
 				specialFilter: true,
