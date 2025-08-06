@@ -131,19 +131,20 @@ const TableBase = (props: TableBaseProps) => {
 		if (!value) {
 			// Remove filter of this column
 			const tempFilters = filters?.filter((item) => JSON.stringify(item.field) !== JSON.stringify(dataIndex));
-			setFilters(tempFilters);
+			setFilters(tempFilters);			
 		} else {
-			const filter = getFilterColumn(dataIndex);
+			const filter = getFilterColumn(dataIndex);			
 			let tempFilters: TFilter<any>[] = [...(filters ?? [])];
-			if (filter)
+			if (filter) {
 				// Udpate current filter
 				tempFilters = tempFilters.map((item) =>
 					JSON.stringify(item.field) === JSON.stringify(dataIndex)
 						? { ...item, active: true, operator: EOperatorType.CONTAIN, values: [value] }
 						: item,
 				);
+			}
 			// Add new filter rule for this column
-			else
+			else {
 				tempFilters.push({
 					active: true,
 					field: dataIndex,
@@ -151,8 +152,11 @@ const TableBase = (props: TableBaseProps) => {
 					values: [value],
 				});
 			setFilters(tempFilters);
+			}
 		}
-		if (confirm) confirm();
+		if (confirm) {
+			confirm();
+		}
 	};
 
 	const getColumnSearchProps = (dataIndex: any, columnTitle: any): Partial<IColumn<unknown>> => {
@@ -189,7 +193,9 @@ const TableBase = (props: TableBaseProps) => {
 									}
 								}}
 								onSearch={(value) => {
-									if (value) updateSearchStorage(dataIndex, value);
+									if (value) {
+										updateSearchStorage(dataIndex, value);
+									}
 									handleSearch(dataIndex, value, confirm);
 								}}
 								ref={searchInputRef}
@@ -225,6 +231,7 @@ const TableBase = (props: TableBaseProps) => {
 	//#region Get Filter Column Props
 
 	const handleFilter = (dataIndex: any, values: string[]) => {
+		debugger;
 		if (!values || !values.length) {
 			// Remove filter of this column
 			const tempFilters = filters?.filter((item) => JSON.stringify(item.field) !== JSON.stringify(dataIndex));
@@ -248,6 +255,7 @@ const TableBase = (props: TableBaseProps) => {
 					values,
 				});
 			setFilters(tempFilters);
+			;
 		}
 	};
 
@@ -398,13 +406,18 @@ const TableBase = (props: TableBaseProps) => {
 			.flat();
 		// Handle Filter in columns
 		Object.entries(fil).map(([field, values]) => {
+			
 			// Field từ table => nếu dataIndex là Array => field1.subfield
 			const dataIndex = field.includes('.') ? field.split('.') : field;
+
 			const col = allColumns.find((item) => JSON.stringify(item.dataIndex) === JSON.stringify(dataIndex));
+
 			if (col?.filterType === 'select') handleFilter(dataIndex, values as any);
 			else if (col?.filterType === 'string') handleSearch(dataIndex, values?.[0] as any);
 			else if (col?.filterType === 'customselect') handleFilter(dataIndex, values as any);
 		});
+
+		
 
 		const { order, field } = sorter;
 		const orderValue = order === 'ascend' ? 1 : order === 'descend' ? -1 : undefined;
