@@ -41,7 +41,7 @@ const FormVoucher = (props: any) => {
           label="Tên mã giảm giá"
           rules={[...rules.required, ...rules.text, ...rules.length(20)]}
         >
-          <Input placeholder="Mã chức vụ" />
+          <Input placeholder="Nhập tên mã giảm giá" />
         </Form.Item>
 
         <Form.Item
@@ -49,7 +49,7 @@ const FormVoucher = (props: any) => {
           label="Mô tả"
           rules={[...rules.text, ...rules.length(250)]}
         >
-          <TextArea placeholder="Tên chức vụ" />
+          <TextArea placeholder="Nhập mô tả" />
         </Form.Item>
         <Row gutter={[10, 10]}>
             <Col span={12}>
