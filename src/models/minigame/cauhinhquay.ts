@@ -1,5 +1,5 @@
-import { capNhatPhanThuong, getCauHinhQuay, putCauHinhQuay } from '@/services/CauHinhQuay';
-import { MCauHinhQuay } from '@/services/CauHinhQuay/typing';
+import { capNhatPhanThuong, getCauHinhQuay, putCauHinhQuay } from '@/services/Minigame/CauHinhQuay';
+import { MCauHinhQuay } from '@/services/Minigame/CauHinhQuay/typing';
 import { useState } from 'react';
 
 export default () => {

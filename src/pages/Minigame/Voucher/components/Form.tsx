@@ -1,5 +1,5 @@
-import { ETrangThaiVoucher } from '@/services/Voucher/constant';
-import { MVoucher } from '@/services/Voucher/typing';
+import { ETrangThaiVoucher } from '@/services/Minigame/Voucher/constant';
+import { MVoucher } from '@/services/Minigame/Voucher/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, DatePicker, Form, Input, InputNumber, Row, Switch } from 'antd';
@@ -10,7 +10,7 @@ import { useModel } from 'umi';
 const FormVoucher = (props: any) => {
   const [form] = Form.useForm();
   const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
-    useModel('voucher.voucher');
+    useModel('minigame.voucher');
   const title = props?.title ?? '';
 
   useEffect(() => {

@@ -1,15 +1,15 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { ETrangThaiVoucher } from '@/services/Voucher/constant';
-import { MVoucher } from '@/services/Voucher/typing';
+import { ETrangThaiVoucher } from '@/services/Minigame/Voucher/constant';
+import { MVoucher } from '@/services/Minigame/Voucher/typing';
 import { currencyFormat } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Switch, Tag, Tooltip } from 'antd';
+import { Button, Modal, Popconfirm, Switch, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import Form from './components/Form';
 
 const VoucherPage = () => {
-  const { getModel, page, limit, deleteModel, handleEdit, putModel } = useModel('voucher.voucher');
+  const { getModel, page, limit, deleteModel, handleEdit, putModel } = useModel('minigame.voucher');
 
   const onChangeStatus = async (record: MVoucher.ICauHinhVoucherDto, status: ETrangThaiVoucher) => {
     const reqUpdate = {
@@ -86,7 +86,7 @@ const VoucherPage = () => {
     <TableBase
       columns={columns}
       dependencies={[page, limit]}
-      modelName="voucher.voucher"
+      modelName="minigame.voucher"
       title="Phiếu quà tặng"
       buttons={{ import: true }}
       Form={Form}

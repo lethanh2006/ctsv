@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useModel } from "umi";
 
 export default () => {
-    const { getCauHinh, cauHinhQuay, thietLapCauHinhQuay } = useModel('cauhinhquay.cauhinhquay');
+    const { getCauHinh, cauHinhQuay, thietLapCauHinhQuay } = useModel('minigame.cauhinhquay');
     const [form] = useForm();
 
     useEffect(() => {

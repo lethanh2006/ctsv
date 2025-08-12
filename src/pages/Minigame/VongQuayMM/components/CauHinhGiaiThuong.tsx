@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Table, Input, Button, Popconfirm, Tag, message } from 'antd';
-import { MCauHinhQuay } from '@/services/CauHinhQuay/typing';
+import { MCauHinhQuay } from '@/services/Minigame/CauHinhQuay/typing';
 import { useModel } from 'umi';
 import { DeleteOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +8,7 @@ import SelectVoucher from '../../Voucher/components/Select';
 
 const EditableVongQuayTable = () => {
 	const [data, setData] = useState<(MCauHinhQuay.IVongQuayInfo & { tempId: string })[]>([]);
-	const { cauHinhQuay, capNhatPhanThuongVongQuay } = useModel('cauhinhquay.cauhinhquay');
+	const { cauHinhQuay, capNhatPhanThuongVongQuay } = useModel('minigame.cauhinhquay');
 
 	useEffect(() => {
 		const danhSach = (cauHinhQuay?.danhSachPhanThuong || []).map((item) => ({

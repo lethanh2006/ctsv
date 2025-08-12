@@ -1,36 +1,42 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { ETrangThaiQuay } from '@/services/LichSuQuay/constant';
-import { MLichSuQuay } from '@/services/LichSuQuay/typing';
-import { ETrangThaiVoucher } from '@/services/Voucher/constant';
-import { currencyFormat, formatDateTimeVN } from '@/utils/utils';
+import { ETrangThaiQuay } from '@/services/Minigame/LichSuQuay/constant';
+import { MLichSuQuay } from '@/services/Minigame/LichSuQuay/typing';
 import { Tag } from 'antd';
+import moment from 'moment';
 import { useModel } from 'umi';
 
 const VoucherPage = () => {
-	const { getModel, page, limit, deleteModel, handleEdit } = useModel('lichsuquay.lichsuquay');
+	const { page, limit } = useModel('minigame.lichsuquay');
 
 	const columns: IColumn<MLichSuQuay.IRecord>[] = [
 		{
 			title: 'Thời gian quay',
 			dataIndex: 'ngayQuay',
+			filterType: 'datetime',
 			align: 'center',
 			sortable: true,
-			width: 120,
-			render: (text) => formatDateTimeVN(text),
+			width: 200,
+			render: (val) => moment(val).format('HH:mm DD/MM/YYYY')
 		},
 		{
-			title: 'Người quay',
-			dataIndex: 'ssoId',
-			width: 120,
-            render: (text, record) => `${record.voucherNguoiDung?.[0]?.hoTen}`,
+			title: 'Mã sinh viên',
+			dataIndex: 'ma',
+			width: 200,
+            filterType: 'string',
+		},
+		{
+			title: 'Họ tên sinh viên',
+			dataIndex: 'hoTen',
+			width: 200,
             filterType: 'string',
 		},
 		{
 			title: 'Giải thưởng nhận được',
 			dataIndex: 'trangThaiQuay',
 			align: 'center',
-			width: 80,
+			fixed: 'right',
+			width: 150,
 			filterType: 'select',
             filterData: [
                 { label: 'Trúng thưởng', value: ETrangThaiQuay.TRUNG_THUONG },
@@ -46,7 +52,7 @@ const VoucherPage = () => {
 		<TableBase
 			columns={columns}
 			dependencies={[page, limit]}
-			modelName='lichsuquay.lichsuquay'
+			modelName='minigame.lichsuquay'
 			title='Lich sử quay'
 			buttons={{ import: false, export: true, create: false }}
 		/>

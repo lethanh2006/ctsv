@@ -3,7 +3,7 @@ import { Button, Modal, Select } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import FormChucVu from './Form';
-import { ETrangThaiVoucher } from '@/services/Voucher/constant';
+import { ETrangThaiVoucher } from '@/services/Minigame/Voucher/constant';
 
 /**
  * Secect Chức vụ để cho vào FormItem
@@ -15,7 +15,7 @@ const SelectVoucher = (props: {
 	hasCreate?: boolean;
 }) => {
 	const { value, onChange, multiple, hasCreate } = props;
-	const { danhSach, getAllModel, setVisibleForm, visibleForm, setEdit, setRecord } = useModel('voucher.voucher');
+	const { danhSach, getAllModel, setVisibleForm, visibleForm, setEdit, setRecord } = useModel('minigame.voucher');
 
 	useEffect(() => {
 		if (!visibleForm) getAllModel();
