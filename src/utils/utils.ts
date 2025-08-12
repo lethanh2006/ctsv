@@ -718,3 +718,15 @@ export const numberToVietnameseWords = (num: number, capitalizeFirst?: boolean):
 		: finalResult.charAt(0).toUpperCase() + finalResult.slice(1);
 	return finalResult;
 };
+
+export function formatDateTimeVN(dateString: string): string {
+  return new Intl.DateTimeFormat('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour12: false,
+    timeZone: 'Asia/Ho_Chi_Minh'
+  }).format(new Date(dateString));
+}

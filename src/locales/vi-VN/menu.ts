@@ -148,4 +148,10 @@ export default {
 
 	'menu.ThongKe': 'Thống kê báo cáo',
 	'menu.ThongKe.SoLuongSinhVien': 'Số lượng sinh viên',
+
+	'menu.Minigame': 'Quản lý Minigame',
+	'menu.Minigame.VongQuayMM': 'Vòng quay may mắn',
+	'menu.Minigame.VongQuayMM.CauHinhVongQuay': 'Cấu hình',
+	'menu.Minigame.VongQuayMM.LichSuQuay': 'Lịch sử quay',
+	'menu.Minigame.Voucher': 'Phiếu quà tặng',
 };
