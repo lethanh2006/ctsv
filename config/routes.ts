@@ -515,6 +515,37 @@
 		],
 	},
 
+	{
+		name: 'Minigame',
+		path: '/minigame',
+		icon: 'RocketOutlined',
+		access: 'accessFilter',
+		maChucNang: 'ctsv',
+		routes: [
+			{
+				name: 'VongQuayMM',
+				path: 'vong-quay',
+				routes: [
+					{
+						name: 'CauHinhVongQuay',
+						path: 'cau-hinh',
+						component: './Minigame/VongQuayMM/CauHinhVongQuay',
+					},
+					{
+						name: 'LichSuQuay',
+						path: 'giai-thuong',
+						component: './Minigame/VongQuayMM/LichSuQuay',
+					},
+				],
+			},
+			{
+				name: 'Voucher',
+				path: 'voucher',
+				component: './Minigame/Voucher',
+			},
+		],
+	},
+
 	// TIN TUC
 	// {
 	//   name: 'TinTuc',
