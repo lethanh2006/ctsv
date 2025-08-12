@@ -72,7 +72,7 @@ const EditableVongQuayTable = () => {
 						border: !text ? '1px solid red' : undefined,
 					}}
 				>
-					<SelectVoucher hasCreate={false} value={text} onChange={(e) => handleChange(e, record.tempId, '_id')} />
+					<SelectVoucher hasCreate={false} value={text} onChange={(e) => handleChange(e || '', record.tempId, '_id')} />
 				</div>
 			),
 		},

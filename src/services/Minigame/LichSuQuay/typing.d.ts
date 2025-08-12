@@ -8,5 +8,7 @@ export module MLichSuQuay {
         tenVongQuay: string;
         trangThaiQuay: ETrangThaiQuay;
         voucherNguoiDung: VoucherNguoiDung;
+        hoTen: string;
+        ma: string;
     }
 }
