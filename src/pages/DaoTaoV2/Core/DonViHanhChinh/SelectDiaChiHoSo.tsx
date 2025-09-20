@@ -1,8 +1,8 @@
-import { getPhuongXa, getQuanHuyen } from '@/services/Core/DonViHanhChinh';
+import { getPhuongXa } from '@/services/Core/DonViHanhChinh';
 import { type DonViHanhChinh } from '@/services/Core/DonViHanhChinh/typing';
 import type { SinhVien } from '@/services/SinhVien/typings';
 import rules from '@/utils/rules';
-import { Col, Form, Input, Select, Row } from 'antd';
+import { Col, Form, Input, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 
 /** Seclect Đơn vị hành chính cho Thông tin gia đình của hồ sơ sinh viên */
@@ -32,23 +32,23 @@ const SelectDiaChiHoSoFormItem = (props: {
 		if (onChange) onChange({ ...(value ?? {}), diaChi });
 	};
 
+	// useEffect(() => {
+	// 	if (value?.maTP)
+	// 		getQuanHuyen(value?.maTP).then((data) => {
+	// 			setListHuyen(data.data.data);
+	// 		});
+	// }, [value?.maTP]);
+
 	useEffect(() => {
 		if (value?.maTP)
-			getQuanHuyen(value?.maTP).then((data) => {
-				setListHuyen(data.data.data);
+			getPhuongXa(value?.maTP).then((data) => {
+				setListXa(data.data.data);
 			});
 	}, [value?.maTP]);
 
-	useEffect(() => {
-		if (value?.maQH)
-			getPhuongXa(value?.maQH).then((data) => {
-				setListXa(data.data.data);
-			});
-	}, [value?.maQH]);
-
 	return (
 		<Row gutter={[12, 0]}>
-			<Col span={12} md={hasSoNha ? 6 : 8}>
+			<Col span={12} md={hasSoNha ? 8 : 12}>
 				<Form.Item label='Tỉnh/Thành phố'>
 					<Select
 						placeholder='Chọn tỉnh/thành phố'
@@ -65,7 +65,7 @@ const SelectDiaChiHoSoFormItem = (props: {
 					/>
 				</Form.Item>
 			</Col>
-			<Col span={12} md={hasSoNha ? 6 : 8}>
+			{/* <Col span={12} md={hasSoNha ? 6 : 8}>
 				<Form.Item label='Quận/Huyện'>
 					<Select
 						placeholder='Chọn quận/huyện'
@@ -82,8 +82,8 @@ const SelectDiaChiHoSoFormItem = (props: {
 						optionFilterProp='label'
 					/>
 				</Form.Item>
-			</Col>
-			<Col span={12} md={hasSoNha ? 6 : 8}>
+			</Col> */}
+			<Col span={12} md={hasSoNha ? 8 : 12}>
 				<Form.Item label='Phường/Xã'>
 					<Select
 						placeholder='Chọn phường/xã'
@@ -102,7 +102,7 @@ const SelectDiaChiHoSoFormItem = (props: {
 				</Form.Item>
 			</Col>
 			{hasSoNha ? (
-				<Col span={12} md={6}>
+				<Col span={12} md={8}>
 					<Form.Item label='Số nhà/Tên đường' rules={[...rules.text, ...rules.length(250)]}>
 						<Input
 							placeholder='Nhập số nhà/tên đường'
