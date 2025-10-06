@@ -907,13 +907,6 @@ export const initTrinhDo = APP_CONFIG_INIT_TRINH_DO;
 
 /** Hình thức đào tạo: Chính quy */
 export const initHinhThuc = APP_CONFIG_INIT_HINH_THUC;
-import {
-	keycloakAuthEndpoint,
-	keycloakTokenEndpoint,
-	keycloakUserInfoEndpoint,
-	oneSignalClient,
-	sentryDSN,
-} from './ip';
 
 // Các endpoint KHÔNG gắn x-data-partition-code
 export const excludedPaths = [
