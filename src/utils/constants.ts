@@ -1,4 +1,11 @@
 import { unitName } from '@/services/base/constant';
+import {
+	keycloakAuthEndpoint,
+	keycloakTokenEndpoint,
+	keycloakUserInfoEndpoint,
+	oneSignalClient,
+	sentryDSN,
+} from './ip';
 
 export const Settings = {
 	version: '1.0',
@@ -900,3 +907,20 @@ export const initTrinhDo = APP_CONFIG_INIT_TRINH_DO;
 
 /** Hình thức đào tạo: Chính quy */
 export const initHinhThuc = APP_CONFIG_INIT_HINH_THUC;
+import {
+	keycloakAuthEndpoint,
+	keycloakTokenEndpoint,
+	keycloakUserInfoEndpoint,
+	oneSignalClient,
+	sentryDSN,
+} from './ip';
+
+// Các endpoint KHÔNG gắn x-data-partition-code
+export const excludedPaths = [
+	APP_CONFIG_KEYCLOAK_AUTHORITY,
+	keycloakAuthEndpoint,
+	keycloakTokenEndpoint,
+	keycloakUserInfoEndpoint,
+	sentryDSN,
+	oneSignalClient,
+].filter(Boolean);

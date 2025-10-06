@@ -58,6 +58,9 @@ export type TableBaseProps = {
 	title?: React.ReactNode;
 	widthDrawer?: number | 'full';
 
+	/** Title cho modal Thêm mới, chỉnh sửa (nên dùng thay cho dùng card trong Form) */
+	modalTitle?: string;
+
 	/** Hàm getData tùy chỉnh, nếu ko có thì 'getModel' của model sẽ là mặc định */
 	getData?: (params: any) => void;
 
@@ -152,6 +155,38 @@ export type TFilter<T> = {
 	active?: boolean;
 };
 
+
+export type ConditionCriteria<T> = {
+	/** Giá trị nằm trong danh sách */
+	$in?: T[];
+	/** Giá trị không nằm trong danh sách */
+	$nin?: T[];
+	/** Bằng giá trị */
+	$eq?: T;
+	/** Khác giá trị */
+	$ne?: T;
+	/** Lớn hơn giá trị */
+	$gt?: T;
+	/** Lớn hơn hoặc bằng giá trị */
+	$gte?: T;
+	/** Nhỏ hơn giá trị */
+	$lt?: T;
+	/** Nhỏ hơn hoặc bằng giá trị */
+	$lte?: T;
+	/** Trường tồn tại hay không */
+	$exist?: boolean;
+	/** Chứa chuỗi hoặc khớp biểu thức chính quy (RegExp) */
+	$like?: string | RegExp;
+	/** Khớp biểu thức chính quy (RegExp) */
+	$regex?: string | RegExp;
+	/** Phủ định điều kiện con bên trong */
+	$not?: ConditionCriteria<T>;
+};
+
+export type QueryCondition<E extends object = any> = {
+	[P in keyof E]?: E[P] | ConditionCriteria<E[P]>;
+};
+
 export type TableStaticProps = Pick<
 	TableBaseProps,
 	| 'emptyText'
@@ -168,6 +203,7 @@ export type TableStaticProps = Pick<
 	| 'onSortEnd'
 	| 'hideChildrenRows'
 	| 'onReload'
+	| 'otherButtons'
 > & {
 	data: any[];
 	loading?: boolean;

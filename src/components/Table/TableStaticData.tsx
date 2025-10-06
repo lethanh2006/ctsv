@@ -1,5 +1,5 @@
-import { MenuOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { AutoComplete, ConfigProvider, Drawer, Empty, Input, Modal, Table, Tooltip, type InputRef } from 'antd';
+import { MenuOutlined, PlusCircleOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { AutoComplete, ConfigProvider, Drawer, Empty, Input, Table, Tooltip, type InputRef } from 'antd';
 import classNames from 'classnames';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
@@ -9,6 +9,7 @@ import { SortableContainer, SortableElement, SortableHandle } from 'react-sortab
 import { useIntl } from 'umi';
 import ButtonExtend from './ButtonExtend';
 import { updateSearchStorage } from './function';
+import ModalExpandable from './ModalExpandable';
 import './style.less';
 import type { IColumn, TDataOption, TableStaticProps } from './typing';
 
@@ -198,7 +199,7 @@ const TableStaticData = (props: TableStaticProps) => {
 							onClick={() => {
 								if (setShowEdit) setShowEdit(true);
 							}}
-							icon={<PlusOutlined />}
+							icon={<PlusCircleOutlined />}
 							type='primary'
 							size={props?.size ?? 'middle'}
 							tooltip={intl.formatMessage({ id: 'global.tablestatic.button.themmoi.tooltip' })}
@@ -206,6 +207,8 @@ const TableStaticData = (props: TableStaticProps) => {
 							{intl.formatMessage({ id: 'global.tablestatic.button.themmoi' })}
 						</ButtonExtend>
 					)}
+
+					{props.otherButtons}
 				</div>
 
 				<div className='extra'>
@@ -244,8 +247,7 @@ const TableStaticData = (props: TableStaticProps) => {
 				)}
 			>
 				<Table
-					title={props?.title ? () => props.title : false}
-					columns={columns}
+					columns={columns as any[]}
 					dataSource={(props?.data ?? []).map((item, index) => ({
 						...item,
 						index: index + 1,
@@ -296,7 +298,7 @@ const TableStaticData = (props: TableStaticProps) => {
 							/>
 						</Drawer>
 					) : (
-						<Modal
+						<ModalExpandable
 							width={props?.widthDrawer}
 							onCancel={() => {
 								if (setShowEdit) setShowEdit(false);
@@ -312,7 +314,7 @@ const TableStaticData = (props: TableStaticProps) => {
 								}}
 								{...props.formProps}
 							/>
-						</Modal>
+						</ModalExpandable>
 					)}
 				</>
 			)}
