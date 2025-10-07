@@ -732,7 +732,10 @@
 		icon: 'PieChartOutlined',
 		// access: 'accessFilter',
 		// maChucNang: 'qldt|thong-ke-bao-cao',
-		routes: [{ name: 'SoLuongSinhVien', path: './so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' }],
+		routes: [
+			{ name: 'SoLuongSinhVien', path: './so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' },
+			{ name: 'KetQuaHocKy', path: './ket-qua-hoc-ky', component: 'ThongKeBaoCao/KetQuaHocKy' },
+		],
 	},
 
 	{
