@@ -148,6 +148,7 @@ export default {
 
 	'menu.ThongKe': 'Thống kê báo cáo',
 	'menu.ThongKe.SoLuongSinhVien': 'Số lượng sinh viên',
+	'menu.ThongKe.KetQuaHocKy': 'KQHT xét học bổng',
 
 	'menu.Minigame': 'Quản lý Minigame',
 	'menu.Minigame.VongQuayMM': 'Vòng quay may mắn',

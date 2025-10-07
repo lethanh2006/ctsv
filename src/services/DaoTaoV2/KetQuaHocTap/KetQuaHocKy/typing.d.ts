@@ -13,17 +13,19 @@ declare module KetQuaHocKy {
 		hocKy?: HocKy.IRecord;
 		maSvHk: string;
 		maKhoaNganh: string;
+		khoaNganh?: KhoaNganh.IRecord;
 
 		// Học kỳ
-		trungBinhHocKy: number; //TBC học kỳ (hệ 10)
+		// trungBinhHocKy: number; //TBC học kỳ (hệ 10)
 		trungBinhHocKyThang4: number; //TBC học kỳ (hệ 4)
 		tongSoTinChiHocKy: number; //Số tín chỉ đạt học kỳ
 		tongSoTinChiTichLuyHocKy: number; // Số tín chỉ tích lũy học kỳ
 		trungBinhHocBongHocKyThang4: number; // TBC học bổng trong kỳ
 		tongSoTinChiNoHocKy: number; // Số tín chỉ nợ trong kỳ
+		tongSoTinChiHocBongHocKy: number; // Số tín chỉ xét học bổng trong kỳ
 
 		// Toàn khóa
-		trungBinhTichLuyToanKhoa: number;
+		// trungBinhTichLuyToanKhoa: number;
 		trungBinhTichLuyToanKhoaThang4: number;
 		tongSoTinChiTichLuyToanKhoa: number;
 		tongSoTinChiNoToanKhoa: number;
@@ -38,6 +40,8 @@ declare module KetQuaHocKy {
 
 		trinhDo: ETrinhDoKqhtHocKy;
 		hocLuc: ELoaiHocLuc;
+		/** Trường tính toán: Xếp loại học lực trong học kỳ */
+		hocLucHocKy?: ELoaiHocLuc;
 		// lopHpSvList?: LopHocPhan.IRecordSinhVienLopHP[];
 
 		thuTuHocKy?: number;
