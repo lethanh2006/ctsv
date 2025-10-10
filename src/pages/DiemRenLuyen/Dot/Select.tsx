@@ -1,3 +1,4 @@
+import hocky from '@/models/daotaov2/hocky/hocky';
 import { Empty, Select, Spin } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
@@ -13,17 +14,15 @@ const SelectDotDiemRenLuyen = (props: {
 	isSetRecord?: boolean;
 }): any => {
 	const { value, onChange, multiple, disabled, style, placeHolder, allowClear, isSetRecord } = props;
-	const { danhSach, getAllModel, loading } = useModel('diemrenluyen.dot');
-
+	const { danhSach, getAllModel, loading } = useModel('diemrenluyen.dotvwa');
 	const { danhSach: danhSachHocKy, getAllModel: getAllHocKy } = useModel('daotaov2.hocky.hocky');
 
 	useEffect(() => {
 		if (!danhSachHocKy.length) getAllHocKy(false, { ma: -1 });
 	}, []);
-
 	useEffect(() => {
-		if (!danhSach.length) getAllModel(isSetRecord, { kyHoc: -1 });
-	}, []);
+		if (!danhSach.length) getAllModel(isSetRecord, { maHocKy: -1 });
+	}, [danhSach.length]);
 
 	return (
 		<Select
@@ -39,12 +38,16 @@ const SelectDotDiemRenLuyen = (props: {
 					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='Không có dữ liệu, hãy thử nhập từ khóa khác!' />
 				)
 			}
-			options={danhSach.map((item) => ({
-				key: item._id,
-				value: item._id,
-				label: `${item?.tenDot}`,
-				rawData: item,
-			}))}
+			options={danhSach.map((item) => {
+				const hocKy = danhSachHocKy?.find((hk) => hk.ma === item.maHocKy);
+
+				return {
+					key: item._id,
+					value: item._id,
+					label: `${hocKy?.ten}`,
+					rawData: item,
+				};
+			})}
 			showSearch
 			optionFilterProp='label'
 			placeholder={placeHolder || 'Lọc theo học kỳ'}
