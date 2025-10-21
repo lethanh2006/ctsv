@@ -1,12 +1,11 @@
+import dayjs from '@/utils/dayjs';
 import { DatePicker } from 'antd';
+import type { RangePickerProps } from 'antd/es/date-picker';
 import locale from 'antd/es/date-picker/locale/vi_VN';
-import 'antd/es/date-picker/style/index.less';
-import type { RangePickerProps } from 'antd/lib/date-picker/generatePicker';
-import type { Moment } from 'moment';
-import moment from 'moment';
+import type { Dayjs } from 'dayjs';
 
 const MyDateRangePicker = (
-	props: Omit<RangePickerProps<Moment>, 'onChange'> & {
+	props: Omit<RangePickerProps, 'onChange'> & {
 		/**
 		 * Format hiển thị, mặc định: DD/MM/YYYY
 		 */
@@ -36,9 +35,9 @@ const MyDateRangePicker = (
 	},
 ) => {
 	const format = props?.format ?? 'DD/MM/YYYY';
-	const { saveFormat, disabledDate, showTime, allowClear, disabled } = props;
+	const { saveFormat, disabledDate, showTime, allowClear=false, disabled } = props;
 
-	const handleChange = (value: [Moment, Moment] | null) => {
+	const handleChange = (value: [Dayjs, Dayjs] | null) => {
 		if (value) {
 			const nextValue = saveFormat
 				? value.map((item) => item.format(props?.saveFormat))
@@ -50,10 +49,8 @@ const MyDateRangePicker = (
 	};
 
 	let objMoment: any = undefined;
-	if (props.value && props.value.every((item) => typeof item === 'string')) {
-		objMoment = props.value.map((item) => {
-			return moment(item, saveFormat);
-		});
+	if (props.value && typeof props.value.every((item) => typeof item === 'string')) {
+		objMoment = props.value.map((item) => dayjs(item, saveFormat));
 	} else objMoment = props?.value;
 
 	return (
