@@ -1,5 +1,5 @@
 import { Button, Form } from 'antd';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { useEffect } from 'react';
 import { SettingKey } from '../../constants';
 import ChucNangTable from '@/pages/CauHinh/AppSlink/components/TableChucNang';

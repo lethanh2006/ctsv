@@ -3,7 +3,7 @@ import SelectTags from '@/pages/QuyTrinhDong/QuanLyTag/select';
 import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { renderFileListUrl } from '@/utils/utils';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Button, Card, Col, Form, Input, Row, Spin } from 'antd';
 import { useEffect } from 'react';
 

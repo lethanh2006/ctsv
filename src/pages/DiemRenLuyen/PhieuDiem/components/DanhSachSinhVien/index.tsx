@@ -9,7 +9,7 @@ import {
 	MapTitleETrangThaiPhieuDiemRL,
 } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
 import type { PhieuDiemRenLuyen } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/typing';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Spin, Tag, Tooltip } from 'antd';
 import { useEffect } from 'react';

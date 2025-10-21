@@ -8,7 +8,7 @@ import {
 	ETrangThaiTiepNhanMinhChung,
 	MapColorETrangThaiTiepNhanMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,

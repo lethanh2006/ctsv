@@ -3,7 +3,7 @@ import { MapCurrentRoles } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constan
 import { getQuyTrinhLinhVuc } from '@/services/QuyTrinhDong/quytrinh';
 import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import { currentRole } from '@/utils/ip';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { DownOutlined, FileAddOutlined, FolderOutlined } from '@ant-design/icons';
 import type { TreeProps } from 'antd';
 import { Input, Tree } from 'antd';

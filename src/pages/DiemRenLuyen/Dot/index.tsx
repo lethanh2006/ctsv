@@ -4,7 +4,7 @@ import type { IColumn } from '@/components/Table/typing';
 import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import FormThemMoi from '@/pages/DiemRenLuyen/Dot/components/FormThemMoi';
 import ViewChiTiet from '@/pages/DiemRenLuyen/Dot/components/ViewChiTiet';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import moment from 'moment';

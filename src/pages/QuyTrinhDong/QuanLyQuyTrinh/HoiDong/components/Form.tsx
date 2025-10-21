@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row, Select, Spin } from 'antd';
 import rules from '@/utils/rules';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { useEffect } from 'react';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import TableThanhVien from './TableThanhVien';

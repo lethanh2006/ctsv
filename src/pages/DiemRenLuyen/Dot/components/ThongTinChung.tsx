@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Descriptions } from 'antd';
 import moment from 'moment';
 

@@ -1,7 +1,7 @@
 import { ELoaiBoLoc, ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Input, Popover, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';

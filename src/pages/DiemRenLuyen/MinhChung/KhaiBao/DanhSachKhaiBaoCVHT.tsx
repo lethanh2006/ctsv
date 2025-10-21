@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import FormKhaiBao from '@/pages/DiemRenLuyen/MinhChung/KhaiBao/components/FormKhaiBao';

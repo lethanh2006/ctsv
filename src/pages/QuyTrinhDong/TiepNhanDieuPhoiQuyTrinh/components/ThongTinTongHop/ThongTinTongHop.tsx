@@ -2,7 +2,7 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 
 import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Button, Card, Col, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';

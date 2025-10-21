@@ -1,5 +1,6 @@
 import { EDinhDangFile } from '@/services/base/constant';
 import { EFileScope, uploadFile } from '@/services/uploadFile';
+import { ip3 } from '@/utils/ip';
 import { message, type FormInstance } from 'antd';
 import { type AxiosResponse } from 'axios';
 import type dayjs from 'dayjs';
@@ -269,27 +270,6 @@ export function renderFileList(arr: string[]) {
 	};
 }
 
-export const uploadMultiFile = async (arrFile: any[], returnFileType?: boolean, returnAllResponse?: boolean) => {
-	const url: any[] = arrFile
-		?.filter((item) => item?.remote === true)
-		?.map((item) => (returnFileType === true ? { url: item?.url ?? '', type: item?.type } : (item?.url ?? '')));
-	if (!arrFile) return [];
-	let arrUrl: any[] = [];
-	const arrUpload = arrFile
-		?.filter((item) => item?.remote !== true)
-		?.map(async (file: { originFileObj: any; type: string; name: string }) => {
-			const response = await uploadFile({
-				file: file?.originFileObj,
-				scope: EFileScope.PUBLIC,
-			});
-			if (returnFileType) return { url: response?.data?.data?.url, type: file.type };
-			else if (returnAllResponse) return response?.data?.data;
-			else return response?.data?.data?.url;
-		});
-	arrUrl = await Promise.all(arrUpload);
-	return [...url, ...arrUrl];
-};
-
 export const checkFileSize = (arrFile: any[], fileSize?: number) => {
 	let check = true;
 	const size = fileSize ?? 8;
@@ -536,13 +516,6 @@ export const getFilenameHeader = (response: AxiosResponse<any>) => {
 	} else {
 		return decodeURIComponent(token.substring(10).slice(0, -1));
 	}
-};
-
-export const toISOString = (date: moment.MomentInput) => {
-	if (date) {
-		return moment(date).startOf('day').toISOString();
-	}
-	return undefined;
 };
 
 export function includes(str1: string, str2: string) {

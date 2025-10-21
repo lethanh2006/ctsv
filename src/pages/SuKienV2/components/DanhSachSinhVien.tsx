@@ -7,7 +7,7 @@ import { exportDanhSachSinhVien, getThongKeSinhVien, xemKhaoSat } from '@/servic
 import { ELoaiKhaoSatSuKien, ETrangThaiThamGia, MapColorETrangThaiThamGia } from '@/services/SuKienV2/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { getFilenameHeader } from '@/utils/utils';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,

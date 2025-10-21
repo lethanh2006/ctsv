@@ -13,10 +13,10 @@ import {
 	ENguoiTraLoiDrl,
 	ETrangThaiPhieuDiemRL,
 } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
-import { useModel } from '@@/plugin-model/useModel';
 import type { FormInstance } from 'antd';
 import { message } from 'antd';
 import { useState } from 'react';
+import { useModel } from 'umi';
 
 export interface FormDanhGiaValues {
 	hoVaTen: string;

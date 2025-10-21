@@ -1,7 +1,7 @@
 import ThongKe from '@/pages/SuKienV2/components/ThongKeKhaoSat/components/thongKe';
 import { ELoaiKhaoSatSuKien } from '@/services/SuKienV2/constant';
-import { exportKetQuaKhaoSatSuKien } from '@/services/TienIch/DotKhaoSat';
-import { useModel } from '@@/plugin-model/useModel';
+import { exportKetQuaKhaoSat } from '@/services/TienIch/DotKhaoSat';
+import { useModel } from 'umi';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Segmented } from 'antd';
 import fileDownload from 'js-file-download';
@@ -33,14 +33,13 @@ const ThongKeKhaoSat = () => {
 					type='primary'
 					onClick={() => {
 						setLoading(true);
-						exportKetQuaKhaoSatSuKien({
+						exportKetQuaKhaoSat({
 							idKhaoSat:
 								dataSeg === 'check-in'
 									? recSuKien?.idKhaoSatCheckIn ?? ''
 									: dataSeg === 'dang-ky'
 									? recSuKien?.idKhaoSatDangKy ?? ''
 									: recSuKien?.idKhaoSatCheckOut ?? '',
-							idSuKien: recSuKien?._id ?? '',
 						}).then((res) => fileDownload(res.data, `Kết quả khảo sát_${dataSeg}.xlsx`));
 						setLoading(false);
 					}}

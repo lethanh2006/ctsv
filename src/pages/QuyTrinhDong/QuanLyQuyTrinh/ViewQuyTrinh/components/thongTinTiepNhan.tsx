@@ -2,7 +2,7 @@ import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhTo
 import { MapColorTrangThaiTiepNhanDon, TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Button, Collapse, Descriptions, Modal, Tag } from 'antd';
 import { useState } from 'react';
 import ViewFromCauHinh from './ViewFromCauHinh';

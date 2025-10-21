@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import ThongKeSingleChoice from '@/pages/TienIch/KhaoSat/DotKhaoSat/ThongKeType/SingleChoice';
 import ThongKeMultipleChoice from '@/pages/TienIch/KhaoSat/DotKhaoSat/ThongKeType/MultipleChoice';
 import ThongKeGrid from '@/pages/TienIch/KhaoSat/DotKhaoSat/ThongKeType/GridChoice';

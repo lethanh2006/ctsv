@@ -3,7 +3,7 @@ import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { Descriptions, Divider, Modal, Tag } from 'antd';
 import moment from 'moment/moment';
 import { Link } from 'umi';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
 import { useState } from 'react';
 

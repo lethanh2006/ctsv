@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, message, Modal, Row, Select, Spin, Tooltip } from 'antd';
 
 import { useState } from 'react';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';

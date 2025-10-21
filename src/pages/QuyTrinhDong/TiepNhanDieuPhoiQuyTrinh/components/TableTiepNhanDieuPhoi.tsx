@@ -1,7 +1,7 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import formWaiting from '@/components/Loading/FormWaiting';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { CheckOutlined, DollarCircleOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Dropdown, Menu, Modal, Select, Tabs, Tag, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';

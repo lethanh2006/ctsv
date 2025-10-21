@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Card, Space, Table } from 'antd';
 import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
 import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';

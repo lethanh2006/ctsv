@@ -9,7 +9,7 @@ import {
 } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
 import ThongTinTiepNhan from './thongTinTiepNhan';
 import ViewResult from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/ViewResult';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/typing';
 import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
 const { TextArea } = Input;

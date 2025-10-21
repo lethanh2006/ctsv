@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableBase from '@/components/Table';
 import { IColumn } from '@/components/Table/typing';
 import FormThemMoiBieuMau from '@/pages/DiemRenLuyen/MinhChung/CauHinh/components/Form';

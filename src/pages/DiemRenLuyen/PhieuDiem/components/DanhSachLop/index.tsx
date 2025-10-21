@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import type { IColumn } from '@/components/Table/typing';
 import SelectNganh from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 import useCheckAccess from '@/hooks/useCheckAccess';

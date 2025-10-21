@@ -1,6 +1,6 @@
 import { ENguonDot, EPhanHe, MapKeyPhanHe } from '@/services/QuyTrinh/constant';
 import rules from '@/utils/rules';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Col, Form, Input, Row, Select } from 'antd';
 import type { FormInstance } from 'antd/es/form/Form';
 import { useEffect } from 'react';
