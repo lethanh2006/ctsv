@@ -48,7 +48,7 @@ const RowCauHinhGiaiDoan = (props: {
 						data-lopid={item._id}
 						style={{
 							backgroundColor: selectedCells.find((j) => j.tuan === tuan && j.lopHocPhanId === item._id)
-								? 'var(--primary-1)'
+								? 'var(--color-primary-bg)'
 								: undefined,
 						}}
 						onClick={() =>

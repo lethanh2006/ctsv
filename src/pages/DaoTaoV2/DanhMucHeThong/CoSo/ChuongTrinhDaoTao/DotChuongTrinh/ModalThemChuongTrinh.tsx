@@ -1,5 +1,5 @@
 import { Button, Card, Descriptions, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import TableChonChuongTrinh from './TableChonChuongTrinh';
@@ -37,10 +37,10 @@ const ModalThemChuongTrinh = (props: { getData?: () => void; [key: string]: any 
 				<Descriptions.Item label='Tên đợt rà soát'>{recDot?.ten}</Descriptions.Item>
 				<Descriptions.Item label='Năm học'>{recDot?.namHoc?.ten ?? recDot?.maNamHoc ?? ''}</Descriptions.Item>
 				<Descriptions.Item label='Thời gian bắt đầu'>
-					{recDot?.thoiGianBatDau ? moment(recDot.thoiGianBatDau).format('DD/MM/YYYY') : ''}
+					{recDot?.thoiGianBatDau ? dayjs(recDot.thoiGianBatDau).format('DD/MM/YYYY') : ''}
 				</Descriptions.Item>
 				<Descriptions.Item label='Thời gian kết thúc'>
-					{recDot?.thoiGianKetThuc ? moment(recDot.thoiGianKetThuc).format('DD/MM/YYYY') : ''}
+					{recDot?.thoiGianKetThuc ? dayjs(recDot.thoiGianKetThuc).format('DD/MM/YYYY') : ''}
 				</Descriptions.Item>
 			</Descriptions>
 

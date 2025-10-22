@@ -2,7 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import rules from '@/utils/rules';
 import { Col, Divider, Form, Input, InputNumber, Row, type FormInstance } from 'antd';
 import { useModel } from 'umi';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const FormNamHocDetail = (props: { form: FormInstance }) => {
 	const { edit } = useModel('daotaov2.namhoc.namhoc');
@@ -10,7 +10,7 @@ const FormNamHocDetail = (props: { form: FormInstance }) => {
 
 	const setTenNamHoc = (thoiGian?: string | null, tuan?: number) => {
 		if (!!thoiGian && !!tuan) {
-			const start = moment(thoiGian);
+			const start = dayjs(thoiGian);
 			const newDate = start.clone().add(tuan, 'week');
 			const ten = `Năm học ${start.year()} - ${newDate.year()}`;
 			form.setFieldsValue({ ten });

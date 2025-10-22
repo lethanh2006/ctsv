@@ -5,7 +5,7 @@ import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import SelectChuDe from '../../ChuDe/components/Select';
@@ -116,7 +116,7 @@ const FormTinTuc = (props: any) => {
             >
               <MyDatePicker
                 format="HH:mm DD/MM/YYYY"
-                disabledDate={(cur) => (!edit ? moment(cur).isBefore(moment()) : false)}
+                disabledDate={(cur) => (!edit ? dayjs(cur).isBefore(dayjs()) : false)}
                 placeholder="Chọn ngày đăng"
                 allowClear={false}
                 showTime={{ showHour: true, showMinute: true }}

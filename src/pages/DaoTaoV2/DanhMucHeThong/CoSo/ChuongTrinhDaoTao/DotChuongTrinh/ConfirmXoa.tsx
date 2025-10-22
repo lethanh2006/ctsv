@@ -32,7 +32,7 @@ const ConfirmXoaKhoiHocPhan = (props: {
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={onCancel}
 			width={600}
 			footer={null}

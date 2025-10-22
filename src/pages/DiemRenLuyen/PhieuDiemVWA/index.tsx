@@ -180,12 +180,12 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 				dependencies={[page, limit]}
 			/>
 			<Modal
-				visible={visibleFormDoiTrangThai}
+				open={visibleFormDoiTrangThai}
 				onCancel={() => {
 					setVisibleFormDoiTrangThai(false);
 				}}
 				footer={false}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 			>
 				<FormCapNhatTrangThai getData={getData} onCancel={() => setVisibleFormDoiTrangThai(false)} />
 			</Modal>

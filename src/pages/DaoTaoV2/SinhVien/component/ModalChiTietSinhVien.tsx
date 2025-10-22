@@ -13,12 +13,12 @@ const ModalChiTietSinhVien = (props: { sinhVienSsoId: string; hasEdit?: boolean;
 
 	return (
 		<Modal
-			visible={visibleForm}
+			open={visibleForm}
 			footer={null}
 			width={1100}
 			onCancel={() => setVisibleForm(false)}
 			maskClosable={false}
-			bodyStyle={{ padding: 0 }}
+			styles={{ padding: 0 }}
 		>
 			{!isView && (props.hasEdit || props.hasDetail) ? (
 				<ModalSinhVien disabledForm={!props.hasEdit && props.hasDetail} />

@@ -110,14 +110,14 @@ const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; 
 			/>
 			<Modal
 				zIndex={1000}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				footer={
 					<Button type='primary' onClick={onCancelPreview}>
 						OK
 					</Button>
 				}
 				width={900}
-				visible={visibleViewForm}
+				open={visibleViewForm}
 				onCancel={onCancelPreview}
 			>
 				<FormGiaoNopSanPham isView getData={() => {}} />

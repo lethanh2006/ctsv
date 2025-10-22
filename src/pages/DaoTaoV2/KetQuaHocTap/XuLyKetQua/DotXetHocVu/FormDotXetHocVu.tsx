@@ -2,7 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import rules from '@/utils/rules';
 import { SaveOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -45,7 +45,7 @@ const FormDotXetHocVu = () => {
 							name='tgXetHvuSb'
 							rules={[...rules.sauNgay(recHocKy?.thoiGianBatDau, 'Thời gian bắt đầu kỳ học')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(recHocKy?.thoiGianBatDau)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(recHocKy?.thoiGianBatDau)} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={8}>
@@ -54,7 +54,7 @@ const FormDotXetHocVu = () => {
 							name='tgTbKqXetHvuSb'
 							rules={[...rules.required, ...rules.sauNgay(tgXetHvuSb, 'Thời gian xét sơ bộ')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgXetHvuSb)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgXetHvuSb)} />
 						</Form.Item>
 					</Col>
 
@@ -64,7 +64,7 @@ const FormDotXetHocVu = () => {
 							name='tgBdLayYKienHvu'
 							rules={[...rules.required, ...rules.sauNgay(tgXetHvuSb, 'Thời gian xét sơ bộ')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgXetHvuSb)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgXetHvuSb)} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={8}>
@@ -73,7 +73,7 @@ const FormDotXetHocVu = () => {
 							name='tgKtLayYKienHvu'
 							rules={[...rules.required, ...rules.sauNgay(tgBdLayYKienHvu, 'Thời gian bắt đầu lấy ý kiến')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgBdLayYKienHvu)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgBdLayYKienHvu)} />
 						</Form.Item>
 					</Col>
 
@@ -83,7 +83,7 @@ const FormDotXetHocVu = () => {
 							name='tgHopHoiDongHvu'
 							rules={[...rules.sauNgay(tgKtLayYKienHvu, 'Thời gian kết thúc lấy ý kiến')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgKtLayYKienHvu)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgKtLayYKienHvu)} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={8}>
@@ -92,7 +92,7 @@ const FormDotXetHocVu = () => {
 							name='tgTbKqHvu'
 							rules={[...rules.sauNgay(tgHopHoiDongHvu, 'Thời gian họp hội đồng')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgHopHoiDongHvu)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgHopHoiDongHvu)} />
 						</Form.Item>
 					</Col>
 				</Row>

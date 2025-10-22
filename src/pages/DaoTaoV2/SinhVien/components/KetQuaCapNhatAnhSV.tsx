@@ -13,11 +13,11 @@ const KetQuaCapNhatAnhSV = () => {
 	};
 	return (
 		<Modal
-			destroyOnClose
-			bodyStyle={{ paddingTop: 4 }}
+			destroyOnHidden
+			styles={{ paddingTop: 4 }}
 			width={700}
 			title='Kết quả cập nhật ảnh sinh viên'
-			visible={visibleKetQuaImportAnh}
+			open={visibleKetQuaImportAnh}
 			footer={
 				<Button type='primary' onClick={() => setVisibleKetQuaImportAnh(false)}>
 					Đóng

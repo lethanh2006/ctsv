@@ -5,7 +5,7 @@ import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import type { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { FileDoneOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, Modal, Select, Tabs, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 
@@ -55,7 +55,7 @@ const TableQuanLyDon = () => {
       width: 120,
       align: 'center',
       render: (val) => (
-        <span title={moment(val).format('DD/MM/YYYY HH:mm:ss')}>{moment(val).fromNow()}</span>
+        <span title={dayjs(val).format('DD/MM/YYYY HH:mm:ss')}>{dayjs(val).fromNow()}</span>
       ),
     },
     {
@@ -63,7 +63,7 @@ const TableQuanLyDon = () => {
       dataIndex: 'hanXuLy',
       width: 120,
       align: 'center',
-      render: (val) => <span>{moment(val).format('HH:mm DD/MM/YYYY')}</span>,
+      render: (val) => <span>{dayjs(val).format('HH:mm DD/MM/YYYY')}</span>,
     },
     {
       title: 'Người gửi',
@@ -222,10 +222,10 @@ const TableQuanLyDon = () => {
       </Select>
 
       <Modal
-        destroyOnClose
+        destroyOnHidden
         width="850px"
         footer={false}
-        visible={visibleFormBieuMau}
+        open={visibleFormBieuMau}
         onCancel={() => {
           setVisibleFormBieuMau(false);
         }}

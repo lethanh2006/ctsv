@@ -24,7 +24,7 @@ const ViewDiemLopHocPhan = (props: {
 	return (
 		<>
 			<Modal
-				visible={visible}
+				open={visible}
 				onCancel={() => setVisible(false)}
 				title='Thông tin sinh viên lớp tín chỉ'
 				width={600}

@@ -43,7 +43,7 @@ const SelectLoaiHocBong = (props: { value?: string; onChange?: any; hasCreate?: 
 			{hasCreate !== false ? (
 				<>
 					<Button icon={<PlusOutlined />} onClick={onAddNew} />
-					<Modal visible={visibleForm} bodyStyle={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
+					<Modal open={visibleForm} styles={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
 						<Form title='loại học bổng' />
 					</Modal>
 				</>

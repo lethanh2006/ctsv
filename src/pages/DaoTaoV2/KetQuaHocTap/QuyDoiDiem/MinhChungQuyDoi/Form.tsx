@@ -12,7 +12,7 @@ import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Input, InputNumber, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -261,7 +261,7 @@ const FormMinhChungQuyDoiDiem = (props: {
 								label='Thời gian hết hiệu lực'
 								rules={[...rules.sauNgay(thoiGianHieuLuc, 'Thời gian hiệu lực')]}
 							>
-								<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianHieuLuc)} />
+								<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianHieuLuc)} />
 							</Form.Item>
 						</Col>
 						<Col xs={24} md={12}>

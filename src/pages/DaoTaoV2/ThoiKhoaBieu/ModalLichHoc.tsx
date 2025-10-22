@@ -16,7 +16,7 @@ const ModalLichHocSinhVien = (props: {
 	return (
 		<Modal
 			title={`Lịch học dự kiến của sinh viên ${tenSinhVien}`}
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 			okButtonProps={{ hidden: true }}
 			cancelText='Đóng'

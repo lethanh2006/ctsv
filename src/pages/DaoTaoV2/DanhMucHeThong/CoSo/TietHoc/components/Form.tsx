@@ -3,7 +3,7 @@ import { Button, Card, Col, Form, Row, InputNumber, message } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import MyDatePicker from '@/components/MyDatePicker';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { resetFieldsForm } from '@/utils/utils';
 
 const FormTietHoc = (props: any) => {
@@ -22,7 +22,7 @@ const FormTietHoc = (props: any) => {
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: any) => {
-		if (moment(values.timeKetThuc).diff(moment(values.timeBatDau), 'minutes') <= 0) {
+		if (dayjs(values.timeKetThuc).diff(dayjs(values.timeBatDau), 'minutes') <= 0) {
 			message.error('Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc!');
 			return;
 		}

@@ -9,7 +9,7 @@ const ModalKyLuat = (props: { visible: boolean; setVisible: (val: boolean) => vo
 	const [activeKey, setActiveKey] = useState('1');
 
 	return (
-		<Modal title='Sinh viên bị kỷ luật' visible={visible} footer={null} width={1000} onCancel={() => setVisible(false)}>
+		<Modal title='Sinh viên bị kỷ luật' open={visible} footer={null} width={1000} onCancel={() => setVisible(false)}>
 			<Tabs activeKey={activeKey} onChange={(val) => setActiveKey(val)}>
 				<Tabs.TabPane key='1' tab={intl.formatMessage({ id: 'ketquahoctap.xulyketqua.kyluat.thiho' })} />
 				<Tabs.TabPane key='2' tab={intl.formatMessage({ id: 'ketquahoctap.xulyketqua.kyluat.nohocphi' })} />

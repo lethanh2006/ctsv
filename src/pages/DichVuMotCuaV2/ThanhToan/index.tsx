@@ -1,6 +1,6 @@
 import { currencyFormat } from '@/utils/utils';
 import { Table, Tabs } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import ChiTietDichVu from './ChiTietDichVu';
@@ -107,7 +107,7 @@ const ThanhToan = (props: { identityCode: string; isCongNo?: boolean }) => {
 								width: 200,
 								dataIndex: 'transactionDate',
 								align: 'center',
-								render: (val: string) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+								render: (val: string) => <div>{dayjs(val).format('HH:mm DD/MM/YYYY')}</div>,
 							},
 							{
 								title: 'Người thực hiện',

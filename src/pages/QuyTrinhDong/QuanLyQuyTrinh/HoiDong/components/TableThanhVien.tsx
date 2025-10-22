@@ -115,11 +115,11 @@ const TableThanhVien = (props: { mode: 'view' | 'edit'; data?: HoiDong.ThanhVien
 			</TableStaticData>
 			<Modal
 				zIndex={1002}
-				destroyOnClose
-				visible={visibleForm}
+				destroyOnHidden
+				open={visibleForm}
 				onCancel={onCancelForm}
 				footer={false}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 			>
 				<FormThanhVien record={record} edit={edit} onCancel={onCancelForm} />
 			</Modal>

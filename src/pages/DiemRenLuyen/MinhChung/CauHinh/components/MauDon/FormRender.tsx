@@ -14,7 +14,7 @@ import FormTable from './FormTable';
 import ViewRender from './ViewRender';
 import TinyEditor from '@/components/TinyEditor';
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
 import {EKieuDuLieu, ELoaiThoiGianThucHien, ELoaiTruongThongTinTinh, ETextDisplay } from '@/services/FormDong/LoaiHinh/constants';
 import { LoaiDefaultValue } from '@/services/FormDong/QuyTrinh/constants';
@@ -111,7 +111,7 @@ const FormRender = (props: {
 					const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
 					const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
 					form.setFieldsValue({
-						[cauHinh.ma]: isDate || isMonth ? moment(khaiBao, isDate ? 'DD/MM/YYYY' : 'MM/YYYY') : khaiBao,
+						[cauHinh.ma]: isDate || isMonth ? dayjs(khaiBao, isDate ? 'DD/MM/YYYY' : 'MM/YYYY') : khaiBao,
 					});
 				} else {
 					setRecordQuyTrinhForm({
@@ -362,11 +362,11 @@ const FormRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnClose
+						destroyOnHidden
 						width={700}
 						footer={false}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
-						visible={visibleFormTable}
+						open={visibleFormTable}
 						onCancel={onCancelFormTable}
 					>
 						<FormTable record={recordTable} onCancel={onCancelFormTable} edit={editFormTable} cauHinh={cauHinh} />

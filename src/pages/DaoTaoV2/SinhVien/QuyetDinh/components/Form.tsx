@@ -71,7 +71,7 @@ const FormQuyetDinhSV = (props: {
 								// rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'Thời gian có hiệu lực')]}
 							>
 								<MyDatePicker
-								// disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)}
+								// disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)}
 								/>
 							</Form.Item>
 						</Col>

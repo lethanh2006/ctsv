@@ -3,7 +3,7 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Select, Tooltip, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import Form from './components/Form';
@@ -59,7 +59,7 @@ const PhanHoiPage = () => {
       title: 'Thời gian hỏi',
       dataIndex: 'createdAt',
       align: 'center',
-      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+      render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
       sortable: true,
       filterType: 'date',
       width: 120,
@@ -98,7 +98,7 @@ const PhanHoiPage = () => {
       dataIndex: 'thoiGianTraLoi',
       align: 'center',
       hide: daTraLoi === false,
-      render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+      render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
       sortable: true,
       filterType: 'date',
       width: 120,

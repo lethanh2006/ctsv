@@ -14,7 +14,7 @@ import {
 } from '@/services/DaoTaoV2/HocKy/constant';
 import { CheckCircleOutlined, CheckOutlined, ImportOutlined, TeamOutlined } from '@ant-design/icons';
 import { Card, Col, Modal, Row, Space, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import SplitPane from 'react-split-pane';
@@ -175,8 +175,8 @@ const PhanCongGiangDayPage = () => {
 					/>
 					{recHocKy?.tgBdPhanCongGiangDay && recHocKy.tgKtPhanCongGiangDay ? (
 						<a href='#!' onClick={() => setVisibleForm(true)}>
-							Thời gian phân công giảng dạy từ {moment(recHocKy.tgBdPhanCongGiangDay).format('DD/MM/YYYY')} đến{' '}
-							{moment(recHocKy.tgKtPhanCongGiangDay).format('DD/MM/YYYY')}
+							Thời gian phân công giảng dạy từ {dayjs(recHocKy.tgBdPhanCongGiangDay).format('DD/MM/YYYY')} đến{' '}
+							{dayjs(recHocKy.tgKtPhanCongGiangDay).format('DD/MM/YYYY')}
 						</a>
 					) : recHocKy?._id ? (
 						<ButtonExtend onClick={() => setVisibleForm(true)}>Cấu hình thời gian phân công</ButtonExtend>
@@ -198,7 +198,7 @@ const PhanCongGiangDayPage = () => {
 								<Card
 									title={`Danh sách lớp tín chỉ ${recHocPhan?.maHocPhan ?? ''}`}
 									headStyle={{ padding: 0 }}
-									bodyStyle={{ padding: '8px 0 0' }}
+									styles={{ padding: '8px 0 0' }}
 									bordered={false}
 								>
 									<TableBase
@@ -247,7 +247,7 @@ const PhanCongGiangDayPage = () => {
 			/>
 
 			<Modal
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				title='Cấu hình thời gian kỳ học'
 				footer={null}

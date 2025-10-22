@@ -153,14 +153,14 @@ const CauHinh = () => {
 
 			<Modal
 				zIndex={1000}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				footer={
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
 						<Button onClick={() => setVisiblePreview(false)}>Đóng</Button>
 					</div>
 				}
 				width={900}
-				visible={visiblePreview}
+				open={visiblePreview}
 				onCancel={() => setVisiblePreview(false)}
 			>
 				<PreviewForm mode='quytrinh' isView getData={() => {}} />

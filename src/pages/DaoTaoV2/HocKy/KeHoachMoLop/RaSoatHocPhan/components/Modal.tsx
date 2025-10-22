@@ -24,7 +24,7 @@ const ModalCapNhatDeCuongHPHK = (props: {
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 			title='Rà soát nhu cầu học phần'
 			footer={null}

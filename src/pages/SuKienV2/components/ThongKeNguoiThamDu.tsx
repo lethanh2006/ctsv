@@ -88,7 +88,7 @@ export const ThongKeNguoiThamDu = () => {
 		<Modal
 			width={900}
 			title={`Thống kê người tham dự ${record?.tenSuKien}`}
-			visible={isVisibleThongKe}
+			open={isVisibleThongKe}
 			footer={null}
 			onCancel={() => setIsVisibleThongKe(false)}
 		>

@@ -1,5 +1,5 @@
 import * as Crypto from 'crypto';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { history, useModel, useParams } from 'umi';
@@ -19,13 +19,13 @@ const QRCodePage = () => {
 		useModel('sukienv2');
 	const [otp, setOtp] = useState<string | undefined>(undefined);
 	const [maDiemDanh, setMaDiemDanh] = useState<string | undefined>(undefined);
-	const [expiredAt, setExpiredAt] = useState(moment().add('s', 10).toDate().toISOString());
+	const [expiredAt, setExpiredAt] = useState(dayjs().add('s', 10).toDate().toISOString());
 	const auth = useAuth();
 
 	const isKetThuc =
 		thongTinSuKien?.thoiGianBatDau &&
 		thongTinSuKien.thoiGianKetThuc &&
-		moment().isAfter(thongTinSuKien.thoiGianKetThuc);
+		dayjs().isAfter(thongTinSuKien.thoiGianKetThuc);
 
 	const getOtp = async (dis: any) => {
 		let newMaDiemDanh: string | undefined = undefined;
@@ -68,7 +68,7 @@ const QRCodePage = () => {
 
 	useEffect(() => {
 		const interval = window.setInterval(() => {
-			setExpiredAt(moment().add('s', 10).toDate().toISOString());
+			setExpiredAt(dayjs().add('s', 10).toDate().toISOString());
 		}, 10000);
 
 		return () => {
@@ -78,7 +78,7 @@ const QRCodePage = () => {
 
 	const ngoaiThoiGian =
 		thongTinSuKien &&
-		(moment().isAfter(thongTinSuKien.thoiGianKetThuc) || moment().isBefore(thongTinSuKien?.thoiGianBatDau));
+		(dayjs().isAfter(thongTinSuKien.thoiGianKetThuc) || dayjs().isBefore(thongTinSuKien?.thoiGianBatDau));
 
 	const renderContent = () => {
 		// if ((!isLoadingThongTinSuKien && !thongTinSuKien) || ngoaiThoiGian) {
@@ -132,10 +132,10 @@ const QRCodePage = () => {
 				{/*          {thongTinSuKien?.tenSuKien}*/}
 				{/*        </Typography.Text>*/}
 				{/*        {thongTinSuKien?.thoiGianBatDau && (*/}
-				{/*          <div>Bắt đầu: {moment(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>*/}
+				{/*          <div>Bắt đầu: {dayjs(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>*/}
 				{/*        )}*/}
 				{/*        {thongTinSuKien?.thoiGianKetThuc && (*/}
-				{/*          <p>Kết thúc: {moment(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</p>*/}
+				{/*          <p>Kết thúc: {dayjs(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</p>*/}
 				{/*        )}*/}
 				{/*        {maDiemDanh && <p>Mã điểm danh: {maDiemDanh}</p>}*/}
 				{/*        {isKetThuc ? (*/}

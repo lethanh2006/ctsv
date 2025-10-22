@@ -1,6 +1,6 @@
 import { Space, Tag } from 'antd';
 import _ from 'lodash';
-import moment, { type Moment } from 'moment';
+import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import './style.less';
 const { CheckableTag } = Tag;
@@ -15,11 +15,11 @@ const GroupTagTuanHoc = (props: {
 	prefix?: string;
 }) => {
 	const { value, onChange, soTuan, thoiGianBatDau, dayOfWeek, fromPhanCong, prefix = 'Tuần ' } = props;
-	const [startDate, setStartDate] = useState<Moment>();
+	const [startDate, setStartDate] = useState<Dayjs | undefined>();
 
 	useEffect(() => {
 		if (thoiGianBatDau && dayOfWeek !== undefined) {
-			const date = moment(thoiGianBatDau).startOf('isoWeek').add(dayOfWeek, 'day');
+			const date = dayjs(thoiGianBatDau).startOf('isoWeek').add(dayOfWeek, 'day');
 			setStartDate(date);
 		} else setStartDate(undefined);
 	}, [thoiGianBatDau, dayOfWeek]);

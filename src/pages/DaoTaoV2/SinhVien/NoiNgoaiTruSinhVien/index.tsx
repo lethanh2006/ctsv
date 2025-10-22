@@ -2,7 +2,7 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { ENoiNgoaiTru } from '@/services/DaoTaoV2/SinhVien/constant';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const NoiNgoaiTruSinhVienPage = () => {
@@ -31,7 +31,7 @@ const NoiNgoaiTruSinhVienPage = () => {
 			dataIndex: 'thoiGianKhaiBao',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Địa chỉ',

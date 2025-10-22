@@ -3,7 +3,7 @@ import type { IColumn } from '@/components/Table/typing';
 import { colorETrangThaiKhaiBaoNoiNgoaiTru, type ETrangThaiKhaiBaoNoiNgoaiTru } from '@/services/NoiNgoaiTru/constant';
 import type { NoiNgoaiTru } from '@/services/NoiNgoaiTru/typing';
 import { Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import ChiTietKhaiBao from './ChiTietKhaiBao';
@@ -55,8 +55,8 @@ const LichSuKhaiBaoPage = () => {
 			render: (val, rec) => {
 				return (
 					<>
-						{moment(rec.dotKhaiBao?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')} -{' '}
-						{moment(rec.dotKhaiBao?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}
+						{dayjs(rec.dotKhaiBao?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')} -{' '}
+						{dayjs(rec.dotKhaiBao?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}
 					</>
 				);
 			},

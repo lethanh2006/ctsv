@@ -7,7 +7,7 @@ import ViewChiTiet from '@/pages/DiemRenLuyen/Dot/components/ViewChiTiet';
 import { useModel } from 'umi';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
 const DotPage = () => {
@@ -47,11 +47,11 @@ const DotPage = () => {
 			render: (val, rec) =>
 				`${
 					rec.thoiGianTiepNhanMinhChung?.thoiGianBatDau
-						? moment(rec.thoiGianTiepNhanMinhChung.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianTiepNhanMinhChung.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
 						: ''
 				} - ${
 					rec.thoiGianTiepNhanMinhChung?.thoiGianKetThuc
-						? moment(rec.thoiGianTiepNhanMinhChung.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianTiepNhanMinhChung.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
 						: ''
 				}`,
 			width: 150,
@@ -63,11 +63,11 @@ const DotPage = () => {
 			render: (val, rec) =>
 				`${
 					rec.thoiGianSVChamDiem?.thoiGianBatDau
-						? moment(rec.thoiGianSVChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianSVChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
 						: ''
 				} - ${
 					rec.thoiGianSVChamDiem?.thoiGianKetThuc
-						? moment(rec.thoiGianSVChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianSVChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
 						: ''
 				}`,
 			width: 150,
@@ -79,11 +79,11 @@ const DotPage = () => {
 			render: (val, rec) =>
 				`${
 					rec.thoiGianBCSChamDiem?.thoiGianBatDau
-						? moment(rec.thoiGianBCSChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianBCSChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
 						: ''
 				} - ${
 					rec.thoiGianBCSChamDiem?.thoiGianKetThuc
-						? moment(rec.thoiGianBCSChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianBCSChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
 						: ''
 				}`,
 			width: 150,
@@ -95,11 +95,11 @@ const DotPage = () => {
 			render: (val, rec) =>
 				`${
 					rec.thoiGianCoVanChamDiem?.thoiGianBatDau
-						? moment(rec.thoiGianCoVanChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianCoVanChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
 						: ''
 				} - ${
 					rec.thoiGianCoVanChamDiem?.thoiGianKetThuc
-						? moment(rec.thoiGianCoVanChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianCoVanChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
 						: ''
 				}`,
 			width: 150,
@@ -111,11 +111,11 @@ const DotPage = () => {
 			render: (val, rec) =>
 				`${
 					rec.thoiGianKhieuNai?.thoiGianBatDau
-						? moment(rec.thoiGianKhieuNai.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianKhieuNai.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
 						: ''
 				} - ${
 					rec.thoiGianKhieuNai?.thoiGianKetThuc
-						? moment(rec.thoiGianKhieuNai.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
+						? dayjs(rec.thoiGianKhieuNai.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
 						: ''
 				}`,
 			width: 150,
@@ -128,11 +128,11 @@ const DotPage = () => {
 		// 	render: (val, rec) =>
 		// 		`${
 		// 			rec.thoiGianPhongCTSVChamDiem?.thoiGianBatDau
-		// 				? moment(rec.thoiGianPhongCTSVChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
+		// 				? dayjs(rec.thoiGianPhongCTSVChamDiem.thoiGianBatDau).format('HH:mm DD/MM/YYYY')
 		// 				: ''
 		// 		} - ${
 		// 			rec.thoiGianPhongCTSVChamDiem?.thoiGianKetThuc
-		// 				? moment(rec.thoiGianPhongCTSVChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
+		// 				? dayjs(rec.thoiGianPhongCTSVChamDiem.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')
 		// 				: ''
 		// 		}`,
 		// 	width: 150,

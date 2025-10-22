@@ -8,7 +8,7 @@ import { ETrangThaiDuyetNoiNgoaiTru, colorETrangThaiDuyetNoiNgoaiTru } from '@/s
 import type { NoiNgoaiTru } from '@/services/NoiNgoaiTru/typing';
 import { ArrowDownOutlined, CheckOutlined, DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Popover, Switch, Tag, Tooltip, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import ModalYeuCauChinhSua from './components/ModalYeuCauChinhSua';
@@ -71,7 +71,7 @@ const DotKhaiBaoNoiNgoaiTruPage = () => {
 			render: (val, rec) => {
 				return (
 					<>
-						{moment(val).format('HH:mm DD/MM/YYYY')} - {moment(rec?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}
+						{dayjs(val).format('HH:mm DD/MM/YYYY')} - {dayjs(rec?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}
 					</>
 				);
 			},

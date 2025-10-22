@@ -136,7 +136,7 @@ const LopHocPhanPage = (props: { fromHocKy?: boolean; isKeHoach?: boolean }) => 
 						<Card
 							title={`Danh sách lớp tín chỉ ${recHocPhan?.maHocPhan ?? ''}`}
 							headStyle={{ padding: 0 }}
-							bodyStyle={{ padding: '8px 0 0' }}
+							styles={{ padding: '8px 0 0' }}
 							bordered={false}
 						>
 							<TableBase

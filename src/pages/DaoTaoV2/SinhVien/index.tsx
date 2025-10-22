@@ -4,7 +4,7 @@ import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
 import { EyeOutlined, FileImageOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button, Tooltip, Tag, message, Popconfirm, Modal } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
 import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinhVien';
@@ -76,7 +76,7 @@ const ViewSinhVien = () => {
 			width: 100,
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			onCell,
 		},
 		{
@@ -125,7 +125,7 @@ const ViewSinhVien = () => {
 			dataIndex: 'updatedAt',
 			width: 120,
 			sortable: true,
-			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : ''),
 		},
 		{
 			title: 'Trạng thái',
@@ -221,9 +221,9 @@ const ViewSinhVien = () => {
 				]}
 			/>
 			<Modal
-				visible={visibleFormCapNhatAnh}
+				open={visibleFormCapNhatAnh}
 				onCancel={() => setvisibleFormCapNhatAnh(false)}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				footer={false}
 			>
 				<FormCapNhatAnhSV getData={getData} />

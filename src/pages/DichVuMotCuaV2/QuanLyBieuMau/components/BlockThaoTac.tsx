@@ -5,7 +5,7 @@ import { includes } from '@/utils/utils';
 import type { FormInstance } from 'antd';
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import _ from 'lodash';
-import mm from 'moment-timezone';
+import mm from 'dayjs-timezone';
 import { useState } from 'react';
 import { useModel } from 'umi';
 mm.tz.setDefault('Asia/Ho_Chi_Minh');

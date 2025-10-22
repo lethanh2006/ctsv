@@ -4,7 +4,7 @@ import type { IColumn } from '@/components/Table/typing';
 import type { ChuongTrinhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/ChuongTrinhDaoTao/typings';
 import { DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { history, useModel } from 'umi';
 import Form from './Form';
 
@@ -41,7 +41,7 @@ const CardDotRaSoatCTDT = () => {
 			width: 120,
 			sortable: true,
 			filterType: 'date',
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Thời gian kết thúc',
@@ -50,7 +50,7 @@ const CardDotRaSoatCTDT = () => {
 			width: 120,
 			sortable: true,
 			filterType: 'date',
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Thao tác',

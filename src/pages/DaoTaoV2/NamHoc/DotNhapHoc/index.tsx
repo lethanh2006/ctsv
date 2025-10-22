@@ -2,7 +2,7 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 // import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 // import ModalChiTietKhoaSinhVien from '../KhoaSinhVien/components/ModalChiTiet';
@@ -58,7 +58,7 @@ const DotNhapHoc = () => {
 			width: 150,
 			align: 'center',
 			dataIndex: 'thoiGianBatDau',
-			render: (val) => <>{val ? moment(val).format('DD/MM/YYYY') : 'Không xác định'}</>,
+			render: (val) => <>{val ? dayjs(val).format('DD/MM/YYYY') : 'Không xác định'}</>,
 			onCell,
 		},
 		{
@@ -66,7 +66,7 @@ const DotNhapHoc = () => {
 			width: 150,
 			align: 'center',
 			dataIndex: 'thoiGianKetThuc',
-			render: (val, rec) => <>{val ? moment(val).format('DD/MM/YYYY') : 'Không xác định'}</>,
+			render: (val, rec) => <>{val ? dayjs(val).format('DD/MM/YYYY') : 'Không xác định'}</>,
 			onCell,
 		},
 		{

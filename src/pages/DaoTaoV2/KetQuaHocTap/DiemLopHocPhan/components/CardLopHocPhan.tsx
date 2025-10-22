@@ -11,7 +11,7 @@ import {
 	colorTrangThaiDiemLop,
 } from '@/services/DaoTaoV2/HocKy/constant';
 import { Card, Col, Row, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import SplitPane from 'react-split-pane';
@@ -43,7 +43,7 @@ const CardLopHocPhan = (props: {
 		style: {
 			cursor: 'pointer',
 			fontWeight: rec._id === record?._id ? 600 : undefined,
-			backgroundColor: rec._id === record?._id ? 'var(--primary-1)' : undefined,
+			backgroundColor: rec._id === record?._id ? 'var(--color-primary-bg)' : undefined,
 		},
 	});
 
@@ -122,11 +122,11 @@ const CardLopHocPhan = (props: {
 							style={{
 								fontSize: 12,
 								fontStyle: 'italic',
-								color: moment().isAfter(rec.thoiGianNhapDiem.end) ? 'red' : undefined,
+								color: dayjs().isAfter(rec.thoiGianNhapDiem.end) ? 'red' : undefined,
 							}}
 						>
-							Thời gian nộp điểm từ {moment(rec.thoiGianNhapDiem?.start).format('DD/MM/YYYY')} đến{' '}
-							{moment(rec.thoiGianNhapDiem.end).format('DD/MM/YYYY')}
+							Thời gian nộp điểm từ {dayjs(rec.thoiGianNhapDiem?.start).format('DD/MM/YYYY')} đến{' '}
+							{dayjs(rec.thoiGianNhapDiem.end).format('DD/MM/YYYY')}
 						</div>
 					) : null}
 				</>
@@ -149,7 +149,7 @@ const CardLopHocPhan = (props: {
 				<Col span={24}>
 					<SplitPane split={isMobile ? 'horizontal' : 'vertical'} onChange={handlePaneSizeChange}>
 						<Pane initialSize={paneSize} minSize='20%'>
-							<Card title='Lớp tín chỉ' bodyStyle={{ padding: '8px 0 0' }} headStyle={{ padding: 0 }} bordered={false}>
+							<Card title='Lớp tín chỉ' styles={{ padding: '8px 0 0' }} headStyle={{ padding: 0 }} bordered={false}>
 								<TableBase
 									hideCard
 									getData={getData}

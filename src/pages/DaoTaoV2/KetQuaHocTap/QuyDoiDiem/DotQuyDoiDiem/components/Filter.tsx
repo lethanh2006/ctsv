@@ -1,7 +1,7 @@
 import FilterHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/FilterHocKy';
 import { ETrangThaiDot } from '@/services/DaoTaoV2/constant';
 import { Modal, Space } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import FormDotQuyDoiDiem from './Form';
 import SelectDotQuyDoiDiem from './Select';
@@ -33,18 +33,18 @@ const FilterDotQuyDoi = () => {
 
 				{recDot?.thoiGianBatDauLayYKien && recDot.thoiGianKetThuc ? (
 					<a href='#!' onClick={() => handleEdit(recDot)}>
-						Thời gian xin ý kiến phòng ban từ {moment(recDot.thoiGianBatDauLayYKien).format('DD/MM/YYYY')} đến{' '}
-						{moment(recDot.thoiGianKetThucLayYKien).format('DD/MM/YYYY')}
+						Thời gian xin ý kiến phòng ban từ {dayjs(recDot.thoiGianBatDauLayYKien).format('DD/MM/YYYY')} đến{' '}
+						{dayjs(recDot.thoiGianKetThucLayYKien).format('DD/MM/YYYY')}
 					</a>
 				) : null}
 			</Space>
 
 			<Modal
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				footer={null}
 				maskClosable={false}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={600}
 			>
 				<FormDotQuyDoiDiem

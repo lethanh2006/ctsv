@@ -4,7 +4,7 @@ import { type HocPhan } from '@/services/DaoTaoV2/DanhMucHeThong/HocPhan/typings
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Switch, Tooltip } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import ViewVanBanQuyDinh from '../../VanBanQuyDinh/components/ViewVanBan';
@@ -57,7 +57,7 @@ const DeCuongHocPhanPage = (props: { maHocPhan?: string; isFormItem?: boolean })
 			width: 100,
 			align: 'center',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			onCell,
 		},
 		// {

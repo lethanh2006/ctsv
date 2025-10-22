@@ -15,7 +15,7 @@ import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/ty
 import { ELoaiTinhTrangDon } from '@/services/QuyTrinhDong/constant';
 import type { EMaTrangThaiThanhToan } from '@/services/TaiChinh/constant';
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { toISOString } from '@/utils/utils';
 import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
 import _ from 'lodash';
@@ -215,7 +215,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		// 	sortable: true,
 		// 	align: 'center',
 		// 	render: (val) => {
-		// 		return val ? moment(val).format('DD/MM/YYYY') : 'Không có dữ liệu';
+		// 		return val ? dayjs(val).format('DD/MM/YYYY') : 'Không có dữ liệu';
 		// 	},
 		// 	onCell,
 		// },
@@ -226,7 +226,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			render: (val, recordVal) => {
 				const buocHienTai = recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1];
 				const thoiGianTemp = isTabTraKetQua ? recordVal?.ngayHenTraKetQua : buocHienTai?.hanCuoiTiepNhan;
-				return thoiGianTemp ? moment(thoiGianTemp).format('DD/MM/YYYY') : 'Không có dữ liệu';
+				return thoiGianTemp ? dayjs(thoiGianTemp).format('DD/MM/YYYY') : 'Không có dữ liệu';
 			},
 			onCell,
 		},
@@ -239,7 +239,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				<div>
 					{recordVal?.hoTenNguoiTraKetQua} (
 					{recordVal?.thoiGianTraKetQua
-						? moment(recordVal?.thoiGianTraKetQua).format('HH:mm DD/MM/YYYY')
+						? dayjs(recordVal?.thoiGianTraKetQua).format('HH:mm DD/MM/YYYY')
 						: 'Không có dữ liệu về thời gian trả kết quả'}
 					)
 				</div>
@@ -614,7 +614,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			<Modal
 				zIndex={100}
 				title={record?.quyTrinh?.ten}
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				width={1200}
 				footer={null}
@@ -631,10 +631,10 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			</Modal>
 			<Modal
 				title={'Tiếp nhận nhiều đơn'}
-				visible={visibleTiepNhanNhieuDon}
+				open={visibleTiepNhanNhieuDon}
 				onCancel={() => setVisibleTiepNhanNhieuDon(false)}
 				width={800}
-				destroyOnClose
+				destroyOnHidden
 				footer={null}
 			>
 				<FormTiepNhanNhieuDon
@@ -646,20 +646,20 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			</Modal>
 
 			<Modal
-				visible={visibleModal}
+				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
-				destroyOnClose
+				destroyOnHidden
 			>
 				{recordChiTietThu?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
 			</Modal>
 			<Modal
 				footer={false}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1200}
-				visible={visibleModalSinhVien}
+				open={visibleModalSinhVien}
 				onCancel={() => setVisibleModalSinhVien(false)}
 				zIndex={101}
 			>

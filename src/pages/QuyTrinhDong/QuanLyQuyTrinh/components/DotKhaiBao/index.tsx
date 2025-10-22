@@ -5,7 +5,7 @@ import { Button, message, Modal, Popconfirm, Switch, Tooltip } from 'antd';
 import type { DotQuyTrinh } from '@/services/QuyTrinhDong/DotQuyTrinh/typing';
 import { DeleteOutlined, EditOutlined, TeamOutlined } from '@ant-design/icons';
 import FormDotQuyTrinh from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/DotKhaiBao/components/Form';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { activeDot } from '@/services/QuyTrinhDong/DotQuyTrinh/dotquytrinh';
 import { useState } from 'react';
 import QuanLyHoiDong from '../../HoiDong';
@@ -37,7 +37,7 @@ const DotKhaiBao = () => {
 			width: 150,
 			align: 'center',
 			render: (val) => {
-				return <>{val ? moment(val).format('DD/MM/YYYY') : 'Không có dữ liệu'}</>;
+				return <>{val ? dayjs(val).format('DD/MM/YYYY') : 'Không có dữ liệu'}</>;
 			},
 		},
 		{
@@ -46,7 +46,7 @@ const DotKhaiBao = () => {
 			width: 150,
 			align: 'center',
 			render: (val) => {
-				return <>{val ? moment(val).format('DD/MM/YYYY') : 'Không có dữ liệu'}</>;
+				return <>{val ? dayjs(val).format('DD/MM/YYYY') : 'Không có dữ liệu'}</>;
 			},
 		},
 		{
@@ -125,9 +125,9 @@ const DotKhaiBao = () => {
 			/>
 			<Modal
 				width={1300}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				onCancel={handleCancelHoiDong}
-				visible={visibleHoiDong}
+				open={visibleHoiDong}
 				footer={<Button onClick={handleCancelHoiDong}>Đóng</Button>}
 			>
 				<QuanLyHoiDong />

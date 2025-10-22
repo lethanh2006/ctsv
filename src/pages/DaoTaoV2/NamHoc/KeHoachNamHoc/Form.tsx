@@ -3,7 +3,7 @@ import type { KeHoachNamHoc } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc/typ
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, InputNumber, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectKhoaNganh from '../KhoaNganh/components/Select';
@@ -46,7 +46,7 @@ const FormKeHoachTheoTuan = (props: {
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col span={24}>
 					<Form.Item name='maKhoaNganhList' label='Danh sách khóa ngành áp dụng' rules={[...rules.required]}>
-						<SelectKhoaNganh multiple namHoc={moment(recordNamHoc?.thoiGianBatDau).year()} />
+						<SelectKhoaNganh multiple namHoc={dayjs(recordNamHoc?.thoiGianBatDau).year()} />
 					</Form.Item>
 				</Col>
 				<Col span={24}>

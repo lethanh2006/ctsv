@@ -68,7 +68,7 @@ const Block = (props: {
 										<Card
 											size='small'
 											headStyle={{ padding: '0px 12px' }}
-											bodyStyle={{ padding: '8px 12px' }}
+											styles={{ padding: '8px 12px' }}
 											key={field.key}
 											title={
 												<>

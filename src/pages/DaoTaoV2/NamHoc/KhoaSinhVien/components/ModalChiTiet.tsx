@@ -21,9 +21,9 @@ const ModalChiTietKhoaSinhVien = (props: {
 	return (
 		<Modal
 			footer={<Button onClick={() => setVisible(false)}>Đóng</Button>}
-			bodyStyle={{ padding: 0 }}
+			styles={{ padding: 0 }}
 			width={800}
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 		>
 			<Card bordered={false}>

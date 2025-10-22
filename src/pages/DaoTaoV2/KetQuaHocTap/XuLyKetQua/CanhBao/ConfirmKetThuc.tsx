@@ -27,7 +27,7 @@ const ConfirmKetThucDotCanhBao = (props: {
 
 	return (
 		<Modal
-			visible={visibleForm}
+			open={visibleForm}
 			onCancel={() => setVisibleForm(false)}
 			title='Kết thúc đợt xét cảnh báo'
 			footer={null}

@@ -69,7 +69,7 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; ssoId?: str
 				thongTinQuyetDinh[item] = {
 					value:
 						// (isDate || isMonth) && valuesForm
-						// 	? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
+						// 	? dayjs(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
 						// 	:
 						valuesForm[item],
 					info: isDanhMuc

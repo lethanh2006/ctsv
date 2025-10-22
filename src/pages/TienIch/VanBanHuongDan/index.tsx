@@ -173,9 +173,9 @@ const VanBanHuongDanPage = () => {
       <Modal
         maskClosable={false}
         footer={null}
-        bodyStyle={{ padding: 0 }}
+        styles={{ padding: 0 }}
         onCancel={() => setVisibleForm(false)}
-        visible={visibleForm}
+        open={visibleForm}
         width={800}
       >
         <ModalVanBanHuongDan />

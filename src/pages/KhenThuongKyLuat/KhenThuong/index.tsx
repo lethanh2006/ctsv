@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { type QuyetDinhKhenThuong } from '@/services/KhenThuong/QuyetDinhKhenThuong/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Tooltip, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import {
 	FormKhenThuongTheoQuyetDinh,
@@ -59,7 +59,7 @@ export default () => {
 			sortable: true,
 			onCell,
 			align: 'center',
-			render: (value) => (value ? moment(value).format('DD/MM/YYYY') : null),
+			render: (value) => (value ? dayjs(value).format('DD/MM/YYYY') : null),
 		},
 		{
 			title: 'Ngày ký',
@@ -69,7 +69,7 @@ export default () => {
 			sortable: true,
 			onCell,
 			align: 'center',
-			render: (value) => (value ? moment(value).format('DD/MM/YYYY') : null),
+			render: (value) => (value ? dayjs(value).format('DD/MM/YYYY') : null),
 		},
 
 		{

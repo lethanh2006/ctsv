@@ -2,7 +2,7 @@ import type { ThongBao } from '@/services/ThongBao/typing';
 import { getNameFile } from '@/utils/utils';
 import { CalendarOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Col, Divider, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 import OneSignalDataToPath from '../components/OneSignalDataToPath';
@@ -31,7 +31,7 @@ const DetailThongBao = (props: { record?: ThongBao.IRecord; afterViewDetail?: ()
 					<>
 						<div>{record?.description}</div>
 						<UserOutlined /> {record?.senderName ?? ''} <Divider type='vertical' />
-						<CalendarOutlined /> {moment(record?.createdAt).format('HH:mm DD/MM/YYYY')}
+						<CalendarOutlined /> {dayjs(record?.createdAt).format('HH:mm DD/MM/YYYY')}
 					</>
 				}
 			/>

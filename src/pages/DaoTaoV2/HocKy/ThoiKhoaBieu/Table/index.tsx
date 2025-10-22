@@ -5,7 +5,7 @@ import SelectNhanSuDebounce from '@/pages/DaoTaoV2/ToChucNhanSu/NhanSu/Select';
 import type { ThoiKhoaBieu } from '@/services/DaoTaoV2/HocKy/ThoiKhoaBieu/typing';
 import { ELoaiHinhHocTap } from '@/services/DaoTaoV2/HocKy/constant';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import Form from '../components/Form';
 import { Tooltip, Button, Popconfirm } from 'antd';
@@ -33,7 +33,7 @@ const ThoiKhoaBieuTable = (props: {
 			align: 'center',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Tiết bắt đầu',

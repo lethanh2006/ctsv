@@ -6,7 +6,7 @@ import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import type { SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { CheckCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useIntl, useModel } from 'umi';
 import Form from './components/Form';
 import { EPhuongThucTinhDiem } from '@/services/DaoTaoV2/DanhMucHeThong/constant';
@@ -48,7 +48,7 @@ const ChungChiSinhVienPage = (props: { fromSinhVien?: boolean }) => {
 			filterType: 'date',
 			align: 'center',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Đơn vị cấp',
@@ -81,9 +81,9 @@ const ChungChiSinhVienPage = (props: { fromSinhVien?: boolean }) => {
 			render: (val, rec) => {
 				if (rec.chungChi && rec.ngayCap)
 					if (rec.chungChi?.chungChiCoThoiHan) {
-						const endDate = moment(rec.ngayCap).add(rec.chungChi.thoiHanChungChi, 'y');
+						const endDate = dayjs(rec.ngayCap).add(rec.chungChi.thoiHanChungChi, 'y');
 						return (
-							<span className={moment().isAfter(endDate) ? 'text-error' : undefined}>
+							<span className={dayjs().isAfter(endDate) ? 'text-error' : undefined}>
 								{endDate.format('DD/MM/YYYY')}
 							</span>
 						);

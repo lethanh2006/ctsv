@@ -56,9 +56,9 @@ const SelectVanBan = (props: {
 					<>
 						<Button icon={<PlusOutlined />} onClick={onAddNew} />
 						<Modal
-							destroyOnClose
-							visible={visibleForm}
-							bodyStyle={{ padding: 0 }}
+							destroyOnHidden
+							open={visibleForm}
+							styles={{ padding: 0 }}
 							footer={null}
 							onCancel={() => setVisibleForm(false)}
 						>

@@ -7,7 +7,7 @@ import type { DotQuyDoiDiem } from '@/services/DaoTaoV2/KetQuaHocTap/DotQuyDoiDi
 import { ETrangThaiDot, colorTrangThaiDot } from '@/services/DaoTaoV2/constant';
 import { CheckOutlined, DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Popover, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import Form from './components/Form';
@@ -40,7 +40,7 @@ const DotQuyDoiDiemPage = () => {
 			title: 'Thời gian bắt đầu',
 			dataIndex: 'thoiGianBatDau',
 			width: 100,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			filterType: 'date',
 			sortable: true,
 		},
@@ -49,7 +49,7 @@ const DotQuyDoiDiemPage = () => {
 			dataIndex: 'thoiGianBatDauLayYKien',
 			width: 100,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			filterType: 'date',
 			sortable: true,
 		},
@@ -58,7 +58,7 @@ const DotQuyDoiDiemPage = () => {
 			dataIndex: 'thoiGianKetThucLayYKien',
 			width: 100,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			filterType: 'date',
 			sortable: true,
 		},
@@ -67,7 +67,7 @@ const DotQuyDoiDiemPage = () => {
 			dataIndex: 'thoiGianKetThuc',
 			width: 100,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			filterType: 'date',
 			sortable: true,
 		},

@@ -2,7 +2,7 @@ import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const KyLuatSinhVienPage = () => {
@@ -37,7 +37,7 @@ const KyLuatSinhVienPage = () => {
 			dataIndex: 'ngayQuyetDinh',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Năm bị kỷ luật',

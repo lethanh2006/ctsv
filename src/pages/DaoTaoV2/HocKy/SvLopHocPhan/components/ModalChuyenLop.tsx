@@ -1,6 +1,6 @@
 import { type LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
 import { Descriptions, Modal } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import DangKyLopHocPhan from './DangKyLopHocPhan';
 
@@ -31,7 +31,7 @@ const ModalChuyenLop = (props: { onOk: () => void }) => {
 	return (
 		<Modal
 			title='Chuyển lớp sinh viên'
-			visible={visibleForm}
+			open={visibleForm}
 			footer={null}
 			width={800}
 			onCancel={() => setVisibleForm(false)}
@@ -43,7 +43,7 @@ const ModalChuyenLop = (props: { onOk: () => void }) => {
 						<Descriptions.Item label='Mã sinh viên'>{recSinhVienLopHp.sinhVien?.ma}</Descriptions.Item>
 						<Descriptions.Item label='Ngày sinh'>
 							{recSinhVienLopHp.sinhVien?.ngaySinh
-								? moment(recSinhVienLopHp.sinhVien.ngaySinh).format('DD/MM/YYYY')
+								? dayjs(recSinhVienLopHp.sinhVien.ngaySinh).format('DD/MM/YYYY')
 								: ''}
 						</Descriptions.Item>
 						<Descriptions.Item label='Số điện thoại'>{recSinhVienLopHp.sinhVien?.soDienThoai}</Descriptions.Item>

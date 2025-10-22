@@ -26,13 +26,13 @@ const vietnameseCalendarConfig = {
 	sameElse: 'DD/MM/YYYY [lúc] HH:mm',
 };
 
-// mirgrate from moment to dayjs:
+// mirgrate from dayjs to dayjs:
 
 // tmp =
-//   moment(content, 'DD/MM/YYYY').toISOString() ||
-//   moment(content, 'D/M/YYYY').toISOString() ||
-//   moment.unix((Number.parseInt(content) - 25569) * 86400).toISOString() ||
-//   moment(content).toISOString() ||
+//   dayjs(content, 'DD/MM/YYYY').toISOString() ||
+//   dayjs(content, 'D/M/YYYY').toISOString() ||
+//   dayjs.unix((Number.parseInt(content) - 25569) * 86400).toISOString() ||
+//   dayjs(content).toISOString() ||
 //   invalidText;
 
 // Tuy nhiên, khi chuyển sang dayjs, không thể viết ngắn gọn kiểu đó vì dayjs(...).toISOString() sẽ trả về Invalid Date string thay vì undefined khi không hợp lệ, nên || không hoạt động đúng như mong đợi.
@@ -51,14 +51,14 @@ const vietnameseCalendarConfig = {
 // 	parsedDate = invalidText;
 // }
 
-// // Moment
+// // dayjs
 // const nextWeek = startDate.clone().add(7, 'day');
 
 // // Dayjs
 // const nextWeek = startDate.add(7, 'day'); // không cần clone
 
-// // Moment
-// moment().isBefore(record?.thoiGianBatDau);
+// // dayjs
+// dayjs().isBefore(record?.thoiGianBatDau);
 
 // // Dayjs
 // dayjs().isBefore(dayjs(record?.thoiGianBatDau)); // ✅ cần bọc nếu là string

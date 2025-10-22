@@ -31,7 +31,7 @@ const ModalImportKeHoach = (props: { visible: boolean; onCancel: () => void; onO
 	return (
 		<Modal
 			title='Nhập kế hoạch năm học'
-			visible={visible}
+			open={visible}
 			onCancel={() => onCancel()}
 			footer={null}
 			maskClosable={false}

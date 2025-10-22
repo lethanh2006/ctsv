@@ -28,7 +28,7 @@ const ModalChiTietLopHocPhan = (props: {
 			title='Thông tin lớp tín chỉ'
 			footer={null}
 			width={1000}
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 		>
 			<ViewChiTietLopHp />

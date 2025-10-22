@@ -35,7 +35,7 @@ const ConfirmDongBoLop = (props: {
 	};
 
 	return (
-		<Modal visible={visible} onCancel={onCancel} title='Đồng bộ lớp tín chỉ' footer={null}>
+		<Modal open={visible} onCancel={onCancel} title='Đồng bộ lớp tín chỉ' footer={null}>
 			<div
 				style={{
 					display: 'flex',

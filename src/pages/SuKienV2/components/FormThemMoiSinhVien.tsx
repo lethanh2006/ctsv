@@ -5,7 +5,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import { useModel } from 'umi';
 import { useEffect, useState } from 'react';
 import { resetFieldsForm } from '@/utils/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import rules from '@/utils/rules';
 import { ETrangThaiThamGia } from '@/services/SuKienV2/constant';
 
@@ -19,8 +19,8 @@ const FormThemMoiSinhVien = (props: { getData?: () => void; type?: 'Đăng ký' 
 	const getDataDot = async () => {
 		try {
 			getOneDotDRL({
-				'thoiGianTiepNhanMinhChung.thoiGianBatDau': { $lte: moment().toISOString() },
-				'thoiGianTiepNhanMinhChung.thoiGianKetThuc': { $gte: moment().toISOString() },
+				'thoiGianTiepNhanMinhChung.thoiGianBatDau': { $lte: dayjs().toISOString() },
+				'thoiGianTiepNhanMinhChung.thoiGianKetThuc': { $gte: dayjs().toISOString() },
 			}).then((res) => {
 				setDataDotHienTai(res);
 			});
@@ -58,8 +58,8 @@ const FormThemMoiSinhVien = (props: { getData?: () => void; type?: 'Đăng ký' 
 	};
 
 	useEffect(() => {
-		if (!visibleForm) resetFieldsForm(form, { thoiGian: moment().toISOString() });
-		else if (record?._id) form.setFieldsValue({ ...record, thoiGian: record?.thoiGian ?? moment().toISOString() });
+		if (!visibleForm) resetFieldsForm(form, { thoiGian: dayjs().toISOString() });
+		else if (record?._id) form.setFieldsValue({ ...record, thoiGian: record?.thoiGian ?? dayjs().toISOString() });
 	}, [visibleForm]);
 
 	useEffect(() => {

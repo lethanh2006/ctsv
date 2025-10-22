@@ -153,13 +153,13 @@ const DanhSachSinhVien = (props: IProps) => {
 				</TableBase>
 			</Spin>
 			<Modal
-				visible={visibleImport}
+				open={visibleImport}
 				onCancel={() => {
 					setVisibleImport(false);
 				}}
 				title='Nhập dữ liệu'
 				footer={null}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form
 					onFinish={(values: any) => {

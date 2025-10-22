@@ -10,7 +10,7 @@ const ModalChiTietNhuCauHocPhan = (props: { maHocPhan: string; deCuongHphk?: Hoc
 
 	return (
 		<Modal
-			visible={visibleForm}
+			open={visibleForm}
 			onCancel={() => setVisibleForm(false)}
 			footer={null}
 			width={1000}

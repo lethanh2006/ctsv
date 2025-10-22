@@ -1,15 +1,15 @@
 import { ColorSuKien, ELoaiSuKien, messagesCalendar } from '@/services/DaoTaoV2/Calendar/constant';
 import { Modal, Space, Button } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import type { DateRange, View } from 'react-big-calendar';
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
+import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useModel } from 'umi';
 import Form from '../components/Form';
 import { PlusCircleOutlined } from '@ant-design/icons';
-const localizer = momentLocalizer(moment);
+const localizer = dayjsLocalizer(dayjs);
 
 const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
 	const { getAllModel, visibleForm, setVisibleForm, setRecord, setEdit, setIsView } =
@@ -25,8 +25,8 @@ const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
 			const data = da.map((j) => ({
 				...j,
 				title: j.tenLopHocPhan,
-				start: moment(j?.thoiGianBatDau).toDate(),
-				end: moment(j?.thoiGianKetThuc).toDate(),
+				start: dayjs(j?.thoiGianBatDau).toDate(),
+				end: dayjs(j?.thoiGianKetThuc).toDate(),
 			}));
 			const start = _.minBy(data, (item) => item.start)?.start;
 			setDate(start);
@@ -70,7 +70,7 @@ const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
 			<Calendar
 				formats={{
 					dayRangeHeaderFormat: (range: DateRange) => {
-						return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format('DD/MM')}`;
+						return `${dayjs(range.start).format('DD/MM')} - ${dayjs(range.end).format('DD/MM')}`;
 					},
 				}}
 				localizer={localizer}
@@ -85,8 +85,8 @@ const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
 				selectable={false}
 				messages={messagesCalendar}
 				style={{ height: 400, overflow: 'auto' }}
-				min={moment('0600', 'HHmm').toDate()}
-				max={moment('2100', 'HHmm').toDate()}
+				min={dayjs('0600', 'HHmm').toDate()}
+				max={dayjs('2100', 'HHmm').toDate()}
 				eventPropGetter={eventPropGetter}
 				components={{ event: (event: any) => eventCustom(event) }}
 				onShowMore={(events: any[], d) => {
@@ -107,9 +107,9 @@ const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
 				width={800}
 				onCancel={() => setVisibleForm(false)}
 				footer={false}
-				bodyStyle={{ padding: 0 }}
-				visible={visibleForm}
-				destroyOnClose={false}
+				styles={{ padding: 0 }}
+				open={visibleForm}
+				destroyOnHidden={false}
 			>
 				<Form getData={getData} title='lịch học' fromPhanCong={fromPhanCong} />
 			</Modal>

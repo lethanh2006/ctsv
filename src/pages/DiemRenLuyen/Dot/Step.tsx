@@ -1,6 +1,6 @@
 import { Steps } from 'antd';
 import { useModel } from 'umi';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 const StepDotChamDiemRenLuyen = () => {
@@ -39,7 +39,7 @@ const StepDotChamDiemRenLuyen = () => {
 	useEffect(() => {
 		let s = -1;
 		steps.some((item) => {
-			if (moment().isBefore(item.thoiGian)) return true;
+			if (dayjs().isBefore(item.thoiGian)) return true;
 			s++;
 			return false;
 		});
@@ -54,8 +54,8 @@ const StepDotChamDiemRenLuyen = () => {
 						description={item.title}
 						title={
 							<b style={{ fontSize: 13 }}>
-								{moment(item.thoiGian).format('HH:mm DD/MM/YYYY')}
-								{item?.thoiGianKetThuc ? ` - ${moment(item.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}` : ''}
+								{dayjs(item.thoiGian).format('HH:mm DD/MM/YYYY')}
+								{item?.thoiGianKetThuc ? ` - ${dayjs(item.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}` : ''}
 							</b>
 						}
 						key={item.title}

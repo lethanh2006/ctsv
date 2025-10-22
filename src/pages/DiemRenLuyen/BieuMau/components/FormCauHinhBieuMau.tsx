@@ -96,7 +96,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 										<Card
 											size='small'
 											headStyle={{ padding: '0px 24px' }}
-											bodyStyle={{ padding: '8px 24px' }}
+											styles={{ padding: '8px 24px' }}
 											className={styles.block}
 											title={
 												<>
@@ -161,10 +161,10 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 			</Form>
 
 			<Modal
-				visible={visibleView}
+				open={visibleView}
 				footer={null}
 				onCancel={() => setVisibleView(false)}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={900}
 			>
 				<ViewDetailDiemRenLuyen hideClose />

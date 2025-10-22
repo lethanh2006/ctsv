@@ -1,7 +1,7 @@
 import { ETrangThaiThanhVienGiaDinh } from '@/services/DaoTaoV2/SinhVien/constant';
 import rules from '@/utils/rules';
 import { Col, Form, type FormInstance, Input, InputNumber, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const FormThongTinChaMe = (props: { suffix: 'Me' | 'Cha'; form: FormInstance }) => {
 	const { suffix, form } = props;
@@ -32,7 +32,7 @@ const FormThongTinChaMe = (props: { suffix: 'Me' | 'Cha'; form: FormInstance }) 
 					</Col>
 					<Col span={12} md={8}>
 						<Form.Item name={`namSinh${suffix}`} label='Năm sinh'>
-							<InputNumber min={1990} max={moment().year()} placeholder='Nhập năm sinh' style={{ width: '100%' }} />
+							<InputNumber min={1990} max={dayjs().year()} placeholder='Nhập năm sinh' style={{ width: '100%' }} />
 						</Form.Item>
 					</Col>
 				</>

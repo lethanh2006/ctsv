@@ -1,7 +1,7 @@
 import { ETrangThaiHoatDong, MapKeyColorTrangThaiHoatDongCLB } from '@/services/CauLacBo/constant';
 import { primaryColor } from '@/services/base/constant';
 import { Descriptions, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const ViewDetailHoatDongCLB = () => {
@@ -14,7 +14,7 @@ const ViewDetailHoatDongCLB = () => {
 			</Descriptions.Item>
 
 			<Descriptions.Item span={2} label='Thời gian'>
-				{moment(record?.thoiGianDuKien).format('HH:mm DD/MM/YYYY')}
+				{dayjs(record?.thoiGianDuKien).format('HH:mm DD/MM/YYYY')}
 			</Descriptions.Item>
 			<Descriptions.Item label='Trạng thái' span={2}>
 				{record?.trangThai && <Tag color={MapKeyColorTrangThaiHoatDongCLB[record?.trangThai]}>{record?.trangThai}</Tag>}

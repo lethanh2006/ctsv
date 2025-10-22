@@ -1,7 +1,7 @@
 import type { HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
 import type { KeHoachNamHoc } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc/typings';
+import dayjs from 'dayjs';
 import _ from 'lodash';
-import moment, { type Moment } from 'moment';
 
 /**
  * Tính số tuần của năm học, bao gồm thời gian break giữa các kỳ
@@ -9,10 +9,10 @@ import moment, { type Moment } from 'moment';
  * @param hocKyList Thông tin các học kỳ
  * @returns Số tuần
  */
-export const calNumWeek = (thoiGianBatDau: Moment, hocKyList: Partial<HocKy.IRecord>[]): number => {
-	let endDay: Moment = moment(thoiGianBatDau);
+export const calNumWeek = (thoiGianBatDau: dayjs, hocKyList: Partial<HocKy.IRecord>[]): number => {
+	let endDay: dayjs = dayjs(thoiGianBatDau);
 	hocKyList.forEach((item) => {
-		if (item.thoiGianBatDau && item.soTuan) endDay = moment(item.thoiGianBatDau).add(item.soTuan, 'w');
+		if (item.thoiGianBatDau && item.soTuan) endDay = dayjs(item.thoiGianBatDau).add(item.soTuan, 'w');
 	});
 	return endDay.diff(thoiGianBatDau, 'w');
 };
@@ -25,7 +25,7 @@ export const calNumWeek = (thoiGianBatDau: Moment, hocKyList: Partial<HocKy.IRec
  * @returns Header
  */
 export const calHeader = (
-	thoiGianBatDau: Moment,
+	thoiGianBatDau: dayjs,
 	hocKyList: Partial<HocKy.IRecord>[],
 	numWeek: number,
 ): KeHoachNamHoc.TGridHeader => {
@@ -41,7 +41,7 @@ export const calHeader = (
 	let stepKy = 0;
 	_.range(0, numWeek).map((tuan) => {
 		// Tuần này có ở trong học kỳ nào ko?
-		const isBreak = day.diff(moment(hocKyList[indexKy]?.thoiGianBatDau).startOf('isoWeek'), 'w') !== stepKy;
+		const isBreak = day.diff(dayjs(hocKyList[indexKy]?.thoiGianBatDau).startOf('isoWeek'), 'w') !== stepKy;
 		if (isBreak) {
 			// Break đầu năm hoặc break đầu tiên sau kỳ
 			if (!hocKys.length || !hocKys.at(-1)?.isBreak) hocKys.push({ span: 1, title: `break${tuan}`, isBreak });

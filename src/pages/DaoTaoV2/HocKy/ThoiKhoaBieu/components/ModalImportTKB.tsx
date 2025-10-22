@@ -37,7 +37,7 @@ const ModalImportTKB = (props: { visible?: boolean; onCancel: () => void; onOk: 
 	};
 
 	return (
-		<Modal title='Nhập thời khóa biểu' visible={visible} onCancel={onCancel} footer={null} maskClosable={false}>
+		<Modal title='Nhập thời khóa biểu' open={visible} onCancel={onCancel} footer={null} maskClosable={false}>
 			<Form form={form} layout='vertical' onFinish={onFinish}>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>

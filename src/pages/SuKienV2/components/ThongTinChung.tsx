@@ -1,7 +1,7 @@
 import { ETrangThaiDienRaMappingToTagColor, ETrangThaiDienRaMappingToTagLabel } from '@/services/SuKien/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { Descriptions, Divider, Modal, Tag } from 'antd';
-import moment from 'moment/moment';
+import dayjs from 'dayjs';
 import { Link } from 'umi';
 import { useModel } from 'umi';
 import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
@@ -40,19 +40,19 @@ const ThongTinChung = (props: IProps) => {
 				</Descriptions.Item>
 				{data?.thoiGianBatDauDangKy && (
 					<Descriptions.Item label='Thời gian bắt đầu đăng ký'>
-						{data?.thoiGianBatDauDangKy ? moment(data?.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--'}
+						{data?.thoiGianBatDauDangKy ? dayjs(data?.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--'}
 					</Descriptions.Item>
 				)}
 				{data?.thoiGianKetThucDangKy && (
 					<Descriptions.Item label='Thời gian kết thúc đăng ký'>
-						{data?.thoiGianKetThucDangKy ? moment(data?.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--'}
+						{data?.thoiGianKetThucDangKy ? dayjs(data?.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--'}
 					</Descriptions.Item>
 				)}
 				<Descriptions.Item label='Thời gian bắt đầu'>
-					{data?.thoiGianBatDau ? moment(data?.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : '--'}
+					{data?.thoiGianBatDau ? dayjs(data?.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
 				<Descriptions.Item label='Thời gian kết thúc'>
-					{data?.thoiGianKetThuc ? moment(data?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : '--'}
+					{data?.thoiGianKetThuc ? dayjs(data?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
 				<Descriptions.Item span={6} label='Địa điểm'>
 					{data?.diaDiem ?? '--'}
@@ -133,11 +133,11 @@ const ThongTinChung = (props: IProps) => {
 			<Descriptions column={2}>
 				{data?.isQRDangKy && (
 					<Descriptions.Item label='Đường dẫn đăng ký sự kiện'>
-						{moment(data?.thoiGianBatDauDangKy).isAfter(moment()) ? (
+						{dayjs(data?.thoiGianBatDauDangKy).isAfter(dayjs()) ? (
 							<Tag color={'orange'}>Chưa đến thời gian đăng ký</Tag>
 						) : (
 							<>
-								{moment(data?.thoiGianKetThucDangKy).isBefore(moment()) ? (
+								{dayjs(data?.thoiGianKetThucDangKy).isBefore(dayjs()) ? (
 									<Tag color={'red'}>Đã hết thời gian đăng ký</Tag>
 								) : (
 									<>
@@ -152,11 +152,11 @@ const ThongTinChung = (props: IProps) => {
 				)}
 				{data?.isQRThamGia && (
 					<Descriptions.Item label='Đường dẫn điểm danh sự kiện'>
-						{/* {moment(data?.thoiGianBatDau).isAfter(moment()) ? (
+						{/* {dayjs(data?.thoiGianBatDau).isAfter(dayjs()) ? (
 							<Tag color={'orange'}>Chưa đến thời gian điểm danh</Tag>
 						) : (
 							<>
-								{moment(data?.thoiGianKetThuc).isBefore(moment()) ? (
+								{dayjs(data?.thoiGianKetThuc).isBefore(dayjs()) ? (
 									<Tag color={'red'}>Đã hết thời gian điểm danh</Tag>
 								) : ( */}
 						<>
@@ -172,7 +172,7 @@ const ThongTinChung = (props: IProps) => {
 			</Descriptions>
 			<Modal
 				title={'Khảo sát'}
-				visible={visibleKhaoSat}
+				open={visibleKhaoSat}
 				onCancel={() => {
 					setVisibleKhaoSat(false);
 				}}

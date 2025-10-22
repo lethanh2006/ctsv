@@ -282,14 +282,14 @@ const RaSoatDeCuong = () => {
 			</TableBase>
 
 			<Modal
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => {
 					setVisibleForm(false);
 					getData();
 				}}
 				footer={null}
 				width={1000}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				maskClosable={false}
 			>
 				<Card title={`Đề cương chi tiết học phần ${recHocPhan?.ten}`}>

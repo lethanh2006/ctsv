@@ -4,7 +4,7 @@ import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import { ELoaiQuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/constant';
 import rules from '@/utils/rules';
 import { Col, Form, Input, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const FormQuyetDinh = (props: { isSinhVien?: boolean; loaiQuyetDinh?: ELoaiQuyetDinh }) => {
@@ -71,7 +71,7 @@ const FormQuyetDinh = (props: { isSinhVien?: boolean; loaiQuyetDinh?: ELoaiQuyet
 				>
 					<MyDatePicker
 						format='DD/MM/YYYY'
-						disabledDate={(cur) => !!recHocKy?.thoiGianBatDau && moment(cur).isBefore(recHocKy?.thoiGianBatDau)}
+						disabledDate={(cur) => !!recHocKy?.thoiGianBatDau && dayjs(cur).isBefore(recHocKy?.thoiGianBatDau)}
 					/>
 				</Form.Item>
 			</Col>

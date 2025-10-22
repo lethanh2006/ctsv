@@ -3,7 +3,7 @@ import SelectNamHoc from '@/pages/DaoTaoV2/NamHoc/NamHoc/components/Select';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Form, Input } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -51,7 +51,7 @@ const FormDotRaSoat = (props: { title?: string; [key: string]: any }) => {
 					label='Thời gian kết thúc'
 					rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'Thời gian bắt đầu')]}
 				>
-					<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)} />
+					<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)} />
 				</Form.Item>
 
 				<div className='form-footer'>

@@ -15,7 +15,7 @@ import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import rules from '@/utils/rules';
 import { CheckOutlined, CloseOutlined, LeftOutlined, PrinterOutlined, UndoOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Collapse, Form, Input, Modal, Row, Select, Spin, Steps, Tag, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import ViewDot from '../../components/DotQuyTrinh/ViewDot';
@@ -173,7 +173,7 @@ const View = (props: Iprops) => {
 				};
 
 				if (isDate || isMonth) {
-					valuesFinal[`${item}Date`] = { value: moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY') };
+					valuesFinal[`${item}Date`] = { value: dayjs(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY') };
 				}
 			});
 
@@ -319,23 +319,23 @@ const View = (props: Iprops) => {
 
 									if (
 										cauHinhThoiGianDot &&
-										moment().isAfter(moment(cauHinhThoiGianDot.thoiGianKetThuc)) &&
+										dayjs().isAfter(dayjs(cauHinhThoiGianDot.thoiGianKetThuc)) &&
 										!coKhaiBao
 									) {
 										tienDo = ETienDoQuyTrinh.QUA_HAN;
 									} else if (
 										cauHinhThoiGianDot &&
-										moment(cauHinhThoiGianDot.thoiGianBatDau).isBefore(moment()) &&
-										moment().isBefore(cauHinhThoiGianDot.thoiGianKetThuc)
+										dayjs(cauHinhThoiGianDot.thoiGianBatDau).isBefore(dayjs()) &&
+										dayjs().isBefore(cauHinhThoiGianDot.thoiGianKetThuc)
 									) {
 										tienDo = ETienDoQuyTrinh.DANG_DIEN_RA;
 									} else if (
 										cauHinhThoiGianDot &&
-										moment().isBefore(moment(cauHinhThoiGianDot.thoiGianBatDau)) &&
-										moment(cauHinhThoiGianDot.thoiGianBatDau).diff(moment(), 'days') === 7
+										dayjs().isBefore(dayjs(cauHinhThoiGianDot.thoiGianBatDau)) &&
+										dayjs(cauHinhThoiGianDot.thoiGianBatDau).diff(dayjs(), 'days') === 7
 									) {
 										tienDo = ETienDoQuyTrinh.SAP_TOI;
-									} else if (cauHinhThoiGianDot && moment().isAfter(moment(cauHinhThoiGianDot.thoiGianKetThuc))) {
+									} else if (cauHinhThoiGianDot && dayjs().isAfter(dayjs(cauHinhThoiGianDot.thoiGianKetThuc))) {
 										tienDo = ETienDoQuyTrinh.DA_DIEN_RA;
 									}
 
@@ -353,8 +353,8 @@ const View = (props: Iprops) => {
 													{value.ten}{' '}
 													{cauHinhThoiGianDot && (
 														<b>
-															({moment(cauHinhThoiGianDot?.thoiGianBatDau).format('DD/MM/YYYY')} -{' '}
-															{moment(cauHinhThoiGianDot?.thoiGianKetThuc).format('DD/MM/YYYY')})
+															({dayjs(cauHinhThoiGianDot?.thoiGianBatDau).format('DD/MM/YYYY')} -{' '}
+															{dayjs(cauHinhThoiGianDot?.thoiGianKetThuc).format('DD/MM/YYYY')})
 														</b>
 													)}
 												</div>
@@ -556,11 +556,11 @@ const View = (props: Iprops) => {
 				{FormModal && (
 					<Modal
 						title={'Khai báo'}
-						visible={visibleFormKhaiBaoQuyTrinh}
+						open={visibleFormKhaiBaoQuyTrinh}
 						onCancel={() => setVisibleFormKhaiBaoQuyTrinh(false)}
 						width={1200}
 						footer={null}
-						destroyOnClose
+						destroyOnHidden
 					>
 						<FormModal {...formProps} />
 					</Modal>
@@ -583,11 +583,11 @@ const View = (props: Iprops) => {
 							</Button>
 						</div>
 					}
-					visible={visibleDuyet}
+					open={visibleDuyet}
 					onCancel={() => {
 						setVisibleDuyet(false);
 					}}
-					destroyOnClose
+					destroyOnHidden
 					footer={null}
 				>
 					<Spin spinning={loadngDuyet}>
@@ -642,11 +642,11 @@ const View = (props: Iprops) => {
 				</Modal>
 				<Modal
 					title={'Điều phối'}
-					visible={visibleDieuPhoi}
+					open={visibleDieuPhoi}
 					onCancel={() => {
 						setVisibleDieuPhoi(false);
 					}}
-					destroyOnClose
+					destroyOnHidden
 					footer={null}
 				>
 					<Spin spinning={loadingDieuPhoi}>
@@ -692,16 +692,16 @@ const View = (props: Iprops) => {
 							OK
 						</Button>
 					}
-					bodyStyle={{ padding: 0 }}
-					visible={visibleViewDetailDot}
+					styles={{ padding: 0 }}
+					open={visibleViewDetailDot}
 					onCancel={() => setVisibleViewDetailDot(false)}
 				>
 					{dotCurrent && dataQuyTrinh.quyTrinh && <ViewDot recDot={dotCurrent} recQuyTrinh={dataQuyTrinh.quyTrinh} />}
 				</Modal>
 				<Modal
-					destroyOnClose
+					destroyOnHidden
 					footer={false}
-					visible={visibleFormPrint}
+					open={visibleFormPrint}
 					onCancel={() => {
 						setVisibleFormPrint(false);
 						setFixedCurrent(undefined);

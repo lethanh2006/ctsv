@@ -45,7 +45,7 @@ const ModalChotKeHoach = (props: {
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={() => onCancel()}
 			title='Chốt kế hoạch năm học'
 			footer={null}

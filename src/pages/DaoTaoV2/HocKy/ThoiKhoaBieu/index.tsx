@@ -196,11 +196,11 @@ const ThoiKhoaBieuPage = (props: { fromLopHP?: boolean }) => {
 
 			{/* View thời khóa biểu, mã hóa lịch học với từng lớp */}
 			<Modal
-				visible={visibleModal}
+				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				cancelText='Đóng'
 				okButtonProps={{ hidden: true }}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
 				maskClosable={false}
 			>

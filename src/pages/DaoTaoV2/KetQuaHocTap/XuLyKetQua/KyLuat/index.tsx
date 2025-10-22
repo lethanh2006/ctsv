@@ -5,7 +5,7 @@ import { type IColumn } from '@/components/Table/typing';
 import type { XetHocVu } from '@/services/DaoTaoV2/KetQuaHocTap/XetHocVu/typing';
 import { DeleteOutlined, ImportOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 
@@ -14,7 +14,7 @@ const KyLuatPage = (props: { type: 'thi-ho' | 'no-hoc-phi' }) => {
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 	const { page, limit, getModel, deleteModel } = useModel('daotaov2.ketquahoctap.xethocvu.kyluat');
 	const [visibleImport, setVisibleImport] = useState<boolean>(false);
-	const ngoaiThoiGianHopHoiDong = !recHocKy?.tgHopHoiDongHvu || moment().isAfter(recHocKy?.tgHopHoiDongHvu, 'd');
+	const ngoaiThoiGianHopHoiDong = !recHocKy?.tgHopHoiDongHvu || dayjs().isAfter(recHocKy?.tgHopHoiDongHvu, 'd');
 
 	const getData = () =>
 		recHocKy?.ma &&

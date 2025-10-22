@@ -1,7 +1,7 @@
 import ViewRender from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
 import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { Col, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const ViewQuyetDinh = () => {
@@ -36,7 +36,7 @@ const ViewQuyetDinh = () => {
 				{buildItem('Ngành', recordQuyetDinh?.nganh.ten)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Ngày sinh', recordQuyetDinh?.ngaySinh ? moment(recordQuyetDinh.ngaySinh).format('DD/MM/YYYY') : '')}
+				{buildItem('Ngày sinh', recordQuyetDinh?.ngaySinh ? dayjs(recordQuyetDinh.ngaySinh).format('DD/MM/YYYY') : '')}
 			</Col>
 			<Col sm={12} md={8}>
 				{buildItem('Giới tính', recordQuyetDinh?.gioiTinh)}

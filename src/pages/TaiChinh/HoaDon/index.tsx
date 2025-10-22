@@ -21,7 +21,7 @@ const HoaDonPage = (props: { ssoId?: string }) => {
 		if (window.location.href.includes('orderType=momo_wallet'))
 			if (window.location.href.includes('resultCode=0'))
 				notification.success({ message: 'Thành công', description: 'Thanh toán công nợ thành công' });
-			else notification.warn({ message: 'Thất bại', description: 'Thanh toán thất bại' });
+			else notification.warning({ message: 'Thất bại', description: 'Thanh toán thất bại' });
 	}, []);
 
 	const getData = () =>
@@ -127,10 +127,10 @@ const HoaDonPage = (props: { ssoId?: string }) => {
 			/>
 
 			<Modal
-				visible={visibleModal}
+				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
 			>
 				<ThongTinThanhToan setVisible={setVisibleModal} getData={getData} />

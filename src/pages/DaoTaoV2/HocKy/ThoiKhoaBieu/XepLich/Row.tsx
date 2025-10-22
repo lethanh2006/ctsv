@@ -43,7 +43,7 @@ const RowXepLich = (props: {
 								backgroundColor: selectedCells.find(
 									(j) => j.thu === thu && j.tiet === tiet.tietHoc && j.phong === item.maPhong,
 								)
-									? 'var(--primary-1)'
+									? 'var(--color-primary-bg)'
 									: undefined,
 							}}
 							onClick={

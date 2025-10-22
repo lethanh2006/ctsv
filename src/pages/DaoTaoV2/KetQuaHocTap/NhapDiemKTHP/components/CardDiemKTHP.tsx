@@ -132,7 +132,7 @@ const CardDiemKTHP = (getData: () => void) => {
 		if (trangThaiDuyet === ETrangThaiDuyetDiem.QUAN_LY_DUYET) return;
 		const hasDiem = danhSach?.some((i) => i.diemThi1 !== null);
 		if (!hasDiem) {
-			message.warn('Chưa nhập điểm cho sinh viên');
+			message.warning('Chưa nhập điểm cho sinh viên');
 			return;
 		}
 		Modal.confirm({
@@ -184,7 +184,7 @@ const CardDiemKTHP = (getData: () => void) => {
 				);
 				const hasDiem = list?.length > 0;
 				if (!hasDiem) {
-					message.warn('Chưa nhập điểm cho sinh viên');
+					message.warning('Chưa nhập điểm cho sinh viên');
 					return;
 				}
 
@@ -337,7 +337,7 @@ const CardDiemKTHP = (getData: () => void) => {
 		<>
 			<Card
 				title={'Danh sách sinh viên'}
-				bodyStyle={{ padding: '8px 0 0' }}
+				styles={{ padding: '8px 0 0' }}
 				headStyle={{ padding: 0 }}
 				bordered={false}
 			>
@@ -424,7 +424,7 @@ const CardDiemKTHP = (getData: () => void) => {
 								<ButtonExtend
 									icon={<ExportOutlined />}
 									disabled={editDiem > 0 || !danhSach.length}
-									onClick={() => message.warn('Đang phát triển...')}
+									onClick={() => message.warning('Đang phát triển...')}
 									tooltip='Xuất bảng điểm'
 								/>
 								<ButtonExtend

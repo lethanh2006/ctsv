@@ -78,7 +78,7 @@ export const Header = ({
 			return null;
 			// return (
 			// 	<Typography.Text type='secondary' italic>
-			// 		{moment().format('[Cập nhật ngày] DD [tháng] MM [năm] YYYY')}
+			// 		{dayjs().format('[Cập nhật ngày] DD [tháng] MM [năm] YYYY')}
 			// 	</Typography.Text>
 			// );
 		}

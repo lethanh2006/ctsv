@@ -11,7 +11,7 @@ import {
 } from '@/services/DaoTaoV2/TaiChinh/constant';
 import { inputFormat } from '@/utils/utils';
 import { Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -57,7 +57,7 @@ const LichSuThanhToan = () => {
 			dataIndex: 'transactionDate',
 			width: 120,
 			sortable: true,
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Hình thức',

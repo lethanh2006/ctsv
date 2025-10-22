@@ -2,7 +2,7 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import FormDanhMucChung from './components/Form';
 
@@ -46,7 +46,7 @@ const DanhMucChungComponent = () => {
 			width: 120,
 			filterType: 'datetime',
 			sortable: true,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Thao tác',

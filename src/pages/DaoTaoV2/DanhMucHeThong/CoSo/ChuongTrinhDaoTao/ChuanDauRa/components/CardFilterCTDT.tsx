@@ -22,7 +22,7 @@ export const CardFilterCTDT = () => {
 		style: {
 			cursor: 'pointer',
 			fontWeight: rec._id === record?._id ? 600 : undefined,
-			backgroundColor: rec._id === record?._id ? 'var(--primary-1)' : undefined,
+			backgroundColor: rec._id === record?._id ? 'var(--color-primary-bg)' : undefined,
 		},
 	});
 
@@ -69,7 +69,7 @@ export const CardFilterCTDT = () => {
 	];
 
 	return (
-		<Card title='Chương trình đào tạo' bodyStyle={{ padding: '8px 0 0' }} headStyle={{ padding: 0 }} bordered={false}>
+		<Card title='Chương trình đào tạo' styles={{ padding: '8px 0 0' }} headStyle={{ padding: 0 }} bordered={false}>
 			<TableBase
 				columns={columnsChuongTrinh}
 				dependencies={[page, limit, chuongTrinhDaoTao]}

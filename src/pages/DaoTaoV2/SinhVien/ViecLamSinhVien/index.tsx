@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { EHinhThucTuyenDung, EViTriViecLam } from '@/services/DaoTaoV2/SinhVien/constant';
 import { tienVietNam } from '@/utils/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const ViecLamSinhVienPage = () => {
@@ -32,7 +32,7 @@ const ViecLamSinhVienPage = () => {
 			dataIndex: 'thoiGianTuyenDung',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Vị trí việc làm',

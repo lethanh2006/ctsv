@@ -29,7 +29,7 @@ const CardFilterHocPhanHocKy = (props: { required?: boolean; trangThaiDiem?: boo
 		style: {
 			cursor: 'pointer',
 			fontWeight: rec._id === recHocPhan?._id ? 600 : undefined,
-			backgroundColor: rec._id === recHocPhan?._id ? 'var(--primary-1)' : undefined,
+			backgroundColor: rec._id === recHocPhan?._id ? 'var(--color-primary-bg)' : undefined,
 		},
 	});
 
@@ -77,7 +77,7 @@ const CardFilterHocPhanHocKy = (props: { required?: boolean; trangThaiDiem?: boo
 	];
 
 	return (
-		<Card title='Danh sách học phần' headStyle={{ padding: 0 }} bodyStyle={{ padding: '8px 0 0' }} bordered={false}>
+		<Card title='Danh sách học phần' headStyle={{ padding: 0 }} styles={{ padding: '8px 0 0' }} bordered={false}>
 			<TableBase
 				columns={columns}
 				getData={getData}

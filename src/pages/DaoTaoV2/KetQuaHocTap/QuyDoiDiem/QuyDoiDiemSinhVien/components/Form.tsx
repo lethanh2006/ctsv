@@ -6,7 +6,7 @@ import { ETrangThaiSinhVienDot, colorTrangThaiSinhVienDot } from '@/services/Dao
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Descriptions, Form, InputNumber, Row, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormItemMinhChungQuyDoi from '../../MinhChungQuyDoi/FormItemMinhChung';
@@ -83,7 +83,7 @@ const FormQuyDoiDiemSinhVien = (props: any) => {
 									<>
 										<Descriptions.Item label='Số quyết định'>{record?.soQuyetDinh}</Descriptions.Item>
 										<Descriptions.Item label='Ngày ban hành'>
-											{record.thoiGianBanHanh ? moment(record?.thoiGianBanHanh).format('DD/MM/YYYY') : ''}
+											{record.thoiGianBanHanh ? dayjs(record?.thoiGianBanHanh).format('DD/MM/YYYY') : ''}
 										</Descriptions.Item>
 									</>
 								) : null}
@@ -93,7 +93,7 @@ const FormQuyDoiDiemSinhVien = (props: any) => {
 										<>
 											{record?.hoTenNguoiChoYKien}: {record?.ghiChu ?? <i>Không có ý kiến</i>}
 											{record.thoiGianChoYKien
-												? ` (${moment(record.thoiGianChoYKien).format('HH:mm DD/MM/YYYY')})`
+												? ` (${dayjs(record.thoiGianChoYKien).format('HH:mm DD/MM/YYYY')})`
 												: ''}
 										</>
 									) : (

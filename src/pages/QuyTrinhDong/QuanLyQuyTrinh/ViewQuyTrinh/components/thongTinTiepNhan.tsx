@@ -120,22 +120,22 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 				</Collapse.Panel>
 			</Collapse>
 			<Modal
-				visible={visibleModal}
+				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
-				destroyOnClose
+				destroyOnHidden
 			>
 				{record?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
 			</Modal>
 			<Modal
 				title='Thông tin xử lý'
-				visible={visibleThongTinDuyet}
+				open={visibleThongTinDuyet}
 				onCancel={() => setVisibleThongTinDuyet(false)}
 				footer={null}
 				width={1000}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<ViewFromCauHinh cauHinhLoaiHinh={cauHinhFormTiepNhan} thongTinKhaiBao={dataFormTiepNhan} />
 			</Modal>

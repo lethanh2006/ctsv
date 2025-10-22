@@ -7,7 +7,7 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Form, Modal, type FormInstance } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyetDinhSV from './Form';
@@ -96,7 +96,7 @@ const FormTableSinhVien = (props: { isThoiHoc: boolean; form: FormInstance }) =>
 					name={['danhSachSinhVien', rec.index - 1, 'thoiGianKetThuc']}
 					rules={[...rules.required, ...rules.sauNgay(thoiGianBatDauBaoLuu, 'Thời gian bắt đầu')]}
 				>
-					<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDauBaoLuu[rec.index - 1])} />
+					<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDauBaoLuu[rec.index - 1])} />
 				</Form.Item>
 			),
 
@@ -107,7 +107,7 @@ const FormTableSinhVien = (props: { isThoiHoc: boolean; form: FormInstance }) =>
 			// dataIndex: 'thoiGianKetThuc',
 			width: 120,
 			align: 'center',
-			// render: (val, rec) => val && <a href='#!'>{val && moment(val).format('DD/MM/YYYY')}</a>,
+			// render: (val, rec) => val && <a href='#!'>{val && dayjs(val).format('DD/MM/YYYY')}</a>,
 		},
 		{
 			title: 'Ghi chú',
@@ -159,7 +159,7 @@ const FormTableSinhVien = (props: { isThoiHoc: boolean; form: FormInstance }) =>
 
 			<Modal
 				title='Thêm mới sinh viên'
-				visible={visibleSinhVien}
+				open={visibleSinhVien}
 				width={600}
 				footer={null}
 				onCancel={() => setVisibleSinhVien(false)}

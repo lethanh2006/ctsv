@@ -95,7 +95,7 @@ const FormTaoQuyTrinh = () => {
                     <Card
                       size="small"
                       headStyle={{ padding: '0px 24px' }}
-                      bodyStyle={{ padding: '8px 24px' }}
+                      styles={{ padding: '8px 24px' }}
                       className={styles.block}
                       title={
                         <>
@@ -178,11 +178,11 @@ const FormTaoQuyTrinh = () => {
         </Form.Item>
       </Form>
       <Modal
-        destroyOnClose
+        destroyOnHidden
         width="60%"
         footer={false}
-        visible={visibleQuyTrinh}
-        bodyStyle={{ padding: 0 }}
+        open={visibleQuyTrinh}
+        styles={{ padding: 0 }}
         onCancel={() => {
           setVisibleQuyTrinh(false);
         }}

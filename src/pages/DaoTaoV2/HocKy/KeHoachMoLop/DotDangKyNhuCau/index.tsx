@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { type DangKyNhuCau } from '@/services/DaoTaoV2/HocKy/DangKyNhuCau/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Switch, Tag, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import ModalDotDangKyNhuCau from './ModalDotDangKyNhuCau';
 
@@ -37,7 +37,7 @@ const DotDangKyNhuCauPage = () => {
 			width: 120,
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY HH:mm:ss'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY HH:mm:ss'),
 			align: 'center',
 			onCell,
 		},
@@ -47,7 +47,7 @@ const DotDangKyNhuCauPage = () => {
 			width: 120,
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY HH:mm:ss'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY HH:mm:ss'),
 			align: 'center',
 			onCell,
 		},
@@ -55,9 +55,9 @@ const DotDangKyNhuCauPage = () => {
 			title: 'Trạng thái',
 			width: 140,
 			render: (val, rec) =>
-				moment().diff(moment(rec.thoiGianKetThuc), 'day') > 0 ? (
+				dayjs().diff(dayjs(rec.thoiGianKetThuc), 'day') > 0 ? (
 					<Tag color='orange'>Đã kết thúc</Tag>
-				) : moment(rec.thoiGianBatDau).diff(moment(), 'day') > 0 ? (
+				) : dayjs(rec.thoiGianBatDau).diff(dayjs(), 'day') > 0 ? (
 					<Tag color='yellow'>Chưa bắt đầu</Tag>
 				) : rec.active ? (
 					<Tag color='green'>Đang diễn ra</Tag>

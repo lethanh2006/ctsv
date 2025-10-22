@@ -3,7 +3,7 @@ import rules from '@/utils/rules';
 import { currencyFormat } from '@/utils/utils';
 import { EditOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Descriptions, Form, InputNumber, Popconfirm } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 
@@ -85,7 +85,7 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
                   if (amountPaid > 0)
                     payInvoiceByIdentityCodeModel({
                       amountPaid,
-                      transactionDate: moment().toISOString(),
+                      transactionDate: dayjs().toISOString(),
                       maChiTietThu: invoice?.identityCode ?? '',
                     });
                 }}
@@ -159,13 +159,13 @@ const ThongTinThanhToan = (props: ThongTinThanhToanProps) => {
         {/*      </div>*/}
         {/*    </Descriptions.Item>*/}
         {/*    <Descriptions.Item label="Thời gian thanh toán">*/}
-        {/*      <Form.Item initialValue={moment(invoice?.transactionDate)} name="transactionDate">*/}
+        {/*      <Form.Item initialValue={dayjs(invoice?.transactionDate)} name="transactionDate">*/}
         {/*        <DatePicker*/}
         {/*          style={{ width: 180, minWidth: 180 }}*/}
         {/*          showTime*/}
         {/*          format="HH:mm DD/MM/YYYY"*/}
         {/*          placeholder="Chọn thời gian"*/}
-        {/*          disabledDate={(cur) => moment(cur).isAfter(moment())}*/}
+        {/*          disabledDate={(cur) => dayjs(cur).isAfter(dayjs())}*/}
         {/*        />*/}
         {/*      </Form.Item>*/}
         {/*    </Descriptions.Item>*/}

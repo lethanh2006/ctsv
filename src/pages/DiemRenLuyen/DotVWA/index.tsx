@@ -5,7 +5,7 @@ import { Button, Popconfirm, Tooltip } from 'antd';
 import { useModel } from 'umi';
 import FormBieuMau from './components/Form';
 import { MapKeyNameLoaiDoiTuongChamDiem } from '@/services/DiemRenLuyen/constants';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { useEffect } from 'react';
 import type { BieuMau } from '@/services/DiemRenLuyen/BieuMau/typing';
@@ -34,8 +34,8 @@ const DotDiemRenLuyenComponent = () => {
 					{val?.map((item) => (
 						<div key={item.loaiDoiTuongChamDiem}>
 							{MapKeyNameLoaiDoiTuongChamDiem[item.loaiDoiTuongChamDiem]} (
-							{moment(item.thoiGianBatDauCham).format('HH:mm DD/MM/YYYY')} -{' '}
-							{moment(item.thoiGianKetThucCham).format('HH:mm DD/MM/YYYY')})
+							{dayjs(item.thoiGianBatDauCham).format('HH:mm DD/MM/YYYY')} -{' '}
+							{dayjs(item.thoiGianKetThucCham).format('HH:mm DD/MM/YYYY')})
 						</div>
 					))}
 				</div>

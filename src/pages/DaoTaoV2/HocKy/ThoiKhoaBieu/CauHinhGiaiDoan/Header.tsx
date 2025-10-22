@@ -1,7 +1,7 @@
 import type { KeHoachNamHoc } from '@/services/DaoTaoV2/NamHoc/KeHoachNamHoc/typings';
 import { tuanHocHighlight } from '@/services/DaoTaoV2/NamHoc/constant';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 
@@ -10,7 +10,7 @@ const ThoiKhoaBieuHeader = (props: { width?: number }) => {
 	const [header, setHeader] = useState<KeHoachNamHoc.TGridHeader>();
 
 	const getDataHeader = () => {
-		const day = moment(recHocKy?.thoiGianBatDau).startOf('isoWeek');
+		const day = dayjs(recHocKy?.thoiGianBatDau).startOf('isoWeek');
 		let month: number = -1;
 		const weeks: number[] = [];
 		const months: KeHoachNamHoc.THeadGroup[] = [];

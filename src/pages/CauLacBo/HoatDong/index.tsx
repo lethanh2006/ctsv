@@ -4,7 +4,7 @@ import { ETrangThaiHoatDong, MapKeyColorTrangThaiHoatDongCLB } from '@/services/
 import type { CauLacBo } from '@/services/CauLacBo/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tag, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import FormHoatDong from './Form';
 import { useState } from 'react';
@@ -42,7 +42,7 @@ const HoatDongCauLacBo = () => {
 			dataIndex: 'thoiGianDuKien',
 			width: 250,
 			align: 'center',
-			render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+			render: (val) => <div>{dayjs(val).format('HH:mm DD/MM/YYYY')}</div>,
 			onCell,
 		},
 		{
@@ -118,7 +118,7 @@ const HoatDongCauLacBo = () => {
 			<Modal
 				width={900}
 				title='Chi tiết'
-				visible={visible}
+				open={visible}
 				onCancel={() => setVisible(false)}
 				footer={
 					<Button

@@ -4,13 +4,13 @@ import type { LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
 import type { ThoiKhoaBieu } from '@/services/DaoTaoV2/HocKy/ThoiKhoaBieu/typing';
 import { Spin } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { DateRange } from 'react-big-calendar';
-import { Calendar, type View, Views, momentLocalizer } from 'react-big-calendar';
+import { Calendar, type View, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useModel } from 'umi';
-const localizer = momentLocalizer(moment);
+const localizer = dayjsLocalizer(dayjs);
 
 /** Hiển thị lịch học của danh sách lớp học phần dưới dạng calendar */
 const LichHocLopHocPhanMulti = React.forwardRef<CalendarLopHpRef, TProps>((props, ref) => {
@@ -28,8 +28,8 @@ const LichHocLopHocPhanMulti = React.forwardRef<CalendarLopHpRef, TProps>((props
 		const data = tkb.map((j) => ({
 			...j.lopHocPhan,
 			title: `${j?.lopHocPhan?.hocPhan?.ten} - ${j?.tenLopHocPhan}`,
-			start: moment(j?.thoiGianBatDau).toDate(),
-			end: moment(j?.thoiGianKetThuc).toDate(),
+			start: dayjs(j?.thoiGianBatDau).toDate(),
+			end: dayjs(j?.thoiGianKetThuc).toDate(),
 		}));
 		const start = _.minBy(data, (item) => item.start)?.start;
 		const end = _.maxBy(data, (item) => item.end)?.end;
@@ -88,14 +88,14 @@ const LichHocLopHocPhanMulti = React.forwardRef<CalendarLopHpRef, TProps>((props
 		<Spin spinning={loading}>
 			<p>
 				Danh sách <b>{danhSachLop?.length} lớp tín chỉ, nhóm thực hành</b>.<br />
-				Tổng cộng có <b>{dataCalendar.length} buổi học</b>, từ ngày {moment(startDate).format('DD/MM/YYYY')} đến ngày{' '}
-				{moment(endDate).format('DD/MM/YYYY')}. Cụ thể như sau:
+				Tổng cộng có <b>{dataCalendar.length} buổi học</b>, từ ngày {dayjs(startDate).format('DD/MM/YYYY')} đến ngày{' '}
+				{dayjs(endDate).format('DD/MM/YYYY')}. Cụ thể như sau:
 			</p>
 
 			<Calendar
 				formats={{
 					dayRangeHeaderFormat: (range: DateRange) => {
-						return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format('DD/MM')}`;
+						return `${dayjs(range.start).format('DD/MM')} - ${dayjs(range.end).format('DD/MM')}`;
 					},
 				}}
 				localizer={localizer}
@@ -110,8 +110,8 @@ const LichHocLopHocPhanMulti = React.forwardRef<CalendarLopHpRef, TProps>((props
 				selectable={false}
 				messages={messagesCalendar}
 				style={{ height: 600, overflow: 'auto' }}
-				min={moment('0600', 'HHmm').toDate()}
-				max={moment('2100', 'HHmm').toDate()}
+				min={dayjs('0600', 'HHmm').toDate()}
+				max={dayjs('2100', 'HHmm').toDate()}
 				eventPropGetter={eventPropGetter}
 				components={{ event: (event: any) => eventCustom(event) }}
 				onSelectEvent={(rec: any) => {

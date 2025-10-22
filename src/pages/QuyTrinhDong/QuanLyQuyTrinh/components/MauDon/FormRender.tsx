@@ -34,7 +34,7 @@ import {
 	Tooltip,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import FormTable from './FormTable';
@@ -149,7 +149,7 @@ const FormRender = (props: {
 					form.setFieldsValue({
 						[cauHinh.ma]:
 							isDate || isMonth
-								? moment(khaiBao, khaiBao?.includes('/') ? (isDate ? 'DD/MM/YYYY' : 'MM/YYYY') : undefined)
+								? dayjs(khaiBao, khaiBao?.includes('/') ? (isDate ? 'DD/MM/YYYY' : 'MM/YYYY') : undefined)
 								: khaiBao,
 					});
 				} else {
@@ -414,11 +414,11 @@ const FormRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnClose
+						destroyOnHidden
 						width={700}
 						footer={false}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
-						visible={visibleFormTable}
+						open={visibleFormTable}
 						onCancel={onCancelFormTable}
 					>
 						<FormTable record={recordTable} onCancel={onCancelFormTable} edit={editFormTable} cauHinh={cauHinh} />

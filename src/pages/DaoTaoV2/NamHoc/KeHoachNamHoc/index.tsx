@@ -12,7 +12,7 @@ import {
 import { Alert, Button, Card, Divider, Empty, Modal, Popconfirm, Spin } from 'antd';
 import fileDownload from 'js-file-download';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import { calHeader } from '../NamHoc/ChiTiet/functions';
@@ -80,7 +80,7 @@ const KeHoachNamHocPage = (props: { hideSelect?: boolean }) => {
 	 */
 	const getData = async () => {
 		getHocKy({ sort: { soThuTu: 1 }, condition: { namHocId: recNam?._id } }).then((hocKyList) => {
-			const day = moment(recNam?.thoiGianBatDau).startOf('isoWeek');
+			const day = dayjs(recNam?.thoiGianBatDau).startOf('isoWeek');
 			const head = calHeader(day, hocKyList.data?.data ?? [], recNam?.soTuan ?? 0);
 			setHeader(head);
 		});
@@ -227,8 +227,8 @@ const KeHoachNamHocPage = (props: { hideSelect?: boolean }) => {
 							<>
 								{recNam?.ngayBdLayYKien && recNam.ngayKtLayYKien ? (
 									<a href='#!' onClick={() => setVisibleModelYKien(true)}>
-										Thời gian xin ý kiến phòng ban từ {moment(recNam.ngayBdLayYKien).format('DD/MM/YYYY')} đến{' '}
-										{moment(recNam.ngayKtLayYKien).format('DD/MM/YYYY')}
+										Thời gian xin ý kiến phòng ban từ {dayjs(recNam.ngayBdLayYKien).format('DD/MM/YYYY')} đến{' '}
+										{dayjs(recNam.ngayKtLayYKien).format('DD/MM/YYYY')}
 									</a>
 								) : recNam?.isKhoiTaoKeHoach ? (
 									<ButtonExtend disabled={recNam?.daChotKeHoachNamHoc} onClick={() => setVisibleYKien(true)}>
@@ -366,7 +366,7 @@ const KeHoachNamHocPage = (props: { hideSelect?: boolean }) => {
 													backgroundColor: selectedCells.find(
 														(j) => j.tuan === index + 1 && j.maKhoaNganh === item.maKhoaNganh,
 													)
-														? 'var(--primary-1)'
+														? 'var(--color-primary-bg)'
 														: kh.hoatDongTuan?.maMau,
 													cursor: header?.days?.[index]?.isBreak ? 'not-allowed' : 'pointer',
 												}}
@@ -407,7 +407,7 @@ const KeHoachNamHocPage = (props: { hideSelect?: boolean }) => {
 
 			<Modal
 				title='Chỉnh sửa kế hoạch năm học'
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				maskClosable={false}
 				width={600}
@@ -418,7 +418,7 @@ const KeHoachNamHocPage = (props: { hideSelect?: boolean }) => {
 
 			<Modal
 				title='Xin ý kiến kế hoạch năm học'
-				visible={visibleYKien}
+				open={visibleYKien}
 				onCancel={() => setVisibleYKien(false)}
 				maskClosable={false}
 				width={600}

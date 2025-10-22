@@ -37,7 +37,7 @@ const PreviewKhungCTDT = (props: { visble: boolean; setVisible: (vis: boolean) =
 	return (
 		<Modal
 			title='Khung chương trình đào tạo'
-			visible={visble}
+			open={visble}
 			onCancel={() => setVisible(false)}
 			okButtonProps={{ hidden: true }}
 			cancelText='Đóng'

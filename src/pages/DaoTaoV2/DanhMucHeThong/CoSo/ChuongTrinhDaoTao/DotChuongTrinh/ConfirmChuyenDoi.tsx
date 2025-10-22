@@ -45,7 +45,7 @@ const ConfirmChuyenDoiKhoiHocPhan = (props: { onCancel: () => void; onOk: () => 
 
 	return (
 		<Modal
-			visible={visibleKhoi}
+			open={visibleKhoi}
 			onCancel={() => {
 				onCancel();
 				setVisibleKhoi(false);

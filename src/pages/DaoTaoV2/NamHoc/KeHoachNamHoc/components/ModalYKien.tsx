@@ -104,7 +104,7 @@ const ModalYKien = (props: { visible: boolean; onCancel: () => void }) => {
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={() => onCancel()}
 			title='Danh sách ý kiến kế hoạch năm học'
 			footer={null}

@@ -1,5 +1,5 @@
 import { Alert, Card, Col, Row, Tabs } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import CanhBaoHocTapTable from '../CanhBao';
@@ -12,9 +12,9 @@ const SinhVienXuLyStep = (props: { isKetQua?: boolean }) => {
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 	const [viewKyLuat, setViewKyLuat] = useState<boolean>(false);
 	const ngoaiThoiGianHopHoiDong =
-		isKetQua === undefined && (!recHocKy?.tgHopHoiDongHvu || moment().isAfter(recHocKy?.tgHopHoiDongHvu, 'd'));
+		isKetQua === undefined && (!recHocKy?.tgHopHoiDongHvu || dayjs().isAfter(recHocKy?.tgHopHoiDongHvu, 'd'));
 	const ngoaiThoiGianThongBaoKetQua =
-		isKetQua === undefined && (!recHocKy?.tgTbKqHvu || moment().isAfter(recHocKy?.tgTbKqHvu, 'd'));
+		isKetQua === undefined && (!recHocKy?.tgTbKqHvu || dayjs().isAfter(recHocKy?.tgTbKqHvu, 'd'));
 
 	return (
 		<>

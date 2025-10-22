@@ -63,7 +63,7 @@ const SelectKhoiKienThuc = (props: {
 			{hasCreate ? (
 				<>
 					<Button icon={<PlusOutlined />} onClick={onAddNew} />
-					<Modal visible={visibleForm} bodyStyle={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
+					<Modal open={visibleForm} style={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
 						<FormNganh title='khối kiến thức' />
 					</Modal>
 				</>

@@ -1,6 +1,6 @@
 import { Button, Card, Col, DatePicker, Form, Input, Row } from 'antd';
 import { useModel } from 'umi';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { RangePickerProps } from 'antd/lib/date-picker';
 import rules from "@/utils/rules";
@@ -15,8 +15,8 @@ const FormDotQuyTrinh = () => {
 		try {
 			const payload = {
 				...values,
-				thoiGianBatDau: moment(values?.thoiGianBatDau).toISOString(),
-				thoiGianKetThuc: moment(values?.thoiGianKetThuc).toISOString(),
+				thoiGianBatDau: dayjs(values?.thoiGianBatDau).toISOString(),
+				thoiGianKetThuc: dayjs(values?.thoiGianKetThuc).toISOString(),
 				quyTrinhId: recordQuyTrinh?._id,
 			};
 			if (edit) {
@@ -34,18 +34,18 @@ const FormDotQuyTrinh = () => {
 	};
 	const disabledDate: RangePickerProps['disabledDate'] = (current) => {
 		// Can not select days before today and today
-		return current && endDate && moment(current).isAfter(endDate);
+		return current && endDate && dayjs(current).isAfter(endDate);
 	};
 	const disabledEndDate: RangePickerProps['disabledDate'] = (current) => {
 		// Can not select days before today and today
-		return current && startDate && moment(current).isBefore(startDate);
+		return current && startDate && dayjs(current).isBefore(startDate);
 	};
 	useEffect(() => {
 		if (record && edit) {
 			form.setFieldsValue({
 				...record,
-				thoiGianBatDau: moment(record?.thoiGianBatDau),
-				thoiGianKetThuc: moment(record?.thoiGianKetThuc),
+				thoiGianBatDau: dayjs(record?.thoiGianBatDau),
+				thoiGianKetThuc: dayjs(record?.thoiGianKetThuc),
 			});
 		}
 	}, [record, edit]);

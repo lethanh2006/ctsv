@@ -181,7 +181,7 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 
 			<Modal
 				title='Thông tin thanh toán'
-				visible={visibleThanhToan}
+				open={visibleThanhToan}
 				onCancel={() => setVisibleThanhToan(false)}
 				footer={null}
 				width={1000}

@@ -166,11 +166,11 @@ const ChiTietKhaiBao = (props: IProps) => {
 			</Spin>
 			<Modal
 				title={'Xử lý đơn'}
-				visible={visibleDuyet}
+				open={visibleDuyet}
 				onCancel={() => {
 					setVisibleDuyet(false);
 				}}
-				destroyOnClose
+				destroyOnHidden
 				footer={null}
 			>
 				<Form onFinish={handleSubmitDon} layout={'vertical'}>
