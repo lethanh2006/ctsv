@@ -131,9 +131,9 @@ const TableBase = (props: TableBaseProps) => {
 		if (!value) {
 			// Remove filter of this column
 			const tempFilters = filters?.filter((item) => JSON.stringify(item.field) !== JSON.stringify(dataIndex));
-			setFilters(tempFilters);			
+			setFilters(tempFilters);
 		} else {
-			const filter = getFilterColumn(dataIndex);			
+			const filter = getFilterColumn(dataIndex);
 			let tempFilters: TFilter<any>[] = [...(filters ?? [])];
 			if (filter) {
 				// Udpate current filter
@@ -151,7 +151,7 @@ const TableBase = (props: TableBaseProps) => {
 					operator: EOperatorType.CONTAIN,
 					values: [value],
 				});
-			setFilters(tempFilters);
+				setFilters(tempFilters);
 			}
 		}
 		if (confirm) {
@@ -231,7 +231,6 @@ const TableBase = (props: TableBaseProps) => {
 	//#region Get Filter Column Props
 
 	const handleFilter = (dataIndex: any, values: string[]) => {
-		debugger;
 		if (!values || !values.length) {
 			// Remove filter of this column
 			const tempFilters = filters?.filter((item) => JSON.stringify(item.field) !== JSON.stringify(dataIndex));
@@ -255,7 +254,6 @@ const TableBase = (props: TableBaseProps) => {
 					values,
 				});
 			setFilters(tempFilters);
-			;
 		}
 	};
 
@@ -406,7 +404,6 @@ const TableBase = (props: TableBaseProps) => {
 			.flat();
 		// Handle Filter in columns
 		Object.entries(fil).map(([field, values]) => {
-			
 			// Field từ table => nếu dataIndex là Array => field1.subfield
 			const dataIndex = field.includes('.') ? field.split('.') : field;
 
@@ -416,8 +413,6 @@ const TableBase = (props: TableBaseProps) => {
 			else if (col?.filterType === 'string') handleSearch(dataIndex, values?.[0] as any);
 			else if (col?.filterType === 'customselect') handleFilter(dataIndex, values as any);
 		});
-
-		
 
 		const { order, field } = sorter;
 		const orderValue = order === 'ascend' ? 1 : order === 'descend' ? -1 : undefined;

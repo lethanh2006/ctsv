@@ -424,6 +424,7 @@ const View = (props: Iprops) => {
 												</Button>
 												{(formKhai?.fileId || formTiepNhan?.fileId) && (
 													<Button
+														style={{ marginRight: 8 }}
 														loading={loading}
 														disabled={
 															current?.trangThaiTiepNhan !== TrangThaiTiepNhanDon.CHUA_CO &&
@@ -448,6 +449,7 @@ const View = (props: Iprops) => {
 												)}
 												{(formKhai?.fileId || formTiepNhan?.fileId) && (
 													<Button
+														style={{ marginRight: 8 }}
 														loading={loading}
 														type={'primary'}
 														icon={<PrinterOutlined />}
@@ -601,9 +603,9 @@ const View = (props: Iprops) => {
 						>
 							{type === 'tiep_nhan' && currentTypeDuyet === TrangThaiTiepNhanDon.DUYET && (
 								<Row gutter={[12, 0]}>
-									{dataFormTiepNhan?.map((item) => (
-										<FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />
-									))}
+									{dataFormTiepNhan?.map((item) => {
+										return <FormRender form={form} formValues={formValues} key={item.ma} cauHinh={item} />;
+									})}
 								</Row>
 							)}
 

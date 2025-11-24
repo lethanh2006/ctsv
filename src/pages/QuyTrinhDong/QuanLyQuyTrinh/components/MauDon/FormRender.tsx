@@ -135,6 +135,7 @@ const FormRender = (props: {
 	useEffect(() => {
 		if (cauHinh && cauHinh?.loaiDefaultValue) {
 			if (!form) return;
+
 			if (cauHinh?.loaiDefaultValue === LoaiDefaultValue.CUSTOM) {
 				form.setFieldsValue({
 					...form.getFieldsValue(),
@@ -143,6 +144,34 @@ const FormRender = (props: {
 			} else if (cauHinh?.loaiDefaultValue === LoaiDefaultValue.LAY_TU_KHAI_BAO && !editFormKhaiBao) {
 				const khaiBao = dataQuyTrinh?.danhSachKhaiBao.find((item) => item.ma === cauHinh.maFormLayDefaultValue)
 					?.thongTinKhaiBao?.[cauHinh.maFieldLayDefaultValue]?.value;
+
+				if (cauHinh.kieuDuLieu !== EKieuDuLieu.TABLE) {
+					const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
+					const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
+					form.setFieldsValue({
+						[cauHinh.ma]:
+							isDate || isMonth
+								? moment(khaiBao, khaiBao?.includes('/') ? (isDate ? 'DD/MM/YYYY' : 'MM/YYYY') : undefined)
+								: khaiBao,
+					});
+				} else {
+					setRecordQuyTrinhForm({
+						...(recordQuyTrinhForm || {}),
+						thongTinKhaiBao: {
+							...(recordQuyTrinhForm?.thongTinKhaiBao ?? {}),
+							[cauHinh.ma]: khaiBao,
+						},
+					});
+				}
+			}
+		} else {
+			if (!form) return;
+			const buocHienTai = dataQuyTrinh?.danhSachBuocXuLy?.find((item) => item?.laBuocHienTai);
+			const thongTinTiepNhanTuFormTiepNhanBuocTruoc = dataQuyTrinh?.danhSachBuocXuLy.find(
+				(item) => item.maFormTiepNhan === buocHienTai?.maFormTiepNhan && item.thongTinTiepNhan,
+			)?.thongTinTiepNhan;
+			if (thongTinTiepNhanTuFormTiepNhanBuocTruoc) {
+				const khaiBao = thongTinTiepNhanTuFormTiepNhanBuocTruoc?.[cauHinh?.ma]?.value;
 				if (cauHinh.kieuDuLieu !== EKieuDuLieu.TABLE) {
 					const isDate = cauHinh.kieuDuLieu === EKieuDuLieu.DATE;
 					const isMonth = cauHinh.kieuDuLieu === EKieuDuLieu.MONTH;
