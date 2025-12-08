@@ -57,7 +57,7 @@ const DSsinhvienTheChat = () => {
 						style={{ marginBottom: 18, paddingTop: 0 }}
 						onChange={record?._id ? onChangeStep : undefined}
 					>
-						<Steps.Step title='Danh sách sinh viên' disabled={!record?._id} />
+						<Steps.Step title='Kết quả sinh viên' disabled={!record?._id} />
 						<Steps.Step title='Chỉ số hình thể sinh viên' disabled={!record?._id} />
 					</Steps>
 

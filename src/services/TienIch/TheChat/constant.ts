@@ -28,6 +28,6 @@ export const colorXepLoaiTheChat: Record<EXepLoaiTheChat, ETagColor> = {
 export enum EChiSoSoSanh {
 	LON = 'Lớn',
 	NHO = 'Nhỏ',
-	LONBANG = 'Lớn hơn hoặc bằng',
-	NHOBANG = 'Nhỏ hơn hoặc bằng',
+	LON_HON_HOAC_BANG = 'Lớn hơn hoặc bằng',
+	NHO_HON_HOAC_BANG = 'Nhỏ hơn hoặc bằng',
 }

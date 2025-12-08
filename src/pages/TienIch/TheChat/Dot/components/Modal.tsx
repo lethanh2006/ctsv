@@ -27,7 +27,7 @@ const ModalDotTheChat = (props: any) => {
 				onChange={record?._id ? onChangeStep : undefined}
 			>
 				<Steps.Step title='Thông tin chung' />
-				<Steps.Step title='Danh sách sinh viên' disabled={!record?._id} />
+				<Steps.Step title='Kết quả sinh viên' disabled={!record?._id} />
 				<Steps.Step title='Chỉ số hình thể sinh viên' disabled={!record?._id} />
 			</Steps>
 

@@ -12,6 +12,9 @@ declare module TheChat {
 		moTa: string;
 		soSanh: EChiSoSoSanh;
 
+		batBuoc: boolean;
+		suDungThietBiNgoaiVi: boolean;
+
 		createdAt: Date;
 		updateAt: Date;
 	}
@@ -76,6 +79,8 @@ declare module TheChat {
 		lanDanhGia: number;
 		thoiGianDanhGia: Date;
 
+		metadata: IMetaData;
+
 		createdAt: Date;
 		updatedAt: Date;
 	}
@@ -139,5 +144,17 @@ declare module TheChat {
 		soSinhVienDaDanhGia: number;
 		soSinhVienDanhGiaLai: number;
 		soSinhVienDanhGiaTheHinh: number;
+	}
+
+	export interface IMetaData {
+		STUDENT_CODE: string;
+		EXAM_ID: number;
+		DEVICE_ID: number;
+		STUDENT_DISTANCE: number;
+		STUDENT_MINS: number;
+		STUDENT_SCORE: number;
+		STUDENT_MAP: string;
+		STUDENT_HEART_START: number;
+		STUDENT_HEART_END: number;
 	}
 }

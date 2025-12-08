@@ -4,7 +4,7 @@ import type { TheChat } from '@/services/TienIch/TheChat/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select, Space, Tooltip } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select, Space, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -18,6 +18,13 @@ const FormDanhMucTheChat = (props: any) => {
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 		else if (record?._id) form.setFieldsValue(record);
+
+		if (!record?._id) {
+			form.setFieldsValue({
+				batBuoc: false,
+				suDungThietBiNgoaiVi: false,
+			});
+		}
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: TheChat.IDanhMucTheChat) => {
@@ -64,6 +71,16 @@ const FormDanhMucTheChat = (props: any) => {
 					<Col span={24}>
 						<Form.Item name='moTa' label='Ghi chú' rules={[...rules.text]}>
 							<Input placeholder='Ghi chú bổ sung (nếu có)...' />
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='batBuoc' valuePropName='checked'>
+							<Checkbox>Bắt buộc thực hiện tiêu chí</Checkbox>
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='suDungThietBiNgoaiVi' valuePropName='checked'>
+							<Checkbox>Sử dụng thiết thị ngoại vi</Checkbox>
 						</Form.Item>
 					</Col>
 				</Row>
