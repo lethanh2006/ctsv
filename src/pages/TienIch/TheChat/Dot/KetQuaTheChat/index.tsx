@@ -5,12 +5,12 @@ import { colorXepLoaiTheChat, EXepLoaiTheChat } from '@/services/TienIch/TheChat
 import type { TheChat } from '@/services/TienIch/TheChat/typing';
 import { DeleteOutlined, EditOutlined, MenuOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Modal, Popconfirm, Select, Tag } from 'antd';
+import moment from 'moment';
 import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormChiSoTheHinh from '../../ChiSoTheHinh/components/Form';
 import HumanBodyViewer from '../../ChiSoTheHinh/components/HumanBodyViewer';
 import Form from './components/Form';
-import moment from 'moment';
 
 const KetQuaTheChatPage = () => {
 	const intl = useIntl();
@@ -139,9 +139,9 @@ const KetQuaTheChatPage = () => {
 				const menu = (
 					<Menu>
 						<Menu.Item key='edit' disabled={!isTrongThoiGian}>
-							<div onClick={() => handleEdit(rec)}>
-								<EditOutlined /> Chỉnh sửa
-							</div>
+							<ButtonExtend type='link' onClick={() => handleEdit(rec)} icon={<EditOutlined />} size='small'>
+								Chỉnh sửa
+							</ButtonExtend>
 						</Menu.Item>
 
 						<Menu.Item key='delete' disabled={!isTrongThoiGian}>
@@ -150,9 +150,9 @@ const KetQuaTheChatPage = () => {
 								onConfirm={() => deleteModel(rec?._id ?? '', getModel)}
 								placement='topRight'
 							>
-								<div>
-									<DeleteOutlined /> Xóa
-								</div>
+								<ButtonExtend type='link' danger icon={<DeleteOutlined />} size='small'>
+									Xóa
+								</ButtonExtend>
 							</Popconfirm>
 						</Menu.Item>
 					</Menu>

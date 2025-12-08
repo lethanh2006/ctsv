@@ -5,7 +5,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { EChiSoSoSanh, EDoiTuongTheChat, EMucDanhGiaTheChat } from '@/services/TienIch/TheChat/constant';
 import type { TheChat } from '@/services/TienIch/TheChat/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import { useModel } from 'umi';
 import Form from './components/Form';
 
@@ -47,14 +47,14 @@ const DanhMucTheChatPage = () => {
 
 	const columns: IColumn<TheChat.IDanhMucTheChat>[] = [
 		{
-			title: 'Mã',
+			title: 'Mã tiêu chí',
 			dataIndex: 'ma',
 			width: 100,
 			filterType: 'string',
 			sortable: true,
 		},
 		{
-			title: 'Tên',
+			title: 'Tên tiêu chí',
 			dataIndex: 'ten',
 			width: 150,
 			filterType: 'string',
@@ -81,6 +81,20 @@ const DanhMucTheChatPage = () => {
 			width: 200,
 			filterType: 'string',
 			ellipsis: true,
+		},
+		{
+			title: 'Bắt buộc thực hiện tiêu chí',
+			dataIndex: 'batBuoc',
+			width: 80,
+			align: 'center',
+			render: (val, rec) => <Checkbox checked={!!val} />,
+		},
+		{
+			title: 'Sử dụng thiết thị ngoại vi',
+			dataIndex: 'suDungThietBiNgoaiVi',
+			width: 80,
+			align: 'center',
+			render: (val, rec) => <Checkbox checked={!!val} />,
 		},
 		{
 			title: 'Thao tác',
