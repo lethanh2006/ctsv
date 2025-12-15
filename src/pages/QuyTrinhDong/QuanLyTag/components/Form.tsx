@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row, Spin } from 'antd';
 import rules from '@/utils/rules';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { useEffect } from 'react';
 
 const FormTag = () => {

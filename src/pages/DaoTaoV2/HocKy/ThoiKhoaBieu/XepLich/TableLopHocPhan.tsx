@@ -37,7 +37,7 @@ const TableLopHocPhanTKB = (props: { tuanHienTai: number }) => {
 		style: {
 			cursor: 'pointer',
 			fontWeight: rec._id === record?._id ? 600 : undefined,
-			backgroundColor: rec._id === record?._id ? 'var(--primary-1)' : undefined,
+			backgroundColor: rec._id === record?._id ? 'var(--color-primary-bg)' : undefined,
 		},
 	});
 
@@ -150,11 +150,11 @@ const TableLopHocPhanTKB = (props: { tuanHienTai: number }) => {
 
 			{/* View thời khóa biểu, mã hóa lịch học với từng lớp */}
 			<Modal
-				visible={visibleModal}
+				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				cancelText='Đóng'
 				okButtonProps={{ hidden: true }}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
 				maskClosable={false}
 			>

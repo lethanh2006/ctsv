@@ -1,5 +1,5 @@
 import { ip3 } from '@/utils/ip';
-import axios from 'axios';
+import axios from '@/utils/axios';
 
 export async function duyetQuyetDinh(type: 'quyet-dinh-thoi-hoc' | 'quyet-dinh-bao-luu', payLoad: any) {
 	return axios.put(`${ip3}/${type}/duyet`, payLoad);

@@ -35,8 +35,8 @@ const ViewKhaoSat = (props: {
 	// const ngoaiThoiGian =
 	//   !recordDot?.thoiGianBatDau ||
 	//   !recordDot?.thoiGianKetThuc ||
-	//   moment().isBefore(recordDot?.thoiGianBatDau, 'd') ||
-	//   moment().isAfter(recordDot?.thoiGianKetThuc, 'd');
+	//   dayjs().isBefore(recordDot?.thoiGianBatDau, 'd') ||
+	//   dayjs().isAfter(recordDot?.thoiGianKetThuc, 'd');
 
 	useEffect(() => {
 		if (!visibleForm && !onOk) {

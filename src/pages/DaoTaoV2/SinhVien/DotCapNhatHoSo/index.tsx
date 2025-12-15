@@ -2,7 +2,7 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Switch, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import FormThemDot from './components/form';
 import { useState } from 'react';
@@ -36,7 +36,7 @@ const DotCapNhatHoSoPage = () => {
 			dataIndex: 'thoiGianBatDau',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Thời gian kết thúc',
@@ -44,7 +44,7 @@ const DotCapNhatHoSoPage = () => {
 			dataIndex: 'thoiGianKetThuc',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			width: 160,
@@ -109,14 +109,14 @@ const DotCapNhatHoSoPage = () => {
 				formProps={{ getData: getData }}
 			/>
 			<Modal
-				visible={visibleDanhSachChuaKhaiBao}
+				open={visibleDanhSachChuaKhaiBao}
 				onCancel={() => {
 					setVisibleDanhSachChuaKhaiBao(false);
 				}}
 				width={1200}
 				footer={null}
 				title={'Danh sách sinh viên'}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<DanhSachChuaKhaiBao
 					data={record}

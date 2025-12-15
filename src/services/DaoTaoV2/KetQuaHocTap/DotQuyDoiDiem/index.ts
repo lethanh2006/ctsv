@@ -1,5 +1,5 @@
 import { ip3 } from '@/utils/ip';
-import axios from 'axios';
+import axios from '@/utils/axios';
 
 export async function postSinhVienQuyDoi(idDotQuyDoi: string, payload: any) {
 	return axios.post(`${ip3}/quy-doi-diem-sinh-vien/dot/${idDotQuyDoi}`, payload);

@@ -1,5 +1,5 @@
 import { Empty, Space, Spin, Typography } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { history, useModel, useParams } from 'umi';
@@ -20,7 +20,7 @@ const QRCodePage = () => {
 	const isKetThuc =
 		thongTinSuKien?.thoiGianBatDau &&
 		thongTinSuKien.thoiGianKetThuc &&
-		moment().isAfter(thongTinSuKien.thoiGianKetThuc);
+		dayjs().isAfter(thongTinSuKien.thoiGianKetThuc);
 
 	useEffect(() => {
 		if (!id) {
@@ -42,7 +42,7 @@ const QRCodePage = () => {
 
 	const ngoaiThoiGian =
 		thongTinSuKien &&
-		(moment().isAfter(thongTinSuKien.thoiGianKetThucDangKy) || moment().isBefore(thongTinSuKien?.thoiGianBatDauDangKy));
+		(dayjs().isAfter(thongTinSuKien.thoiGianKetThucDangKy) || dayjs().isBefore(thongTinSuKien?.thoiGianBatDauDangKy));
 
 	const renderContent = () => {
 		if ((!isLoadingThongTinSuKien && !thongTinSuKien) || ngoaiThoiGian) {
@@ -95,10 +95,10 @@ const QRCodePage = () => {
 				{/*          {thongTinSuKien?.tenSuKien}*/}
 				{/*        </Typography.Text>*/}
 				{/*        {thongTinSuKien?.thoiGianBatDau && (*/}
-				{/*          <div>Bắt đầu: {moment(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>*/}
+				{/*          <div>Bắt đầu: {dayjs(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>*/}
 				{/*        )}*/}
 				{/*        {thongTinSuKien?.thoiGianKetThuc && (*/}
-				{/*          <p>Kết thúc: {moment(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</p>*/}
+				{/*          <p>Kết thúc: {dayjs(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</p>*/}
 				{/*        )}*/}
 				{/*        {isKetThuc ? (*/}
 				{/*          <Typography.Text strong style={{ fontSize: 22, color: primaryColor }}>*/}

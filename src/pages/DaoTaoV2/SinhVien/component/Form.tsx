@@ -15,7 +15,7 @@ import { resetFieldsForm } from '@/utils/utils';
 import { PlusOutlined, PrinterOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Col, Collapse, Divider, Form, Input, Row, Select } from 'antd';
 import fileDownload from 'js-file-download';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectDonViHanhChinh from '../../Core/DonViHanhChinh/SelectDonViHanhChinh';
@@ -125,7 +125,7 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 						</Col>
 						<Col span={12} md={8}>
 							<Form.Item name='ngaySinh' label='Ngày sinh' rules={[...rules.required, ...rules.ngaySinh]}>
-								<MyDatePicker style={{ width: '100%' }} disabledDate={(cur) => moment(cur).isAfter(moment())} />
+								<MyDatePicker style={{ width: '100%' }} disabledDate={(cur) => dayjs(cur).isAfter(dayjs())} />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>

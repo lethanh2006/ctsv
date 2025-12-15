@@ -4,7 +4,7 @@ import SelectCapKyLuat from '@/pages/DanhMuc/CapKyLuat/components/Select';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Tooltip, message } from 'antd';
 import { isEmpty } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import { FormKyLuat, type FormKyLuatProps } from './components/Form';
 import { type KyLuat } from '@/services/KhenThuongKyLuat/KyLuat/typing';
@@ -103,7 +103,7 @@ export default () => {
 			width: 140,
 			dataIndex: 'ngayQuyetDinh',
 			filterType: 'date',
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			sortable: true,
 			align: 'center',
 			onCell,

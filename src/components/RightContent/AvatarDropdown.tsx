@@ -1,35 +1,27 @@
 import { landingUrl } from '@/services/base/constant';
 import { DatabaseOutlined, FileWordOutlined, GlobalOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
-import { type ItemType } from 'antd/lib/menu/hooks/useItems';
+import { Avatar, Dropdown, Spin } from 'antd';
+import { ItemType } from 'antd/es/menu/interface';
+import { rgba } from 'polished';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import { OIDCBounder } from '../OIDCBounder';
-import HeaderDropdown from './HeaderDropdown';
 import styles from './index.less';
 
 const AvatarDropdown = () => {
 	const intl = useIntl();
 	const { initialState } = useModel('@@initialState');
-	const { danhSach, getAllModel } = useModel('core.phanvunguser');
+	const { danhSach: dsPhanVung, getPartitionCodeMeModel } = useModel('core.phanvunguser');
+	const { getAllModel: getAllPhanVung } = useModel('core.phanvungdulieu');
 
 	const currentPartition = localStorage.getItem('partitionCode');
 
 	//Phân vùng dữ liệu
 	useEffect(() => {
 		if (initialState?.currentUser?.ssoId) {
-			getAllModel(undefined, undefined, undefined, undefined, 'many/me').then((res) => {
-				if (!res || res.length === 0) {
-					localStorage.removeItem('partitionCode');
-					return;
-				}
-
-				const exists = res.some((item) => item?.dataPartitionCode?.toString() === currentPartition);
-
-				if (!currentPartition || !exists) {
-					localStorage.setItem('partitionCode', res?.[0]?.dataPartitionCode?.toString());
-				}
-			});
+			//Get All phân vùng để lấy mã màu
+			getAllPhanVung();
+			getPartitionCodeMeModel(currentPartition?.toString());
 		}
 	}, [initialState?.currentUser?.ssoId]);
 
@@ -44,19 +36,34 @@ const AvatarDropdown = () => {
 
 	const fullName = initialState.currentUser?.family_name
 		? `${initialState.currentUser.family_name} ${initialState.currentUser?.given_name ?? ''}`
-		: initialState.currentUser?.name ?? (initialState.currentUser?.preferred_username || '');
+		: (initialState.currentUser?.name ?? (initialState.currentUser?.preferred_username || ''));
 	const lastNameChar = fullName.split(' ')?.at(-1)?.[0]?.toUpperCase();
 
+	const currentPartitionInfo = dsPhanVung?.find((item) => item?.dataPartitionCode === currentPartition);
+	const currentPartitionColor = currentPartitionInfo?.dataPartition?.maMau;
+	const currentPartitionName = currentPartitionInfo?.dataPartition?.name;
+
 	const partitionItems: ItemType[] =
-		danhSach?.map((item) => {
-			const code = item?.dataPartitionCode?.toString();
+		dsPhanVung?.map((item) => {
+			const code = item?.dataPartitionCode;
 			const isActive = code === currentPartition;
+			const partitionColor = item?.dataPartition?.maMau;
+
+			const activeColor = partitionColor || 'var(--color-primary)';
+			const activeBgColor = partitionColor ? rgba(partitionColor, 0.1) : 'var(--color-primary-bg)';
 
 			return {
 				key: `partition-${code}`,
 				icon: <DatabaseOutlined />,
 				label: item?.dataPartition?.name ?? item?.dataPartition?.ma,
-				className: isActive ? styles.activePartition : undefined,
+				style: isActive
+					? {
+							backgroundColor: activeBgColor,
+							borderLeft: `3px solid ${activeColor}`,
+							color: activeColor,
+							fontWeight: 'bold',
+						}
+					: undefined,
 				onClick: () => {
 					localStorage.setItem('partitionCode', code);
 					window.location.reload();
@@ -104,37 +111,32 @@ const AvatarDropdown = () => {
 		},
 	];
 
-	if (!initialState.currentUser.realm_access?.roles?.includes('QUAN_TRI_VIEN')) {
-		// items.splice(1, 0, {
-		//   key: 'center',
-		//   icon: <UserOutlined />,
-		//   label: intl.formatMessage({ id: 'app.header.userpage', defaultMessage: 'Trang cá nhân' }),
-		//   onClick: () => history.push('/account/center'),
-		// });
-	}
-
 	return (
 		<>
-			<HeaderDropdown overlay={<Menu className={styles.menu} items={items} />}>
+			<Dropdown menu={{ items }}>
 				<span className={`${styles.action} ${styles.account}`}>
 					<div className={styles.avatarWrapper}>
 						<Avatar
 							className={styles.avatar}
 							src={initialState.currentUser?.picture ? <img src={initialState.currentUser?.picture} /> : undefined}
-							icon={!initialState.currentUser?.picture ? lastNameChar ?? <UserOutlined /> : undefined}
+							icon={!initialState.currentUser?.picture ? (lastNameChar ?? <UserOutlined />) : undefined}
 							alt='avatar'
 						/>
-						{danhSach?.length >= 2 && (
-							<span className={styles.partitionBadge}>
-								{danhSach
-									.find((item) => item?.dataPartitionCode?.toString() === currentPartition)
-									?.dataPartition?.name?.[0]?.toUpperCase() ?? ''}
+						{dsPhanVung?.length >= 2 && (
+							<span
+								className={styles.partitionBadge}
+								style={{
+									backgroundColor: currentPartitionColor || 'var(--color-primary)',
+									color: '#fff',
+								}}
+							>
+								{currentPartitionName?.[0]?.toUpperCase() ?? ''}
 							</span>
 						)}
 					</div>
 					<span className={`${styles.name}`}>{fullName}</span>
 				</span>
-			</HeaderDropdown>
+			</Dropdown>
 		</>
 	);
 };

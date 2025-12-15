@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableBase from '@/components/Table';
 import { IColumn } from '@/components/Table/typing';
 import FormThemMoiBieuMau from '@/pages/DiemRenLuyen/MinhChung/CauHinh/components/Form';
@@ -153,14 +153,14 @@ const CauHinh = () => {
 
 			<Modal
 				zIndex={1000}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				footer={
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
 						<Button onClick={() => setVisiblePreview(false)}>Đóng</Button>
 					</div>
 				}
 				width={900}
-				visible={visiblePreview}
+				open={visiblePreview}
 				onCancel={() => setVisiblePreview(false)}
 			>
 				<PreviewForm mode='quytrinh' isView getData={() => {}} />

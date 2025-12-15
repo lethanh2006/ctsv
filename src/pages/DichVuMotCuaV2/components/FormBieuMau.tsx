@@ -27,8 +27,8 @@ import {
 	Select,
 	Tooltip,
 } from 'antd';
-import moment from 'moment';
-import mm from 'moment-timezone';
+import dayjs from 'dayjs';
+import mm from 'dayjs-timezone';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormDieuPhoi from '../QuanLyDon/components/FormDieuPhoi';
@@ -211,13 +211,13 @@ const FormBieuMau = (props: {
 			}
 
 			case 'DATE_PICKER': {
-				initialValue = item?.value ? moment(item?.value) : undefined;
+				initialValue = item?.value ? dayjs(item?.value) : undefined;
 				element = (
 					//@ts-ignore
 					<DatePicker
 						style={{ width: '100%' }}
 						format='DD/MM/YYYY HH:mm'
-						showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+						showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
 					/>
 				);
 				break;
@@ -360,7 +360,7 @@ const FormBieuMau = (props: {
 					recordRow?.forEach((cell: DichVuMotCuaV2.CauHinhBieuMau) => {
 						let value = typeof cell?.value === 'object' ? cell?.value?.join(', ') : cell?.value;
 						if (cell.type === 'DATE_PICKER') {
-							value = moment(cell?.value)?.format('HH:mm DD/MM/YYYY');
+							value = dayjs(cell?.value)?.format('HH:mm DD/MM/YYYY');
 						}
 						if (
 							props?.record?.thongTinDichVu?.maDichVu === MaDichVuVps.BAO_CAO_SU_CO &&
@@ -416,7 +416,7 @@ const FormBieuMau = (props: {
 									column?.type === 'DATE_PICKER' ? (
 										<div>
 											{val && props.type !== 'create' && props.type !== 'edit'
-												? moment(val)?.format('HH:mm DD/MM/YYYY')
+												? dayjs(val)?.format('HH:mm DD/MM/YYYY')
 												: val}
 										</div>
 									) : (
@@ -606,7 +606,7 @@ const FormBieuMau = (props: {
 	}, []);
 
 	return (
-		<Card title={props?.title} bodyStyle={{ padding: window.screen.width > 600 ? '30px' : 12 }}>
+		<Card title={props?.title} styles={{ padding: window.screen.width > 600 ? '30px' : 12 }}>
 			{!props.hideTitle && <TieuDeBieuMau title={props?.record?.thongTinDichVu?.ten ?? ''} />}
 
 			<br />
@@ -856,10 +856,10 @@ const FormBieuMau = (props: {
 				</Form.Item>
 			</Form>
 			<Modal
-				destroyOnClose
-				bodyStyle={{ padding: 0 }}
+				destroyOnHidden
+				styles={{ padding: 0 }}
 				footer={false}
-				visible={visibleFormDieuPhoi}
+				open={visibleFormDieuPhoi}
 				onCancel={() => {
 					setVisibleFormDieuPhoi(false);
 				}}
@@ -871,10 +871,10 @@ const FormBieuMau = (props: {
 				/>
 			</Modal>
 			<Modal
-				destroyOnClose
-				bodyStyle={{ padding: 0 }}
+				destroyOnHidden
+				styles={{ padding: 0 }}
 				footer={false}
-				visible={visibleFormXuLy}
+				open={visibleFormXuLy}
 				onCancel={() => {
 					setVisibleFormXuLy(false);
 				}}

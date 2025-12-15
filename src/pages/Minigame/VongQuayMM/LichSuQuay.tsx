@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { ETrangThaiQuay } from '@/services/Minigame/LichSuQuay/constant';
 import { MLichSuQuay } from '@/services/Minigame/LichSuQuay/typing';
 import { Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const VoucherPage = () => {
@@ -17,7 +17,7 @@ const VoucherPage = () => {
 			align: 'center',
 			sortable: true,
 			width: 200,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY')
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY')
 		},
 		{
 			title: 'Mã sinh viên',

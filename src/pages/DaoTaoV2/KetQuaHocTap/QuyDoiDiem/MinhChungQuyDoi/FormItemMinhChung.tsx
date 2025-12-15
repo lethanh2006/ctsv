@@ -4,7 +4,7 @@ import { type IColumn } from '@/components/Table/typing';
 import type { DotQuyDoiDiem } from '@/services/DaoTaoV2/KetQuaHocTap/DotQuyDoiDiem/typing';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Modal, Popconfirm } from 'antd';
-import monent from 'moment';
+import monent from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormMinhChungQuyDoiDiem from './Form';
@@ -200,7 +200,7 @@ const FormItemMinhChungQuyDoi = (props: {
 
 			<Modal
 				title='Thêm mới minh chứng'
-				visible={visibleForm}
+				open={visibleForm}
 				width={800}
 				footer={null}
 				onCancel={() => (setVisibleForm(false), setRecMinhChung(''))}

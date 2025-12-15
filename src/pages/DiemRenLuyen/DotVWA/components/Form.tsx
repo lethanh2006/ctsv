@@ -4,7 +4,7 @@ import { ELoaiDoiTuongChamDiem, MapKeyNameLoaiDoiTuongChamDiem } from '@/service
 import rules from '@/utils/rules';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Divider, Form, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import { toISOString } from '@/utils/utils';
@@ -19,10 +19,10 @@ const FormDot = () => {
 		if (record?._id)
 			form.setFieldsValue({
 				...record,
-				thoiGianDot: [moment(record.thoiGianBatDau), moment(record.thoiGianKetThuc)],
+				thoiGianDot: [dayjs(record.thoiGianBatDau), dayjs(record.thoiGianKetThuc)],
 				danhSachDoiTuongChamDiem: record?.danhSachDoiTuongChamDiem?.map((item) => ({
 					...item,
-					thoiGian: [moment(item.thoiGianBatDauCham), moment(item.thoiGianKetThucCham)],
+					thoiGian: [dayjs(item.thoiGianBatDauCham), dayjs(item.thoiGianKetThucCham)],
 				})),
 			});
 		else form.resetFields();

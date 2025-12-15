@@ -264,7 +264,7 @@ const Block = (props: {
                                         <Card
                                           size="small"
                                           headStyle={{ padding: '0px 24px' }}
-                                          bodyStyle={{ padding: '8px 24px' }}
+                                          styles={{ padding: '8px 24px' }}
                                           className={styles.block}
                                           title={
                                             <>
@@ -357,7 +357,7 @@ const Block = (props: {
                         <Card
                           size="small"
                           headStyle={{ padding: '8px 24px' }}
-                          bodyStyle={{ padding: '8px 24px' }}
+                          styles={{ padding: '8px 24px' }}
                           className={styles.block}
                           title={
                             <>

@@ -286,9 +286,9 @@ const RaSoatHocPhanPage = () => {
 			/>
 
 			<Modal
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
-				visible={visibleHocPhan}
+				open={visibleHocPhan}
 				onCancel={() => setVisibleHocPhan(false)}
 				footer={null}
 			>

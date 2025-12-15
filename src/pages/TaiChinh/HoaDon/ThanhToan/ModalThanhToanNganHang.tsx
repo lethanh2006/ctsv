@@ -129,7 +129,7 @@ const ModalThanhToanNganHang = (props: { visible: boolean; onOk: () => void }) =
 	if (!record?._id) return <></>;
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={() => onOk()}
 			title='Hướng dẫn thanh toán'
 			okButtonProps={{ hidden: true }}

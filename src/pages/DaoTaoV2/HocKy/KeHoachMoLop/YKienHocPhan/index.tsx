@@ -1,7 +1,7 @@
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import SelectKhoaNganh from '@/pages/DaoTaoV2/NamHoc/KhoaNganh/components/Select';
 import { Space } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import NhuCauHocPhanPage from '../NhuCauHocPhan';
@@ -29,8 +29,8 @@ const YKienHocPhanPage = () => {
 
 				{recHocKy?.tgBdLayYKienKhgd && recHocKy.tgKtLayYKienKhgd ? (
 					<a href='#!' onClick={() => setVisibleSurvey(true)}>
-						Thời gian đóng góp ý kiến KHGD từ {moment(recHocKy.tgBdLayYKienKhgd).format('DD/MM/YYYY')} đến{' '}
-						{moment(recHocKy.tgKtLayYKienKhgd).format('DD/MM/YYYY')}
+						Thời gian đóng góp ý kiến KHGD từ {dayjs(recHocKy.tgBdLayYKienKhgd).format('DD/MM/YYYY')} đến{' '}
+						{dayjs(recHocKy.tgKtLayYKienKhgd).format('DD/MM/YYYY')}
 					</a>
 				) : recHocKy?._id ? (
 					<ButtonExtend onClick={() => setVisibleSurvey(true)}>Xin ý kiến kế hoạch giảng dạy</ButtonExtend>

@@ -47,11 +47,11 @@ const ModalImport = (props: {
 	return (
 		<Modal
 			title='Nhập dữ liệu'
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 			footer={null}
 			width={600}
-			destroyOnClose
+			destroyOnHidden
 		>
 			<Form layout='vertical' onFinish={onFinish} form={form}>
 				<Row gutter={[12, 0]}>

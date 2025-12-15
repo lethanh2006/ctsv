@@ -2,7 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Input, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -86,7 +86,7 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 						label='Thời gian kết thúc'
 						rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'Thời gian bắt đầu')]}
 					>
-						<MyDatePicker format='DD/MM/YYYY' showTime disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)} />
+						<MyDatePicker format='DD/MM/YYYY' showTime disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)} />
 					</Form.Item>
 				</Col>
 			</Row>

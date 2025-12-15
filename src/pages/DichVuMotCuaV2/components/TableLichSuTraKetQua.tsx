@@ -1,6 +1,6 @@
 
 import { DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {useModel} from "umi";
 import { IColumn } from '@/components/Table/typing';
 import TableStaticData from "@/components/Table/TableStaticData";
@@ -48,7 +48,7 @@ const TableLichSuTraKetQua = (props: { data: DichVuMotCuaV2.LichSuChinhSua[] }) 
       dataIndex: 'editDate',
       width: 200,
       align: 'center',
-      render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+      render: (val) => <div>{dayjs(val).format('HH:mm DD/MM/YYYY')}</div>,
     },
   ];
 

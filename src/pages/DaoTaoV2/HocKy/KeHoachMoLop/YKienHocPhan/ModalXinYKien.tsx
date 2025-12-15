@@ -1,7 +1,7 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import rules from '@/utils/rules';
 import { Button, Col, Divider, Form, Modal, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const ModalXinYKien = (props: { visible: boolean; setVisible: (val: boolean) => void }) => {
@@ -23,7 +23,7 @@ const ModalXinYKien = (props: { visible: boolean; setVisible: (val: boolean) => 
 	};
 
 	return (
-		<Modal visible={visible} onCancel={onCancel} title='Xin ý kiến kế hoạch giảng dạy' width={600} footer={null}>
+		<Modal open={visible} onCancel={onCancel} title='Xin ý kiến kế hoạch giảng dạy' width={600} footer={null}>
 			<span>
 				Gửi thông tin để xin ý kiến các phòng ban về kế hoạch giảng dạy <b>{recHocKy?.ten}</b>
 			</span>
@@ -48,7 +48,7 @@ const ModalXinYKien = (props: { visible: boolean; setVisible: (val: boolean) => 
 							rules={[...rules.required, ...rules.sauNgay(tgBdLayYKienKhgd, 'Thời gian bắt đầu')]}
 							initialValue={recHocKy?.tgKtLayYKienKhgd}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgBdLayYKienKhgd)} allowClear />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgBdLayYKienKhgd)} allowClear />
 						</Form.Item>
 					</Col>
 				</Row>

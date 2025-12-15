@@ -8,7 +8,7 @@ import type { DotQuyDoiDiem } from '@/services/DaoTaoV2/KetQuaHocTap/DotQuyDoiDi
 import { ETrangThaiSinhVienDot } from '@/services/DaoTaoV2/constant';
 import { CheckCircleOutlined, CloseOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Card, Empty, Popconfirm, Segmented, Tabs, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FilterDotQuyDoi from '../DotQuyDoiDiem/components/Filter';
@@ -176,7 +176,7 @@ const QuyDoiDiemSinhVienPage = () => {
 				val ? (
 					<>
 						{val}: {rec.ghiChu}
-						{rec.thoiGianChoYKien ? ` (${moment(rec.thoiGianChoYKien).format('HH:mm DD/MM/YYYY')})` : ''}
+						{rec.thoiGianChoYKien ? ` (${dayjs(rec.thoiGianChoYKien).format('HH:mm DD/MM/YYYY')})` : ''}
 					</>
 				) : (
 					<Tag color='blue'>Chưa cho ý kiến</Tag>
@@ -199,7 +199,7 @@ const QuyDoiDiemSinhVienPage = () => {
 			dataIndex: 'thoiGianBanHanh',
 			align: 'center',
 			width: 120,
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			filterType: 'date',
 			sortable: true,
 			hide: trangThaiQuyDoiDiem !== ETrangThaiSinhVienDot.DA_RA_QUYET_DINH,

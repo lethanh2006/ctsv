@@ -6,7 +6,7 @@ import { deleteHocKyValidate } from '@/services/DaoTaoV2/HocKy/HocKy';
 import { type HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Space, Switch, Tag, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useIntl, useModel } from 'umi';
 import ModalHocKy from './components/Modal';
 
@@ -108,7 +108,7 @@ const HocKyPage = (props: { fromNamHoc?: boolean }) => {
 			width: 100,
 			align: 'center',
 			filterType: 'date',
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			sortable: true,
 			onCell,
 		},

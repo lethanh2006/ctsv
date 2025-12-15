@@ -1,7 +1,7 @@
 import { useWindowSize } from '@/hooks/useWindowSize';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { Spin, Statistic } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { QRCodeSVG } from 'qrcode.react';
 import styled from 'styled-components';
 interface IProps {
@@ -149,15 +149,15 @@ const JoinDisplay = (props: IProps) => {
 	const size = useWindowSize();
 	const renderContent = () => {
 		if (
-			moment().isBefore(
-				moment(props?.isThamGia ? thongTinSuKien?.thoiGianBatDauDangKy : thongTinSuKien?.thoiGianBatDau),
+			dayjs().isBefore(
+				dayjs(props?.isThamGia ? thongTinSuKien?.thoiGianBatDauDangKy : thongTinSuKien?.thoiGianBatDau),
 			)
 		) {
 			return <div style={{ color: '#fff', fontSize: '36px', fontWeight: 'bold' }}>Sự kiện chưa bắt đầu</div>;
 		} else {
 			if (
-				moment().isAfter(
-					moment(props?.isThamGia ? thongTinSuKien?.thoiGianKetThucDangKy : thongTinSuKien?.thoiGianKetThuc),
+				dayjs().isAfter(
+					dayjs(props?.isThamGia ? thongTinSuKien?.thoiGianKetThucDangKy : thongTinSuKien?.thoiGianKetThuc),
 				)
 			) {
 				return <div style={{ color: '#fff', fontSize: '36px', fontWeight: 'bold' }}>Sự kiện đã kết thúc</div>;
@@ -222,14 +222,14 @@ const JoinDisplay = (props: IProps) => {
 				</div>
 				<div className='thong-tin' style={{ gap: '20px', alignItems: 'center' }}>
 					<div className='calender'>
-						<div className='header-calen'>{moment(thongTinSuKien?.thoiGianBatDau).format('MM/YYYY')}</div>
-						<div className='footer-calen'>{moment(thongTinSuKien?.thoiGianBatDau).date()}</div>
+						<div className='header-calen'>{dayjs(thongTinSuKien?.thoiGianBatDau).format('MM/YYYY')}</div>
+						<div className='footer-calen'>{dayjs(thongTinSuKien?.thoiGianBatDau).date()}</div>
 					</div>
 
 					<div>
 						<h3>{thongTinSuKien?.tenSuKien}</h3>
-						<div>Thời gian bắt đầu: {moment(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>
-						<div>Thời gian kết thúc: {moment(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</div>
+						<div>Thời gian bắt đầu: {dayjs(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>
+						<div>Thời gian kết thúc: {dayjs(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</div>
 						<div>Địa điểm: {thongTinSuKien?.diaDiem}</div>
 					</div>
 				</div>

@@ -46,7 +46,7 @@ import {
 } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { first } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import QuanLySuKien from './QuanLySuKien';
@@ -448,7 +448,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 									>
 										<MyDatePicker
 											disabledDate={
-												thoiGianKetThucDangKy ? (cur) => moment(cur).isAfter(thoiGianKetThucDangKy) : undefined
+												thoiGianKetThucDangKy ? (cur) => dayjs(cur).isAfter(thoiGianKetThucDangKy) : undefined
 											}
 											showTime={{ showHour: true, showMinute: true }}
 											format='HH:mm DD/MM/YYYY'
@@ -465,7 +465,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 											showTime={{ showHour: true, showMinute: true }}
 											format='HH:mm DD/MM/YYYY'
 											disabledDate={
-												thoiGianBatDauDangKy ? (cur) => moment(cur).isBefore(thoiGianBatDauDangKy) : undefined
+												thoiGianBatDauDangKy ? (cur) => dayjs(cur).isBefore(thoiGianBatDauDangKy) : undefined
 											}
 										/>
 									</Form.Item>
@@ -480,13 +480,13 @@ const FormSuKien = ({ hideCard }: Props) => {
 								label='Thời gian bắt đầu'
 							>
 								<MyDatePicker
-									disabledDate={thoiGianKetThuc ? (cur) => moment(cur).isAfter(thoiGianKetThuc) : undefined}
+									disabledDate={thoiGianKetThuc ? (cur) => dayjs(cur).isAfter(thoiGianKetThuc) : undefined}
 									// disabledTime={() =>
 									// 	disabledRangeTime(
-									// 		moment(thoiGianKetThuc),
+									// 		dayjs(thoiGianKetThuc),
 									// 		'start',
-									// 		moment(thoiGianKetThuc).hour()?.toString(),
-									// 		moment(thoiGianKetThuc).minutes()?.toString(),
+									// 		dayjs(thoiGianKetThuc).hour()?.toString(),
+									// 		dayjs(thoiGianKetThuc).minutes()?.toString(),
 									// 	)
 									// }
 									showTime={{ showHour: true, showMinute: true }}
@@ -503,13 +503,13 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<MyDatePicker
 									showTime={{ showHour: true, showMinute: true }}
 									format='HH:mm DD/MM/YYYY'
-									disabledDate={thoiGianBatDau ? (cur) => moment(cur).isBefore(thoiGianBatDau) : undefined}
+									disabledDate={thoiGianBatDau ? (cur) => dayjs(cur).isBefore(thoiGianBatDau) : undefined}
 									// disabledTime={() =>
 									// 	disabledRangeTime(
-									// 		moment(thoiGianBatDau),
+									// 		dayjs(thoiGianBatDau),
 									// 		'start',
-									// 		moment(thoiGianBatDau).hour()?.toString(),
-									// 		moment(thoiGianBatDau).minutes()?.toString(),
+									// 		dayjs(thoiGianBatDau).hour()?.toString(),
+									// 		dayjs(thoiGianBatDau).minutes()?.toString(),
 									// 	)
 									// }
 								/>
@@ -576,12 +576,12 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<Modal
 									footer={false}
 									width={700}
-									bodyStyle={{ padding: 0 }}
-									visible={visibleFormDuTruKinhPhi}
+									styles={{ padding: 0 }}
+									open={visibleFormDuTruKinhPhi}
 									onCancel={() => {
 										setVisibleFormDuTruKinhPhi(false);
 									}}
-									destroyOnClose
+									destroyOnHidden
 								>
 									<FormDuTruKinhPhi setData={setDataKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
 								</Modal>

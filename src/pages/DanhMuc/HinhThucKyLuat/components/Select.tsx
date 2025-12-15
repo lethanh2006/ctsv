@@ -56,7 +56,7 @@ const SelectHinhThucKyLuat = (props: {
 			{hasCreate !== false ? (
 				<>
 					<Button icon={<PlusOutlined />} onClick={onAddNew} />
-					<Modal visible={visibleForm} bodyStyle={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
+					<Modal open={visibleForm} styles={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
 						<FormHinhThucKhenThuong title='Hình thức kỷ luật' />
 					</Modal>
 				</>

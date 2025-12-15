@@ -57,7 +57,7 @@ const ModalQuyetDinhQuyDoiDiem = (props: {
 		<Modal
 			title='Ra quyết định quy đổi điểm'
 			width={1000}
-			visible={visibleForm}
+			open={visibleForm}
 			onCancel={() => setVisibleForm(false)}
 			footer={false}
 		>

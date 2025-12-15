@@ -2,7 +2,7 @@ import { type PhanHoi } from '@/services/TienIch/PhanHoi/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Descriptions, Form, Input } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -34,7 +34,7 @@ const FormPhanHoi = () => {
         <Descriptions.Item label="Người hỏi">{record?.maSv ?? '--'}</Descriptions.Item>
         <Descriptions.Item label="Câu hỏi">{record?.noiDungPhanHoi}</Descriptions.Item>
         <Descriptions.Item label="Thời gian hỏi">
-          {moment(record?.createdAt).format('HH:mm DD/MM/YYYY')}
+          {dayjs(record?.createdAt).format('HH:mm DD/MM/YYYY')}
         </Descriptions.Item>
         <Descriptions.Item label="Loại phản hồi">{record?.loaiPhanHoi}</Descriptions.Item>
         <Descriptions.Item label="File đính kèm">
@@ -57,7 +57,7 @@ const FormPhanHoi = () => {
             </Descriptions.Item>
             <Descriptions.Item label="Thời gian trả lời">
               {record?.thoiGianTraLoi
-                ? moment(record.thoiGianTraLoi).format('HH:mm DD/MM/YYYY')
+                ? dayjs(record.thoiGianTraLoi).format('HH:mm DD/MM/YYYY')
                 : '--'}
             </Descriptions.Item>
           </Descriptions>

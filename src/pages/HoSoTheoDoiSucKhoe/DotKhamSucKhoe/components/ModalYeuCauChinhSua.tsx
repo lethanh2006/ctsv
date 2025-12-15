@@ -2,7 +2,7 @@ import { ETrangThaiKhamSucKhoe } from '@/services/DotKhamSuKhoe/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Descriptions, Form, Input, Modal, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -33,7 +33,7 @@ const ModalYeuCauChinhSua = (props: { visibleForm: boolean; setVisibleForm: (val
 		<Modal
 			width={600}
 			title='Yêu cầu chỉnh sửa'
-			visible={visibleForm}
+			open={visibleForm}
 			onCancel={() => setVisibleForm(false)}
 			footer={null}
 		>
@@ -44,10 +44,10 @@ const ModalYeuCauChinhSua = (props: { visibleForm: boolean; setVisibleForm: (val
 							<Descriptions.Item label='Học kỳ'>{record?.tenHocKy}</Descriptions.Item>
 							<Descriptions.Item label='Tên đợt khai báo'>{record?.ten}</Descriptions.Item>
 							<Descriptions.Item label='Thời gian bắt đầu'>
-								{moment(record?.thoiGianBatDau).format('DD/MM/YYYY')}
+								{dayjs(record?.thoiGianBatDau).format('DD/MM/YYYY')}
 							</Descriptions.Item>
 							<Descriptions.Item label='Thời gian kết thúc'>
-								{moment(record?.thoiGianKetThuc).format('DD/MM/YYYY')}
+								{dayjs(record?.thoiGianKetThuc).format('DD/MM/YYYY')}
 							</Descriptions.Item>
 						</Descriptions>
 					</Col>

@@ -1,5 +1,5 @@
 import { ipTaiChinh } from '@/utils/ip';
-import axios from 'axios';
+import axios from '@/utils/axios';
 
 export async function getConfigMomo() {
 	return axios.get(`${ipTaiChinh}/momo/config`);

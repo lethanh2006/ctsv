@@ -12,7 +12,7 @@ import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Input, Menu, Modal, Popconfirm, Select, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useEffect } from 'react';
 import { useModel } from 'umi';
 import ViewRender from '../QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
@@ -120,7 +120,7 @@ const QuyetDinh = (props: {
 			dataIndex: 'ngaySinh',
 			width: 100,
 			align: 'center',
-			render: (val) => (val ? moment(val).format('DD/MM/YYYY') : ''),
+			render: (val) => (val ? dayjs(val).format('DD/MM/YYYY') : ''),
 			onCell,
 			hide: props.ssoId ? true : false,
 		},
@@ -286,10 +286,10 @@ const QuyetDinh = (props: {
 				modelName={'chedochinhsach.quyetdinhchedosinhvien'}
 				columns={columns}
 			/>
-			<Modal destroyOnClose width={900} title='Chi tiết' footer={false} visible={visibleView} onCancel={onCancelView}>
+			<Modal destroyOnHidden width={900} title='Chi tiết' footer={false} open={visibleView} onCancel={onCancelView}>
 				<ViewQuyetDinh />
 			</Modal>
-			<Modal onCancel={() => setVisibleImport(false)} footer={false} visible={visibleImport} title='Nhập dữ liệu'>
+			<Modal onCancel={() => setVisibleImport(false)} footer={false} open={visibleImport} title='Nhập dữ liệu'>
 				<FormImport getData={getData} />
 			</Modal>
 		</>

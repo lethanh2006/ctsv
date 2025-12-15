@@ -3,7 +3,7 @@ import type { IColumn } from '@/components/Table/typing';
 import type { HoiDong } from '@/services/QuyTrinh/HoiDong/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import FormHoiDong from './components/Form';
 import TableThanhVien from './components/TableThanhVien';
@@ -32,7 +32,7 @@ const QuanLyHoiDong = () => {
 			width: 150,
 			render: (record: HoiDong.IRecord) => (
 				<div>
-					{moment(record.startDate).format('HH:mm DD/MM/YYYY')} - {moment(record.endDate).format('HH:mm DD/MM/YYYY')}
+					{dayjs(record.startDate).format('HH:mm DD/MM/YYYY')} - {dayjs(record.endDate).format('HH:mm DD/MM/YYYY')}
 				</div>
 			),
 		},
@@ -110,7 +110,7 @@ const QuanLyHoiDong = () => {
 						Đóng
 					</Button>
 				}
-				visible={visibleViewThanhVien}
+				open={visibleViewThanhVien}
 				onCancel={onCancelViewThanhVien}
 			>
 				<TableThanhVien mode='view' />

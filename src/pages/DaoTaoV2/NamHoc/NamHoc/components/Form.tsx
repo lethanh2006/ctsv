@@ -62,7 +62,7 @@ const FormNamHoc = (props: { afterAddNew: (rec: NamHoc.IRecord) => void }) => {
 													label='Thời gian bắt đầu'
 													rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'ngày bắt đầu năm học')]}
 												>
-													<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau, 'd')} />
+													<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau, 'd')} />
 												</Form.Item>
 											</Col>
 											<Col span={12} md={12}>

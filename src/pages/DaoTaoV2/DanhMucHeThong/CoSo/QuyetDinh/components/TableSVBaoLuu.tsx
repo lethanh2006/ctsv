@@ -2,7 +2,7 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
 import type { QuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/QuyetDinh/typing';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectNganhCoSo from '../../Nganh/components/SelectNganh';
@@ -38,14 +38,14 @@ const TableSVBaoLuu = () => {
 		{
 			title: 'Thời gian bắt đầu',
 			dataIndex: 'thoiGianBatDau',
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			width: 120,
 			sortable: true,
 		},
 		{
 			title: 'Thời gian kết thúc',
 			dataIndex: 'thoiGianKetThuc',
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			width: 120,
 			sortable: true,
 		},

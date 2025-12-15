@@ -1,7 +1,7 @@
 import DonutChart from '@/components/Chart/DonutChart';
 import { inputFormat } from '@/utils/utils';
 import { Col, Row, Statistic, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -15,10 +15,10 @@ const ThongKePage = () => {
 	}, [record?._id]);
 
 	const checkTime = (timeStart: string, timeEnd: string) => {
-		if (moment().isBefore(timeStart)) {
+		if (dayjs().isBefore(timeStart)) {
 			return <Tag color={'blue'}>Đợt chưa diễn ra</Tag>;
 		} else {
-			if (moment().isAfter(timeStart) && moment().isBefore(timeEnd)) {
+			if (dayjs().isAfter(timeStart) && dayjs().isBefore(timeEnd)) {
 				return (
 					<>
 						<div>
@@ -26,8 +26,8 @@ const ThongKePage = () => {
 						</div>
 						<div>
 							<span>
-								{moment(record?.thoiGianKetThuc).isAfter(moment()) &&
-									moment(record?.thoiGianBatDau).isBefore(moment()) && (
+								{dayjs(record?.thoiGianKetThuc).isAfter(dayjs()) &&
+									dayjs(record?.thoiGianBatDau).isBefore(dayjs()) && (
 										<div
 											style={{
 												display: 'flex',
@@ -45,7 +45,7 @@ const ThongKePage = () => {
 											</p>
 											<Countdown
 												valueStyle={{ fontSize: 16 }}
-												value={moment(record?.thoiGianKetThuc).unix() * 1000}
+												value={dayjs(record?.thoiGianKetThuc).unix() * 1000}
 												format='D Ngày H Giờ m Phút s giây )'
 											/>
 										</div>
@@ -68,8 +68,8 @@ const ThongKePage = () => {
 						<h3 style={{ color: '#0065CA' }}>Tên đợt: {record?.tenDot}</h3>
 						<div style={{ marginBottom: 16 }}>
 							{checkTime(
-								record?.thoiGianBatDau ? moment(record?.thoiGianBatDau).format('YYYY-MM-DD') : '',
-								record?.thoiGianKetThuc ? moment(record?.thoiGianKetThuc).format('YYYY-MM-DD') : '',
+								record?.thoiGianBatDau ? dayjs(record?.thoiGianBatDau).format('YYYY-MM-DD') : '',
+								record?.thoiGianKetThuc ? dayjs(record?.thoiGianKetThuc).format('YYYY-MM-DD') : '',
 							)}
 						</div>
 						<div>

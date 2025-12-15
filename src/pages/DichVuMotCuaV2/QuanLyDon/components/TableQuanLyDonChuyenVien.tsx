@@ -16,7 +16,7 @@ import {
 	QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, Modal, Popconfirm, Popover, Select, Tabs, Tag, Tooltip, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
@@ -116,7 +116,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 			dataIndex: 'createdAt',
 			align: 'center',
 			width: 120,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 			onCell,
 		},
 		{
@@ -381,7 +381,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 			dataIndex: 'createdAt',
 			align: 'center',
 			width: 120,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 			onCell,
 		},
 		{
@@ -712,10 +712,10 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 			{/*)}*/}
 
 			<Modal
-				destroyOnClose
+				destroyOnHidden
 				width='900px'
 				footer={false}
-				visible={visibleFormDon}
+				open={visibleFormDon}
 				onCancel={() => {
 					setVisibleFormDon(false);
 				}}
@@ -756,9 +756,9 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 			</Modal>
 			{/*<Modal*/}
 			{/*  footer={false}*/}
-			{/*  visible={visibleForm}*/}
+			{/*  open={visibleForm}*/}
 			{/*  onCancel={() => setVisibleForm(false)}*/}
-			{/*  bodyStyle={{ padding: 0 }}*/}
+			{/*  styles={{ padding: 0 }}*/}
 			{/*  width={600}*/}
 			{/*>*/}
 			{/*  <FormTraLoiPhanHoi getData={getData} />*/}

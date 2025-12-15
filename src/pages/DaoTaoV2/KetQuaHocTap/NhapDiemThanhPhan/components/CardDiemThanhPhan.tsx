@@ -100,7 +100,7 @@ const CardDiemThanhPhan = (getData: () => void) => {
 			),
 		);
 		if (!hasDiem) {
-			message.warn('Chưa nhập điểm cho sinh viên');
+			message.warning('Chưa nhập điểm cho sinh viên');
 			return;
 		}
 		Modal.confirm({
@@ -191,7 +191,7 @@ const CardDiemThanhPhan = (getData: () => void) => {
 							i && Object.entries(i).some(([title, diem]) => title.includes('diemThanhPhan') && diem !== null),
 					);
 				if (!hasDiem) {
-					message.warn('Chưa nhập điểm cho sinh viên');
+					message.warning('Chưa nhập điểm cho sinh viên');
 					return;
 				}
 				const list = values.data
@@ -295,7 +295,7 @@ const CardDiemThanhPhan = (getData: () => void) => {
 		<>
 			<Card
 				title={'Danh sách sinh viên'}
-				bodyStyle={{ padding: '8px 0 0' }}
+				styles={{ padding: '8px 0 0' }}
 				headStyle={{ padding: '0' }}
 				bordered={false}
 			>

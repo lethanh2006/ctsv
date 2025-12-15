@@ -11,7 +11,7 @@ import { ELoaiQuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/constant';
 import { ETrangThaiSinhVienDot } from '@/services/DaoTaoV2/constant';
 import { CheckCircleOutlined, CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Card, Modal, Popconfirm, Tabs } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormQuyetDinhSinhVien from './components/FormDuyet';
@@ -53,7 +53,7 @@ const QuyetDinhSinhVienPage = (props: { isThoiHoc?: boolean }) => {
 			dataIndex: 'thoiGianHieuLuc',
 			width: 120,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			sortable: true,
 			hide: !isThoiHoc,
 		},
@@ -62,7 +62,7 @@ const QuyetDinhSinhVienPage = (props: { isThoiHoc?: boolean }) => {
 			dataIndex: 'thoiGianBatDau',
 			width: 120,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			sortable: true,
 			hide: isThoiHoc,
 		},
@@ -71,7 +71,7 @@ const QuyetDinhSinhVienPage = (props: { isThoiHoc?: boolean }) => {
 			dataIndex: 'thoiGianKetThuc',
 			width: 120,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			sortable: true,
 			hide: isThoiHoc,
 		},
@@ -80,7 +80,7 @@ const QuyetDinhSinhVienPage = (props: { isThoiHoc?: boolean }) => {
 			// dataIndex: 'thoiGianKetThuc',
 			width: 120,
 			align: 'center',
-			// render: (val, rec) => val && <a href='#!'>{val && moment(val).format('DD/MM/YYYY')}</a>,
+			// render: (val, rec) => val && <a href='#!'>{val && dayjs(val).format('DD/MM/YYYY')}</a>,
 			sortable: true,
 			hide: trangThaiDuyet !== ETrangThaiSinhVienDot.CHO_XU_LY,
 		},
@@ -225,7 +225,7 @@ const QuyetDinhSinhVienPage = (props: { isThoiHoc?: boolean }) => {
 			</Card>
 
 			<Modal
-				visible={viewKhongDuyet}
+				open={viewKhongDuyet}
 				title={`Không duyệt ${
 					isThoiHoc
 						? intl.formatMessage({ id: 'danhmuchethong.coso.quyetdinh.thoihoc' })
@@ -244,10 +244,10 @@ const QuyetDinhSinhVienPage = (props: { isThoiHoc?: boolean }) => {
 			</Modal>
 
 			<Modal
-				visible={visibleQuyetDinh}
+				open={visibleQuyetDinh}
 				onCancel={() => setVisibleQuyetDinh(false)}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
 			>
 				<ViewQuyetDinh />

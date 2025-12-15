@@ -7,7 +7,7 @@ import { userUpdateBuoc } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoq
 import FormRender from '../../components/MauDon/FormRender';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { EKieuDuLieu } from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const FormQuyTrinh = (props: { getData: () => void }) => {
 	const {
@@ -50,7 +50,7 @@ const FormQuyTrinh = (props: { getData: () => void }) => {
 				valuesFinal[item] = {
 					value:
 						(isDate || isMonth) && valuesForm
-							? moment(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
+							? dayjs(valuesForm[item]).format(isDate ? 'DD/MM/YYYY' : 'MM/YYYY')
 							: valuesForm[item],
 					info: isDanhMuc
 						? danhSachDanhMuc

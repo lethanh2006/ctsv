@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { type ELoaiLogDiem } from '@/services/DaoTaoV2/HocKy/constant';
 import { type LichSuNhapDiem } from '@/services/DaoTaoV2/KetQuaHocTap/LichSuNhapDiem/typing';
 import { Modal } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useIntl, useModel } from 'umi';
 import { useEffect } from 'react';
 import { EOperatorType } from '@/components/Table/constant';
@@ -65,7 +65,7 @@ const ModalLichSuNhapDiem = (props: {
 			align: 'center',
 			filterType: 'datetime',
 			sortable: true,
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 			width: 120,
 		},
 	];
@@ -73,7 +73,7 @@ const ModalLichSuNhapDiem = (props: {
 	return (
 		<Modal
 			title={intl.formatMessage({ id: 'ketquahoctap.lichsunhapdiem.title' })}
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 			okButtonProps={{ hidden: true }}
 			cancelText='Đóng'

@@ -3,7 +3,7 @@ import { ELoaiThoiGianNhapDiem } from '@/services/DaoTaoV2/HocKy/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Divider, Form, InputNumber, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -48,7 +48,7 @@ const CauHinhThoiGianHocKyPage = (props: { onlyPhanCong?: boolean }) => {
 								>
 									<MyDatePicker
 										onChange={() => form.validateFields(['tgKtLayYKienKhgd'])}
-										// disabledDate={(cur) => moment(cur).isBefore(record?.thoiGianBatDau)}
+										// disabledDate={(cur) => dayjs(cur).isBefore(record?.thoiGianBatDau)}
 										allowClear
 									/>
 								</Form.Item>
@@ -59,7 +59,7 @@ const CauHinhThoiGianHocKyPage = (props: { onlyPhanCong?: boolean }) => {
 									label='Thời gian kết thúc'
 									rules={[...rules.sauNgay(tgBdLayYKienKhgd, 'Thời gian bắt đầu')]}
 								>
-									<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgBdLayYKienKhgd)} allowClear />
+									<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgBdLayYKienKhgd)} allowClear />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -79,7 +79,7 @@ const CauHinhThoiGianHocKyPage = (props: { onlyPhanCong?: boolean }) => {
 							label='Thời gian kết thúc'
 							rules={[...rules.sauNgay(tgBdPhanCongGiangDay, 'Thời gian bắt đầu')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(tgBdPhanCongGiangDay)} allowClear />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(tgBdPhanCongGiangDay)} allowClear />
 						</Form.Item>
 					</Col>
 				</Row>
@@ -122,7 +122,7 @@ const CauHinhThoiGianHocKyPage = (props: { onlyPhanCong?: boolean }) => {
 											onChange={(val) => {
 												form.validateFields(['thoiGianNhapDiemKetThuc']);
 											}}
-											disabledDate={(cur) => moment(cur).isBefore(record?.thoiGianBatDau)}
+											disabledDate={(cur) => dayjs(cur).isBefore(record?.thoiGianBatDau)}
 										/>
 									</Form.Item>
 								</Col>
@@ -132,7 +132,7 @@ const CauHinhThoiGianHocKyPage = (props: { onlyPhanCong?: boolean }) => {
 										label='Thời gian kết thúc'
 										rules={[...rules.sauNgay(thoiGianNhapDiemBatDau, 'Thời gian bắt đầu')]}
 									>
-										<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianNhapDiemBatDau)} />
+										<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianNhapDiemBatDau)} />
 									</Form.Item>
 								</Col>
 							</Row>

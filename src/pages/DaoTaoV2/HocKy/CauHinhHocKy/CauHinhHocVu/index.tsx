@@ -167,11 +167,11 @@ const CauHinhHocVuPage = (props: { isThoiHoc?: boolean }) => {
 						? intl.formatMessage({ id: 'kyhoc.cauhinhkyhoc.thongtincauhinh.tab3' }).toLocaleLowerCase()
 						: intl.formatMessage({ id: 'kyhoc.cauhinhkyhoc.thongtincauhinh.tab2' }).toLocaleLowerCase()
 				}`}
-				visible={viewXuLy}
+				open={viewXuLy}
 				onCancel={() => setViewXuLy(false)}
 				footer={null}
 				width={600}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<FormCauHinhHocVu
 					edit={editXuLy}

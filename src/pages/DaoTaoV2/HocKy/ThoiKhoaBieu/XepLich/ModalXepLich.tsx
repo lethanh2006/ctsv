@@ -29,7 +29,7 @@ const ModalXepLich = (props: {
 	};
 
 	return (
-		<Modal visible={visible} onCancel={onCancel} footer={null} title='Lịch học tuần' width={800} maskClosable={false}>
+		<Modal open={visible} onCancel={onCancel} footer={null} title='Lịch học tuần' width={800} maskClosable={false}>
 			<Form form={form} layout='vertical' onFinish={onFinish}>
 				{lichTuan?.lopHocPhanId ? (
 					<Form.Item label='Lớp tín chỉ'>

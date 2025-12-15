@@ -4,7 +4,7 @@ import FormRender from './FormRender';
 import { useEffect, useState } from 'react';
 // import TableThanhVien from './TableThanhVien';
 import { resetFieldsForm } from '@/utils/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
 
@@ -17,7 +17,7 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; mode: 'quyt
 		...recordQuyTrinhForm,
 		...recordQuyTrinhForm?.thongTinKhaiBao,
 		vaiTro: recordQuyTrinhForm?.nguoiKhaiBao?.danhSachVaiTro,
-		thoiGian: [moment(recordQuyTrinhForm?.thongTinThoiGian?.start), moment(recordQuyTrinhForm?.thongTinThoiGian?.end)],
+		thoiGian: [dayjs(recordQuyTrinhForm?.thongTinThoiGian?.start), dayjs(recordQuyTrinhForm?.thongTinThoiGian?.end)],
 	});
 
 	useEffect(() => {
@@ -28,8 +28,8 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; mode: 'quyt
 				...recordQuyTrinhForm?.thongTinKhaiBao,
 				vaiTro: recordQuyTrinhForm?.nguoiKhaiBao?.danhSachVaiTro,
 				thoiGian: [
-					moment(recordQuyTrinhForm?.thongTinThoiGian?.start),
-					moment(recordQuyTrinhForm?.thongTinThoiGian?.end),
+					dayjs(recordQuyTrinhForm?.thongTinThoiGian?.start),
+					dayjs(recordQuyTrinhForm?.thongTinThoiGian?.end),
 				],
 			});
 	}, [recordQuyTrinhForm?._id, visibleForm]);

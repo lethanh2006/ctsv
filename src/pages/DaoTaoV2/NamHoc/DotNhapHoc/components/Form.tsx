@@ -1,7 +1,7 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import rules from '@/utils/rules';
 import { Button, Col, Form, InputNumber, Row, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectKhoaSinhVien from '../../KhoaSinhVien/components/Select';
@@ -30,7 +30,7 @@ const FormDotNhapHoc = (props: { afterAddNew?: (rec: DotNhapHoc.IRecord) => void
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: DotNhapHoc.IRecord) => {
-		if (moment(values.thoiGianKetThuc).diff(moment(values.thoiGianBatDau), 'minutes') <= 0) {
+		if (dayjs(values.thoiGianKetThuc).diff(dayjs(values.thoiGianBatDau), 'minutes') <= 0) {
 			message.error('Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc!');
 			return;
 		}

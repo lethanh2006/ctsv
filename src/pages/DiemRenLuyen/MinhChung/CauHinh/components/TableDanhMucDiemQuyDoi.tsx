@@ -80,9 +80,9 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 			<Modal
 				title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} danh mục điểm quy đổi`}
 				footer={null}
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form
 					layout={'vertical'}
@@ -90,7 +90,7 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 						const dataOrigin = formProps.getFieldValue('danhMucDiemQuyDoi') ?? [];
 
 						if (dataOrigin?.find((item: any) => item?.tieuDe === values?.tieuDe) && !edit) {
-							message.warn('Không được trùng tiêu đề');
+							message.warning('Không được trùng tiêu đề');
 							return;
 						}
 

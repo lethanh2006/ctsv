@@ -2,7 +2,7 @@ import rules from '@/utils/rules';
 import { removeVietnameseTones } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import _ from 'lodash';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableCauHinh from './MauDon/TableCauHinh';
 import { useEffect } from 'react';
 import TableDanhMucDiemQuyDoi from '@/pages/DiemRenLuyen/MinhChung/CauHinh/components/TableDanhMucDiemQuyDoi';

@@ -143,11 +143,11 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 				</Space>
 			</TableStaticData>
 			<Modal
-				destroyOnClose
+				destroyOnHidden
 				width={700}
 				footer={false}
-				bodyStyle={{ padding: 0 }}
-				visible={visibleCauHinh}
+				styles={{ padding: 0 }}
+				open={visibleCauHinh}
 				onCancel={onCancelFormCauHinh}
 			>
 				<FormCauHinh onCancel={onCancelFormCauHinh} dataSetState={props?.dataSetState} dataState={props?.dataState} />

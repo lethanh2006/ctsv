@@ -7,7 +7,7 @@ import type { QuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/QuyetDinh/typ
 import { ELoaiQuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/constant';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useIntl, useModel } from 'umi';
 import CardFormQuyetDinh from './components/CardForm';
 import ViewQuyetDinh from './components/View';
@@ -47,7 +47,7 @@ const QuyetDinhPage = () => {
 			dataIndex: 'ngayBanHanh',
 			align: 'center',
 			width: 120,
-			render: (val, rec) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			filterType: 'date',
 			sortable: true,
 			onCell,

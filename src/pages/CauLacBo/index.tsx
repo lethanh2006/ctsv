@@ -181,8 +181,8 @@ const CauLacBoComponent = () => {
 				columns={columns}
 			/>
 			<Modal
-				destroyOnClose
-				bodyStyle={{ paddingTop: 4 }}
+				destroyOnHidden
+				styles={{ paddingTop: 4 }}
 				width={1100}
 				footer={
 					<Button
@@ -194,7 +194,7 @@ const CauLacBoComponent = () => {
 					</Button>
 				}
 				title={recordCLB?.ten}
-				visible={visibleDetail}
+				open={visibleDetail}
 				onCancel={() => setVisibleDetail(false)}
 			>
 				<ViewDetailCLB dataThongKe={dataThongKe.find((item) => item.cauLacBo === recordCLB?.ten) as any} />

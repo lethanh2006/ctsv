@@ -3,7 +3,7 @@ import type { DotQuyDoiDiem } from '@/services/DaoTaoV2/KetQuaHocTap/DotQuyDoiDi
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -63,7 +63,7 @@ const FormDotQuyDoiDiem = (props: any) => {
 						>
 							<MyDatePicker
 								onChange={() => form.validateFields(['thoiGianKetThucLayYKien'])}
-								disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)}
+								disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)}
 							/>
 						</Form.Item>
 					</Col>
@@ -76,7 +76,7 @@ const FormDotQuyDoiDiem = (props: any) => {
 						>
 							<MyDatePicker
 								onChange={() => form.validateFields(['thoiGianKetThuc'])}
-								disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDauLayYKien)}
+								disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDauLayYKien)}
 							/>
 						</Form.Item>
 					</Col>
@@ -86,7 +86,7 @@ const FormDotQuyDoiDiem = (props: any) => {
 							label='Thời gian kết thúc'
 							rules={[...rules.required, ...rules.sauNgay(thoiGianKetThucLayYKien, 'Thời gian kết thúc lấy ý kiến')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianKetThucLayYKien)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianKetThucLayYKien)} />
 						</Form.Item>
 					</Col>
 				</Row>

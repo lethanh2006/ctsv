@@ -7,7 +7,7 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Space, Switch } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -164,7 +164,7 @@ const FormHocKy = (props: { fromNamHoc?: boolean; afterAddNew: (rec: HocKy.IReco
 					>
 						<MyDatePicker
 							disabledDate={(cur) =>
-								moment(cur).isBefore(edit ? record?.namHoc?.thoiGianBatDau : recNamHoc?.thoiGianBatDau, 'd')
+								dayjs(cur).isBefore(edit ? record?.namHoc?.thoiGianBatDau : recNamHoc?.thoiGianBatDau, 'd')
 							}
 							// disabled={edit}
 						/>

@@ -2,7 +2,7 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 
 import { Modal, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import FormTable from './FormTable';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
@@ -81,14 +81,14 @@ const ViewRender = (props: {
 			break;
 
 		case EKieuDuLieu.HOUR:
-			value = <div>{moment(valueFinal).format('HH:mm DD/MM/YYYY')}</div>;
+			value = <div>{dayjs(valueFinal).format('HH:mm DD/MM/YYYY')}</div>;
 			break;
 		case EKieuDuLieu.DATE:
-			value = <div>{moment(valueFinal).format('DD/MM/YYYY')}</div>;
+			value = <div>{dayjs(valueFinal).format('DD/MM/YYYY')}</div>;
 			// value = <div>{valueFinal}</div>;
 			break;
 		case EKieuDuLieu.MONTH:
-			value = <div>{moment(valueFinal).format('MM/YYYY')}</div>;
+			value = <div>{dayjs(valueFinal).format('MM/YYYY')}</div>;
 			// value = <div>{valueFinal}</div>;
 			break;
 		case EKieuDuLieu.FILE:
@@ -138,11 +138,11 @@ const ViewRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnClose
+						destroyOnHidden
 						width={700}
 						footer={false}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
-						visible={visibleFormTable}
+						open={visibleFormTable}
 						onCancel={() => setVisibleFormTable(false)}
 					>
 						<FormTable

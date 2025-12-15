@@ -4,7 +4,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { type TinTuc } from '@/services/TienIch/TinTuc/typing';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 // import FilterPhamVi from '../ChuDe/components/Filter';
@@ -66,7 +66,7 @@ const TinTucPage = () => {
       align: 'center',
       filterType: 'date',
       sortable: true,
-      render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+      render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
       onCell,
     },
     {
@@ -128,12 +128,12 @@ const TinTucPage = () => {
 
       <Modal
         width={900}
-        bodyStyle={{ padding: 0 }}
-        destroyOnClose
+        styles={{ padding: 0 }}
+        destroyOnHidden
         okButtonProps={{ hidden: true }}
         cancelText="Đóng"
         onCancel={() => setVisibleModal(false)}
-        visible={visibleModal}
+        open={visibleModal}
       >
         <ViewTinTuc />
       </Modal>

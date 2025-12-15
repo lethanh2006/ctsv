@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, message, Modal, Row, Select, Spin, Tooltip } from 'antd';
 
 import { useState } from 'react';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -30,7 +30,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 	const onFinish = async (values: any) => {
 		try {
 			if (dataDanhSachThamChieu?.length < 1) {
-				message.warn('Vui lòng thêm danh sách tham chiếu đơn');
+				message.warning('Vui lòng thêm danh sách tham chiếu đơn');
 				return;
 			}
 			setLoadingDuyet(true);
@@ -255,7 +255,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 
 			<Modal
 				title={'Thêm mới'}
-				visible={visibleThamChieu}
+				open={visibleThamChieu}
 				onCancel={() => setVisbleThamChieu(false)}
 				width={800}
 				// footer={
@@ -263,7 +263,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 				// 		<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
 				// 	</>
 				// }
-				destroyOnClose
+				destroyOnHidden
 				footer={null}
 			>
 				<Form
@@ -311,12 +311,12 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 			</Modal>
 			<Modal
 				footer={false}
-				visible={visible}
-				bodyStyle={{ padding: 0 }}
+				open={visible}
+				styles={{ padding: 0 }}
 				onCancel={() => {
 					setVisible(false);
 				}}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<ImportExcel
 					handleData={handleData}

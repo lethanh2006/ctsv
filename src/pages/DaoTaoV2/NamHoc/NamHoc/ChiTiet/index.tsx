@@ -6,7 +6,7 @@ import { boxesIntersect, useSelectionContainer, type Box } from '@air/react-drag
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Card, Divider, Form, Modal, Popconfirm } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { history, useIntl, useModel } from 'umi';
@@ -58,7 +58,7 @@ const ChiTietNamHocPage = () => {
 	}, [maNamHoc]);
 
 	useEffect(() => {
-		const nam = moment(thoiGianBatDau).year();
+		const nam = dayjs(thoiGianBatDau).year();
 		getAllKhoaNganh(false, undefined, undefined, [
 			{
 				active: true,
@@ -87,11 +87,11 @@ const ChiTietNamHocPage = () => {
 			}));
 			setData(dat);
 		});
-	}, [moment(thoiGianBatDau).year()]);
+	}, [dayjs(thoiGianBatDau).year()]);
 
 	useEffect(() => {
 		if (!thoiGianBatDau || !hocKyList?.length) return;
-		const day = moment(thoiGianBatDau).startOf('isoWeek');
+		const day = dayjs(thoiGianBatDau).startOf('isoWeek');
 		const soTuan = calNumWeek(day, hocKyList);
 		const head = calHeader(day, hocKyList, soTuan);
 		setHeader(head);
@@ -274,7 +274,7 @@ const ChiTietNamHocPage = () => {
 												backgroundColor: selectedCells.find(
 													(j) => j.tuan === index + 1 && j.maKhoaNganh === item.maKhoaNganh,
 												)
-													? 'var(--primary-1)'
+													? 'var(--color-primary-bg)'
 													: kh.hoatDongTuan?.maMau,
 												cursor: header?.days?.[index]?.isBreak ? 'not-allowed' : 'pointer',
 											}}
@@ -314,7 +314,7 @@ const ChiTietNamHocPage = () => {
 
 			<Modal
 				title='Chỉnh sửa kế hoạch năm học'
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				maskClosable={false}
 				width={600}

@@ -5,7 +5,7 @@ import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { tienVietNam } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useIntl, useModel } from 'umi';
 import Form from './Form';
 
@@ -42,7 +42,7 @@ const HocBongSinhVienPage = () => {
 			dataIndex: 'thoiGianTraoTangHocBong',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Loại học bổng',

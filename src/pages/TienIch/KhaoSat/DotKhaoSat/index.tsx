@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Divider, Modal, Popconfirm, Popover, Switch, Tooltip } from 'antd';
 import fileDownload from 'js-file-download';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import FormViewDetail from '../components/FormViewDetail';
@@ -86,7 +86,7 @@ const DotKhaoSatPage = () => {
       title: 'Thời gian bắt đầu',
       dataIndex: 'thoiGianBatDau',
       align: 'center',
-      render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+      render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : ''),
       sortable: true,
       filterType: 'datetime',
       width: 120,
@@ -96,7 +96,7 @@ const DotKhaoSatPage = () => {
       title: 'Thời gian kết thúc',
       dataIndex: 'thoiGianKetThuc',
       align: 'center',
-      render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : ''),
+      render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : ''),
       sortable: true,
       filterType: 'datetime',
       width: 120,
@@ -237,9 +237,9 @@ const DotKhaoSatPage = () => {
       </TableBase>
 
       <Modal
-        visible={visibleBieuMau}
+        open={visibleBieuMau}
         onCancel={() => setVisibleBieuMau(false)}
-        bodyStyle={{ padding: 0 }}
+        styles={{ padding: 0 }}
         footer={null}
         width={800}
       >

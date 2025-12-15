@@ -3,7 +3,7 @@ import type { NamHoc } from '@/services/DaoTaoV2/NamHoc/NamHoc/typings';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -44,7 +44,7 @@ const FormXinYKien = (props: { visible: boolean; setVisible?: (val: boolean) => 
 						label='Thời gian kết thúc'
 						rules={[...rules.required, ...rules.sauNgay(ngayBdLayYKien, 'Thời gian bắt đầu')]}
 					>
-						<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(ngayBdLayYKien)} />
+						<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(ngayBdLayYKien)} />
 					</Form.Item>
 				</Col>
 			</Row>

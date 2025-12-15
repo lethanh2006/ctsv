@@ -1,11 +1,11 @@
 import useInitModel from '@/hooks/useInitModel';
-import { getQRDangKy, getQRThamGia, getThongKeSuKien, getThongTinSuKien, thongKeKhaoSat } from '@/services/SuKienV2';
 import { locationPathMappingToESuKienType } from '@/services/SuKien/constant';
-import { last } from 'lodash';
-import { useState } from 'react';
-import monent from 'moment';
+import { getQRDangKy, getQRThamGia, getThongKeSuKien, getThongTinSuKien, thongKeKhaoSat } from '@/services/SuKienV2';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import type { BieuMau } from '@/services/TienIch/BieuMau/typings';
+import dayjs from 'dayjs';
+import { last } from 'lodash';
+import { useState } from 'react';
 
 export default () => {
 	const objInit = useInitModel<SuKienV2.IRecord>('su-kien/admin');
@@ -42,7 +42,7 @@ export default () => {
 		setIsLoadingThongKeTheoNam(true);
 		try {
 			// const response = await getThongKeSuKien({ nam: '2023', loaiSuKien: getSuKienType() });
-			const response = await getThongKeSuKien({ nam: monent().year() });
+			const response = await getThongKeSuKien({ nam: dayjs().year() });
 			setThongKeTheoNamData(response.data?.data as SuKienV2.ThongKeTheoNam);
 		} finally {
 			setIsLoadingThongKeTheoNam(false);

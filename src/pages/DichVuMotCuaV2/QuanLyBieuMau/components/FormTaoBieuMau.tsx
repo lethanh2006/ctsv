@@ -121,7 +121,7 @@ const FormBieuMau = () => {
                     <Card
                       size="small"
                       headStyle={{ padding: '0px 24px' }}
-                      bodyStyle={{ padding: '8px 24px' }}
+                      styles={{ padding: '8px 24px' }}
                       className={styles.block}
                       title={
                         <>
@@ -209,11 +209,11 @@ const FormBieuMau = () => {
         </Form.Item>
       </Form>
       <Modal
-        destroyOnClose
+        destroyOnHidden
         width="60%"
         footer={false}
-        visible={viewBieuBMau}
-        bodyStyle={{ padding: 0 }}
+        open={viewBieuBMau}
+        styles={{ padding: 0 }}
         onCancel={() => {
           setViewBieuBMau(false);
         }}

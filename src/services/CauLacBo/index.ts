@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/utils/axios';
 import type { ETrangThaiHoatDong } from './constant';
 import { ip3 } from '@/utils/ip';
 

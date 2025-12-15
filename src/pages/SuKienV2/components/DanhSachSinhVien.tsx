@@ -7,7 +7,7 @@ import { exportDanhSachSinhVien, getThongKeSinhVien, xemKhaoSat } from '@/servic
 import { ELoaiKhaoSatSuKien, ETrangThaiThamGia, MapColorETrangThaiThamGia } from '@/services/SuKienV2/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { getFilenameHeader } from '@/utils/utils';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,
@@ -34,7 +34,7 @@ import {
 	message,
 } from 'antd';
 import fileDownload from 'js-file-download';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 
 interface IProps {
@@ -121,7 +121,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			width: 120,
 			hide: type !== 'Đăng ký',
 			align: 'center',
-			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : '--'),
+			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
 			title: 'Thời gian checkin',
@@ -129,7 +129,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			width: 120,
 			hide: type !== 'Tham gia',
 			align: 'center',
-			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : '--'),
+			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
 			title: 'Thời gian checkout',
@@ -137,7 +137,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			width: 120,
 			hide: type !== 'Tham gia',
 			align: 'center',
-			render: (val) => (val ? moment(val).format('HH:mm DD/MM/YYYY') : '--'),
+			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
 			title: 'Làm khảo sát đăng ký',
@@ -528,9 +528,9 @@ const DanhSachSinhVien = (props: IProps) => {
 			/>
 
 			<Modal
-				destroyOnClose
+				destroyOnHidden
 				title={`Khảo sát ${record?._id ? `sinh viên ${record?.tenSv} (${record?.maSv})` : ''}`}
-				visible={visibleKhaoSat}
+				open={visibleKhaoSat}
 				onCancel={() => {
 					setVisibleKhaoSat(false);
 				}}

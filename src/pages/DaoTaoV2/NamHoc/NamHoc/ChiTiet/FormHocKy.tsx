@@ -2,7 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import rules from '@/utils/rules';
 import { Col, Divider, Form, InputNumber, Row } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const FormHocKyDetail = (props: { soKyChinh: number; soKyPhu: number; thoiGianBatDau: any; hocKyList: any[] }) => {
 	const { soKyChinh, soKyPhu, thoiGianBatDau, hocKyList } = props;
@@ -17,7 +17,7 @@ const FormHocKyDetail = (props: { soKyChinh: number; soKyPhu: number; thoiGianBa
 							const isKyChinh = ky <= soKyChinh;
 							const batDau = !index
 								? thoiGianBatDau
-								: moment(hocKyList?.[index - 1]?.thoiGianBatDau ?? thoiGianBatDau)
+								: dayjs(hocKyList?.[index - 1]?.thoiGianBatDau ?? thoiGianBatDau)
 										.startOf('w')
 										.add(hocKyList?.[index - 1]?.soTuan ?? 0, 'w');
 							return (
@@ -32,7 +32,7 @@ const FormHocKyDetail = (props: { soKyChinh: number; soKyPhu: number; thoiGianBa
 										</Col>
 										<Col span={12} md={12}>
 											<Form.Item name={[index, 'thoiGianBatDau']} label='Thời gian bắt đầu' rules={[...rules.required]}>
-												<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(batDau, 'd')} />
+												<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(batDau, 'd')} />
 											</Form.Item>
 										</Col>
 										<Col span={12} md={12}>

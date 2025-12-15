@@ -7,7 +7,7 @@ export enum EFileScope {
 	PRIVATE = 'Private',
 }
 
-const handleSingleFile = async (
+export const handleSingleFile = async (
 	file: any,
 	scope: EFileScope = EFileScope.PUBLIC,
 	returnResponse?: boolean,

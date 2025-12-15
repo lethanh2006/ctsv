@@ -12,7 +12,7 @@ import { ELoaiQuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/constant';
 import { ETrangThaiSinhVienBaoLuu } from '@/services/DaoTaoV2/SinhVien/constant';
 import { CheckCircleOutlined, NotificationOutlined, RetweetOutlined } from '@ant-design/icons';
 import { Card, Modal, Popconfirm, Segmented, Space, Tabs } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import StatSinhVienBaoLuu from './Stat';
@@ -48,13 +48,13 @@ const QuyetDinhSinhVienPage = () => {
 
 		if (value === '1') setFilters(temp);
 		else if (value === '2') {
-			const oneMonthFromNow = moment().add(1, 'months').toISOString();
+			const oneMonthFromNow = dayjs().add(1, 'months').toISOString();
 			setFilters([
 				...temp,
 				{
 					field: 'thoiGianKetThuc',
 					operator: EOperatorType.BETWEEN,
-					values: [moment().toISOString(), oneMonthFromNow],
+					values: [dayjs().toISOString(), oneMonthFromNow],
 					active: true,
 				},
 			]);
@@ -64,7 +64,7 @@ const QuyetDinhSinhVienPage = () => {
 				{
 					field: 'thoiGianKetThuc',
 					operator: EOperatorType.LESS_THAN,
-					values: [moment().toISOString()],
+					values: [dayjs().toISOString()],
 					active: true,
 				},
 			]);
@@ -113,7 +113,7 @@ const QuyetDinhSinhVienPage = () => {
 			dataIndex: 'thoiGianBatDau',
 			width: 120,
 			align: 'center',
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			sortable: true,
 		},
 		{
@@ -123,14 +123,14 @@ const QuyetDinhSinhVienPage = () => {
 			align: 'center',
 			render: (val) => {
 				if (!val) return null;
-				const oneMonthAhead = moment().add(1, 'months');
+				const oneMonthAhead = dayjs().add(1, 'months');
 				return (
 					<span
 						style={{
-							color: moment().isAfter(val, 'd') ? 'red' : oneMonthAhead.isAfter(val, 'd') ? 'orange' : undefined,
+							color: dayjs().isAfter(val, 'd') ? 'red' : oneMonthAhead.isAfter(val, 'd') ? 'orange' : undefined,
 						}}
 					>
-						{moment(val).format('DD/MM/YYYY')}
+						{dayjs(val).format('DD/MM/YYYY')}
 					</span>
 				);
 			},
@@ -261,10 +261,10 @@ const QuyetDinhSinhVienPage = () => {
 			</Card>
 
 			<Modal
-				visible={visibleQuyetDinh}
+				open={visibleQuyetDinh}
 				onCancel={() => setVisibleQuyetDinh(false)}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
 			>
 				<ViewQuyetDinh />

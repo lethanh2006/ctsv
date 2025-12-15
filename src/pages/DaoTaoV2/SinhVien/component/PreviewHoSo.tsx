@@ -2,7 +2,7 @@ import KetQuaToanKhoaSinhVien from '@/pages/DaoTaoV2/KetQuaHocTap/KetQuaToanKhoa
 import { formatPhoneNumber } from '@/utils/utils';
 import { MenuOutlined, PrinterOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Empty, Image, Row, Spin, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import ChartCongNoSinhVien from '../CongNoSinhVien/ChartCongNo';
 import { exportLyLich } from '@/services/DaoTaoV2/SinhVien';
@@ -55,13 +55,13 @@ const PreviewHoSo = (props: any) => {
 		{ label: 'Giới tính', content: record?.gioiTinh, md: 8 },
 		{
 			label: 'Ngày sinh',
-			content: record?.ngaySinh ? moment(record.ngaySinh).format('DD/MM/YYYY') : '',
+			content: record?.ngaySinh ? dayjs(record.ngaySinh).format('DD/MM/YYYY') : '',
 			md: 8,
 		},
 		{
 			label: 'CCCD/CMND',
 			content: `${record?.cccd ?? ''}, ngày cấp: ${
-				record?.ngayCapCccd ? moment(record.ngayCapCccd).format('DD/MM/YYYY') : '--'
+				record?.ngayCapCccd ? dayjs(record.ngayCapCccd).format('DD/MM/YYYY') : '--'
 			}, nơi cấp: ${record?.noiCapCccd ?? ''}`,
 			md: 24,
 		},
@@ -123,17 +123,17 @@ const PreviewHoSo = (props: any) => {
 	// 		children: [
 	// 			{
 	// 				label: 'Ngày vào Đoàn',
-	// 				content: record?.ngayVaoDoan ? moment(record.ngayVaoDoan).format('DD/MM/YYYY') : '',
+	// 				content: record?.ngayVaoDoan ? dayjs(record.ngayVaoDoan).format('DD/MM/YYYY') : '',
 	// 				md: 8,
 	// 			},
 	// 			{
 	// 				label: 'Ngày vào Đảng',
-	// 				content: record?.ngayVaoDang ? moment(record.ngayVaoDang).format('DD/MM/YYYY') : '',
+	// 				content: record?.ngayVaoDang ? dayjs(record.ngayVaoDang).format('DD/MM/YYYY') : '',
 	// 				md: 8,
 	// 			},
 	// 			{
 	// 				label: 'Ngày vào Đảng chính thức',
-	// 				content: record?.ngayVaoDangChinhThuc ? moment(record.ngayVaoDangChinhThuc).format('DD/MM/YYYY') : '',
+	// 				content: record?.ngayVaoDangChinhThuc ? dayjs(record.ngayVaoDangChinhThuc).format('DD/MM/YYYY') : '',
 	// 				md: 8,
 	// 			},
 	// 		],
@@ -192,13 +192,13 @@ const PreviewHoSo = (props: any) => {
 									title='Kết quả học tập'
 									bordered={false}
 									headStyle={{ padding: 0 }}
-									bodyStyle={{ padding: '8px 0 0 0' }}
+									styles={{ padding: '8px 0 0 0' }}
 								>
 									<KetQuaToanKhoaSinhVien sinhVienSsoId={record?.ssoId} hideDetail />
 								</Card>
 							</Col>
 							<Col span={24} md={8}>
-								<Card title='Công nợ' bordered={false} headStyle={{ padding: 0 }} bodyStyle={{ padding: '8px 0 0 0' }}>
+								<Card title='Công nợ' bordered={false} headStyle={{ padding: 0 }} styles={{ padding: '8px 0 0 0' }}>
 									<ChartCongNoSinhVien />
 								</Card>
 							</Col>

@@ -1,5 +1,5 @@
+import axios from '@/utils/axios';
 import { ipDaoTao } from '@/utils/ip';
-import axios from 'axios';
 
 export async function khoiTaoCanhBaoSinhVien(type: 'canh-bao-ket-qua-hoc-tap' | 'thoi-hoc', hocKyId: string) {
 	return axios.post(`${ipDaoTao}/${type}/hoc-ky/${hocKyId}/khoi-tao`);

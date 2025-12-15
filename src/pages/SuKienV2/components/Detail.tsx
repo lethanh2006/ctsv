@@ -169,11 +169,11 @@ export const Detail = () => {
 
 	return (
 		<Modal
-			bodyStyle={{ paddingTop: 4 }}
+			styles={{ paddingTop: 4 }}
 			width={1000}
-			visible={isVisibleFormDetail}
+			open={isVisibleFormDetail}
 			title='Chi tiết sự kiện'
-			destroyOnClose
+			destroyOnHidden
 			onCancel={() => setIsVisibleFormDetail(false)}
 			footer={null}
 		>

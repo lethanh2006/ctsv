@@ -1,6 +1,6 @@
 import { TrangThaiKhaiBao } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Card, Form, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import FormRender from '../../components/MauDon/FormRender';

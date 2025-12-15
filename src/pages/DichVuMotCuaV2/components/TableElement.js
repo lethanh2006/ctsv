@@ -1,7 +1,7 @@
 import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Input, Table, Drawer, Modal, Tooltip, Divider, Popconfirm } from 'antd';
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 class App extends React.Component {
   state = {
@@ -82,7 +82,7 @@ class App extends React.Component {
         break;
       }
       case 'DATE_PICKER': {
-        valueFinal = values?.value ? moment(values?.value)?.format('HH:mm DD/MM/YYYY') : undefined;
+        valueFinal = values?.value ? dayjs(values?.value)?.format('HH:mm DD/MM/YYYY') : undefined;
         break;
       }
       case 'DON_VI_HANH_CHINH': {
@@ -218,10 +218,10 @@ class App extends React.Component {
                 onClose={() => {
                   this.setState({ visible: false });
                 }}
-                destroyOnClose
+                destroyOnHidden
                 footer={false}
-                bodyStyle={{ padding: 0 }}
-                visible={this.state.visible}
+                styles={{ padding: 0 }}
+                open={this.state.visible}
               >
                 <Form
                   hideTitle
@@ -273,10 +273,10 @@ class App extends React.Component {
                 onCancel={() => {
                   this.setState({ visible: false });
                 }}
-                destroyOnClose
+                destroyOnHidden
                 footer={false}
-                bodyStyle={{ padding: 0 }}
-                visible={this.state.visible}
+                styles={{ padding: 0 }}
+                open={this.state.visible}
               >
                 <Form
                   hideTitle

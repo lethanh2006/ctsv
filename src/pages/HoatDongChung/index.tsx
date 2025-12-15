@@ -4,7 +4,7 @@ import type { EHoatDongChungType1 } from '@/services/HoatDongChung/constants';
 import { EHoatDongChungType2 } from '@/services/HoatDongChung/constants';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectHocKy from '../DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
@@ -88,14 +88,14 @@ const HoatDongChungPage = (props: {
 			align: 'center',
 			width: 130,
 			sortable: true,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Thời gian kết thúc',
 			dataIndex: 'thoiGianKetThuc',
 			align: 'center',
 			width: 130,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Thao tác',
@@ -207,11 +207,11 @@ const HoatDongChungPage = (props: {
 			/>
 
 			<Modal
-				bodyStyle={{
+				styles={{
 					paddingTop: 4,
 				}}
 				title={'Danh sách sinh viên'}
-				visible={visibleDanhSach}
+				open={visibleDanhSach}
 				onCancel={() => {
 					setVisibleDanhSach(false);
 				}}

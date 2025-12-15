@@ -3,21 +3,21 @@ import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import { primaryColor } from '@/services/base/constant';
 import { SyncOutlined } from '@ant-design/icons';
 import { Card, Timeline } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import type { Key } from 'react';
 
 const ViewDot = (props: { recDot: DotQuyTrinh.IRecord; recQuyTrinh: QuyTrinh.IRecord }) => {
 	const { recDot, recQuyTrinh } = props;
 	const indexCurrent =
 		recDot.danhSachCauHinhThoiGianDot?.findIndex(
-			(item: { thoiGianBatDau: moment.MomentInput; thoiGianKetThuc: moment.MomentInput }) =>
-				moment(item.thoiGianBatDau).isBefore(moment()) && moment().isBefore(item.thoiGianKetThuc),
+			(item: { thoiGianBatDau: dayjs.dayjsInput; thoiGianKetThuc: dayjs.dayjsInput }) =>
+				dayjs(item.thoiGianBatDau).isBefore(dayjs()) && dayjs().isBefore(item.thoiGianKetThuc),
 		) ?? 0;
 
 	return (
 		<Card
-			bodyStyle={{ paddingBottom: 0 }}
-			title={`${recDot.ten} (${moment(recDot.thoiGianBatDau).format('DD/MM/YYYY')} - ${moment(
+			styles={{ paddingBottom: 0 }}
+			title={`${recDot.ten} (${dayjs(recDot.thoiGianBatDau).format('DD/MM/YYYY')} - ${dayjs(
 				recDot.thoiGianKetThuc,
 			).format('DD/MM/YYYY')})`}
 		>
@@ -26,8 +26,8 @@ const ViewDot = (props: { recDot: DotQuyTrinh.IRecord; recQuyTrinh: QuyTrinh.IRe
 					(
 						item: {
 							maBuoc: Key | null | undefined;
-							thoiGianBatDau: moment.MomentInput;
-							thoiGianKetThuc: moment.MomentInput;
+							thoiGianBatDau: dayjs.dayjsInput;
+							thoiGianKetThuc: dayjs.dayjsInput;
 						},
 						index: number,
 					) => (
@@ -39,8 +39,8 @@ const ViewDot = (props: { recDot: DotQuyTrinh.IRecord; recQuyTrinh: QuyTrinh.IRe
 							<div style={{ color: index === indexCurrent ? primaryColor : undefined }}>
 								{recQuyTrinh.danhSachBuocXuLy.find((ele) => ele.ma === item.maBuoc)?.ten}{' '}
 								<b>
-									({moment(item.thoiGianBatDau).format('DD/MM/YYYY')} -{' '}
-									{moment(item.thoiGianKetThuc).format('DD/MM/YYYY')})
+									({dayjs(item.thoiGianBatDau).format('DD/MM/YYYY')} -{' '}
+									{dayjs(item.thoiGianKetThuc).format('DD/MM/YYYY')})
 								</b>
 							</div>
 						</Timeline.Item>

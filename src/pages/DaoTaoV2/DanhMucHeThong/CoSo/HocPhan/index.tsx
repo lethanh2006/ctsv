@@ -185,7 +185,7 @@ const HocPhanPage = () => {
 
 			<ModalImport
 				modelName='daotaov2.hocphan.decuonghocphan'
-				visible={visibleImportDeCuong}
+				open={visibleImportDeCuong}
 				onCancel={() => setVisibleImportDeCuong(false)}
 				onOk={() => {
 					setVisibleImportDeCuong(false);

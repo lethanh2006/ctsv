@@ -1,10 +1,10 @@
 import { Button, Card, Col, Form, Input, Row, Select, Spin } from 'antd';
 import rules from '@/utils/rules';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { useEffect } from 'react';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import TableThanhVien from './TableThanhVien';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const FormHoiDong = () => {
 	const [form] = Form.useForm();
@@ -33,7 +33,7 @@ const FormHoiDong = () => {
 	};
 	useEffect(() => {
 		if (record && edit) {
-			form.setFieldsValue({ ...record, thoiGian: [moment(record?.startDate), moment(record?.endDate)] });
+			form.setFieldsValue({ ...record, thoiGian: [dayjs(record?.startDate), dayjs(record?.endDate)] });
 		}
 	}, [record, edit]);
 	return (

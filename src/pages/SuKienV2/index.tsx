@@ -15,17 +15,17 @@ import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { CalendarOutlined, DeleteOutlined, EditOutlined, PieChartOutlined, TableOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Modal, Popconfirm, Row, Segmented, Spin, Switch, Tag, Tooltip } from 'antd';
 import { sum } from 'lodash';
-import moment, { type Moment } from 'moment';
+import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import type { DateRange, View } from 'react-big-calendar';
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
+import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useModel } from 'umi';
 import { Detail } from './components/Detail';
 import Form from './components/Form';
 import { ThongKeNguoiThamDu } from './components/ThongKeNguoiThamDu';
 
-const localizer = momentLocalizer(moment);
+const localizer = dayjsLocalizer(dayjs);
 
 const SuKienPage = () => {
 	const {
@@ -51,7 +51,7 @@ const SuKienPage = () => {
 	const [layout, setLayout] = useState<'listing' | 'time'>('listing');
 	const [calendarView, setCalendarView] = useState<View>(Views.MONTH);
 	const [date, setDate] = useState(new Date());
-	const [dateRange, setDateRange] = useState<Moment[]>([moment().startOf('month'), moment().endOf('month')]);
+	const [dateRange, setDateRange] = useState<dayjs[]>([dayjs().startOf('month'), dayjs().endOf('month')]);
 	const [dataCalendar, setDataCalendar] = useState<{ title: string; rawData: SuKienV2.IRecord }[]>([]);
 
 	const eventPropGetter = (event: { title: string; rawData: SuKienV2.IRecord }) => ({
@@ -123,7 +123,7 @@ const SuKienPage = () => {
 			width: 160,
 			onCell,
 			render: (_, record) => {
-				return record.thoiGianBatDauDangKy ? moment(record.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--';
+				return record.thoiGianBatDauDangKy ? dayjs(record.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--';
 			},
 		},
 		{
@@ -135,7 +135,7 @@ const SuKienPage = () => {
 			width: 160,
 			onCell,
 			render: (_, record) => {
-				return record.thoiGianKetThucDangKy ? moment(record.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--';
+				return record.thoiGianKetThucDangKy ? dayjs(record.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--';
 			},
 		},
 		{
@@ -146,7 +146,7 @@ const SuKienPage = () => {
 			width: 160,
 			onCell,
 			render: (_, record) => {
-				return record.thoiGianBatDau ? moment(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : null;
+				return record.thoiGianBatDau ? dayjs(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : null;
 			},
 		},
 		// {
@@ -315,8 +315,8 @@ const SuKienPage = () => {
 			danhSach.map((item) => ({
 				rawData: item,
 				title: item.tenSuKien,
-				start: moment(item?.thoiGianBatDau).toDate(),
-				end: moment(item?.thoiGianKetThuc).toDate(),
+				start: dayjs(item?.thoiGianBatDau).toDate(),
+				end: dayjs(item?.thoiGianKetThuc).toDate(),
 			})),
 		);
 	}, [danhSach, layout]);
@@ -342,12 +342,12 @@ const SuKienPage = () => {
 					formats={{
 						dayHeaderFormat: 'dddd DD/MM/YYYY',
 						dayRangeHeaderFormat: (range: DateRange) => {
-							return `${moment(range.start).format('DD/MM')} - ${moment(range.end).format('DD/MM')}`;
+							return `${dayjs(range.start).format('DD/MM')} - ${dayjs(range.end).format('DD/MM')}`;
 						},
 					}}
 					onRangeChange={(val) => {
-						if (Array.isArray(val)) setDateRange([moment(val[0]).startOf('d'), moment(val.at(-1)).endOf('d')]);
-						else setDateRange([moment(val.start).startOf('d'), moment(val.end).endOf('d')]);
+						if (Array.isArray(val)) setDateRange([dayjs(val[0]).startOf('d'), dayjs(val.at(-1)).endOf('d')]);
+						else setDateRange([dayjs(val.start).startOf('d'), dayjs(val.end).endOf('d')]);
 					}}
 					localizer={localizer}
 					defaultView={calendarView}
@@ -360,8 +360,8 @@ const SuKienPage = () => {
 					messages={messagesCalendar}
 					views={['month', 'week', 'day']}
 					style={{ height: 700, overflow: 'auto' }}
-					min={moment('0000', 'HHmm').toDate()}
-					max={moment('2359', 'HHmm').toDate()}
+					min={dayjs('0000', 'HHmm').toDate()}
+					max={dayjs('2359', 'HHmm').toDate()}
 					eventPropGetter={eventPropGetter}
 					onSelectSlot={handleSelect}
 					components={{ event: (event) => eventCustom(event) }}
@@ -375,7 +375,7 @@ const SuKienPage = () => {
 					onCancel={() => setVisibleForm(false)}
 					footer={null}
 					title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} hoạt động`}
-					visible={visibleForm}
+					open={visibleForm}
 					width={900}
 				>
 					<Form hideCard />
@@ -389,7 +389,7 @@ const SuKienPage = () => {
 			<Col span={24}>
 				<Row gutter={[12, 12]}>
 					<Col span={24} md={12} lg={6}>
-						<Card bodyStyle={{ padding: '8px 14px' }}>
+						<Card styles={{ padding: '8px 14px' }}>
 							<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 								<div style={{ fontSize: 18, fontWeight: 700, color: '#007EB9' }}>
 									{sum([
@@ -406,7 +406,7 @@ const SuKienPage = () => {
 						const key = ETrangThaiDienRaMappingToThongKeKey[item];
 						return (
 							<Col key={item} span={24} md={12} lg={6}>
-								<Card bodyStyle={{ padding: '8px 14px' }}>
+								<Card styles={{ padding: '8px 14px' }}>
 									<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 										<div style={{ fontSize: 18, fontWeight: 700, color: ETrangThaiDienRaMappingToHexColor[item] }}>
 											{thongKeTheoNamData?.[key]}

@@ -469,7 +469,7 @@ const KhoiHocPhanCTDTList = (props: { isKeHoach?: boolean }) => {
 			</Col>
 
 			<Modal
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				footer={null}
 				title={(edit ? 'Chỉnh sửa' : 'Thêm mới') + ' khối học phần'}

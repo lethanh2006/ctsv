@@ -3,7 +3,7 @@ import { ELoaiDoiTuong, ELoaiDot } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, DatePicker, Form, Input, Row, Select, Switch } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectMauKhaoSat from '../components/Select';
@@ -30,8 +30,8 @@ const FormDotKhaoSat = (props: any) => {
 			form.setFieldsValue({
 				...record,
 				thoiGian: [
-					record?.thoiGianBatDau ? moment(record.thoiGianBatDau) : undefined,
-					record?.thoiGianKetThuc ? moment(record.thoiGianKetThuc) : undefined,
+					record?.thoiGianBatDau ? dayjs(record.thoiGianBatDau) : undefined,
+					record?.thoiGianKetThuc ? dayjs(record.thoiGianKetThuc) : undefined,
 				],
 				// phamVi: record?.phamVi ?? EPhamViChuDe.TAT_CA,
 				loaiDoiTuongSuDung: record?.loaiDoiTuongSuDung?.[0] ?? ELoaiDoiTuong.TAT_CA,
@@ -141,7 +141,7 @@ const FormDotKhaoSat = (props: any) => {
 						<Form.Item name='thoiGian' label='Thời gian khảo sát' rules={[...rules.required]}>
 							<DatePicker.RangePicker
 								format='HH:mm DD/MM/YYYY'
-								disabledDate={(cur) => moment(cur).isBefore(moment(), 'days')}
+								disabledDate={(cur) => dayjs(cur).isBefore(dayjs(), 'days')}
 								style={{ width: '100%' }}
 								placeholder={['Thời gian bắt đầu', 'Thời gian kết thúc']}
 								showTime

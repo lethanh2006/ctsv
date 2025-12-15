@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useModel } from 'umi';
 import TableQuanLyDon from '../QuanLyDon/components/TableQuanLyDonChuyenVien';
 import ThongTinTongHop from './components/ThongTinTongHop';
-import moment from "moment";
+import dayjs from "dayjs";
 
 const ThongTinTongHopChuyenVienDieuPhoi = () => {
   const { idDichVu, chuyenVienDieuPhoiGetTongSoDonDVMCModel } = useModel('dashboard');

@@ -1,6 +1,6 @@
 import { ip3 } from '@/utils/ip';
 import { buildFormData } from '@/utils/utils';
-import axios from 'axios';
+import axios from '@/utils/axios';
 
 export const getTemplateImportCheDoSinhVien = (idChinhSach: string) => {
 	return axios.get(`${ip3}/che-do-sinh-vien/${idChinhSach}/import-template`, { responseType: 'arraybuffer' });

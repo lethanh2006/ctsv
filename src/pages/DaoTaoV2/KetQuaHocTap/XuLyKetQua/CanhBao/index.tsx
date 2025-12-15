@@ -23,7 +23,7 @@ import {
 	SaveOutlined,
 } from '@ant-design/icons';
 import { Alert, Modal, Popconfirm, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import ConfirmKetThucDotCanhBao from './ConfirmKetThuc';
@@ -54,7 +54,7 @@ const CanhBaoHocTapTable = (props: { isKetQua?: boolean; isThoiHoc?: boolean }) 
 	const { handleView } = useModel('daotaov2.sinhvien.sinhvien');
 	const [viewChot, setViewChot] = useState<boolean>(false);
 	const ngoaiThoiGianHopHoiDong =
-		isKetQua === undefined && (!recHocKy?.tgHopHoiDongHvu || moment().isAfter(recHocKy?.tgHopHoiDongHvu, 'd'));
+		isKetQua === undefined && (!recHocKy?.tgHopHoiDongHvu || dayjs().isAfter(recHocKy?.tgHopHoiDongHvu, 'd'));
 
 	const getData = () => recHocKy?.ma && getModel({ maHocKy: recHocKy.ma });
 

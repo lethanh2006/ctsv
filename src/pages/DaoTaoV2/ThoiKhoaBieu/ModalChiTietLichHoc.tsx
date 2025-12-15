@@ -8,9 +8,9 @@ const ModalChiTietLichHocSinhVien = (props: { visible: boolean; setVisible: (val
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title='Thông tin lớp tín chỉ'
-			destroyOnClose
+			destroyOnHidden
 			width={800}
 			onCancel={() => setVisible(false)}
 			okButtonProps={{ hidden: true }}

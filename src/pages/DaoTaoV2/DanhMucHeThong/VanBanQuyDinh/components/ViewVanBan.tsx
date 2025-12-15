@@ -1,6 +1,6 @@
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Descriptions, Modal } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -19,7 +19,7 @@ const ViewVanBanQuyDinh = (props: {
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={() => setVisible(false)}
 			title='Chi tiết căn cứ pháp lý'
 			okButtonProps={{ hidden: true }}
@@ -36,7 +36,7 @@ const ViewVanBanQuyDinh = (props: {
 					</a>
 				</Descriptions.Item>
 				<Descriptions.Item label='Thời gian cập nhật'>
-					{moment(record?.updatedAt).format('HH:mm DD/MM/YYYY')}
+					{dayjs(record?.updatedAt).format('HH:mm DD/MM/YYYY')}
 				</Descriptions.Item>
 			</Descriptions>
 

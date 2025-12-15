@@ -29,7 +29,7 @@ const PreviewDanhSachHocPhan = (props: { visble: boolean; setVisible: (vis: bool
 	return (
 		<Modal
 			title='Danh sách học phần thuộc CTĐT'
-			visible={visble}
+			open={visble}
 			onCancel={() => setVisible(false)}
 			okButtonProps={{ hidden: true }}
 			cancelText='Đóng'

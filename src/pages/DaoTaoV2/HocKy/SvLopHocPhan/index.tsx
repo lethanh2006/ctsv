@@ -164,9 +164,9 @@ const SinhVienLopHocPhan = (props: { isView?: boolean }) => {
 				width={600}
 				onCancel={() => setVisibleForm(false)}
 				footer={false}
-				bodyStyle={{ padding: 0 }}
-				visible={visibleForm}
-				destroyOnClose={false}
+				styles={{ padding: 0 }}
+				open={visibleForm}
+				destroyOnHidden={false}
 			>
 				<Form title={intl.formatMessage({ id: 'kyhoc.sinhvienlophocphan.title' })} getData={getData} />
 			</Modal>

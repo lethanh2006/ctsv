@@ -25,7 +25,7 @@ const CardLopHanhChinh = (props: { children: JSX.Element; title?: string; otherC
 		style: {
 			cursor: 'pointer',
 			fontWeight: rec._id === record?._id ? 600 : undefined,
-			backgroundColor: rec._id === record?._id ? 'var(--primary-1)' : undefined,
+			backgroundColor: rec._id === record?._id ? 'var(--color-primary-bg)' : undefined,
 		},
 	});
 
@@ -75,7 +75,7 @@ const CardLopHanhChinh = (props: { children: JSX.Element; title?: string; otherC
 									title={`DS sinh viên lớp ${recLopHanhChinh?.ten ?? ''}`}
 									bordered={false}
 									headStyle={{ padding: 0 }}
-									bodyStyle={{ padding: '8px 0 0' }}
+									styles={{ padding: '8px 0 0' }}
 								>
 									<TableStaticData columns={columns} data={danhSach} otherProps={{ size: 'small' }} hasTotal />
 								</Card>

@@ -6,7 +6,7 @@ import { ETrangThaiKhamSucKhoe, colorETrangThaiKhaiBaoSucKhoe } from '@/services
 import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
 import { ArrowDownOutlined, CheckOutlined, DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Popover, Tag, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import ModalDotKhamSucKhoe from './components/ModalDotKhamSucKhoe';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ const DotKhamSucKhoePage = () => {
 			align: 'center',
 			filterType: 'datetime',
 			sortable: true,
-			render: (val) => val && moment(val).format(' DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format(' DD/MM/YYYY'),
 			onCell,
 		},
 		{
@@ -65,7 +65,7 @@ const DotKhamSucKhoePage = () => {
 			align: 'center',
 			filterType: 'datetime',
 			sortable: true,
-			render: (val) => val && moment(val).format(' DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format(' DD/MM/YYYY'),
 			onCell,
 		},
 		{

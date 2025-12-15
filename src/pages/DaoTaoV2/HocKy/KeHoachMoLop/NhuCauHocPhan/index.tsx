@@ -7,7 +7,7 @@ import { ETrangThaiYKienHocPhan, colorYKienHocPhan } from '@/services/DaoTaoV2/D
 import { type DangKyNhuCau } from '@/services/DaoTaoV2/HocKy/DangKyNhuCau/typing';
 import { loaiNhuCauHocPhan, type ELoaiNhuCauHocPhan } from '@/services/DaoTaoV2/HocKy/constant';
 import { Modal, Segmented, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import SinhVienHpHkPage from '../../SvHocPhan';
@@ -84,7 +84,7 @@ const NhuCauHocPhanPage = (props: { maHocPhan?: string; maKhoaNganh?: string }) 
 			dataIndex: 'thoiGianGuiYKien',
 			width: 100,
 			align: 'center',
-			render: (val) => val && moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Người gửi',
@@ -141,7 +141,7 @@ const NhuCauHocPhanPage = (props: { maHocPhan?: string; maKhoaNganh?: string }) 
 				okButtonProps={{ hidden: true }}
 				cancelText='Đóng'
 				onCancel={() => setVisibleSvHpHk(false)}
-				visible={visibleSvHpHk}
+				open={visibleSvHpHk}
 			>
 				<SinhVienHpHkPage maHocPhan={record?.maHocPhan} maKhoaNganh={record?.maKhoaNganh} loaiNhuCau={loaiNhuCau} />
 			</Modal>

@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Button, Card, Steps } from 'antd';
 import { useEffect, useState } from 'react';
 import ThongTinChung from '@/pages/DiemRenLuyen/Dot/components/ThongTinChung';

@@ -1,6 +1,6 @@
 import { primaryColor } from '@/services/base/constant';
 import { Col, Empty, Row, Space, Spin, Statistic, Typography } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
@@ -14,12 +14,12 @@ const QRCodePage = () => {
 
 	const { getThongTinSuKien, isLoadingThongTinSuKien, thongTinSuKien } = useModel('sukien');
 
-	const [expiredAt, setExpiredAt] = useState(moment().add('s', 10).toDate().toISOString());
+	const [expiredAt, setExpiredAt] = useState(dayjs().add('s', 10).toDate().toISOString());
 
 	const isKetThuc =
 		thongTinSuKien?.thoiGianBatDau &&
 		thongTinSuKien.thoiGianKetThuc &&
-		moment().isAfter(thongTinSuKien.thoiGianKetThuc);
+		dayjs().isAfter(thongTinSuKien.thoiGianKetThuc);
 
 	useEffect(() => {
 		if (!id) {
@@ -31,7 +31,7 @@ const QRCodePage = () => {
 
 	useEffect(() => {
 		const interval = window.setInterval(() => {
-			setExpiredAt(moment().add('s', 10).toDate().toISOString());
+			setExpiredAt(dayjs().add('s', 10).toDate().toISOString());
 		}, 10000);
 		return () => {
 			window.clearInterval(interval);
@@ -73,10 +73,10 @@ const QRCodePage = () => {
 								{thongTinSuKien?.tenSuKien}
 							</Typography.Text>
 							{thongTinSuKien?.thoiGianBatDau && (
-								<div>Bắt đầu: {moment(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>
+								<div>Bắt đầu: {dayjs(thongTinSuKien?.thoiGianBatDau).format('HH:mm DD/MM/YYYY')}</div>
 							)}
 							{thongTinSuKien?.thoiGianKetThuc && (
-								<p>Kết thúc: {moment(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</p>
+								<p>Kết thúc: {dayjs(thongTinSuKien?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY')}</p>
 							)}
 							{isKetThuc ? (
 								<Typography.Text strong style={{ fontSize: 22, color: primaryColor }}>

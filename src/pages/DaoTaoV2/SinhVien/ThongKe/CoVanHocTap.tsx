@@ -1,7 +1,7 @@
 import type { IColumn } from '@/components/Table/typing';
 import { exportSoLuongSinhVienLhc, getThongKeCoVanHocTap } from '@/services/DaoTaoV2/SinhVien';
 import { jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Row } from 'antd';
 import fileDownload from 'js-file-download';

@@ -16,6 +16,7 @@ import { Button, Card, Form, Input, message, Spin, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import { FieldsNhapDiem } from './FieldsNhapDiem';
+import useCheckAccess from '@/hooks/useCheckAccess';
 
 const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhieuNai?: boolean; getData?: any }) => {
 	const [form] = Form.useForm();
@@ -27,13 +28,21 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 		dataDiemMinhChung,
 	} = useModel('diemrenluyen.bieumau');
 
-	const { record: recordDot, dataPhanQuyen } = useModel('diemrenluyen.dot');
+	const { record: recordDot, dataPhanQuyen, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
+	
 	const {
 		record: recPhieuDiem,
 		xuLyKhieuNaiModel,
 		loading,
 		setVisibleForm,
 	} = useModel('diemrenluyen.phieudiemrenluyen');
+
+	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
+	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
+
+	useEffect(() => {
+		handleCheckPhanQuyen(idDuyet, isKhoa);
+	}, []);
 
 	const isCVHT = false;
 	const { initialState } = useModel('@@initialState');

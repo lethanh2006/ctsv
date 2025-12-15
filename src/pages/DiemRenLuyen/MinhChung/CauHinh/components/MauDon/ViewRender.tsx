@@ -6,7 +6,7 @@ import { EKieuDuLieu, ETextDisplay } from '@/services/FormDong/LoaiHinh/constant
 import type { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
 import { currencyFormat } from '@/utils/utils';
 import { Modal, Tag } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import FormTable from './FormTable';
 import { primaryColor } from '@/services/base/constant';
@@ -81,14 +81,14 @@ const ViewRender = (props: {
 			break;
 
 		case EKieuDuLieu.HOUR:
-			value = <div>{moment(valueFinal)?.format('HH:mm DD/MM/YYYY')}</div>;
+			value = <div>{dayjs(valueFinal)?.format('HH:mm DD/MM/YYYY')}</div>;
 			break;
 		case EKieuDuLieu.DATE:
-			value = <div>{moment(valueFinal)?.format('DD/MM/YYYY')}</div>;
+			value = <div>{dayjs(valueFinal)?.format('DD/MM/YYYY')}</div>;
 			// value = <div>{valueFinal}</div>;
 			break;
 		case EKieuDuLieu.MONTH:
-			value = <div>{moment(valueFinal)?.format('MM/YYYY')}</div>;
+			value = <div>{dayjs(valueFinal)?.format('MM/YYYY')}</div>;
 			// value = <div>{valueFinal}</div>;
 			break;
 		case EKieuDuLieu.FILE:
@@ -147,11 +147,11 @@ const ViewRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnClose
+						destroyOnHidden
 						width={700}
 						footer={false}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
-						visible={visibleFormTable}
+						open={visibleFormTable}
 						onCancel={() => setVisibleFormTable(false)}
 					>
 						<FormTable

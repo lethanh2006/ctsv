@@ -1,6 +1,6 @@
-import { chuanHoaTen, removeHtmlTags, urlRegex } from '@/utils/utils';
+import dayjs from './dayjs'; // Import dayjs đã được cấu hình
 import _ from 'lodash';
-import moment from 'moment';
+import { trim, removeHtmlTags, urlRegex } from '@/utils/utils';
 
 const allCharacters =
 	'a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹýếẾ';
@@ -78,49 +78,6 @@ const rules = {
 		{
 			pattern: new RegExp(`^[0-9${allCharacters} \n]+$`),
 			message: 'Không chứa kí tự đặc biệt',
-		},
-	],
-
-	arrNumber: (max, min) => [
-		{
-			validator: (__, value, callback) => {
-				let isArrNumber = true;
-				if (value && value.length) {
-					value.map((item) => {
-						const isNumber = !isNaN(item) && !isNaN(parseFloat(item));
-						if (isNumber !== true) isArrNumber = false;
-					});
-				}
-				if (!isArrNumber) callback('');
-				callback();
-			},
-			message: 'Chỉ được nhập số, ngăn cách giữa phần nguyên và phần thập phân bởi dấu chấm',
-		},
-		{
-			validator: (__, value, callback) => {
-				let isValidArrNumber = true;
-				if (value && value.length) {
-					value.map((item) => {
-						if (parseFloat(item) > max) isValidArrNumber = false;
-					});
-				}
-				if (!isValidArrNumber) callback('');
-				callback();
-			},
-			message: `Giá trị tối đa: ${max}`,
-		},
-		{
-			validator: (__, value, callback) => {
-				let isValidArrNumber = true;
-				if (value && value.length) {
-					value.map((item) => {
-						if (parseFloat(item) < min) isValidArrNumber = false;
-					});
-				}
-				if (!isValidArrNumber) callback('');
-				callback();
-			},
-			message: `Giá trị nhỏ nhất: ${min}`,
 		},
 	],
 
@@ -215,7 +172,7 @@ const rules = {
 	ngaySinh: [
 		{
 			validator: (_, value, callback) => {
-				if (moment(value).isAfter(moment())) callback('');
+				if (dayjs(value).isAfter(dayjs())) callback('');
 				callback();
 			},
 			message: 'Ngày sinh chưa đúng',
@@ -224,7 +181,7 @@ const rules = {
 	sauHomNay: [
 		{
 			validator: (_, value, callback) => {
-				if (value && moment(value).isBefore(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (value && dayjs(value).isBefore(dayjs().startOf('day'))) callback('');
 				callback();
 			},
 			message: 'Không được trước thời điểm hiện tại',
@@ -233,7 +190,7 @@ const rules = {
 	sauThoiDiem: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
-				if (mo && value && moment(value).isBefore(moment(mo))) callback('');
+				if (mo && value && dayjs(value).isBefore(dayjs(mo))) callback('');
 				callback();
 			},
 			message: 'Không được trước ' + label,
@@ -242,7 +199,7 @@ const rules = {
 	sauNgay: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
-				if (mo && value && moment(value).isBefore(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (mo && value && dayjs(value).isBefore(dayjs(mo).startOf('day'))) callback('');
 				callback();
 			},
 			message: 'Không được trước ' + label,
@@ -251,7 +208,7 @@ const rules = {
 	truocHomNay: [
 		{
 			validator: (_, value, callback) => {
-				if (value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (value && dayjs(value).isAfter(dayjs().startOf('day'))) callback('');
 				callback();
 			},
 			message: 'Không được sau thời điểm hiện tại',
@@ -260,7 +217,7 @@ const rules = {
 	nhoHonBangHomNay: [
 		{
 			validator: (_, value, callback) => {
-				if (value && moment(value).isAfter(moment().set({ hour: 0, minute: 0, second: 0 }).add(1, 'day'))) callback('');
+				if (value && dayjs(value).isAfter(dayjs().set({ hour: 0, minute: 0, second: 0 }).add(1, 'day'))) callback('');
 				callback();
 			},
 			message: 'Không được sau ngày hôm nay',
@@ -269,7 +226,7 @@ const rules = {
 	truocThoiDiem: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
-				if (mo && value && moment(value).isAfter(moment(mo))) callback('');
+				if (mo && value && dayjs(value).isAfter(dayjs(mo))) callback('');
 				callback();
 			},
 			message: 'Không được trước ' + label,
@@ -278,7 +235,7 @@ const rules = {
 	truocNgay: (mo, label) => [
 		{
 			validator: (_, value, callback) => {
-				if (mo && value && moment(value).isAfter(moment(mo).set({ hour: 0, minute: 0, second: 0 }))) callback('');
+				if (mo && value && dayjs(value).isAfter(dayjs(mo).startOf('day'))) callback('');
 				callback();
 			},
 			message: 'Không được sau ' + label,
@@ -406,6 +363,36 @@ const rules = {
 				callback();
 			},
 			message: `Số lượng không quá ${len} file`,
+		},
+	],
+
+	floatnumber: (max, min = 0, sauDauPhay = 2) => [
+		{
+			pattern: new RegExp(/^-?\d*(\.\d+)?$/),
+			message: 'Chỉ được nhập số, ngăn cách giữa phần nguyên và phần thập phân bởi dấu chấm',
+		},
+		{
+			validator: (__, value, callback) => {
+				const string = `${value}`.split('.');
+				if (string.length === 2 && string[1].length > sauDauPhay) callback('');
+				callback();
+			},
+			message: `Chỉ được ${sauDauPhay} số sau dấu phẩy`,
+		},
+
+		{
+			validator: (__, value, callback) => {
+				if (value > max) callback('');
+				callback();
+			},
+			message: `Giá trị tối đa: ${max}`,
+		},
+		{
+			validator: (__, value, callback) => {
+				if (value < min) callback('');
+				callback();
+			},
+			message: `Giá trị nhỏ nhất: ${min}`,
 		},
 	],
 

@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/Select';
 import FormNhapPhieuDiem from '../PhieuDiem/FormPhieuDiem/Form';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const DonKhieuNaiPage = () => {
 	const {
@@ -55,7 +55,7 @@ const DonKhieuNaiPage = () => {
 			sortable: true,
 			dataIndex: 'thoiGianGuiKhieuNai',
 			width: 120,
-			render: (val) => moment(val).format('HH:mm DD/MM/YYYY'),
+			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
 			title: 'Họ tên',

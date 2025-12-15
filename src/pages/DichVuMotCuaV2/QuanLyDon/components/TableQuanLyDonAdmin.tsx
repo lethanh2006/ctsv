@@ -13,7 +13,7 @@ import {
   FileTextOutlined,
 } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Modal, Popconfirm, Select, Tabs, Tag, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
@@ -157,7 +157,7 @@ const TableQuanLyDonAdmin = (props: {
       dataIndex: 'createdAt',
       align: 'center',
       width: 150,
-      render: (val) => <div>{moment(val).format('HH:mm DD/MM/YYYY')}</div>,
+      render: (val) => <div>{dayjs(val).format('HH:mm DD/MM/YYYY')}</div>,
       onCell,
     },
 
@@ -319,11 +319,11 @@ const TableQuanLyDonAdmin = (props: {
       </TableBase>
 
       <Modal
-        destroyOnClose
+        destroyOnHidden
         width="820px"
         footer={false}
-        visible={visibleFormBieuMau}
-        bodyStyle={{ padding: 18 }}
+        open={visibleFormBieuMau}
+        styles={{ padding: 18 }}
         onCancel={() => {
           setVisibleFormBieuMau(false);
         }}

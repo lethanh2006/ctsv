@@ -1,6 +1,6 @@
 import { ELoaiQuyetDinh } from '@/services/DaoTaoV2/DanhMucHeThong/constant';
 import { Button, Card, Descriptions } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useIntl, useModel } from 'umi';
 import TableSVBaoLuu from './TableSVBaoLuu';
 import TableSVSongNganh from './TableSVSongNganh';
@@ -18,7 +18,7 @@ const ViewQuyetDinh = () => {
 				<Descriptions.Item label='Loại quyết định'>{record?.loai ?? ''}</Descriptions.Item>
 				<Descriptions.Item label='Số quyết định'>{record?.soQuyetDinh ?? ''}</Descriptions.Item>
 				<Descriptions.Item label='Ngày ban hành'>
-					{record?.ngayBanHanh && moment(record?.ngayBanHanh).format('DD/MM/YYYY')}
+					{record?.ngayBanHanh && dayjs(record?.ngayBanHanh).format('DD/MM/YYYY')}
 				</Descriptions.Item>
 				<Descriptions.Item label='Nội dung' span={2}>
 					{record?.noiDung ?? ''}

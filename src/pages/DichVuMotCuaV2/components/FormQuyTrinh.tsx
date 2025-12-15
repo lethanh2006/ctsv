@@ -8,7 +8,7 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Modal, Spin, Timeline } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormBieuMau from './FormBieuMau';
@@ -149,7 +149,7 @@ const FormQuyTrinh = (props: {
                       <b>
                         Tạo đơn thành công
                         {props?.thoiGianTaoDon
-                          ? ` vào lúc ${moment(props?.thoiGianTaoDon).format('HH:mm DD/MM/YYYY')}`
+                          ? ` vào lúc ${dayjs(props?.thoiGianTaoDon).format('HH:mm DD/MM/YYYY')}`
                           : ''}
                       </b>
                     </div>
@@ -227,7 +227,7 @@ const FormQuyTrinh = (props: {
                             <div>
                               {recordThaoTac?.hanXuLy ? (
                                 <div>
-                                  Hạn xử lý: {moment(recordThaoTac?.hanXuLy)?.format('DD/MM/YYYY')}
+                                  Hạn xử lý: {dayjs(recordThaoTac?.hanXuLy)?.format('DD/MM/YYYY')}
                                 </div>
                               ) : (
                                 <div>
@@ -264,7 +264,7 @@ const FormQuyTrinh = (props: {
                             <>
                               <div>
                                 {recordThaoTac?.updatedAt
-                                  ? `Vào lúc: ${moment(recordThaoTac?.updatedAt).format(
+                                  ? `Vào lúc: ${dayjs(recordThaoTac?.updatedAt).format(
                                       'HH:mm DD/MM/YYYY',
                                     )}`
                                   : ''}
@@ -308,10 +308,10 @@ const FormQuyTrinh = (props: {
         )}
 
         <Modal
-          destroyOnClose
+          destroyOnHidden
           width="850px"
           footer={false}
-          visible={visibleFormBieuMau}
+          open={visibleFormBieuMau}
           onCancel={() => {
             setVisibleFormBieuMau(false);
           }}

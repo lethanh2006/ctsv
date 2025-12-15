@@ -8,7 +8,7 @@ import { buildUpLoadFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Descriptions, Form, Input, InputNumber, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import SelectHocKy from '../../HocKy/components/SelectHocKy';
@@ -108,7 +108,7 @@ const FormThoiKhoaBieu = (props: {
 						<>
 							{!isView && !isGiamSat ? (
 								<Descriptions.Item label='Học kỳ' span={2}>{`${recHocKy?.ten}, ${recHocKy?.soTuan ?? 0} tuần, từ ${
-									recHocKy?.thoiGianBatDau ? moment(recHocKy.thoiGianBatDau).format('DD/MM/YYYY') : ''
+									recHocKy?.thoiGianBatDau ? dayjs(recHocKy.thoiGianBatDau).format('DD/MM/YYYY') : ''
 								}`}</Descriptions.Item>
 							) : null}
 							<Descriptions.Item label='Tên học phần'>
@@ -154,7 +154,7 @@ const FormThoiKhoaBieu = (props: {
 						>
 							<MyDatePicker
 								disabled={fromPhanCong}
-								disabledDate={(cur) => moment(cur).isBefore(recHocKy?.thoiGianBatDau, 'd')}
+								disabledDate={(cur) => dayjs(cur).isBefore(recHocKy?.thoiGianBatDau, 'd')}
 							/>
 						</Form.Item>
 					</Col>

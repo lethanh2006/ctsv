@@ -52,8 +52,8 @@ const SelectSinhVienLopHP = (props: {
       {hasCreate !== false ? <Button icon={<PlusOutlined />} onClick={onAddNew} /> : null}
 
       <Modal
-        visible={visibleForm}
-        bodyStyle={{ padding: 0 }}
+        open={visibleForm}
+        styles={{ padding: 0 }}
         footer={null}
         onCancel={() => setVisibleForm(false)}
       >

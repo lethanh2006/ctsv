@@ -9,6 +9,11 @@ export enum ELoaiDoiTuong {
 	NGUOI_DUNG_CU_THE = 'Người dùng cụ thể',
 }
 
+export enum EVaiTroKhaoSat {
+	SINH_VIEN = 'sinh_vien',
+	NHAN_VIEN = 'nhan_vien',
+}
+
 export enum ELoaiCauHoi {
 	SingleChoice = 'Chọn 1 đáp án',
 	MultipleChoice = 'Chọn nhiều đáp án',

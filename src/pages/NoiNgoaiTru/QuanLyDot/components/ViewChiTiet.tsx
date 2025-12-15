@@ -6,7 +6,7 @@ const ViewChiTiet = (props: { visibleForm: boolean; setVisibleForm: (val: boolea
 	const { visibleForm, setVisibleForm } = props;
 	return (
 		<Modal
-			visible={visibleForm}
+			open={visibleForm}
 			onCancel={() => setVisibleForm(false)}
 			title='Chi tiết đợt khai báo nội - ngoại trú'
 			footer={null}

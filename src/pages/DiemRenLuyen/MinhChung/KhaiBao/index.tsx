@@ -8,7 +8,7 @@ import {
 	ETrangThaiTiepNhanMinhChung,
 	MapColorETrangThaiTiepNhanMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,
@@ -19,6 +19,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Divider, Popconfirm, Popover, Spin, Tag } from 'antd';
 import { useEffect } from 'react';
+import useCheckAccess from '@/hooks/useCheckAccess';
 
 const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: () => void }) => {
 	const { getModel, page, limit, condition, handleEdit, deleteModel, handleView, putModel } = useModel(
@@ -32,7 +33,14 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 		setRecord: setRecortdDot,
 		loading: loadingDot,
 		dataPhanQuyen,
+		handleCheckPhanQuyen,
 	} = useModel('diemrenluyen.dot');
+	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
+	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
+
+	useEffect(() => {
+		handleCheckPhanQuyen(idDuyet, isKhoa);
+	}, []);
 
 	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
 		'daotaov2.lophanhchinh.lophanhchinh',

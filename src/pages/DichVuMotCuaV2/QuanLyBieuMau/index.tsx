@@ -178,9 +178,9 @@ const QuanLyBieuMau = () => {
       <Modal
         width={800}
         footer={null}
-        visible={visible}
+        open={visible}
         onCancel={() => setVisible(false)}
-        destroyOnClose
+        destroyOnHidden
       >
         <Tabs>
           <Tabs.TabPane tab="Quy trình" key={0}>

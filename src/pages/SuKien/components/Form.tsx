@@ -34,7 +34,7 @@ import {
 } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { first } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormDuTruKinhPhi from './FormDuTruKinhPhi';
@@ -381,7 +381,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<MyDatePicker
 									showTime={{ showHour: true, showMinute: true }}
 									format='HH:mm DD/MM/YYYY'
-									disabledDate={thoiGianBatDau ? (cur) => moment(cur).isBefore(thoiGianBatDau) : undefined}
+									disabledDate={thoiGianBatDau ? (cur) => dayjs(cur).isBefore(thoiGianBatDau) : undefined}
 								/>
 							</Form.Item>
 						</Col>
@@ -526,12 +526,12 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<Modal
 									footer={false}
 									width={700}
-									bodyStyle={{ padding: 0 }}
-									visible={visibleFormDuTruKinhPhi}
+									styles={{ padding: 0 }}
+									open={visibleFormDuTruKinhPhi}
 									onCancel={() => {
 										setVisibleFormDuTruKinhPhi(false);
 									}}
-									destroyOnClose
+									destroyOnHidden
 								>
 									<FormDuTruKinhPhi setData={setDataKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
 								</Modal>

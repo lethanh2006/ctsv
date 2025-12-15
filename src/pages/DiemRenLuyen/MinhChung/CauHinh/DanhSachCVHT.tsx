@@ -11,12 +11,14 @@ import { ETrangThaiTiepNhanMinhChung } from '@/services/DiemRenLuyen/MinhChung/K
 
 const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	const { getAllModel, danhSach, record, setRecord } = useModel('diemrenluyen.minhchung.cauhinh');
-	const { dataPhanQuyen, record: recordDot } = useModel('diemrenluyen.dot');
+	const { dataPhanQuyen, record: recordDot, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
 	const { getModel, getAllModel: getAllMinhChung } = useModel('diemrenluyen.minhchung.khaibao');
 	const { record: recordLopHanhChinh } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 	const accessDuyetMinhChung = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const [dataCheckTrangThaiMinhChung, setDataCheckTrangThaiMinhChung] = useState<boolean>(false);
 	const { record: recordCauHinh } = useModel('diemrenluyen.minhchung.cauhinh');
+	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
+	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
 
 	const getData = async (isSetRecord: boolean) => {
 		try {
@@ -31,6 +33,7 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	};
 
 	useEffect(() => {
+		handleCheckPhanQuyen(idDuyet, isKhoa);
 		getData(true);
 
 		return () => {};

@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row } from 'antd';
 import rules from '@/utils/rules';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import { useEffect } from 'react';

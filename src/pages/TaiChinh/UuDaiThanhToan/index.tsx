@@ -2,7 +2,7 @@ import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import type { UuDaiThanhToan } from '@/services/TaiChinh/UuDaiThanhToan/typing';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useModel } from 'umi';
 
 const UuDaiThanhToanPage = () => {
@@ -22,8 +22,8 @@ const UuDaiThanhToanPage = () => {
 			align: 'center',
 			width: 140,
 			render: (val, rec) =>
-				`${rec.uuDai?.thoiGianBatDau ? moment(rec.uuDai?.thoiGianBatDau).format('DD/MM/YYYY') : ''} - ${
-					rec.uuDai?.thoiGianKetThuc ? moment(rec.uuDai?.thoiGianKetThuc).format('DD/MM/YYYY') : ''
+				`${rec.uuDai?.thoiGianBatDau ? dayjs(rec.uuDai?.thoiGianBatDau).format('DD/MM/YYYY') : ''} - ${
+					rec.uuDai?.thoiGianKetThuc ? dayjs(rec.uuDai?.thoiGianKetThuc).format('DD/MM/YYYY') : ''
 				}`,
 		},
 		{
@@ -50,7 +50,7 @@ const UuDaiThanhToanPage = () => {
 			dataIndex: 'createdAt',
 			align: 'center',
 			width: 100,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 	];
 

@@ -120,10 +120,10 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 			/>
 
 			<Modal
-				visible={visibleModal}
+				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 				width={1000}
 			>
 				<ThongTinThanhToan setVisible={setVisibleModal} />

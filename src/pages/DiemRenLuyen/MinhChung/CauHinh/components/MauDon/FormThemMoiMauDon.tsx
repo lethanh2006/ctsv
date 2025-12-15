@@ -3,7 +3,7 @@ import { QuyTrinh } from '@/services/FormDong/QuyTrinh/typing';
 import { buildUpLoadFile, getFileById } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { removeVietnameseTones, resetFieldsForm } from '@/utils/utils';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Button, Card, Form, Input, Select, message } from 'antd';
 import fileDownload from 'js-file-download';
 import _ from 'lodash';

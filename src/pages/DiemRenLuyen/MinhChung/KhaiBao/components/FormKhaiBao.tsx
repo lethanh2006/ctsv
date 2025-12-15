@@ -1,7 +1,7 @@
 import { Button, Card, Col, Divider, Form, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import FormRender from '../../CauHinh/components/MauDon/FormRender';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { EKieuDuLieu, ETextDisplay } from '@/services/FormDong/LoaiHinh/constants';
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import type { SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';

@@ -167,7 +167,7 @@ const CardDiemLopHocPhan = (getData: () => void) => {
 		<>
 			<Card
 				title={'Danh sách sinh viên'}
-				bodyStyle={{ padding: '8px 0 0' }}
+				styles={{ padding: '8px 0 0' }}
 				headStyle={{ padding: '0' }}
 				bordered={false}
 			>
@@ -185,7 +185,7 @@ const CardDiemLopHocPhan = (getData: () => void) => {
 							<Space wrap>
 								<Button
 									icon={<ExportOutlined />}
-									onClick={() => message.warn('Đang phát triển...')}
+									onClick={() => message.warning('Đang phát triển...')}
 									disabled={!danhSach.length}
 								>
 									Xuất bảng điểm

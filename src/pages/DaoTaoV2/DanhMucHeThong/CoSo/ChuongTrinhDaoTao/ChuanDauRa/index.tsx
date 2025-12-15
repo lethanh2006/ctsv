@@ -71,7 +71,7 @@ const ChuanDauRaPage = () => {
 					{recChuongTrinh?._id ? (
 						<Card
 							title='Danh sách chứng chỉ'
-							bodyStyle={{ padding: '8px 0 0' }}
+							styles={{ padding: '8px 0 0' }}
 							headStyle={{ padding: 0 }}
 							bordered={false}
 						>

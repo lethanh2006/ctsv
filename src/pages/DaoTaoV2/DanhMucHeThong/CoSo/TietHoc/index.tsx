@@ -98,9 +98,9 @@ const TietHoc = (props: { hideCard?: boolean }) => {
 			</TableBase>
 
 			<Modal
-				visible={visibleNhom}
+				open={visibleNhom}
 				onCancel={() => setVisibleNhom(false)}
-				bodyStyle={{ padding: 0 }}
+				style={{ padding: 0 }}
 				width={1000}
 				okButtonProps={{ hidden: true }}
 				cancelText='Đóng'

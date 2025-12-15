@@ -45,11 +45,11 @@ const NhuCauSinhVienPage = () => {
 			{activeKey === '1' ? <PhieuDangKyNhuCauPage /> : <SinhVienChuaDangKyPage />}
 
 			<Modal
-				visible={visibleDotDangKy}
+				open={visibleDotDangKy}
 				onCancel={() => setVisibleDotDangKy(false)}
 				width={1000}
 				footer={null}
-				bodyStyle={{ padding: 0 }}
+				styles={{ padding: 0 }}
 			>
 				<DotDangKyNhuCauPage />
 			</Modal>

@@ -21,7 +21,7 @@ import rules from '@/utils/rules';
 import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select, message } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectCLB from '../CauLacBo/components/SelectCLB';
@@ -218,7 +218,7 @@ const FormHoatDongChung = (props: {
 							<MyDatePicker
 								showTime={{ showHour: true, showMinute: true }}
 								format='HH:mm DD/MM/YYYY'
-								disabledDate={thoiGianBatDau ? (cur) => moment(cur).isBefore(thoiGianBatDau) : undefined}
+								disabledDate={thoiGianBatDau ? (cur) => dayjs(cur).isBefore(thoiGianBatDau) : undefined}
 							/>
 						</Form.Item>
 					</Col>

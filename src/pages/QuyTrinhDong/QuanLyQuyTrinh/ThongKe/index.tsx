@@ -137,8 +137,8 @@ const ThongKeBaoCao = () => {
 				onCancel={() => setVisibleForm(false)}
 				width={700}
 				footer={false}
-				bodyStyle={{ padding: 0 }}
-				visible={visibleForm}
+				styles={{ padding: 0 }}
+				open={visibleForm}
 			>
 				<Form isQuyTrinh modelName={'quytrinh.thongke'} />
 			</Modal>

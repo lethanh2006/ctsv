@@ -1,11 +1,11 @@
 import { EDinhDangFile } from '@/services/base/constant';
 import { EFileScope, uploadFile } from '@/services/uploadFile';
+import { ip3 } from '@/utils/ip';
 import { message, type FormInstance } from 'antd';
 import { type AxiosResponse } from 'axios';
-import type { Moment } from 'moment';
-import moment from 'moment';
+import type dayjs from 'dayjs';
 import * as XLSX from 'xlsx';
-import { ip3 } from './ip';
+import dayjsLib from './dayjs';
 
 export const urlRegex =
 	/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.,~#?&//=]*)$/;
@@ -104,18 +104,21 @@ export function isValue(val: string | number | any[]) {
 }
 
 export function trim(str: string) {
-	// nếu là moment thì cho sang string
-	if (moment.isMoment(str)) return str?.toISOString() ?? '';
+	// nếu là dayjs thì cho sang string
+	if (dayjsLib.isDayjs(str)) return str?.toISOString() ?? '';
 	// xóa tất cả dấu cách thừa
 	if (typeof str === 'string') return str.replace(/[ ]{2,}/g, ' ').trim();
 	return str;
 }
 
 export function currencyFormat(num?: number) {
-	if (!num || !num.toFixed) return '0';
-	return num?.toFixed(0)?.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') ?? '0';
+	if (typeof num !== 'number' || isNaN(num)) return '0';
+	return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
+export const toISOString = (date: dayjs.Dayjs | string | Date | null | undefined) => {
+	return date ? dayjsLib(date).startOf('day').toISOString() : undefined;
+};
 export function formatPhoneNumber(num: any) {
 	// Remove any non-digit characters
 	const phoneNumber = num.replace(/\D/g, '');
@@ -267,27 +270,6 @@ export function renderFileList(arr: string[]) {
 	};
 }
 
-export const uploadMultiFile = async (arrFile: any[], returnFileType?: boolean, returnAllResponse?: boolean) => {
-	const url: any[] = arrFile
-		?.filter((item) => item?.remote === true)
-		?.map((item) => (returnFileType === true ? { url: item?.url ?? '', type: item?.type } : item?.url ?? ''));
-	if (!arrFile) return [];
-	let arrUrl: any[] = [];
-	const arrUpload = arrFile
-		?.filter((item) => item?.remote !== true)
-		?.map(async (file: { originFileObj: any; type: string; name: string }) => {
-			const response = await uploadFile({
-				file: file?.originFileObj,
-				scope: EFileScope.PUBLIC,
-			});
-			if (returnFileType) return { url: response?.data?.data?.url, type: file.type };
-			else if (returnAllResponse) return response?.data?.data;
-			else return response?.data?.data?.url;
-		});
-	arrUrl = await Promise.all(arrUpload);
-	return [...url, ...arrUrl];
-};
-
 export const checkFileSize = (arrFile: any[], fileSize?: number) => {
 	let check = true;
 	const size = fileSize ?? 8;
@@ -373,8 +355,8 @@ export const range = (start: number, end: number) => {
 	return result;
 };
 
-export const disabledRangeTime = (current: Moment, type: 'start' | 'end', hour: string, minute: string) => {
-	return current && current.format('DDMMYYYY') === moment().format('DDMMYYYY')
+export const disabledRangeTime = (current: dayjs.Dayjs, type: 'start' | 'end', hour: string, minute: string) => {
+	return current && current.format('DDMMYYYY') === dayjsLib().format('DDMMYYYY')
 		? {
 				disabledHours: () => range(0, Number(hour)),
 				disabledMinutes: () => range(0, hour === current.format('HH') ? Number(minute) : 0),
@@ -487,6 +469,28 @@ export const genExcelFile = (data: (string | number | null | undefined)[][], fil
 	XLSX.writeFile(workbook, fileName || 'Danh sách.xlsx');
 };
 
+export const uploadMultiFile = async (arrFile: any[], returnFileType?: boolean, returnAllResponse?: boolean) => {
+	const url: any[] = arrFile
+		?.filter((item) => item?.remote === true)
+		?.map((item) => (returnFileType === true ? { url: item?.url ?? '', type: item?.type } : (item?.url ?? '')));
+	if (!arrFile) return [];
+	let arrUrl: any[] = [];
+	const arrUpload = arrFile
+		?.filter((item) => item?.remote !== true)
+		?.map(async (file: { originFileObj: any; type: string; name: string }) => {
+			const response = await uploadFile({
+				file: file?.originFileObj,
+				// filename: parse(file?.name).name,
+				scope: EFileScope.PUBLIC,
+			});
+			if (returnFileType) return { url: response?.data?.data?.url, type: file.type };
+			else if (returnAllResponse) return response?.data?.data;
+			else return response?.data?.data?.url;
+		});
+	arrUrl = await Promise.all(arrUpload);
+	return [...url, ...arrUrl];
+};
+
 /**
  * Clear values of component in Form
  * @param form
@@ -512,13 +516,6 @@ export const getFilenameHeader = (response: AxiosResponse<any>) => {
 	} else {
 		return decodeURIComponent(token.substring(10).slice(0, -1));
 	}
-};
-
-export const toISOString = (date: moment.MomentInput) => {
-	if (date) {
-		return moment(date).startOf('day').toISOString();
-	}
-	return undefined;
 };
 
 export function includes(str1: string, str2: string) {

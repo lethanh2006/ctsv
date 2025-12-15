@@ -6,7 +6,7 @@ import UploadFile from '@/components/Upload/UploadFile';
 import { importDanhSachSinhVien, importDanhSachSinhVienThamGia } from '@/services/HoatDongChung';
 import type { HoatDongChung } from '@/services/HoatDongChung/typings';
 import rules from '@/utils/rules';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { DeleteOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Form, message, Modal, Popconfirm, Space, Spin, Tabs } from 'antd';
 import { useCallback, useState } from 'react';
@@ -153,13 +153,13 @@ const DanhSachSinhVien = (props: IProps) => {
 				</TableBase>
 			</Spin>
 			<Modal
-				visible={visibleImport}
+				open={visibleImport}
 				onCancel={() => {
 					setVisibleImport(false);
 				}}
 				title='Nhập dữ liệu'
 				footer={null}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form
 					onFinish={(values: any) => {

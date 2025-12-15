@@ -142,7 +142,7 @@ const LichTrinhCuTheList = () => {
 			</Col>
 
 			<Modal
-				visible={visibleForm}
+				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
 				footer={null}
 				title={(edit ? 'Chỉnh sửa' : 'Thêm mới') + ' lịch trình tổ chức dạy học'}

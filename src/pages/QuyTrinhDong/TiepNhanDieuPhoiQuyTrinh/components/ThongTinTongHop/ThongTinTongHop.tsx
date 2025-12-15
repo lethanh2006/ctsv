@@ -2,9 +2,9 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 
 import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import { Button, Card, Col, Modal, Row, Spin } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import SplitPane from 'react-split-pane';
@@ -41,8 +41,8 @@ const ThongTinTongHop = (props: IProps) => {
 
 	const getDonHomNay = async (mode: 'day' | 'week' | 'month', quyTrinhId?: string) => {
 		const res = await thongKeDon(type, {
-			startDate: moment().startOf(mode).toISOString(),
-			endDate: moment().endOf(mode).toISOString(),
+			startDate: dayjs().startOf(mode).toISOString(),
+			endDate: dayjs().endOf(mode).toISOString(),
 			quyTrinhId,
 		});
 		if (res) {
@@ -288,9 +288,9 @@ const ThongTinTongHop = (props: IProps) => {
 
 			<Modal
 				title={'Chi tiết'}
-				visible={visibleChiTiet}
+				open={visibleChiTiet}
 				onCancel={() => setVisibleChiTiet(false)}
-				destroyOnClose
+				destroyOnHidden
 				footer={
 					<>
 						<Button onClick={() => setVisibleChiTiet(false)}>Đóng</Button>

@@ -4,7 +4,7 @@ import { ETrangThaiSinhVienDot } from '@/services/DaoTaoV2/constant';
 import { buildUpLoadFile } from '@/services/uploadFile';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Row } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormTableSinhVien from './FormTableSV';
@@ -47,7 +47,7 @@ const FormQuyetDinhSinhVien = (props: {
 			...values,
 			quyetDinh: {
 				...values.quyetDinh,
-				ngayBanHanh: moment(values.quyetDinh.ngayBanHanh).startOf('D'),
+				ngayBanHanh: dayjs(values.quyetDinh.ngayBanHanh).startOf('D'),
 			},
 			trangThai: ETrangThaiSinhVienDot.DA_RA_QUYET_DINH,
 		};

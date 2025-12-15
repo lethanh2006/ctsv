@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import type { NamHoc } from '@/services/DaoTaoV2/NamHoc/NamHoc/typings';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { history, useIntl, useModel } from 'umi';
 import ModalNamHoc from './components/ModalNamHoc';
 
@@ -58,7 +58,7 @@ const NamHocPage = () => {
 			align: 'center',
 			filterType: 'date',
 			sortable: true,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 			onCell,
 		},
 		{

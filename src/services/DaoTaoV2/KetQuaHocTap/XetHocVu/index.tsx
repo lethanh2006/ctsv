@@ -1,5 +1,5 @@
 import { ip3 } from '@/utils/ip';
-import axios from 'axios';
+import axios from '@/utils/axios';
 
 export async function khoiTaoCanhBaoSinhVien(type: 'canh-bao-ket-qua-hoc-tap' | 'thoi-hoc', hocKyId: string) {
 	return axios.post(`${ip3}/${type}/hoc-ky/${hocKyId}/khoi-tao`);

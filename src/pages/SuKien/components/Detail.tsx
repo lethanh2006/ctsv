@@ -14,7 +14,7 @@ import { inputFormat, tienVietNam } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Descriptions, Modal, Popconfirm, Space, Tabs, Tag, Tooltip, Typography } from 'antd';
 import { first } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Link, useModel } from 'umi';
 import type { IColumn } from '@/components/Table/typing';
@@ -181,9 +181,9 @@ export const Detail = () => {
 	return (
 		<Modal
 			width={900}
-			visible={isVisibleFormDetail}
+			open={isVisibleFormDetail}
 			title='Chi tiết hoạt động'
-			destroyOnClose
+			destroyOnHidden
 			onCancel={() => setIsVisibleFormDetail(false)}
 			footer={
 				<Space wrap>
@@ -226,10 +226,10 @@ export const Detail = () => {
 				<Descriptions.Item label='Tên hoạt động'>{record?.tenSuKien}</Descriptions.Item>
 				<Descriptions.Item label='Địa điểm'>{record?.diaDiem ?? '--'}</Descriptions.Item>
 				<Descriptions.Item label='Thời gian bắt đầu'>
-					{record?.thoiGianBatDau ? moment(record?.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : '--'}
+					{record?.thoiGianBatDau ? dayjs(record?.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
 				<Descriptions.Item label='Thời gian kết thúc'>
-					{record?.thoiGianKetThuc ? moment(record?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : '--'}
+					{record?.thoiGianKetThuc ? dayjs(record?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
 				<Descriptions.Item label='Kinh phí'>{record?.kinhPhi ? tienVietNam(record?.kinhPhi) : '--'}</Descriptions.Item>
 				<Descriptions.Item label='Số lượng'>{record?.soLuong ?? record?.users?.length ?? '--'}</Descriptions.Item>

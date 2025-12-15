@@ -2,7 +2,7 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import type { SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Form from './Form';
 import { useState } from 'react';
 import { Tooltip, Button, Popconfirm } from 'antd';
@@ -63,7 +63,7 @@ const ThongTinGiaDinhFormItem = (props: {
 			dataIndex: 'ngaySinh',
 			align: 'center',
 			width: 120,
-			render: (val) => val && moment(val).format('DD/MM/YYYY'),
+			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
 			title: 'Nghế nghiệp',

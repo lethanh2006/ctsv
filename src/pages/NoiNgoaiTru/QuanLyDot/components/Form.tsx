@@ -4,7 +4,7 @@ import { ETrangThaiNoiNgoaiTru } from '@/services/NoiNgoaiTru/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -69,7 +69,7 @@ const FormDotKhaoBaoNoiNgoaiTru = (props: any) => {
 							label='Thời gian kết thúc'
 							rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'Thời gian bắt đầu')]}
 						>
-							<MyDatePicker disabledDate={(cur) => moment(cur).isBefore(thoiGianBatDau)} />
+							<MyDatePicker disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)} />
 						</Form.Item>
 					</Col>
 

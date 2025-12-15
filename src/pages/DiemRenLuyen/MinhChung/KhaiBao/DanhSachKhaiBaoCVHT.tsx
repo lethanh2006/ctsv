@@ -1,4 +1,4 @@
-import { useModel } from '@@/plugin-model/useModel';
+import { useModel } from 'umi';
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import FormKhaiBao from '@/pages/DiemRenLuyen/MinhChung/KhaiBao/components/FormKhaiBao';
@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 
 import { duyetTheoLopHanhChinh } from '@/services/DiemRenLuyen';
+import useCheckAccess from '@/hooks/useCheckAccess';
 
 const KhaiBaoMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	const { getModel, page, limit, condition, handleEdit, deleteModel, handleView, putModel } = useModel(
@@ -23,13 +24,20 @@ const KhaiBaoMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	const { record: recordCauHinh } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { getAllModel } = useModel('quytrinh.danhmuc');
 	const { getAllModel: getAllMinhChung } = useModel('diemrenluyen.minhchung.cauhinh');
+	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
+	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
 
 	const {
 		record: recordDot,
 		setRecord: setRecortdDot,
 		loading: loadingDot,
 		dataPhanQuyen,
+		handleCheckPhanQuyen,
 	} = useModel('diemrenluyen.dot');
+
+	useEffect(() => {
+		handleCheckPhanQuyen(idDuyet, isKhoa);
+	}, []);
 
 	const { record: recordLopHanhChinh } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 
