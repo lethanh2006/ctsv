@@ -1,8 +1,8 @@
+import FormVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/components/Form';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Select, Spin } from 'antd';
 import { CSSProperties, useEffect } from 'react';
 import { useModel } from 'umi';
-import FormVanBan from "@/pages/QuyTrinhDong/QuanLyVanBan/components/Form";
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -56,7 +56,7 @@ const SelectVanBan = (props: {
 					<>
 						<Button icon={<PlusOutlined />} onClick={onAddNew} />
 						<Modal
-							destroyOnHidden
+							destroyOnClose
 							open={visibleForm}
 							styles={{ padding: 0 }}
 							footer={null}

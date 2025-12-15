@@ -150,7 +150,7 @@ const CauHinhHocVuPage = (props: { isThoiHoc?: boolean }) => {
 
 			<TableStaticData
 				columns={columns}
-				data={isThoiHoc ? record?.validateBuocThoiHoc ?? [] : record?.validateCanhBao ?? []}
+				data={isThoiHoc ? (record?.validateBuocThoiHoc ?? []) : (record?.validateCanhBao ?? [])}
 				loading={formSubmiting}
 				size='small'
 				addStt
@@ -171,7 +171,7 @@ const CauHinhHocVuPage = (props: { isThoiHoc?: boolean }) => {
 				onCancel={() => setViewXuLy(false)}
 				footer={null}
 				width={600}
-				destroyOnHidden
+				destroyOnClose
 			>
 				<FormCauHinhHocVu
 					edit={editXuLy}

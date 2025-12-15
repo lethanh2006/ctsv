@@ -242,7 +242,7 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 			<Modal
 				styles={{ padding: 0 }}
 				open={visibleFormYeuCauChinhSua}
-				footer={false}
+				footer={null}
 				onCancel={() => setVisibleFormYeuCauChinhSua(false)}
 			>
 				<FormYeuCauChinhSua

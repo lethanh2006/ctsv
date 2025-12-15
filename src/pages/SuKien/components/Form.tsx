@@ -1,5 +1,12 @@
+import ExpandText from '@/components/ExpandText';
 import MyDatePicker from '@/components/MyDatePicker';
 import TableStaticData from '@/components/Table/TableStaticData';
+import type { IColumn } from '@/components/Table/typing';
+import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
+import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
 import GroupTagVaiTro from '@/pages/TienIch/KhaoSat/DotKhaoSat/GroupTagVaiTro';
@@ -15,37 +22,15 @@ import {
 import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
-import { inputFormat, resetFieldsForm, tienVietNam } from '@/utils/utils';
-import {
-	Button,
-	Card,
-	Col,
-	Form,
-	Input,
-	InputNumber,
-	Modal,
-	Popconfirm,
-	Radio,
-	Row,
-	Select,
-	Tabs,
-	Tag,
-	Tooltip,
-} from 'antd';
+import { inputFormat, resetFieldsForm } from '@/utils/utils';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Form, Input, Modal, Popconfirm, Radio, Row, Select, Tabs, Tag, Tooltip } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
-import { first } from 'lodash';
 import dayjs from 'dayjs';
+import { first } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormDuTruKinhPhi from './FormDuTruKinhPhi';
-import type { IColumn } from '@/components/Table/typing';
-import ExpandText from '@/components/ExpandText';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
-import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
-import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
-import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
-import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 
 interface Props {
 	hideCard?: boolean;
@@ -443,8 +428,8 @@ const FormSuKien = ({ hideCard }: Props) => {
 											[EReceiverType.KhoaSinhVien, EReceiverType.Nganh].includes(receiverType)
 												? [EVaiTroBieuMau.SINH_VIEN]
 												: receiverType === EReceiverType.Khoa
-												? [EVaiTroBieuMau.NHAN_VIEN]
-												: undefined
+													? [EVaiTroBieuMau.NHAN_VIEN]
+													: undefined
 										}
 									/>
 								</Form.Item>
@@ -524,14 +509,14 @@ const FormSuKien = ({ hideCard }: Props) => {
 									Thêm mới
 								</Button>
 								<Modal
-									footer={false}
+									footer={null}
 									width={700}
 									styles={{ padding: 0 }}
 									open={visibleFormDuTruKinhPhi}
 									onCancel={() => {
 										setVisibleFormDuTruKinhPhi(false);
 									}}
-									destroyOnHidden
+									destroyOnClose
 								>
 									<FormDuTruKinhPhi setData={setDataKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
 								</Modal>

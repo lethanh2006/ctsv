@@ -1,15 +1,14 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
+import { thongKeChung } from '@/services/CauLacBo';
+import { ETrangThaiHoatDong, ETrangThaiThanhVien } from '@/services/CauLacBo/constant';
 import type { CauLacBo } from '@/services/CauLacBo/typings';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormCauLacBo from './components/Form';
-import { useEffect, useState } from 'react';
 import ViewDetailCLB from './components/ViewDetail';
-import { thongKeChung } from '@/services/CauLacBo';
-import { ETrangThaiHoatDong } from '@/services/CauLacBo/constant';
-import { ETrangThaiThanhVien } from '@/services/CauLacBo/constant';
 
 const CauLacBoComponent = () => {
 	const { handleEdit, deleteModel, getModel, setRecord, record: recordCLB } = useModel('caulacbo.caulacbo');
@@ -181,7 +180,7 @@ const CauLacBoComponent = () => {
 				columns={columns}
 			/>
 			<Modal
-				destroyOnHidden
+				destroyOnClose
 				styles={{ paddingTop: 4 }}
 				width={1100}
 				footer={

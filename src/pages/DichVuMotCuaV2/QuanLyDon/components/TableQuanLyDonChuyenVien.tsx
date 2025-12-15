@@ -1,9 +1,9 @@
+import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import Form from '@/pages/DichVuMotCuaV2/components/FormBieuMau';
 import { type DichVuMotCuaV2 } from '@/services/DVMC/DichVuMotCuaV2/typing';
 import { ColorTrangThaiDonMotCua, TrangThaiDonDVMC } from '@/services/DVMC/constants';
 import { includes } from '@/utils/utils';
-import ThanhToan from '../../ThanhToan';
 import {
 	CheckOutlined,
 	CloseOutlined,
@@ -19,9 +19,9 @@ import { Button, Divider, Dropdown, Menu, Modal, Popconfirm, Popover, Select, Ta
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import ThanhToan from '../../ThanhToan';
 import FormQuyTrinh from '../../components/FormQuyTrinh';
 import TableLichSuTraKetQua from '../../components/TableLichSuTraKetQua';
-import TableBase from '@/components/Table';
 
 const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboard?: boolean }) => {
 	const {
@@ -49,8 +49,9 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 		adminDeleteDonModel,
 		typeTraKetQua,
 		updateTrangThaiNhanKetQuaModel,
-    chuyenVienDieuPhoiGetDonThongKeModel,
-		setCondition,setIsDashBoard
+		chuyenVienDieuPhoiGetDonThongKeModel,
+		setCondition,
+		setIsDashBoard,
 	} = useModel('dvmc.dichvumotcuav2');
 
 	const { getThongTinSinhVienBySsoIdModel, record: infoNguoiTaoDon } = useModel('sinhvien.sinhvien');
@@ -93,19 +94,18 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 	};
 
 	const getData = () => {
-    if (props?.isDashboard){
-      chuyenVienDieuPhoiGetDonThongKeModel('DVMC');
-    }else {
-      chuyenVienDieuPhoiGetDonModel('DVMC');
-    }
-
+		if (props?.isDashboard) {
+			chuyenVienDieuPhoiGetDonThongKeModel('DVMC');
+		} else {
+			chuyenVienDieuPhoiGetDonModel('DVMC');
+		}
 	};
 
 	const onCell = (recordDonColumn: DichVuMotCuaV2.Don) => ({
 		onClick: () => {
 			// getCsvcByIdModel(recordDonColumn?.idCoSoVatChat ?? '');
 			handleDon(recordDonColumn);
-      setIsDashBoard(props?.isDashboard??false)
+			setIsDashBoard(props?.isDashboard ?? false);
 		},
 		style: { cursor: 'pointer' },
 	});
@@ -210,8 +210,8 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 						TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.PROCESSING
 							? ColorTrangThaiDonMotCua.PROCESSING
 							: TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.OK
-							? ColorTrangThaiDonMotCua.OK
-							: ColorTrangThaiDonMotCua.NOT_OK
+								? ColorTrangThaiDonMotCua.OK
+								: ColorTrangThaiDonMotCua.NOT_OK
 					}
 				>
 					{TrangThaiDonDVMC?.[val] ?? 'Chưa cập nhật'}
@@ -480,8 +480,8 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 						TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.PROCESSING
 							? ColorTrangThaiDonMotCua.PROCESSING
 							: TrangThaiDonDVMC?.[val] === TrangThaiDonDVMC.OK
-							? ColorTrangThaiDonMotCua.OK
-							: ColorTrangThaiDonMotCua.NOT_OK
+								? ColorTrangThaiDonMotCua.OK
+								: ColorTrangThaiDonMotCua.NOT_OK
 					}
 				>
 					{TrangThaiDonDVMC?.[val] ?? 'Chưa cập nhật'}
@@ -671,7 +671,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 												_id: {
 													$in: danhSach?.map((item) => item._id),
 												},
-										  } as any),
+											} as any),
 								);
 							}}
 							showSearch
@@ -712,9 +712,9 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 			{/*)}*/}
 
 			<Modal
-				destroyOnHidden
+				destroyOnClose
 				width='900px'
-				footer={false}
+				footer={null}
 				open={visibleFormDon}
 				onCancel={() => {
 					setVisibleFormDon(false);
@@ -755,7 +755,7 @@ const TableQuanLyDon = (props: { hideFilter?: boolean; type?: string; isDashboar
 				</Tabs>
 			</Modal>
 			{/*<Modal*/}
-			{/*  footer={false}*/}
+			{/*  footer={null}*/}
 			{/*  open={visibleForm}*/}
 			{/*  onCancel={() => setVisibleForm(false)}*/}
 			{/*  styles={{ padding: 0 }}*/}

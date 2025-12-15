@@ -1,10 +1,10 @@
+import { EPhanHe } from '@/services/QuyTrinhDong/constant';
 import { DeleteOutlined, EditOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Collapse, Empty, Modal, Popconfirm, Select, Spin, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 import Form from './components/Form';
 import ViewThongKe from './components/ViewThongKe';
-import { EPhanHe } from '@/services/QuyTrinhDong/constant';
 
 const ThongKeBaoCao = () => {
 	const {
@@ -136,7 +136,7 @@ const ThongKeBaoCao = () => {
 			<Modal
 				onCancel={() => setVisibleForm(false)}
 				width={700}
-				footer={false}
+				footer={null}
 				styles={{ padding: 0 }}
 				open={visibleForm}
 			>

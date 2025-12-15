@@ -1,17 +1,17 @@
-import { CheckOutlined, CloseOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, message, Modal, Row, Spin, Steps, Tag } from 'antd';
-import { useEffect, useState } from 'react';
+import ViewResult from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/ViewResult';
 import type { TrangThaiTiepNhan } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
 import {
 	MapColorTrangThaiTiepNhan,
 	TrangThaiKhaiBao,
 	TrangThaiTiepNhanDon,
 } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constants';
-import ThongTinTiepNhan from './thongTinTiepNhan';
-import ViewResult from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/ViewResult';
-import { useModel } from 'umi';
-import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/typing';
 import { chuyenVienTiepNhanDuyet } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/donquytrinh';
+import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/typing';
+import { CheckOutlined, CloseOutlined, UndoOutlined } from '@ant-design/icons';
+import { Button, Col, Form, Input, message, Modal, Row, Spin, Steps, Tag } from 'antd';
+import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
+import ThongTinTiepNhan from './thongTinTiepNhan';
 const { TextArea } = Input;
 const { Step } = Steps;
 interface IProps {
@@ -170,7 +170,7 @@ const ChiTietKhaiBao = (props: IProps) => {
 				onCancel={() => {
 					setVisibleDuyet(false);
 				}}
-				destroyOnHidden
+				destroyOnClose
 				footer={null}
 			>
 				<Form onFinish={handleSubmitDon} layout={'vertical'}>

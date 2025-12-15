@@ -4,14 +4,14 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
 import UploadFile from '@/components/Upload/UploadFile';
 import { importDanhSachSinhVien, importDanhSachSinhVienThamGia } from '@/services/HoatDongChung';
+import { TrangThaiThamGia } from '@/services/HoatDongChung/constants';
 import type { HoatDongChung } from '@/services/HoatDongChung/typings';
 import rules from '@/utils/rules';
-import { useModel } from 'umi';
 import { DeleteOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Form, message, Modal, Popconfirm, Space, Spin, Tabs } from 'antd';
 import { useCallback, useState } from 'react';
+import { useModel } from 'umi';
 import FormDanhSachSinhVien from './FormDanhSachSinhVien';
-import { TrangThaiThamGia } from '@/services/HoatDongChung/constants';
 
 interface IProps {
 	hoatDongCtsvId: string;
@@ -159,7 +159,7 @@ const DanhSachSinhVien = (props: IProps) => {
 				}}
 				title='Nhập dữ liệu'
 				footer={null}
-				destroyOnHidden
+				destroyOnClose
 			>
 				<Form
 					onFinish={(values: any) => {

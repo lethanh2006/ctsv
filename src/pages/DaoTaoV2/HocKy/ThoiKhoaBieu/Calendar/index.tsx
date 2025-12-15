@@ -1,14 +1,14 @@
 import { ColorSuKien, ELoaiSuKien, messagesCalendar } from '@/services/DaoTaoV2/Calendar/constant';
-import { Modal, Space, Button } from 'antd';
-import _ from 'lodash';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { Button, Modal, Space } from 'antd';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import type { DateRange, View } from 'react-big-calendar';
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useModel } from 'umi';
 import Form from '../components/Form';
-import { PlusCircleOutlined } from '@ant-design/icons';
 const localizer = dayjsLocalizer(dayjs);
 
 const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
@@ -106,10 +106,10 @@ const CalendarThoiKhoaBieu = (props: { fromPhanCong?: boolean }) => {
 				maskClosable={false}
 				width={800}
 				onCancel={() => setVisibleForm(false)}
-				footer={false}
+				footer={null}
 				styles={{ padding: 0 }}
 				open={visibleForm}
-				destroyOnHidden={false}
+				destroyOnClose={false}
 			>
 				<Form getData={getData} title='lịch học' fromPhanCong={fromPhanCong} />
 			</Modal>

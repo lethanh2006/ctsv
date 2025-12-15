@@ -1,25 +1,28 @@
+import formWaiting from '@/components/Loading/FormWaiting';
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
-import formWaiting from '@/components/Loading/FormWaiting';
-import { useModel } from 'umi';
-import { CheckOutlined, DollarCircleOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Dropdown, Menu, Modal, Select, Tabs, Tag, Tooltip } from 'antd';
-import { useEffect, useState } from 'react';
+import ModalSinhVien from '@/pages/DaoTaoV2/SinhVien/component/ModalSinhVien';
 import View from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/ViewQuyTrinh/components/View';
 import SelectDotKhaiBao from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/DotKhaiBao/Select';
 import FormTiepNhanNhieuDon from '@/pages/QuyTrinhDong/TiepNhanDieuPhoiQuyTrinh/components/FormTiepNhanNhieuDon';
+import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
 import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
-import { TrangThaiTiepNhan } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
-import { MapColorTrangThaiTiepNhan, TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import {
+	MapColorTrangThaiTiepNhan,
+	TrangThaiTiepNhan,
+	TrangThaiTiepNhanDon,
+} from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { ELoaiTinhTrangDon } from '@/services/QuyTrinhDong/constant';
 import type { EMaTrangThaiThanhToan } from '@/services/TaiChinh/constant';
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
-import dayjs from 'dayjs';
 import { toISOString } from '@/utils/utils';
-import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhToan';
+import { CheckOutlined, DollarCircleOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Dropdown, Menu, Modal, Select, Tabs, Tag, Tooltip } from 'antd';
+import dayjs from 'dayjs';
 import _ from 'lodash';
-import ModalSinhVien from '@/pages/DaoTaoV2/SinhVien/component/ModalSinhVien';
+import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 
 interface IProps {
 	type: 'dieu_phoi' | 'tiep_nhan';
@@ -557,7 +560,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 										? {
 												$gte: toISOString(val[0]),
 												$lte: toISOString(val[1]),
-										  }
+											}
 										: undefined,
 								});
 							}}
@@ -606,9 +609,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 						});
 					}}
 				>
-					{Object.values(ELoaiTinhTrangDon)?.map((val) => (
-						<Tabs.TabPane tab={val} key={val} />
-					))}
+					{Object.values(ELoaiTinhTrangDon)?.map((val) => <Tabs.TabPane tab={val} key={val} />)}
 				</Tabs>
 			</TableBase>
 			<Modal
@@ -634,7 +635,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				open={visibleTiepNhanNhieuDon}
 				onCancel={() => setVisibleTiepNhanNhieuDon(false)}
 				width={800}
-				destroyOnHidden
+				destroyOnClose
 				footer={null}
 			>
 				<FormTiepNhanNhieuDon
@@ -651,12 +652,12 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				footer={null}
 				styles={{ padding: 0 }}
 				width={1000}
-				destroyOnHidden
+				destroyOnClose
 			>
 				{recordChiTietThu?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
 			</Modal>
 			<Modal
-				footer={false}
+				footer={null}
 				styles={{ padding: 0 }}
 				width={1200}
 				open={visibleModalSinhVien}

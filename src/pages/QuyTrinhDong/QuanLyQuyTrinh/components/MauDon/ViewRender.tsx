@@ -1,15 +1,15 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
+import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
+import { currencyFormat } from '@/utils/utils';
 import { Modal, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import FormTable from './FormTable';
-import type { LoaiHinh } from '@/services/QuyTrinhDong/LoaiHinh/typing';
-import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
-import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
-import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
-import { currencyFormat } from '@/utils/utils';
 
 const ViewRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -138,9 +138,9 @@ const ViewRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnHidden
+						destroyOnClose
 						width={700}
-						footer={false}
+						footer={null}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
 						open={visibleFormTable}
 						onCancel={() => setVisibleFormTable(false)}

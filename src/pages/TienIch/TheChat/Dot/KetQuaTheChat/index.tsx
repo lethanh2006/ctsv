@@ -197,7 +197,12 @@ const KetQuaTheChatPage = () => {
 				destroyModal
 			/>
 
-			<Modal bodyStyle={{ padding: 0 }} visible={visibleForm} onCancel={() => setVisibleForm(false)} footer={null}>
+			<Modal
+				styles={{ body: { padding: 0 } }}
+				visible={visibleForm}
+				onCancel={() => setVisibleForm(false)}
+				footer={null}
+			>
 				<FormChiSoTheHinh title='Chỉ số hình thể' getData={getData} />
 			</Modal>
 

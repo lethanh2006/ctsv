@@ -1,9 +1,9 @@
+import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { IColumn } from '@/components/Table/typing';
-import { useState } from 'react';
-import { Button, Form, FormInstance, Input, InputNumber, message, Modal, Popconfirm } from 'antd';
-import ButtonExtend from '@/components/Table/ButtonExtend';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Form, FormInstance, Input, InputNumber, message, Modal, Popconfirm } from 'antd';
+import { useState } from 'react';
 
 interface Iprop {
 	value?: any;
@@ -64,7 +64,7 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 	return (
 		<>
 			<TableStaticData
-				otherProps={{ size: 'small',pagination:false }}
+				otherProps={{ size: 'small', pagination: false }}
 				size={'small'}
 				hasCreate
 				addStt
@@ -82,7 +82,7 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 				footer={null}
 				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
-				destroyOnHidden
+				destroyOnClose
 			>
 				<Form
 					layout={'vertical'}

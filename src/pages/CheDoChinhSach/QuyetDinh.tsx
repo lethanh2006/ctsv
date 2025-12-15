@@ -1,5 +1,6 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
+import { EOperatorType } from '@/components/Table/constant';
 import type { IColumn } from '@/components/Table/typing';
 import {
 	ELoaiBoLoc,
@@ -21,7 +22,6 @@ import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
 import FormImport from './components/FormImport';
 import SelectCheDoChinhSach from './components/SelectCheDoChinhSach';
 import ViewQuyetDinh from './components/ViewQuyetDinh';
-import { EOperatorType } from '@/components/Table/constant';
 
 const QuyetDinh = (props: {
 	title: string;
@@ -286,10 +286,10 @@ const QuyetDinh = (props: {
 				modelName={'chedochinhsach.quyetdinhchedosinhvien'}
 				columns={columns}
 			/>
-			<Modal destroyOnHidden width={900} title='Chi tiết' footer={false} open={visibleView} onCancel={onCancelView}>
+			<Modal destroyOnClose width={900} title='Chi tiết' footer={null} open={visibleView} onCancel={onCancelView}>
 				<ViewQuyetDinh />
 			</Modal>
-			<Modal onCancel={() => setVisibleImport(false)} footer={false} open={visibleImport} title='Nhập dữ liệu'>
+			<Modal onCancel={() => setVisibleImport(false)} footer={null} open={visibleImport} title='Nhập dữ liệu'>
 				<FormImport getData={getData} />
 			</Modal>
 		</>

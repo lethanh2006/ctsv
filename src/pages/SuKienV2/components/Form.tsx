@@ -45,8 +45,8 @@ import {
 	Tooltip,
 } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
-import { first } from 'lodash';
 import dayjs from 'dayjs';
+import { first } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import QuanLySuKien from './QuanLySuKien';
@@ -574,14 +574,14 @@ const FormSuKien = ({ hideCard }: Props) => {
 									Thêm mới
 								</Button>
 								<Modal
-									footer={false}
+									footer={null}
 									width={700}
 									styles={{ padding: 0 }}
 									open={visibleFormDuTruKinhPhi}
 									onCancel={() => {
 										setVisibleFormDuTruKinhPhi(false);
 									}}
-									destroyOnHidden
+									destroyOnClose
 								>
 									<FormDuTruKinhPhi setData={setDataKinhPhi} setVisibleForm={setVisibleFormDuTruKinhPhi} />
 								</Modal>
@@ -676,8 +676,8 @@ const FormSuKien = ({ hideCard }: Props) => {
 										[EReceiverType.KhoaSinhVien, EReceiverType.Nganh].includes(receiverType)
 											? [EVaiTroBieuMau.SINH_VIEN]
 											: receiverType === EReceiverType.Khoa
-											? [EVaiTroBieuMau.NHAN_VIEN]
-											: undefined
+												? [EVaiTroBieuMau.NHAN_VIEN]
+												: undefined
 									}
 								/>
 							</Form.Item>

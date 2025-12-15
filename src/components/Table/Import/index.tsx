@@ -66,7 +66,7 @@ const ModalImport = (props: ModalImportProps) => {
 			onCancel={() => onCancelModal()}
 			footer={null}
 			width={800}
-			destroyOnHidden
+			destroyOnClose
 			maskClosable={maskCloseableForm || false}
 			loading={loading}
 		>

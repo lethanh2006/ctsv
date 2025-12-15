@@ -33,8 +33,8 @@ import {
 	Space,
 	Tooltip,
 } from 'antd';
-import _ from 'lodash';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import FormTable from './FormTable';
@@ -411,7 +411,7 @@ const FormRender = (props: {
 							message: 'Bắt buộc',
 							required: true,
 						},
-				  ]
+					]
 				: [];
 
 			component = (
@@ -443,9 +443,9 @@ const FormRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnHidden
+						destroyOnClose
 						width={700}
-						footer={false}
+						footer={null}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
 						open={visibleFormTable}
 						onCancel={onCancelFormTable}
@@ -533,16 +533,16 @@ const FormRender = (props: {
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.NAM
 										? 'YYYY'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THANGNAM
-										? 'MM/YYYY'
-										: 'DD/MM/YYYY'
+											? 'MM/YYYY'
+											: 'DD/MM/YYYY'
 								}
 								placeholder={['Từ', 'đến']}
 								picker={
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.NAM
 										? 'year'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THANGNAM
-										? 'month'
-										: 'date'
+											? 'month'
+											: 'date'
 								}
 							/>
 						</Form.Item>
@@ -561,15 +561,15 @@ const FormRender = (props: {
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_YYYY
 										? 'YYYY'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_MMYYYY
-										? 'MM/YYYY'
-										: 'DD/MM/YYYY'
+											? 'MM/YYYY'
+											: 'DD/MM/YYYY'
 								}
 								pickerStyle={
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_YYYY
 										? 'year'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_MMYYYY
-										? 'month'
-										: 'date'
+											? 'month'
+											: 'date'
 								}
 								placeholder={'Chọn thời gian'}
 							/>

@@ -88,7 +88,7 @@ const TableThanhVien = (props: { mode: 'view' | 'edit'; data?: HoiDong.ThanhVien
 				data={
 					props?.data
 						? props.data
-						: recordHoiDong?.danhSachThanhVien?.map((item, index) => ({ ...item, index: index + 1 })) ?? []
+						: (recordHoiDong?.danhSachThanhVien?.map((item, index) => ({ ...item, index: index + 1 })) ?? [])
 				}
 				otherProps={{
 					pagination: false,
@@ -115,10 +115,10 @@ const TableThanhVien = (props: { mode: 'view' | 'edit'; data?: HoiDong.ThanhVien
 			</TableStaticData>
 			<Modal
 				zIndex={1002}
-				destroyOnHidden
+				destroyOnClose
 				open={visibleForm}
 				onCancel={onCancelForm}
-				footer={false}
+				footer={null}
 				styles={{ padding: 0 }}
 			>
 				<FormThanhVien record={record} edit={edit} onCancel={onCancelForm} />

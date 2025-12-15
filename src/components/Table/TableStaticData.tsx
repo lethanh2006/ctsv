@@ -318,8 +318,8 @@ const TableStaticData = (props: TableStaticProps) => {
 							onClose={() => {
 								if (setShowEdit) setShowEdit(false);
 							}}
-							destroyOnHidden
-							footer={false}
+							destroyOnClose
+							footer={null}
 							open={showEdit}
 						>
 							<Form
@@ -335,8 +335,8 @@ const TableStaticData = (props: TableStaticProps) => {
 							onCancel={() => {
 								if (setShowEdit) setShowEdit(false);
 							}}
-							destroyOnHidden
-							footer={false}
+							destroyOnClose
+							footer={null}
 							styles={{ body: { padding: 0 } }}
 							open={showEdit}
 						>

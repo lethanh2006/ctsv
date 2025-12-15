@@ -1,18 +1,18 @@
 import { Button, Col, Form, Input, message, Modal, Row, Select, Spin, Tooltip } from 'antd';
 
-import { useState } from 'react';
-import { useModel } from 'umi';
+import ImportExcel from '@/components/ImportExcel';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
+import SelectQuyTrinh from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/Select';
+import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
+import { TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
+import { chuyenVienTiepNhanImport } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
+import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
+import rules from '@/utils/rules';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
-import ImportExcel from '@/components/ImportExcel';
-import rules from '@/utils/rules';
-import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
-import SelectQuyTrinh from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/Select';
-import { chuyenVienTiepNhanImport } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/khaibaoquytrinh';
-import { TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
-import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
+import { useState } from 'react';
+import { useModel } from 'umi';
 const { TextArea } = Input;
 const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 	const { handleCancel } = props;
@@ -263,7 +263,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 				// 		<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
 				// 	</>
 				// }
-				destroyOnHidden
+				destroyOnClose
 				footer={null}
 			>
 				<Form
@@ -310,13 +310,13 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 				</Form>
 			</Modal>
 			<Modal
-				footer={false}
+				footer={null}
 				open={visible}
 				styles={{ padding: 0 }}
 				onCancel={() => {
 					setVisible(false);
 				}}
-				destroyOnHidden
+				destroyOnClose
 			>
 				<ImportExcel
 					handleData={handleData}

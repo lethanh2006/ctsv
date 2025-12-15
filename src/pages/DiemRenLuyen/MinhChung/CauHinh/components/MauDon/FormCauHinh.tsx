@@ -1,12 +1,19 @@
+import JsonEditor from '@/components/JsonEditor';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
+import TinyEditor from '@/components/TinyEditor';
+import UploadFile from '@/components/Upload/UploadFile';
+import { ELoaiDanhMucChung } from '@/services/FormDong/DanhMuc/constants';
+import { EKieuDuLieu, ETextDisplay, MapKeyNameTextDisplay } from '@/services/FormDong/LoaiHinh/constants';
+import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
+import { LoaiDefaultValue } from '@/services/FormDong/QuyTrinh/constants';
+import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { removeVietnameseTones } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import {
 	Button,
 	Card,
-	Checkbox,
 	Col,
 	Form,
 	Input,
@@ -25,15 +32,7 @@ import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import FormCot from './FormCot';
-import JsonEditor from '@/components/JsonEditor';
-import UploadFile from '@/components/Upload/UploadFile';
-import { buildUpLoadMultiFile } from '@/services/uploadFile';
-import TinyEditor from '@/components/TinyEditor';
-import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
-import { EKieuDuLieu, ETextDisplay, MapKeyNameTextDisplay } from '@/services/FormDong/LoaiHinh/constants';
-import { LoaiDefaultValue } from '@/services/FormDong/QuyTrinh/constants';
 import FormGiaTriLienQuan from './FormGiaTriLienQuan';
-import { ELoaiDanhMucChung } from '@/services/FormDong/DanhMuc/constants';
 
 const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: string }) => {
 	const [form] = Form.useForm();
@@ -501,8 +500,8 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 			<Modal
 				width={700}
 				open={visibleCot}
-				destroyOnHidden
-				footer={false}
+				destroyOnClose
+				footer={null}
 				styles={{ padding: 0 }}
 				onCancel={onCancelFormCot}
 			>

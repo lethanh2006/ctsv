@@ -2,6 +2,7 @@ import MyDatePicker from '@/components/MyDatePicker';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
+import TinyEditor from '@/components/TinyEditor';
 import UploadFile from '@/components/Upload/UploadFile';
 import rules from '@/utils/rules';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -12,14 +13,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import FormTable from './FormTable';
 import ViewRender from './ViewRender';
-import TinyEditor from '@/components/TinyEditor';
 
-import dayjs from 'dayjs';
-import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
-import {EKieuDuLieu, ELoaiThoiGianThucHien, ELoaiTruongThongTinTinh, ETextDisplay } from '@/services/FormDong/LoaiHinh/constants';
-import { LoaiDefaultValue } from '@/services/FormDong/QuyTrinh/constants';
-import SelectNhanSuDebounce from "@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce";
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
+import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import {
+	EKieuDuLieu,
+	ELoaiThoiGianThucHien,
+	ELoaiTruongThongTinTinh,
+	ETextDisplay,
+} from '@/services/FormDong/LoaiHinh/constants';
+import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
+import { LoaiDefaultValue } from '@/services/FormDong/QuyTrinh/constants';
+import dayjs from 'dayjs';
 
 const FormRender = (props: {
 	cauHinh: LoaiHinh.TruongThongTin | LoaiHinh.Cot;
@@ -330,7 +335,7 @@ const FormRender = (props: {
 							message: 'Bắt buộc',
 							required: true,
 						},
-				  ]
+					]
 				: [];
 
 			component = (
@@ -362,9 +367,9 @@ const FormRender = (props: {
 						columns={columns}
 					/>
 					<Modal
-						destroyOnHidden
+						destroyOnClose
 						width={700}
-						footer={false}
+						footer={null}
 						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
 						open={visibleFormTable}
 						onCancel={onCancelFormTable}
@@ -451,16 +456,16 @@ const FormRender = (props: {
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.NAM
 										? 'YYYY'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THANGNAM
-										? 'MM/YYYY'
-										: 'DD/MM/YYYY'
+											? 'MM/YYYY'
+											: 'DD/MM/YYYY'
 								}
 								placeholder={['Từ', 'đến']}
 								picker={
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.NAM
 										? 'year'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THANGNAM
-										? 'month'
-										: 'date'
+											? 'month'
+											: 'date'
 								}
 							/>
 						</Form.Item>
@@ -479,15 +484,15 @@ const FormRender = (props: {
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_YYYY
 										? 'YYYY'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_MMYYYY
-										? 'MM/YYYY'
-										: 'DD/MM/YYYY'
+											? 'MM/YYYY'
+											: 'DD/MM/YYYY'
 								}
 								pickerStyle={
 									recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_YYYY
 										? 'year'
 										: recordLoaiHinh?.loaiThoiGianThucHien === ELoaiThoiGianThucHien.THOIGIANCUTHE_MMYYYY
-										? 'month'
-										: 'date'
+											? 'month'
+											: 'date'
 								}
 								placeholder={'Chọn thời gian'}
 							/>

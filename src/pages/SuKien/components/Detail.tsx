@@ -1,3 +1,10 @@
+import ExpandText from '@/components/ExpandText';
+import TableStaticData from '@/components/Table/TableStaticData';
+import type { IColumn } from '@/components/Table/typing';
+import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
+import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
+import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import TableSelectNhanSu from '@/pages/ThongBao/components/TableSelectNhanSu';
 import TableSelectSinhVien from '@/pages/ThongBao/components/TableSelectSinhVien';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
@@ -12,18 +19,11 @@ import { type SuKien } from '@/services/SuKien/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
 import { inputFormat, tienVietNam } from '@/utils/utils';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Descriptions, Modal, Popconfirm, Space, Tabs, Tag, Tooltip, Typography } from 'antd';
-import { first } from 'lodash';
+import { Button, Descriptions, Modal, Popconfirm, Space, Tabs, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { first } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Link, useModel } from 'umi';
-import type { IColumn } from '@/components/Table/typing';
-import ExpandText from '@/components/ExpandText';
-import TableStaticData from '@/components/Table/TableStaticData';
-import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
-import SelectLopHanhChinhDebounce from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
-import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
-import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 
 export const Detail = () => {
 	const { deleteModel, handleEdit, setIsVisibleFormDetail, record, isVisibleFormDetail, getModel } = useModel('sukien');
@@ -183,7 +183,7 @@ export const Detail = () => {
 			width={900}
 			open={isVisibleFormDetail}
 			title='Chi tiết hoạt động'
-			destroyOnHidden
+			destroyOnClose
 			onCancel={() => setIsVisibleFormDetail(false)}
 			footer={
 				<Space wrap>

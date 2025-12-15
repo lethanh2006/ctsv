@@ -664,7 +664,7 @@ const TableBase = (props: TableBaseProps) => {
 							className={widthDrawer === 'full' ? 'drawer-full' : ''}
 							maskClosable={props.maskCloseableForm || false}
 							width={widthDrawer !== 'full' ? widthDrawer : undefined}
-							footer={false}
+							footer={null}
 							styles={{ body: { padding: 0 } }}
 							open={visibleForm}
 							destroyOnClose={destroyModal || false}

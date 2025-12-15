@@ -2,9 +2,9 @@ import ThongTinThanhToan from '@/pages/TaiChinh/HoaDon/ThanhToan/ThongTinThanhTo
 import { MapColorTrangThaiTiepNhanDon, TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/typings';
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
-import { useModel } from 'umi';
 import { Button, Collapse, Descriptions, Modal, Tag } from 'antd';
 import { useState } from 'react';
+import { useModel } from 'umi';
 import ViewFromCauHinh from './ViewFromCauHinh';
 
 const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: any; isBuocNgoaiHeThong?: boolean }) => {
@@ -125,7 +125,7 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 				footer={null}
 				styles={{ padding: 0 }}
 				width={1000}
-				destroyOnHidden
+				destroyOnClose
 			>
 				{record?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
 			</Modal>
@@ -135,7 +135,7 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 				onCancel={() => setVisibleThongTinDuyet(false)}
 				footer={null}
 				width={1000}
-				destroyOnHidden
+				destroyOnClose
 			>
 				<ViewFromCauHinh cauHinhLoaiHinh={cauHinhFormTiepNhan} thongTinKhaiBao={dataFormTiepNhan} />
 			</Modal>

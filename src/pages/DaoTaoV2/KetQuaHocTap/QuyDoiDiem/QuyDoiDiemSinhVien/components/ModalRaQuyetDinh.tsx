@@ -59,7 +59,7 @@ const ModalQuyetDinhQuyDoiDiem = (props: {
 			width={1000}
 			open={visibleForm}
 			onCancel={() => setVisibleForm(false)}
-			footer={false}
+			footer={null}
 		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]}>

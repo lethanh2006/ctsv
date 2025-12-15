@@ -1,5 +1,5 @@
-import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
 import TinyEditor from '@/components/TinyEditor';
+import SelectVanBan from '@/pages/QuyTrinhDong/QuanLyVanBan/Select';
 import {
 	ETienDoQuyTrinh,
 	MapColorTienDoQuyTrinh,
@@ -20,9 +20,9 @@ import { useEffect, useState } from 'react';
 import { history, useModel } from 'umi';
 import ViewDot from '../../components/DotQuyTrinh/ViewDot';
 import FormRender from '../../components/MauDon/FormRender';
+import FormInHoSo from './FormInHoSo';
 import ThongTinTiepNhan from './thongTinTiepNhan';
 import ViewFromCauHinh from './ViewFromCauHinh';
-import FormInHoSo from './FormInHoSo';
 
 const { TextArea } = Input;
 const { Step } = Steps;
@@ -317,11 +317,7 @@ const View = (props: Iprops) => {
 									let tienDo;
 									const coKhaiBao = dataQuyTrinh?.danhSachBuocXuLy?.find((item) => item?.ma === value?.ma)?.coKhaiBao;
 
-									if (
-										cauHinhThoiGianDot &&
-										dayjs().isAfter(dayjs(cauHinhThoiGianDot.thoiGianKetThuc)) &&
-										!coKhaiBao
-									) {
+									if (cauHinhThoiGianDot && dayjs().isAfter(dayjs(cauHinhThoiGianDot.thoiGianKetThuc)) && !coKhaiBao) {
 										tienDo = ETienDoQuyTrinh.QUA_HAN;
 									} else if (
 										cauHinhThoiGianDot &&
@@ -562,7 +558,7 @@ const View = (props: Iprops) => {
 						onCancel={() => setVisibleFormKhaiBaoQuyTrinh(false)}
 						width={1200}
 						footer={null}
-						destroyOnHidden
+						destroyOnClose
 					>
 						<FormModal {...formProps} />
 					</Modal>
@@ -589,7 +585,7 @@ const View = (props: Iprops) => {
 					onCancel={() => {
 						setVisibleDuyet(false);
 					}}
-					destroyOnHidden
+					destroyOnClose
 					footer={null}
 				>
 					<Spin spinning={loadngDuyet}>
@@ -648,7 +644,7 @@ const View = (props: Iprops) => {
 					onCancel={() => {
 						setVisibleDieuPhoi(false);
 					}}
-					destroyOnHidden
+					destroyOnClose
 					footer={null}
 				>
 					<Spin spinning={loadingDieuPhoi}>
@@ -701,8 +697,8 @@ const View = (props: Iprops) => {
 					{dotCurrent && dataQuyTrinh.quyTrinh && <ViewDot recDot={dotCurrent} recQuyTrinh={dataQuyTrinh.quyTrinh} />}
 				</Modal>
 				<Modal
-					destroyOnHidden
-					footer={false}
+					destroyOnClose
+					footer={null}
 					open={visibleFormPrint}
 					onCancel={() => {
 						setVisibleFormPrint(false);

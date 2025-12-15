@@ -1,12 +1,12 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
+import DanhSachChuaKhaiBao from '@/pages/DaoTaoV2/SinhVien/DotCapNhatHoSo/components/DanhSachChuaKhaiBao';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Switch, Tooltip } from 'antd';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { useModel } from 'umi';
 import FormThemDot from './components/form';
-import { useState } from 'react';
-import DanhSachChuaKhaiBao from '@/pages/DaoTaoV2/SinhVien/DotCapNhatHoSo/components/DanhSachChuaKhaiBao';
 
 const DotCapNhatHoSoPage = () => {
 	const { handleEdit, getModel, page, limit, deleteModel, putModel, setRecord, record } = useModel(
@@ -116,7 +116,7 @@ const DotCapNhatHoSoPage = () => {
 				width={1200}
 				footer={null}
 				title={'Danh sách sinh viên'}
-				destroyOnHidden
+				destroyOnClose
 			>
 				<DanhSachChuaKhaiBao
 					data={record}

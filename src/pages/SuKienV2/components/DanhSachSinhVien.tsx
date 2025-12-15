@@ -7,7 +7,6 @@ import { exportDanhSachSinhVien, getThongKeSinhVien, xemKhaoSat } from '@/servic
 import { ELoaiKhaoSatSuKien, ETrangThaiThamGia, MapColorETrangThaiThamGia } from '@/services/SuKienV2/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { getFilenameHeader } from '@/utils/utils';
-import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,
@@ -33,9 +32,10 @@ import {
 	Tooltip,
 	message,
 } from 'antd';
-import fileDownload from 'js-file-download';
 import dayjs from 'dayjs';
+import fileDownload from 'js-file-download';
 import { useState } from 'react';
+import { useModel } from 'umi';
 
 interface IProps {
 	type: 'Đăng ký' | 'Tham gia';
@@ -438,8 +438,8 @@ const DanhSachSinhVien = (props: IProps) => {
 									recSuKien?.idKhaoSatCheckIn && recSuKien?.idKhaoSatCheckOut
 										? 8
 										: recSuKien?.idKhaoSatCheckIn || recSuKien?.idKhaoSatCheckOut
-										? 12
-										: 24
+											? 12
+											: 24
 								}
 							>
 								<Card style={{ borderRadius: 5 }} hoverable>
@@ -528,7 +528,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			/>
 
 			<Modal
-				destroyOnHidden
+				destroyOnClose
 				title={`Khảo sát ${record?._id ? `sinh viên ${record?.tenSv} (${record?.maSv})` : ''}`}
 				open={visibleKhaoSat}
 				onCancel={() => {

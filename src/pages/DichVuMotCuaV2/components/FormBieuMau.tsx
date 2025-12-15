@@ -170,8 +170,8 @@ const FormBieuMau = (props: {
 			'cauHinhBieuMau',
 			valuesFinal,
 			props?.handleAdd || props?.type === 'edit' || props?.type === 'handle'
-				? props?.record?.thongTinDichVu?.cauHinhBieuMau ?? []
-				: record?.cauHinhBieuMau ?? [],
+				? (props?.record?.thongTinDichVu?.cauHinhBieuMau ?? [])
+				: (record?.cauHinhBieuMau ?? []),
 		);
 		return { valuesFinal, duLieuBieuMau };
 	};
@@ -352,7 +352,7 @@ const FormBieuMau = (props: {
 								message: 'Bắt buộc',
 								required: true,
 							},
-					  ]
+						]
 					: [];
 
 				const data = item?.value?.map((recordRow: DichVuMotCuaV2.CauHinhBieuMau[]) => {
@@ -629,7 +629,7 @@ const FormBieuMau = (props: {
 				form={form}
 				// layout={'vertical'}
 			>
-				{props?.record?.thongTinDichVu?.cauHinhBieuMau?.length ?? 0 ? (
+				{(props?.record?.thongTinDichVu?.cauHinhBieuMau?.length ?? 0) ? (
 					<>
 						{props.record?.thongTinDichVu?.cauHinhBieuMau?.map((item, index) => {
 							return buildForm(`cauHinhBieuMau[${index}]`, item);
@@ -856,9 +856,9 @@ const FormBieuMau = (props: {
 				</Form.Item>
 			</Form>
 			<Modal
-				destroyOnHidden
+				destroyOnClose
 				styles={{ padding: 0 }}
-				footer={false}
+				footer={null}
 				open={visibleFormDieuPhoi}
 				onCancel={() => {
 					setVisibleFormDieuPhoi(false);
@@ -871,9 +871,9 @@ const FormBieuMau = (props: {
 				/>
 			</Modal>
 			<Modal
-				destroyOnHidden
+				destroyOnClose
 				styles={{ padding: 0 }}
-				footer={false}
+				footer={null}
 				open={visibleFormXuLy}
 				onCancel={() => {
 					setVisibleFormXuLy(false);

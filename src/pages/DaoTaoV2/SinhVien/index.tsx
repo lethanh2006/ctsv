@@ -1,17 +1,17 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
+import { handleLockHoSo, handleUnLockHoSo } from '@/services/DaoTaoV2/SinhVien';
+import { ETrangThaiHocSv, colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { formatPhoneNumber } from '@/utils/utils';
 import { EyeOutlined, FileImageOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
-import { Button, Tooltip, Tag, message, Popconfirm, Modal } from 'antd';
+import { Button, Modal, Popconfirm, Tag, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
 import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinhVien';
 import ModalSinhVien from './component/ModalSinhVien';
 import PreviewHoSo from './component/PreviewHoSo';
-import { ETrangThaiHocSv, colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
-import { handleLockHoSo, handleUnLockHoSo } from '@/services/DaoTaoV2/SinhVien';
 import FormCapNhatAnhSV from './components/FormCapNhatAnhSV';
 import KetQuaCapNhatAnhSV from './components/KetQuaCapNhatAnhSV';
 
@@ -224,7 +224,7 @@ const ViewSinhVien = () => {
 				open={visibleFormCapNhatAnh}
 				onCancel={() => setvisibleFormCapNhatAnh(false)}
 				styles={{ padding: 0 }}
-				footer={false}
+				footer={null}
 			>
 				<FormCapNhatAnhSV getData={getData} />
 			</Modal>

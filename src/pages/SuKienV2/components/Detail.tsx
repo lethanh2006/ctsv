@@ -1,3 +1,8 @@
+import ExpandText from '@/components/ExpandText';
+import type { IColumn } from '@/components/Table/typing';
+import DanhSachSinhVien from '@/pages/SuKienV2/components/DanhSachSinhVien';
+import ThongKeKhaoSat from '@/pages/SuKienV2/components/ThongKeKhaoSat';
+import ThongTinChung from '@/pages/SuKienV2/components/ThongTinChung';
 import { ELoaiSoLuong, ETrangThaiDienRa } from '@/services/SuKienV2/constant';
 import { type SuKienV2 } from '@/services/SuKienV2/typings';
 import { EVaiTroBieuMau } from '@/services/TienIch/constant';
@@ -7,11 +12,6 @@ import { Button, Modal, Popconfirm, Tabs, Tag } from 'antd';
 import { first } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import type { IColumn } from '@/components/Table/typing';
-import ExpandText from '@/components/ExpandText';
-import ThongTinChung from '@/pages/SuKienV2/components/ThongTinChung';
-import DanhSachSinhVien from '@/pages/SuKienV2/components/DanhSachSinhVien';
-import ThongKeKhaoSat from "@/pages/SuKienV2/components/ThongKeKhaoSat";
 
 export const Detail = () => {
 	const { deleteModel, handleEdit, setIsVisibleFormDetail, record, isVisibleFormDetail, getModel } =
@@ -173,7 +173,7 @@ export const Detail = () => {
 			width={1000}
 			open={isVisibleFormDetail}
 			title='Chi tiết sự kiện'
-			destroyOnHidden
+			destroyOnClose
 			onCancel={() => setIsVisibleFormDetail(false)}
 			footer={null}
 		>

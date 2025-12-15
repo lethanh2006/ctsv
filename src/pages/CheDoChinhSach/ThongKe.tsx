@@ -127,7 +127,7 @@ const ThongKeBaoCao = () => {
 			<Modal
 				onCancel={() => setVisibleForm(false)}
 				width={700}
-				footer={false}
+				footer={null}
 				styles={{ padding: 0 }}
 				open={visibleForm}
 			>

@@ -13,7 +13,7 @@ const KetQuaCapNhatAnhSV = () => {
 	};
 	return (
 		<Modal
-			destroyOnHidden
+			destroyOnClose
 			styles={{ paddingTop: 4 }}
 			width={700}
 			title='Kết quả cập nhật ảnh sinh viên'

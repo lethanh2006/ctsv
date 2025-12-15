@@ -196,7 +196,7 @@ const TableDuToanKinhPhi = () => {
 			</TableStaticData>
 
 			<Modal
-				destroyOnHidden
+				destroyOnClose
 				title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} dự toán kinh phí`}
 				open={visibleForm}
 				width={800}

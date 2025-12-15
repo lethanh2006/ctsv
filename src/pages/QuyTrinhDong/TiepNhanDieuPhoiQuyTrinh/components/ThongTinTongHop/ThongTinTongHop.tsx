@@ -2,13 +2,13 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 
 import { chiTietDonQuaHan, thongKeDon, thongKeDonQuaHan } from '@/services/QuyTrinhDong/ThongKe/thongke';
-import { useModel } from 'umi';
 import { Button, Card, Col, Modal, Row, Spin } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import SplitPane from 'react-split-pane';
 import Pane from 'react-split-pane/lib/Pane';
+import { useModel } from 'umi';
 import BlockSoLuongDon from './BlockSoLuongDon';
 import BlockSoLuongDonTheoBuoc from './BlockSoLuongDonTheoBuoc';
 import DanhSachQuyTrinh from './DanhSachQuyTrinh';
@@ -290,7 +290,7 @@ const ThongTinTongHop = (props: IProps) => {
 				title={'Chi tiết'}
 				open={visibleChiTiet}
 				onCancel={() => setVisibleChiTiet(false)}
-				destroyOnHidden
+				destroyOnClose
 				footer={
 					<>
 						<Button onClick={() => setVisibleChiTiet(false)}>Đóng</Button>
