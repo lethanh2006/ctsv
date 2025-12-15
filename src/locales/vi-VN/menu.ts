@@ -146,4 +146,11 @@ export default {
 	'menu.Minigame.VongQuayMM.CauHinhVongQuay': 'Cấu hình',
 	'menu.Minigame.VongQuayMM.LichSuQuay': 'Lịch sử quay',
 	'menu.Minigame.Voucher': 'Phiếu quà tặng',
+
+	//Dịch vụ chung
+	'menu.DichVuChung': 'Dịch vụ chung',
+	'menu.DichVuChung.TheChat': 'Thể chất sinh viên',
+	'menu.DichVuChung.TheChat.DanhMuc': 'Tiêu chuẩn đánh giá',
+	'menu.DichVuChung.TheChat.DotDangKy': 'Đợt đánh giá',
+	'menu.DichVuChung.TheChat.DanhSachSinhVien': 'Kết quả đánh giá',
 };

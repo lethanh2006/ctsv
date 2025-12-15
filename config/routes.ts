@@ -520,6 +520,37 @@
 	},
 
 	{
+		name: 'DichVuChung',
+		path: 'dich-vu-chung',
+		icon: 'CustomerServiceOutlined',
+		routes: [
+			{
+				name: 'TheChat',
+				path: 'the-chat',
+				access: 'accessFilter',
+				maChucNang: 'qldt|the-chat|chuyen-vien',
+				routes: [
+					{
+						name: 'DanhMuc',
+						path: 'danh-muc',
+						component: 'TienIch/TheChat/DanhMuc',
+					},
+					{
+						name: 'DotDangKy',
+						path: 'dot-dang-ky',
+						component: 'TienIch/TheChat/Dot',
+					},
+					{
+						name: 'DanhSachSinhVien',
+						path: 'danh-sach-sinh-vien',
+						component: 'TienIch/TheChat/DanhSachSinhVien',
+					},
+				],
+			},
+		],
+	},
+
+	{
 		name: 'Minigame',
 		path: '/minigame',
 		icon: 'RocketOutlined',

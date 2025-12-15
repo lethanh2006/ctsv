@@ -11,8 +11,18 @@ declare module KhoaNganh {
 		nganh: NganhDaoTao.IRecordCoSo;
 		namBatDau?: number;
 		namKetThuc?: number;
+
+		maCSDT: string;
+		csdt?: CoSoDaoTao.IRecord;
+		maTinhChatCt: string;
+		tinhChatCt?: TinhChatChuongTrinh.IRecord;
+
 		createdAt?: string;
 		updatedAt?: string;
+
+		// Fake query
+		maTrinhDo?: string;
+		maHinhThuc?: string;
 	}
 
 	export type TKhoaNganhSv = {
