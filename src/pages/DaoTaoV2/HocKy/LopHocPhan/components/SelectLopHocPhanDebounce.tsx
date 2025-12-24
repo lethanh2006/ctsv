@@ -10,13 +10,14 @@ import { useModel } from 'umi';
  */
 const SelectLopHocPhanDebounce = (props: {
 	value?: string;
+	allowClear?: boolean;
 	onChange?: (val?: string) => void;
 	multiple?: boolean;
 	disabled?: boolean;
 	selectMa?: boolean;
 	style?: React.CSSProperties;
 }) => {
-	const { value, onChange, multiple, disabled, selectMa, style } = props;
+	const { value, onChange, multiple, disabled, selectMa, style, allowClear } = props;
 	const { danhSach, filters, setFilters, getModel, loading } = useModel('daotaov2.hocky.lophocphan');
 
 	useEffect(() => {
@@ -35,7 +36,7 @@ const SelectLopHocPhanDebounce = (props: {
 							values: Array.isArray(value) ? value : [value],
 							operator: EOperatorType.INCLUDE,
 						},
-				  ]
+					]
 				: undefined,
 			undefined,
 			1,
@@ -49,11 +50,12 @@ const SelectLopHocPhanDebounce = (props: {
 
 	return (
 		<Select
+			allowClear={allowClear}
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
 			onChange={onChange}
 			disabled={disabled}
-			notFoundContent={loading ? <Spin spinning={true} /> : undefined}
+			notFoundContent={loading ? <Spin spinning={true} style={{ width: '100%', margin: 10 }} /> : undefined}
 			onSearch={(val) => searchDebounceLopHocPhan(val)}
 			options={danhSach.map((item) => ({
 				key: item._id,

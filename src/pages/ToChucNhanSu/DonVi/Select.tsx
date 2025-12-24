@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Select, Spin } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -17,7 +17,7 @@ const SelectDonVi = (props: {
 	readOnly?: boolean;
 }) => {
 	const { value, onChange, multiple, disabled, style, allowClear, placeholder, selectMa, readOnly } = props;
-	const { danhSach, getAllModel } = useModel('tochucnhansu.donvi');
+	const { danhSach, getAllModel, loading } = useModel('tochucnhansu.donvi');
 
 	useEffect(() => {
 		// Fix cứng khoa
@@ -31,6 +31,7 @@ const SelectDonVi = (props: {
 			allowClear={allowClear}
 			onChange={onChange}
 			disabled={disabled}
+			notFoundContent={loading ? <Spin spinning={true} style={{ width: '100%', margin: 10 }} /> : undefined}
 			options={danhSach.map((item) => ({
 				key: item._id,
 				value: selectMa ? item.maDonVi : item._id,

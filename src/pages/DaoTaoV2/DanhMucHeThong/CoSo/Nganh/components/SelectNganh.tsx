@@ -1,6 +1,6 @@
 import { EOperatorType } from '@/components/Table/constant';
 import type { NganhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/Nganh/typings';
-import { Select } from 'antd';
+import { Select, Spin } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -61,7 +61,7 @@ const SelectNganhCoSo = (props: {
 							values: allowList,
 							operator: EOperatorType.INCLUDE,
 						},
-				  ]
+					]
 				: undefined,
 		).then((data) => {
 			// Nếu chưa chọn giá trị và (sau khi thêm mới hoặc data chỉ có 1 phần tử)
@@ -80,6 +80,7 @@ const SelectNganhCoSo = (props: {
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
 			onChange={onChange}
+			notFoundContent={loading ? <Spin spinning={true} style={{ width: '100%', margin: 10 }} /> : undefined}
 			options={danhSach
 				.filter((item) => !except || !except.includes(item.ma))
 				.map((item) => ({
@@ -92,8 +93,6 @@ const SelectNganhCoSo = (props: {
 			placeholder={placeholder ?? 'Chọn ngành đào tạo'}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
-			showArrow
-			loading={loading}
 		/>
 	);
 };

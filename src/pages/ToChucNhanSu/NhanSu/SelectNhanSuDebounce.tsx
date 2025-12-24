@@ -27,7 +27,7 @@ const SelectNhanSuDebounce = (props: {
 							values: Array.isArray(value) ? value : [value],
 							operator: EOperatorType.INCLUDE,
 						},
-				  ]
+					]
 				: undefined,
 			undefined,
 			1,
@@ -62,6 +62,7 @@ const SelectNhanSuDebounce = (props: {
 				key: item._id,
 				value: item.ssoId,
 				label: `${item.hoDem ?? ''} ${item.ten ?? ''} - ${item.maCanBo ?? ''}`,
+				rawData: item,
 			}))}
 			showSearch
 			optionFilterProp='label'
