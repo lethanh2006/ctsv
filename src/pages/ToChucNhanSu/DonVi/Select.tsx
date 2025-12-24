@@ -1,6 +1,6 @@
 import { Select, Spin } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -16,6 +16,7 @@ const SelectDonVi = (props: {
 	selectMa?: boolean;
 	readOnly?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, disabled, style, allowClear, placeholder, selectMa, readOnly } = props;
 	const { danhSach, getAllModel, loading } = useModel('tochucnhansu.donvi');
 
@@ -40,7 +41,7 @@ const SelectDonVi = (props: {
 			removeIcon={readOnly ? null : undefined}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder || 'Chọn đơn vị'}
+			placeholder={placeholder || intl.formatMessage({ id: 'activity.info.form.unitCode.place' })}
 			style={{ width: '100%', ...style, pointerEvents: readOnly ? 'none' : undefined }}
 		/>
 	);

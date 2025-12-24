@@ -1,11 +1,11 @@
 import { Card, Steps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
+import EquivalencyPage from '../Equivalency';
 import FormActivity from './Form';
 
 const ModalActivity = (props: any) => {
 	const intl = useIntl();
-	const { getData } = props;
 	const { record, edit } = useModel('cct.activity');
 	const title = props?.title ?? '';
 	const [currentStep, setCurrentStep] = useState<number>(0);
@@ -28,11 +28,11 @@ const ModalActivity = (props: any) => {
 				style={{ marginBottom: 18, paddingTop: 0 }}
 				onChange={record?._id ? onChangeStep : undefined}
 			>
-				<Steps.Step title={intl.formatMessage({ id: 'questionsmanagement.step.thongtinchung' })} />
-				<Steps.Step title={intl.formatMessage({ id: 'questionsmanagement.step.cauhinh' })} disabled={!record?._id} />
+				<Steps.Step title={intl.formatMessage({ id: 'activity.step.info' })} />
+				<Steps.Step title={intl.formatMessage({ id: 'activity.step.cca' })} disabled={!record?._id} />
 			</Steps>
 
-			{currentStep === 0 ? <FormActivity /> : <></>}
+			{currentStep === 0 ? <FormActivity afterAddNew={() => setCurrentStep(1)} /> : <EquivalencyPage />}
 		</Card>
 	);
 };

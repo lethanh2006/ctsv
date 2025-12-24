@@ -2,6 +2,7 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { Activity } from '@/services/CCT/Activity/typing';
+import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
@@ -18,7 +19,7 @@ const ActivityPage = () => {
 
 	const columns: IColumn<Activity.IRecord>[] = [
 		{
-			title: 'Activity name',
+			title: intl.formatMessage({ id: 'activity.column.name' }),
 			dataIndex: 'name',
 			align: 'center',
 			width: 150,
@@ -26,22 +27,24 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Activity attributes',
+			title: intl.formatMessage({ id: 'activity.column.attribute' }),
 			align: 'center',
 			width: 120,
 			render: (val, rec) => rec?.activitiesType?.attributes?.name,
 			onCell,
 		},
 		{
-			title: 'Co-curricular activity (CCA)',
+			title: intl.formatMessage({ id: 'activity.column.cca' }),
 			dataIndex: 'activitiesTypeId',
 			width: 170,
 			render: (val, rec) => rec?.activitiesType?.name,
 			onCell,
 		},
 		{
-			title: 'Date',
+			title: intl.formatMessage({ id: 'activity.column.date' }),
 			width: 220,
+			render: (val, rec) =>
+				`${dayjs(rec?.startDate).format('DD/MM/YYYY')} - ${dayjs(rec?.endDate).format('DD/MM/YYYY')}`,
 			onCell,
 		},
 		{
@@ -51,10 +54,24 @@ const ActivityPage = () => {
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
-					<ButtonExtend tooltip='Chỉnh sửa' onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} />
+					<ButtonExtend
+						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
+						onClick={() => handleEdit(rec)}
+						type='link'
+						icon={<EditOutlined />}
+					/>
 
-					<Popconfirm onConfirm={() => deleteModel(rec._id)} title='Xác nhận xóa' placement='topLeft'>
-						<ButtonExtend tooltip='Xóa' danger type='link' icon={<DeleteOutlined />} />
+					<Popconfirm
+						onConfirm={() => deleteModel(rec._id)}
+						title={intl.formatMessage({ id: 'activity.confirm.xoa' })}
+						placement='topLeft'
+					>
+						<ButtonExtend
+							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+							danger
+							type='link'
+							icon={<DeleteOutlined />}
+						/>
 					</Popconfirm>
 				</>
 			),
@@ -66,7 +83,7 @@ const ActivityPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='cct.activity'
-			title='Activity Management'
+			title={intl.formatMessage({ id: 'activity.title' })}
 			Form={ModalActivity}
 			widthDrawer={1000}
 		/>

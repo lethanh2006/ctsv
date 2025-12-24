@@ -11,8 +11,7 @@ const FormItemStudent = (props: {
 	onChange?: (data: ActivitiesManagement.IStudentDeclaration[]) => void;
 }) => {
 	const intl = useIntl();
-	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView, handleView } =
-		useModel('danhmuc.student');
+	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView } = useModel('danhmuc.student');
 	const { value = [], onChange } = props;
 
 	const onDelete = (index: number) => {
@@ -34,23 +33,16 @@ const FormItemStudent = (props: {
 		}
 	};
 
-	const onCell = (rec: ActivitiesManagement.IStudentDeclaration) => ({
-		onClick: () => handleView(rec),
-		style: { cursor: 'pointer' },
-	});
-
 	const columns: IColumn<ActivitiesManagement.IStudentDeclaration>[] = [
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten' }),
 			dataIndex: 'name',
 			width: 220,
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.student.column.email' }),
 			dataIndex: 'email',
 			width: 100,
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),

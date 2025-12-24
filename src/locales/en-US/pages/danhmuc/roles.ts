@@ -20,4 +20,6 @@ export default {
 	'rolesmanagement.form.active': 'Active',
 	'rolesmanagement.form.des': 'Description',
 	'rolesmanagement.form.des.place': 'Place description',
+
+	'levelsmanagement.select.place': 'Select Roles Management',
 };

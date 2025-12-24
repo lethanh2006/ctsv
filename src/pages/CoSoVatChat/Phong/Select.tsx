@@ -2,7 +2,7 @@ import type { TFilter } from '@/components/Table/typing';
 import { DownOutlined } from '@ant-design/icons';
 import { Select, Spin } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -20,6 +20,7 @@ const SelectPhongCSVC = (props: {
 	filter?: TFilter<PhongCSVC.IRecord>[];
 	hideTCHC?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, style, isSetRecord, condition, selectMa, disabled, filter, hideTCHC } =
 		props;
 	const { danhSach, getAllModel, loading } = useModel('cosovatchat.phong');
@@ -44,7 +45,7 @@ const SelectPhongCSVC = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn phòng'
+			placeholder={intl.formatMessage({ id: 'activity.info.form.location.onCampus.place' })}
 			style={{ width: '100%', ...style }}
 			suffixIcon={<DownOutlined />}
 		/>

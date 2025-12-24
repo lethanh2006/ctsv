@@ -1,7 +1,7 @@
 import type { NganhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/Nganh/typings';
 import { Select, Spin } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -22,6 +22,7 @@ const SelectKhoaSinhVien = (props: {
 	placeholder?: string;
 	except?: string[];
 }) => {
+	const intl = useIntl();
 	const {
 		value,
 		onChange,
@@ -69,7 +70,7 @@ const SelectKhoaSinhVien = (props: {
 				}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn khoá sinh viên'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'activity.info.form.studentCohortCode.place' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 		/>

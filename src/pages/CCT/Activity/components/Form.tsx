@@ -18,19 +18,34 @@ import { Button, Checkbox, Col, Form, Input, Radio, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormItemUserRoles from '../UserRoles/FormItem';
+import UserRolesModelPage from '../UserRolesModel';
 import GroupTagVaiTro from './GroupTagVaiTro';
 
-const FormActivity = (props: any) => {
+const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) => {
 	const intl = useIntl();
+	const { afterAddNew } = props;
 	const [form] = Form.useForm();
 	const { danhSach: dsActivitiType } = useModel('danhmuc.activities');
-	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm, setFormSubmiting } =
-		useModel('cct.activity');
+	const {
+		record,
+		setVisibleForm,
+		edit,
+		isView,
+		postModel,
+		putModel,
+		formSubmiting,
+		visibleForm,
+		setFormSubmiting,
+		setRecord,
+		setEdit,
+	} = useModel('cct.activity');
 
 	const startDate: Date = Form.useWatch('startDate', form);
 	const onCampus: Boolean = Form.useWatch('onCampus', form);
 	const participantScope: EParticipantScope = Form.useWatch('participantScope', form);
 	const activitiesTypeId: string = Form.useWatch('activitiesTypeId', form);
+	const cct: boolean = Form.useWatch('cct', form);
+	const participantRole: EparticipantRole = Form.useWatch('participantRole', form);
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -63,13 +78,24 @@ const FormActivity = (props: any) => {
 		values.backgroundImage = backgroundImage;
 		setFormSubmiting(false);
 
+		if (values.cct === true) {
+			values.activitiesTypeId = null;
+		}
+
 		if (edit) {
-			putModel(record?._id ?? '', values)
-				.then()
+			putModel(record?._id ?? '', values, undefined, undefined, false)
+				.then((rec) => {
+					setRecord({ ...rec, ...record });
+					if (afterAddNew) afterAddNew(rec);
+				})
 				.catch((er) => console.log(er));
 		} else
-			postModel(values)
-				.then(() => form.resetFields())
+			postModel(values, undefined, false)
+				.then((rec) => {
+					setRecord({ ...rec, ...record });
+					setEdit(true);
+					if (afterAddNew) afterAddNew(rec);
+				})
 				.catch((er) => console.log(er));
 	};
 
@@ -77,45 +103,78 @@ const FormActivity = (props: any) => {
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]}>
 				<Col span={24} md={12}>
-					<Form.Item name='banner' label='Banner' rules={[...rules.required]}>
+					<Form.Item
+						name='banner'
+						label={intl.formatMessage({ id: 'activity.info.form.banner' })}
+						rules={[...rules.required]}
+					>
 						<UploadFile disabled={isView} />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={12}>
-					<Form.Item name='backgroundImage' label='Background' rules={[...rules.required]}>
+					<Form.Item
+						name='backgroundImage'
+						label={intl.formatMessage({ id: 'activity.info.form.backgroundImage' })}
+						rules={[...rules.required]}
+					>
 						<UploadFile disabled={isView} />
 					</Form.Item>
 				</Col>
 				<Col span={24}>
-					<Form.Item name='name' label='Activity name' rules={[...rules.required]}>
-						<Input disabled={isView} placeholder='Enter Activity name' />
+					<Form.Item
+						name='name'
+						label={intl.formatMessage({ id: 'activity.info.form.name' })}
+						rules={[...rules.required]}
+					>
+						<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activity.info.form.name.place' })} />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={12}>
-					<Form.Item name='startDate' label='Start Date' rules={[...rules.required]}>
-						<MyDatePicker disabled={isView} />
+					<Form.Item
+						name='startDate'
+						label={intl.formatMessage({ id: 'activity.info.form.startDate' })}
+						rules={[...rules.required]}
+					>
+						<MyDatePicker
+							disabled={isView}
+							placeholder={intl.formatMessage({ id: 'activity.info.form.startDate.place' })}
+						/>
 					</Form.Item>
 				</Col>
 				<Col span={24} md={12}>
-					<Form.Item name='endDate' label='End Date' rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}>
+					<Form.Item
+						name='endDate'
+						label={intl.formatMessage({ id: 'activity.info.form.endDate' })}
+						rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}
+					>
 						<MyDatePicker
 							disabled={isView}
 							disabledDate={(cur) => (startDate ? dayjs(cur).isBefore(startDate) : false)}
+							placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}
 						/>
 					</Form.Item>
 				</Col>
 				<Col span={24}>
-					<Form.Item name='organizer' label='Organizer' rules={[...rules.required]}>
-						<Input disabled={isView} placeholder='Enter Organizer' />
+					<Form.Item
+						name='organizer'
+						label={intl.formatMessage({ id: 'activity.info.form.organizer' })}
+						rules={[...rules.required]}
+					>
+						<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activity.info.form.organizer.place' })} />
 					</Form.Item>
 				</Col>
 
 				<Col span={24} md={12}>
-					<Form.Item name='onCampus' label='Location' rules={[...rules.required]}>
+					<Form.Item
+						name='onCampus'
+						label={intl.formatMessage({ id: 'activity.info.form.location' })}
+						rules={[...rules.required]}
+					>
 						<Radio.Group
+							disabled={isView}
 							options={[
-								{ value: true, label: 'On-campus' },
-								{ value: false, label: 'Other location' },
+								{ value: true, label: intl.formatMessage({ id: 'activity.info.form.location.onCampus' }) },
+								{ value: false, label: intl.formatMessage({ id: 'activity.info.form.location.otherAddress' }) },
 							]}
 						/>
 					</Form.Item>
@@ -123,8 +182,13 @@ const FormActivity = (props: any) => {
 
 				{onCampus ? (
 					<Col span={24} md={12}>
-						<Form.Item name='facilityCode' label='On-campus' rules={[...rules.required]}>
+						<Form.Item
+							name='facilityCode'
+							label={intl.formatMessage({ id: 'activity.info.form.location.onCampus' })}
+							rules={[...rules.required]}
+						>
 							<SelectPhongCSVC
+								disabled={isView}
 								onChange={(val, option) => {
 									const phong = option?.rawData;
 									form.setFieldsValue({
@@ -137,33 +201,58 @@ const FormActivity = (props: any) => {
 					</Col>
 				) : (
 					<Col span={24} md={12}>
-						<Form.Item name='otherAddress' label='Other location' rules={[...rules.required]}>
-							<Input disabled={isView} placeholder='Enter Other location' />
+						<Form.Item
+							name='otherAddress'
+							label={intl.formatMessage({ id: 'activity.info.form.location.otherAddress' })}
+							rules={[...rules.required]}
+						>
+							<Input
+								disabled={isView}
+								placeholder={intl.formatMessage({ id: 'activity.info.form.location.otherAddress.place' })}
+							/>
 						</Form.Item>
 					</Col>
 				)}
 
 				<Col span={24}>
-					<Form.Item name='description' label='Description' rules={[...rules.text]}>
-						<Input.TextArea rows={3} disabled={isView} placeholder='Enter Description' />
-					</Form.Item>
-				</Col>
-
-				<Col span={24} md={12}>
-					<Form.Item name='participantScope' label='Participant List' rules={[...rules.required]}>
-						<Select
-							options={Object.values(EParticipantScope).map((item) => ({
-								value: item,
-								label: mapNameParticipantScope[item],
-							}))}
-							placeholder='Select Participant List'
+					<Form.Item
+						name='description'
+						label={intl.formatMessage({ id: 'activity.info.form.description' })}
+						rules={[...rules.text]}
+					>
+						<Input.TextArea
+							rows={3}
+							disabled={isView}
+							placeholder={intl.formatMessage({ id: 'activity.info.form.description.place' })}
 						/>
 					</Form.Item>
 				</Col>
 
 				<Col span={24} md={12}>
-					<Form.Item name='participantRole' label='Participant Role' rules={[...rules.required]}>
+					<Form.Item
+						name='participantScope'
+						label={intl.formatMessage({ id: 'activity.info.form.participantScope' })}
+						rules={[...rules.required]}
+					>
+						<Select
+							disabled={isView}
+							options={Object.values(EParticipantScope).map((item) => ({
+								value: item,
+								label: mapNameParticipantScope[item],
+							}))}
+							placeholder={intl.formatMessage({ id: 'activity.info.form.participantScope.place' })}
+						/>
+					</Form.Item>
+				</Col>
+
+				<Col span={24} md={12}>
+					<Form.Item
+						name='participantRole'
+						label={intl.formatMessage({ id: 'activity.info.form.participantRole' })}
+						rules={[...rules.required]}
+					>
 						<GroupTagVaiTro
+							disabled={isView}
 							listVaiTro={
 								participantScope === EParticipantScope.UNIT
 									? [EparticipantRole.STAFF]
@@ -179,64 +268,108 @@ const FormActivity = (props: any) => {
 
 				<Col span={24}>
 					{participantScope === EParticipantScope.USER_LIST ? (
-						<Form.Item name='participantsList' label='Participants user list'>
-							<FormItemUserRoles />
-						</Form.Item>
+						record?._id ? (
+							<>
+								<div className='fw500' style={{ marginBottom: 8 }}>
+									{intl.formatMessage({ id: 'activity.info.form.participantsList' })}
+								</div>
+								<UserRolesModelPage disabled={isView} participantRole={participantRole} />
+							</>
+						) : (
+							<Form.Item
+								name='participantsList'
+								label={intl.formatMessage({ id: 'activity.info.form.participantsList' })}
+							>
+								<FormItemUserRoles disabled={isView} participantRole={participantRole} />
+							</Form.Item>
+						)
 					) : participantScope === EParticipantScope.STUDENT ? (
-						<Form.Item name='studentCohortCode' label='Khóa sinh viên' rules={[...rules.required]}>
-							<SelectKhoaSinhVien selectMa allowClear />
+						<Form.Item
+							name='studentCohortCode'
+							label={intl.formatMessage({ id: 'activity.info.form.studentCohortCode' })}
+							rules={[...rules.required]}
+						>
+							<SelectKhoaSinhVien selectMa allowClear disabled={isView} />
 						</Form.Item>
 					) : participantScope === EParticipantScope.MAJOR ? (
-						<Form.Item name='majorCode' label='Ngành học' rules={[...rules.required]}>
-							<SelectNganhCoSo selectMa allowClear />
+						<Form.Item
+							name='majorCode'
+							label={intl.formatMessage({ id: 'activity.info.form.majorCode' })}
+							rules={[...rules.required]}
+						>
+							<SelectNganhCoSo selectMa allowClear disabled={isView} />
 						</Form.Item>
 					) : participantScope === EParticipantScope.COURSE_CLASS ? (
-						<Form.Item name='courseClassCode' label='Lớp học phần' rules={[...rules.required]}>
-							<SelectLopHocPhanDebounce selectMa allowClear />
+						<Form.Item
+							name='courseClassCode'
+							label={intl.formatMessage({ id: 'activity.info.form.courseClassCode' })}
+							rules={[...rules.required]}
+						>
+							<SelectLopHocPhanDebounce selectMa allowClear disabled={isView} />
 						</Form.Item>
 					) : participantScope === EParticipantScope.UNIT ? (
-						<Form.Item name='unitCode' label='Đơn vị' rules={[...rules.required]}>
-							<SelectDonVi selectMa allowClear />
+						<Form.Item
+							name='unitCode'
+							label={intl.formatMessage({ id: 'activity.info.form.unitCode' })}
+							rules={[...rules.required]}
+						>
+							<SelectDonVi selectMa allowClear disabled={isView} />
 						</Form.Item>
 					) : null}
 				</Col>
 
 				<Col span={24} md={12}>
 					<Form.Item name='cct' valuePropName='checked'>
-						<Checkbox>CCT Transcript</Checkbox>
-					</Form.Item>
-				</Col>
-				<Col span={24} md={12}>
-					<Form.Item name='allowPostEventResultsUpdate' valuePropName='checked'>
-						<Checkbox>Allow post-event results update</Checkbox>
+						<Checkbox disabled={isView}>{intl.formatMessage({ id: 'activity.info.form.cct' })}</Checkbox>
 					</Form.Item>
 				</Col>
 
-				<Col span={24} md={12}>
-					<Form.Item name='activitiesTypeId' label='Co-curricular Activities (CCA)'>
-						<SelectActivitiesManagement />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={12}>
-					<Form.Item label='EXCEL competency mapping'>
-						<Input disabled value={dsActivitiType?.find((item) => item?._id === activitiesTypeId)?.attributes?.name} />
-					</Form.Item>
-				</Col>
+				{!cct && (
+					<>
+						<Col span={24} md={12}>
+							<Form.Item name='allowPostEventResultsUpdate' valuePropName='checked'>
+								<Checkbox disabled={isView}>
+									{intl.formatMessage({ id: 'activity.info.form.allowPostEventResultsUpdate' })}
+								</Checkbox>
+							</Form.Item>
+						</Col>
 
-				<Col span={24}>
-					{record?._id ? (
-						<>
-							<div className='fw500' style={{ marginBottom: 8 }}>
-								Student Declaration Approver
-							</div>
-							<StudenModelPage disabled={isView} mode='activity' />
-						</>
-					) : (
-						<Form.Item name='studentDeclarationApproverList' label='Student Declaration Approver'>
-							<FormItemStudent />
-						</Form.Item>
-					)}
-				</Col>
+						<Col span={24} md={12}>
+							<Form.Item
+								name='activitiesTypeId'
+								label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId' })}
+							>
+								<SelectActivitiesManagement disabled={isView} />
+							</Form.Item>
+						</Col>
+						<Col span={24} md={12}>
+							<Form.Item label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}>
+								<Input
+									disabled
+									value={dsActivitiType?.find((item) => item?._id === activitiesTypeId)?.attributes?.name}
+								/>
+							</Form.Item>
+						</Col>
+
+						<Col span={24}>
+							{record?._id ? (
+								<>
+									<div className='fw500' style={{ marginBottom: 8 }}>
+										{intl.formatMessage({ id: 'activity.info.form.student' })}
+									</div>
+									<StudenModelPage disabled={isView} mode='activity' />
+								</>
+							) : (
+								<Form.Item
+									name='studentDeclarationApproverList'
+									label={intl.formatMessage({ id: 'activity.info.form.student' })}
+								>
+									<FormItemStudent />
+								</Form.Item>
+							)}
+						</Col>
+					</>
+				)}
 			</Row>
 
 			<div className='form-footer'>

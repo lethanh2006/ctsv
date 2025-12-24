@@ -7,14 +7,12 @@ import { Button, Col, Form, Row, Segmented } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormUserRoles = (props: {
-	onOk: (val: Activity.IParticipantsList) => void;
-	participantRole: EparticipantRole;
-}) => {
+const FormUserRolesModel = (props: any) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
-	const { onOk, participantRole: participantRoleExtra } = props;
-	const { setVisibleForm, visibleForm, edit } = useModel('cct.userroles');
+	const { getData, participantRole: participantRoleExtra } = props;
+	const { record: recActivity } = useModel('cct.activity');
+	const { setVisibleForm, visibleForm, edit, postModel, formSubmiting } = useModel('cct.userroles');
 
 	const participantRole: EparticipantRole = Form.useWatch('participantRole', form);
 
@@ -29,7 +27,15 @@ const FormUserRoles = (props: {
 	}, [visibleForm, participantRole]);
 
 	const onFinish = async (values: Activity.IParticipantsList) => {
-		onOk({ ...values });
+		postModel(
+			{
+				...values,
+				activitiesId: recActivity?._id,
+			},
+			getData,
+		)
+			.then()
+			.catch((err) => console.log(err));
 	};
 
 	return (
@@ -44,7 +50,7 @@ const FormUserRoles = (props: {
 									: [participantRoleExtra],
 							).map((item) => ({
 								value: item,
-								label: mapNameParticipantRole[item],
+								label: mapNameParticipantRole[item as EparticipantRole],
 							}))}
 						/>
 					</Form.Item>
@@ -87,7 +93,7 @@ const FormUserRoles = (props: {
 			</Row>
 
 			<div className='form-footer'>
-				<Button htmlType='submit' type='primary'>
+				<Button loading={formSubmiting} htmlType='submit' type='primary'>
 					{!edit
 						? intl.formatMessage({ id: 'global.button.themmoi' })
 						: intl.formatMessage({ id: 'global.button.chinhsua' })}
@@ -99,4 +105,4 @@ const FormUserRoles = (props: {
 	);
 };
 
-export default FormUserRoles;
+export default FormUserRolesModel;

@@ -28,7 +28,7 @@ declare module Activity {
 
 		allowPostEventResultsUpdate?: boolean;
 
-		activitiesTypeId: string;
+		activitiesTypeId: string | null;
 		activitiesType: ActivitiesManagement.IRecord;
 		featuredActivities: boolean;
 
@@ -47,5 +47,18 @@ declare module Activity {
 		participantRole: EparticipantRole;
 		activitiesId: string;
 		activities: string;
+	}
+
+	export interface IEquivalency {
+		_id: string;
+		activitiesId: string;
+		activities: ActivitiesManagement.IRecord;
+		rolesId: string;
+		roles: RolesManagement.IRecord;
+		attributesId: string;
+		attributes: AttributesManagement.IRecord;
+		autoApprove: boolean;
+		selfAssessmentQuestionsId: string;
+		selfAssessmentQuestionsName: string;
 	}
 }

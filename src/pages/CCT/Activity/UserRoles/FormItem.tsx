@@ -2,6 +2,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { Activity } from '@/services/CCT/Activity/typing';
+import { EparticipantRole } from '@/services/CCT/constant';
 import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
@@ -10,11 +11,12 @@ import FormUserRoles from './Form';
 const FormItemUserRoles = (props: {
 	value?: Activity.IParticipantsList[];
 	onChange?: (data: Activity.IParticipantsList[]) => void;
+	disabled?: boolean;
+	participantRole: EparticipantRole;
 }) => {
 	const intl = useIntl();
-	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView, handleView } =
-		useModel('cct.userroles');
-	const { value = [], onChange } = props;
+	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView } = useModel('cct.userroles');
+	const { value = [], onChange, disabled, participantRole } = props;
 
 	const onDelete = (index: number) => {
 		const data = [...value];
@@ -35,29 +37,21 @@ const FormItemUserRoles = (props: {
 		}
 	};
 
-	const onCell = (rec: Activity.IParticipantsList) => ({
-		onClick: () => handleView(rec),
-		style: { cursor: 'pointer' },
-	});
-
 	const columns: IColumn<Activity.IParticipantsList>[] = [
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'activity.info.participantsList.column.name' }),
 			dataIndex: 'name',
 			width: 220,
-			onCell,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'activity.info.participantsList.column.email' }),
 			dataIndex: 'email',
 			width: 100,
-			onCell,
 		},
 		{
-			title: 'Vai trò',
+			title: intl.formatMessage({ id: 'activity.info.participantsList.column.role' }),
 			dataIndex: 'participantRole',
 			width: 100,
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
@@ -68,10 +62,11 @@ const FormItemUserRoles = (props: {
 				<>
 					<Popconfirm
 						onConfirm={() => onDelete(rec.index - 1)}
-						title={intl.formatMessage({ id: 'activitiesmanagement.student.comfirm.xoa' })}
+						title={intl.formatMessage({ id: 'activity.info.participantsList.confirm.xoa' })}
 						placement='topLeft'
 					>
 						<ButtonExtend
+							disabled={disabled}
 							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
 							danger
 							type='link'
@@ -87,6 +82,7 @@ const FormItemUserRoles = (props: {
 		<>
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
 				<Button
+					disabled={disabled}
 					icon={<PlusCircleOutlined />}
 					onClick={() => {
 						setRecord({} as Activity.IParticipantsList);
@@ -102,13 +98,13 @@ const FormItemUserRoles = (props: {
 			</TableStaticData>
 
 			<Modal
-				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activitiesmanagement.form.student' })}`}
+				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.participantsList' })}`}
 				open={visibleForm}
 				width={600}
 				footer={null}
 				onCancel={() => setVisibleForm(false)}
 			>
-				<FormUserRoles onOk={onAdd} />
+				<FormUserRoles onOk={onAdd} participantRole={participantRole} />
 			</Modal>
 		</>
 	);

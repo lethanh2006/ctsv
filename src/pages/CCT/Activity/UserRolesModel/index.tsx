@@ -2,14 +2,15 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { Activity } from '@/services/CCT/Activity/typing';
+import { EparticipantRole } from '@/services/CCT/constant';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormStudentModel from './Form';
 
-const StudenModelPage = (props: { disabled?: boolean }) => {
+const UserRolesModelPage = (props: { disabled?: boolean; participantRole: EparticipantRole }) => {
 	const intl = useIntl();
-	const { disabled } = props;
+	const { disabled, participantRole } = props;
 	const { record: recActivity } = useModel('cct.activity');
 	const { getModel, page, limit, deleteModel } = useModel('cct.userroles');
 
@@ -22,17 +23,17 @@ const StudenModelPage = (props: { disabled?: boolean }) => {
 
 	const columns: IColumn<Activity.IParticipantsList>[] = [
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'activity.info.participantsList.column.name' }),
 			dataIndex: 'name',
 			width: 220,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'activity.info.participantsList.column.email' }),
 			dataIndex: 'email',
 			width: 100,
 		},
 		{
-			title: 'Vai trò',
+			title: intl.formatMessage({ id: 'activity.info.participantsList.column.role' }),
 			dataIndex: 'participantRole',
 			width: 100,
 		},
@@ -44,8 +45,8 @@ const StudenModelPage = (props: { disabled?: boolean }) => {
 			render: (val, rec) => (
 				<>
 					<Popconfirm
-						onConfirm={() => deleteModel(rec?._id)}
-						title={intl.formatMessage({ id: 'activitiesmanagement.student.comfirm.xoa' })}
+						onConfirm={() => deleteModel(rec?._id, getData)}
+						title={intl.formatMessage({ id: 'activity.info.participantsList.confirm.xoa' })}
 						placement='topLeft'
 					>
 						<ButtonExtend
@@ -65,10 +66,10 @@ const StudenModelPage = (props: { disabled?: boolean }) => {
 			getData={getData}
 			columns={columns}
 			dependencies={[page, limit, recActivity?._id]}
-			modelName='danhmuc.student'
-			title='Participants user list'
+			modelName='cct.userroles'
+			title={intl.formatMessage({ id: 'activity.info.form.participantsList' })}
 			Form={FormStudentModel}
-			formProps={{ getData }}
+			formProps={{ getData, participantRole }}
 			buttons={{ create: !disabled }}
 			widthDrawer={800}
 			hideCard
@@ -79,4 +80,4 @@ const StudenModelPage = (props: { disabled?: boolean }) => {
 	);
 };
 
-export default StudenModelPage;
+export default UserRolesModelPage;

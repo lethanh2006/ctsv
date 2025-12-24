@@ -2,7 +2,7 @@ import { EOperatorType } from '@/components/Table/constant';
 import type { NganhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/Nganh/typings';
 import { Select, Spin } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -23,6 +23,7 @@ const SelectNganhCoSo = (props: {
 	placeholder?: string;
 	except?: string[];
 }) => {
+	const intl = useIntl();
 	const {
 		value,
 		onChange,
@@ -90,7 +91,7 @@ const SelectNganhCoSo = (props: {
 				}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn ngành đào tạo'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'activity.info.form.majorCode.place' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 		/>
