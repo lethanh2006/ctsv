@@ -4,6 +4,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
+import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import { DeleteOutlined, EditOutlined, EyeOutlined, MenuOutlined } from '@ant-design/icons';
 import { Popconfirm, Popover } from 'antd';
 import { useIntl, useModel } from 'umi';
@@ -15,10 +16,9 @@ const KhaoSatPage = () => {
 	const { getModel, page, limit, isView, deleteModel, handleEdit, handleView } = useModel('tienich.bieumau');
 
 	const getData = () => {
-		getModel();
-		// 	{
-		// 	loai: ELoaiBieuMau.QUESTIONS,
-		// }
+		getModel({
+			loai: ELoaiBieuMau.QUESTIONS,
+		});
 	};
 
 	const onCell = (rec: BieuMau.Record) => ({

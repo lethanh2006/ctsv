@@ -10,7 +10,6 @@ const FormRoles = (props: any) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
 		useModel('danhmuc.roles');
-	const title = props?.title ?? '';
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -33,7 +32,7 @@ const FormRoles = (props: any) => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values)
+			postModel({ ...values, isActive: true })
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
@@ -41,11 +40,11 @@ const FormRoles = (props: any) => {
 	return (
 		<Card
 			title={
-				(edit
-					? intl.formatMessage({ id: 'global.button.chinhsua' })
+				edit
+					? intl.formatMessage({ id: 'rolesmanagement.form.chinhsua' })
 					: isView
-						? intl.formatMessage({ id: 'global.button.chitiet' })
-						: intl.formatMessage({ id: 'global.button.themmoi' })) + title.toLowerCase()
+						? intl.formatMessage({ id: 'rolesmanagement.form.chitiet' })
+						: intl.formatMessage({ id: 'rolesmanagement.form.themmoi' })
 			}
 		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>

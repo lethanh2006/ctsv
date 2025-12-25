@@ -12,7 +12,6 @@ const FormActivities = (props: any) => {
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
 		useModel('danhmuc.activities');
-	const title = props?.title ?? '';
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -25,17 +24,13 @@ const FormActivities = (props: any) => {
 		}
 	}, [record?._id, visibleForm]);
 
-	useEffect(() => {
-		if (!visibleForm) form.resetFields();
-	}, [visibleForm]);
-
 	const onFinish = async (values: ActivitiesManagement.IRecord) => {
 		if (edit) {
 			putModel(record?._id ?? '', values)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values)
+			postModel({ ...values, isActive: true })
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
@@ -43,11 +38,11 @@ const FormActivities = (props: any) => {
 	return (
 		<Card
 			title={
-				(edit
-					? intl.formatMessage({ id: 'global.button.chinhsua' })
+				edit
+					? intl.formatMessage({ id: 'activitiesmanagement.form.chinhsua' })
 					: isView
-						? intl.formatMessage({ id: 'global.button.chitiet' })
-						: intl.formatMessage({ id: 'global.button.themmoi' })) + title.toLowerCase()
+						? intl.formatMessage({ id: 'activitiesmanagement.form.chitiet' })
+						: intl.formatMessage({ id: 'activitiesmanagement.form.themmoi' })
 			}
 		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>

@@ -57,18 +57,14 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				participantScope: EParticipantScope.USER_LIST,
+				participantScope: EParticipantScope.UNIVERSITY,
 				participantRole: EparticipantRole.ALL,
-				cct: false,
+				cct: true,
 				allowPostEventResultsUpdate: false,
 				onCampus: true,
 			});
 		}
 	}, [record?._id, visibleForm]);
-
-	useEffect(() => {
-		if (!visibleForm) form.resetFields();
-	}, [visibleForm]);
 
 	const onFinish = async (values: Activity.IRecord) => {
 		setFormSubmiting(true);
@@ -78,7 +74,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 		values.backgroundImage = backgroundImage;
 		setFormSubmiting(false);
 
-		if (values.cct === true) {
+		if (values.cct === false) {
 			values.activitiesTypeId = null;
 		}
 
@@ -86,7 +82,9 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 			putModel(record?._id ?? '', values, undefined, undefined, false)
 				.then((rec) => {
 					setRecord({ ...rec, ...record });
-					if (afterAddNew) afterAddNew(rec);
+					if (afterAddNew && rec?.activitiesTypeId) {
+						afterAddNew(rec);
+					} else setVisibleForm(false);
 				})
 				.catch((er) => console.log(er));
 		} else
@@ -94,7 +92,9 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 				.then((rec) => {
 					setRecord({ ...rec, ...record });
 					setEdit(true);
-					if (afterAddNew) afterAddNew(rec);
+					if (afterAddNew && rec?.activitiesTypeId) {
+						afterAddNew(rec);
+					} else setVisibleForm(false);
 				})
 				.catch((er) => console.log(er));
 	};
@@ -103,20 +103,12 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]}>
 				<Col span={24} md={12}>
-					<Form.Item
-						name='banner'
-						label={intl.formatMessage({ id: 'activity.info.form.banner' })}
-						rules={[...rules.required]}
-					>
+					<Form.Item name='banner' label={intl.formatMessage({ id: 'activity.info.form.banner' })}>
 						<UploadFile disabled={isView} />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={12}>
-					<Form.Item
-						name='backgroundImage'
-						label={intl.formatMessage({ id: 'activity.info.form.backgroundImage' })}
-						rules={[...rules.required]}
-					>
+					<Form.Item name='backgroundImage' label={intl.formatMessage({ id: 'activity.info.form.backgroundImage' })}>
 						<UploadFile disabled={isView} />
 					</Form.Item>
 				</Col>
@@ -324,7 +316,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 					</Form.Item>
 				</Col>
 
-				{!cct && (
+				{cct && (
 					<>
 						<Col span={24} md={12}>
 							<Form.Item name='allowPostEventResultsUpdate' valuePropName='checked'>
@@ -338,6 +330,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 							<Form.Item
 								name='activitiesTypeId'
 								label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId' })}
+								rules={[...rules.required]}
 							>
 								<SelectActivitiesManagement disabled={isView} />
 							</Form.Item>
@@ -346,7 +339,10 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 							<Form.Item label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}>
 								<Input
 									disabled
-									value={dsActivitiType?.find((item) => item?._id === activitiesTypeId)?.attributes?.name}
+									value={
+										dsActivitiType?.find((item) => item?._id === activitiesTypeId)?.attributes?.name ??
+										intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.select' })
+									}
 								/>
 							</Form.Item>
 						</Col>

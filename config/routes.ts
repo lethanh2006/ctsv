@@ -181,6 +181,13 @@
 	},
 
 	{
+		name: 'ActivityResuls',
+		icon: 'calendar',
+		path: '/activity-resuls',
+		component: 'CCT/ActivityStudent',
+	},
+
+	{
 		path: `/qr-su-kien-v2/:id`,
 		component: 'SuKienV2/QRCode',
 		layout: false,
@@ -695,75 +702,83 @@
 		path: '/danh-muc',
 		icon: 'copy',
 		routes: [
-			// {
-			// 	name: 'KhenThuong',
-			// 	path: 'khen-thuong',
-			// 	component: 'CheDoChinhSach/KhenThuong/CheDoKhenThuong',
-			// 	// routes: [
-			// 	// 	{
-			// 	// 		name: 'LoaiKhenThuong',
-			// 	// 		path: 'loai-khen-thuong',
-			// 	// 		component: 'DanhMuc/LoaiKhenThuong',
-			// 	// 	},
-			// 	// 	{
-			// 	// 		name: 'HinhThucKhenThuong',
-			// 	// 		path: 'hinh-thuc-khen-thuong',
-			// 	// 		component: 'DanhMuc/HinhThucKhenThuong',
-			// 	// 	},
-			// 	// 	{
-			// 	// 		name: 'KhenThuong',
-			// 	// 		path: 'khen-thuong',
-			// 	// 		component: 'CheDoChinhSach/KhenThuong/CheDoKhenThuong',
-			// 	// 	},
-			// 	// ],
-			// },
-			// {
-			// 	name: 'KyLuat',
-			// 	path: 'ky-luat',
-			// 	component: 'CheDoChinhSach/KyLuat/CheDoKyLuat',
-			// 	// routes: [
-			// 	// 	{
-			// 	// 		name: 'CapKyLuat',
-			// 	// 		path: 'cap-ky-luat',
-			// 	// 		component: 'DanhMuc/CapKyLuat',
-			// 	// 	},
-			// 	// 	{
-			// 	// 		name: 'HinhThucKyLuat',
-			// 	// 		path: 'hinh-thuc-ky-luat',
-			// 	// 		component: 'DanhMuc/HinhThucKyLuat',
-			// 	// 	},
-			// 	// 	{
-			// 	// 		name: 'KyLuat',
-			// 	// 		path: 'ky-luat',
-			// 	// 		component: 'CheDoChinhSach/KyLuat/CheDoKyLuat',
-			// 	// 	},
-			// 	// ],
-			// },
-			// {
-			// 	name: 'HocBong',
-			// 	path: 'hoc-bong',
-			// 	component: 'CheDoChinhSach/HocBong/CheDoHocBong',
-			// },
-			// {
-			// 	name: 'BaoHiemXaHoi',
-			// 	path: 'bao-hiem',
-			// 	component: 'CheDoChinhSach/BaoHiem/CheDoBaoHiem',
-			// },
-			// {
-			// 	name: 'CheDoChinhSach',
-			// 	component: 'CheDoChinhSach/CheDoChinhSach/CheDoChinhSach',
-			// 	path: 'che-do-chinh-sach',
-			// },
-			// {
-			// 	name: 'GiaoDucChinhTriTuTuong',
-			// 	component: 'CheDoChinhSach/GiaoDucChinhTriTuTuong/CheDoGDCTTT',
-			// 	path: 'giao-duc-chinh-tri-tu-tuong',
-			// },
-			// {
-			// 	name: 'Chung',
-			// 	component: 'DanhMuc/Chung',
-			// 	path: 'chung',
-			// },
+			{
+				name: 'KhenThuong',
+				path: 'khen-thuong',
+				component: 'CheDoChinhSach/KhenThuong/CheDoKhenThuong',
+				// routes: [
+				// 	{
+				// 		name: 'LoaiKhenThuong',
+				// 		path: 'loai-khen-thuong',
+				// 		component: 'DanhMuc/LoaiKhenThuong',
+				// 	},
+				// 	{
+				// 		name: 'HinhThucKhenThuong',
+				// 		path: 'hinh-thuc-khen-thuong',
+				// 		component: 'DanhMuc/HinhThucKhenThuong',
+				// 	},
+				// 	{
+				// 		name: 'KhenThuong',
+				// 		path: 'khen-thuong',
+				// 		component: 'CheDoChinhSach/KhenThuong/CheDoKhenThuong',
+				// 	},
+				// ],
+			},
+			{
+				name: 'KyLuat',
+				path: 'ky-luat',
+				component: 'CheDoChinhSach/KyLuat/CheDoKyLuat',
+				// routes: [
+				// 	{
+				// 		name: 'CapKyLuat',
+				// 		path: 'cap-ky-luat',
+				// 		component: 'DanhMuc/CapKyLuat',
+				// 	},
+				// 	{
+				// 		name: 'HinhThucKyLuat',
+				// 		path: 'hinh-thuc-ky-luat',
+				// 		component: 'DanhMuc/HinhThucKyLuat',
+				// 	},
+				// 	{
+				// 		name: 'KyLuat',
+				// 		path: 'ky-luat',
+				// 		component: 'CheDoChinhSach/KyLuat/CheDoKyLuat',
+				// 	},
+				// ],
+			},
+			{
+				name: 'HocBong',
+				path: 'hoc-bong',
+				component: 'CheDoChinhSach/HocBong/CheDoHocBong',
+			},
+			{
+				name: 'BaoHiemXaHoi',
+				path: 'bao-hiem',
+				component: 'CheDoChinhSach/BaoHiem/CheDoBaoHiem',
+			},
+			{
+				name: 'CheDoChinhSach',
+				component: 'CheDoChinhSach/CheDoChinhSach/CheDoChinhSach',
+				path: 'che-do-chinh-sach',
+			},
+			{
+				name: 'GiaoDucChinhTriTuTuong',
+				component: 'CheDoChinhSach/GiaoDucChinhTriTuTuong/CheDoGDCTTT',
+				path: 'giao-duc-chinh-tri-tu-tuong',
+			},
+			{
+				name: 'Chung',
+				component: 'DanhMuc/Chung',
+				path: 'chung',
+			},
+		],
+	},
+
+	{
+		name: 'YeuCauChung',
+		path: '/yeu-cau-chung',
+		icon: 'copy',
+		routes: [
 			{
 				name: 'Attributes',
 				component: 'DanhMuc/Attributes',

@@ -3,7 +3,7 @@ import { ETrangThaiChinhSuaNhanSu } from '@/services/ToChucNhanSu/constant';
 import { Empty, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectNhanSuDebounce = (props: {
 	value?: string | string[];
@@ -13,6 +13,7 @@ const SelectNhanSuDebounce = (props: {
 	disabled?: boolean;
 	isView?: boolean;
 }): any => {
+	const intl = useIntl();
 	const { value, onChange, multiple, placeholder } = props;
 	const { danhSach, getModel, setFilters, filters, loading } = useModel('tochucnhansu.nhansu');
 
@@ -66,7 +67,7 @@ const SelectNhanSuDebounce = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder || 'Chọn cán bộ, giảng viên (tìm kiếm theo tên)'}
+			placeholder={placeholder || intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten.select' })}
 		/>
 	);
 };

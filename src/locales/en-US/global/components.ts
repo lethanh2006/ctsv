@@ -42,7 +42,7 @@ export default {
 	'global.rightcontent.thongbao.dong': 'Close',
 
 	//Table
-	'global.table.column.stt': 'Display order',
+	'global.table.column.stt': 'No.',
 	'global.table.export.title': 'Export data',
 	'global.table.export.khadung': 'Available fields',
 	'global.table.export.choose.chontatca': 'Select all',

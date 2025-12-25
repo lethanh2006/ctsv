@@ -7,12 +7,11 @@ import { Colorpicker } from 'antd-colorpicker';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormAttributes = (props: any) => {
+const FormAttributes = () => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, setFormSubmiting, formSubmiting, visibleForm } =
 		useModel('danhmuc.attributes');
-	const title = props?.title ?? '';
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -25,10 +24,6 @@ const FormAttributes = (props: any) => {
 		}
 	}, [record?._id, visibleForm]);
 
-	useEffect(() => {
-		if (!visibleForm) form.resetFields();
-	}, [visibleForm]);
-
 	const onFinish = async (values: AttributesManagement.IRecord) => {
 		setFormSubmiting(true);
 		const icon = await buildUpLoadFile(values, 'icon');
@@ -40,7 +35,7 @@ const FormAttributes = (props: any) => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values)
+			postModel({ ...values, isActive: true })
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
@@ -48,11 +43,11 @@ const FormAttributes = (props: any) => {
 	return (
 		<Card
 			title={
-				(edit
-					? intl.formatMessage({ id: 'global.button.chinhsua' })
+				edit
+					? intl.formatMessage({ id: 'attributesmanagement.form.chinhsua' })
 					: isView
-						? intl.formatMessage({ id: 'global.button.chitiet' })
-						: intl.formatMessage({ id: 'global.button.themmoi' })) + title.toLowerCase()
+						? intl.formatMessage({ id: 'attributesmanagement.form.chitiet' })
+						: intl.formatMessage({ id: 'attributesmanagement.form.themmoi' })
 			}
 		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>

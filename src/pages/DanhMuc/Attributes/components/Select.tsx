@@ -20,7 +20,7 @@ const SelectAttributesManagement = (props: {
 	const { danhSach, getAllModel } = useModel('danhmuc.attributes');
 
 	useEffect(() => {
-		getAllModel(!!isSetRecord, undefined, { ...condition, isActive: true });
+		getAllModel(!!isSetRecord, { order: 1 }, { ...condition, isActive: true });
 	}, [JSON.stringify(condition)]);
 
 	return (

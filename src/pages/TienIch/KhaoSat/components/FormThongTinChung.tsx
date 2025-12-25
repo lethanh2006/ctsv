@@ -71,7 +71,7 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 					>
 						<Input.TextArea
 							rows={3}
-							placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.tieude.place' })}
+							placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota.place' })}
 						/>
 					</Form.Item>
 				</Col>

@@ -8,7 +8,11 @@ export default {
 	'levelsmanagement.column.auto': 'Auto approval',
 	'levelsmanagement.column.active': 'Active',
 
-	'levelsmanagement.confirm.delete': 'Do you want to remove this levels management?',
+	'levelsmanagement.confirm.delete': 'Do you want to remove this level?',
+
+	'levelsmanagement.form.themmoi': 'Add new level',
+	'levelsmanagement.form.chinhsua': 'Edit level',
+	'levelsmanagement.form.chitiet': 'Detail level',
 
 	'levelsmanagement.form.id': 'ID',
 	'levelsmanagement.form.id.place': 'Enter ID',
@@ -19,7 +23,7 @@ export default {
 	'levelsmanagement.form.active': 'Active',
 	'levelsmanagement.form.auto': 'Auto approval',
 	'levelsmanagement.form.des': 'Description',
-	'levelsmanagement.form.des.place': 'Place description',
+	'levelsmanagement.form.des.place': 'Enter description',
 
-	'levelsmanagement.select.place': 'Select levels management',
+	'levelsmanagement.select.place': 'Select level',
 };

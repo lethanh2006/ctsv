@@ -110,7 +110,6 @@ const ActivitiesPage = () => {
 			title={intl.formatMessage({ id: 'activitiesmanagement.title' })}
 			Form={FormActivities}
 			buttons={{ import: true, export: true }}
-			addStt={false}
 			widthDrawer={800}
 		/>
 	);

@@ -12,19 +12,21 @@ const SelectRolesManagement = (props: {
 	allowClear?: boolean;
 	style?: React.CSSProperties;
 	isSetRecord?: boolean;
-	condition?: Partial<LevelsManagement.IRecord>;
+	condition?: Partial<RolesManagement.IRecord>;
 	disabled?: boolean;
+	size?: 'small' | 'middle' | 'large';
 }) => {
 	const intl = useIntl();
-	const { value, onChange, multiple, allowClear, style, isSetRecord, condition, disabled } = props;
+	const { value, onChange, multiple, allowClear, style, isSetRecord, condition, disabled, size } = props;
 	const { danhSach, getAllModel } = useModel('danhmuc.roles');
 
 	useEffect(() => {
-		getAllModel(!!isSetRecord, undefined, { ...condition, isActive: true });
+		getAllModel(!!isSetRecord, { order: 1 }, { ...condition, isActive: true });
 	}, [JSON.stringify(condition)]);
 
 	return (
 		<Select
+			size={size}
 			disabled={disabled}
 			mode={multiple ? 'multiple' : undefined}
 			allowClear={allowClear}

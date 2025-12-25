@@ -2,7 +2,7 @@ import UploadFile from '@/components/Upload/UploadFile';
 import { type BieuMau } from '@/services/TienIch/BieuMau/typings';
 import { ELoaiCauHoiPublic } from '@/services/TienIch/constant';
 import { Button, Card, Divider } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import GridChoice from './QuestionView/GridChoice';
 import MultipleChoice from './QuestionView/MultipleChoice';
 import NumericChoice from './QuestionView/NumericChoice';
@@ -12,6 +12,7 @@ import Text from './QuestionView/Text';
 import './block.css';
 
 const ViewDetailKhaoSat = (props: { hideCard?: boolean }) => {
+	const intl = useIntl();
 	const { hideCard } = props;
 	const { loading, record, setVisibleForm } = useModel('tienich.bieumau');
 
@@ -53,7 +54,8 @@ const ViewDetailKhaoSat = (props: { hideCard?: boolean }) => {
 			<div key={question._id} className='question-item'>
 				<div className='question-header'>
 					<div className='question-title'>
-						Câu {index + 1}: {question.noiDungCauHoi} {question.batBuoc && <span className='required'>*</span>}
+						{intl.formatMessage({ id: 'questionsmanagement.chitiet.cau' })} {index + 1}: {question.noiDungCauHoi}{' '}
+						{question.batBuoc && <span className='required'>*</span>}
 					</div>
 				</div>
 				<div className='question-content'>{questionEleMent}</div>
@@ -82,10 +84,10 @@ const ViewDetailKhaoSat = (props: { hideCard?: boolean }) => {
 	if (hideCard) return renderContent;
 
 	return (
-		<Card loading={loading} title='Chi tiết biểu mẫu khảo sát' className='card'>
+		<Card loading={loading} title={intl.formatMessage({ id: 'questionsmanagement.form.chitiet' })} className='card'>
 			{renderContent}
 			<div className='form-footer'>
-				<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

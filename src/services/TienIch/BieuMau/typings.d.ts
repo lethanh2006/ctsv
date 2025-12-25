@@ -143,4 +143,19 @@ declare module BieuMau {
 		luaChonTuyenTinh?: number;
 		listUrlFile?: string[];
 	}
+
+	export interface ICauTraLoiKhaoSat {
+		id: string;
+		answered: boolean;
+		danhSachTraLoi: BieuMau.TraLoiRecord[];
+		idDot: string;
+		idKhaoSat: string;
+		saved: boolean;
+
+		soLuotDaTraLoi: number;
+		soLuotTraLoiToiDa: number;
+
+		userSsoId: string;
+		giangVienSsoId: string;
+	}
 }

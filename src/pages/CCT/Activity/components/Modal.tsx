@@ -4,10 +4,9 @@ import { useIntl, useModel } from 'umi';
 import EquivalencyPage from '../Equivalency';
 import FormActivity from './Form';
 
-const ModalActivity = (props: any) => {
+const ModalActivity = () => {
 	const intl = useIntl();
-	const { record, edit } = useModel('cct.activity');
-	const title = props?.title ?? '';
+	const { record, edit, isView } = useModel('cct.activity');
 	const [currentStep, setCurrentStep] = useState<number>(0);
 
 	useEffect(() => {
@@ -20,7 +19,13 @@ const ModalActivity = (props: any) => {
 
 	return (
 		<Card
-			title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${title?.toLowerCase()}`}
+			title={
+				edit
+					? intl.formatMessage({ id: 'activity.form.chinhsua' })
+					: isView
+						? intl.formatMessage({ id: 'activity.form.chitet' })
+						: intl.formatMessage({ id: 'activity.form.themmoi' })
+			}
 		>
 			<Steps
 				current={currentStep}
@@ -29,7 +34,10 @@ const ModalActivity = (props: any) => {
 				onChange={record?._id ? onChangeStep : undefined}
 			>
 				<Steps.Step title={intl.formatMessage({ id: 'activity.step.info' })} />
-				<Steps.Step title={intl.formatMessage({ id: 'activity.step.cca' })} disabled={!record?._id} />
+				<Steps.Step
+					title={intl.formatMessage({ id: 'activity.step.cca' })}
+					disabled={!record?._id || !record?.activitiesTypeId}
+				/>
 			</Steps>
 
 			{currentStep === 0 ? <FormActivity afterAddNew={() => setCurrentStep(1)} /> : <EquivalencyPage />}

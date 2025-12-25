@@ -33,6 +33,7 @@ declare module Activity {
 		featuredActivities: boolean;
 
 		studentDeclarationApproverList: ActivitiesManagement.IStudentDeclaration[];
+		coCurricularActivityEquivalency: IEquivalency[];
 
 		//fake
 		cct?: boolean;
@@ -52,13 +53,20 @@ declare module Activity {
 	export interface IEquivalency {
 		_id: string;
 		activitiesId: string;
-		activities: ActivitiesManagement.IRecord;
+		activities?: ActivitiesManagement.IRecord;
 		rolesId: string;
-		roles: RolesManagement.IRecord;
+		roles?: RolesManagement.IRecord;
 		attributesId: string;
-		attributes: AttributesManagement.IRecord;
+		attributes?: AttributesManagement.IRecord;
 		autoApprove: boolean;
 		selfAssessmentQuestionsId: string;
 		selfAssessmentQuestionsName: string;
 	}
+
+	export type IAnalyticsActivity = {
+		completed: number;
+		ongoing: number;
+		total: number;
+		upcoming: number;
+	};
 }

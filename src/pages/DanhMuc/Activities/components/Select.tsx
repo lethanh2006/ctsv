@@ -20,7 +20,7 @@ const SelectActivitiesManagement = (props: {
 	const { danhSach, getAllModel } = useModel('danhmuc.activities');
 
 	useEffect(() => {
-		getAllModel(!!isSetRecord, undefined, { ...condition, isActive: true });
+		getAllModel(!!isSetRecord, { order: 1 }, { ...condition, isActive: true });
 	}, [JSON.stringify(condition)]);
 
 	return (

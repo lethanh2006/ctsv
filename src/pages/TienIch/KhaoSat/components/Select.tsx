@@ -10,26 +10,21 @@ import { useModel } from 'umi';
  */
 const SelectMauKhaoSat = (props: {
 	value?: string;
-	onChange?: (id: string) => void;
+	onChange?: (val: string | string[], option: any) => void;
 	multiple?: boolean;
 	allowClear?: boolean;
 	placeholder?: string;
 	style?: React.CSSProperties;
 	disabled?: boolean;
 	condition?: Partial<BieuMau.Record>;
+	size?: 'small' | 'middle' | 'large';
 }) => {
-	const { value, onChange, multiple, allowClear, placeholder, style, disabled, condition } = props;
+	const { value, onChange, multiple, allowClear, placeholder, style, disabled, condition, size } = props;
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('tienich.bieumau');
 
 	useEffect(() => {
 		if (!visibleForm)
 			getAllModel(undefined, undefined, condition, [
-				{
-					active: true,
-					field: 'kichHoat',
-					values: [true],
-					operator: EOperatorType.EQUAL,
-				},
 				{
 					active: true,
 					field: 'loai',
@@ -46,6 +41,7 @@ const SelectMauKhaoSat = (props: {
 
 	return (
 		<Select
+			size={size}
 			loading={loading}
 			mode={multiple ? 'multiple' : undefined}
 			allowClear={allowClear}
@@ -56,6 +52,7 @@ const SelectMauKhaoSat = (props: {
 				key: item._id,
 				value: item._id,
 				label: item.tieuDe,
+				rawData: item,
 			}))}
 			showSearch
 			optionFilterProp='label'

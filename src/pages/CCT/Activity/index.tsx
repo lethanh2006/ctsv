@@ -1,12 +1,14 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
+import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm } from 'antd';
+import { Card, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import ModalActivity from './components/Modal';
+import StatActivity from './components/Stat';
 
 const ActivityPage = () => {
 	const intl = useIntl();
@@ -38,10 +40,13 @@ const ActivityPage = () => {
 			dataIndex: 'activitiesTypeId',
 			width: 170,
 			render: (val, rec) => rec?.activitiesType?.name,
+			filterType: 'customselect',
+			filterCustomSelect: <SelectActivitiesManagement multiple />,
 			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'activity.column.date' }),
+			align: 'center',
 			width: 220,
 			render: (val, rec) =>
 				`${dayjs(rec?.startDate).format('DD/MM/YYYY')} - ${dayjs(rec?.endDate).format('DD/MM/YYYY')}`,
@@ -79,14 +84,18 @@ const ActivityPage = () => {
 	];
 
 	return (
-		<TableBase
-			columns={columns}
-			dependencies={[page, limit]}
-			modelName='cct.activity'
-			title={intl.formatMessage({ id: 'activity.title' })}
-			Form={ModalActivity}
-			widthDrawer={1000}
-		/>
+		<Card title={intl.formatMessage({ id: 'activity.title' })}>
+			<StatActivity />
+			<TableBase
+				columns={columns}
+				dependencies={[page, limit]}
+				modelName='cct.activity'
+				title={intl.formatMessage({ id: 'activity.title' })}
+				Form={ModalActivity}
+				widthDrawer={1200}
+				hideCard
+			/>
+		</Card>
 	);
 };
 

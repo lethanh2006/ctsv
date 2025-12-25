@@ -1,4 +1,5 @@
 import activity from './activity';
+import activityresult from './activityresult';
 import activities from './danhmuc/activities';
 import attributes from './danhmuc/attributes';
 import levels from './danhmuc/levels';
@@ -14,4 +15,5 @@ export default {
 	...activities,
 	...questions,
 	...activity,
+	...activityresult,
 };

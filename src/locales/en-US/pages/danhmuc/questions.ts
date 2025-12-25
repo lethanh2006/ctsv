@@ -6,10 +6,14 @@ export default {
 	'questionsmanagement.column.mota': 'Description',
 	'questionsmanagement.column.kichhoat': 'Active',
 
-	'questionsmanagement.comfirm.xoa': 'Are you sure you want to delete this Self-Assessment Questions?',
+	'questionsmanagement.comfirm.xoa': 'Are you sure you want to delete this question?',
 
 	'questionsmanagement.button.xemtruoc': 'Preview',
 	'questionsmanagement.button.tieptheo': 'Next',
+
+	'questionsmanagement.form.themmoi': 'Add new question',
+	'questionsmanagement.form.chinhsua': 'Edit question',
+	'questionsmanagement.form.chitiet': 'Detail question',
 
 	'questionsmanagement.step.thongtinchung': 'General Information',
 	'questionsmanagement.step.cauhinh': 'Form Configuration',
@@ -77,6 +81,8 @@ export default {
 	'questionsmanagement.cauhinh.numberic.chon': 'Select',
 	'questionsmanagement.cauhinh.numberic.tu': 'From',
 	'questionsmanagement.cauhinh.numberic.den': 'To',
+
+	'questionsmanagement.chitiet.cau': 'Question',
 
 	'questionsmanagement.chitiet.gridchoice.noidung': 'Content',
 

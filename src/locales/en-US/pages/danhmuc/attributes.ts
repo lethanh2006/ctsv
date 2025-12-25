@@ -7,7 +7,11 @@ export default {
 	'attributesmanagement.column.des': 'Description',
 	'attributesmanagement.column.active': 'Active',
 
-	'attributesmanagement.confirm.delete': 'Do you want to remove this attributes management?',
+	'attributesmanagement.confirm.delete': 'Do you want to remove this attribute?',
+
+	'attributesmanagement.form.themmoi': 'Add new attribute',
+	'attributesmanagement.form.chinhsua': 'Edit attribute',
+	'attributesmanagement.form.chitiet': 'Detail attribute',
 
 	'attributesmanagement.form.icon': 'Icon',
 	'attributesmanagement.form.color': 'Color',
@@ -21,5 +25,5 @@ export default {
 	'attributesmanagement.form.des': 'Description',
 	'attributesmanagement.form.des.place': 'Enter description',
 
-	'attributesmanagement.select.place': 'Select EXCEL competency mapping',
+	'attributesmanagement.select.place': 'Select attribute',
 };

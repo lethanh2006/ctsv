@@ -15,12 +15,14 @@ export default {
 	'menu.DichVuHanhChinh.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
 
 	'menu.Activity': 'Activity Management',
+	'menu.ActivityResuls': 'Activity Results Approval',
 
-	'menu.DanhMuc.Attributes': 'Attributes Management',
-	'menu.DanhMuc.Levels': 'Levels Management',
-	'menu.DanhMuc.Roles': 'Roles Management',
-	'menu.DanhMuc.Activities': 'Co-curricular Activities (CCA)',
-	'menu.DanhMuc.Questions': 'Self-Assessment Questions',
+	'menu.YeuCauChung': 'Yêu cầu chung',
+	'menu.YeuCauChung.Attributes': 'Attributes Management',
+	'menu.YeuCauChung.Levels': 'Levels Management',
+	'menu.YeuCauChung.Roles': 'Roles Management',
+	'menu.YeuCauChung.Activities': 'Co-curricular Activities (CCA)',
+	'menu.YeuCauChung.Questions': 'Self-Assessment Questions',
 
 	'menu.DanhMuc': 'Danh mục',
 	'menu.DanhMuc.Chung': 'Danh mục chung',

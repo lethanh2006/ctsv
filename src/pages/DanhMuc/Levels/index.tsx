@@ -108,7 +108,6 @@ const LevelsPage = () => {
 			title={intl.formatMessage({ id: 'levelsmanagement.title' })}
 			Form={FormLevels}
 			buttons={{ import: true, export: true }}
-			addStt={false}
 			widthDrawer={800}
 		/>
 	);

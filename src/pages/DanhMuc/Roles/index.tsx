@@ -110,7 +110,6 @@ const RolesPage = () => {
 			title={intl.formatMessage({ id: 'rolesmanagement.title' })}
 			Form={FormRoles}
 			buttons={{ import: true, export: true }}
-			addStt={false}
 			widthDrawer={800}
 		/>
 	);

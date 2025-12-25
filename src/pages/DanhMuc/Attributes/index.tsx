@@ -101,7 +101,6 @@ const AttributesPage = () => {
 			title={intl.formatMessage({ id: 'attributesmanagement.title' })}
 			Form={FormAttributes}
 			buttons={{ import: true, export: true }}
-			addStt={false}
 			widthDrawer={800}
 		/>
 	);
