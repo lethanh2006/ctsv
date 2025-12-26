@@ -65,6 +65,7 @@ declare module BieuMau {
 		// kichHoat: boolean;
 		danhSachKhoi: Khoi[];
 		// doiTuong: string;
+		defaultQuestion?: boolean;
 
 		levelId: string;
 		levelName: string;

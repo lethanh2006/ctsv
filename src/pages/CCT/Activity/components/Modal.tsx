@@ -4,8 +4,9 @@ import { useIntl, useModel } from 'umi';
 import EquivalencyPage from '../Equivalency';
 import FormActivity from './Form';
 
-const ModalActivity = () => {
+const ModalActivity = (props: any) => {
 	const intl = useIntl();
+	const { getData } = props;
 	const { record, edit, isView, visibleForm } = useModel('cct.activity');
 	const [currentStep, setCurrentStep] = useState<number>(0);
 
@@ -42,7 +43,11 @@ const ModalActivity = () => {
 				/>
 			</Steps>
 
-			{currentStep === 0 ? <FormActivity afterAddNew={() => setCurrentStep(1)} /> : <EquivalencyPage />}
+			{currentStep === 0 ? (
+				<FormActivity afterAddNew={() => setCurrentStep(1)} getData={getData} />
+			) : (
+				<EquivalencyPage />
+			)}
 		</Card>
 	);
 };

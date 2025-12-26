@@ -36,6 +36,9 @@ export default function access(initialState: IInitialState) {
 		/** Lớp tín chỉ đi theo học kỳ */
 		lopTinChiHocKyAccessFilter: () => tenTruongVietTatTiengAnh !== 'VWA',
 
+		/** Co-curricular Activities (CCA) */
+		cctFilter: () => tenTruongVietTatTiengAnh === 'VINUNI',
+
 		// adminAccessFilter: (route: any) =>
 		//   (token && vaiTro && vaiTro === 'Admin') ||
 		//   initialState?.phanNhom?.nhom_vai_tro?.includes(route?.maChucNang) ||

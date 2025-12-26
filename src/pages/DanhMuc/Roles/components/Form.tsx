@@ -28,11 +28,18 @@ const FormRoles = (props: any) => {
 
 	const onFinish = async (values: RolesManagement.IRecord) => {
 		if (edit) {
-			putModel(record?._id ?? '', values)
+			putModel(
+				record?._id ?? '',
+				values,
+				undefined,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values)
+			postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};

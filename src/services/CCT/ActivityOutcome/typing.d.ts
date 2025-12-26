@@ -4,6 +4,8 @@ import { EActivityCategory, EApprovalStatus } from '../constant';
 declare module ActivityOutCome {
 	export interface IRecord {
 		_id: string;
+		name: string;
+		email: string;
 		activitiesOutcomeName: string;
 		activitiesId: string;
 		activities: Activity.IRecord;
@@ -27,5 +29,11 @@ declare module ActivityOutCome {
 
 		createdAt: Date;
 		updatedAt: Date;
+	}
+
+	export interface IAnalyticsStaff {
+		pending: number;
+		processed: number;
+		total: number;
 	}
 }

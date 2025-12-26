@@ -1,3 +1,4 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
@@ -25,11 +26,14 @@ import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
 import FormPerstionActivityOutCome from './components/FormPerstion';
 import ModalXuLyActivityStudent from './components/ModalXuLy';
+import StatActivityOutCome from './components/Stat';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
 	const { getModel, page, limit, handleView, deleteModel, setRecord } = useModel('cct.activityoutcome');
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { getAnalyticsStaffModel } = useModel('cct.activityoutcome');
+
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
 
 	const [tabActive, setTabActive] = useState<EActivityCategory>(EActivityCategory.REGISTERED);
@@ -54,6 +58,10 @@ const HistoryActivityPage = () => {
 			undefined,
 			'approval-task-list/page',
 		);
+	};
+
+	const getThongKe = () => {
+		getAnalyticsStaffModel(tabActive);
 	};
 
 	const attributeColumns: IColumn<any>[] = useMemo(() => {
@@ -81,6 +89,20 @@ const HistoryActivityPage = () => {
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
 		{
+			title: 'Name',
+			dataIndex: 'name',
+			width: 120,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Email',
+			dataIndex: 'email',
+			width: 160,
+			filterType: 'string',
+			onCell,
+		},
+		{
 			title: intl.formatMessage({ id: 'activityresult.column.name' }),
 			dataIndex: 'activitiesOutcomeName',
 			width: 150,
@@ -91,7 +113,7 @@ const HistoryActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.cca' }),
 			dataIndex: 'activitiesTypeId',
-			width: 120,
+			width: 160,
 			render: (val, rec) => rec?.activitiesType?.name,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectActivitiesManagement multiple />,
@@ -108,8 +130,12 @@ const HistoryActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.attribute' }),
 			align: 'center',
-			width: 120,
-			render: (val, rec) => rec?.activities?.activitiesType?.attributes?.name,
+			width: 200,
+			render: (val, rec) => (
+				<Tag color={rec?.activities?.activitiesType?.attributes?.color}>
+					{rec?.activities?.activitiesType?.attributes?.name}
+				</Tag>
+			),
 			onCell,
 			hide: tabActive === EActivityCategory.PERSONAL_CO_CURRICULAR,
 		},
@@ -154,6 +180,22 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		...attributeColumns,
+		{
+			title: 'Rejection Note',
+			dataIndex: 'activityRejectionNote',
+			width: 180,
+			render: (val, rec) => <ExpandText>{val}</ExpandText>,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Revision Note',
+			dataIndex: 'revisionNote',
+			width: 180,
+			render: (val, rec) => <ExpandText>{val}</ExpandText>,
+			filterType: 'string',
+			onCell,
+		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.status' }),
 			dataIndex: 'workflow',
@@ -229,7 +271,17 @@ const HistoryActivityPage = () => {
 								/>
 								{/* <ButtonExtend tooltip='Edit' onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} /> */}
 								<Popconfirm
-									onConfirm={() => deleteModel(rec?._id, getData)}
+									onConfirm={() =>
+										deleteModel(
+											rec?._id,
+											() => {
+												getData();
+												getThongKe();
+											},
+											undefined,
+											intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+										)
+									}
 									title={intl.formatMessage({ id: 'activityresult.comfirm.xoa' })}
 									placement='topLeft'
 								>
@@ -259,9 +311,16 @@ const HistoryActivityPage = () => {
 				))}
 			</Tabs>
 
+			<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
+
 			<TableBase
 				getData={getData}
-				formProps={{ getData }}
+				formProps={{
+					getData: () => {
+						getData();
+						getThongKe();
+					},
+				}}
 				columns={columns}
 				dependencies={[page, limit, tabActive]}
 				modelName='cct.activityoutcome'
@@ -270,6 +329,10 @@ const HistoryActivityPage = () => {
 				widthDrawer={800}
 				hideCard
 				buttons={{ create: false }}
+				onReload={() => {
+					getData();
+					getThongKe();
+				}}
 			/>
 
 			<ModalXuLyActivityStudent
@@ -277,7 +340,10 @@ const HistoryActivityPage = () => {
 				setVisible={setVisibleXuLy}
 				title={trangThai?.title ?? ''}
 				trangThai={trangThai?.trangThai ?? EApprovalStatus.DRAFT}
-				getData={getData}
+				getData={() => {
+					getData();
+					getThongKe();
+				}}
 			/>
 		</Card>
 	);

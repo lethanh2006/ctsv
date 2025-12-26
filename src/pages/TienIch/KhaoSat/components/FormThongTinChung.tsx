@@ -2,8 +2,8 @@ import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Col, Form, Input, Row, Switch } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
+import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
 const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
@@ -11,12 +11,12 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 	const [form] = Form.useForm();
 	const { formSubmiting, record, setRecord, visibleForm, setVisibleForm } = useModel('tienich.bieumau');
 
-	const [camKet, setCamKet] = useState<boolean | undefined>(record?.coCamKet);
+	// const [camKet, setCamKet] = useState<boolean | undefined>(record?.coCamKet);
 
 	useEffect(() => {
 		if (!visibleForm) {
 			resetFieldsForm(form);
-		} else {
+		} else if (record?._id) {
 			form.setFieldsValue(record);
 		}
 	}, [record?._id, visibleForm]);
@@ -63,12 +63,7 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 				</Col>
 
 				<Col span={24}>
-					<Form.Item
-						name='moTa'
-						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota' })}
-						rules={[...rules.length(2000)]}
-						initialValue={record?.moTa}
-					>
+					<Form.Item name='moTa' label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota' })}>
 						<Input.TextArea
 							rows={3}
 							placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota.place' })}
@@ -77,6 +72,12 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 				</Col>
 
 				<Col span={24}>
+					<Form.Item name='defaultQuestion' initialValue={record?.defaultQuestion ?? true} valuePropName='checked'>
+						<Checkbox>{intl.formatMessage({ id: 'questionsmanagement.thongtinchung.defaultQuestion' })}</Checkbox>
+					</Form.Item>
+				</Col>
+
+				{/* <Col span={24}>
 					<Form.Item
 						name='coCamKet'
 						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.camket' })}
@@ -85,9 +86,9 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 					>
 						<Switch onChange={(val) => setCamKet(val)} />
 					</Form.Item>
-				</Col>
+				</Col> */}
 
-				{camKet && (
+				{/* {camKet && (
 					<Col span={24}>
 						<Form.Item
 							rules={[...rules.required]}
@@ -100,7 +101,7 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 							/>
 						</Form.Item>
 					</Col>
-				)}
+				)} */}
 			</Row>
 
 			<div className='form-footer'>

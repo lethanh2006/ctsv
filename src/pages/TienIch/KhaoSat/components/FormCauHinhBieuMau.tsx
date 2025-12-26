@@ -75,11 +75,18 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 		};
 
 		if (edit)
-			putModel(record?._id ?? '', finalData, getData)
+			putModel(
+				record?._id ?? '',
+				finalData,
+				getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		else
-			postModel(finalData, getData)
+			postModel(finalData, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 	};

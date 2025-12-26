@@ -23,6 +23,7 @@ export default {
 	'questionsmanagement.thongtinchung.lever': 'Level',
 	'questionsmanagement.thongtinchung.mota': 'Description',
 	'questionsmanagement.thongtinchung.mota.place': 'Enter description',
+	'questionsmanagement.thongtinchung.defaultQuestion': 'Default Question Set for Level',
 	'questionsmanagement.thongtinchung.camket': 'Has commitment',
 	'questionsmanagement.thongtinchung.noidungcamket': 'Commitment content',
 	'questionsmanagement.thongtinchung.noidungcamket.place': 'Enter commitment content',

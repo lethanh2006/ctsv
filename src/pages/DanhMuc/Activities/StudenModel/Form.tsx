@@ -28,6 +28,8 @@ const FormStudentModel = (props: any) => {
 						activitiesId: recActivity?._id,
 					},
 			getData,
+			undefined,
+			intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
 		)
 			.then()
 			.catch((err) => console.log(err));

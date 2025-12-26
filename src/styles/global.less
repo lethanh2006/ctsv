@@ -176,6 +176,31 @@ a {
 	}
 }
 
+.btn-error {
+	border-color: @red-6;
+
+	&.ant-btn-primary:not(:disabled) {
+		background-color: @red-6;
+
+		&:hover {
+			background-color: @red-5;
+		}
+	}
+
+	&.ant-btn-link {
+		color: @red-6;
+		border: none;
+	}
+
+	&:hover {
+		border-color: @red-5;
+
+		&:not(.ant-btn-primary) {
+			color: @red-5;
+		}
+	}
+}
+
 canvas {
 	display: block;
 }

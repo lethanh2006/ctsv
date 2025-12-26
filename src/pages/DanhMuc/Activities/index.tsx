@@ -3,7 +3,7 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch } from 'antd';
+import { Popconfirm, Switch, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import SelectAttributesManagement from '../Attributes/components/Select';
 import FormActivities from './components/Form';
@@ -57,8 +57,9 @@ const ActivitiesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.attribute' }),
 			dataIndex: 'attributesId',
-			width: 120,
-			render: (val, rec) => rec?.attributes?.name,
+			align: 'center',
+			width: 200,
+			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectAttributesManagement multiple />,
 		},
@@ -86,7 +87,9 @@ const ActivitiesPage = () => {
 					/>
 
 					<Popconfirm
-						onConfirm={() => deleteModel(rec._id)}
+						onConfirm={() =>
+							deleteModel(rec._id, undefined, undefined, intl.formatMessage({ id: 'global.message.xoathanhcong' }))
+						}
 						title={intl.formatMessage({ id: 'activitiesmanagement.confirm.delete' })}
 						placement='topLeft'
 					>

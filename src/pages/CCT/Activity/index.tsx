@@ -5,14 +5,15 @@ import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Se
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Card, Popconfirm } from 'antd';
+import { Card, Popconfirm, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import ModalActivity from './components/Modal';
 import StatActivity from './components/Stat';
 
 const ActivityPage = () => {
 	const intl = useIntl();
-	const { page, limit, deleteModel, handleEdit, handleView } = useModel('cct.activity');
+	const { getModel, page, limit, deleteModel, handleEdit, handleView } = useModel('cct.activity');
+	const { getAnalyticsActivityModel } = useModel('cct.activity');
 
 	const onCell = (rec: Activity.IRecord) => ({
 		onClick: () => handleView(rec),
@@ -31,8 +32,11 @@ const ActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activity.column.attribute' }),
 			align: 'center',
-			width: 120,
-			render: (val, rec) => rec?.activitiesType?.attributes?.name,
+			width: 200,
+			render: (val, rec) => (
+				<Tag color={rec?.activitiesType?.attributes?.color}>{rec?.activitiesType?.attributes?.name}</Tag>
+			),
+
 			onCell,
 		},
 		{
@@ -67,7 +71,17 @@ const ActivityPage = () => {
 					/>
 
 					<Popconfirm
-						onConfirm={() => deleteModel(rec._id)}
+						onConfirm={() =>
+							deleteModel(
+								rec._id,
+								() => {
+									getModel();
+									getAnalyticsActivityModel();
+								},
+								undefined,
+								intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+							)
+						}
 						title={intl.formatMessage({ id: 'activity.confirm.xoa' })}
 						placement='topLeft'
 					>
@@ -92,8 +106,18 @@ const ActivityPage = () => {
 				modelName='cct.activity'
 				title={intl.formatMessage({ id: 'activity.title' })}
 				Form={ModalActivity}
+				formProps={{
+					getData: () => {
+						getModel();
+						getAnalyticsActivityModel();
+					},
+				}}
 				widthDrawer={1200}
 				hideCard
+				onReload={() => {
+					getModel();
+					getAnalyticsActivityModel();
+				}}
 			/>
 		</Card>
 	);

@@ -45,7 +45,9 @@ const UserRolesModelPage = (props: { disabled?: boolean; participantRole: Eparti
 			render: (val, rec) => (
 				<>
 					<Popconfirm
-						onConfirm={() => deleteModel(rec?._id, getData)}
+						onConfirm={() =>
+							deleteModel(rec?._id, getData, undefined, intl.formatMessage({ id: 'global.message.xoathanhcong' }))
+						}
 						title={intl.formatMessage({ id: 'activity.info.participantsList.confirm.xoa' })}
 						placement='topLeft'
 					>
