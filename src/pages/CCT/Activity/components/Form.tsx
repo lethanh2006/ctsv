@@ -21,9 +21,9 @@ import FormItemUserRoles from '../UserRoles/FormItem';
 import UserRolesModelPage from '../UserRolesModel';
 import GroupTagVaiTro from './GroupTagVaiTro';
 
-const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) => {
+const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; getData?: () => void }) => {
 	const intl = useIntl();
-	const { afterAddNew } = props;
+	const { afterAddNew, getData } = props;
 	const [form] = Form.useForm();
 	const { danhSach: dsActivitiType } = useModel('danhmuc.activities');
 	const {
@@ -79,7 +79,14 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 		}
 
 		if (edit) {
-			putModel(record?._id ?? '', values, undefined, undefined, false)
+			putModel(
+				record?._id ?? '',
+				values,
+				getData,
+				undefined,
+				false,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then((rec) => {
 					setRecord({ ...rec, ...record });
 					if (afterAddNew && rec?.activitiesTypeId) {
@@ -88,7 +95,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 				})
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, undefined, false)
+			postModel(values, getData, false, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then((rec) => {
 					setRecord({ ...rec, ...record });
 					setEdit(true);

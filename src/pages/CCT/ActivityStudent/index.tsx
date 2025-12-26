@@ -25,11 +25,14 @@ import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
 import FormPerstionActivityOutCome from './components/FormPerstion';
 import ModalXuLyActivityStudent from './components/ModalXuLy';
+import StatActivityOutCome from './components/Stat';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
 	const { getModel, page, limit, handleView, deleteModel, setRecord } = useModel('cct.activityoutcome');
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { getAnalyticsStaffModel } = useModel('cct.activityoutcome');
+
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
 
 	const [tabActive, setTabActive] = useState<EActivityCategory>(EActivityCategory.REGISTERED);
@@ -54,6 +57,10 @@ const HistoryActivityPage = () => {
 			undefined,
 			'approval-task-list/page',
 		);
+	};
+
+	const getThongKe = () => {
+		getAnalyticsStaffModel(tabActive);
 	};
 
 	const attributeColumns: IColumn<any>[] = useMemo(() => {
@@ -229,7 +236,17 @@ const HistoryActivityPage = () => {
 								/>
 								{/* <ButtonExtend tooltip='Edit' onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} /> */}
 								<Popconfirm
-									onConfirm={() => deleteModel(rec?._id, getData)}
+									onConfirm={() =>
+										deleteModel(
+											rec?._id,
+											() => {
+												getData();
+												getThongKe();
+											},
+											undefined,
+											intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+										)
+									}
 									title={intl.formatMessage({ id: 'activityresult.comfirm.xoa' })}
 									placement='topLeft'
 								>
@@ -259,9 +276,16 @@ const HistoryActivityPage = () => {
 				))}
 			</Tabs>
 
+			<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
+
 			<TableBase
 				getData={getData}
-				formProps={{ getData }}
+				formProps={{
+					getData: () => {
+						getData();
+						getThongKe();
+					},
+				}}
 				columns={columns}
 				dependencies={[page, limit, tabActive]}
 				modelName='cct.activityoutcome'
@@ -270,6 +294,10 @@ const HistoryActivityPage = () => {
 				widthDrawer={800}
 				hideCard
 				buttons={{ create: false }}
+				onReload={() => {
+					getData();
+					getThongKe();
+				}}
 			/>
 
 			<ModalXuLyActivityStudent

@@ -84,7 +84,9 @@ const LevelsPage = () => {
 					/>
 
 					<Popconfirm
-						onConfirm={() => deleteModel(rec._id)}
+						onConfirm={() =>
+							deleteModel(rec._id, undefined, undefined, intl.formatMessage({ id: 'global.message.xoathanhcong' }))
+						}
 						title={intl.formatMessage({ id: 'levelsmanagement.confirm.delete' })}
 						placement='topLeft'
 					>

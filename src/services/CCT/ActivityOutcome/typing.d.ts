@@ -28,4 +28,10 @@ declare module ActivityOutCome {
 		createdAt: Date;
 		updatedAt: Date;
 	}
+
+	export interface IAnalyticsStaff {
+		pending: number;
+		processed: number;
+		total: number;
+	}
 }

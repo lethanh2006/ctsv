@@ -12,7 +12,8 @@ import StatActivity from './components/Stat';
 
 const ActivityPage = () => {
 	const intl = useIntl();
-	const { page, limit, deleteModel, handleEdit, handleView } = useModel('cct.activity');
+	const { getModel, page, limit, deleteModel, handleEdit, handleView } = useModel('cct.activity');
+	const { getAnalyticsActivityModel } = useModel('cct.activity');
 
 	const onCell = (rec: Activity.IRecord) => ({
 		onClick: () => handleView(rec),
@@ -67,7 +68,17 @@ const ActivityPage = () => {
 					/>
 
 					<Popconfirm
-						onConfirm={() => deleteModel(rec._id)}
+						onConfirm={() =>
+							deleteModel(
+								rec._id,
+								() => {
+									getModel();
+									getAnalyticsActivityModel();
+								},
+								undefined,
+								intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+							)
+						}
 						title={intl.formatMessage({ id: 'activity.confirm.xoa' })}
 						placement='topLeft'
 					>
@@ -92,8 +103,18 @@ const ActivityPage = () => {
 				modelName='cct.activity'
 				title={intl.formatMessage({ id: 'activity.title' })}
 				Form={ModalActivity}
+				formProps={{
+					getData: () => {
+						getModel();
+						getAnalyticsActivityModel();
+					},
+				}}
 				widthDrawer={1200}
 				hideCard
+				onReload={() => {
+					getModel();
+					getAnalyticsActivityModel();
+				}}
 			/>
 		</Card>
 	);

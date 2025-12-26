@@ -47,7 +47,9 @@ const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?
 			render: (val, rec) => (
 				<>
 					<Popconfirm
-						onConfirm={() => deleteModel(rec._id)}
+						onConfirm={() =>
+							deleteModel(rec._id, undefined, undefined, intl.formatMessage({ id: 'global.message.xoathanhcong' }))
+						}
 						title={intl.formatMessage({ id: 'activitiesmanagement.student.comfirm.xoa' })}
 						placement='topLeft'
 					>

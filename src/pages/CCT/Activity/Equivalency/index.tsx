@@ -269,7 +269,12 @@ const EquivalencyPage = () => {
 			});
 		});
 
-		postManyEquivalencyModel(recActi?._id ?? '', { listCoCurricularActivityEquivalency: result }, getData)
+		postManyEquivalencyModel(
+			recActi?._id ?? '',
+			{ listCoCurricularActivityEquivalency: result },
+			getData,
+			intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+		)
 			.then(() => setVisibleForm(false))
 			.catch(() => {});
 	};

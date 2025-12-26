@@ -35,6 +35,7 @@ const ModalXuLyActivityStudent = (props: {
 				revisionNote: values.revisionNote,
 			},
 			getData,
+			intl.formatMessage({ id: 'global.message.luuthanhcong' }),
 		).then(() => {
 			setVisible(false);
 		});
