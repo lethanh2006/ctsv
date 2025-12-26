@@ -3,20 +3,22 @@ import { ELoaiLopHocPhan } from '@/services/DaoTaoV2/HocKy/constant';
 import { Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
  */
 const SelectLopHocPhanDebounce = (props: {
 	value?: string;
+	allowClear?: boolean;
 	onChange?: (val?: string) => void;
 	multiple?: boolean;
 	disabled?: boolean;
 	selectMa?: boolean;
 	style?: React.CSSProperties;
 }) => {
-	const { value, onChange, multiple, disabled, selectMa, style } = props;
+	const intl = useIntl();
+	const { value, onChange, multiple, disabled, selectMa, style, allowClear } = props;
 	const { danhSach, filters, setFilters, getModel, loading } = useModel('daotaov2.hocky.lophocphan');
 
 	useEffect(() => {
@@ -35,7 +37,7 @@ const SelectLopHocPhanDebounce = (props: {
 							values: Array.isArray(value) ? value : [value],
 							operator: EOperatorType.INCLUDE,
 						},
-				  ]
+					]
 				: undefined,
 			undefined,
 			1,
@@ -49,11 +51,12 @@ const SelectLopHocPhanDebounce = (props: {
 
 	return (
 		<Select
+			allowClear={allowClear}
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
 			onChange={onChange}
 			disabled={disabled}
-			notFoundContent={loading ? <Spin spinning={true} /> : undefined}
+			notFoundContent={loading ? <Spin spinning={true} style={{ width: '100%', margin: 10 }} /> : undefined}
 			onSearch={(val) => searchDebounceLopHocPhan(val)}
 			options={danhSach.map((item) => ({
 				key: item._id,
@@ -62,7 +65,7 @@ const SelectLopHocPhanDebounce = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn lớp tín chỉ'
+			placeholder={intl.formatMessage({ id: 'activity.info.form.courseClassCode.place' })}
 			style={{ width: '100%', ...style }}
 		/>
 	);

@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 
 const SelectSinhVienDebounce = (props: {
 	value?: string | string[];
-	onChange?: (val: string | string[] | null) => void;
+	onChange?: (val: string | string[], option: any) => void;
 	multiple?: boolean;
 	disabled?: boolean;
 	style?: React.CSSProperties;
@@ -41,7 +41,7 @@ const SelectSinhVienDebounce = (props: {
 								values: Array.isArray(value) ? value : [value],
 								operator: EOperatorType.INCLUDE,
 							},
-					  ]
+						]
 					: undefined,
 				undefined,
 				1,
@@ -76,6 +76,7 @@ const SelectSinhVienDebounce = (props: {
 				key: item?.ssoId,
 				value: selectMa ? item.ma : item?.ssoId,
 				label: `${item.ten} - ${item.ma} - ${item?.khoaSinhVien?.ten}`,
+				rawData: item,
 			}))}
 			showSearch
 			optionFilterProp='label'
