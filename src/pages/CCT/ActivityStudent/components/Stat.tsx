@@ -15,17 +15,17 @@ const StatActivityOutCome = (props: { getData: () => void; dependency?: any }) =
 
 	const statisticsData: StatisticsItem[] = [
 		{
-			title: intl.formatMessage({ id: 'activityresult.stat.total' }),
+			title: 'Total',
 			value: inputFormat(dataThongKe?.total ?? 0),
 			valueColor: '#1677ff',
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.stat.upcoming' }),
+			title: 'Pending',
 			value: inputFormat(dataThongKe?.pending ?? 0),
 			valueColor: '#faad14',
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.stat.ongoing' }),
+			title: 'Processed',
 			value: inputFormat(dataThongKe?.processed ?? 0),
 			valueColor: '#52c41a',
 		},
