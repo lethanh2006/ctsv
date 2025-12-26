@@ -37,7 +37,7 @@ export default function access(initialState: IInitialState) {
 		lopTinChiHocKyAccessFilter: () => tenTruongVietTatTiengAnh !== 'VWA',
 
 		/** Co-curricular Activities (CCA) */
-		cctFilter: () => tenTruongVietTatTiengAnh !== 'VINUNI',
+		cctFilter: () => tenTruongVietTatTiengAnh === 'VINUNI',
 
 		// adminAccessFilter: (route: any) =>
 		//   (token && vaiTro && vaiTro === 'Admin') ||
