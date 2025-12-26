@@ -1,5 +1,5 @@
 export default {
-	'attributesmanagement.title': 'Attributes Management',
+	'attributesmanagement.title': 'Attribute',
 
 	'attributesmanagement.column.order': 'Display order',
 	'attributesmanagement.column.id': 'ID',

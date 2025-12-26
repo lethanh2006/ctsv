@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 
 const SingleChoice = (props: { question: BieuMau.CauHoi; indexKhoi: number; indexCauHoi: number; traLoi?: any }) => {
 	const [idCauTraLoi, setIdCauTraLoi] = useState<string>();
-
 	const handleRenderTraLoi = () => {
 		if (props.question?.cauTraLoiKhac && props.traLoi?.traLoiKhac) {
 			setIdCauTraLoi('traLoiKhac');
 		} else {
 			props.question?.luaChon?.forEach((val) => {
-				if (props?.traLoi?.listLuaChon?.includes(val?._id)) {
+				if (props?.traLoi?.listLuaChon?.includes(val?.noiDung)) {
 					setIdCauTraLoi(val?._id);
 				}
 			});

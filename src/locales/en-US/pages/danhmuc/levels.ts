@@ -1,5 +1,5 @@
 export default {
-	'levelsmanagement.title': 'Levels Management',
+	'levelsmanagement.title': 'Level',
 
 	'levelsmanagement.column.order': 'Display order',
 	'levelsmanagement.column.id': 'ID',

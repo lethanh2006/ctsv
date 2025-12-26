@@ -16,7 +16,7 @@ const FormLevels = () => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: false,
+				isActive: true,
 				autoApproval: true,
 			});
 		}
@@ -28,7 +28,7 @@ const FormLevels = () => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel({ ...values, isActive: true })
+			postModel(values)
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};

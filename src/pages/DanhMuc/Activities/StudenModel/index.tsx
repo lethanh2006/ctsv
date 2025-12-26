@@ -74,7 +74,6 @@ const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?
 			Form={FormStudentModel}
 			formProps={{ getData, mode }}
 			buttons={{ create: !disabled }}
-			widthDrawer={800}
 			hideCard
 			otherProps={{
 				size: 'small',

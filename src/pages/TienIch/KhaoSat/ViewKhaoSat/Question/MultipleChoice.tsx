@@ -12,7 +12,7 @@ const MultipleChoice = (props: { question: BieuMau.CauHoi; indexKhoi: number; in
 
 		const arr = [...idCauTraLoi];
 		props.question?.luaChon?.forEach((val) => {
-			if (props?.traLoi?.listLuaChon?.includes(val?._id)) {
+			if (props?.traLoi?.listLuaChon?.includes(val?.noiDung)) {
 				arr.push(val?._id);
 			}
 		});

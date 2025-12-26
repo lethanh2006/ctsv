@@ -3,12 +3,11 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
-import SelectMauKhaoSat from '@/pages/TienIch/KhaoSat/components/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
 import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { DeleteOutlined, PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, message, Popconfirm } from 'antd';
+import { Button, Checkbox, Form, message, Popconfirm, Select } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -42,12 +41,16 @@ const EquivalencyPage = () => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 
-	const { record: recActi, setVisibleForm, isView } = useModel('cct.activity');
+	const { record: recActi, setVisibleForm, isView, getByIdModel } = useModel('cct.activity');
 	const { getModel, danhSach, loading, formSubmiting, postManyEquivalencyModel } = useModel('cct.equivalency');
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { getAllModel: getAllKhaoSat, danhSach: dsKhaoSat } = useModel('tienich.bieumau');
 
 	useEffect(() => {
 		getAllModel(undefined, { order: 1 });
+		getAllKhaoSat(undefined, undefined, {
+			loai: ELoaiBieuMau.QUESTIONS,
+		});
 	}, []);
 
 	const getData = () => {
@@ -58,6 +61,9 @@ const EquivalencyPage = () => {
 
 	useEffect(() => {
 		getData();
+		if (recActi?._id) {
+			getByIdModel(recActi?._id);
+		}
 	}, [recActi?._id]);
 
 	useEffect(() => {
@@ -122,17 +128,10 @@ const EquivalencyPage = () => {
 
 							form.setFieldValue(['listCoCurricularActivityEquivalency', field.name, 'role'], role);
 
-							form.setFieldValue(['listCoCurricularActivityEquivalency', field.name, 'autoApprove'], role?.autoApprove);
-
-							if (role?.attributes?.length) {
-								const attrObj = role.attributes.reduce((acc: any, attr: any) => {
-									acc[attr._id] = true;
-									return acc;
-								}, {});
-								form.setFieldValue(['listCoCurricularActivityEquivalency', field.name, 'attributes'], attrObj);
-							} else {
-								form.setFieldValue(['listCoCurricularActivityEquivalency', field.name, 'attributes'], {});
-							}
+							form.setFieldValue(
+								['listCoCurricularActivityEquivalency', field.name, 'autoApprove'],
+								role?.level?.autoApproval,
+							);
 						}}
 					/>
 				</Form.Item>
@@ -193,25 +192,32 @@ const EquivalencyPage = () => {
 			render: (_, field) => (
 				<Form.Item shouldUpdate noStyle>
 					{({ getFieldValue }) => {
+						const role = getFieldValue(['listCoCurricularActivityEquivalency', field.name, 'role']);
 						const autoApprove = getFieldValue(['listCoCurricularActivityEquivalency', field.name, 'autoApprove']);
 
 						return (
 							<>
 								<Form.Item className='table-form-item' name={[field.name, 'selfAssessmentQuestionsId']}>
-									<SelectMauKhaoSat
-										disabled={isView || autoApprove}
-										condition={{ loai: ELoaiBieuMau.QUESTIONS }}
+									<Select
 										size='small'
 										allowClear
-										onChange={(val, option) => {
+										disabled={isView || autoApprove}
+										placeholder={intl.formatMessage({
+											id: 'activity.equivalency.question.place',
+										})}
+										options={(dsKhaoSat || [])
+											.filter((item) => item?.levelId === role?.levelId)
+											.map((item: any) => ({
+												label: item?.tieuDe,
+												value: item?._id,
+												rawData: item,
+											}))}
+										onChange={(val, option: any) => {
 											form.setFieldValue(
 												['listCoCurricularActivityEquivalency', field.name, 'selfAssessmentQuestionsName'],
 												option?.rawData?.tieuDe,
 											);
 										}}
-										placeholder={intl.formatMessage({
-											id: 'activity.equivalency.question.place',
-										})}
 									/>
 								</Form.Item>
 								<Form.Item hidden name={[field.name, 'selfAssessmentQuestionsName']} />
@@ -303,13 +309,17 @@ const EquivalencyPage = () => {
 								size='small'
 								type='primary'
 								icon={<PlusCircleOutlined />}
-								onClick={() =>
+								onClick={() => {
+									const defaultAttributes = recActi?.activitiesType?.attributesId
+										? { [recActi?.activitiesType?.attributesId]: true }
+										: {};
+
 									add({
 										role: null,
 										autoApprove: false,
-										attributes: {},
-									})
-								}
+										attributes: defaultAttributes,
+									});
+								}}
 								disabled={isView}
 							>
 								{intl.formatMessage({ id: 'global.button.themmoi' })}

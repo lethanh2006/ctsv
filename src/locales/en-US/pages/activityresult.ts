@@ -51,5 +51,5 @@ export default {
 	'activityresult.perstion.learningOutcomes.place': 'Enter learning outcomes',
 	'activityresult.perstion.file': 'Upload Evidence',
 	'activityresult.perstion.studentDeclarationApproverSsoId': 'Student Declaration Approvers',
-	'activityresult.perstion.studentDeclarationApproverSsoId.select': 'Select student Declaration Approvers',
+	'activityresult.perstion.studentDeclarationApproverSsoId.select': 'Select student declaration approver',
 };

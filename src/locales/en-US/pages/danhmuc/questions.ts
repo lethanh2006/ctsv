@@ -91,4 +91,12 @@ export default {
 	'questionsmanagement.chitiet.renderinput.nhapgiatri': 'Enter value',
 
 	'questionsmanagement.chitiet.singlechoice.cautlkhac': 'Other answer',
+
+	'question.type.SingleChoice': 'Single choice',
+	'question.type.MultipleChoice': 'Multiple choice',
+	'question.type.GridSingleChoice': 'Grid (single choice)',
+	'question.type.GridMultipleChoice': 'Grid (multiple choice)',
+	'question.type.NumericRange': 'Numeric rating',
+	'question.type.Text': 'Text answer',
+	'question.type.UploadFile': 'Upload file',
 };

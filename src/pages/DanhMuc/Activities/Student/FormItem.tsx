@@ -87,7 +87,11 @@ const FormItemStudent = (props: {
 			</TableStaticData>
 
 			<Modal
-				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activitiesmanagement.form.student' })}`}
+				title={
+					edit
+						? intl.formatMessage({ id: 'activitiesmanagement.student.form.chinhsua' })
+						: intl.formatMessage({ id: 'activitiesmanagement.student.form.themmoi' })
+				}
 				open={visibleForm}
 				width={600}
 				footer={null}

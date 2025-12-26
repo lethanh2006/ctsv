@@ -6,12 +6,14 @@ import FormActivity from './Form';
 
 const ModalActivity = () => {
 	const intl = useIntl();
-	const { record, edit, isView } = useModel('cct.activity');
+	const { record, edit, isView, visibleForm } = useModel('cct.activity');
 	const [currentStep, setCurrentStep] = useState<number>(0);
 
 	useEffect(() => {
-		setCurrentStep(0);
-	}, [record?._id]);
+		if (!visibleForm) {
+			setCurrentStep(0);
+		}
+	}, [visibleForm]);
 
 	const onChangeStep = (step: number) => {
 		setCurrentStep(step);

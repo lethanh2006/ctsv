@@ -47,7 +47,7 @@ const FormPerstionActivityOutCome = (props: any) => {
 		setFormSubmiting(false);
 
 		if (edit) {
-			putModel(record?._id ?? '', values, getData)
+			putModel(`me/${record?._id}`, values, getData)
 				.then()
 				.catch((er) => console.log(er));
 		} else
@@ -99,6 +99,8 @@ const FormPerstionActivityOutCome = (props: any) => {
 							rules={[...rules.required]}
 						>
 							<MyDatePicker
+								showTime={{ showHour: true, showMinute: true }}
+								format='HH:mm DD/MM/YYYY'
 								disabled={isView}
 								placeholder={intl.formatMessage({ id: 'activityresult.perstion.startDate.place' })}
 							/>
@@ -111,6 +113,8 @@ const FormPerstionActivityOutCome = (props: any) => {
 							rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}
 						>
 							<MyDatePicker
+								showTime={{ showHour: true, showMinute: true }}
+								format='HH:mm DD/MM/YYYY'
 								disabled={isView}
 								disabledDate={(cur) => (startDate ? dayjs(cur).isBefore(startDate) : false)}
 								placeholder={intl.formatMessage({ id: 'activityresult.perstion.endDate.place' })}
@@ -192,7 +196,7 @@ const FormPerstionActivityOutCome = (props: any) => {
 						>
 							<Select
 								placeholder={intl.formatMessage({
-									id: 'activityresult.perstion.studentDeclarationApproverSsoId.place',
+									id: 'activityresult.perstion.studentDeclarationApproverSsoId.select',
 								})}
 								options={dsActivitiType
 									?.find((item) => item?._id === activitiesTypeId)

@@ -104,12 +104,12 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 			<Row gutter={[12, 0]}>
 				<Col span={24} md={12}>
 					<Form.Item name='banner' label={intl.formatMessage({ id: 'activity.info.form.banner' })}>
-						<UploadFile disabled={isView} />
+						<UploadFile disabled={isView} accept='.png, .jpeg, .jpg' />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={12}>
 					<Form.Item name='backgroundImage' label={intl.formatMessage({ id: 'activity.info.form.backgroundImage' })}>
-						<UploadFile disabled={isView} />
+						<UploadFile disabled={isView} accept='.png, .jpeg, .jpg' />
 					</Form.Item>
 				</Col>
 				<Col span={24}>
@@ -128,6 +128,8 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 						rules={[...rules.required]}
 					>
 						<MyDatePicker
+							showTime={{ showHour: true, showMinute: true }}
+							format='HH:mm DD/MM/YYYY'
 							disabled={isView}
 							placeholder={intl.formatMessage({ id: 'activity.info.form.startDate.place' })}
 						/>
@@ -140,6 +142,8 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void }) 
 						rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}
 					>
 						<MyDatePicker
+							showTime={{ showHour: true, showMinute: true }}
+							format='HH:mm DD/MM/YYYY'
 							disabled={isView}
 							disabledDate={(cur) => (startDate ? dayjs(cur).isBefore(startDate) : false)}
 							placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}

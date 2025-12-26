@@ -1,4 +1,4 @@
-import { ELoaiCauHoi, ELoaiCauHoiPublic } from '@/services/TienIch/constant';
+import { ELoaiCauHoiPublic } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, type FormInstance, Input, Row, Select } from 'antd';
@@ -40,11 +40,14 @@ const BlockQuestion = (props: { index: number; block: number; initialType?: any;
 					>
 						<Select
 							onChange={(val: ELoaiCauHoiPublic) => setQuestionType(val)}
-							placeholder={intl.formatMessage({ id: 'questionsmanagement.cauhinh.block.question.loai.place' })}
-							options={Object.entries(ELoaiCauHoi).map(([value, label]) => ({
-								key: value,
+							placeholder={intl.formatMessage({
+								id: 'questionsmanagement.cauhinh.block.question.loai.place',
+							})}
+							options={Object.values(ELoaiCauHoiPublic).map((value) => ({
 								value,
-								label,
+								label: intl.formatMessage({
+									id: `question.type.${value}`,
+								}),
 							}))}
 						/>
 					</Form.Item>

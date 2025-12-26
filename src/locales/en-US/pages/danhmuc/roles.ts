@@ -1,5 +1,5 @@
 export default {
-	'rolesmanagement.title': 'Roles Management',
+	'rolesmanagement.title': 'Role',
 
 	'rolesmanagement.column.order': 'Display order',
 	'rolesmanagement.column.id': 'ID',

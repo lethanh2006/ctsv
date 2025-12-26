@@ -8,11 +8,11 @@ export default {
 	'activitiesmanagement.column.attribute': 'Attribute',
 	'activitiesmanagement.column.active': 'Active',
 
-	'activitiesmanagement.confirm.delete': 'Do you want to remove this co-curricular activitie?',
+	'activitiesmanagement.confirm.delete': 'Do you want to remove this co-curricular activity?',
 
-	'activitiesmanagement.form.themmoi': 'Add new co-curricular activitie',
-	'activitiesmanagement.form.chinhsua': 'Edit co-curricular activitie',
-	'activitiesmanagement.form.chitiet': 'Detail co-curricular activitie',
+	'activitiesmanagement.form.themmoi': 'Add new co-curricular activity',
+	'activitiesmanagement.form.chinhsua': 'Edit co-curricular activity',
+	'activitiesmanagement.form.chitiet': 'Detail co-curricular activity',
 
 	'activitiesmanagement.form.id': 'ID',
 	'activitiesmanagement.form.id.place': 'Enter ID',
@@ -32,4 +32,7 @@ export default {
 	'activitiesmanagement.student.column.hoten.select': 'Select staff/lecturers (search by name)',
 	'activitiesmanagement.student.column.email': 'Email',
 	'activitiesmanagement.student.comfirm.xoa': 'Do you want to remove this Student Declaration Approver?',
+
+	'activitiesmanagement.student.form.themmoi': 'Add new student declaration approver',
+	'activitiesmanagement.student.form.chinhsua': 'Edit student declaration approver',
 };

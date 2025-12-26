@@ -22,7 +22,6 @@ import {
 import { Button, Card, Checkbox, Popconfirm, Popover, Tabs, Tag } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl, useModel } from 'umi';
-import StatActivity from '../Activity/components/Stat';
 import FormActivityStudent from './components/Form';
 import FormPerstionActivityOutCome from './components/FormPerstion';
 import ModalXuLyActivityStudent from './components/ModalXuLy';
@@ -254,8 +253,6 @@ const HistoryActivityPage = () => {
 
 	return (
 		<Card title={intl.formatMessage({ id: 'activityresult.title' })}>
-			<StatActivity />
-
 			<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
 				{Object.values(EActivityCategory).map((item) => (
 					<Tabs.TabPane tab={mapNameActivityCategory[item]} key={item} />

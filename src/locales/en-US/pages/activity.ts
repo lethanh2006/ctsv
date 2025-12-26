@@ -6,7 +6,7 @@ export default {
 	'activity.column.cca': 'Co-curricular activity (CCA)',
 	'activity.column.date': 'Date',
 
-	'activity.confirm.delete': 'Do you want to remove this activity?',
+	'activity.confirm.xoa': 'Do you want to remove this activity?',
 
 	'activity.step.info': 'General Information',
 	'activity.step.cca': 'CCA Equivalency Framework',
@@ -48,7 +48,7 @@ export default {
 	'activity.info.form.allowPostEventResultsUpdate': 'Allow post-event results update',
 	'activity.info.form.activitiesTypeId': 'Co-curricular Activities (CCA)',
 	'activity.info.form.activitiesTypeId.select': 'Select co-curricular activities (CCA)',
-	'activity.info.form.activitiesTypeId.mapping': 'EXCEL competency mapping',
+	'activity.info.form.activitiesTypeId.mapping': 'Attributes Competency Mapping',
 	'activity.info.form.student': 'Student Declaration Approver',
 
 	'activity.info.participantsList.column.name': 'Full name',

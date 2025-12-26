@@ -175,14 +175,14 @@
 
 	{
 		name: 'Activity',
-		icon: 'calendar',
+		icon: 'AppstoreOutlined',
 		path: '/activity',
 		component: 'CCT/Activity',
 	},
 
 	{
 		name: 'ActivityResuls',
-		icon: 'calendar',
+		icon: 'TrophyOutlined',
 		path: '/activity-resuls',
 		component: 'CCT/ActivityStudent',
 	},
@@ -771,14 +771,6 @@
 				component: 'DanhMuc/Chung',
 				path: 'chung',
 			},
-		],
-	},
-
-	{
-		name: 'YeuCauChung',
-		path: '/yeu-cau-chung',
-		icon: 'copy',
-		routes: [
 			{
 				name: 'Attributes',
 				component: 'DanhMuc/Attributes',
@@ -808,24 +800,24 @@
 	},
 
 	// THONG KE BAO CAO
-	{
-		name: 'ThongKe',
-		path: '/thong-ke',
-		icon: 'PieChartOutlined',
-		// access: 'accessFilter',
-		// maChucNang: 'qldt|thong-ke-bao-cao',
-		routes: [
-			{ name: 'SoLuongSinhVien', path: 'so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' },
-			{ name: 'KetQuaHocKy', path: 'ket-qua-hoc-ky', component: 'ThongKeBaoCao/KetQuaHocKy' },
-		],
-	},
+	// {
+	// 	name: 'ThongKe',
+	// 	path: '/thong-ke',
+	// 	icon: 'PieChartOutlined',
+	// 	// access: 'accessFilter',
+	// 	// maChucNang: 'qldt|thong-ke-bao-cao',
+	// 	routes: [
+	// 		{ name: 'SoLuongSinhVien', path: 'so-luong-sinh-vien', component: 'ThongKeBaoCao/SoLuongSinhVien' },
+	// 		{ name: 'KetQuaHocKy', path: 'ket-qua-hoc-ky', component: 'ThongKeBaoCao/KetQuaHocKy' },
+	// 	],
+	// },
 
-	{
-		name: 'ThongBao',
-		icon: 'bell',
-		path: 'thong-bao',
-		component: 'ThongBao',
-	},
+	// {
+	// 	name: 'ThongBao',
+	// 	icon: 'bell',
+	// 	path: 'thong-bao',
+	// 	component: 'ThongBao',
+	// },
 
 	{
 		path: '/notification',
