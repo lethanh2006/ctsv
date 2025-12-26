@@ -5,7 +5,7 @@ import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Se
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Card, Popconfirm } from 'antd';
+import { Card, Popconfirm, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import ModalActivity from './components/Modal';
 import StatActivity from './components/Stat';
@@ -32,8 +32,11 @@ const ActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activity.column.attribute' }),
 			align: 'center',
-			width: 120,
-			render: (val, rec) => rec?.activitiesType?.attributes?.name,
+			width: 200,
+			render: (val, rec) => (
+				<Tag color={rec?.activitiesType?.attributes?.color}>{rec?.activitiesType?.attributes?.name}</Tag>
+			),
+
 			onCell,
 		},
 		{
