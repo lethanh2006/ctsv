@@ -99,7 +99,9 @@ const KhaoSatPage = () => {
 
 								<Popconfirm
 									onConfirm={() =>
-										deleteModel(rec._id, getData, undefined, intl.formatMessage({ id: 'global.message.xoathanhcong' }))
+										deleteModel(rec._id, getData, {
+											messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+										})
 									}
 									title={intl.formatMessage({ id: 'questionsmanagement.comfirm.xoa' })}
 									placement='topLeft'

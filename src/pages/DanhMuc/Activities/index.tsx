@@ -88,7 +88,9 @@ const ActivitiesPage = () => {
 
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, undefined, undefined, intl.formatMessage({ id: 'global.message.xoathanhcong' }))
+							deleteModel(rec._id, undefined, {
+								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+							})
 						}
 						title={intl.formatMessage({ id: 'activitiesmanagement.confirm.delete' })}
 						placement='topLeft'

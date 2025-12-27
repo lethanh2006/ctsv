@@ -78,8 +78,9 @@ const ActivityPage = () => {
 									getModel();
 									getAnalyticsActivityModel();
 								},
-								undefined,
-								intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								{
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								},
 							)
 						}
 						title={intl.formatMessage({ id: 'activity.confirm.xoa' })}
