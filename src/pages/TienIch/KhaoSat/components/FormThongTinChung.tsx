@@ -1,70 +1,117 @@
-import { ELoaiBieuMau, ELoaiDoiTuong } from '@/services/TienIch/constant';
+import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
+import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
-import { Button, Form, Input, Switch } from 'antd';
-import { useState } from 'react';
-import { useModel } from 'umi';
+import { resetFieldsForm } from '@/utils/utils';
+import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
-  const [form] = Form.useForm();
-  const { formSubmiting, record, setRecord, setVisibleForm } = useModel('tienich.bieumau');
-  const [camKet, setCamKet] = useState<boolean | undefined>(record?.coCamKet);
-  const onFinish = async (values: any) => {
-    setRecord({
-      ...record,
-      ...values,
-      loai: ELoaiBieuMau.KHAO_SAT,
-      doiTuong: ELoaiDoiTuong.TAT_CA,
-    });
-    if (props.afterAddNew) props.afterAddNew();
-  };
+	const intl = useIntl();
+	const [form] = Form.useForm();
+	const { formSubmiting, record, setRecord, visibleForm, setVisibleForm } = useModel('tienich.bieumau');
 
-  return (
-    <Form layout="vertical" onFinish={onFinish} form={form}>
-      <Form.Item
-        name="tieuDe"
-        label="Tiêu đề"
-        rules={[...rules.required, ...rules.text, ...rules.length(250)]}
-        initialValue={record?.tieuDe}
-      >
-        <Input placeholder="Nhập tiêu đề" />
-      </Form.Item>
-      <Form.Item
-        name="moTa"
-        label="Mô tả"
-        rules={[...rules.length(2000)]}
-        initialValue={record?.moTa}
-      >
-        <Input.TextArea rows={3} placeholder="Nhập mô tả" />
-      </Form.Item>
+	// const [camKet, setCamKet] = useState<boolean | undefined>(record?.coCamKet);
 
-      <Form.Item
-        name="coCamKet"
-        label="Có cam kết"
-        initialValue={record?.coCamKet}
-        valuePropName="checked"
-      >
-        <Switch onChange={(val) => setCamKet(val)} />
-      </Form.Item>
+	useEffect(() => {
+		if (!visibleForm) {
+			resetFieldsForm(form);
+		} else if (record?._id) {
+			form.setFieldsValue(record);
+		}
+	}, [record?._id, visibleForm]);
 
-      {camKet && (
-        <Form.Item
-          rules={[...rules.required]}
-          name="noiDungCamKet"
-          label="Nội dung cam kết"
-          initialValue={record?.noiDungCamKet}
-        >
-          <Input placeholder="Nội dung cam kết" />
-        </Form.Item>
-      )}
+	const onFinish = async (values: any) => {
+		setRecord({
+			...record,
+			...values,
+			loai: ELoaiBieuMau.QUESTIONS,
+		});
+		if (props.afterAddNew) props.afterAddNew();
+	};
 
-      <div className="form-footer">
-        <Button loading={formSubmiting} htmlType="submit" type="primary">
-          Tiếp theo
-        </Button>
-        <Button onClick={() => setVisibleForm(false)}>Hủy</Button>
-      </div>
-    </Form>
-  );
+	return (
+		<Form layout='vertical' onFinish={onFinish} form={form}>
+			<Row gutter={[12, 12]}>
+				<Col span={24}>
+					<Form.Item
+						name='tieuDe'
+						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.tieude' })}
+						rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+					>
+						<Input placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.tieude.place' })} />
+					</Form.Item>
+				</Col>
+
+				<Col span={24}>
+					<Form.Item
+						name='levelId'
+						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.lever' })}
+						rules={[...rules.required]}
+					>
+						<SelectLevelsManagement
+							onChange={(val, option) => {
+								const level = option?.rawData;
+								form.setFieldsValue({
+									levelName: level?.name,
+								});
+							}}
+						/>
+					</Form.Item>
+
+					<Form.Item name='levelName' hidden />
+				</Col>
+
+				<Col span={24}>
+					<Form.Item name='moTa' label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota' })}>
+						<Input.TextArea
+							rows={3}
+							placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota.place' })}
+						/>
+					</Form.Item>
+				</Col>
+
+				<Col span={24}>
+					<Form.Item name='defaultQuestion' initialValue={record?.defaultQuestion ?? true} valuePropName='checked'>
+						<Checkbox>{intl.formatMessage({ id: 'questionsmanagement.thongtinchung.defaultQuestion' })}</Checkbox>
+					</Form.Item>
+				</Col>
+
+				{/* <Col span={24}>
+					<Form.Item
+						name='coCamKet'
+						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.camket' })}
+						initialValue={record?.coCamKet}
+						valuePropName='checked'
+					>
+						<Switch onChange={(val) => setCamKet(val)} />
+					</Form.Item>
+				</Col> */}
+
+				{/* {camKet && (
+					<Col span={24}>
+						<Form.Item
+							rules={[...rules.required]}
+							name='noiDungCamKet'
+							label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.noidungcamket' })}
+							initialValue={record?.noiDungCamKet}
+						>
+							<Input
+								placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.noidungcamket.place' })}
+							/>
+						</Form.Item>
+					</Col>
+				)} */}
+			</Row>
+
+			<div className='form-footer'>
+				<Button loading={formSubmiting} htmlType='submit' type='primary'>
+					{intl.formatMessage({ id: 'questionsmanagement.button.tieptheo' })}
+				</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+			</div>
+		</Form>
+	);
 };
 
 export default FormThongTinChungKhaoSat;

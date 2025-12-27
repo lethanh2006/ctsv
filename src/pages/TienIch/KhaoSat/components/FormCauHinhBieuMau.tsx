@@ -1,128 +1,187 @@
+import { ELoaiCauHoiPublic } from '@/services/TienIch/constant';
+import { resetFieldsForm } from '@/utils/utils';
 import {
-  ArrowDownOutlined,
-  ArrowLeftOutlined,
-  ArrowUpOutlined,
-  CloseOutlined,
-  PlusCircleOutlined,
-  PlusOutlined,
-  SaveOutlined,
+	ArrowDownOutlined,
+	ArrowLeftOutlined,
+	ArrowUpOutlined,
+	CloseOutlined,
+	PlusCircleOutlined,
+	PlusOutlined,
+	SaveOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Form, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 import Block from './Block';
 import styles from './block.css';
 
-const FormCauHinhBieuMau = (props: { onBack: () => void }) => {
-  const { loading, record, edit, postModel, putModel, setRecord } = useModel('tienich.bieumau');
-  const [form] = Form.useForm();
+const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void }) => {
+	const intl = useIntl();
+	const { getData } = props;
+	const { formSubmiting, record, edit, postModel, putModel, setRecord, visibleForm, setVisibleForm } =
+		useModel('tienich.bieumau');
+	const [form] = Form.useForm();
 
-  const onFinish = async (values: any) => {
-    if (edit)
-      putModel(record?._id ?? '', { ...record, ...values })
-        .then()
-        .catch((er) => console.log(er));
-    else
-      postModel({
-        ...record,
-        ...values,
-      })
-        .then()
-        .catch((er) => console.log(er));
-  };
+	useEffect(() => {
+		if (!visibleForm) {
+			resetFieldsForm(form);
+		} else {
+			form.setFieldsValue(record);
+		}
+	}, [record?._id, visibleForm]);
 
-  return (
-    <Form layout="vertical" onFinish={onFinish} form={form}>
-      <Form.List
-        name="danhSachKhoi"
-        initialValue={record?.danhSachKhoi ?? []}
-        rules={[
-          {
-            validator: async (validate, names) => {
-              if (!names || names.length < 1) {
-                return Promise.reject(new Error('Ít nhất 1 khối'));
-              }
-              return '';
-            },
-          },
-        ]}
-      >
-        {(fields, { add, remove, move }, { errors }) => {
-          return (
-            <>
-              {fields.map((field, index) => (
-                <div key={field.key}>
-                  <Card
-                    size="small"
-                    headStyle={{ padding: '0px 24px' }}
-                    styles={{ padding: '8px 24px' }}
-                    className={styles.block}
-                    title={
-                      <>
-                        <div style={{ float: 'left' }}>Khối {index + 1}</div>
-                        <Tooltip title="Xóa">
-                          <CloseOutlined
-                            style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
-                            onClick={() => remove(field.name)}
-                          />
-                        </Tooltip>
-                        <Tooltip title="Di chuyển lên">
-                          <ArrowUpOutlined
-                            style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
-                            onClick={() => move(field.name, field.name - 1)}
-                          />
-                        </Tooltip>
-                        <Tooltip title="Di chuyển xuống">
-                          <ArrowDownOutlined
-                            style={{ float: 'right', marginTop: 4 }}
-                            onClick={() => move(field.name, field.name + 1)}
-                          />
-                        </Tooltip>
-                      </>
-                    }
-                  >
-                    <Block field={{ ...field }} />
-                  </Card>
-                  <br />
-                </div>
-              ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  style={{ width: '100%' }}
-                  icon={<PlusOutlined />}
-                >
-                  Thêm khối
-                </Button>
-                <Form.ErrorList errors={errors} />
-              </Form.Item>
-            </>
-          );
-        }}
-      </Form.List>
+	const onFinish = async (values: any) => {
+		const cleanCauHoi = (cauHoi: any) => {
+			const { loai } = cauHoi;
+			return {
+				...cauHoi,
+				luaChon: [ELoaiCauHoiPublic.SINGLE_CHOICE, ELoaiCauHoiPublic.MULTIPLE_CHOICE].includes(loai)
+					? cauHoi.luaChon
+					: null,
+				luaChonHang: [ELoaiCauHoiPublic.GRID_SINGLE_CHOICE, ELoaiCauHoiPublic.GRID_MULTIPLE_CHOICE].includes(loai)
+					? cauHoi.luaChonHang
+					: null,
+				luaChonCot: [ELoaiCauHoiPublic.GRID_SINGLE_CHOICE, ELoaiCauHoiPublic.GRID_MULTIPLE_CHOICE].includes(loai)
+					? cauHoi.luaChonCot
+					: null,
+				gioiHanDuoiTuyenTinh: [ELoaiCauHoiPublic.NUMERIC_RANGE, ELoaiCauHoiPublic.RENDER_INPUT_RATING].includes(loai)
+					? cauHoi.gioiHanDuoiTuyenTinh
+					: null,
+				gioiHanTrenTuyenTinh: [ELoaiCauHoiPublic.NUMERIC_RANGE, ELoaiCauHoiPublic.RENDER_INPUT_RATING].includes(loai)
+					? cauHoi.gioiHanTrenTuyenTinh
+					: null,
+			};
+		};
 
-      <div className="form-footer">
-        <Button
-          icon={<ArrowLeftOutlined />}
-          onClick={() => {
-            const valueView = form.getFieldsValue(true);
-            setRecord({ ...record, ...valueView });
-            props.onBack();
-          }}
-        >
-          Quay lại
-        </Button>
-        <Button
-          icon={edit ? <SaveOutlined /> : <PlusCircleOutlined />}
-          loading={loading}
-          htmlType="submit"
-          type="primary"
-        >
-          {!edit ? 'Thêm mới' : 'Lưu Lại'}
-        </Button>
-      </div>
-    </Form>
-  );
+		const updatedDanhSachKhoi = (values?.danhSachKhoi || []).map((khoi: any) => {
+			const newKhoi = {
+				...khoi,
+				danhSachCauHoi: (khoi?.danhSachCauHoi || []).map(cleanCauHoi),
+			};
+
+			if (!khoi.isDanhGiaChuanDauRa) {
+				delete newKhoi.cauHinh;
+			} else {
+				delete newKhoi.danhSachCauHoi;
+			}
+
+			return newKhoi;
+		});
+
+		const finalData = {
+			...record,
+			...values,
+			danhSachKhoi: updatedDanhSachKhoi,
+		};
+
+		if (edit)
+			putModel(
+				record?._id ?? '',
+				finalData,
+				getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
+				.then()
+				.catch((er) => console.log(er));
+		else
+			postModel(finalData, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+				.then()
+				.catch((er) => console.log(er));
+	};
+
+	return (
+		<Form layout='vertical' onFinish={onFinish} form={form}>
+			<Form.List
+				name='danhSachKhoi'
+				initialValue={record?.danhSachKhoi ?? []}
+				rules={[
+					{
+						validator: async (validate, names) => {
+							if (!names || names.length < 1) {
+								return Promise.reject(new Error(intl.formatMessage({ id: 'questionsmanagement.cauhinh.vali' })));
+							}
+							return '';
+						},
+					},
+				]}
+			>
+				{(fields, { add, remove, move }, { errors }) => {
+					return (
+						<>
+							{fields.map((field, index) => (
+								<div key={field.key}>
+									<Card
+										size='small'
+										className={styles.block}
+										title={
+											<>
+												<div style={{ float: 'left' }}>
+													{intl.formatMessage({ id: 'questionsmanagement.cauhinh.khoi' })} {index + 1}
+												</div>
+												<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
+													<CloseOutlined
+														style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
+														onClick={() => remove(field.name)}
+													/>
+												</Tooltip>
+												<Tooltip title={intl.formatMessage({ id: 'questionsmanagement.cauhinh.dichuyenlen' })}>
+													<ArrowUpOutlined
+														style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
+														onClick={() => move(field.name, field.name - 1)}
+													/>
+												</Tooltip>
+												<Tooltip title={intl.formatMessage({ id: 'questionsmanagement.cauhinh.dichuyenxuong' })}>
+													<ArrowDownOutlined
+														style={{ float: 'right', marginTop: 4 }}
+														onClick={() => move(field.name, field.name + 1)}
+													/>
+												</Tooltip>
+											</>
+										}
+									>
+										<Block field={{ ...field }} form={form} />
+									</Card>
+									<br />
+								</div>
+							))}
+							<Form.Item>
+								<Button type='dashed' onClick={() => add()} style={{ width: '100%' }} icon={<PlusOutlined />}>
+									{intl.formatMessage({ id: 'questionsmanagement.cauhinh.themkhoi' })}
+								</Button>
+								<Form.ErrorList errors={errors} />
+							</Form.Item>
+						</>
+					);
+				}}
+			</Form.List>
+
+			<div className='form-footer'>
+				<Button
+					icon={<ArrowLeftOutlined />}
+					onClick={() => {
+						const valueView = form.getFieldsValue(true);
+						setRecord({ ...record, ...valueView });
+						props.onBack();
+					}}
+				>
+					{intl.formatMessage({ id: 'questionsmanagement.cauhinh.quaylai' })}
+				</Button>
+				<Button
+					icon={edit ? <SaveOutlined /> : <PlusCircleOutlined />}
+					loading={formSubmiting}
+					htmlType='submit'
+					type='primary'
+				>
+					{!edit
+						? intl.formatMessage({ id: 'global.button.themmoi' })
+						: intl.formatMessage({ id: 'global.button.luulai' })}
+				</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
+			</div>
+		</Form>
+	);
 };
 
 export default FormCauHinhBieuMau;

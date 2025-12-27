@@ -160,7 +160,7 @@ export type TableBaseProps = {
 export type TFilter<T> = {
 	field?: keyof T | [keyof T, string];
 	operator?: EOperatorType;
-	values?: (string | number)[];
+	values?: (string | number | boolean)[];
 	active?: boolean;
 	filters?: TFilter<T>[];
 	logicOperator?: 'or' | 'and';
