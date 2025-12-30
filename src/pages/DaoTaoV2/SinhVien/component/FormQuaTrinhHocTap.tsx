@@ -1,6 +1,7 @@
 import { Collapse } from 'antd';
 import { useModel } from 'umi';
 import HocTapSinhVienHienTaiPage from '../HocTapSinhVienHienTai';
+import LichThiSinhVien from '../LichThi';
 import LopHanhChinhSinhVien from '../LopHanhChinhSinhVien';
 import LopTinChiSinhVien from '../LopTinChi';
 
@@ -18,6 +19,10 @@ const FormQuaTrinhHocTap = () => {
 
 				<Collapse.Panel header='DS lớp tín chỉ đã học' key='2'>
 					<LopTinChiSinhVien />
+				</Collapse.Panel>
+
+				<Collapse.Panel header='Lịch thi kết thúc học phần' key='lichthi'>
+					<LichThiSinhVien />
 				</Collapse.Panel>
 			</Collapse>
 		</>

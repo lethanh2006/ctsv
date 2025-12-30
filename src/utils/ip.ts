@@ -16,6 +16,7 @@ const ipSlink = ipRoot + 'slink'; // ip dev
 const ipCCT = ipRoot + 'co-curriculum'; // ip dev
 const ipCsvc = ipRoot + 'csvc';
 // const ipCCT = 'http://192.168.1.38:3010'; // ip dev
+const ipKhaoThi = ipRoot + 'khao-thi';
 
 const currentRole = EModuleKey.CTSV;
 const replaceRole: EModuleKey | undefined = undefined; //EModuleKey.CONG_CAN_BO; // Thay đổi theo từng phân hệ
@@ -38,6 +39,7 @@ export {
 	ipCore,
 	ipCsvc,
 	ipDaoTao,
+	ipKhaoThi,
 	ipNhanSu,
 	ipNotif,
 	ipSlink,
