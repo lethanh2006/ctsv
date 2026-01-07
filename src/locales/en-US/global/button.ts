@@ -13,6 +13,4 @@ export default {
 	'global.button.boloctuychinh': 'Custom filters',
 	'global.button.tongso': 'Total',
 	'global.button.chinhsua': 'Edit',
-	'global.button.xoa': 'Delete',
-	'global.button.chitiet': 'Detail',
 };

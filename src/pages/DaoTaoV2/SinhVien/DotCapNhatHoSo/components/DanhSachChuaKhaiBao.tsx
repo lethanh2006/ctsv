@@ -4,9 +4,10 @@ import { getDanhSachChuaKhaiBaoPage, getDanhSachDaKhaiBaoPage } from '@/services
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: () => void }) => {
+	const intl = useIntl();
 	const { setDanhSach, condition, page, limit, setTotal, filters, setFilters } = useModel(
 		'daotaov2.sinhvien.danhsachsinhviencuadot',
 	);
@@ -24,10 +25,10 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 				const res = await (currentTabs === '1'
 					? getDanhSachDaKhaiBaoPage(props?.data?._id, page, limit, condition, [
 							...(filters?.filter((item) => item.active)?.map(({ active, ...item }) => item) || []),
-					  ])
+						])
 					: getDanhSachChuaKhaiBaoPage(props?.data?._id, page, limit, condition, [
 							...(filters?.filter((item) => item.active)?.map(({ active, ...item }) => item) || []),
-					  ]));
+						]));
 				if (res) {
 					// setDanhSachChuaKhaiBao(res?.data?.data ?? []);
 					setDanhSach(res?.data?.data?.result ?? []);
@@ -43,25 +44,25 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 
 	const columns: IColumn<DotCapNhatHoSo.IThongTinSinhVien>[] = [
 		{
-			title: 'Tên sinh viên',
+			title: intl.formatMessage({ id: 'dotcapnhathoso.dssv.column.tensv' }),
 			dataIndex: 'ten',
 			filterType: 'string',
 			width: 150,
 		},
 		{
-			title: 'CMT/CCCD',
+			title: intl.formatMessage({ id: 'dotcapnhathoso.dssv.column.cccd' }),
 			dataIndex: 'cccd',
 			filterType: 'string',
 			width: 150,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'dotcapnhathoso.dssv.column.email' }),
 			dataIndex: 'email',
 			filterType: 'string',
 			width: 120,
 		},
 		{
-			title: 'Lớp hành chính',
+			title: intl.formatMessage({ id: 'dotcapnhathoso.dssv.column.lophanhchinh' }),
 			dataIndex: 'lopHanhChinhList',
 			// filterType: 'string',
 			width: 120,
@@ -83,8 +84,8 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 					setCurrentTabs(val);
 				}}
 			>
-				<Tabs.TabPane tab='Danh sách sinh viên đã khai báo' key='1' />
-				<Tabs.TabPane tab='Danh sách sinh viên chưa khai báo' key='2' />
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'dotcapnhathoso.dssv.dakhaobao' })} key='1' />
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'dotcapnhathoso.dssv.chuakhao' })} key='2' />
 			</Tabs>
 			<TableBase
 				hideCard
@@ -104,7 +105,7 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 						}}
 						key={'export'}
 					>
-						Xuất danh sách
+						{intl.formatMessage({ id: 'dotcapnhathoso.dssv.button.xuatdanhsach' })}
 					</Button>,
 				]}
 				buttons={{ create: false }}
@@ -119,7 +120,7 @@ const DanhSachChuaKhaiBao = (props: { data?: DotCapNhatHoSo.IRecord; onCancel?: 
 						if (props?.onCancel) props?.onCancel();
 					}}
 				>
-					Đóng
+					{intl.formatMessage({ id: 'global.button.dong' })}
 				</Button>
 			</div>
 		</>
