@@ -15,7 +15,7 @@ import { Button, Select, Space } from 'antd';
 import _ from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import RenderLichHoc from '../../HocKy/LopHocPhan/components/RenderLichHoc';
 import ViewDiemLopHocPhan from '../../KetQuaHocTap/DiemLopHocPhan/components/ViewDiemLopHocPhan';
 import ModalLichHocSinhVien from '../../ThoiKhoaBieu/ModalLichHoc';
@@ -24,6 +24,7 @@ import TitlePrintLopTinChi from './TitlePrintLopTinChi';
 type TData = LopHocPhan.IRecordSinhVienLopHP & Partial<HocPhan.IRecord> & { title?: string; maHocKy?: string };
 
 const LopTinChiSinhVien = () => {
+	const intl = useIntl();
 	const { getLopHpSvBySinhVienModel, loading } = useModel('daotaov2.hocky.sinhvienlophocphan');
 	// const { getAllModel: getLopHp, loading: loadLop } = useModel('daotaov2.hocky.lophocphan');
 	const { loading: loadDiem } = useModel('daotaov2.ketquahoctap.diemhpsvhk');
@@ -71,7 +72,7 @@ const LopTinChiSinhVien = () => {
 			const gHocKy = _.groupBy(danhSachLopHienThi, (item) => item.maHocKy); // Nhóm theo học kỳ
 			const aHocKy = Object.entries(gHocKy).sort(([a], [b]) => (a > b ? -1 : 1)); // Sắp xếp tăng dần học kỳ
 			aHocKy.forEach(([mahk, lopTinChi]) => {
-				const ten = lopTinChi[0]?.lopHocPhan?.hocKy?.ten ?? `Học kỳ ${mahk}`;
+				const ten = lopTinChi[0]?.lopHocPhan?.hocKy?.ten ?? `${intl.formatMessage({ id: 'loptinchi.hocky' })} ${mahk}`;
 				dsHocKy.push({ ma: mahk, ten });
 				res.push({ _id: '-1', ten, maHocKy: mahk });
 				res.push(
@@ -106,7 +107,7 @@ const LopTinChiSinhVien = () => {
 	const reactToPrintTrigger = useCallback(
 		() => (
 			<Button icon={<PrinterOutlined />} size='small'>
-				In thông tin
+				{intl.formatMessage({ id: 'loptinchi.button.inthongtin' })}
 			</Button>
 		),
 		[],
@@ -114,7 +115,7 @@ const LopTinChiSinhVien = () => {
 
 	const columns: IColumn<TData>[] = [
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'loptinchi.column.hocky' }),
 			dataIndex: ['lopHocPhan', 'maHocKy'],
 			align: 'center',
 			width: 80,
@@ -122,7 +123,7 @@ const LopTinChiSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Mã HP',
+			title: intl.formatMessage({ id: 'loptinchi.column.mahocphan' }),
 			dataIndex: 'ma',
 			align: 'center',
 			width: 80,
@@ -131,7 +132,7 @@ const LopTinChiSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Tên học phần',
+			title: intl.formatMessage({ id: 'loptinchi.column.tenhocphan' }),
 			dataIndex: 'ten',
 			width: 180,
 			filterType: 'string',
@@ -142,14 +143,14 @@ const LopTinChiSinhVien = () => {
 			}),
 		},
 		{
-			title: 'TC',
+			title: intl.formatMessage({ id: 'loptinchi.column.tinchi' }),
 			align: 'center',
 			width: 40,
 			render: (val, rec) => rec?.lopHocPhan?.hocPhan?.soTinChi ?? rec.lopHocPhan?.hocPhan?.soTinChi ?? rec.soTinChi,
 			onCell,
 		},
 		{
-			title: 'TT lớp',
+			title: intl.formatMessage({ id: 'loptinchi.column.ttlop' }),
 			align: 'center',
 			width: 80,
 			render: (val, rec) =>
@@ -159,7 +160,7 @@ const LopTinChiSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Giảng viên',
+			title: intl.formatMessage({ id: 'loptinchi.column.giangvien' }),
 			width: 160,
 			render: (val, rec) => (
 				<ExpandText>
@@ -172,12 +173,12 @@ const LopTinChiSinhVien = () => {
 			),
 		},
 		{
-			title: 'Lịch học',
+			title: intl.formatMessage({ id: 'loptinchi.column.lichhoc' }),
 			width: 200,
 			render: (val, rec) => rec?.lopHocPhan && <RenderLichHoc lopHocPhan={rec.lopHocPhan as LopHocPhan.IRecord} />,
 		},
 		{
-			title: 'Loại đăng ký',
+			title: intl.formatMessage({ id: 'loptinchi.column.loaidangky' }),
 			dataIndex: 'loai',
 			width: 120,
 			render: (val: ELoaiHocPhanDangKyTinChi) => LoaiHocPhanDangKyTinChi[val],
@@ -192,14 +193,14 @@ const LopTinChiSinhVien = () => {
 
 	const columnsPrint: IColumn<TData>[] = [
 		{
-			title: 'TT',
+			title: intl.formatMessage({ id: 'loptinchi.column.tt' }),
 			dataIndex: 'title',
 			align: 'center',
 			width: 40,
 			onCell,
 		},
 		{
-			title: 'Mã HP',
+			title: intl.formatMessage({ id: 'loptinchi.column.mahocphan' }),
 			dataIndex: 'ma',
 			align: 'center',
 			width: 80,
@@ -208,7 +209,7 @@ const LopTinChiSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Tên học phần',
+			title: intl.formatMessage({ id: 'loptinchi.column.tenhocphan' }),
 			dataIndex: 'ten',
 			width: 180,
 			filterType: 'string',
@@ -219,14 +220,14 @@ const LopTinChiSinhVien = () => {
 			}),
 		},
 		{
-			title: 'TC',
+			title: intl.formatMessage({ id: 'loptinchi.column.tinchi' }),
 			align: 'center',
 			width: 40,
 			render: (val, rec) => rec?.lopHocPhan?.hocPhan?.soTinChi ?? rec.lopHocPhan?.hocPhan?.soTinChi ?? rec.soTinChi,
 			onCell,
 		},
 		{
-			title: 'TT lớp',
+			title: intl.formatMessage({ id: 'loptinchi.column.ttlop' }),
 			align: 'center',
 			width: 80,
 			render: (val, rec) =>
@@ -236,7 +237,7 @@ const LopTinChiSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Giảng viên',
+			title: intl.formatMessage({ id: 'loptinchi.column.giangvien' }),
 			width: 160,
 			render: (val, rec) => (
 				<>
@@ -250,14 +251,14 @@ const LopTinChiSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Lịch học',
+			title: intl.formatMessage({ id: 'loptinchi.column.lichhoc' }),
 			width: 200,
 			render: (val, rec) =>
 				rec?.lopHocPhan && <RenderLichHoc lopHocPhan={rec.lopHocPhan as LopHocPhan.IRecord} showAll />,
 			onCell,
 		},
 		{
-			title: 'Loại đăng ký',
+			title: intl.formatMessage({ id: 'loptinchi.column.loaidangky' }),
 			dataIndex: 'loai',
 			width: 120,
 			render: (val: ELoaiHocPhanDangKyTinChi) => LoaiHocPhanDangKyTinChi[val],
@@ -290,15 +291,15 @@ const LopTinChiSinhVien = () => {
 						onChange={(val) => setHocKy(danhSachHocKy.find((item) => item.ma === val))}
 						options={danhSachHocKy.map((item) => ({ key: item.ma, value: item.ma, label: item.ten }))}
 						size='small'
-						placeholder='Chọn kỳ học'
+						placeholder={intl.formatMessage({ id: 'loptinchi.select.hocky' })}
 						loading={loading}
 					/>
 					<Button icon={<CalendarOutlined />} onClick={() => setVisibleLichHoc(true)} size='small'>
-						Xem lịch học
+						{intl.formatMessage({ id: 'loptinchi.button.xemlichhoc' })}
 					</Button>
 					<ReactToPrint
 						content={reactToPrintContent}
-						documentTitle='Danh sách lớp tín chỉ'
+						documentTitle={intl.formatMessage({ id: 'loptinchi.danhsach.title' })}
 						trigger={reactToPrintTrigger}
 						removeAfterPrint
 					/>

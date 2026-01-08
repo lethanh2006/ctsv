@@ -1,26 +1,27 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import { Button, Modal, Tabs } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const KetQuaCapNhatAnhSV = () => {
+	const intl = useIntl();
 	const { visibleKetQuaImportAnh, setVisibleKetQuaImportAnh } = useModel('daotaov2.sinhvien.sinhvien');
 
 	const model: any = useModel('daotaov2.sinhvien.sinhvien');
 	const MapKeyName: any = {
-		listImageSuccess: 'Thành công',
-		listImageError: 'Gặp lỗi',
-		listImageNotfound: 'Không tìm thấy sinh viên',
+		listImageSuccess: intl.formatMessage({ id: 'hosonguoihoc.ketquacapnhatanhthesv.thanhcong' }),
+		listImageError: intl.formatMessage({ id: 'hosonguoihoc.ketquacapnhatanhthesv.gaploi' }),
+		listImageNotfound: intl.formatMessage({ id: 'hosonguoihoc.ketquacapnhatanhthesv.khongtimthaysinhvien' }),
 	};
 	return (
 		<Modal
 			destroyOnClose
 			styles={{ paddingTop: 4 }}
 			width={700}
-			title='Kết quả cập nhật ảnh sinh viên'
+			title={intl.formatMessage({ id: 'hosonguoihoc.ketquacapnhatanhthesv.title' })}
 			open={visibleKetQuaImportAnh}
 			footer={
 				<Button type='primary' onClick={() => setVisibleKetQuaImportAnh(false)}>
-					Đóng
+					{intl.formatMessage({ id: 'global.button.dong' })}
 				</Button>
 			}
 		>
@@ -31,13 +32,13 @@ const KetQuaCapNhatAnhSV = () => {
 							addStt
 							columns={[
 								{
-									title: 'Tên ảnh',
+									title: intl.formatMessage({ id: 'hosonguoihoc.ketquacapnhatanhthesv.tenanh' }),
 									dataIndex: 'filename',
 									width: 200,
 									align: 'center',
 								},
 								{
-									title: 'Lý do',
+									title: intl.formatMessage({ id: 'hosonguoihoc.ketquacapnhatanhthesv.lydo' }),
 									dataIndex: 'reason',
 									width: 200,
 									hide: item !== 'listImageError',

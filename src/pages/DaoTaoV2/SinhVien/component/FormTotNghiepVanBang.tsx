@@ -1,97 +1,101 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import FormItemUrlOrUpload from '@/components/Upload/FormItemUrlOrUpload';
 import { SaveOutlined } from '@ant-design/icons';
+import { useIntl } from '@umijs/max';
 import { Button, Col, Divider, Form, Input, InputNumber, Row } from 'antd';
 
 const FormTotNghiepVanBang = () => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 
 	return (
 		<Form layout='vertical'>
 			<Button icon={<SaveOutlined />} type='primary' htmlType='submit'>
-				Cập nhật
+				{intl.formatMessage({ id: 'sinhvien.totnghiepvb.button.capnhat' })}
 			</Button>
 
-			<Divider orientation='center'>Thông tin tốt nghiệp</Divider>
+			<Divider orientation='center'>
+				{intl.formatMessage({ id: 'sinhvien.totnghiepvb.divider.thongtintotnghiep' })}
+			</Divider>
 			<Row gutter={[12, 0]}>
 				<Col span={24} md={6}>
-					<Form.Item label='Thời gian tốt nghiệp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.thoigiantotnghiep' })}>
 						<MyDatePicker />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Loại tốt nghiệp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.loaitotnghiep' })}>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Số quyết định tốt nghiệp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.soquyetdinhtotnghiep' })}>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Ngày ban hành QĐ'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.ngaybanhanhqd' })}>
 						<MyDatePicker />
 					</Form.Item>
 				</Col>
 			</Row>
 
-			<Divider orientation='center'>Thông tin văn bằng</Divider>
+			<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.totnghiepvb.divider.thongtinvbang' })}</Divider>
 			<Row gutter={[12, 0]}>
 				<Col span={24} md={6}>
-					<Form.Item label='Mã ngành'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.manganh' })}>
 						<Input disabled />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Mã chương trình đào tạo'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.machuongtrinhdaotao' })}>
 						<Input disabled />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Tên đơn vị bằng cấp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.tendonvibangcap' })}>
 						<Input disabled />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Trình độ đào tạo'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.trinhdodaotao' })}>
 						<Input disabled />
 					</Form.Item>
 				</Col>
 
 				<Col span={24} md={6}>
-					<Form.Item label='Năm tốt nghiệp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.namtotnghiep' })}>
 						<InputNumber style={{ width: '100%' }} min={2020} max={2300} />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Số QĐ công nhận tốt nghiệp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.soqdcongnhantotnghiep' })}>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Số QĐ thành lập hội đồng'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.soqdthanhlaphoidong' })}>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={6}>
-					<Form.Item label='Ngày bảo vệ'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.ngaybaove' })}>
 						<MyDatePicker />
 					</Form.Item>
 				</Col>
 
 				<Col span={24} md={8}>
-					<Form.Item label='Tên văn bằng'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.tenvanbang' })}>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={8}>
-					<Form.Item label='Số hiệu văn bằng'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.sohieuvanbang' })}>
 						<Input />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={8}>
-					<Form.Item label='Ngày cấp'>
+					<Form.Item label={intl.formatMessage({ id: 'sinhvien.totnghiepvb.id.ngaycap' })}>
 						<MyDatePicker />
 					</Form.Item>
 				</Col>
