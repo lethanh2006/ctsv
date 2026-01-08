@@ -6,14 +6,6 @@ export default {
 	'menu.About': `Introduction ${APP_CONFIG_TIEN_TO_TRUONG.toLowerCase()}`,
 	'menu.News': 'News',
 
-	'menu.DichVuHanhChinh': 'Dịch vụ hành chính',
-	'menu.DichVuHanhChinh.PhanHoi': 'Phản hồi',
-	'menu.DichVuHanhChinh.ThongTinTongHop': 'Thông tin tổng hợp',
-	'menu.DichVuHanhChinh.QuanLyBieuMau': 'Quản lý biểu mẫu',
-	'menu.DichVuHanhChinh.QuanLyDon': 'Quản lý đơn',
-	'menu.DichVuHanhChinh.ChuyenVienDieuPhoiQuanLyDon': 'Điều phối',
-	'menu.DichVuHanhChinh.ChuyenVienTiepNhanQuanLyDon': 'Xử lý',
-
 	'menu.Activity': 'Activity Management',
 	'menu.ActivityResuls': 'Activity Results Approval',
 
@@ -157,4 +149,18 @@ export default {
 
 	'menu.ThongKe': 'Thống kê báo cáo',
 	'menu.ThongKe.SoLuongSinhVien': 'Số lượng sinh viên',
+	'menu.ThongKe.KetQuaHocKy': 'KQHT xét học bổng',
+
+	'menu.Minigame': 'Quản lý Minigame',
+	'menu.Minigame.VongQuayMM': 'Vòng quay may mắn',
+	'menu.Minigame.VongQuayMM.CauHinhVongQuay': 'Cấu hình',
+	'menu.Minigame.VongQuayMM.LichSuQuay': 'Lịch sử quay',
+	'menu.Minigame.Voucher': 'Phiếu quà tặng',
+
+	//Dịch vụ chung
+	'menu.DichVuChung': 'Dịch vụ chung',
+	'menu.DichVuChung.TheChat': 'Thể chất sinh viên',
+	'menu.DichVuChung.TheChat.DanhMuc': 'Tiêu chuẩn đánh giá',
+	'menu.DichVuChung.TheChat.DotDangKy': 'Đợt đánh giá',
+	'menu.DichVuChung.TheChat.DanhSachSinhVien': 'Kết quả đánh giá',
 };

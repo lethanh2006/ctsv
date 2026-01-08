@@ -32,7 +32,7 @@ export default {
 	'global.previewfile.thongbao': 'Tệp tin không hỗ trợ hiển thị trực tiếp',
 
 	//RightContent
-	'global.rightcontent.header.title': 'HỆ THỐNG PHẦN MỀM CHỈ ĐẠO, ĐIỀU HÀNH',
+	'global.rightcontent.header.title': 'HỆ THỐNG PHẦN MỀM ĐẠI HỌC SỐ',
 	'global.rightcontent.moduleswitch.dschungnang': 'Danh sách chức năng',
 
 	'global.rightcontent.thongbao.title': 'Thông báo',
@@ -43,7 +43,8 @@ export default {
 
 	//Table
 	'global.table.column.tt': 'TT',
-
+	'global.column.action': 'Thao tác',
+	
 	'global.table.export.title': 'Xuất dữ liệu',
 	'global.table.export.khadung': 'Các trường khả dụng',
 	'global.table.export.choose.chontatca': 'Chọn tất cả',

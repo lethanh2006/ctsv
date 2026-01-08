@@ -176,7 +176,7 @@
 	{
 		name: 'Activity',
 		icon: 'AppstoreOutlined',
-		path: '/activity',
+		path: '/activity-management',
 		component: 'CCT/Activity',
 		access: 'cctFilter',
 	},
@@ -184,7 +184,7 @@
 	{
 		name: 'ActivityResuls',
 		icon: 'TrophyOutlined',
-		path: '/activity-resuls',
+		path: '/activity-results-approval',
 		component: 'CCT/ActivityStudent',
 		access: 'cctFilter',
 	},
@@ -776,30 +776,30 @@
 			{
 				name: 'Attributes',
 				component: 'DanhMuc/Attributes',
-				path: 'attributes-management',
+				path: 'attribute',
 				access: 'cctFilter',
 			},
 			{
 				name: 'Levels',
 				component: 'DanhMuc/Levels',
-				path: 'levels-management',
+				path: 'level',
 				access: 'cctFilter',
 			},
 			{
 				name: 'Roles',
 				component: 'DanhMuc/Roles',
-				path: 'roles-management',
+				path: 'role',
 				access: 'cctFilter',
 			},
 			{
 				name: 'Activities',
 				component: 'DanhMuc/Activities',
-				path: 'activities-management',
+				path: 'co-curricular-ctivities',
 				access: 'cctFilter',
 			},
 			{
 				name: 'Questions',
-				path: 'assessment-questions',
+				path: 'self-assessment-questions',
 				component: 'TienIch/KhaoSat',
 				access: 'cctFilter',
 			},

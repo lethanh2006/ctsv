@@ -65,7 +65,7 @@ const FormAttributes = () => {
 							label={intl.formatMessage({ id: 'attributesmanagement.form.icon' })}
 							rules={[...rules.required]}
 						>
-							<UploadFile disabled={isView} />
+							<UploadFile disabled={isView} accept='.png, .jpeg, .jpg' />
 						</Form.Item>
 					</Col>
 
