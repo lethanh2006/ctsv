@@ -9,6 +9,7 @@ import login from './login';
 import loptinchi from './loptinchi';
 import namhoc from './namhoc';
 import sinhvien from './sinhvien';
+import thongbao from './thongbao';
 import thongtinnguoihoc from './thongtinnguoihoc';
 import trangchu from './trangchu';
 
@@ -27,4 +28,5 @@ export default {
 	...thongtinnguoihoc,
 	...activity,
 	...danhmuc,
+	...thongbao,
 };

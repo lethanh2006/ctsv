@@ -10,9 +10,10 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 import fileDownload from 'js-file-download';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormThongBaoTuyChinh = (props: any) => {
+	const intl = useIntl();
 	const { afterAddNew, type } = props;
 	const [form] = Form.useForm();
 	const {
@@ -34,7 +35,9 @@ const FormThongBaoTuyChinh = (props: any) => {
 
 	const onDownloadTemplate = () => {
 		try {
-			dowLoadBieuMauNguoiNhan().then((res: any) => fileDownload(res.data, 'File biểu mẫu.xlsx'));
+			dowLoadBieuMauNguoiNhan().then((res: any) =>
+				fileDownload(res.data, intl.formatMessage({ id: 'thongbao.formtuychinh.filename' })),
+			);
 		} catch (er) {
 			console.log('🚀 er:', er);
 		}
@@ -60,14 +63,22 @@ const FormThongBaoTuyChinh = (props: any) => {
 		<Form layout='vertical' onFinish={onFinish} form={form}>
 			<Row gutter={[12, 0]}>
 				<Col span={24}>
-					<Form.Item name='title' label='Tiêu đề' rules={[...rules.required, ...rules.text, ...rules.length(250)]}>
-						<Input placeholder='Nhập tiêu đề' />
+					<Form.Item
+						name='title'
+						label={intl.formatMessage({ id: 'thongbao.formtuychinh.title.label' })}
+						rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+					>
+						<Input placeholder={intl.formatMessage({ id: 'thongbao.formtuychinh.title.placeholder' })} />
 					</Form.Item>
 				</Col>
 				<Col span={24} md={12}>
-					<Form.Item name='vaiTroNguoiNhan' label='Vai trò người nhận' rules={[...rules.required]}>
+					<Form.Item
+						name='vaiTroNguoiNhan'
+						label={intl.formatMessage({ id: 'thongbao.formtuychinh.receiverRole.label' })}
+						rules={[...rules.required]}
+					>
 						<Select
-							placeholder='Chọn vai trò người nhận'
+							placeholder={intl.formatMessage({ id: 'thongbao.formtuychinh.receiverRole.placeholder' })}
 							options={Object.values([EVaiTroKhaoSat.SINH_VIEN, EVaiTroKhaoSat.NHAN_VIEN]).map((item) => ({
 								value: item,
 								label: TenVaiTroKhaoSat[item],
@@ -80,10 +91,10 @@ const FormThongBaoTuyChinh = (props: any) => {
 						name='file'
 						label={
 							<Space>
-								<span>Danh sách người nhận thông báo</span>
+								<span>{intl.formatMessage({ id: 'thongbao.formtuychinh.receiverFile.label' })}</span>
 
 								<Button icon={<DownloadOutlined />} type='link' onClick={onDownloadTemplate}>
-									Tải tập tin mẫu
+									{intl.formatMessage({ id: 'thongbao.formtuychinh.receiverFile.downloadTemplate' })}
 								</Button>
 							</Space>
 						}
@@ -94,25 +105,39 @@ const FormThongBaoTuyChinh = (props: any) => {
 				</Col>
 				<Form.Item
 					name='content'
-					label='Nội dung chi tiết thông báo'
+					label={intl.formatMessage({ id: 'thongbao.formtuychinh.content.label' })}
 					rules={[...rules.requiredHtml]}
 					extra={
 						<div>
-							<p>Hướng dẫn:</p>
+							<p>
+								{intl.formatMessage({
+									id: 'thongbao.formtuychinh.content.guide.title',
+								})}
+							</p>
 							<ul style={{ margin: 0, paddingLeft: '20px', marginTop: -10 }}>
+								<li
+									dangerouslySetInnerHTML={{
+										__html: intl.formatMessage(
+											{ id: 'thongbao.formtuychinh.content.guide.rule1' },
+											{ syntax: '{{..}}' },
+										),
+									}}
+								/>
 								<li>
-									Các giá trị trong cú pháp <strong>{'{{..}}'}</strong> tương ứng với tên cột trong file Excel bạn tải
-									lên.
+									{intl.formatMessage({
+										id: 'thongbao.formtuychinh.content.guide.rule2',
+									})}
 								</li>
+								<li
+									dangerouslySetInnerHTML={{
+										__html: intl.formatMessage({ id: 'thongbao.formtuychinh.content.guide.rule3' }),
+									}}
+								/>
 								<li>
-									Đảm bảo file Excel có tiêu đề cột chính xác và đầy đủ ở hàng đầu tiên (A1, B1, ...). Lưu ý viết liền
-									không dấu
+									{intl.formatMessage({
+										id: 'thongbao.formtuychinh.content.guide.rule4',
+									})}
 								</li>
-								<li>
-									Ví dụ: Nếu file Excel có cột <strong>HOTEN</strong>, bạn có thể sử dụng <strong>{'{{HOTEN}}'}</strong>{' '}
-									để hiển thị giá trị từ cột đó.
-								</li>
-								<li>Hãy kiểm tra file Excel để tránh lỗi trong quá trình xử lý.</li>
 							</ul>
 						</div>
 					}
@@ -123,9 +148,11 @@ const FormThongBaoTuyChinh = (props: any) => {
 
 			<div className='form-footer'>
 				<Button loading={formSubmiting} htmlType='submit' type='primary'>
-					Xem trước
+					{intl.formatMessage({ id: 'thongbao.formtuychinh.button.preview' })}
 				</Button>
-				<Button onClick={() => setVisibleThongBaoDanhSach(false)}>Hủy</Button>
+				<Button onClick={() => setVisibleThongBaoDanhSach(false)}>
+					{intl.formatMessage({ id: 'global.button.huy' })}
+				</Button>
 			</div>
 		</Form>
 	);

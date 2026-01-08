@@ -1,12 +1,13 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
+import { thongKeNotificationNguoiNhan } from '@/services/ThongBao';
 import type { ThongBao } from '@/services/ThongBao/typing';
 import { Select, Tag } from 'antd';
-import { useModel } from 'umi';
-import { thongKeNotificationNguoiNhan } from '@/services/ThongBao';
 import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const TableReceiverThongBao = (props: { record?: ThongBao.IRecord }) => {
+	const intl = useIntl();
 	const { page, limit, getModel } = useModel('thongbao.receiver');
 	const { record } = props;
 	const [dataThongKeNguoiNhan, setDataThongKeNguoiNhan] = useState<ThongBao.IThongKeNguoiNhan>();
@@ -28,24 +29,32 @@ const TableReceiverThongBao = (props: { record?: ThongBao.IRecord }) => {
 	};
 	const columns: IColumn<ThongBao.TReceiver>[] = [
 		{
-			title: 'Mã giảng viên / sinh viên',
+			title: intl.formatMessage({ id: 'thongbao.receiver.column.ma' }),
 			dataIndex: 'username',
 			width: 150,
 			filterType: 'string',
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'thongbao.receiver.column.hoten' }),
 			dataIndex: 'fullname',
 			width: 180,
 			filterType: 'string',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'thongbao.receiver.column.trangthai' }),
 			dataIndex: 'read',
 			width: 100,
 			align: 'center',
 			render: (val) => {
-				return <>{val ? <Tag color={'green'}>Đã đọc</Tag> : <Tag color={'red'}>Chưa đọc</Tag>}</>;
+				return (
+					<>
+						{val ? (
+							<Tag color={'green'}>{intl.formatMessage({ id: 'thongbao.receiver.status.read' })}</Tag>
+						) : (
+							<Tag color={'red'}>{intl.formatMessage({ id: 'thongbao.receiver.status.unread' })}</Tag>
+						)}
+					</>
+				);
 			},
 		},
 	];
@@ -65,38 +74,41 @@ const TableReceiverThongBao = (props: { record?: ThongBao.IRecord }) => {
 				otherButtons={[
 					<Select
 						key={'1'}
-						placeholder={'Chọn trạng thái'}
+						placeholder={intl.formatMessage({ id: 'thongbao.receiver.filter.status.placeholder' })}
 						onChange={(val) => {
 							setTrangThaiSelect(val);
 						}}
 						allowClear
 						style={{ width: 160 }}
 						options={[
-							{ value: 1, label: 'Đã đọc' },
-							{ value: 0, label: 'Chưa đọc' },
+							{ value: 1, label: intl.formatMessage({ id: 'thongbao.receiver.status.read' }) },
+							{ value: 0, label: intl.formatMessage({ id: 'thongbao.receiver.status.unread' }) },
 						]}
 					/>,
 				]}
 			>
 				{dataThongKeNguoiNhan && (
-					<div style={{ marginBottom: 16 }}>
-						Tỉ lệ :{' '}
-						<b>
-							{dataThongKeNguoiNhan?.daDoc}/{+dataThongKeNguoiNhan?.daDoc + +dataThongKeNguoiNhan?.chuaDoc}
-						</b>{' '}
-						{dataThongKeNguoiNhan?.daDoc > 0 && dataThongKeNguoiNhan?.chuaDoc > 0 ? (
-							<>
-								(
-								{(
-									(dataThongKeNguoiNhan?.daDoc / (+dataThongKeNguoiNhan?.daDoc + +dataThongKeNguoiNhan?.chuaDoc)) *
-									100
-								).toFixed(2)}
-								% đã đọc thông báo)
-							</>
-						) : (
-							'(0% đã đọc thông báo)'
-						)}
-					</div>
+					<div
+						style={{ marginBottom: 16 }}
+						dangerouslySetInnerHTML={{
+							__html:
+								dataThongKeNguoiNhan?.daDoc > 0 && dataThongKeNguoiNhan?.chuaDoc > 0
+									? intl.formatMessage(
+											{ id: 'thongbao.receiver.statistic.full' },
+											{
+												read: dataThongKeNguoiNhan.daDoc,
+												total: +dataThongKeNguoiNhan.daDoc + +dataThongKeNguoiNhan.chuaDoc,
+												percent: (
+													(dataThongKeNguoiNhan.daDoc / (+dataThongKeNguoiNhan.daDoc + +dataThongKeNguoiNhan.chuaDoc)) *
+													100
+												).toFixed(2),
+											},
+										)
+									: intl.formatMessage({
+											id: 'thongbao.receiver.statistic.empty',
+										}),
+						}}
+					/>
 				)}
 			</TableBase>
 		</>

@@ -2,11 +2,12 @@ import ModalExpandable from '@/components/Table/ModalExpandable';
 import type { NotificationType } from '@/services/ThongBao/constant';
 import { Steps } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import ConfirmThongBaoTuyChinh from './Confirm';
 import FormThongBaoTuyChinh from './Form';
 
 const CardFormThongBaoTuyChinh = (props: { getData: () => void; type: NotificationType }) => {
+	const intl = useIntl();
 	const { getData, type } = props;
 	const { visibleThongBaoDanhSach, setVisibleThongBaoDanhSach, recordThongBaoDanhSach } = useModel('thongbao.thongbao');
 	const [currentStep, setCurrentStep] = useState<number>(0);
@@ -21,7 +22,7 @@ const CardFormThongBaoTuyChinh = (props: { getData: () => void; type: Notificati
 
 	return (
 		<ModalExpandable
-			title='Gửi thông báo tùy chỉnh'
+			title={intl.formatMessage({ id: 'thongbao.cardtuychinh.title' })}
 			open={visibleThongBaoDanhSach}
 			onCancel={() => setVisibleThongBaoDanhSach(false)}
 			footer={null}
@@ -33,8 +34,11 @@ const CardFormThongBaoTuyChinh = (props: { getData: () => void; type: Notificati
 				style={{ marginBottom: 18, paddingTop: 0 }}
 				onChange={recordThongBaoDanhSach?.title ? onChangeStep : undefined}
 			>
-				<Steps.Step title='Thông tin chung' />
-				<Steps.Step title='Xác nhận gửi thông báo' disabled={!recordThongBaoDanhSach?.title} />
+				<Steps.Step title={intl.formatMessage({ id: 'thongbao.cardtuychinh.step.thongtinchung' })} />
+				<Steps.Step
+					title={intl.formatMessage({ id: 'thongbao.cardtuychinh.step.xacnhanthongbao' })}
+					disabled={!recordThongBaoDanhSach?.title}
+				/>
 			</Steps>
 
 			{currentStep === 0 ? (

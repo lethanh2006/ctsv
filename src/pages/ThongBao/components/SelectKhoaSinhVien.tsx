@@ -1,7 +1,7 @@
 import type { KhoaSinhVien } from '@/services/DaoTaoV2/NamHoc/KhoaSinhVien/typings';
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -18,6 +18,7 @@ const SelectKhoaSinhVien = (props: {
 	selectMa?: boolean;
 	readOnly?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, condition, allowClear, disabled, style, isSetRecord, selectMa, readOnly } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.namhoc.khoasinhvien');
 
@@ -39,7 +40,7 @@ const SelectKhoaSinhVien = (props: {
 			removeIcon={readOnly ? null : undefined}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn khóa sinh viên'
+			placeholder={intl.formatMessage({ id: 'activity.info.form.studentCohortCode.place' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined, ...style }}
 		/>

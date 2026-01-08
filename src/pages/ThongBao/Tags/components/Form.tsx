@@ -1,10 +1,11 @@
-import { Button, Card, Col, Form, Input, Row } from 'antd';
-import { useModel } from 'umi';
-import { useEffect } from 'react';
 import rules from '@/utils/rules';
+import { Button, Card, Col, Form, Input, Row } from 'antd';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 const { TextArea } = Input;
 
 const FormTags = () => {
+	const intl = useIntl();
 	const { setVisibleForm, edit, record, postModel, putModel } = useModel('thongbao.tags');
 	const [form] = Form.useForm();
 	const handleFinish = async (values: any) => {
@@ -25,31 +26,42 @@ const FormTags = () => {
 	}, [record, edit]);
 
 	return (
-		<Card title={edit ? 'Chỉnh sửa' : 'Thêm mới'}>
+		<Card title={intl.formatMessage({ id: edit ? 'global.title.chinhsua' : 'global.title.themmoi' })}>
 			<Form onFinish={handleFinish} form={form} layout={'vertical'}>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item label={'Tên nhãn dán'} name={'ten'} rules={[...rules.required]}>
-							<Input placeholder={'Nhập tên nhãn'} />
+						<Form.Item
+							label={intl.formatMessage({ id: 'thongbao.tags.form.name.label' })}
+							name={'ten'}
+							rules={[...rules.required]}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'thongbao.tags.form.name.placeholder' })} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item label={'Mô tả'} name={'moTa'} rules={[...rules.required]}>
-							<TextArea placeholder={'Nhập mô tả'} rows={3} />
+						<Form.Item
+							label={intl.formatMessage({ id: 'thongbao.tags.form.description.label' })}
+							name={'moTa'}
+							rules={[...rules.required]}
+						>
+							<TextArea
+								placeholder={intl.formatMessage({ id: 'thongbao.tags.form.description.placeholder' })}
+								rows={3}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<div style={{ display: 'flex', justifyContent: 'center' }}>
 							<Form.Item>
 								<Button style={{ marginRight: 8 }} htmlType={'submit'} type={'primary'}>
-									Lưu
+									{intl.formatMessage({ id: 'global.button.luulai' })}
 								</Button>
 								<Button
 									onClick={() => {
 										setVisibleForm(false);
 									}}
 								>
-									Đóng
+									{intl.formatMessage({ id: 'global.button.dong' })}
 								</Button>
 							</Form.Item>
 						</div>
