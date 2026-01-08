@@ -13,12 +13,13 @@ export default () => {
 		payload: { lopHanhChinhId: string; sinhVienSsoIds: string[] },
 		getData: () => void,
 		closeModal?: boolean,
+		messageText?: string,
 	): Promise<any> => {
 		if (formSubmiting) Promise.reject('form submiting');
 		setFormSubmiting(true);
 		try {
 			const res = await postManySinhVienLopHanhChinh(chuanHoaObject(payload));
-			message.success('Thêm mới thành công');
+			message.success(messageText ?? 'Thêm mới thành công');
 
 			if (getData) getData();
 			if (closeModal !== false) setVisibleForm(false);

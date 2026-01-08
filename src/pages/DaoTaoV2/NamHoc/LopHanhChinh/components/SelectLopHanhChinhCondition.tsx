@@ -1,7 +1,7 @@
 import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -17,6 +17,7 @@ const SelectLopHanhChinhCondition = (props: {
 	selectMa?: boolean;
 	keyName?: string;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, disabled, style, isSetRecord, condition, selectMa, keyName } = props;
 	const { danhSach, getAllModel } = useModel('daotaov2.namhoc.lophanhchinh');
 
@@ -38,7 +39,7 @@ const SelectLopHanhChinhCondition = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn lớp hành chính'
+			placeholder={intl.formatMessage({ id: 'lophanhchinh.step.cvht.filterLHC.select.lhc' })}
 			style={{ width: '100%', ...style }}
 		/>
 	);

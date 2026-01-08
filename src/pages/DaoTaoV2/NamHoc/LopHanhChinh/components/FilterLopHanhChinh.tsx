@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { useModel } from 'umi';
 import FilterKhoaNganh from '../../KhoaNganh/components/Filter';
 import SelectLopHanhChinhCondition from './SelectLopHanhChinhCondition';

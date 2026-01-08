@@ -1,13 +1,12 @@
 import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
 import { ETrangThaiKhamSucKhoe } from '@/services/DotKhamSuKhoe/constant';
 import { Alert, Card, Empty } from 'antd';
-import { useIntl, useModel } from 'umi';
+import { useModel } from 'umi';
 import SelectDotKhamSucKhoe from '../DotKhamSucKhoe/components/Select';
 import SinhVienDotKhamPage from '../SinhVienDotKham';
 import StatKetQuaKhamSucKhoe from './Stat';
 
 const KetQuaKhamSucKhoePage = () => {
-	const intl = useIntl();
 	const {
 		danhSach: danhSachDotKham,
 		setRecord: setRecordDotKham,

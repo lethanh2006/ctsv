@@ -34,7 +34,7 @@ const LopHanhChinhPage = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecord>[] = [
 		{
-			title: 'Tên lớp',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.tenlop' }),
 			dataIndex: 'ten',
 			width: 120,
 			filterType: 'string',
@@ -42,7 +42,7 @@ const LopHanhChinhPage = () => {
 			onCell,
 		},
 		{
-			title: 'Sĩ số',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.siso' }),
 			dataIndex: 'siSo',
 			align: 'center',
 			width: 80,
@@ -51,7 +51,7 @@ const LopHanhChinhPage = () => {
 			onCell,
 		},
 		{
-			title: 'Khóa sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.khoasv' }),
 			width: 120,
 			dataIndex: 'maKhoaSinhVien',
 			render: (val, rec) => (
@@ -68,7 +68,7 @@ const LopHanhChinhPage = () => {
 			filterCustomSelect: <SelectKhoaSinhVien multiple selectMa />,
 		},
 		{
-			title: 'Ngành đào tạo',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.nganhdt' }),
 			width: 180,
 			dataIndex: 'maNganh',
 			render: (val, rec) => `${rec?.nganh?.dmNganh?.ten ?? ''} - ${rec?.nganh?.ma ?? ''}`,
@@ -77,7 +77,7 @@ const LopHanhChinhPage = () => {
 			onCell,
 		},
 		{
-			title: 'Đối tượng',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.doituong' }),
 			align: 'center',
 			width: 100,
 			dataIndex: 'doiTuong',
@@ -99,19 +99,23 @@ const LopHanhChinhPage = () => {
 		// 	onCell,
 		// },
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: LopHanhChinh.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id, getData)}
-							title='Bạn có chắc chắn muốn xóa lớp hành chính này?'
+							onConfirm={() =>
+								deleteModel(record._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								})
+							}
+							title={intl.formatMessage({ id: 'lophanhchinh.column.confirm.xoa' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -137,10 +141,10 @@ const LopHanhChinhPage = () => {
 				buttons={{ import: true, export: true }}
 				otherButtons={[
 					<ButtonExtend key={'svlhc'} onClick={() => setVisibleImportSvLhc(true)} icon={<TeamOutlined />}>
-						Nhập DS sinh viên
+						{intl.formatMessage({ id: 'lophanhchinh.button.nhapsv' })}
 					</ButtonExtend>,
 					<ButtonExtend key={'nslhc'} onClick={() => setVisibleImportNsLhc(true)} icon={<TeamOutlined />}>
-						Nhập DS CVHT
+						{intl.formatMessage({ id: 'lophanhchinh.button.nhapcvht' })}
 					</ButtonExtend>,
 				]}
 			>
