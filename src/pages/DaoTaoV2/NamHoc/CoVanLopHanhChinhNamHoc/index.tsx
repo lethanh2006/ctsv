@@ -110,7 +110,7 @@ const CoVanLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord })
 				dependencies={[page, limit, recLopHanhChinh?._id, recNamHoc?.ma, props?.lopHanhChinh?._id]}
 				getData={getData}
 				modelName='daotaov2.lophcnsnamhoc.lophcnsnamhoc'
-				title={'Danh sách cố vấn học tập'}
+				title={intl.formatMessage({ id: 'lophanhchinh.step.cvht.title' })}
 				Form={Form}
 				// hideCard={hideCard}
 			/>
