@@ -5,27 +5,28 @@ import type { IColumn } from '@/components/Table/typing';
 import { ThongBao } from '@/services/ThongBao/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { kiemTraPhanVung } from '../../../utils/constants';
 import FormTags from './components/Form';
 
 const Tags = () => {
+	const intl = useIntl();
 	const { page, limit, handleEdit, deleteModel } = useModel('thongbao.tags');
 	const columns: IColumn<ThongBao.Tags>[] = [
 		{
-			title: 'Tên',
+			title: intl.formatMessage({ id: 'thongbao.tags.column.name' }),
 			dataIndex: 'ten',
 			width: 150,
 			filterType: 'string',
 		},
 		{
-			title: 'Mô tả',
+			title: intl.formatMessage({ id: 'thongbao.tags.column.description' }),
 			dataIndex: 'moTa',
 			width: 280,
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'thongbao.tags.column.action' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
@@ -36,7 +37,7 @@ const Tags = () => {
 					<>
 						<ButtonExtend
 							disabled={!isPhanVung}
-							tooltip='Chỉnh sửa'
+							tooltip={intl.formatMessage({ id: 'thongbao.tags.action.edit' })}
 							onClick={() => {
 								handleEdit(recordVal);
 							}}
@@ -49,11 +50,11 @@ const Tags = () => {
 							onConfirm={() => {
 								deleteModel(recordVal?._id);
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'thongbao.tags.confirm.delete' })}
 						>
 							<ButtonExtend
 								disabled={!isPhanVung}
-								tooltip='Xóa'
+								tooltip={intl.formatMessage({ id: 'thongbao.tags.action.delete' })}
 								shape='circle'
 								type='link'
 								danger
@@ -68,7 +69,7 @@ const Tags = () => {
 	return (
 		<>
 			<TableBase
-				title={'Quản lý nhãn dán'}
+				title={intl.formatMessage({ id: 'thongbao.tags.table.title' })}
 				modelName={'thongbao.tags'}
 				columns={columns}
 				dependencies={[page, limit]}

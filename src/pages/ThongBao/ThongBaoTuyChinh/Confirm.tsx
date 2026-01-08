@@ -7,9 +7,10 @@ import type { ThongBao } from '@/services/ThongBao/typing';
 import dayjs from '@/utils/dayjs';
 import { currentRole } from '@/utils/ip';
 import { Button } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ConfirmThongBaoTuyChinh = (props: { getData: () => void; type: NotificationType }) => {
+	const intl = useIntl();
 	const { getData, type } = props;
 	const {
 		formSubmiting,
@@ -36,18 +37,18 @@ const ConfirmThongBaoTuyChinh = (props: { getData: () => void; type: Notificatio
 
 	const columns: IColumn<ThongBao.IRecord>[] = [
 		{
-			title: 'Tiêu đề',
+			title: intl.formatMessage({ id: 'thongbao.confirm.column.title' }),
 			dataIndex: 'title',
 			width: 200,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Người nhận',
+			title: intl.formatMessage({ id: 'thongbao.confirm.column.receiver' }),
 			width: 250,
 			render: (val, rec) => `${rec?.userList[0]?.fullname} - ${rec?.userList[0]?.code}`,
 		},
 		{
-			title: 'Nội dung',
+			title: intl.formatMessage({ id: 'thongbao.confirm.column.content' }),
 			dataIndex: 'content',
 			width: 280,
 			render: (val) => (
@@ -57,7 +58,7 @@ const ConfirmThongBaoTuyChinh = (props: { getData: () => void; type: Notificatio
 			),
 		},
 		{
-			title: 'Thời gian gửi',
+			title: intl.formatMessage({ id: 'thongbao.confirm.column.sendTime' }),
 			dataIndex: 'createdAt',
 			width: 120,
 			align: 'center',
@@ -77,9 +78,11 @@ const ConfirmThongBaoTuyChinh = (props: { getData: () => void; type: Notificatio
 
 			<div className='form-footer'>
 				<Button loading={formSubmiting} onClick={() => handleGui()} type='primary'>
-					Gửi thông báo
+					{intl.formatMessage({ id: 'thongbao.confirm.button.send' })}
 				</Button>
-				<Button onClick={() => setVisibleThongBaoDanhSach(false)}>Hủy</Button>
+				<Button onClick={() => setVisibleThongBaoDanhSach(false)}>
+					{intl.formatMessage({ id: 'global.button.huy' })}
+				</Button>
 			</div>
 		</>
 	);

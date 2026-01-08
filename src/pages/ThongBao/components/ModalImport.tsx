@@ -7,7 +7,7 @@ import { Button, Col, Form, Modal, Row } from 'antd';
 import fileDownload from 'js-file-download';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ModalImport = (props: {
 	visible: boolean;
@@ -16,6 +16,7 @@ const ModalImport = (props: {
 	selectedUsers: any;
 	role?: any;
 }) => {
+	const intl = useIntl();
 	const { visible, setVisible, setSelectedUsers, role, selectedUsers } = props;
 	const [form] = Form.useForm();
 	const { importNguoiNhanThongBaoModel, formSubmiting } = useModel('thongbao.thongbao');
@@ -26,7 +27,9 @@ const ModalImport = (props: {
 
 	const onDownloadTemplate = () => {
 		try {
-			dowLoadBieuMauNguoiNhan().then((res: any) => fileDownload(res.data, 'File biểu mẫu.xlsx'));
+			dowLoadBieuMauNguoiNhan().then((res: any) =>
+				fileDownload(res.data, intl.formatMessage({ id: 'thongbao.import.filename' })),
+			);
 		} catch (er) {
 			console.log('🚀 er:', er);
 		}
@@ -46,7 +49,7 @@ const ModalImport = (props: {
 
 	return (
 		<Modal
-			title='Nhập dữ liệu'
+			title={intl.formatMessage({ id: 'thongbao.import.button.nhapdulieu' })}
 			open={visible}
 			onCancel={() => setVisible(false)}
 			footer={null}
@@ -56,24 +59,38 @@ const ModalImport = (props: {
 			<Form layout='vertical' onFinish={onFinish} form={form}>
 				<Row gutter={[12, 0]}>
 					<Col span={24}>
-						<Form.Item name='file' label='Tập tin dữ liệu' rules={[...rules.fileRequired]}>
-							<UploadFile accept='.xls, .xlsx' drag buttonDescription='Chọn tập tin dữ liệu để nhập vào hệ thống' />
+						<Form.Item
+							name='file'
+							label={intl.formatMessage({ id: 'thongbao.import.id.taptin' })}
+							rules={[...rules.fileRequired]}
+						>
+							<UploadFile
+								accept='.xls, .xlsx'
+								drag
+								buttonDescription={intl.formatMessage({ id: 'thongbao.import.description' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} style={{ textAlign: 'center', marginTop: 8 }}>
-						<i>Sử dụng tập dữ liệu mẫu để việc xử lý được thực hiện nhanh chóng và chính xác</i>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: intl.formatMessage({
+									id: 'thongbao.import.button.note',
+								}),
+							}}
+						/>
 						<br />
 						<Button icon={<DownloadOutlined />} type='link' onClick={onDownloadTemplate}>
-							Tải tập tin mẫu
+							{intl.formatMessage({ id: 'thongbao.import.button.tailiemau' })}
 						</Button>
 					</Col>
 				</Row>
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						Lưu lại
+						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 
-					<Button onClick={() => setVisible(false)}>Hủy</Button>
+					<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Modal>

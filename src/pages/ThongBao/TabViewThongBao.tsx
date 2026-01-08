@@ -1,11 +1,16 @@
 import { TabViewPage } from '@/components/TabViewPage';
 import type { NotificationType } from '@/services/ThongBao/constant';
+import { useIntl } from '@umijs/max';
 import CardThongBao from './CardThongBao';
 
 const TabViewThongBao = (props: { notiType: NotificationType }) => {
+	const intl = useIntl();
 	const { notiType } = props;
 	const paths = ['ban-hanh', 'tu-dong'];
-	const titles = ['Ban hành thông báo', 'Thông báo tự động'];
+	const titles = [
+		intl.formatMessage({ id: 'thongbao.tabview.tbbanhanh' }),
+		intl.formatMessage({ id: 'thongbao.tabview.tbtudong' }),
+	];
 
 	const menus = [
 		{

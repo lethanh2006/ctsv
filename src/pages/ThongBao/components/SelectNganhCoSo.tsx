@@ -1,7 +1,7 @@
 import type { NganhDaoTao } from '@/services/DaoTaoV2/DanhMucHeThong/Nganh/typings';
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -18,6 +18,7 @@ const SelectNganhCoSo = (props: {
 	disabled?: boolean;
 	readOnly?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, hasDefault, style, selectMa, condition, disabled, readOnly } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.danhmuc.nganhdaotao');
 
@@ -48,7 +49,7 @@ const SelectNganhCoSo = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn ngành đào tạo'
+			placeholder={intl.formatMessage({ id: 'thongbao.select.nganhcoso.chonnganh' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', pointerEvents: readOnly ? 'none' : undefined, ...style }}
 			removeIcon={readOnly ? null : undefined}

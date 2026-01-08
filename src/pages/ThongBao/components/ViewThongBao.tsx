@@ -6,10 +6,11 @@ import { currentRole } from '@/utils/ip';
 import { getNameFile } from '@/utils/utils';
 import { CalendarOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Col, Divider, Row } from 'antd';
-import { history } from 'umi';
+import { history, useIntl } from 'umi';
 import './style.less';
 
 const ViewThongBao = (props: { record?: ThongBao.IRecord; afterViewDetail?: () => void; hideCard?: boolean }) => {
+	const intl = useIntl();
 	const { record, afterViewDetail, hideCard } = props;
 
 	const redirectNotif = () => {
@@ -63,7 +64,7 @@ const ViewThongBao = (props: { record?: ThongBao.IRecord; afterViewDetail?: () =
 			<Row style={{ marginTop: 12 }} gutter={[12, 12]}>
 				{record?.taiLieuDinhKem?.length ? (
 					<>
-						<Col span={24}>Tệp đính kèm: </Col>
+						<Col span={24}>{intl.formatMessage({ id: 'thongbao.view.tepdinhkem' })}</Col>
 						{record?.taiLieuDinhKem?.map((item) => (
 							<Col span={24} key={item}>
 								<a href={item} target='_blank' rel='noreferrer'>
@@ -76,7 +77,7 @@ const ViewThongBao = (props: { record?: ThongBao.IRecord; afterViewDetail?: () =
 
 				{record?.thoiGianHieuLuc ? (
 					<Col span={24}>
-						Hiệu lực thông báo:{' '}
+						{intl.formatMessage({ id: 'thongbao.view.hieulucthongbao' })}
 						<b style={{ color: 'red' }}>{dayjs(record?.thoiGianHieuLuc).format('DD/MM/YYYY')}</b>{' '}
 					</Col>
 				) : null}
@@ -84,7 +85,7 @@ const ViewThongBao = (props: { record?: ThongBao.IRecord; afterViewDetail?: () =
 				{record?.metadata?.pathWeb && record?.metadata?.phanHe ? (
 					<Col span={24}>
 						<Button type='primary' onClick={() => redirectNotif()}>
-							Xem chi tiết
+							{intl.formatMessage({ id: 'thongbao.view.button.xemchitiet' })}
 						</Button>
 					</Col>
 				) : null}

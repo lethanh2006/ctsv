@@ -3,7 +3,7 @@ import { ELoaiLopHocPhan } from '@/services/DaoTaoV2/HocKy/constant';
 import { Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -15,6 +15,7 @@ const SelectLopHocPhanDebounce = (props: {
 	disabled?: boolean;
 	selectMa?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, disabled, selectMa } = props;
 	const { danhSach, filters, setFilters, getModel, loading } = useModel('daotaov2.hocky.lophocphan');
 
@@ -36,7 +37,7 @@ const SelectLopHocPhanDebounce = (props: {
 							values: Array.isArray(value) ? value : [value],
 							operator: EOperatorType.INCLUDE,
 						},
-				  ]
+					]
 				: undefined,
 			undefined,
 			1,
@@ -64,7 +65,7 @@ const SelectLopHocPhanDebounce = (props: {
 				}))}
 				showSearch
 				optionFilterProp='label'
-				placeholder='Chọn lớp học phần (tìm theo tên lớp)'
+				placeholder={intl.formatMessage({ id: 'thongbao.select.lophocphan.chonlophocphan' })}
 			/>
 		</div>
 	);

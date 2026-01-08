@@ -2,6 +2,7 @@ import FormWaiting from '@/components/Loading/FormWaiting';
 import MyDatePicker from '@/components/MyDatePicker';
 import TinyEditor from '@/components/TinyEditor';
 import UploadFile from '@/components/Upload/UploadFile';
+import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import {
 	EReceiverType,
 	EVaiTroKhaoSat,
@@ -17,17 +18,17 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, message, Modal, Row, Segmented, Select, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectTag from '../Tags/components/Select';
 import GroupTagVaiTro from './GroupTagVaiTro';
-import TableSelectUser from './TableSelect';
-import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import SelectKhoaSinhVien from './SelectKhoaSinhVien';
 import SelectLopHanhChinhDebounce from './SelectLopHanhChinh';
 import SelectLopHocPhanDebounce from './SelectLopHocPhan';
 import SelectNganhCoSo from './SelectNganhCoSo';
+import TableSelectUser from './TableSelect';
 
 const FormThongBao = (props: any) => {
+	const intl = useIntl();
 	const { title, getData, notiType } = props;
 	const [form] = Form.useForm();
 	const { record, setFormSubmiting, setVisibleForm, edit, postModel, formSubmiting, visibleForm, putModel } =
@@ -59,7 +60,7 @@ const FormThongBao = (props: any) => {
 		if (formSubmiting) return;
 		setFormSubmiting(true);
 		try {
-			FormWaiting('Đang xử lý dữ liệu');
+			FormWaiting(intl.formatMessage({ id: 'thongbao.form.handle.wait' }));
 			const imageUrl = await buildUpLoadFile(values, 'imageUrl');
 			const taiLieuDinhKem = await buildUpLoadMultiFile(values, 'taiLieuDinhKem');
 			values.imageUrl = imageUrl;
@@ -77,7 +78,7 @@ const FormThongBao = (props: any) => {
 					email365: item.email365,
 				}));
 				if (!values.userList?.length) {
-					message.warning('Vui lòng chọn người nhận');
+					message.warning(intl.formatMessage({ id: 'thongbao.form.handle.chonnguoinhan' }));
 					return;
 				}
 			}
@@ -110,12 +111,14 @@ const FormThongBao = (props: any) => {
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={`${intl.formatMessage({ id: edit ? 'global.title.chinhsua' : 'global.title.themmoi' })} ${title?.toLowerCase()}`}
+		>
 			<Form layout='vertical' onFinish={onFinish} form={form}>
 				<Row gutter={[12, 0]}>
 					{notiType === NotificationType.ONESIGNAL && (
 						<Col span={24} md={6}>
-							<Form.Item name='imageUrl' label='Ảnh đại diện'>
+							<Form.Item name='imageUrl' label={intl.formatMessage({ id: 'thongbao.form.id.avatar' })}>
 								<UploadFile isAvatarSmall />
 							</Form.Item>
 						</Col>
@@ -125,22 +128,30 @@ const FormThongBao = (props: any) => {
 							<Col span={notiType === NotificationType.ONESIGNAL ? 24 : 12}>
 								<Form.Item
 									name='title'
-									label='Tiêu đề'
+									label={intl.formatMessage({ id: 'thongbao.form.id.tieude' })}
 									rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 								>
-									<Input placeholder='Nhập tiêu đề' />
+									<Input placeholder={intl.formatMessage({ id: 'thongbao.form.id.nhaptieude' })} />
 								</Form.Item>
 							</Col>
 							{notiType === NotificationType.EMAIL && (
 								<Col span={12}>
-									<Form.Item name='idTagEmail' label='Nhãn dán' rules={[...rules.required]}>
+									<Form.Item
+										name='idTagEmail'
+										label={intl.formatMessage({ id: 'thongbao.form.id.nhandan' })}
+										rules={[...rules.required]}
+									>
 										<SelectTag />
 									</Form.Item>
 								</Col>
 							)}
 							<Col span={24}>
-								<Form.Item name='description' label='Mô tả' rules={[...rules.text, ...rules.length(500)]}>
-									<Input.TextArea rows={3} placeholder='Nhập mô tả' />
+								<Form.Item
+									name='description'
+									label={intl.formatMessage({ id: 'thongbao.form.id.mota' })}
+									rules={[...rules.text, ...rules.length(500)]}
+								>
+									<Input.TextArea rows={3} placeholder={intl.formatMessage({ id: 'thongbao.form.id.nhapmota' })} />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -149,7 +160,12 @@ const FormThongBao = (props: any) => {
 					<Col span={24} md={8}>
 						<Form.Item
 							name='receiverType'
-							label={notiType === NotificationType.ONESIGNAL ? 'Đối tượng nhận thông báo' : 'Đối tượng nhận email'}
+							label={intl.formatMessage({
+								id:
+									notiType === NotificationType.ONESIGNAL
+										? 'thongbao.form.id.dtnhantb'
+										: 'thongbao.form.id.dtnhanemail',
+							})}
 							rules={[...rules.required]}
 						>
 							<Select
@@ -160,7 +176,7 @@ const FormThongBao = (props: any) => {
 										value,
 										label,
 									}))}
-								placeholder='Chọn nhóm người nhận'
+								placeholder={intl.formatMessage({ id: 'thongbao.form.id.nhomnguoinhan' })}
 								onChange={() => {
 									form.setFieldsValue({
 										filter: { roles: [] },
@@ -173,7 +189,11 @@ const FormThongBao = (props: any) => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={8}>
-						<Form.Item name={['filter', 'roles']} label='Vai trò' rules={[...rules.required]}>
+						<Form.Item
+							name={['filter', 'roles']}
+							label={intl.formatMessage({ id: 'thongbao.form.id.vaitro' })}
+							rules={[...rules.required]}
+						>
 							<GroupTagVaiTro
 								onChange={(arr) => {
 									setActiveKey(
@@ -194,11 +214,11 @@ const FormThongBao = (props: any) => {
 					</Col>
 					{roles?.length ? (
 						<Col span={24} md={8}>
-							<Form.Item name='loaiNguoiDung' label='Danh sách người dùng'>
+							<Form.Item name='loaiNguoiDung' label={intl.formatMessage({ id: 'thongbao.form.id.dsnguoidung' })}>
 								<Segmented
 									options={[
-										{ value: EReceiverType.All, label: 'Tất cả' },
-										{ value: EReceiverType.User, label: 'Người dùng cụ thể' },
+										{ value: EReceiverType.All, label: intl.formatMessage({ id: 'thongbao.form.id.tatca' }) },
+										{ value: EReceiverType.User, label: intl.formatMessage({ id: 'thongbao.form.id.nguoidungcuthe' }) },
 									]}
 								/>
 							</Form.Item>
@@ -259,9 +279,12 @@ const FormThongBao = (props: any) => {
 					<Col span={24}>
 						<Form.Item
 							name='content'
-							label={
-								notiType === NotificationType.ONESIGNAL ? 'Nội dung chi tiết thông báo' : 'Nội dung chi tiết email'
-							}
+							label={intl.formatMessage({
+								id:
+									notiType === NotificationType.ONESIGNAL
+										? 'thongbao.form.id.chitiettb'
+										: 'thongbao.form.id.chitietemail',
+							})}
 							rules={[...rules.requiredHtml]}
 						>
 							<TinyEditor height={300} hideMenubar />
@@ -269,12 +292,12 @@ const FormThongBao = (props: any) => {
 					</Col>
 
 					<Col span={24} md={12}>
-						<Form.Item name='taiLieuDinhKem' label='Tệp đính kèm'>
+						<Form.Item name='taiLieuDinhKem' label={intl.formatMessage({ id: 'thongbao.form.id.tepdinhkem' })}>
 							<UploadFile maxCount={5} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='thoiGianHieuLuc' label='Hiệu lực thông báo'>
+						<Form.Item name='thoiGianHieuLuc' label={intl.formatMessage({ id: 'thongbao.form.id.hieuluctb' })}>
 							<MyDatePicker />
 						</Form.Item>
 					</Col>
@@ -282,9 +305,9 @@ const FormThongBao = (props: any) => {
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới ' : 'Lưu lại'}
+						{intl.formatMessage({ id: !edit ? 'global.button.themmoi' : 'global.button.luulai' })}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>

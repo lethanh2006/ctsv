@@ -1,7 +1,7 @@
 import { Select, Spin } from 'antd';
 import type { CSSProperties } from 'react';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -16,6 +16,7 @@ const SelectTag = (props: {
 	placeholder?: string;
 	style?: CSSProperties;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, loadData, allowClear, placeholder, disabled, style } = props;
 	const { danhSach, loading, getAllModel } = useModel('thongbao.tags');
 
@@ -39,7 +40,7 @@ const SelectTag = (props: {
 			style={style}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn nhãn dán'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'thongbao.tag.nhandan.placeholder' })}
 		/>
 	);
 };
