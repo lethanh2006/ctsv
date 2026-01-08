@@ -13,6 +13,7 @@ export default {
 	'global.button.boloctuychinh': 'Bộ lọc tùy chỉnh',
 	'global.button.tongso': 'Tổng số',
 	'global.button.chinhsua': 'Chỉnh sửa',
-	'global.button.xoa': 'Xóa',
 	'global.button.chitiet': 'Chi tiết',
+	'global.button.teptin': 'Xem tệp tin',
+	'global.button.xoa': 'Xóa',
 };

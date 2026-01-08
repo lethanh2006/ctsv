@@ -11,7 +11,7 @@ const FormThemDot = (props: any) => {
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } = useModel(
 		'daotaov2.sinhvien.dotcapnhathoso',
 	);
-	const { title, getData } = props;
+	const { getData } = props;
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -20,38 +20,70 @@ const FormThemDot = (props: any) => {
 
 	const onFinish = async (values: DotCapNhatHoSo.IRecord) => {
 		if (edit) {
-			putModel(record?._id ?? '', { ...values, kichHoat: true }, getData)
+			putModel(
+				record?._id ?? '',
+				{ ...values, kichHoat: true },
+				getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else {
-			postModel({ ...values, kichHoat: true }, getData)
+			postModel(
+				{ ...values, kichHoat: true },
+				getData,
+				undefined,
+				intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		}
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'dotcapnhathoso.title.chinhsua' })
+					: intl.formatMessage({ id: 'dotcapnhathoso.title.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='tenDot' label='Tên đợt' rules={[...rules.required, ...rules.text, ...rules.length(250)]}>
-							<Input placeholder='Nhập tên đợt' />
+						<Form.Item
+							name='tenDot'
+							label={intl.formatMessage({ id: 'dotcapnhathoso.form.tendot' })}
+							rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'dotcapnhathoso.form.tendot.place' })} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='thoiGianBatDau' label='Thời gian bắt đầu' rules={[...rules.required]}>
+						<Form.Item
+							name='thoiGianBatDau'
+							label={intl.formatMessage({ id: 'dotcapnhathoso.form.tgbt' })}
+							rules={[...rules.required]}
+						>
 							<MyDatePicker
 								format={'HH:mm DD/MM/YYYY'}
 								showTime={{ showHour: true, showMinute: true, minuteStep: 15 }}
+								placeholder={intl.formatMessage({ id: 'dotcapnhathoso.form.tgbt.place' })}
 							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='thoiGianKetThuc' label='Thời gian kết thúc' rules={[...rules.required]}>
+						<Form.Item
+							name='thoiGianKetThuc'
+							label={intl.formatMessage({ id: 'dotcapnhathoso.form.tgkt' })}
+							rules={[...rules.required]}
+						>
 							<MyDatePicker
 								format={'HH:mm DD/MM/YYYY'}
 								showTime={{ showHour: true, showMinute: true, minuteStep: 15 }}
+								placeholder={intl.formatMessage({ id: 'dotcapnhathoso.form.tgkt.place' })}
 							/>
 						</Form.Item>
 					</Col>

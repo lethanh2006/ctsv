@@ -1,4 +1,4 @@
-import vi from '@/components/Chart/vi.json';
+// import vi from '@/components/Chart/vi.json';
 import { type ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 import { useModel } from 'umi';
@@ -32,7 +32,7 @@ const ChartSoTinChi = () => {
 	const options: ApexOptions = {
 		chart: {
 			defaultLocale: 'vi',
-			locales: [vi],
+			// locales: [vi],
 			stacked: true,
 		},
 		title: {

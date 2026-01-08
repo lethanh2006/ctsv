@@ -1,11 +1,17 @@
 import { EOperatorType } from '@/components/Table/constant';
-import { ETinhTrangSucKhoe, colorETinhTrangSucKhoe, fieldTinhTrangSucKhoe } from '@/services/DotKhamSuKhoe/constant';
+import {
+	ETinhTrangSucKhoe,
+	colorETinhTrangSucKhoe,
+	fieldTinhTrangSucKhoe,
+	i18nTinhTrangSucKhoe,
+} from '@/services/DotKhamSuKhoe/constant';
 
 import { Card, Col, Row } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const StatKetQuaKhamSucKhoe = () => {
+	const intl = useIntl();
 	const { setFilters, filters, thongKeSucKhoeSinhVienModel, thongKe } = useModel('hosotheodoisuckhoe.suckhoesinhvien');
 	const { record } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
@@ -31,7 +37,7 @@ const StatKetQuaKhamSucKhoe = () => {
 				<Col span={12} md={6}>
 					<Card className='card-stat-small' onClick={() => handleTrangThai()} style={{ cursor: 'pointer' }}>
 						<span className='num'>{thongKe?.total ?? '--'}</span>
-						<span>Tổng số sinh viên</span>
+						<span>{intl.formatMessage({ id: 'ketquakhamsuckhoe.stat.tongso' })}</span>
 					</Card>
 				</Col>
 
@@ -41,7 +47,7 @@ const StatKetQuaKhamSucKhoe = () => {
 							<span className='num' style={{ color: colorETinhTrangSucKhoe[item] }}>
 								{thongKe?.[fieldTinhTrangSucKhoe[item]] ?? '--'}
 							</span>
-							<span>Sinh viên {item.toLocaleLowerCase()}</span>
+							<span>{intl.formatMessage({ id: i18nTinhTrangSucKhoe[item] })}</span>
 						</Card>
 					</Col>
 				))}

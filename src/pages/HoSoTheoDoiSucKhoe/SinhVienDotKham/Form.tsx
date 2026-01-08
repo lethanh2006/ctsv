@@ -5,18 +5,17 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormSinhVienDotKham = (props: any) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postModel, putModel, getModel, formSubmiting, visibleForm } = useModel(
+	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } = useModel(
 		'hosotheodoisuckhoe.suckhoesinhvien',
 	);
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
-	const { title } = props;
+	const { getData } = props;
 	const { danhSach: danhSachSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
-
-	const getData = () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id });
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -33,18 +32,31 @@ const FormSinhVienDotKham = (props: any) => {
 			maSinhVien: recSinhVien?.ma,
 		};
 		if (edit) {
-			putModel(record?._id ?? '', data, getData)
+			putModel(
+				record?._id ?? '',
+				data,
+				getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else {
-			postModel(data, getData)
+			postModel(data, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 		}
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.chinhsua' })
+					: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					{/* <Col xs={24}>
@@ -53,44 +65,62 @@ const FormSinhVienDotKham = (props: any) => {
 						</Form.Item>
 					</Col> */}
 					<Col xs={24}>
-						<Form.Item name='sinhVienSsoId' label='Sinh viên' rules={[...rules.required]}>
+						<Form.Item
+							name='sinhVienSsoId'
+							label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.sinhvien' })}
+							rules={[...rules.required]}
+						>
 							<SelectSinhVienDebounce disabled={edit} />
 						</Form.Item>
 					</Col>
 
 					<Col xs={12}>
-						<Form.Item rules={[...rules.required, ...rules.text]} label='Mã xét nghiệm' name='maXetNghiem'>
-							<Input placeholder='Mã xét nghiệm' />
+						<Form.Item
+							rules={[...rules.required, ...rules.text]}
+							label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.maxetnghiem' })}
+							name='maXetNghiem'
+						>
+							<Input placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.maxetnghiem.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={12}>
-						<Form.Item rules={[...rules.required]} label='Phân loại sức khỏe' name='phanLoaiSucKhoe'>
+						<Form.Item
+							rules={[...rules.required]}
+							label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.phanloaisuckhoe' })}
+							name='phanLoaiSucKhoe'
+						>
 							<Select
 								options={Object.values(EPhanLoaiSucKhoe).map((item) => ({ value: item, label: item }))}
-								placeholder='Phân loại sức khỏe'
+								placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.phanloaisuckhoe.place' })}
 							/>
 						</Form.Item>
 					</Col>
 
 					<Col xs={24}>
-						<Form.Item label='Bệnh/tật' name='benhTat'>
-							<Input.TextArea placeholder='Bệnh/tật' />
+						<Form.Item label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.benhvatat' })} name='benhTat'>
+							<Input.TextArea
+								placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.benhvatat.place' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item label='Tư vấn' name='tuVan'>
-							<Input.TextArea placeholder='Tư vấn' />
+						<Form.Item label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.tuvan' })} name='tuVan'>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.tuvan.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item label='Ghi chú' name='ghiChu'>
-							<Input.TextArea placeholder='Ghi chú' />
+						<Form.Item label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.ghichu' })} name='ghiChu'>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.ghichu.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='tinhTrangSucKhoe' label='Kết luận' rules={[...rules.required]}>
+						<Form.Item
+							name='tinhTrangSucKhoe'
+							label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.tinhtrangsuckhoe' })}
+							rules={[...rules.required]}
+						>
 							<Select
-								placeholder='Chọn tình trạng sức khỏe'
+								placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.tinhtrangsuckhoe.place' })}
 								options={Object.values(ETinhTrangSucKhoe).map((item) => ({
 									key: item,
 									label: MapKeyNameTinhTrangSuckhoe[item],
@@ -103,9 +133,11 @@ const FormSinhVienDotKham = (props: any) => {
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới' : 'Lưu lại'}
+						{!edit
+							? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+							: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>

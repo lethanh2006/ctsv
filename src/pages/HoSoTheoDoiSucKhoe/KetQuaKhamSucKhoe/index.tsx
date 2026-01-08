@@ -1,12 +1,13 @@
 import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
 import { ETrangThaiKhamSucKhoe } from '@/services/DotKhamSuKhoe/constant';
 import { Alert, Card, Empty } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotKhamSucKhoe from '../DotKhamSucKhoe/components/Select';
 import SinhVienDotKhamPage from '../SinhVienDotKham';
 import StatKetQuaKhamSucKhoe from './Stat';
 
 const KetQuaKhamSucKhoePage = () => {
+	const intl = useIntl();
 	const {
 		danhSach: danhSachDotKham,
 		setRecord: setRecordDotKham,
@@ -16,7 +17,7 @@ const KetQuaKhamSucKhoePage = () => {
 	const { record: recHocKy, setRecord, danhSach: danhSachHocKy } = useModel('daotaov2.hocky.hocky');
 
 	return (
-		<Card title='Kết quả khám sức khỏe'>
+		<Card title={intl.formatMessage({ id: 'ketquakhamsuckhoe.title' })}>
 			<div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 18 }}>
 				<SelectHocKy
 					style={{ width: 250 }}
@@ -40,9 +41,17 @@ const KetQuaKhamSucKhoePage = () => {
 				<>
 					<div style={{ marginBottom: 12 }}>
 						{recDot.trangThai === ETrangThaiKhamSucKhoe.DA_DUYET ? (
-							<Alert description='Đợt khám sức khỏe đã được duyệt' type='success' showIcon />
+							<Alert
+								description={intl.formatMessage({ id: 'ketquakhamsuckhoe.alert.daduyet' })}
+								type='success'
+								showIcon
+							/>
 						) : recDot.trangThai === ETrangThaiKhamSucKhoe.CHO_DUYET ? (
-							<Alert description='Đợt khám sức khỏe chưa được duyệt' type='warning' showIcon />
+							<Alert
+								description={intl.formatMessage({ id: 'ketquakhamsuckhoe.alert.chuaduyet' })}
+								type='warning'
+								showIcon
+							/>
 						) : null}
 					</div>
 
@@ -50,7 +59,10 @@ const KetQuaKhamSucKhoePage = () => {
 					<SinhVienDotKhamPage isKetQua />
 				</>
 			) : (
-				<Empty description='Chưa chọn đợt' style={{ marginTop: 50, marginBottom: 32 }} />
+				<Empty
+					description={intl.formatMessage({ id: 'ketquakhamsuckhoe.empty' })}
+					style={{ marginTop: 50, marginBottom: 32 }}
+				/>
 			)}
 		</Card>
 	);

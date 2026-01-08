@@ -1,8 +1,11 @@
 import login from './login';
-import sinhvien from './sinhvien';
 import namhoc from './namhoc';
+import sinhvien from './sinhvien';
+import thongtinnguoihoc from './thongtinnguoihoc';
+
 export default {
 	...login,
 	...sinhvien,
 	...namhoc,
+	...thongtinnguoihoc,
 };
