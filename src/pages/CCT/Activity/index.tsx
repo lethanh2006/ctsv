@@ -24,7 +24,6 @@ const ActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activity.column.name' }),
 			dataIndex: 'name',
-			align: 'center',
 			width: 150,
 			filterType: 'string',
 			onCell,
@@ -36,7 +35,6 @@ const ActivityPage = () => {
 			render: (val, rec) => (
 				<Tag color={rec?.activitiesType?.attributes?.color}>{rec?.activitiesType?.attributes?.name}</Tag>
 			),
-
 			onCell,
 		},
 		{
@@ -50,10 +48,11 @@ const ActivityPage = () => {
 		},
 		{
 			title: intl.formatMessage({ id: 'activity.column.date' }),
-			align: 'center',
+			dataIndex: 'startDate',
 			width: 220,
 			render: (val, rec) =>
 				`${dayjs(rec?.startDate).format('DD/MM/YYYY')} - ${dayjs(rec?.endDate).format('DD/MM/YYYY')}`,
+			sortable: true,
 			onCell,
 		},
 		{

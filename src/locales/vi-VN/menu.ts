@@ -5,6 +5,16 @@ export default {
 	'menu.Dashboard': 'Trang chủ',
 	'menu.About': `Giới thiệu ${APP_CONFIG_TIEN_TO_TRUONG.toLowerCase()}`,
 	'menu.News': 'Tin tức',
+
+	'menu.Activity': 'Quản lý hoạt động',
+	'menu.ActivityResuls': 'Phê duyệt kết quả hoạt động',
+
+	'menu.DanhMuc.Attributes': 'Thuộc tính',
+	'menu.DanhMuc.Levels': 'Cấp độ',
+	'menu.DanhMuc.Roles': 'Vai trò',
+	'menu.DanhMuc.Activities': 'Hoạt động ngoại khóa (CCA)',
+	'menu.DanhMuc.Questions': 'Câu hỏi tự đánh giá',
+
 	'menu.DanhMuc': 'Danh mục',
 	'menu.DanhMuc.Chung': 'Danh mục chung',
 	'menu.DanhMuc.PhieuDiemRenLuyen': 'Phiếu điểm rèn luyện',

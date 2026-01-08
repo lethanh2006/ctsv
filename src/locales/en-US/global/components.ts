@@ -43,6 +43,7 @@ export default {
 
 	//Table
 	'global.table.column.tt': 'No.',
+	'global.column.action': 'Action',
 
 	'global.table.export.title': 'Export data',
 	'global.table.export.khadung': 'Available fields',
