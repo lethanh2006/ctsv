@@ -3,18 +3,17 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormKhoaNganhDotKham = (props: any) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, getModel, formSubmiting, postManyKhoaNganhModel, visibleForm } = useModel(
+	const { record, setVisibleForm, edit, formSubmiting, postManyKhoaNganhModel, visibleForm } = useModel(
 		'hosotheodoisuckhoe.dotkhamkhoanganh',
 	);
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { danhSach: danhSachKhaoNganh } = useModel('daotaov2.namhoc.khoanganh');
-	const { title } = props;
-
-	const getData = () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id });
+	const { getData } = props;
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -35,17 +34,27 @@ const FormKhoaNganhDotKham = (props: any) => {
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.chinhsua' })
+					: intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24}>
-						<Form.Item label='Đợt khám sức khỏe'>
+						<Form.Item label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.form.dot' })}>
 							<Input value={recDotKhaiBao?.ten} disabled />
 						</Form.Item>
 					</Col>
 
 					<Col xs={24}>
-						<Form.Item name='maKhoaNganh' label='Khóa ngành' rules={[...rules.required]}>
+						<Form.Item
+							name='maKhoaNganh'
+							label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.form.tennganh' })}
+							rules={[...rules.required]}
+						>
 							<SelectKhoaNganh multiple />
 						</Form.Item>
 					</Col>
@@ -53,9 +62,11 @@ const FormKhoaNganhDotKham = (props: any) => {
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới' : 'Lưu lại'}
+						{!edit
+							? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+							: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>

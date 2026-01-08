@@ -1,11 +1,12 @@
 import { Collapse } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import HocTapSinhVienHienTaiPage from '../HocTapSinhVienHienTai';
 import LichThiSinhVien from '../LichThi';
 import LopHanhChinhSinhVien from '../LopHanhChinhSinhVien';
 import LopTinChiSinhVien from '../LopTinChi';
 
 const FormQuaTrinhHocTap = () => {
+	const intl = useIntl();
 	const { record } = useModel('daotaov2.sinhvien.sinhvien');
 
 	return (
@@ -13,15 +14,15 @@ const FormQuaTrinhHocTap = () => {
 			<HocTapSinhVienHienTaiPage sinhVienSsoId={record?.ssoId} />
 
 			<Collapse>
-				<Collapse.Panel header='Lớp hành chính' key='1'>
+				<Collapse.Panel header={intl.formatMessage({ id: 'sinhvien.tab2.lophanhchinh.header' })} key='1'>
 					<LopHanhChinhSinhVien />
 				</Collapse.Panel>
 
-				<Collapse.Panel header='DS lớp tín chỉ đã học' key='2'>
+				<Collapse.Panel header={intl.formatMessage({ id: 'sinhvien.tab2.loptinchi.header' })} key='2'>
 					<LopTinChiSinhVien />
 				</Collapse.Panel>
 
-				<Collapse.Panel header='Lịch thi kết thúc học phần' key='lichthi'>
+				<Collapse.Panel header={intl.formatMessage({ id: 'sinhvien.tab2.lichthi.header' })} key='lichthi'>
 					<LichThiSinhVien />
 				</Collapse.Panel>
 			</Collapse>

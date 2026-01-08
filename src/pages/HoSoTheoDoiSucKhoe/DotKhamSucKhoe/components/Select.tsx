@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -14,6 +14,7 @@ const SelectDotKhamSucKhoe = (props: {
 	style?: React.CSSProperties;
 	isSetRecord?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord } = props;
 	const { danhSach, getAllModel, visibleForm, setRecord } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
@@ -36,7 +37,7 @@ const SelectDotKhamSucKhoe = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn đợt đăng ký'
+			placeholder={intl.formatMessage({ id: 'ketquakhamsuckhoe.select.dot' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 		/>

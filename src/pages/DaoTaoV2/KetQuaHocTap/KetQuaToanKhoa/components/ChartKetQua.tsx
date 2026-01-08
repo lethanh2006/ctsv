@@ -1,4 +1,4 @@
-import vi from '@/components/Chart/vi.json';
+// import vi from '@/components/Chart/vi.json';
 import { type ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
@@ -46,7 +46,7 @@ const ChartKetQua = () => {
 	const options: ApexOptions = {
 		chart: {
 			defaultLocale: 'vi',
-			locales: [vi],
+			// locales: [vi],
 			stacked: true,
 		},
 		dataLabels: {

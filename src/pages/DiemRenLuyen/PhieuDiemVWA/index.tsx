@@ -10,12 +10,13 @@ import {
 import { CheckOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import { useCallback, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../DotVWA/components/SelectDot';
 import FormPhieuDiem from './components/Form';
 import FormCapNhatTrangThai from './components/FormCapNhatTrangThai';
 
 const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean }) => {
+	const intl = useIntl();
 	const {
 		handleEdit,
 		deleteModel,
@@ -35,34 +36,34 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 
 	const column: IColumn<PhieuDiemRenLuyen.IRecord>[] = [
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.hocky' }),
 			dataIndex: 'dotDrlId',
 			width: 150,
 			render: (val) => danhSachHocKy.find((item) => item.ma === danhSach.find((ele) => ele._id === val)?.maHocKy)?.ten,
 		},
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.hovaten' }),
 			dataIndex: ['thongTinNguoiTao', 'ten'],
 			width: 150,
 			filterType: 'string',
 			render: (val, rec) => rec.thongTinNguoiTao.ten,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.masinhvien' }),
 			dataIndex: ['thongTinNguoiTao', 'ma'],
 			width: 120,
 			filterType: 'string',
 			render: (val, rec) => rec.thongTinNguoiTao.ma,
 		},
 		{
-			title: 'Lớp',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.lop' }),
 			dataIndex: 'maLopHanhChinh',
 			width: 100,
 			filterType: 'string',
 			align: 'center',
 		},
 		{
-			title: 'Ngành',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.nganh' }),
 			dataIndex: 'nganh',
 			width: 150,
 			filterType: 'string',
@@ -70,7 +71,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			render: (val) => val?.ten,
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.trangthai' }),
 			dataIndex: 'trangThai',
 			width: 150,
 			filterType: 'select',
@@ -82,14 +83,14 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			align: 'center',
 		},
 		{
-			title: 'Điểm',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.diem' }),
 			dataIndex: 'diemSo',
 			width: 100,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Xếp loại',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.xeploai' }),
 			dataIndex: 'xepLoai',
 			width: 150,
 			filterType: 'select',
@@ -101,7 +102,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			align: 'center',
 		},
 		{
-			title: 'Điểm trung bình',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.diemtrungbinh' }),
 			width: 150,
 			dataIndex: 'diemTrungBinh',
 			align: 'center',
@@ -115,20 +116,20 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 			// },
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (rec: PhieuDiemRenLuyen.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.tooltip.edit' })}>
 						<Button onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.tooltip.delete' })}>
 						<Popconfirm
 							onConfirm={() => deleteModel(rec._id, getData)}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.confirm.delete' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -159,7 +160,12 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 						}}
 						key={'dot'}
 					/>,
-					<Tooltip title={!condition?.dotDrlId ? 'Vui lòng chọn một học kỳ' : ''} key={'trangthai'}>
+					<Tooltip
+						title={
+							!condition?.dotDrlId ? intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.tooltip.selecthocky' }) : ''
+						}
+						key={'trangthai'}
+					>
 						<Button
 							disabled={!condition?.dotDrlId}
 							onClick={() => {
@@ -168,13 +174,13 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 							type='primary'
 							icon={<CheckOutlined />}
 						>
-							Cập nhật trạng thái
+							{intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.button.capnhattrangthai' })}
 						</Button>
 					</Tooltip>,
 				]}
 				widthDrawer={700}
 				Form={Form}
-				title='Kết quả rèn luyện'
+				title={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.title' })}
 				columns={column}
 				modelName={'diemrenluyen.phieudiem'}
 				dependencies={[page, limit]}

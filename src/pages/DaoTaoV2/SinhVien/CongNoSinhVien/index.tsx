@@ -12,10 +12,11 @@ import { inputFormat } from '@/utils/utils';
 import { EyeOutlined } from '@ant-design/icons';
 import { Modal, Tag } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import ThongTinThanhToan from './components/ThongTinThanhToan';
 
 const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
+	const intl = useIntl();
 	const { page, limit, setRecord } = useModel('daotaov2.taichinh.hoadon');
 	const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
@@ -26,7 +27,7 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 
 	const columns: IColumn<HoaDon.IRecord>[] = [
 		{
-			title: 'Mã TT',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.matt' }),
 			dataIndex: 'identityCode',
 			align: 'center',
 			filterType: 'string',
@@ -46,24 +47,20 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 		// 	filterType: 'string',
 		// },
 		{
-			title: 'Đợt thu',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.dotthu' }),
 			dataIndex: 'idDotThu',
 			width: 180,
 			render: (val, rec) => rec.dotThu?.tenDot,
 		},
 		{
-			title: 'Khoản thu',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.khoanthu' }),
 			width: 250,
 			render: (val, rec) => (
-				<ExpandText>
-					{rec?.billItems?.map((item) => (
-						<div key={item._id}>- {item?.tenKhoanThu}</div>
-					))}
-				</ExpandText>
+				<ExpandText>{rec?.billItems?.map((item) => <div key={item._id}>- {item?.tenKhoanThu}</div>)}</ExpandText>
 			),
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.trangthai' }),
 			dataIndex: 'status',
 			align: 'center',
 			width: 150,
@@ -71,7 +68,7 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 				val && <Tag color={EMauTrangThaiThanhToanTable?.[val]}>{ETrangThaiThanhToan?.[val] ?? ''}</Tag>,
 		},
 		{
-			title: 'Số tiền phải thu',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.sotienphaithu' }),
 			width: 120,
 			align: 'right',
 			render: (val, rec) => {
@@ -82,7 +79,7 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 			},
 		},
 		{
-			title: 'Số tiền đã thu',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.sotiendathu' }),
 			width: 120,
 			align: 'right',
 			render: (val, rec) => {
@@ -93,13 +90,13 @@ const CongNoSinhVienPage = (props: { sinhVienSsoId?: string }) => {
 			},
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.column.thaotac' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
 			render: (val, rec) => (
 				<ButtonExtend
-					tooltip='Thông tin thanh toán'
+					tooltip={intl.formatMessage({ id: 'sinhvienhocvu.congno.tooltip.thongtinthanhtoan' })}
 					onClick={() => handleDetail(rec)}
 					type='link'
 					icon={<EyeOutlined />}

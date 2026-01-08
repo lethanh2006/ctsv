@@ -7,7 +7,7 @@ import { formatPhoneNumber } from '@/utils/utils';
 import { EyeOutlined, FileImageOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tag, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectKhoaNganh from '../NamHoc/KhoaNganh/components/Select';
 import FilterKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/FilterKhoaSinhVien';
 import ModalSinhVien from './component/ModalSinhVien';
@@ -16,6 +16,7 @@ import FormCapNhatAnhSV from './components/FormCapNhatAnhSV';
 import KetQuaCapNhatAnhSV from './components/KetQuaCapNhatAnhSV';
 
 const ViewSinhVien = () => {
+	const intl = useIntl();
 	const { getModel, page, limit, isView, handleView, visibleFormCapNhatAnh, setvisibleFormCapNhatAnh } =
 		useModel('daotaov2.sinhvien.sinhvien');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
@@ -27,7 +28,7 @@ const ViewSinhVien = () => {
 		try {
 			const res = await handleLockHoSo(id);
 			if (res) {
-				message.success('Khoá hồ sơ thành công');
+				message.success(intl.formatMessage({ id: 'hosonguoihoc.message.khoathanhcong' }));
 				getData();
 			}
 		} catch (e) {
@@ -39,7 +40,7 @@ const ViewSinhVien = () => {
 		try {
 			const res = await handleUnLockHoSo(id);
 			if (res) {
-				message.success('Mở khoá hồ sơ thành công');
+				message.success(intl.formatMessage({ id: 'hosonguoihoc.message.mokhoathanhcong' }));
 				getData();
 			}
 		} catch (e) {
@@ -54,7 +55,7 @@ const ViewSinhVien = () => {
 
 	const columns: IColumn<SinhVien.IRecord>[] = [
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.masinhvien' }),
 			dataIndex: 'ma',
 			width: 140,
 			sortable: true,
@@ -63,7 +64,7 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.hoten' }),
 			dataIndex: 'ten',
 			width: 150,
 			filterType: 'string',
@@ -71,7 +72,7 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Ngày sinh',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.ngaysinh' }),
 			dataIndex: 'ngaySinh',
 			width: 100,
 			filterType: 'date',
@@ -80,14 +81,14 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'CCCD',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.cccd' }),
 			dataIndex: 'cccd',
 			width: 120,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'SĐT',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.sdt' }),
 			dataIndex: 'soDienThoai',
 			width: 120,
 			filterType: 'string',
@@ -95,14 +96,14 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.email' }),
 			dataIndex: 'email',
 			width: 150,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Khóa ngành',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.khoanganh' }),
 			dataIndex: 'maKhoaNganh',
 			width: 150,
 			filterType: 'customselect',
@@ -111,7 +112,7 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Trạng thái học',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.trangthaihoc' }),
 			dataIndex: 'trangThaiHoc',
 			align: 'center',
 			width: 140,
@@ -121,42 +122,51 @@ const ViewSinhVien = () => {
 			onCell,
 		},
 		{
-			title: 'Cập nhật lúc',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.capnhat' }),
 			dataIndex: 'updatedAt',
 			width: 120,
 			sortable: true,
 			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : ''),
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.trangthai' }),
 			dataIndex: 'choPhepSua',
 			width: 120,
 			align: 'center',
 			fixed: 'right',
-			render: (val) => (val ? <Tag color='green'>Mở khóa</Tag> : <Tag color='red'>Khóa</Tag>),
+			render: (val) =>
+				val ? (
+					<Tag color='green'>{intl.formatMessage({ id: 'hosonguoihoc.column.trangthaihoc.mokhoa' })}</Tag>
+				) : (
+					<Tag color='red'>{intl.formatMessage({ id: 'hosonguoihoc.column.trangthaihoc.khoa' })}</Tag>
+				),
 			filterType: 'select',
 			filterData: [
-				{ value: true, label: 'Mở khóa' },
-				{ value: false, label: 'Khóa' },
+				{ value: true, label: intl.formatMessage({ id: 'hosonguoihoc.column.trangthaihoc.mokhoa' }) },
+				{ value: false, label: intl.formatMessage({ id: 'hosonguoihoc.column.trangthaihoc.khoa' }) },
 			],
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'hosonguoihoc.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: SinhVien.IRecord) => (
 				<>
-					<Tooltip title='Xem chi tiết'>
+					<Tooltip title={intl.formatMessage({ id: 'hosonguoihoc.column.xemchitiet' })}>
 						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
 					</Tooltip>
-					<Tooltip title={record?.choPhepSua ? 'Khoá hồ sơ' : 'Mở khoá hồ sơ'}>
+					<Tooltip
+						title={intl.formatMessage({
+							id: record?.choPhepSua ? 'hosonguoihoc.column.khoahoso' : 'hosonguoihoc.column.mokhoahoso',
+						})}
+					>
 						<Popconfirm
-							title={
-								record?.choPhepSua
-									? 'Bạn có chắc chắn muốn khoá chỉnh sửa hồ sơ này?'
-									: 'Bạn có chắc chắn muốn mở khoá chỉnh sửa hồ sơ này?'
-							}
+							title={intl.formatMessage({
+								id: record?.choPhepSua
+									? 'hosonguoihoc.column.xacnhankhoahoso'
+									: 'hosonguoihoc.column.xacnhanmokhoahoso',
+							})}
 							onConfirm={() => {
 								if (record?.choPhepSua) {
 									handleLockHoSoModel(record?._id);
@@ -199,7 +209,7 @@ const ViewSinhVien = () => {
 				getData={getData}
 				dependencies={[page, limit, recKhoa?.ma, recNganh?.ma]}
 				modelName='daotaov2.sinhvien.sinhvien'
-				title={'Danh sách sinh viên'}
+				title={intl.formatMessage({ id: 'hosonguoihoc.title' })}
 				Form={isView ? PreviewHoSo : ModalSinhVien}
 				formProps={{ hasEdit: true }}
 				widthDrawer={1200}
@@ -216,7 +226,7 @@ const ViewSinhVien = () => {
 						key={'image'}
 						type='primary'
 					>
-						Cập nhật ảnh thẻ SV
+						{intl.formatMessage({ id: 'hosonguoihoc.button.capnhatanhthesv' })}
 					</Button>,
 				]}
 			/>

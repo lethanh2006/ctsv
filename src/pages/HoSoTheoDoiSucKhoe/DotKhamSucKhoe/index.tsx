@@ -1,3 +1,4 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
@@ -7,13 +8,13 @@ import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
 import { ArrowDownOutlined, CheckOutlined, DeleteOutlined, EditOutlined, MenuOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Popover, Tag, Tooltip } from 'antd';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
-import ModalDotKhamSucKhoe from './components/ModalDotKhamSucKhoe';
 import { useState } from 'react';
+import { useIntl, useModel } from 'umi';
+import ModalDotKhamSucKhoe from './components/ModalDotKhamSucKhoe';
 import ModalYeuCauChinhSua from './components/ModalYeuCauChinhSua';
-import ExpandText from '@/components/ExpandText';
 
 const DotKhamSucKhoePage = () => {
+	const intl = useIntl();
 	const { page, limit, deleteModel, handleEdit, putModel, getModel, setRecord } = useModel(
 		'hosotheodoisuckhoe.dotkhamsuckhoe',
 	);
@@ -28,20 +29,27 @@ const DotKhamSucKhoePage = () => {
 	const getData = () => getModel({ maHocKy: recHocKy?.ma });
 
 	const handleDuyet = (record: DotKhamSucKhoe.IRecord) => {
-		putModel(record._id ?? '', { ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET, ghiChu: '' }, getData)
+		putModel(
+			record._id ?? '',
+			{ ...record, trangThai: ETrangThaiKhamSucKhoe.DA_DUYET, ghiChu: '' },
+			getData,
+			undefined,
+			undefined,
+			intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+		)
 			.then()
 			.catch((err) => console.log(err));
 	};
 
 	const columns: IColumn<any>[] = [
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.hocky' }),
 			dataIndex: 'tenHocKy',
 			width: 150,
 			onCell,
 		},
 		{
-			title: 'Tên đợt khám',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.tendot' }),
 			dataIndex: 'ten',
 			width: 150,
 			filterType: 'string',
@@ -49,7 +57,7 @@ const DotKhamSucKhoePage = () => {
 			onCell,
 		},
 		{
-			title: 'Bắt đầu',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.tgbd' }),
 			dataIndex: 'thoiGianBatDau',
 			width: 120,
 			align: 'center',
@@ -59,7 +67,7 @@ const DotKhamSucKhoePage = () => {
 			onCell,
 		},
 		{
-			title: 'Kết thúc',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.tgkt' }),
 			dataIndex: 'thoiGianKetThuc',
 			width: 120,
 			align: 'center',
@@ -69,7 +77,7 @@ const DotKhamSucKhoePage = () => {
 			onCell,
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.trangthai' }),
 			dataIndex: 'trangThai',
 			align: 'center',
 			filterType: 'select',
@@ -79,26 +87,30 @@ const DotKhamSucKhoePage = () => {
 			onCell,
 		},
 		{
-			title: 'Ghi chú',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.ghichu' }),
 			dataIndex: 'ghiChu',
 			width: 150,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			onCell,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (rec) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
-							onConfirm={() => deleteModel(rec._id)}
-							title='Bạn có chắc chắn muốn xóa đợt khám sức khỏe này?'
+							onConfirm={() =>
+								deleteModel(rec._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								})
+							}
+							title={intl.formatMessage({ id: 'dotkhamsuckhoe.confirm.xoa' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -110,18 +122,26 @@ const DotKhamSucKhoePage = () => {
 							<>
 								<Popconfirm
 									onConfirm={() => handleDuyet(rec)}
-									title='Bạn có chắc chắn muốn duyệt đợt khám sức khỏe?'
+									title={intl.formatMessage({ id: 'dotkhamsuckhoe.confirm.duyet' })}
 									placement='topRight'
 								>
-									<ButtonExtend tooltip='Duyệt' type='link' icon={<CheckOutlined />} />
+									<ButtonExtend
+										tooltip={intl.formatMessage({ id: 'dotkhamsuckhoe.button.duyet' })}
+										type='link'
+										icon={<CheckOutlined />}
+									/>
 								</Popconfirm>
 								<ButtonExtend
 									onClick={() => (setViewYeuCau(true), setRecord(rec))}
-									tooltip='Yêu cầu chỉnh sửa'
+									tooltip={intl.formatMessage({ id: 'dotkhamsuckhoe.button.yccs' })}
 									type='link'
 									icon={<EditOutlined />}
 								/>
-								<ButtonExtend tooltip='Tải biểu mẫu' type='link' icon={<ArrowDownOutlined />} />
+								<ButtonExtend
+									tooltip={intl.formatMessage({ id: 'dotkhamsuckhoe.button.taibieumau' })}
+									type='link'
+									icon={<ArrowDownOutlined />}
+								/>
 							</>
 						}
 					>
@@ -133,13 +153,13 @@ const DotKhamSucKhoePage = () => {
 	];
 
 	return (
-		<Card title='Đợt khám sức khỏe'>
+		<Card title={intl.formatMessage({ id: 'dotkhamsuckhoe.title' })}>
 			<TableBase
 				columns={columns}
 				params={{ maHocKy: recHocKy?.ma }}
 				dependencies={[page, limit, recHocKy?.ma]}
 				modelName='hosotheodoisuckhoe.dotkhamsuckhoe'
-				title='Đợt khám sức khỏe'
+				title={intl.formatMessage({ id: 'dotkhamsuckhoe.title' })}
 				Form={ModalDotKhamSucKhoe}
 				widthDrawer={1000}
 				hideCard

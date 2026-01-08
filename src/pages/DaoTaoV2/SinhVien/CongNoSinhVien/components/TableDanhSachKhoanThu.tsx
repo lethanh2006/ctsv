@@ -10,9 +10,10 @@ import { inputFormat } from '@/utils/utils';
 import { Table, Tag } from 'antd';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const TableDanhSachKhoanThu = () => {
+	const intl = useIntl();
 	const { record: recHoaDon } = useModel('daotaov2.taichinh.hoadon');
 	const { getAllModel, danhSach } = useModel('daotaov2.taichinh.hoadonchitiet');
 
@@ -25,40 +26,40 @@ const TableDanhSachKhoanThu = () => {
 
 	const columns: IColumn<HoaDon.IBillItem>[] = [
 		{
-			title: 'Nội dung',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.column.noidung' }),
 			dataIndex: 'tenKhoanThu',
 			width: 180,
 		},
 		{
-			title: 'Thành tiền',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.column.thanhtien' }),
 			dataIndex: 'amountDue',
 			width: 120,
 			align: 'right',
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Ưu đãi',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.column.uudai' }),
 			dataIndex: 'amountDiscount',
 			width: 120,
 			align: 'right',
 			render: (val) => `${inputFormat(val ?? 0)} VND`,
 		},
 		{
-			title: 'Đã nộp',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.column.danop' }),
 			dataIndex: 'amountPaid',
 			width: 120,
 			align: 'right',
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Còn lại',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.column.conlai' }),
 			dataIndex: 'amountRemaining',
 			width: 120,
 			align: 'right',
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.column.trangthai' }),
 			dataIndex: 'status',
 			align: 'center',
 			width: 120,
@@ -83,7 +84,7 @@ const TableDanhSachKhoanThu = () => {
 					return (
 						<Table.Summary.Row>
 							<Table.Summary.Cell index={0} align='center' colSpan={2}>
-								<b>Tổng cộng</b>
+								<b>{intl.formatMessage({ id: 'sinhvienhocvu.congno.chitietkhoanthu.summary.tongcong' })}</b>
 							</Table.Summary.Cell>
 							<Table.Summary.Cell align={'right'} index={1}>
 								<b> {inputFormat(totalDue ?? 0)} VND</b>

@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormSinhVien from './Form';
 
 /**
@@ -16,6 +16,7 @@ const SelectSinhVienLopHC = (props: {
 	lopHanhChinhId: string;
 	keyName?: string;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, onSearch, hasCreate, multiple, lopHanhChinhId, keyName } = props;
 	const { danhSach, getAllModel, setVisibleForm, visibleForm, setEdit, setRecord } = useModel(
 		'daotaov2.namhoc.sinhvienlophanhchinh',
@@ -47,13 +48,13 @@ const SelectSinhVienLopHC = (props: {
 					}))}
 					showSearch
 					optionFilterProp='label'
-					placeholder='Chọn sinh viên'
+					placeholder={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.sv.place' })}
 				/>
 			</div>
 
 			{hasCreate !== false ? <Button icon={<PlusOutlined />} onClick={onAddNew} /> : null}
 
-			<Modal open={visibleForm} styles={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
+			<Modal open={visibleForm} styles={{ body: { padding: 0 } }} footer={null} onCancel={() => setVisibleForm(false)}>
 				<FormSinhVien title='Sinh viên' />
 			</Modal>
 		</div>
