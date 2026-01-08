@@ -278,8 +278,9 @@ const HistoryActivityPage = () => {
 												getData();
 												getThongKe();
 											},
-											undefined,
-											intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+											{
+												messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+											},
 										)
 									}
 									title={intl.formatMessage({ id: 'activityresult.comfirm.xoa' })}
