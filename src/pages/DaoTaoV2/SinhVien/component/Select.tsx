@@ -2,7 +2,7 @@ import { EOperatorType } from '@/components/Table/constant';
 import { Empty, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectSinhVienDebounce = (props: {
 	value?: string | string[];
@@ -13,6 +13,7 @@ const SelectSinhVienDebounce = (props: {
 	selectMa?: boolean;
 	isView?: boolean;
 }): any => {
+	const intl = useIntl();
 	const { value, onChange, multiple, disabled, style, selectMa } = props;
 	const { danhSach, getModel, loading, searchSinhVienModel } = useModel('daotaov2.sinhvien.sinhvien');
 	const [keyword, setKeyword] = useState<string>();
@@ -67,9 +68,16 @@ const SelectSinhVienDebounce = (props: {
 			onSearch={(val) => searchDebounceSinhVien(val)}
 			notFoundContent={
 				loading ? (
-					<Spin spinning={true} tip='Đang tìm kiếm...' style={{ width: '100%', margin: 10 }} />
+					<Spin
+						spinning={true}
+						tip={intl.formatMessage({ id: 'kyluatkhenthuong.selectsinhvien.loading' })}
+						style={{ width: '100%', margin: 10 }}
+					/>
 				) : (
-					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='Không có dữ liệu, hãy thử nhập từ khóa khác!' />
+					<Empty
+						image={Empty.PRESENTED_IMAGE_SIMPLE}
+						description={intl.formatMessage({ id: 'kyluatkhenthuong.selectsinhvien.description' })}
+					/>
 				)
 			}
 			options={danhSach.map((item) => ({
@@ -80,7 +88,7 @@ const SelectSinhVienDebounce = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn sinh viên (tìm theo họ tên hoặc mã sinh viên)'
+			placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.selectsinhvien.placeholder' })}
 			style={{ width: '100%', ...style }}
 			showArrow
 		/>

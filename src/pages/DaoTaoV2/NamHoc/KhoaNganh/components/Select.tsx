@@ -1,7 +1,7 @@
 import { EOperatorType } from '@/components/Table/constant';
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -17,6 +17,7 @@ const SelectKhoaNganh = (props: {
 	style?: React.CSSProperties;
 	isSetRecord?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, namHoc, disabled, allowClear, style, isSetRecord, condition } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.namhoc.khoanganh');
 
@@ -54,7 +55,7 @@ const SelectKhoaNganh = (props: {
 			showSearch
 			showArrow
 			optionFilterProp='label'
-			placeholder='Chọn khóa ngành'
+			placeholder={intl.formatMessage({ id: 'sinhvien.select.chonkhoanganh' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 		/>

@@ -14,8 +14,8 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { PlusOutlined, PrinterOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Col, Collapse, Divider, Form, Input, Row, Select } from 'antd';
-import fileDownload from 'js-file-download';
 import dayjs from 'dayjs';
+import fileDownload from 'js-file-download';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectDonViHanhChinh from '../../Core/DonViHanhChinh/SelectDonViHanhChinh';
@@ -69,7 +69,12 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 			setFormSubmiting(true);
 
 			exportLyLich(record?.ssoId)
-				.then((res) => fileDownload(res.data, `Hồ sơ ${record.ten}.pdf`))
+				.then((res) =>
+					fileDownload(
+						res.data,
+						`${intl.formatMessage({ id: 'hosonguoihoc.previewhoso.filename' }, { ten: record?.ten })}`,
+					),
+				)
 				.finally(() => setFormSubmiting(false));
 		}
 	};
@@ -84,12 +89,12 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 						type='primary'
 						icon={edit ? <SaveOutlined /> : <PlusOutlined />}
 					>
-						{!edit ? <>Thêm mới và Tiếp tục</> : <>Lưu lại</>}
+						{intl.formatMessage({ id: !edit ? 'sinhvien.themhoso' : 'sinhvien.capnhathoso' })}
 					</Button>
 
 					{edit ? (
 						<Button icon={<PrinterOutlined />} onClick={onExport} loading={formSubmiting}>
-							In hồ sơ
+							{intl.formatMessage({ id: 'hosonguoihoc.previewhoso.button.inlylich' })}
 						</Button>
 					) : null}
 				</div>
@@ -106,12 +111,20 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 				<Col span={24} md={18}>
 					<Row gutter={[12, 0]}>
 						<Col span={24} md={8}>
-							<Form.Item name='ma' label='Mã sinh viên' rules={[...rules.required, ...rules.text, ...rules.length(20)]}>
-								<Input placeholder='Mã sinh viên' disabled={edit} />
+							<Form.Item
+								name='ma'
+								label={intl.formatMessage({ id: 'sinhvien.id.masinhvien' })}
+								rules={[...rules.required, ...rules.text, ...rules.length(20)]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.masinhvien' })} disabled={edit} />
 							</Form.Item>
 						</Col>
 						<Col span={24} md={16}>
-							<Form.Item name='maKhoaNganh' label='Khóa ngành' rules={[...rules.required]}>
+							<Form.Item
+								name='maKhoaNganh'
+								label={intl.formatMessage({ id: 'sinhvien.id.khoanganh' })}
+								rules={[...rules.required]}
+							>
 								<SelectKhoaNganh disabled={edit} />
 							</Form.Item>
 						</Col>
@@ -119,19 +132,31 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 
 					<Row gutter={[12, 0]}>
 						<Col span={24} md={8}>
-							<Form.Item name='ten' label='Họ và tên' rules={[...rules.required, ...rules.text, ...rules.length(250)]}>
-								<Input placeholder='Nhập họ tên sinh viên' />
+							<Form.Item
+								name='ten'
+								label={intl.formatMessage({ id: 'sinhvien.id.hoten' })}
+								rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhaphoten' })} />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='ngaySinh' label='Ngày sinh' rules={[...rules.required, ...rules.ngaySinh]}>
+							<Form.Item
+								name='ngaySinh'
+								label={intl.formatMessage({ id: 'sinhvien.id.ngaysinh' })}
+								rules={[...rules.required, ...rules.ngaySinh]}
+							>
 								<MyDatePicker style={{ width: '100%' }} disabledDate={(cur) => dayjs(cur).isAfter(dayjs())} />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='gioiTinh' label='Giới tính' rules={[...rules.required, ...rules.text]}>
+							<Form.Item
+								name='gioiTinh'
+								label={intl.formatMessage({ id: 'sinhvien.id.gioitinh' })}
+								rules={[...rules.required, ...rules.text]}
+							>
 								<Select
-									placeholder='Chọn giới tính'
+									placeholder={intl.formatMessage({ id: 'sinhvien.id.chongioitinh' })}
 									options={Object.values(EGioiTinh).map((item) => ({
 										key: item,
 										value: item,
@@ -142,28 +167,40 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 						</Col>
 
 						<Col span={12} md={8}>
-							<Form.Item name='cccd' label='Số CMND/CCCD' rules={[...rules.CMND]}>
-								<Input placeholder='Nhập số CMND/CCCD' />
+							<Form.Item name='cccd' label={intl.formatMessage({ id: 'sinhvien.id.cccd' })} rules={[...rules.CMND]}>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapcccd' })} />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='ngayCapCccd' label='Ngày cấp' rules={[...rules.truocHomNay]}>
-								<MyDatePicker placeholder='Chọn ngày cấp' allowClear />
+							<Form.Item
+								name='ngayCapCccd'
+								label={intl.formatMessage({ id: 'sinhvien.id.ngaycap' })}
+								rules={[...rules.truocHomNay]}
+							>
+								<MyDatePicker placeholder={intl.formatMessage({ id: 'sinhvien.id.chonngaycap' })} allowClear />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='noiCapCccd' label='Nơi cấp' rules={[...rules.text, ...rules.length(250)]}>
-								<Input placeholder='Nhập nơi cấp' />
+							<Form.Item
+								name='noiCapCccd'
+								label={intl.formatMessage({ id: 'sinhvien.id.noicap' })}
+								rules={[...rules.text, ...rules.length(250)]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapnoicap' })} />
 							</Form.Item>
 						</Col>
 
 						<Col span={12} md={8}>
-							<Form.Item name='email' label='Email' rules={[...rules.required, ...rules.email]}>
-								<Input placeholder='Nhập email' />
+							<Form.Item
+								name='email'
+								label={intl.formatMessage({ id: 'sinhvien.id.email' })}
+								rules={[...rules.required, ...rules.email]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapemail' })} />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={16}>
-							<Form.Item name='maKhoaNganh2' label='Khóa ngành 2'>
+							<Form.Item name='maKhoaNganh2' label={intl.formatMessage({ id: 'sinhvien.id.khoanganh2' })}>
 								<SelectKhoaNganh disabled />
 							</Form.Item>
 						</Col>
@@ -175,28 +212,28 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 				<Collapse.Panel forceRender header={intl.formatMessage({ id: 'sinhvien.thongtinchung.chitiet' })} key={'1'}>
 					<Row gutter={[12, 0]}>
 						<Col span={12} md={8}>
-							<Form.Item name='quocTich' label='Quốc tịch'>
+							<Form.Item name='quocTich' label={intl.formatMessage({ id: 'sinhvien.id.quoctich' })}>
 								<SelectQuocTich allowClear />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='danToc' label='Dân tộc'>
+							<Form.Item name='danToc' label={intl.formatMessage({ id: 'sinhvien.id.dantoc' })}>
 								<SelectDanToc allowClear />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='tonGiao' label='Tôn giáo'>
+							<Form.Item name='tonGiao' label={intl.formatMessage({ id: 'sinhvien.id.tongiao' })}>
 								<SelectTonGiao allowClear />
 							</Form.Item>
 						</Col>
 					</Row>
 
-					<Divider orientation='center'>Nơi sinh</Divider>
+					<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.noisinh.title' })}</Divider>
 					<Row gutter={[12, 0]}>
 						<Col span={12} md={12}>
-							<Form.Item name='loaiNoiSinh' label='Loại nơi sinh'>
+							<Form.Item name='loaiNoiSinh' label={intl.formatMessage({ id: 'sinhvien.id.loainoisinh' })}>
 								<Select
-									placeholder='Chọn loại nơi sinh'
+									placeholder={intl.formatMessage({ id: 'sinhvien.id.chonloainoisinh' })}
 									allowClear
 									options={Object.values(ELoaiNoiSinh).map((item) => ({
 										key: item,
@@ -208,9 +245,9 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 						</Col>
 						<Col span={12} md={12}>
 							{loaiNoiSinh === ELoaiNoiSinh.TRONG_NUOC ? (
-								<Form.Item name='tinhTpNoiSinh' label='Tỉnh/Thành phố'>
+								<Form.Item name='tinhTpNoiSinh' label={intl.formatMessage({ id: 'sinhvien.id.tinhtp' })}>
 									<Select
-										placeholder='Chọn tỉnh/thành phố'
+										placeholder={intl.formatMessage({ id: 'sinhvien.id.chontinhtp' })}
 										options={listTinh?.map((item) => ({
 											key: item.ma,
 											value: item.tenDonVi,
@@ -222,8 +259,8 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 									/>
 								</Form.Item>
 							) : (
-								<Form.Item name='quocGiaNoiSinh' label='Quốc gia'>
-									<Input placeholder='Nhập quốc gia nơi sinh' />
+								<Form.Item name='quocGiaNoiSinh' label={intl.formatMessage({ id: 'sinhvien.id.quocgia' })}>
+									<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapquocgia' })} />
 								</Form.Item>
 							)}
 						</Col>
@@ -232,26 +269,34 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 						<SelectDonViHanhChinh form={form} listTinh={listTinh} suffix='NoiSinh' />
 					</Row> */}
 
-					<Divider orientation='center'>Quê quán</Divider>
+					<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.quequan.title' })}</Divider>
 					<Row gutter={[12, 0]}>
 						<SelectDonViHanhChinh form={form} listTinh={listTinh} suffix='QueQuan' />
 					</Row>
 
-					<Divider orientation='center'>Hộ khẩu thường trú</Divider>
+					<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.hokhau.title' })}</Divider>
 					<Row gutter={[12, 0]}>
 						<SelectDonViHanhChinh form={form} listTinh={listTinh} suffix='ThuongTru' hasSoNha />
 					</Row>
 
-					<Divider orientation='center'>Thông tin liên lạc</Divider>
+					<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.thongtinlienlac.title' })}</Divider>
 					<Row gutter={[12, 0]}>
 						<Col span={12}>
-							<Form.Item name='soDienThoai' label='Số điện thoại' rules={[...rules.soDienThoai]}>
-								<Input placeholder='Nhập số điện thoại' />
+							<Form.Item
+								name='soDienThoai'
+								label={intl.formatMessage({ id: 'sinhvien.id.nhapsdt' })}
+								rules={[...rules.soDienThoai]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapsdt' })} />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='email2' label='Email liên lạc' rules={[...rules.email]}>
-								<Input placeholder='Nhập email' />
+							<Form.Item
+								name='email2'
+								label={intl.formatMessage({ id: 'sinhvien.id.emaillienlac' })}
+								rules={[...rules.email]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapemail' })} />
 							</Form.Item>
 						</Col>
 						{/* <Col span={24} md={6}>
@@ -276,25 +321,33 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 						</Col> */}
 					</Row>
 
-					<Divider orientation='center'>Thông tin tài khoản ngân hàng</Divider>
+					<Divider orientation='center'>{intl.formatMessage({ id: 'sinhvien.taikhoannganhang' })}</Divider>
 					<Row gutter={[12, 0]}>
 						<Col span={24} md={8}>
-							<Form.Item name='soTaiKhoanNganHang' label='Số tài khoản ngân hàng' rules={[...rules.sotaikhoan]}>
-								<Input placeholder='Nhập số tài khoản' />
+							<Form.Item
+								name='soTaiKhoanNganHang'
+								label={intl.formatMessage({ id: 'sinhvien.id.stknganhang' })}
+								rules={[...rules.sotaikhoan]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapstknganhang' })} />
 							</Form.Item>
 						</Col>
 						<Col span={24} md={8}>
-							<Form.Item name='tenNganHang' label='Tên ngân hàng' rules={[...rules.text, ...rules.length(250)]}>
-								<Input placeholder='Nhập tên ngân hàng' />
+							<Form.Item
+								name='tenNganHang'
+								label={intl.formatMessage({ id: 'sinhvien.id.tennganhang' })}
+								rules={[...rules.text, ...rules.length(250)]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhaptennganhang' })} />
 							</Form.Item>
 						</Col>
 						<Col span={24} md={8}>
 							<Form.Item
 								name='chiNhanhNganHang'
-								label='Chi nhánh ngân hàng'
+								label={intl.formatMessage({ id: 'sinhvien.id.chinhanh' })}
 								rules={[...rules.text, ...rules.length(250)]}
 							>
-								<Input placeholder='Nhập chi nhánh' />
+								<Input placeholder={intl.formatMessage({ id: 'sinhvien.id.nhapchinhanh' })} />
 							</Form.Item>
 						</Col>
 					</Row>
@@ -319,17 +372,29 @@ const FormSinhVien = (props: { afterAddNew: (rec: SinhVien.IRecord) => void; dis
 							</Form.Item>
 						</Col> */}
 						<Col span={12} md={8}>
-							<Form.Item name='ngayVaoDoan' label='Ngày vào đoàn' rules={[...rules.truocHomNay]}>
+							<Form.Item
+								name='ngayVaoDoan'
+								label={intl.formatMessage({ id: 'sinhvien.id.ngayvaodoan' })}
+								rules={[...rules.truocHomNay]}
+							>
 								<MyDatePicker allowClear style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 						<Col span={12} md={8}>
-							<Form.Item name='ngayVaoDang' label='Ngày vào đảng' rules={[...rules.truocHomNay]}>
+							<Form.Item
+								name='ngayVaoDang'
+								label={intl.formatMessage({ id: 'sinhvien.id.ngayvaodang' })}
+								rules={[...rules.truocHomNay]}
+							>
 								<MyDatePicker allowClear style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 						<Col span={24} md={8}>
-							<Form.Item name='ngayVaoDangChinhThuc' label='Ngày vào đảng chính thức' rules={[...rules.truocHomNay]}>
+							<Form.Item
+								name='ngayVaoDangChinhThuc'
+								label={intl.formatMessage({ id: 'sinhvien.id.ngayvaodangchinhthuc' })}
+								rules={[...rules.truocHomNay]}
+							>
 								<MyDatePicker allowClear style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>

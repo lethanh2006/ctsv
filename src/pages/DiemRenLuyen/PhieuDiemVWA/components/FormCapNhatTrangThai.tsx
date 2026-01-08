@@ -1,9 +1,10 @@
 import { ETrangThaiChamDiem, MapKeyNameTrangThaiChamDiem } from '@/services/DiemRenLuyen/constants';
 import rules from '@/utils/rules';
 import { Button, Card, Col, Form, Row, Select } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormCapNhatTrangThai = (props: { onCancel: any; getData: any }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { loading, doiTrangThaiPhieuDiemModel, condition } = useModel('diemrenluyen.phieudiem');
 	const onFinish = async (values: any) => {
@@ -13,13 +14,17 @@ const FormCapNhatTrangThai = (props: { onCancel: any; getData: any }) => {
 	};
 
 	return (
-		<Card title={'Cập nhật trạng thái kết quả rèn luyện'}>
+		<Card title={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.formtrangthai.title' })}>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col md={12}>
-						<Form.Item name='trangThaiCu' label='Trạng thái cũ' rules={[...rules.required]}>
+						<Form.Item
+							name='trangThaiCu'
+							label={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.formtrangthai.trangthaicu' })}
+							rules={[...rules.required]}
+						>
 							<Select
-								placeholder='Trạng thái cũ'
+								placeholder={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.formtrangthai.trangthaicu' })}
 								options={Object.values(ETrangThaiChamDiem).map((item) => ({
 									value: item,
 									label: MapKeyNameTrangThaiChamDiem[item],
@@ -28,9 +33,13 @@ const FormCapNhatTrangThai = (props: { onCancel: any; getData: any }) => {
 						</Form.Item>
 					</Col>
 					<Col md={12}>
-						<Form.Item name='trangThaiMoi' label='Trạng thái mới' rules={[...rules.required]}>
+						<Form.Item
+							name='trangThaiMoi'
+							label={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.formtrangthai.trangthaimoi' })}
+							rules={[...rules.required]}
+						>
 							<Select
-								placeholder='Trạng thái mới'
+								placeholder={intl.formatMessage({ id: 'sinhvienhocvu.phieudiemrl.formtrangthai.trangthaimoi' })}
 								options={Object.values(ETrangThaiChamDiem).map((item) => ({
 									value: item,
 									label: MapKeyNameTrangThaiChamDiem[item],
@@ -42,14 +51,14 @@ const FormCapNhatTrangThai = (props: { onCancel: any; getData: any }) => {
 
 				<Form.Item style={{ textAlign: 'center', marginTop: 24 }}>
 					<Button loading={loading} style={{ marginRight: 8 }} htmlType='submit' type='primary'>
-						{'Lưu lại'}
+						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 					<Button
 						onClick={() => {
 							props.onCancel();
 						}}
 					>
-						Đóng
+						{intl.formatMessage({ id: 'global.button.dong' })}
 					</Button>
 				</Form.Item>
 			</Form>

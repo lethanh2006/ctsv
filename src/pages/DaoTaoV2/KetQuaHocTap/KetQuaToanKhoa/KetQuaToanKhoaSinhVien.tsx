@@ -1,15 +1,16 @@
 import { Carousel, Empty, Segmented, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
+import SelectSongNganh from '../../NamHoc/KhoaNganh/components/SelectSongNganh';
 import DiemHocPhanSvTable from '../DiemHocPhan';
 import TableDiemHocPhan from '../KetQuaHocKy/components/TableDiemHocPhan';
 import '../KetQuaHocKy/components/style.less';
 import ChartDiemTrungBinh from './components/ChartDiemTrungBinh';
 import ChartSoTinChi from './components/ChartSoTinChi';
 import './components/style.less';
-import SelectSongNganh from '../../NamHoc/KhoaNganh/components/SelectSongNganh';
 
 const KetQuaToanKhoaSinhVien = (props: { sinhVienSsoId?: string; hideDetail?: boolean; maKhoaNganh?: string }) => {
+	const intl = useIntl();
 	const { getAllModel: getKetQuaHocKy, danhSach, loading } = useModel('daotaov2.ketquahoctap.ketquahocky');
 	const [tabActive, setTabActive] = useState<string>('1');
 	const [selectKhoaNganh, setSelectKhoaNganh] = useState<string>();
@@ -57,8 +58,8 @@ const KetQuaToanKhoaSinhVien = (props: { sinhVienSsoId?: string; hideDetail?: bo
 									value={tabActive}
 									onChange={(tab) => setTabActive(tab.toString())}
 									options={[
-										{ value: '1', label: 'Danh sách chi tiết' },
-										{ value: '2', label: 'Bảng điểm học phần' },
+										{ value: '1', label: intl.formatMessage({ id: 'sinhvienhocvu.ketqua.danhsach.label' }) },
+										{ value: '2', label: intl.formatMessage({ id: 'sinhvienhocvu.ketqua.bangdiemhocphan.label' }) },
 									]}
 									style={{ margin: '12px 8px 8px 0' }}
 								/>
@@ -72,7 +73,10 @@ const KetQuaToanKhoaSinhVien = (props: { sinhVienSsoId?: string; hideDetail?: bo
 						) : null}
 					</>
 				) : (
-					<Empty description='Không có dữ liệu !' style={{ marginTop: 50, marginBottom: 32 }} />
+					<Empty
+						description={intl.formatMessage({ id: 'sinhvienhocvu.ketqua.khongcodulieu' })}
+						style={{ marginTop: 50, marginBottom: 32 }}
+					/>
 				)}
 			</Spin>
 		</>

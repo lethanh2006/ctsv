@@ -44,38 +44,60 @@ const FormChungChiSinhVien = (props: any) => {
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={`${intl.formatMessage({ id: edit ? 'global.title.chinhsua' : 'global.title.themmoi' })} ${title?.toLowerCase()}`}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					{!fromSinhVien ? (
 						<Col xs={24} md={12}>
-							<Form.Item name='sinhVienSsoId' label='Sinh viên' rules={[...rules.required]}>
+							<Form.Item
+								name='sinhVienSsoId'
+								label={intl.formatMessage({ id: 'sinhvien.chungchi.id.sinhvien' })}
+								rules={[...rules.required]}
+							>
 								<SelectSinhVienDebounce disabled={edit} />
 							</Form.Item>
 						</Col>
 					) : null}
 					<Col xs={24} md={12}>
-						<Form.Item name='maChungChi' label='Chứng chỉ' rules={[...rules.required]}>
+						<Form.Item
+							name='maChungChi'
+							label={intl.formatMessage({ id: 'sinhvien.chungchi.id.chungchi' })}
+							rules={[...rules.required]}
+						>
 							<SelectChungChi selectMa onChange={() => form.setFieldsValue({ diem: undefined })} />
 						</Form.Item>
 					</Col>
 
 					<Col xs={24} md={12}>
-						<Form.Item name='ngayCap' label='Ngày cấp' rules={[...rules.required]}>
+						<Form.Item
+							name='ngayCap'
+							label={intl.formatMessage({ id: 'sinhvien.chungchi.id.ngaycap' })}
+							rules={[...rules.required]}
+						>
 							<MyDatePicker />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='donViCap' label='Đơn vị cấp' rules={[...rules.required]}>
-							<Input placeholder='Nhập đơn vị cấp' />
+						<Form.Item
+							name='donViCap'
+							label={intl.formatMessage({ id: 'sinhvien.chungchi.id.donvicap' })}
+							rules={[...rules.required]}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'sinhvien.chungchi.id.placeholder.nhapdonvicap' })} />
 						</Form.Item>
 					</Col>
 
 					{recChungChi?.phuongThucTinhDiem === EPhuongThucTinhDiem.BAC ? (
 						<Col xs={24} md={12}>
-							<Form.Item name='diem' label='Bậc chứng chỉ' rules={[...rules.required]}>
+							<Form.Item
+								name='diem'
+								label={intl.formatMessage({ id: 'sinhvien.chungchi.id.bacchungchi' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder='Chọn bậc chứng chỉ'
+									placeholder={intl.formatMessage({ id: 'sinhvien.chungchi.id.placeholder.chonbacchungchi' })}
 									options={recChungChi?.bac?.map((item) => ({
 										key: item.order,
 										label: item.ten,
@@ -89,7 +111,7 @@ const FormChungChiSinhVien = (props: any) => {
 							<Col xs={24} md={12}>
 								<Form.Item
 									name='diem'
-									label='Mức điểm'
+									label={intl.formatMessage({ id: 'sinhvien.chungchi.id.mucdiem' })}
 									rules={[...rules.required, ...rules.number(recChungChi.max, recChungChi.min)]}
 								>
 									<InputNumber
@@ -97,7 +119,7 @@ const FormChungChiSinhVien = (props: any) => {
 										min={recChungChi.min}
 										max={recChungChi.max}
 										step={recChungChi.step}
-										placeholder='Nhập điểm đạt được'
+										placeholder={intl.formatMessage({ id: 'sinhvien.chungchi.id.placeholder.nhapdiemdatduoc' })}
 									/>
 								</Form.Item>
 							</Col>

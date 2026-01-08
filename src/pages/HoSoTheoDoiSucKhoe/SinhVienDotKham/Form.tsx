@@ -5,9 +5,10 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormSinhVienDotKham = (props: any) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, getModel, formSubmiting, visibleForm } = useModel(
 		'hosotheodoisuckhoe.suckhoesinhvien',
@@ -44,7 +45,9 @@ const FormSinhVienDotKham = (props: any) => {
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={`${intl.formatMessage({ id: edit ? 'global.title.chinhsua' : 'global.title.themmoi' })} ${title?.toLowerCase()}`}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					{/* <Col xs={24}>
@@ -53,44 +56,60 @@ const FormSinhVienDotKham = (props: any) => {
 						</Form.Item>
 					</Col> */}
 					<Col xs={24}>
-						<Form.Item name='sinhVienSsoId' label='Sinh viên' rules={[...rules.required]}>
+						<Form.Item
+							name='sinhVienSsoId'
+							label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.sinhvien' })}
+							rules={[...rules.required]}
+						>
 							<SelectSinhVienDebounce disabled={edit} />
 						</Form.Item>
 					</Col>
 
 					<Col xs={12}>
-						<Form.Item rules={[...rules.required, ...rules.text]} label='Mã xét nghiệm' name='maXetNghiem'>
-							<Input placeholder='Mã xét nghiệm' />
+						<Form.Item
+							rules={[...rules.required, ...rules.text]}
+							label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.maxetnghiem' })}
+							name='maXetNghiem'
+						>
+							<Input placeholder={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.maxetnghiem' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={12}>
-						<Form.Item rules={[...rules.required]} label='Phân loại sức khỏe' name='phanLoaiSucKhoe'>
+						<Form.Item
+							rules={[...rules.required]}
+							label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.phanloaisuckhoe' })}
+							name='phanLoaiSucKhoe'
+						>
 							<Select
 								options={Object.values(EPhanLoaiSucKhoe).map((item) => ({ value: item, label: item }))}
-								placeholder='Phân loại sức khỏe'
+								placeholder={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.phanloaisuckhoe' })}
 							/>
 						</Form.Item>
 					</Col>
 
 					<Col xs={24}>
-						<Form.Item label='Bệnh/tật' name='benhTat'>
-							<Input.TextArea placeholder='Bệnh/tật' />
+						<Form.Item label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.benhtat' })} name='benhTat'>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.benhtat' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item label='Tư vấn' name='tuVan'>
-							<Input.TextArea placeholder='Tư vấn' />
+						<Form.Item label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.tuvan' })} name='tuVan'>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.tuvan' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item label='Ghi chú' name='ghiChu'>
-							<Input.TextArea placeholder='Ghi chú' />
+						<Form.Item label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.ghichu' })} name='ghiChu'>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.ghichu' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='tinhTrangSucKhoe' label='Kết luận' rules={[...rules.required]}>
+						<Form.Item
+							name='tinhTrangSucKhoe'
+							label={intl.formatMessage({ id: 'sinhvien.dotkham.form.label.ketluan' })}
+							rules={[...rules.required]}
+						>
 							<Select
-								placeholder='Chọn tình trạng sức khỏe'
+								placeholder={intl.formatMessage({ id: 'sinhvien.dotkham.form.placeholder.ketluan' })}
 								options={Object.values(ETinhTrangSucKhoe).map((item) => ({
 									key: item,
 									label: MapKeyNameTinhTrangSuckhoe[item],
@@ -103,9 +122,9 @@ const FormSinhVienDotKham = (props: any) => {
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới' : 'Lưu lại'}
+						{intl.formatMessage({ id: edit ? 'global.button.luulai' : 'sinhvien.dotkham.form.button.themmoi' })}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>

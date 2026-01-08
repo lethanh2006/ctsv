@@ -1,6 +1,7 @@
 import QuyetDinh from '@/pages/CheDoChinhSach/QuyetDinh';
 import SinhVienHocVuPage from '@/pages/DaoTaoV2/SinhVien/XetHocVu';
 import PhieuDiemRenLuyenComponent from '@/pages/DiemRenLuyen/PhieuDiemVWA';
+import SinhVienDotKhamPage from '@/pages/HoSoTheoDoiSucKhoe/SinhVienDotKham';
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import { Button, Card, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
@@ -14,7 +15,6 @@ import FormSinhVien from './Form';
 import FormKhenThuongKyLuat from './FormKhenThuongKyLuat';
 import FormQuaTrinhHocTap from './FormQuaTrinhHocTap';
 import FormTotNghiepVanBang from './FormTotNghiepVanBang';
-import SinhVienDotKhamPage from '@/pages/HoSoTheoDoiSucKhoe/SinhVienDotKham';
 
 const ModalSinhVien = (props: any) => {
 	const intl = useIntl();
@@ -32,7 +32,9 @@ const ModalSinhVien = (props: any) => {
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} hồ sơ sinh viên`}>
+		<Card
+			title={`${intl.formatMessage({ id: edit ? 'global.title.chinhsua' : 'global.title.themmoi' })} ${intl.formatMessage({ id: 'sinhvien.modal.title' })}`}
+		>
 			<Tabs
 				destroyInactiveTabPane
 				activeKey={currentStep}
@@ -55,7 +57,7 @@ const ModalSinhVien = (props: any) => {
 						filterWidth={450}
 						loaiCheDoSinhVien={ELoaiCheDoSinhVien.HOC_BONG}
 						ssoId={record?.ssoId}
-						title='Danh sách sinh viên được cấp Học bổng'
+						title={intl.formatMessage({ id: 'sinhvien.quyetdinh.title' })}
 					/>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab5' })} key={'2'} disabled={!record?.ssoId}>
@@ -66,7 +68,7 @@ const ModalSinhVien = (props: any) => {
 						filterWidth={250}
 						loaiCheDoSinhVien={ELoaiCheDoSinhVien.CHE_DO_CHINH_SACH}
 						ssoId={record?.ssoId}
-						title='Danh sách sinh viên được cấp Học bổng'
+						title={intl.formatMessage({ id: 'sinhvien.quyetdinh.title' })}
 					/>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab14' })} key={'14'} disabled={!record?.ssoId}>
@@ -74,7 +76,7 @@ const ModalSinhVien = (props: any) => {
 						filterWidth={250}
 						loaiCheDoSinhVien={ELoaiCheDoSinhVien.GDCT_TU_TUONG}
 						ssoId={record?.ssoId}
-						title='Danh sách sinh viên được cấp Học bổng'
+						title={intl.formatMessage({ id: 'sinhvien.quyetdinh.title' })}
 					/>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab13' })} key={'13'} disabled={!record?.ssoId}>
@@ -91,7 +93,7 @@ const ModalSinhVien = (props: any) => {
 						filterWidth={250}
 						loaiCheDoSinhVien={ELoaiCheDoSinhVien.BAO_HIEM}
 						ssoId={record?.ssoId}
-						title='Danh sách sinh viên được cấp Học bổng'
+						title={intl.formatMessage({ id: 'sinhvien.quyetdinh.title' })}
 					/>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab={intl.formatMessage({ id: 'sinhvien.tab7' })} key={'4'} disabled={!record?.ssoId}>
@@ -112,8 +114,8 @@ const ModalSinhVien = (props: any) => {
 			</Tabs>
 
 			<div className='form-footer'>
-				<Button onClick={() => handleView()}>Xem rút gọn</Button>
-				<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+				<Button onClick={() => handleView()}>{intl.formatMessage({ id: 'sinhvien.xemrutgon' })}</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

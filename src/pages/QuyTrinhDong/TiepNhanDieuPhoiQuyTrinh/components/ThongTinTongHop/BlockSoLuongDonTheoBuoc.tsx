@@ -1,10 +1,10 @@
 import ColumnChart from '@/components/Chart/ColumnChart';
-import { inputFormat } from '@/utils/utils';
-import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
-import vi from '@/components/Chart/vi.json';
 import { MapColorTrangThaiTiepNhanDon, TrangThaiTiepNhanDon } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/constants';
 import { thongKeDonTheoBuoc } from '@/services/QuyTrinhDong/ThongKe/thongke';
+import { inputFormat } from '@/utils/utils';
+import vi from 'apexcharts/dist/locales/vi.json';
+import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 
 const BlockSoLuongDonTheoBuoc = () => {
 	const { quyTrinhSelect } = useModel('quytrinh.khaibaoquytrinh');

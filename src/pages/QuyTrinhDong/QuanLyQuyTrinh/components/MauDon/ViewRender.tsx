@@ -9,6 +9,7 @@ import { currencyFormat } from '@/utils/utils';
 import { Modal, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { useIntl } from 'umi';
 import FormTable from './FormTable';
 
 const ViewRender = (props: {
@@ -16,6 +17,7 @@ const ViewRender = (props: {
 	recordSanPham?: any;
 	isCot?: boolean;
 }): any => {
+	const intl = useIntl();
 	// const { danhSach } = useModel('quanlykhoahoc.danhmuc.chung');
 	// const { danhSach: danhSachLoaiHinh } = useModel('quanlykhoahoc.loaihinhnckh');
 	const { cauHinh, recordSanPham, isCot } = props;
@@ -56,7 +58,13 @@ const ViewRender = (props: {
 			break;
 
 		case EKieuDuLieu.BOOLEAN:
-			value = <div>{valueFinal ? 'Có' : 'Không'}</div>;
+			value = (
+				<div>
+					{intl.formatMessage({
+						id: valueFinal ? 'kyluatkhenthuong.viewrender.co' : 'kyluatkhenthuong.viewrender.khong',
+					})}
+				</div>
+			);
 			break;
 
 		case EKieuDuLieu.DANHMUC:
@@ -99,7 +107,7 @@ const ViewRender = (props: {
 						valueFinal?.map((item: string) => (
 							<Tag color={'red'} key={cauHinh.ma}>
 								<a href={item} target='_blank' rel='noreferrer'>
-									Xem tập tin
+									{intl.formatMessage({ id: 'kyluatkhenthuong.viewrender.xemtaptin' })}
 								</a>
 							</Tag>
 						))}
@@ -141,7 +149,7 @@ const ViewRender = (props: {
 						destroyOnClose
 						width={700}
 						footer={null}
-						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
+						title={`${intl.formatMessage({ id: editFormTable ? 'global.title.chinhsua' : 'global.title.themmoi' })} ${cauHinh.ten}`}
 						open={visibleFormTable}
 						onCancel={() => setVisibleFormTable(false)}
 					>

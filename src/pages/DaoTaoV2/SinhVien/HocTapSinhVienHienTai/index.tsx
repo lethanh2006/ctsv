@@ -34,21 +34,38 @@ const HocTapSinhVienHienTaiPage = (props: { sinhVienSsoId?: string }) => {
 		<Row gutter={[12, 0]}>
 			<Col span={24}>
 				<Descriptions column={{ xs: 1, sm: 1, md: 2 }}>
-					<Descriptions.Item label='Trạng thái sinh viên'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.trangthai' })}>
 						{(
 							<Tag color={colorTrangThaiHocSv[rec?.trangThaiSinhVien as ETrangThaiHocSv]}>{rec?.trangThaiSinhVien}</Tag>
 						) ?? '--'}
 					</Descriptions.Item>
-					<Descriptions.Item label='Hình thức đào tạo'>{rec?.hinhThucDaoTao?.ten ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Khoa'>{'--'}</Descriptions.Item>
-					<Descriptions.Item label='Khoá sinh viên'>{rec?.khoaSinhVien?.ten ?? ''}</Descriptions.Item>
-					<Descriptions.Item span={2} label='Chương trình đào tạo'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.hinhthucdaotao' })}>
+						{rec?.hinhThucDaoTao?.ten ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.khoa' })}>
+						{'--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.khoasinhvien' })}>
+						{rec?.khoaSinhVien?.ten ?? ''}
+					</Descriptions.Item>
+					<Descriptions.Item
+						span={2}
+						label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.chuongtrinhdaotao' })}
+					>
 						{rec?.chuongTrinhDaoTao?.ten ?? '--'}
 					</Descriptions.Item>
-					<Descriptions.Item label='Ngành đào tạo'>{rec?.nganhDaoTao?.ten ?? ''}</Descriptions.Item>
-					<Descriptions.Item label='Sinh viên năm thứ'>{rec?.sinhVienNamThu ?? ''}</Descriptions.Item>
-					<Descriptions.Item label='Đào tạo từ năm'>{rec?.khoaSinhVien?.namHocBatDau ?? ''}</Descriptions.Item>
-					<Descriptions.Item label='Số năm đào tạo'>{rec?.soNamDaoTao ?? '--'} năm</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.nganhdaotao' })}>
+						{rec?.nganhDaoTao?.ten ?? ''}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.sinhviennamthu' })}>
+						{rec?.sinhVienNamThu ?? ''}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.daotautunam' })}>
+						{rec?.khoaSinhVien?.namHocBatDau ?? ''}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.sonamdaotao' })}>
+						{rec?.soNamDaoTao ?? '--'} {intl.formatMessage({ id: 'sinhvien.hoctapsinhvienhientai.nam' })}
+					</Descriptions.Item>
 				</Descriptions>
 			</Col>
 		</Row>
