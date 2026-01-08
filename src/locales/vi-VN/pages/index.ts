@@ -1,4 +1,5 @@
 import activity from './activity';
+import CCT from './CCT';
 import chinhtritutuong from './chinhtritutuong';
 import danhmuc from './danhmuc';
 import donvihanhchinh from './donvihanhchinh';
@@ -20,4 +21,5 @@ export default {
 	...activity,
 	...danhmuc,
 	...chinhtritutuong,
+	...CCT,
 };
