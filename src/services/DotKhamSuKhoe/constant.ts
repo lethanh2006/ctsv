@@ -36,6 +36,12 @@ export const fieldTinhTrangSucKhoe: Record<ETinhTrangSucKhoe, keyof DotKhamSucKh
 	[ETinhTrangSucKhoe.CHUA_CO_KET_QUA]: 'chuaDanhGia',
 };
 
+export const i18nTinhTrangSucKhoe: Record<ETinhTrangSucKhoe, string> = {
+	[ETinhTrangSucKhoe.BINH_THUONG]: 'ketquakhamsuckhoe.stat.binhThuong',
+	[ETinhTrangSucKhoe.CAN_LUU_Y]: 'ketquakhamsuckhoe.stat.canLuuY',
+	[ETinhTrangSucKhoe.CHUA_CO_KET_QUA]: 'ketquakhamsuckhoe.stat.chuaCoKetQua',
+};
+
 export enum EPhanLoaiSucKhoe {
 	I = 'I',
 	II = 'II',
