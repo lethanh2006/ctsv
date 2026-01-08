@@ -1,19 +1,20 @@
 import { PieChartOutlined, TableOutlined } from '@ant-design/icons';
 import { Card, Collapse, Tabs } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectHocKy from '../../HocKy/HocKy/components/SelectHocKy';
+import CoVanHocTap from './CoVanHocTap';
 import ThongKeDanToc from './DanToc';
 import ThongKeHoKhau from './HoKhau';
 import ThongKeNganh from './Nganh';
 import ThongKeTonGiao from './TonGiao';
-import CoVanHocTap from './CoVanHocTap';
 
 const ThongKeSinhVien = () => {
+	const intl = useIntl();
 	const { record: recHocKy, setRecord: setRecHocKy, danhSach } = useModel('daotaov2.hocky.hocky');
 	const [mode, setMode] = useState<'table' | 'donut'>('table');
 	return (
-		<Card title='Thống kê sinh viên'>
+		<Card title={intl.formatMessage({ id: 'thongke.title' })}>
 			<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 				<SelectHocKy
 					style={{ width: 300, marginBottom: 8 }}
@@ -27,19 +28,19 @@ const ThongKeSinhVien = () => {
 				</Tabs>
 			</div>
 			<Collapse>
-				<Collapse.Panel header='Thống kê sinh viên theo dân tộc' key={'dantoc'}>
+				<Collapse.Panel header={intl.formatMessage({ id: 'thongke.dantoc' })} key={'dantoc'}>
 					<ThongKeDanToc mode={mode} />
 				</Collapse.Panel>
-				<Collapse.Panel header='Thống kê sinh viên theo tôn giáo' key={'tongiao'}>
+				<Collapse.Panel header={intl.formatMessage({ id: 'thongke.tongiao' })} key={'tongiao'}>
 					<ThongKeTonGiao mode={mode} />
 				</Collapse.Panel>
-				<Collapse.Panel header='Thống kê sinh viên theo ngành' key={'nganh'}>
+				<Collapse.Panel header={intl.formatMessage({ id: 'thongke.nganh' })} key={'nganh'}>
 					<ThongKeNganh mode={mode} />
 				</Collapse.Panel>
-				<Collapse.Panel header='Thống kê sinh viên theo hộ khẩu' key={'hokhau'}>
+				<Collapse.Panel header={intl.formatMessage({ id: 'thongke.hokhau' })} key={'hokhau'}>
 					<ThongKeHoKhau mode={mode} />
 				</Collapse.Panel>
-				<Collapse.Panel header='Cố vấn học tập' key={'cvht'}>
+				<Collapse.Panel header={intl.formatMessage({ id: 'thongke.cvht' })} key={'cvht'}>
 					<CoVanHocTap mode={mode} />
 				</Collapse.Panel>
 			</Collapse>
