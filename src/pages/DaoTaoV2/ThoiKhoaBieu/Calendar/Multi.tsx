@@ -3,17 +3,18 @@ import { ColorSuKien, ELoaiSuKien, messagesCalendar } from '@/services/Calendar/
 import type { LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
 import type { ThoiKhoaBieu } from '@/services/DaoTaoV2/HocKy/ThoiKhoaBieu/typing';
 import { Spin } from 'antd';
-import _ from 'lodash';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { DateRange } from 'react-big-calendar';
 import { Calendar, type View, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 const localizer = dayjsLocalizer(dayjs);
 
 /** Hiển thị lịch học của danh sách lớp học phần dưới dạng calendar */
 const LichHocLopHocPhanMulti = React.forwardRef<CalendarLopHpRef, TProps>((props, ref) => {
+	const intl = useIntl();
 	const { getAllModel, loading } = useModel('daotaov2.hocky.thoikhoabieu');
 	const { getByIdModel: getLopHp } = useModel('daotaov2.hocky.lophocphan');
 	const [calendarView, setCalendarView] = useState<View>(Views.WEEK);
@@ -86,11 +87,19 @@ const LichHocLopHocPhanMulti = React.forwardRef<CalendarLopHpRef, TProps>((props
 
 	return (
 		<Spin spinning={loading}>
-			<p>
-				Danh sách <b>{danhSachLop?.length} lớp tín chỉ, nhóm thực hành</b>.<br />
-				Tổng cộng có <b>{dataCalendar.length} buổi học</b>, từ ngày {dayjs(startDate).format('DD/MM/YYYY')} đến ngày{' '}
-				{dayjs(endDate).format('DD/MM/YYYY')}. Cụ thể như sau:
-			</p>
+			<p
+				dangerouslySetInnerHTML={{
+					__html: intl.formatMessage(
+						{ id: 'loptinchi.lichhoc.lophocphan.description' },
+						{
+							soLop: danhSachLop?.length,
+							soBuoiHoc: dataCalendar.length,
+							ngayBatDau: dayjs(startDate).format('DD/MM/YYYY'),
+							ngayKetThuc: dayjs(endDate).format('DD/MM/YYYY'),
+						},
+					),
+				}}
+			/>
 
 			<Calendar
 				formats={{

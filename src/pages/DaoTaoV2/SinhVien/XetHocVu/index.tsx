@@ -1,7 +1,7 @@
 import { Collapse } from 'antd';
 import { useIntl, useModel } from 'umi';
-import SinhVienCanhBaoTable from './Table';
 import KetQuaToanKhoaSinhVien from '../../KetQuaHocTap/KetQuaToanKhoa/KetQuaToanKhoaSinhVien';
+import SinhVienCanhBaoTable from './Table';
 
 const SinhVienHocVuPage = () => {
 	const { record } = useModel('daotaov2.sinhvien.sinhvien');

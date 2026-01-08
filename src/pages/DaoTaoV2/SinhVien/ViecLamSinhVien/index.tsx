@@ -1,25 +1,26 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { EHinhThucTuyenDung, EViTriViecLam } from '@/services/DaoTaoV2/SinhVien/constant';
+import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { tienVietNam } from '@/utils/utils';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ViecLamSinhVienPage = () => {
+	const intl = useIntl();
 	const { getModel, page, limit } = useModel('daotaov2.sinhvien.vieclam');
 	const { record: recSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 
 	const columns: IColumn<SinhVien.IViecLamSinhVien>[] = [
 		{
-			title: 'Đơn vị tuyển dụng',
+			title: intl.formatMessage({ id: 'sinhvien.vieclam.column.donvitd' }),
 			dataIndex: 'donViTuyenDung',
 			width: 150,
 			filterType: 'string',
 			sortable: true,
 		},
 		{
-			title: 'Hình thức tuyển dụng',
+			title: intl.formatMessage({ id: 'sinhvien.vieclam.column.hinhthuctuyendung' }),
 			width: 120,
 			dataIndex: 'hinhThucTuyenDung',
 			filterType: 'select',
@@ -27,7 +28,7 @@ const ViecLamSinhVienPage = () => {
 			sortable: true,
 		},
 		{
-			title: 'Thời gian tuyển dụng',
+			title: intl.formatMessage({ id: 'sinhvien.vieclam.column.thoigiantuyendung' }),
 			width: 100,
 			dataIndex: 'thoiGianTuyenDung',
 			filterType: 'date',
@@ -35,7 +36,7 @@ const ViecLamSinhVienPage = () => {
 			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
-			title: 'Vị trí việc làm',
+			title: intl.formatMessage({ id: 'sinhvien.vieclam.column.vitrivieclam' }),
 			width: 120,
 			dataIndex: 'viTriViecLam',
 			filterType: 'select',
@@ -43,7 +44,7 @@ const ViecLamSinhVienPage = () => {
 			sortable: true,
 		},
 		{
-			title: 'Mức lương khởi điểm',
+			title: intl.formatMessage({ id: 'sinhvien.vieclam.column.mucluongkhoiđiem' }),
 			width: 100,
 			dataIndex: 'mucLuongKhoiDiem',
 			filterType: 'number',

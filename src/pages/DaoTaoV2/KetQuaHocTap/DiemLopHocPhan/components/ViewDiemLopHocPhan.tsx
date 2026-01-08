@@ -1,13 +1,14 @@
 import { type LopHocPhan } from '@/services/DaoTaoV2/HocKy/LopHocPhan/typing';
 import { Button, Descriptions, Divider, Modal } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ViewDiemLopHocPhan = (props: {
 	visible: boolean;
 	setVisible: (vis: boolean) => void;
 	sinhVienLopHocPhanId?: string;
 }) => {
+	const intl = useIntl();
 	const { visible, setVisible, sinhVienLopHocPhanId } = props;
 	const { record, getByIdModel } = useModel('daotaov2.hocky.sinhvienlophocphan');
 	// const { record: recordLopHP, getByIdModel: getLopHocPhan } = useModel('daotaov2.hocky.lophocphan');
@@ -26,23 +27,30 @@ const ViewDiemLopHocPhan = (props: {
 			<Modal
 				open={visible}
 				onCancel={() => setVisible(false)}
-				title='Thông tin sinh viên lớp tín chỉ'
+				title={intl.formatMessage({ id: 'loptinchi.viewdiem.title' })}
 				width={600}
-				footer={<Button onClick={() => setVisible(false)}>Đóng</Button>}
+				footer={<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>}
 			>
 				<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }}>
-					<Descriptions.Item label='Mã sinh viên'>{record?.sinhVien?.ma}</Descriptions.Item>
-					<Descriptions.Item label='Họ tên'>{record?.sinhVien?.ten}</Descriptions.Item>
-					<Descriptions.Item label='Lớp tín chỉ'>{record?.lopHocPhan?.ten}</Descriptions.Item>
-					<Descriptions.Item label='Học phần'>
-						{record?.lopHocPhan?.hocPhan?.ma ?? ''} - {record?.lopHocPhan?.hocPhan?.soTinChi ?? ''} tín chỉ
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.masv' })}>
+						{record?.sinhVien?.ma}
 					</Descriptions.Item>
-					<Descriptions.Item label='Tên học phần' span={2}>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.hoten' })}>
+						{record?.sinhVien?.ten}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.loptinchi' })}>
+						{record?.lopHocPhan?.ten}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.hocphan' })} span={2}>
+						{record?.lopHocPhan?.hocPhan?.ma ?? ''} - {record?.lopHocPhan?.hocPhan?.soTinChi ?? ''}{' '}
+						{intl.formatMessage({ id: 'loptinchi.viewdiem.tc' })}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.tenhocphan' })} span={2}>
 						{record?.lopHocPhan?.hocPhan?.ten}
 					</Descriptions.Item>
 				</Descriptions>
 
-				<Divider>Điểm thành phần</Divider>
+				<Divider>{intl.formatMessage({ id: 'loptinchi.viewdiem.diemthanhphan.title' })}</Divider>
 				<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }}>
 					{danhSachDauDiem?.map((item) => (
 						<Descriptions.Item label={item.ten} key={item._id}>
@@ -51,20 +59,36 @@ const ViewDiemLopHocPhan = (props: {
 					))}
 				</Descriptions>
 
-				<Divider>Điểm kết thúc học phần</Divider>
+				<Divider>{intl.formatMessage({ id: 'loptinchi.viewdiem.diemketthuc.title' })}</Divider>
 				<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }}>
-					<Descriptions.Item label='Điểm thi lần 1'>{record?.diemThi1 ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Điểm thẩm định'>{record?.diemThamDinh ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Điểm phúc khảo'>{record?.diemPhucKhao ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Điểm thi lần 2'>{record?.diemThi2 ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Điểm cuối'>{record?.diemKthp ?? '--'}</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diemlan1' })}>
+						{record?.diemThi1 ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diemthamdinh' })}>
+						{record?.diemThamDinh ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diemphuckhao' })}>
+						{record?.diemPhucKhao ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diemlan2' })}>
+						{record?.diemThi2 ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diemcuoi' })}>
+						{record?.diemKthp ?? '--'}
+					</Descriptions.Item>
 				</Descriptions>
 
-				<Divider>Điểm tổng kết</Divider>
+				<Divider>{intl.formatMessage({ id: 'loptinchi.viewdiem.diemtongket.title' })}</Divider>
 				<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }}>
-					<Descriptions.Item label='Điểm thang 10'>{record?.diemTongKet ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Điểm thang 4'>{record?.diemThang4 ?? '--'}</Descriptions.Item>
-					<Descriptions.Item label='Điểm chữ'>{record?.diemChu ?? '--'}</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diem10' })}>
+						{record?.diemTongKet ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diem4' })}>
+						{record?.diemThang4 ?? '--'}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'loptinchi.viewdiem.diemchu' })}>
+						{record?.diemChu ?? '--'}
+					</Descriptions.Item>
 				</Descriptions>
 			</Modal>
 		</>

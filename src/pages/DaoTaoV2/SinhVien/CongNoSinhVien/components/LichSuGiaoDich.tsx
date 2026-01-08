@@ -13,9 +13,10 @@ import { inputFormat } from '@/utils/utils';
 import { Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const LichSuThanhToan = () => {
+	const intl = useIntl();
 	const { record } = useModel('daotaov2.taichinh.hoadon');
 	const { getAllModel, danhSach, loading } = useModel('daotaov2.taichinh.giaodich');
 
@@ -27,32 +28,45 @@ const LichSuThanhToan = () => {
 
 	const columns: IColumn<GiaoDich.IRecord>[] = [
 		{
-			title: 'Loại giao dịch',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.column.loaigiaodich' }),
 			align: 'center',
 			width: 100,
 			render: (val, rec) => {
 				switch ((rec.fromAccount, rec.toAccount)) {
 					case (ETransactionSourceType.EXTERNAL, ETransactionSourceType.WALLET):
-						return <Tag color='green'>Nộp tiền</Tag>;
+						return (
+							<Tag color='green'>{intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.tag.noptien' })}</Tag>
+						);
 					case (ETransactionSourceType.WALLET, ETransactionSourceType.SYSTEM):
-						return <Tag color='orange'>Thanh toán</Tag>;
+						return (
+							<Tag color='orange'>
+								{intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.tag.thanhtoan' })}
+							</Tag>
+						);
 					case (ETransactionSourceType.SYSTEM, ETransactionSourceType.WALLET):
-						return <Tag color='purple'>Hoàn trả</Tag>;
+						return (
+							<Tag color='purple'>{intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.tag.hoantra' })}</Tag>
+						);
 					default:
 						return null;
 				}
 			},
 		},
 		{
-			title: 'Số tiền',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.column.sotien' }),
 			dataIndex: 'amount',
 			align: 'right',
 			width: 120,
 			render: (val) => `${inputFormat(val)} VND`,
 		},
-		{ title: 'Người thực hiện', dataIndex: 'payerFullname', width: 150, filterType: 'string' },
 		{
-			title: 'Thời gian',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.column.nguoithuchien' }),
+			dataIndex: 'payerFullname',
+			width: 150,
+			filterType: 'string',
+		},
+		{
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.column.thoigian' }),
 			align: 'center',
 			dataIndex: 'transactionDate',
 			width: 120,
@@ -60,13 +74,13 @@ const LichSuThanhToan = () => {
 			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Hình thức',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.column.hinhthuc' }),
 			dataIndex: 'paymentType',
 			width: 120,
 			render: (val: ETransactionPaymentType, rec) => transactionPaymentLabel?.[val as ETransactionPaymentType] ?? '',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.congno.lichsuthanhtoan.column.trangthai' }),
 			dataIndex: 'status',
 			width: 140,
 			align: 'center',

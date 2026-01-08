@@ -54,9 +54,16 @@ const SelectNhanSuDebounce = (props: {
 			onSearch={(val) => searchDebounceSinhVien(val)}
 			notFoundContent={
 				loading ? (
-					<Spin spinning={true} tip='Đang tìm kiếm...' style={{ width: '100%', margin: 10 }} />
+					<Spin
+						spinning={true}
+						tip={intl.formatMessage({ id: 'kyluatkhenthuong.selectnhansu.loading' })}
+						style={{ width: '100%', margin: 10 }}
+					/>
 				) : (
-					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='Không có dữ liệu, hãy thử nhập từ khóa khác!' />
+					<Empty
+						image={Empty.PRESENTED_IMAGE_SIMPLE}
+						description={intl.formatMessage({ id: 'kyluatkhenthuong.selectnhansu.description' })}
+					/>
 				)
 			}
 			options={danhSach.map((item) => ({

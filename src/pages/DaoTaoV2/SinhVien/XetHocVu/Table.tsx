@@ -3,9 +3,10 @@ import { type IColumn } from '@/components/Table/typing';
 import type { XetHocVu } from '@/services/DaoTaoV2/KetQuaHocTap/XetHocVu/typing';
 import { ETrangThaiDuyetCanhBao } from '@/services/DaoTaoV2/KetQuaHocTap/constant';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SinhVienCanhBaoTable = (props: { isThoiHoc?: boolean }) => {
+	const intl = useIntl();
 	const { isThoiHoc } = props;
 	const { getAllModel } = useModel(
 		isThoiHoc ? 'daotaov2.ketquahoctap.xethocvu.thoihoc' : 'daotaov2.ketquahoctap.xethocvu.canhbao',
@@ -30,7 +31,7 @@ const SinhVienCanhBaoTable = (props: { isThoiHoc?: boolean }) => {
 
 	const columns: IColumn<XetHocVu.IRecord>[] = [
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.canhbao.column.hocky' }),
 			dataIndex: 'maHocKy',
 			width: 150,
 			render: (val, rec) => rec.hocKy?.ten,
@@ -47,18 +48,18 @@ const SinhVienCanhBaoTable = (props: { isThoiHoc?: boolean }) => {
 		// 	width: 180,
 		// },
 		{
-			title: 'Lớp hành chính',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.canhbao.column.lophanhchinh' }),
 			dataIndex: 'tenLopHanhChinh',
 			width: 120,
 		},
 		{
-			title: 'Lý do',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.canhbao.column.lydo' }),
 			dataIndex: 'danhSachLyDo',
 			width: 350,
 			render: (val, rec) => rec.danhSachLyDo?.map((item) => <div key={item._id}>- {item?.noiDung}</div>),
 		},
 		{
-			title: 'Loại',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.canhbao.column.loai' }),
 			dataIndex: 'loaiThoiHoc',
 			width: 120,
 			hide: !isThoiHoc,

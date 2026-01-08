@@ -1,14 +1,14 @@
 import KetQuaToanKhoaSinhVien from '@/pages/DaoTaoV2/KetQuaHocTap/KetQuaToanKhoa/KetQuaToanKhoaSinhVien';
+import { exportLyLich } from '@/services/DaoTaoV2/SinhVien';
+import type { ETrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import { colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
 import { formatPhoneNumber } from '@/utils/utils';
 import { MenuOutlined, PrinterOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Empty, Image, Row, Spin, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
-import ChartCongNoSinhVien from '../CongNoSinhVien/ChartCongNo';
-import { exportLyLich } from '@/services/DaoTaoV2/SinhVien';
 import fileDownload from 'js-file-download';
-import type { ETrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
-import { colorTrangThaiHocSv } from '@/services/DaoTaoV2/SinhVien/constant';
+import { useIntl, useModel } from 'umi';
+import ChartCongNoSinhVien from '../CongNoSinhVien/ChartCongNo';
 
 type DescriptionItem = {
 	label?: string;
@@ -18,6 +18,7 @@ type DescriptionItem = {
 };
 
 const PreviewHoSo = (props: any) => {
+	const intl = useIntl();
 	const { record, loading, handleEdit, setVisibleForm, formSubmiting, setFormSubmiting } =
 		useModel('daotaov2.sinhvien.sinhvien');
 
@@ -27,7 +28,12 @@ const PreviewHoSo = (props: any) => {
 			setFormSubmiting(true);
 
 			exportLyLich(record?.ssoId)
-				.then((res) => fileDownload(res.data, `Hồ sơ ${record.ten}.pdf`))
+				.then((res) =>
+					fileDownload(
+						res.data,
+						`${intl.formatMessage({ id: 'hosonguoihoc.previewhoso.filename' }, { ten: record?.ten })}`,
+					),
+				)
 				.finally(() => setFormSubmiting(false));
 		}
 	};
@@ -50,34 +56,34 @@ const PreviewHoSo = (props: any) => {
 	);
 
 	const dataChung: DescriptionItem[] = [
-		{ label: 'Mã sinh viên', content: record?.ma, md: 8 },
-		{ label: 'Họ và tên', content: record?.ten, md: 16 },
-		{ label: 'Giới tính', content: record?.gioiTinh, md: 8 },
+		{ label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.masinhvien' }), content: record?.ma, md: 8 },
+		{ label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.hoten' }), content: record?.ten, md: 16 },
+		{ label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.gioitinh' }), content: record?.gioiTinh, md: 8 },
 		{
-			label: 'Ngày sinh',
+			label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.ngaysinh' }),
 			content: record?.ngaySinh ? dayjs(record.ngaySinh).format('DD/MM/YYYY') : '',
 			md: 8,
 		},
 		{
-			label: 'CCCD/CMND',
-			content: `${record?.cccd ?? ''}, ngày cấp: ${
+			label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.cccd' }),
+			content: `${record?.cccd ?? ''}, ${intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.ngaycap' })} ${
 				record?.ngayCapCccd ? dayjs(record.ngayCapCccd).format('DD/MM/YYYY') : '--'
-			}, nơi cấp: ${record?.noiCapCccd ?? ''}`,
+			}, ${intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.noicap' })} ${record?.noiCapCccd ?? ''}`,
 			md: 24,
 		},
 		{
-			label: 'Số điện thoại',
+			label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.sodienthoai' }),
 			content: !!record?.soDienThoai && formatPhoneNumber(record.soDienThoai),
 			md: 8,
 		},
-		{ label: 'Email', content: record?.email, md: 16 },
+		{ label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.email' }), content: record?.email, md: 16 },
 		{
-			label: 'Trạng thái học',
+			label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.trangthaihoc' }),
 			content: <Tag color={colorTrangThaiHocSv[record?.trangThaiHoc as ETrangThaiHocSv]}>{record?.trangThaiHoc}</Tag>,
 			md: 8,
 		},
 		{
-			label: 'Khóa ngành',
+			label: intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.khoanganh' }),
 			content: record?.khoaNganh?.ten ?? '',
 			md: 16,
 		},
@@ -151,7 +157,7 @@ const PreviewHoSo = (props: any) => {
 	// ];
 
 	return (
-		<Card title='Hồ sơ sinh viên'>
+		<Card title={intl.formatMessage({ id: 'hosonguoihoc.previewhoso.title' })}>
 			<Spin spinning={loading}>
 				{record?.ssoId ? (
 					<>
@@ -159,7 +165,7 @@ const PreviewHoSo = (props: any) => {
 						<Row gutter={[18, 18]} style={{ maxWidth: 1200, margin: 'auto' }}>
 							<Col span={24}>
 								<Button icon={<PrinterOutlined />} onClick={onExport} loading={formSubmiting}>
-									In hồ sơ
+									{intl.formatMessage({ id: 'hosonguoihoc.previewhoso.button.inlylich' })}
 								</Button>
 							</Col>
 
@@ -189,7 +195,7 @@ const PreviewHoSo = (props: any) => {
 						<Row gutter={[12, 12]} style={{ marginTop: 24 }}>
 							<Col span={24} md={16}>
 								<Card
-									title='Kết quả học tập'
+									title={intl.formatMessage({ id: 'hosonguoihoc.previewhoso.ketquahoctap' })}
 									bordered={false}
 									headStyle={{ padding: 0 }}
 									styles={{ padding: '8px 0 0 0' }}
@@ -198,7 +204,12 @@ const PreviewHoSo = (props: any) => {
 								</Card>
 							</Col>
 							<Col span={24} md={8}>
-								<Card title='Công nợ' bordered={false} headStyle={{ padding: 0 }} styles={{ padding: '8px 0 0 0' }}>
+								<Card
+									title={intl.formatMessage({ id: 'hosonguoihoc.previewhoso.congno' })}
+									bordered={false}
+									headStyle={{ padding: 0 }}
+									styles={{ padding: '8px 0 0 0' }}
+								>
 									<ChartCongNoSinhVien />
 								</Card>
 							</Col>
@@ -206,7 +217,11 @@ const PreviewHoSo = (props: any) => {
 					</>
 				) : (
 					<Empty
-						description={<i style={{ color: '#999' }}>Không tìm thấy thông tin sinh viên !</i>}
+						description={
+							<i style={{ color: '#999' }}>
+								{intl.formatMessage({ id: 'hosonguoihoc.previewhoso.label.khongthaysv' })}
+							</i>
+						}
 						style={{ marginTop: 32, marginBottom: 32 }}
 					/>
 				)}
@@ -215,10 +230,10 @@ const PreviewHoSo = (props: any) => {
 			<div className='form-footer' style={{ marginTop: 18 }}>
 				{props.hasEdit && record?.ssoId ? (
 					<Button type='primary' icon={<MenuOutlined />} onClick={() => handleEdit()}>
-						Xem chi tiết
+						{intl.formatMessage({ id: 'hosonguoihoc.previewhoso.xemchitiet' })}
 					</Button>
 				) : null}
-				<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

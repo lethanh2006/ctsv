@@ -7,9 +7,10 @@ import { resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Row } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; ssoId?: string }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record } = useModel('chedochinhsach.chedochinhsach');
 	const {
@@ -98,7 +99,9 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; ssoId?: str
 	};
 
 	return (
-		<Card title={`${!edit ? 'Thêm mới' : 'Chỉnh sửa'} ${record?.ten ?? ''}`}>
+		<Card
+			title={`${intl.formatMessage({ id: !edit ? 'global.title.themmoi' : 'global.title.chinhsua' })} ${record?.ten ?? ''}`}
+		>
 			<Form
 				scrollToFirstError
 				labelCol={{ span: 24 }}
@@ -114,7 +117,11 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; ssoId?: str
 				<Row gutter={[12, 0]}>
 					{!props.ssoId && (
 						<Col span={24}>
-							<Form.Item rules={[...rules.required]} name='ssoId' label='Sinh viên'>
+							<Form.Item
+								rules={[...rules.required]}
+								name='ssoId'
+								label={intl.formatMessage({ id: 'kyluatkhenthuong.formgiaonopsp.sinhvien' })}
+							>
 								<SelectSinhVienDebounce />
 							</Form.Item>
 						</Col>
@@ -127,10 +134,10 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; ssoId?: str
 				{!props.isView && (
 					<div className='form-footer'>
 						<Button icon={<SaveOutlined />} loading={formSubmiting || loading} htmlType='submit' type='primary'>
-							{'Lưu lại'}
+							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 						<Button icon={<CloseOutlined />} onClick={() => setVisibleForm(false)}>
-							Hủy
+							{intl.formatMessage({ id: 'global.button.huy' })}
 						</Button>
 					</div>
 				)}

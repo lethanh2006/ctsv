@@ -15,7 +15,7 @@ import { DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined } from '@a
 import { Button, Dropdown, Input, Menu, Modal, Popconfirm, Select, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import ViewRender from '../QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/ViewRender';
 import { buildFilter } from './components/BuildFilter';
 import FormGiaoNopSanPham from './components/FormGiaoNopSanPham';
@@ -29,6 +29,7 @@ const QuyetDinh = (props: {
 	ssoId?: string;
 	filterWidth?: number;
 }) => {
+	const intl = useIntl();
 	const {
 		handleEdit,
 		deleteModel,
@@ -78,7 +79,7 @@ const QuyetDinh = (props: {
 
 	const columns: IColumn<CheDoSinhVien.QuyetDinhCheDoSinhVien>[] = [
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.hovaten' }),
 			dataIndex: 'hoVaTen',
 			width: 150,
 			align: 'center',
@@ -87,7 +88,7 @@ const QuyetDinh = (props: {
 			hide: props.ssoId ? true : false,
 		},
 		{
-			title: 'Mã SV',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.masv' }),
 			dataIndex: 'maSinhVien',
 			width: 120,
 			align: 'center',
@@ -96,7 +97,7 @@ const QuyetDinh = (props: {
 			hide: props.ssoId ? true : false,
 		},
 		{
-			title: 'Lớp',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.lop' }),
 			dataIndex: 'lop.ten',
 			width: 100,
 			align: 'center',
@@ -106,7 +107,7 @@ const QuyetDinh = (props: {
 			hide: props.ssoId ? true : false,
 		},
 		{
-			title: 'Ngành',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.nganh' }),
 			dataIndex: 'nganh.ten',
 			width: 200,
 			align: 'center',
@@ -116,7 +117,7 @@ const QuyetDinh = (props: {
 			hide: props.ssoId ? true : false,
 		},
 		{
-			title: 'Ngày sinh',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.ngaysinh' }),
 			dataIndex: 'ngaySinh',
 			width: 100,
 			align: 'center',
@@ -125,7 +126,7 @@ const QuyetDinh = (props: {
 			hide: props.ssoId ? true : false,
 		},
 		{
-			title: 'Giới tính',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.gioitinh' }),
 			dataIndex: 'gioiTinh',
 			width: 100,
 			align: 'center',
@@ -133,7 +134,7 @@ const QuyetDinh = (props: {
 			hide: props.ssoId ? true : false,
 		},
 		{
-			title: 'Dân tộc',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.column.dantoc' }),
 			dataIndex: 'danToc',
 			width: 100,
 			align: 'center',
@@ -145,10 +146,14 @@ const QuyetDinh = (props: {
 
 	recordCheDoChinhSach?.danhSachCauHinhThongTin?.map((item) => {
 		if (item.kieuDuLieu === EKieuDuLieu.TABLE || item.kieuDuLieu === EKieuDuLieu.DANHSACH) return;
-		if (arrSpecialColumn.includes(item.ten) && columns.map((ele) => ele.title).includes('Đối tượng miễn giảm')) return;
+		if (
+			arrSpecialColumn.includes(item.ten) &&
+			columns.map((ele) => ele.title).includes(intl.formatMessage({ id: 'kyluatkhenthuong.column.doituongmiengiam' }))
+		)
+			return;
 		if (arrSpecialColumn.includes(item.ten)) {
 			columns.push({
-				title: 'Đối tượng miễn giảm',
+				title: intl.formatMessage({ id: 'kyluatkhenthuong.column.doituongmiengiam' }),
 				// dataIndex: `thongTinQuyetDinh.${item.ma}.value`,
 				width: 200,
 				// align: 'center',
@@ -173,14 +178,14 @@ const QuyetDinh = (props: {
 	});
 
 	columns.push({
-		title: 'Thao tác',
+		title: intl.formatMessage({ id: 'kyluatkhenthuong.column.thaotac' }),
 		align: 'center',
 		width: 120,
 		fixed: 'right',
 		render: (record: CheDoSinhVien.QuyetDinhCheDoSinhVien) => {
 			return (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.column.edit' })}>
 						<Button
 							onClick={() => {
 								handleEdit(record);
@@ -189,10 +194,10 @@ const QuyetDinh = (props: {
 							icon={<EditOutlined />}
 						/>
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.column.delete' })}>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, getData)}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'kyluatkhenthuong.column.confirm.delete' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -219,14 +224,16 @@ const QuyetDinh = (props: {
 							overlay={
 								<Menu>
 									<Menu.Item onClick={() => getTemplateImportCheDoSinhVienModel(recordCheDoChinhSach?._id ?? '')}>
-										Tải mẫu nhập dữ liệu
+										{intl.formatMessage({ id: 'kyluatkhenthuong.button.downloadtemplate' })}
 									</Menu.Item>
-									<Menu.Item onClick={() => setVisibleImport(true)}>Nhập dữ liệu</Menu.Item>
+									<Menu.Item onClick={() => setVisibleImport(true)}>
+										{intl.formatMessage({ id: 'kyluatkhenthuong.button.import' })}
+									</Menu.Item>
 								</Menu>
 							}
 						>
 							<ButtonExtend loading={loading} icon={<ImportOutlined />}>
-								Nhập dữ liệu
+								{intl.formatMessage({ id: 'kyluatkhenthuong.button.import' })}
 							</ButtonExtend>
 						</Dropdown>
 						<ButtonExtend
@@ -234,7 +241,7 @@ const QuyetDinh = (props: {
 							loading={loading}
 							icon={<ExportOutlined />}
 						>
-							Xuất dữ liệu
+							{intl.formatMessage({ id: 'kyluatkhenthuong.button.export' })}
 						</ButtonExtend>
 						{recordCheDoChinhSach?.danhSachBoLoc?.map((item) => (
 							<>
@@ -254,7 +261,7 @@ const QuyetDinh = (props: {
 										}}
 										style={{ width: 250 }}
 										allowClear
-										placeholder={`Lọc theo ${item.ten}`}
+										placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.filter.placeholder' }, { ten: item.ten })}
 										options={
 											item.loai === ELoaiBoLoc.MANG
 												? item.danhSachGiaTri.map((gt) => ({ value: gt, label: gt }))
@@ -282,14 +289,26 @@ const QuyetDinh = (props: {
 				widthDrawer={800}
 				Form={Form}
 				dependencies={[page, limit, recordCheDoChinhSach?._id, props.loaiCheDoSinhVien]}
-				title={props.title || 'Chế độ chính sách'}
+				title={props.title || intl.formatMessage({ id: 'kyluatkhenthuong.title' })}
 				modelName={'chedochinhsach.quyetdinhchedosinhvien'}
 				columns={columns}
 			/>
-			<Modal destroyOnClose width={900} title='Chi tiết' footer={null} open={visibleView} onCancel={onCancelView}>
+			<Modal
+				destroyOnClose
+				width={900}
+				title={intl.formatMessage({ id: 'kyluatkhenthuong.modal.chitiet' })}
+				footer={null}
+				open={visibleView}
+				onCancel={onCancelView}
+			>
 				<ViewQuyetDinh />
 			</Modal>
-			<Modal onCancel={() => setVisibleImport(false)} footer={null} open={visibleImport} title='Nhập dữ liệu'>
+			<Modal
+				onCancel={() => setVisibleImport(false)}
+				footer={null}
+				open={visibleImport}
+				title={intl.formatMessage({ id: 'kyluatkhenthuong.modal.import' })}
+			>
 				<FormImport getData={getData} />
 			</Modal>
 		</>

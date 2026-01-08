@@ -6,33 +6,42 @@ import {
 import { inputFormat } from '@/utils/utils';
 import { Button, Card, Col, Descriptions, Row, Tabs, Tag } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import LichSuThanhToan from './LichSuGiaoDich';
 import TableDanhSachKhoanThu from './TableDanhSachKhoanThu';
 
 const ThongTinThanhToan = (props: { setVisible: any }) => {
+	const intl = useIntl();
 	const { setVisible } = props;
 	const { record } = useModel('daotaov2.taichinh.hoadon');
 	const [activeTab, setActiveTab] = useState('1');
 
 	return (
-		<Card title='Thông tin thanh toán'>
+		<Card title={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.title' })}>
 			<Row gutter={[12, 12]}>
 				<Col span={24}>
 					<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }} bordered>
-						<Descriptions.Item label='Trạng thái'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.label.trangthai' })}
+						>
 							{record?.status ? (
 								<Tag color={EMauTrangThaiThanhToanTable?.[record.status]}>
 									{ETrangThaiThanhToan?.[record.status] ?? ''}
 								</Tag>
 							) : (
-								<i>Đang cập nhật</i>
+								<i>{intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.dangcapnhat' })}</i>
 							)}
 						</Descriptions.Item>
-						<Descriptions.Item label='Họ tên người nộp'>
-							{record?.userFullname ?? <i>Đang cập nhật</i>}
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.label.hotentieunop' })}
+						>
+							{record?.userFullname ?? (
+								<i>{intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.dangcapnhat' })}</i>
+							)}
 						</Descriptions.Item>
-						<Descriptions.Item label='Tổng thành tiền'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.label.tongthanhtien' })}
+						>
 							{inputFormat(
 								record?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -40,7 +49,9 @@ const ThongTinThanhToan = (props: { setVisible: any }) => {
 							)}{' '}
 							VNĐ
 						</Descriptions.Item>
-						<Descriptions.Item label='Số tiền ưu đãi'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.label.sotienuudai' })}
+						>
 							{inputFormat(
 								record?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -48,7 +59,9 @@ const ThongTinThanhToan = (props: { setVisible: any }) => {
 							)}{' '}
 							VNĐ
 						</Descriptions.Item>
-						<Descriptions.Item label='Số tiền đã thu'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.label.sotiendathu' })}
+						>
 							{inputFormat(
 								record?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -56,7 +69,9 @@ const ThongTinThanhToan = (props: { setVisible: any }) => {
 							)}{' '}
 							VNĐ
 						</Descriptions.Item>
-						<Descriptions.Item label='Số tiền còn lại phải thu'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.label.sotienconlaiphaitthu' })}
+						>
 							{inputFormat(
 								record?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -69,8 +84,14 @@ const ThongTinThanhToan = (props: { setVisible: any }) => {
 
 				<Col span={24}>
 					<Tabs activeKey={activeTab} onChange={(tab) => setActiveTab(tab)}>
-						<Tabs.TabPane key={'1'} tab='Chi tiết' />
-						<Tabs.TabPane key={'2'} tab='Lịch sử thanh toán' />
+						<Tabs.TabPane
+							key={'1'}
+							tab={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.tab.chitiet' })}
+						/>
+						<Tabs.TabPane
+							key={'2'}
+							tab={intl.formatMessage({ id: 'sinhvienhocvu.congno.thongtinthanhtoan.tab.lichsuthanhtoan' })}
+						/>
 					</Tabs>
 
 					{activeTab === '1' ? <TableDanhSachKhoanThu /> : <LichSuThanhToan />}
@@ -78,7 +99,7 @@ const ThongTinThanhToan = (props: { setVisible: any }) => {
 			</Row>
 
 			<div className='form-footer' style={{ marginTop: 18 }}>
-				<Button onClick={() => setVisible(false)}>Đóng</Button>
+				<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectSongNganh = (props: {
 	ssoId: string;
@@ -10,6 +10,7 @@ const SelectSongNganh = (props: {
 	onChange?: (val: string) => void;
 	hideSelect?: boolean;
 }) => {
+	const intl = useIntl();
 	const { ssoId, style, disabled, value, onChange, hideSelect } = props;
 	const { getKhoaNganhSvModel, khoaNganhSv, loading } = useModel('daotaov2.sinhvien.sinhvien');
 
@@ -25,7 +26,7 @@ const SelectSongNganh = (props: {
 		<Select
 			loading={loading}
 			disabled={disabled}
-			placeholder='Chọn ngành đào tạo'
+			placeholder={intl.formatMessage({ id: 'sinhvienhocvu.selectsongnganh.placeholder' })}
 			value={value}
 			style={{ width: '100%', ...style }}
 			options={
@@ -39,13 +40,13 @@ const SelectSongNganh = (props: {
 								value: khoaNganhSv?.khoaNganhPhu?.ma,
 								label: `${khoaNganhSv?.khoaNganhPhu?.nganh?.ten}`,
 							},
-					  ]
+						]
 					: [
 							{
 								value: khoaNganhSv?.khoaNganhChinh?.ma,
 								label: `${khoaNganhSv?.khoaNganhChinh?.nganh?.ten}`,
 							},
-					  ]
+						]
 			}
 			onChange={(val) => onChange?.(val)}
 		/>
