@@ -43,7 +43,8 @@ export default {
 
 	//Table
 	'global.table.column.tt': 'TT',
-
+	'global.column.action': 'Thao tác',
+	
 	'global.table.export.title': 'Xuất dữ liệu',
 	'global.table.export.khadung': 'Các trường khả dụng',
 	'global.table.export.choose.chontatca': 'Chọn tất cả',
