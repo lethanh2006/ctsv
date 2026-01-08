@@ -7,7 +7,7 @@ import { ImportOutlined } from '@ant-design/icons';
 import { Checkbox, Col, Empty, Row } from 'antd';
 import _ from 'lodash';
 import { Key, useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import GroupTagUsers from './GroupTagUsers';
 import ModalImport from './ModalImport';
 
@@ -18,6 +18,7 @@ const TableSelectUser = (props: {
 	danhSachDoiTuong?: Record<string, string[]>;
 	receiverType?: EReceiverType;
 }) => {
+	const intl = useIntl();
 	const { selectedUsers = [], setSelectedUsers, danhSachDoiTuong, type, receiverType } = props;
 	const { page, limit } = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu');
 	const { getCanBoChuChotModel, danhSachCanBo, loading } = useModel('thongbao.nhansu');
@@ -92,7 +93,12 @@ const TableSelectUser = (props: {
 
 	const columns: IColumn<ThongBao.IUser>[] = [
 		{
-			title: type === EVaiTroKhaoSat.SINH_VIEN ? 'Mã sinh viên' : 'Mã cán bộ',
+			title: intl.formatMessage({
+				id:
+					type === EVaiTroKhaoSat.SINH_VIEN
+						? 'thongbao.select.user.column.masv'
+						: 'thongbao.select.user.column.macanbo',
+			}),
 			dataIndex: 'code',
 			filterType: 'string',
 			width: 80,
@@ -100,7 +106,7 @@ const TableSelectUser = (props: {
 			onCell,
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'thongbao.select.user.column.hoten' }),
 			dataIndex: 'fullname',
 			filterType: 'string',
 			width: 180,
@@ -108,7 +114,7 @@ const TableSelectUser = (props: {
 		},
 		type === EVaiTroKhaoSat.SINH_VIEN
 			? {
-					title: 'Trạng thái học',
+					title: intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
 					dataIndex: 'trangThaiSinhVien',
 					align: 'center',
 					width: 120,
@@ -118,7 +124,7 @@ const TableSelectUser = (props: {
 					onCell,
 				}
 			: {
-					title: 'Trạng thái',
+					title: intl.formatMessage({ id: 'thongbao.select.user.column.trangthai' }),
 					dataIndex: 'trangThai',
 					align: 'center',
 					width: 120,
@@ -157,7 +163,7 @@ const TableSelectUser = (props: {
 									checked={checked}
 									onChange={(e) => handleCheckBox(e.target.checked)}
 								>
-									Cán bộ chủ chốt
+									{intl.formatMessage({ id: 'thongbao.select.user.checkbox.canbo' })}
 								</Checkbox>
 							) : (
 								<></>
@@ -169,7 +175,7 @@ const TableSelectUser = (props: {
 								type='default'
 								size='small'
 							>
-								Nhập dữ liệu
+								{intl.formatMessage({ id: 'thongbao.select.user.button.nhapdulieu' })}
 							</ButtonExtend>,
 						]}
 					/>
@@ -179,7 +185,10 @@ const TableSelectUser = (props: {
 						{selectedUsers?.length ? (
 							<GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} type={type} />
 						) : (
-							<Empty style={{ marginTop: 32, marginBottom: 32 }} description='Không có dữ liệu' />
+							<Empty
+								style={{ marginTop: 32, marginBottom: 32 }}
+								description={intl.formatMessage({ id: 'thongbao.select.user.description.khongcodulieu' })}
+							/>
 						)}
 					</div>
 				</Col>

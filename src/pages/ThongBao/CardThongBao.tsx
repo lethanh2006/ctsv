@@ -11,7 +11,7 @@ import { currentRole } from '@/utils/ip';
 import { DeleteOutlined, EyeOutlined, LeftOutlined, PlusCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Popconfirm, Segmented, Space } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import news from '../../assets/new6.gif';
 import { kiemTraPhanVung } from '../../utils/constants';
 import Form from './components/Form';
@@ -20,6 +20,7 @@ import ViewThongBao from './ViewThongBao/CardView';
 import TableReceiverThongBao from './ViewThongBao/TableReceiver';
 
 const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) => {
+	const intl = useIntl();
 	const { notiType, activeKey } = props;
 	const {
 		page,
@@ -79,14 +80,14 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 
 	const columns: IColumn<ThongBao.IRecord>[] = [
 		{
-			title: 'Người gửi',
+			title: intl.formatMessage({ id: 'thongbao.card.column.nguoigui' }),
 			dataIndex: 'senderName',
 			width: 150,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Tiêu đề',
+			title: intl.formatMessage({ id: 'thongbao.card.column.tieude' }),
 			dataIndex: 'title',
 			width: 200,
 			filterType: 'string',
@@ -105,7 +106,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 			),
 		},
 		{
-			title: 'Nhãn dán',
+			title: intl.formatMessage({ id: 'thongbao.card.column.nhandan' }),
 			dataIndex: 'idTagEmail',
 			width: 150,
 			render: (val, recordVal) => recordVal?.tagEmail?.ten,
@@ -113,7 +114,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 			hide: notiType === NotificationType.ONESIGNAL,
 		},
 		{
-			title: 'Mô tả',
+			title: intl.formatMessage({ id: 'thongbao.card.column.mota' }),
 			dataIndex: 'description',
 			width: 280,
 			filterType: 'string',
@@ -121,7 +122,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Danh sách người nhận',
+			title: intl.formatMessage({ id: 'thongbao.card.column.danhsachnguoinhan' }),
 			align: 'center',
 			width: 90,
 			render: (val, rec) => (
@@ -131,12 +132,12 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 						setVisibleNguoiNhan(true);
 					}}
 				>
-					Xem
+					{intl.formatMessage({ id: 'thongbao.link.xem' })}
 				</a>
 			),
 		},
 		{
-			title: 'Thời gian gửi',
+			title: intl.formatMessage({ id: 'thongbao.card.column.thoigiangui' }),
 			dataIndex: 'createdAt',
 			width: 120,
 			align: 'center',
@@ -146,7 +147,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'thongbao.card.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
@@ -156,7 +157,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 				return (
 					<>
 						<ButtonExtend
-							tooltip='Xem chi tiết'
+							tooltip={intl.formatMessage({ id: 'thongbao.tooltip.xemchitiet' })}
 							onClick={() => {
 								setRecord(recordThongBao);
 								setVisible(true);
@@ -169,10 +170,10 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 								onConfirm={() => {
 									deleteModel(recordThongBao._id, getData);
 								}}
-								title='Bạn có chắc chắn muốn xóa?'
+								title={intl.formatMessage({ id: 'thongbao.confirm.xoa' })}
 							>
 								<ButtonExtend
-									tooltip='Xóa'
+									tooltip={intl.formatMessage({ id: 'thongbao.tooltip.xoa' })}
 									disabled={activeKey === 'tu_dong' || !isPhanVung}
 									shape='circle'
 									type='link'
@@ -199,24 +200,24 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 						setType(key);
 					}}
 					options={[
-						{ value: 'MONTH', label: 'Theo tháng' },
-						{ value: 'WEEK', label: 'Theo tuần' },
-						{ value: 'DAY', label: 'Theo ngày' },
+						{ value: 'MONTH', label: intl.formatMessage({ id: 'thongbao.segmented.theothang' }) },
+						{ value: 'WEEK', label: intl.formatMessage({ id: 'thongbao.segmented.theotuan' }) },
+						{ value: 'DAY', label: intl.formatMessage({ id: 'thongbao.segmented.theongay' }) },
 					]}
 				/>
 
 				{type === 'WEEK' && (
 					<Space>
 						<Button onClick={() => setStartDate(startDate.subtract(7, 'day'))}>
-							<LeftOutlined /> Tuần trước
+							<LeftOutlined /> {intl.formatMessage({ id: 'thongbao.button.tuantruoc' })}
 						</Button>
-						<span>
-							Tuần: {startDay} - {endDay}
-						</span>
+						<span>{intl.formatMessage({ id: 'thongbao.label.tuan' }, { startDay, endDay })}</span>
 						<Button onClick={() => setStartDate(startDate.add(7, 'day'))}>
-							Tuần sau <RightOutlined />
+							{intl.formatMessage({ id: 'thongbao.button.tuansau' })} <RightOutlined />
 						</Button>
-						<a onClick={() => setStartDate(dayjs().startOf('week'))}>Tuần này</a>
+						<a onClick={() => setStartDate(dayjs().startOf('week'))}>
+							{intl.formatMessage({ id: 'thongbao.button.tuannay' })}
+						</a>
 					</Space>
 				)}
 				{type === 'DAY' && (
@@ -245,7 +246,9 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 			</Space>
 
 			<TableBase
-				title={notiType === NotificationType.ONESIGNAL ? 'Thông báo' : 'Gửi Email'}
+				title={intl.formatMessage({
+					id: notiType === NotificationType.ONESIGNAL ? 'thongbao.title.thongbao' : 'thongbao.title.guiemail',
+				})}
 				columns={columns}
 				modelName='thongbao.thongbao'
 				widthDrawer={1000}
@@ -269,9 +272,9 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 								icon={<PlusCircleOutlined />}
 								type='primary'
 								notHideText
-								tooltip='Thêm mới dữ liệu'
+								tooltip={intl.formatMessage({ id: 'thongbao.tooltip.themmoidulieu' })}
 							>
-								Thêm mới
+								{intl.formatMessage({ id: 'global.button.themmoi' })}
 							</ButtonExtend>
 							<ButtonExtend
 								key='1'
@@ -280,7 +283,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 									setVisibleThongBaoDanhSach(true);
 								}}
 							>
-								Thông báo tùy chỉnh
+								{intl.formatMessage({ id: 'thongbao.button.thongbaotuychinh' })}
 							</ButtonExtend>
 						</>
 					) : (
@@ -293,7 +296,7 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 				width={800}
 				styles={{ body: { padding: 0 } }}
 				okButtonProps={{ hidden: true }}
-				cancelText='Đóng'
+				cancelText={intl.formatMessage({ id: 'global.button.dong' })}
 				open={visible}
 				onCancel={() => setVisible(false)}
 				destroyOnClose
@@ -302,10 +305,10 @@ const CardThongBao = (props: { notiType: NotificationType; activeKey: string }) 
 			</ModalExpandable>
 
 			<ModalExpandable
-				title='Danh sách người nhận'
+				title={intl.formatMessage({ id: 'thongbao.modal.title.danhsachnguoinhan' })}
 				width={800}
 				okButtonProps={{ hidden: true }}
-				cancelText='Đóng'
+				cancelText={intl.formatMessage({ id: 'global.button.dong' })}
 				open={visibleNguoiNhan}
 				onCancel={() => setVisibleNguoiNhan(false)}
 				destroyOnClose
