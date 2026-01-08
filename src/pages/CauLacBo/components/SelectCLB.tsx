@@ -1,7 +1,7 @@
 import type { HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectCLB = (props: {
 	value?: string;
@@ -15,6 +15,7 @@ const SelectCLB = (props: {
 	keyValue?: string;
 	placeHolder?: string;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, keyValue, disabled, placeHolder } =
 		props;
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('caulacbo.caulacbo');
@@ -36,7 +37,7 @@ const SelectCLB = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeHolder || 'Lọc theo câu lạc bộ'}
+			placeholder={placeHolder || intl.formatMessage({ id: 'tuansinhhoatcongdan.select.clb' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			loading={loading}

@@ -15,6 +15,24 @@ export enum EHoatDongChungType2 {
 	NGOAI_HOC_VIEN = 'Ngoài Học viện',
 }
 
+export const EHoatDongChungType2I18n: Record<EHoatDongChungType2, string> = {
+	[EHoatDongChungType2.CA_NHAN]: 'hoatdongchung.CA_NHAN',
+	[EHoatDongChungType2.TAT_CA]: 'hoatdongchung.TAT_CA',
+	[EHoatDongChungType2.TUAN_LE_CONG_DAN]: 'hoatdongchung.TUAN_LE_CONG_DAN',
+	[EHoatDongChungType2.CAC_HOAT_DONG]: 'hoatdongchung.CAC_HOAT_DONG',
+	[EHoatDongChungType2.DAO_TAO_BOI_DUONG]: 'hoatdongchung.DAO_TAO_BOI_DUONG',
+	[EHoatDongChungType2.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO]: 'hoatdongchung.HOP_TAC_NGUYEN_CUU_CHUYEN_GAO',
+	[EHoatDongChungType2.THUC_THI_CHINH_SACH]: 'hoatdongchung.THUC_THI_CHINH_SACH',
+	[EHoatDongChungType2.HOAT_DONG_XA_HOI]: 'hoatdongchung.HOAT_DONG_XA_HOI',
+	[EHoatDongChungType2.VAN_HOA_VAN_NGHE_THE_THAO]: 'hoatdongchung.VAN_HOA_VAN_NGHE_THE_THAO',
+	[EHoatDongChungType2.HOAT_DONG_CAU_LAC_BO]: 'hoatdongchung.HOAT_DONG_CAU_LAC_BO',
+	[EHoatDongChungType2.KHAC]: 'hoatdongchung.KHAC',
+	[EHoatDongChungType2.HUONG_NGHIEP_VIEC_LAM]: 'hoatdongchung.HUONG_NGHIEP_VIEC_LAM',
+	[EHoatDongChungType2.HOAT_DONG_HUY_DONG_GIAO_DUC_TU_TUONG_CHINH_TRI]:
+		'hoatdongchung.HOAT_DONG_HUY_DONG_GIAO_DUC_TU_TUONG_CHINH_TRI',
+	[EHoatDongChungType2.NGOAI_HOC_VIEN]: 'hoatdongchung.NGOAI_HOC_VIEN',
+};
+
 export enum ELoaiSuKienSinhVien {
 	NGAY_HOI_VIEC_LAM = 'Ngày hội việc làm',
 	HOI_THAO_CHUYEN_DE_VIEC_LAM = 'Hội thảo, nói chuyện chuyên đề về việc làm',

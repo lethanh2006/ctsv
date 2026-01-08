@@ -9,10 +9,11 @@ import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/ic
 import { Modal, Popconfirm, Table } from 'antd';
 import _ from 'lodash';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormDuToanKinhPhi from './FormDuToanKinhPhi';
 
 const TableDuToanKinhPhi = () => {
+	const intl = useIntl();
 	const { record: recHoatDong, setRecord: setRecHoatDong } = useModel('hoatdongchung');
 	const [visibleForm, setVisibleForm] = useState(false);
 	const [recDuToan, setRecDuToan] = useState<HoatDongChung.IDuToanKinhPhi>();
@@ -28,7 +29,7 @@ const TableDuToanKinhPhi = () => {
 
 	const columns: IColumn<HoatDongChung.IDuToanKinhPhi & { index: number }>[] = [
 		{
-			title: 'Chi tiết công việc',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.chitiet' }),
 			dataIndex: 'hoatDong',
 			width: 180,
 			filterType: 'string',
@@ -36,42 +37,41 @@ const TableDuToanKinhPhi = () => {
 			onCell,
 		},
 		{
-			title: 'ĐVT',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.dvt' }),
 			dataIndex: 'donViTinh',
 			align: 'center',
 			width: 120,
 			onCell,
 		},
 		{
-			title: 'Số lượng',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.soluong' }),
 			width: 260,
 			children: [
 				{
-					title: 'Người',
+					title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.nguoi' }),
 					dataIndex: 'soLuongNguoi',
 					align: 'center',
 					width: 80,
 					onCell,
 				},
 				{
-					title: 'Ngày',
+					title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.ngay' }),
 					dataIndex: 'soLuongNgay',
 					align: 'center',
 					width: 80,
 					onCell,
 				},
 				{
-					title: 'Khác',
+					title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.khac' }),
 					dataIndex: 'soLuongKhac',
 					align: 'center',
 					width: 80,
-
 					onCell,
 				},
 			],
 		},
 		{
-			title: 'Định mức (VNĐ)',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.dinhmuc' }),
 			dataIndex: 'dinhMuc',
 			align: 'center',
 			width: 100,
@@ -81,7 +81,7 @@ const TableDuToanKinhPhi = () => {
 			onCell,
 		},
 		{
-			title: 'Thành tiền (VNĐ)',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.thanhtien' }),
 			align: 'center',
 			width: 120,
 			render: (val, rec) =>
@@ -91,32 +91,32 @@ const TableDuToanKinhPhi = () => {
 			onCell,
 		},
 		{
-			title: 'Tiến độ hoàn thành',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.tiendo' }),
 			dataIndex: 'tienDoHoanThanh',
 			width: 120,
 			onCell,
 		},
 		{
-			title: 'Chứng từ yêu cầu',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.chungtu' }),
 			dataIndex: 'chungTuYeuCau',
 			width: 150,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Ghi chú',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.ghichu' }),
 			dataIndex: 'ghiChu',
 			width: 150,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (val, rec, index) => (
 				<>
 					<ButtonExtend
-						tooltip='Chỉnh sửa'
+						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
 						type='link'
 						onClick={() => {
 							setRecDuToan(rec);
@@ -136,10 +136,15 @@ const TableDuToanKinhPhi = () => {
 										.map((item, ind) => ({ ...item, index: ind })) ?? [],
 							} as HoatDongChung.IRecord);
 						}}
-						title='Bạn có chắc chắn muốn xóa?'
+						title={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.comfirm.xoa' })}
 						placement='topRight'
 					>
-						<ButtonExtend tooltip='Xóa' danger type='link' icon={<DeleteOutlined />} />
+						<ButtonExtend
+							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+							danger
+							type='link'
+							icon={<DeleteOutlined />}
+						/>
 					</Popconfirm>
 				</>
 			),
@@ -153,32 +158,35 @@ const TableDuToanKinhPhi = () => {
 				columns={columns}
 				size='small'
 				addStt
-				otherProps={{
-					pagination: false,
-					scroll: { y: 250 },
-					summary: (pageData: HoatDongChung.IDuToanKinhPhi[]) => {
-						const tongTien = _.sumBy(
-							pageData,
-							(item) => (item?.soLuongNguoi ?? 1) * (item?.soLuongNgay ?? 1) * (item?.soLuongKhac ?? 1) * item?.dinhMuc,
-						);
-						return (
-							<Table.Summary fixed>
-								<Table.Summary.Row>
-									<Table.Summary.Cell align='center' index={0} colSpan={7}>
-										<b>Tổng tiền</b>
-									</Table.Summary.Cell>
-									<Table.Summary.Cell align='right' index={1}>
-										<b> {inputFormat(tongTien ?? 0)} VNĐ</b>
-									</Table.Summary.Cell>
-									<Table.Summary.Cell index={2} />
-									<Table.Summary.Cell index={3} />
-									<Table.Summary.Cell index={4} />
-									<Table.Summary.Cell index={5} />
-								</Table.Summary.Row>
-							</Table.Summary>
-						);
-					},
-				}}
+				otherProps={
+					{
+						pagination: false,
+						scroll: { y: 250 },
+						summary: (pageData: HoatDongChung.IDuToanKinhPhi[]) => {
+							const tongTien = _.sumBy(
+								pageData,
+								(item) =>
+									(item?.soLuongNguoi ?? 1) * (item?.soLuongNgay ?? 1) * (item?.soLuongKhac ?? 1) * item?.dinhMuc,
+							);
+							return (
+								<Table.Summary fixed>
+									<Table.Summary.Row>
+										<Table.Summary.Cell align='center' index={0} colSpan={7}>
+											<b>{intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.tongtien' })}</b>
+										</Table.Summary.Cell>
+										<Table.Summary.Cell align='right' index={1}>
+											<b> {inputFormat(tongTien ?? 0)} VNĐ</b>
+										</Table.Summary.Cell>
+										<Table.Summary.Cell index={2} />
+										<Table.Summary.Cell index={3} />
+										<Table.Summary.Cell index={4} />
+										<Table.Summary.Cell index={5} />
+									</Table.Summary.Row>
+								</Table.Summary>
+							);
+						},
+					} as any
+				}
 				hasTotal
 			>
 				<ButtonExtend
@@ -191,13 +199,17 @@ const TableDuToanKinhPhi = () => {
 					size='small'
 					type='primary'
 				>
-					Thêm mới
+					{intl.formatMessage({ id: 'global.button.themmoi' })}
 				</ButtonExtend>
 			</TableStaticData>
 
 			<Modal
 				destroyOnClose
-				title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} dự toán kinh phí`}
+				title={
+					edit
+						? intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.chinhsua' })
+						: intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.themmoi' })
+				}
 				open={visibleForm}
 				width={800}
 				footer={null}
