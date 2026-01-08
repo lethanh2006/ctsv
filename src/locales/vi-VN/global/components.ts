@@ -210,5 +210,5 @@ export default {
 	'global.uploadfile.text1': 'Thêm ảnh đại diện',
 	'global.uploadfile.button.chontep': 'Chọn tệp',
 
-	'global.column.action': 'Thao tác',
+	'global.placeholder.ngay': 'Chọn ngày',
 };

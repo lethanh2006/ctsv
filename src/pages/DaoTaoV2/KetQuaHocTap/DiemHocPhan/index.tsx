@@ -5,19 +5,20 @@ import type { IColumn } from '@/components/Table/typing';
 
 import type { SinhVien } from '@/services/SinhVien/typings';
 
+import { ELoaiDiemChu } from '@/services/DaoTaoV2/KetQuaHocTap/constant';
+import { exportKetQuaHocTap, exportPhuLucVanBang } from '@/services/DaoTaoV2/SinhVien';
+import { ETrangThaiDiemHocPhanSv } from '@/services/SinhVien/constant';
 import { ExportOutlined, PrinterOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Space } from 'antd';
 import fileDownload from 'js-file-download';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import TitlePrintKQHT from '../KetQuaHocKy/components/TitlePrintKQHT';
-import { ELoaiDiemChu } from '@/services/DaoTaoV2/KetQuaHocTap/constant';
-import { exportPhuLucVanBang, exportKetQuaHocTap } from '@/services/DaoTaoV2/SinhVien';
-import { ETrangThaiDiemHocPhanSv } from '@/services/SinhVien/constant';
 
 /** Bảng Điểm học phần (cuối cùng) của sinh viên */
 const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string }) => {
+	const intl = useIntl();
 	const { getAllModel, danhSach } = useModel('daotaov2.sinhvien.diemhocphan');
 	const { record } = useModel('daotaov2.namhoc.sinhvienlophanhchinh');
 	const { record: recSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
@@ -35,7 +36,11 @@ const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string
 	const reactToPrintContent = useCallback(() => componentRef.current, [componentRef.current]);
 
 	const reactToPrintTrigger = useCallback(
-		() => <ButtonExtend icon={<PrinterOutlined />}>In bảng điểm</ButtonExtend>,
+		() => (
+			<ButtonExtend icon={<PrinterOutlined />}>
+				{intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.button.inbangdiem' })}
+			</ButtonExtend>
+		),
 		[],
 	);
 
@@ -49,9 +54,13 @@ const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string
 			}).then((res) => {
 				fileDownload(
 					res.data,
-					`Phụ lục văn bằng - ${record?.sinhVien?.ma ?? recSinhVien?.ma} - ${
-						record?.sinhVien?.ten ?? recSinhVien?.ten
-					}.pdf`,
+					intl.formatMessage(
+						{ id: 'sinhvienhocvu.bangdiemhp.filename.phulucvb' },
+						{
+							maSv: record?.sinhVien?.ma ?? recSinhVien?.ma,
+							tenSv: record?.sinhVien?.ten ?? recSinhVien?.ten,
+						},
+					),
 				);
 				setLoadingExport(false);
 			});
@@ -68,9 +77,13 @@ const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string
 			}).then((res) => {
 				fileDownload(
 					res.data,
-					`Kết quả học tập tích lũy - ${record?.sinhVien?.ma ?? recSinhVien?.ma} - ${
-						record?.sinhVien?.ten ?? recSinhVien?.ten
-					}.pdf`,
+					intl.formatMessage(
+						{ id: 'sinhvienhocvu.bangdiemhp.filename.bangdiemtichluy' },
+						{
+							maSv: record?.sinhVien?.ma ?? recSinhVien?.ma,
+							tenSv: record?.sinhVien?.ten ?? recSinhVien?.ten,
+						},
+					),
 				);
 				setLoadingExport(false);
 			});
@@ -79,38 +92,38 @@ const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string
 
 	const columns: IColumn<SinhVien.IDiemHocPhanSv>[] = [
 		{
-			title: 'Mã HP',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.column.mahp' }),
 			dataIndex: 'maHocPhan',
 			width: 80,
 			align: 'center',
 			filterType: 'string',
 		},
 		{
-			title: 'Tên học phần',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.column.tenhocphan' }),
 			dataIndex: ['hocPhan', 'ten'],
 			width: 200,
 			filterType: 'string',
 		},
 		{
-			title: 'Số TC',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.column.sotc' }),
 			dataIndex: ['hocPhan', 'soTinChi'],
 			width: 80,
 			align: 'center',
 		},
 		{
-			title: 'Điểm hệ 10',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.column.diemhe10' }),
 			dataIndex: 'diemTongKet',
 			width: 80,
 			align: 'center',
 		},
 		{
-			title: 'Điểm hệ 4',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.column.diemhe4' }),
 			dataIndex: 'diemThang4',
 			width: 80,
 			align: 'center',
 		},
 		{
-			title: 'Điểm chữ',
+			title: intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.column.diemchu' }),
 			dataIndex: 'diemChu',
 			width: 80,
 			align: 'center',
@@ -130,18 +143,22 @@ const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string
 				<Dropdown
 					overlay={
 						<Menu>
-							<Menu.Item onClick={() => onExportBangDiemToanKhoa()}>Bảng điểm tích lũy</Menu.Item>
-							<Menu.Item onClick={() => onExportPhuLucVanBang()}>Phụ lục văn bằng</Menu.Item>
+							<Menu.Item onClick={() => onExportBangDiemToanKhoa()}>
+								{intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.button.bangdiemtichluy' })}
+							</Menu.Item>
+							<Menu.Item onClick={() => onExportPhuLucVanBang()}>
+								{intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.button.phulucvb' })}
+							</Menu.Item>
 						</Menu>
 					}
 				>
 					<ButtonExtend loading={loadingExport} icon={<ExportOutlined />}>
-						Xuất bảng điểm
+						{intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.button.xuatbangdiem' })}
 					</ButtonExtend>
 				</Dropdown>
 				<ReactToPrint
 					content={reactToPrintContent}
-					documentTitle='Bảng điểm học phần sinh viên'
+					documentTitle={intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.title' })}
 					trigger={reactToPrintTrigger}
 					removeAfterPrint
 				/>
@@ -155,7 +172,10 @@ const DiemHocPhanSvTable = (props: { sinhVienSsoId: string; maKhoaNganh?: string
 				addStt
 			/>
 
-			<PrintTemplate ref={componentRef} tenPhongBan={'Phòng Đào tạo'}>
+			<PrintTemplate
+				ref={componentRef}
+				tenPhongBan={intl.formatMessage({ id: 'sinhvienhocvu.bangdiemhp.tenphongban' })}
+			>
 				<TitlePrintKQHT />
 				<div className='to-print'>
 					<TableStaticData columns={columns} data={danhSach} size='small' otherProps={{ pagination: false }} addStt />

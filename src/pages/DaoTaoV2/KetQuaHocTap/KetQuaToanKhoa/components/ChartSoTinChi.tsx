@@ -1,29 +1,30 @@
-import vi from '@/components/Chart/vi.json';
+// import vi from '@/components/Chart/vi.json';
 import { type ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ChartSoTinChi = () => {
+	const intl = useIntl();
 	const { danhSach } = useModel('daotaov2.ketquahoctap.ketquahocky');
 
 	const series = [
 		{
-			name: 'Số TC tích lũy HK',
+			name: intl.formatMessage({ id: 'sinhvienhocvu.chart.sotinchi' }),
 			group: 'dat',
 			data: danhSach.map((item) => item.tongSoTinChiTichLuyHocKy),
 		},
 		{
-			name: 'Tổng số TC tích luỹ',
+			name: intl.formatMessage({ id: 'sinhvienhocvu.chart.tongsotinchi' }),
 			group: 'tichluy',
 			data: danhSach.map((item) => item.tongSoTinChiTichLuyToanKhoa),
 		},
 		{
-			name: 'Số TC nợ trong HK',
+			name: intl.formatMessage({ id: 'sinhvienhocvu.chart.sotinchinohk' }),
 			group: 'dat',
 			data: danhSach.map((item) => item.tongSoTinChiNoHocKy),
 		},
 		{
-			name: 'Tổng số TC nợ',
+			name: intl.formatMessage({ id: 'sinhvienhocvu.chart.tongsotinchino' }),
 			group: 'tichluy',
 			data: danhSach.map((item) => item.tongSoTinChiNoToanKhoa),
 		},
@@ -32,11 +33,11 @@ const ChartSoTinChi = () => {
 	const options: ApexOptions = {
 		chart: {
 			defaultLocale: 'vi',
-			locales: [vi],
+			// locales: [vi],
 			stacked: true,
 		},
 		title: {
-			text: 'Số tín chỉ',
+			text: intl.formatMessage({ id: 'sinhvienhocvu.chart.title.sotinchi' }),
 			align: 'left',
 			style: {
 				fontSize: '14px',

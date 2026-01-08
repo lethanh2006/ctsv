@@ -2,6 +2,7 @@ import { getPhuongXa } from '@/services/Core/DonViHanhChinh';
 import { type DonViHanhChinh } from '@/services/Core/DonViHanhChinh/typing';
 import type { SinhVien } from '@/services/SinhVien/typings';
 import rules from '@/utils/rules';
+import { useIntl } from '@umijs/max';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 
@@ -12,6 +13,7 @@ const SelectDiaChiHoSoFormItem = (props: {
 	listTinh?: DonViHanhChinh.IRecord[];
 	hasSoNha?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, listTinh, hasSoNha } = props;
 	const [listHuyen, setListHuyen] = useState<DonViHanhChinh.IRecord[]>([]);
 	const [listXa, setListXa] = useState<DonViHanhChinh.IRecord[]>([]);
@@ -49,9 +51,9 @@ const SelectDiaChiHoSoFormItem = (props: {
 	return (
 		<Row gutter={[12, 0]}>
 			<Col span={12} md={hasSoNha ? 8 : 12}>
-				<Form.Item label='Tỉnh/Thành phố'>
+				<Form.Item label={intl.formatMessage({ id: 'donvihanhchinh.tinhthanhpho.place' })}>
 					<Select
-						placeholder='Chọn tỉnh/thành phố'
+						placeholder={intl.formatMessage({ id: 'donvihanhchinh.chontinhthanhpho.place' })}
 						options={listTinh?.map((item) => ({
 							key: item.ma,
 							value: item.ma,
@@ -84,9 +86,9 @@ const SelectDiaChiHoSoFormItem = (props: {
 				</Form.Item>
 			</Col> */}
 			<Col span={12} md={hasSoNha ? 8 : 12}>
-				<Form.Item label='Phường/Xã'>
+				<Form.Item label={intl.formatMessage({ id: 'donvihanhchinh.phuongxa.place' })}>
 					<Select
-						placeholder='Chọn phường/xã'
+						placeholder={intl.formatMessage({ id: 'donvihanhchinh.chonphuongxa.place' })}
 						allowClear
 						showSearch
 						options={(listXa ?? []).map((item) => ({
@@ -94,7 +96,7 @@ const SelectDiaChiHoSoFormItem = (props: {
 							value: item.ma,
 							label: item.tenDonVi,
 						}))}
-						notFoundContent={!value?.maQH ? 'Chọn quận/huyện phố trước' : undefined}
+						notFoundContent={!value?.maQH ? intl.formatMessage({ id: 'donvihanhchinh.note.place' }) : undefined}
 						value={value?.maXaPhuong}
 						onChange={(val, opt: any) => onChangeXaPhuong(opt.value, opt.label)}
 						optionFilterProp='label'
@@ -103,9 +105,12 @@ const SelectDiaChiHoSoFormItem = (props: {
 			</Col>
 			{hasSoNha ? (
 				<Col span={12} md={8}>
-					<Form.Item label='Số nhà/Tên đường' rules={[...rules.text, ...rules.length(250)]}>
+					<Form.Item
+						label={intl.formatMessage({ id: 'donvihanhchinh.sonha.place' })}
+						rules={[...rules.text, ...rules.length(250)]}
+					>
 						<Input
-							placeholder='Nhập số nhà/tên đường'
+							placeholder={intl.formatMessage({ id: 'donvihanhchinh.nhapsonha.place' })}
 							value={value?.diaChi}
 							onChange={(e) => onChangeDiaChi(e.target.value)}
 						/>

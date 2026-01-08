@@ -1,4 +1,5 @@
 import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Form } from 'antd';
@@ -6,7 +7,6 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectLopHanhChinhCondition from '../LopHanhChinh/components/SelectLopHanhChinhCondition';
 import SelectNamHoc from '../NamHoc/components/Select';
-import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 
 const FormCoVanHocTap = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRecord }) => {
 	const intl = useIntl();
@@ -37,24 +37,49 @@ const FormCoVanHocTap = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRec
 			tenLopHc: props?.lopHanhChinh?.ten || values?.tenLopHc,
 		};
 		if (edit) {
-			putModel(record?._id ?? '', payload, props.getData);
+			putModel(
+				record?._id ?? '',
+				payload,
+				props.getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			);
 		} else {
-			postModel(payload, props.getData);
+			postModel(payload, props.getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 		}
 	};
 
 	return (
-		<Card title={!edit ? 'Thêm cố vấn học tập' : 'Chỉnh sửa cố vấn học tập'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'lophanhchinh.step.cvht.form.chinhsua' })
+					: intl.formatMessage({ id: 'lophanhchinh.step.cvht.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Form.Item rules={[...rules.required]} name='maNamHoc' label='Năm học'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='maNamHoc'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.cvht.form.namhoc' })}
+				>
 					<SelectNamHoc selectMa />
 				</Form.Item>
 				{!props.lopHanhChinh?._id && (
-					<Form.Item rules={[...rules.required]} name='tenLopHc' label='Lớp hành chính'>
+					<Form.Item
+						rules={[...rules.required]}
+						name='tenLopHc'
+						label={intl.formatMessage({ id: 'lophanhchinh.step.cvht.form.lhc' })}
+					>
 						<SelectLopHanhChinhCondition keyName='ten' />
 					</Form.Item>
 				)}
-				<Form.Item rules={[...rules.required]} name='nhanSuSsoId' label='Cán bộ/giảng viên'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='nhanSuSsoId'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.cvht.form.canbo' })}
+				>
 					<SelectNhanSuDebounce />
 				</Form.Item>
 

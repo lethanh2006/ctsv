@@ -1,12 +1,13 @@
+import { TrangThaiThamGia } from '@/services/HoatDongChung/constants';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Form } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectSinhVienDebounce from '../DaoTaoV2/SinhVien/component/Select';
-import { TrangThaiThamGia } from '@/services/HoatDongChung/constants';
 
 const FormDanhSachSinhVien = (props: { getData: any; hoatDongCtsvId: string; trangThai: string }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, formSubmiting, visibleForm } = useModel('danhsachsinhvienhoatdong');
 
@@ -26,21 +27,31 @@ const FormDanhSachSinhVien = (props: { getData: any; hoatDongCtsvId: string; tra
 			hoatDongCtsvId: props.hoatDongCtsvId,
 			trangThaiThamGia: props.trangThai === 'tham-gia' ? TrangThaiThamGia.THAM_GIA : undefined,
 		};
-		postModel(payload, props.getData);
+		postModel(payload, props.getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 	};
 
 	return (
-		<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'danh mục chung'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.form.chinhsua' })
+					: intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Form.Item name='ssoId' label='Sinh viên' rules={[...rules.required]}>
+				<Form.Item
+					name='ssoId'
+					label={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.form.sinhvien' })}
+					rules={[...rules.required]}
+				>
 					<SelectSinhVienDebounce />
 				</Form.Item>
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{'Thêm mới'}
+						{intl.formatMessage({ id: 'global.button.themmoi' })}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>

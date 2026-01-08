@@ -4,7 +4,7 @@ import rules from '@/utils/rules';
 import { Col, Form, type FormInstance, Input, Select } from 'antd';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectDonViHanhChinh = (props: {
 	form: FormInstance<any>;
@@ -12,6 +12,7 @@ const SelectDonViHanhChinh = (props: {
 	listTinh?: DonViHanhChinh.IRecord[];
 	hasSoNha?: boolean;
 }) => {
+	const intl = useIntl();
 	const { form, suffix, listTinh, hasSoNha } = props;
 	const { record: recSinhVien } = useModel('sinhvien.sinhvien');
 	const [idTinh, setIdTinh] = useState<string>();
@@ -51,9 +52,9 @@ const SelectDonViHanhChinh = (props: {
 	return (
 		<>
 			<Col span={12} md={hasSoNha ? 8 : 12}>
-				<Form.Item name={'tinhTp' + suffix} label='Tỉnh/Thành phố'>
+				<Form.Item name={'tinhTp' + suffix} label={intl.formatMessage({ id: 'donvihanhchinh.tinhthanhpho.place' })}>
 					<Select
-						placeholder='Chọn tỉnh/thành phố'
+						placeholder={intl.formatMessage({ id: 'donvihanhchinh.chontinhthanhpho.place' })}
 						options={listTinh?.map((item) => ({
 							key: item.ma,
 							value: item.tenDonVi,
@@ -83,9 +84,9 @@ const SelectDonViHanhChinh = (props: {
 				</Form.Item>
 			</Col> */}
 			<Col span={12} md={hasSoNha ? 8 : 12}>
-				<Form.Item name={'xaPhuong' + suffix} label='Phường/Xã'>
+				<Form.Item name={'xaPhuong' + suffix} label={intl.formatMessage({ id: 'donvihanhchinh.phuongxa.place' })}>
 					<Select
-						placeholder='Chọn phường/xã'
+						placeholder={intl.formatMessage({ id: 'donvihanhchinh.chonphuongxa.place' })}
 						allowClear
 						showSearch
 						options={(listXa ?? []).map((item) => ({
@@ -101,10 +102,10 @@ const SelectDonViHanhChinh = (props: {
 				<Col span={12} md={8}>
 					<Form.Item
 						name={'soNhaTenDuong' + suffix}
-						label='Số nhà/Tên đường'
+						label={intl.formatMessage({ id: 'donvihanhchinh.sonha.place' })}
 						rules={[...rules.text, ...rules.length(250)]}
 					>
-						<Input placeholder='Nhập số nhà/tên đường' />
+						<Input placeholder={intl.formatMessage({ id: 'donvihanhchinh.nhapsonha.place' })} />
 					</Form.Item>
 				</Col>
 			) : null}

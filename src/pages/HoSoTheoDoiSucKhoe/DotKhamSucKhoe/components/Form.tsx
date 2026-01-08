@@ -4,9 +4,10 @@ import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Input, Row } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const {
 		record,
@@ -38,11 +39,18 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 	const onFinish = async (values: any) => {
 		const data = { ...values, maHocKy: recHocKy?.ma, tenHocKy: recHocKy?.ten };
 		if (edit) {
-			putModel(record?._id ?? '', data, getData, undefined, false)
+			putModel(
+				record?._id ?? '',
+				data,
+				getData,
+				undefined,
+				false,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(data, getData, false)
+			postModel(data, getData, false, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then((rec) => {
 					setRecord(rec);
 					setEdit(true);
@@ -55,47 +63,59 @@ const FormDotKhamSucKhoe = (props: { afterAddNew?: (rec: any) => void }) => {
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col xs={24} md={12}>
-					<Form.Item label='Kỳ học'>
+					<Form.Item label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.hocky' })}>
 						<Input disabled value={recHocKy?.ten} />
 					</Form.Item>
 				</Col>
 				<Col xs={24} md={12}>
 					<Form.Item
 						name='ten'
-						label='Tên đợt đăng ký'
+						label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.tendot' })}
 						rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 					>
-						<Input placeholder='Nhập tên đợt đăng ký' />
+						<Input placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.tendot.place' })} />
 					</Form.Item>
 				</Col>
 
 				<Col xs={24} md={12}>
-					<Form.Item name='thoiGianBatDau' label='Thời gian bắt đầu' rules={[...rules.required]}>
+					<Form.Item
+						name='thoiGianBatDau'
+						label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.tgbd' })}
+						rules={[...rules.required]}
+					>
 						<MyDatePicker
 							onChange={(val) => {
 								form.validateFields(['thoiGianKetThuc']);
 							}}
 							format='DD/MM/YYYY'
 							showTime
+							placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.tgbd.place' })}
 						/>
 					</Form.Item>
 				</Col>
 				<Col xs={24} md={12}>
 					<Form.Item
 						name='thoiGianKetThuc'
-						label='Thời gian kết thúc'
+						label={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.tgkt' })}
 						rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'Thời gian bắt đầu')]}
 					>
-						<MyDatePicker format='DD/MM/YYYY' showTime disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)} />
+						<MyDatePicker
+							format='DD/MM/YYYY'
+							showTime
+							disabledDate={(cur) => dayjs(cur).isBefore(thoiGianBatDau)}
+							placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.thongtinchung.form.tgkt.place' })}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>
 
 			<div className='form-footer'>
 				<Button loading={formSubmiting} htmlType='submit' type='primary'>
-					{!edit ? 'Thêm mới' : 'Lưu lại'}
+					{!edit
+						? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+						: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 				</Button>
-				<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 			</div>
 		</Form>
 	);

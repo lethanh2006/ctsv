@@ -6,9 +6,10 @@ import { inputFormat } from '@/utils/utils';
 import { Button, Col, Form, Input, InputNumber, Row } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToanKinhPhi; edit: boolean }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 
 	const { setRecord, record } = useModel('hoatdongchung');
@@ -43,57 +44,74 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<>
 					<Col xs={24}>
-						<Form.Item name='hoatDong' label='Hoạt động' rules={[...rules.required]}>
-							<Input placeholder='Nhập hoạt động' />
+						<Form.Item
+							name='hoatDong'
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.hd' })}
+							rules={[...rules.required]}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.hd.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='donViTinh' label='Đơn vị tính'>
-							<Input placeholder='Nhập đơn vị tính' />
+						<Form.Item name='donViTinh' label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.dvt' })}>
+							<Input placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.dvt.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={8}>
-						<Form.Item name='soLuongNguoi' label='Số lượng người'>
+						<Form.Item
+							name='soLuongNguoi'
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.sl' })}
+						>
 							<InputNumber
 								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 								style={{ width: '100%' }}
-								placeholder='Nhập số lượng'
+								placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.sl.place' })}
 								min={0}
 							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={8}>
-						<Form.Item name='soLuongNgay' label='Số lượng ngày'>
+						<Form.Item
+							name='soLuongNgay'
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.slngay' })}
+						>
 							<InputNumber
 								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 								style={{ width: '100%' }}
-								placeholder='Nhập số lượng'
+								placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.slngay.place' })}
 								min={0}
 							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={8}>
-						<Form.Item name='soLuongKhac' label='Số lượng khác'>
+						<Form.Item
+							name='soLuongKhac'
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.slkhac' })}
+						>
 							<InputNumber
 								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 								style={{ width: '100%' }}
-								placeholder='Nhập số lượng'
+								placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.slkhac.place' })}
 								min={0}
 							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='dinhMuc' label='Định mức (VNĐ)' rules={[...rules.required]}>
+						<Form.Item
+							name='dinhMuc'
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.dinhmuc' })}
+							rules={[...rules.required]}
+						>
 							<InputNumber
 								formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 								style={{ width: '100%' }}
-								placeholder='Nhập định mức'
+								placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.dinhmuc.place' })}
 								min={0}
 							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item label='Thành tiền (VNĐ)'>
+						<Form.Item label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.thanhtien' })}>
 							<Input
 								value={
 									dinhMuc ? inputFormat((soLuongNguoi ?? 1) * (soLuongNgay ?? 1) * (soLuongKhac ?? 1) * dinhMuc) : 0
@@ -103,23 +121,38 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item label='Tiến độ hoàn thành' name='tienDoHoanThanh'>
-							<Input placeholder='Nhập tiến độ hoàn thành' />
+						<Form.Item
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.tiendo' })}
+							name='tienDoHoanThanh'
+						>
+							<Input placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.tiendo.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item label='Chứng từ yêu cầu' name='chungTuYeuCau'>
-							<Input.TextArea placeholder='Nhập chứng từ yêu cầu' rows={3} />
+						<Form.Item
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.chungtu' })}
+							name='chungTuYeuCau'
+						>
+							<Input.TextArea
+								placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.chungtu.place' })}
+								rows={3}
+							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item label='Tệp đính kèm' name='tepDinhKem'>
+						<Form.Item
+							label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.tepdinhdem' })}
+							name='tepDinhKem'
+						>
 							<UploadFile maxCount={5} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='ghiChu' label='Ghi chú'>
-							<Input.TextArea placeholder='Nhập ghi chú' rows={3} />
+						<Form.Item name='ghiChu' label={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.ghichu' })}>
+							<Input.TextArea
+								placeholder={intl.formatMessage({ id: 'tuansinhhoatcongdan.form.dutoan.form.ghichu.place' })}
+								rows={3}
+							/>
 						</Form.Item>
 					</Col>
 				</>
@@ -127,10 +160,11 @@ const FormDuToanKinhPhi = (props: { onCancel: any; record?: HoatDongChung.IDuToa
 
 			<div className='form-footer'>
 				<Button htmlType='submit' type='primary'>
-					{!props.edit ? 'Thêm mới ' : 'Lưu lại'}
+					{!props.edit
+						? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+						: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 				</Button>
-
-				<Button onClick={() => props.onCancel()}>Hủy</Button>
+				<Button onClick={() => props.onCancel()}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 			</div>
 		</Form>
 	);

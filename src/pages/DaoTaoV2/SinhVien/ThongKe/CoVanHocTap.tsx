@@ -1,11 +1,11 @@
 import type { IColumn } from '@/components/Table/typing';
 import { exportSoLuongSinhVienLhc, getThongKeCoVanHocTap } from '@/services/DaoTaoV2/SinhVien';
 import { jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
-import { useModel } from 'umi';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Row } from 'antd';
 import fileDownload from 'js-file-download';
 import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 
 interface IThongKeCoVan {
 	_id: string;
@@ -24,6 +24,7 @@ interface IThongKeCoVan {
 }
 
 const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
+	const intl = useIntl();
 	const { mode } = props;
 	const [data, setData] = useState<IThongKeCoVan[]>([]);
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
@@ -57,51 +58,51 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 
 	const columns: IColumn<IThongKeCoVan>[] = [
 		{
-			title: 'Mã cố vấn',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.macovan' }),
 			dataIndex: 'maNhanSu',
 			filterType: 'string',
 			width: 200,
 			align: 'center',
-			render: (val) => val || 'Không có thông tin',
+			render: (val) => val || intl.formatMessage({ id: 'thongke.cvht.common.noInfo' }),
 		},
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.hoten' }),
 			dataIndex: 'hoTenNhanSu',
 			width: 200,
 			align: 'center',
 			filterType: 'string',
-			render: (val) => val || 'Không có thông tin',
+			render: (val) => val || intl.formatMessage({ id: 'thongke.cvht.common.noInfo' }),
 		},
 		{
-			title: 'Tổng sinh viên',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.tongsv' }),
 			dataIndex: 'tong',
 			width: 120,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Sinh viên đang học',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.danghoc' }),
 			dataIndex: 'dangHoc',
 			width: 120,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Sinh viên đã tốt nghiệp',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.dadongnghiep' }),
 			dataIndex: 'daTotNghiep',
 			width: 120,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Sinh viên bảo lưu',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.baoluu' }),
 			dataIndex: 'baoLuu',
 			width: 120,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Sinh viên thôi học',
+			title: intl.formatMessage({ id: 'thongke.cvht.column.thoihoc' }),
 			dataIndex: 'thoiHoc',
 			width: 120,
 			sortable: true,
@@ -132,7 +133,7 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 					reportSoLuongSinhVienLhcModel({ maTrinhDo: '7', maHinhThuc: '1', maHocKy: recHocKy?.ma ?? '' });
 				}}
 			>
-				Xuất dữ liệu
+				{intl.formatMessage({ id: 'thongke.cvht.common.export' })}
 			</Button>
 			{/* <TableStaticData addStt columns={columns} data={data} /> */}
 		</>
@@ -146,7 +147,7 @@ const CoVanHocTap = (props: { mode: 'table' | 'donut' }) => {
 					reportSoLuongSinhVienLhcModel({ maTrinhDo: '7', maHinhThuc: '1', maHocKy: recHocKy?.ma ?? '' });
 				}}
 			>
-				Xuất dữ liệu
+				{intl.formatMessage({ id: 'thongke.cvht.common.export' })}
 			</Button>
 			{/* <Col span={24}>
 				<ColumnChart

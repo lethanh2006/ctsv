@@ -1,19 +1,19 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
+import DanhSachSinhVien from '@/pages/HoatDongChung/DanhSachSinhVien';
+import { thongKe } from '@/services/HoatDongChung';
 import type { EHoatDongChungType1 } from '@/services/HoatDongChung/constants';
-import { EHoatDongChungType2 } from '@/services/HoatDongChung/constants';
+import { EHoatDongChungType2, EHoatDongChungType2I18n } from '@/services/HoatDongChung/constants';
+import type { HoatDongChung } from '@/services/HoatDongChung/typings';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
+import SelectCLB from '../CauLacBo/components/SelectCLB';
 import SelectHocKy from '../DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import FormHoatDongChung from './Form';
-import type { HoatDongChung } from '@/services/HoatDongChung/typings';
-import { thongKe } from '@/services/HoatDongChung';
 import ThongKe from './ThongKeSoLuong';
-import SelectCLB from '../CauLacBo/components/SelectCLB';
-import DanhSachSinhVien from '@/pages/HoatDongChung/DanhSachSinhVien';
 
 const HoatDongChungPage = (props: {
 	phanLoaiCap1: EHoatDongChungType1;
@@ -22,6 +22,7 @@ const HoatDongChungPage = (props: {
 	hideCard?: boolean;
 	paramCondition?: any;
 }) => {
+	const intl = useIntl();
 	const { getModel, condition, setCondition, handleEdit, deleteModel, filters, setRecord, record } =
 		useModel('hoatdongchung');
 
@@ -52,13 +53,13 @@ const HoatDongChungPage = (props: {
 
 	const column: IColumn<HoatDongChung.IRecord>[] = [
 		{
-			title: 'Tên hoạt động',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.tenhd' }),
 			dataIndex: 'ten',
 			width: 200,
 			filterType: 'string',
 		},
 		{
-			title: 'Loại',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.loai' }),
 			dataIndex: 'loai',
 			width: 200,
 			filterType: 'string',
@@ -68,7 +69,7 @@ const HoatDongChungPage = (props: {
 			),
 		},
 		{
-			title: 'Câu lạc bộ',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.clb' }),
 			dataIndex: ['info', 'refId'],
 			width: 200,
 			align: 'center',
@@ -76,14 +77,14 @@ const HoatDongChungPage = (props: {
 			render: (val) => danhSachCauLacBo.find((item) => item._id === val)?.ten,
 		},
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.hocky' }),
 			dataIndex: 'maHocKy',
 			width: 150,
 			render: (val) => danhSach.find((item) => item.ma === val)?.ten,
 			align: 'center',
 		},
 		{
-			title: 'Thời gian bắt đầu',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.tgbd' }),
 			dataIndex: 'thoiGianBatDau',
 			align: 'center',
 			width: 130,
@@ -91,20 +92,20 @@ const HoatDongChungPage = (props: {
 			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Thời gian kết thúc',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.tgkt' }),
 			dataIndex: 'thoiGianKetThuc',
 			align: 'center',
 			width: 130,
 			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (recordVal: HoatDongChung.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button
 							onClick={() => {
 								handleEdit(recordVal);
@@ -114,17 +115,19 @@ const HoatDongChungPage = (props: {
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
-								deleteModel(recordVal._id, getData);
+								deleteModel(recordVal._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								});
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'tuansinhhoatcongdan.confirm.xoa' })}
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
 					</Tooltip>
-					<Tooltip title='Danh sách sinh viên'>
+					<Tooltip title={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.title' })}>
 						<Button
 							onClick={() => {
 								setRecord(recordVal);
@@ -178,7 +181,7 @@ const HoatDongChungPage = (props: {
 						style={{ width: 300 }}
 						selectMa
 						key={'hocky'}
-						placeHolder='Lọc theo học kỳ'
+						placeHolder={intl.formatMessage({ id: 'tuansinhhoatcongdan.select.hocky' })}
 					/>,
 					<>
 						{[EHoatDongChungType2.HOAT_DONG_CAU_LAC_BO].includes(props.phanLoaiCap2) && (
@@ -191,7 +194,7 @@ const HoatDongChungPage = (props: {
 											? {
 													type: 'CAU_LAC_BO',
 													refId: val,
-											  }
+												}
 											: undefined,
 									})
 								}
@@ -203,14 +206,20 @@ const HoatDongChungPage = (props: {
 				Form={Form}
 				columns={column}
 				modelName='hoatdongchung'
-				title={props?.title ?? props.phanLoaiCap2}
+				title={
+					props?.title ??
+					intl.formatMessage({
+						id: EHoatDongChungType2I18n[props.phanLoaiCap2],
+						defaultMessage: props.phanLoaiCap2,
+					})
+				}
 			/>
 
 			<Modal
 				styles={{
-					paddingTop: 4,
+					body: { paddingTop: 4 },
 				}}
-				title={'Danh sách sinh viên'}
+				title={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.title' })}
 				open={visibleDanhSach}
 				onCancel={() => {
 					setVisibleDanhSach(false);

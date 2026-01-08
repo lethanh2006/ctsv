@@ -3,7 +3,7 @@ import FilterTrinhDoHinhThuc from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/TrinhDo/
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectKhoaSinhVien from './Select';
 
 const FilterKhoaSinhVien = (props: {
@@ -13,6 +13,7 @@ const FilterKhoaSinhVien = (props: {
 	hasSelectNganh?: boolean;
 	children?: React.ReactNode;
 }) => {
+	const intl = useIntl();
 	const { record: recKhoa, danhSach: danhSachKhoa, setRecord: setKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh, danhSach: danhSachNganh, setRecord: setNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 	const { record: recTrinhDo } = useModel('daotaov2.danhmuc.trinhdo');
@@ -24,13 +25,13 @@ const FilterKhoaSinhVien = (props: {
 		<div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
 			{visibleOption ? (
 				<>
-					<Tooltip title='Ẩn bộ lọc'>
+					<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.filterkhoanganh.an' })}>
 						<Button icon={<MinusOutlined />} onClick={() => setVisibleOption(false)} type='dashed' />
 					</Tooltip>
 					<FilterTrinhDoHinhThuc width={width} allowClear={props.allowClear} />
 				</>
 			) : !props.hideExpand ? (
-				<Tooltip title='Mở rộng bộ lọc'>
+				<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.filterkhoanganh.morong' })}>
 					<Button icon={<PlusOutlined />} onClick={() => setVisibleOption(true)} type='dashed' />
 				</Tooltip>
 			) : null}

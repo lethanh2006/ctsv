@@ -2,13 +2,14 @@ import DonutChart from '@/components/Chart/DonutChart';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { getThongKeDanTocSinhVien } from '@/services/DaoTaoV2/SinhVien';
+import { jsonToXlsx } from '@/utils/utils';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
-import { jsonToXlsx } from '@/utils/utils';
+import { useIntl, useModel } from 'umi';
 
 const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
+	const intl = useIntl();
 	const { record: recHocKy } = useModel('daotaov2.hocky.hocky');
 
 	const [data, setData] = useState<
@@ -27,36 +28,36 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 
 	const columns: IColumn<{ danToc: string; tongSoSv: number; nu: number; nam: number; noInfoGioiTinh: number }>[] = [
 		{
-			title: 'Dân tộc',
+			title: intl.formatMessage({ id: 'thongke.dantoc.column.dantoc' }),
 			dataIndex: 'danToc',
 			filterType: 'string',
 			width: 200,
 			align: 'center',
-			render: (val) => val || 'Không có thông tin',
+			render: (val) => val || intl.formatMessage({ id: 'thongke.dantoc.common.noInfo' }),
 		},
 		{
-			title: 'Số lượng',
+			title: intl.formatMessage({ id: 'thongke.dantoc.column.tongSo' }),
 			dataIndex: 'tongSoSv',
 			width: 200,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Nữ',
+			title: intl.formatMessage({ id: 'thongke.dantoc.column.nu' }),
 			dataIndex: 'nu',
 			width: 200,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Nam',
+			title: intl.formatMessage({ id: 'thongke.dantoc.column.nam' }),
 			dataIndex: 'nam',
 			width: 200,
 			sortable: true,
 			align: 'center',
 		},
 		{
-			title: 'Không có thông tin',
+			title: intl.formatMessage({ id: 'thongke.dantoc.column.noGenderInfo' }),
 			dataIndex: 'noInfoGioiTinh',
 			width: 200,
 			sortable: true,
@@ -88,33 +89,37 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 					handleExportDuLieu();
 				}}
 			>
-				Xuất dữ liệu
+				{intl.formatMessage({ id: 'thongke.dantoc.common.export' })}
 			</Button>
 			<TableStaticData
-				otherProps={{
-					summary: (pageData: any[]) => {
-						let allSoLuong = 0;
-						let allNu = 0;
-						let allNam = 0;
-						let allKhongThongTin = 0;
-						pageData.map((item) => {
-							allSoLuong += item?.tongSoSv ?? 0;
-							allNu += item?.nu ?? 0;
-							allNam += item?.nam ?? 0;
-							allKhongThongTin += item?.noInfoGioiTinh;
-						});
-						return (
-							<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
-								<Table.Summary.Cell index={0} />
-								<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
-								<Table.Summary.Cell index={2}>{allSoLuong}</Table.Summary.Cell>
-								<Table.Summary.Cell index={3}>{allNu}</Table.Summary.Cell>
-								<Table.Summary.Cell index={4}>{allNam}</Table.Summary.Cell>
-								<Table.Summary.Cell index={5}>{allKhongThongTin}</Table.Summary.Cell>
-							</Table.Summary.Row>
-						);
-					},
-				}}
+				otherProps={
+					{
+						summary: (pageData: any[]) => {
+							let allSoLuong = 0;
+							let allNu = 0;
+							let allNam = 0;
+							let allKhongThongTin = 0;
+							pageData.map((item) => {
+								allSoLuong += item?.tongSoSv ?? 0;
+								allNu += item?.nu ?? 0;
+								allNam += item?.nam ?? 0;
+								allKhongThongTin += item?.noInfoGioiTinh;
+							});
+							return (
+								<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+									<Table.Summary.Cell index={0} />
+									<Table.Summary.Cell index={1}>
+										{intl.formatMessage({ id: 'thongke.dantoc.common.total' })}
+									</Table.Summary.Cell>
+									<Table.Summary.Cell index={2}>{allSoLuong}</Table.Summary.Cell>
+									<Table.Summary.Cell index={3}>{allNu}</Table.Summary.Cell>
+									<Table.Summary.Cell index={4}>{allNam}</Table.Summary.Cell>
+									<Table.Summary.Cell index={5}>{allKhongThongTin}</Table.Summary.Cell>
+								</Table.Summary.Row>
+							);
+						},
+					} as any
+				}
 				addStt
 				columns={columns}
 				data={data}
@@ -129,35 +134,62 @@ const ThongKeDanToc = (props: { mode: 'table' | 'donut' }) => {
 					handleExportDuLieu();
 				}}
 			>
-				Xuất dữ liệu
+				{intl.formatMessage({ id: 'thongke.dantoc.common.export' })}
 			</Button>
 			<Col md={12} lg={8}>
 				<DonutChart
 					showTotal
-					formatY={(val) => `${val} sinh viên`}
+					formatY={(val) =>
+						intl.formatMessage(
+							{ id: 'thongke.dantoc.unit.sinhvien' },
+							{
+								value: val,
+							},
+						)
+					}
 					height={220}
-					yLabel={['Sinh viên']}
-					xAxis={data.map((item) => (item.danToc ? item.danToc : 'Không có thông tin'))}
+					yLabel={[intl.formatMessage({ id: 'thongke.dantoc.chart.sinhvien' })]}
+					xAxis={data.map((item) =>
+						item.danToc ? item.danToc : intl.formatMessage({ id: 'thongke.dantoc.common.noInfo' }),
+					)}
 					yAxis={[data.map((item) => item.tongSoSv)]}
 				/>
 			</Col>
 			<Col md={12} lg={8}>
 				<DonutChart
 					showTotal
-					formatY={(val) => `${val} nữ`}
+					formatY={(val) =>
+						intl.formatMessage(
+							{ id: 'thongke.dantoc.unit.nam' },
+							{
+								value: val,
+							},
+						)
+					}
 					height={220}
-					yLabel={['Sinh viên nữ']}
-					xAxis={data.map((item) => (item.danToc ? item.danToc : 'Không có thông tin'))}
+					yLabel={[intl.formatMessage({ id: 'thongke.dantoc.chart.nam' })]}
+					xAxis={data.map((item) =>
+						item.danToc ? item.danToc : intl.formatMessage({ id: 'thongke.dantoc.common.noInfo' }),
+					)}
 					yAxis={[data.map((item) => item?.nu)]}
 				/>
 			</Col>
 			<Col md={12} lg={8}>
 				<DonutChart
 					showTotal
-					formatY={(val) => `${val} nam`}
+					formatY={(val) =>
+						intl.formatMessage(
+							{ id: 'thongke.dantoc.unit.nu' },
+							{
+								value: val,
+							},
+						)
+					}
 					height={220}
-					yLabel={['Sinh viên nữ']}
-					xAxis={data.map((item) => (item.danToc ? item.danToc : 'Không có thông tin'))}
+					yLabel={[intl.formatMessage({ id: 'thongke.dantoc.chart.nu' })]}
+					xAxis={data.map((item) =>
+						item.danToc ? item.danToc : intl.formatMessage({ id: 'thongke.dantoc.common.noInfo' }),
+					)}
 					yAxis={[data.map((item) => item?.nam)]}
 				/>
 			</Col>

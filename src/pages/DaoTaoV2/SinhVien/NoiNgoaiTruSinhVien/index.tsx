@@ -1,24 +1,25 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { ENoiNgoaiTru } from '@/services/DaoTaoV2/SinhVien/constant';
+import { type SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const NoiNgoaiTruSinhVienPage = () => {
+	const intl = useIntl();
 	const { getModel, page, limit } = useModel('daotaov2.sinhvien.noingoaitru');
 	const { record: recSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 
 	const columns: IColumn<SinhVien.INoiTruSinhVien>[] = [
 		{
-			title: 'Kỳ học',
+			title: intl.formatMessage({ id: 'sinhvien.ntnt.column.kyhoc' }),
 			dataIndex: 'maKyHoc',
 			width: 90,
 			filterType: 'string',
 			sortable: true,
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sinhvien.ntnt.column.trangthai' }),
 			width: 90,
 			dataIndex: 'tinhTrang',
 			filterType: 'select',
@@ -26,7 +27,7 @@ const NoiNgoaiTruSinhVienPage = () => {
 			sortable: true,
 		},
 		{
-			title: 'Thời gian',
+			title: intl.formatMessage({ id: 'sinhvien.ntnt.column.thoigian' }),
 			width: 100,
 			dataIndex: 'thoiGianKhaiBao',
 			filterType: 'date',
@@ -34,7 +35,7 @@ const NoiNgoaiTruSinhVienPage = () => {
 			render: (val) => val && dayjs(val).format('DD/MM/YYYY'),
 		},
 		{
-			title: 'Địa chỉ',
+			title: intl.formatMessage({ id: 'sinhvien.ntnt.column.diachi' }),
 			width: 200,
 			dataIndex: 'diaChi',
 		},

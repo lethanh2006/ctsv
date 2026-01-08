@@ -8,13 +8,11 @@ import { useIntl, useModel } from 'umi';
 const FormSvLopHanhChinh = (props: any) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
-	const { record, setVisibleForm, edit, postManyModel, putModel, formSubmiting, visibleForm, getModel } = useModel(
+	const { record, setVisibleForm, edit, postManyModel, putModel, formSubmiting, visibleForm } = useModel(
 		'daotaov2.namhoc.sinhvienlophanhchinh',
 	);
 	const { record: recLopHanhChinh } = useModel('daotaov2.namhoc.lophanhchinh');
-	const { title } = props;
-
-	const getData = () => getModel({ lopHanhChinhId: recLopHanhChinh?._id });
+	const { getData } = props;
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -23,26 +21,48 @@ const FormSvLopHanhChinh = (props: any) => {
 
 	const onFinish = async (values: any) => {
 		if (edit) {
-			putModel(record?._id ?? '', values, getData)
+			putModel(
+				record?._id ?? '',
+				values,
+				getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postManyModel({ ...values, lopHanhChinhId: recLopHanhChinh?._id ?? '' }, getData)
+			postManyModel(
+				{ ...values, lopHanhChinhId: recLopHanhChinh?._id ?? '' },
+				getData,
+				undefined,
+				intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'lophanhchinh.step.dssv.chinhsua' })
+					: intl.formatMessage({ id: 'lophanhchinh.step.dssv.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24}>
-						<Form.Item label='Lớp hành chính'>
+						<Form.Item label={intl.formatMessage({ id: 'lophanhchinh.step.dssv.form.tenlop' })}>
 							<Input value={recLopHanhChinh?.ten} disabled />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='sinhVienSsoIds' label='Sinh viên' rules={[...rules.required]}>
+						<Form.Item
+							name='sinhVienSsoIds'
+							label={intl.formatMessage({ id: 'lophanhchinh.step.dssv.form.sv' })}
+							rules={[...rules.required]}
+						>
 							<SelectSinhVienDebounce multiple />
 						</Form.Item>
 					</Col>

@@ -2,9 +2,10 @@ import ViewRender from '@/pages/QuyTrinhDong/QuanLyQuyTrinh/components/MauDon/Vi
 import { EKieuDuLieu, ETextDisplay } from '@/services/QuyTrinhDong/LoaiHinh/constants';
 import { Col, Row } from 'antd';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ViewQuyetDinh = () => {
+	const intl = useIntl();
 	const { record } = useModel('chedochinhsach.chedochinhsach');
 	const { record: recordQuyetDinh } = useModel('chedochinhsach.quyetdinhchedosinhvien');
 
@@ -24,25 +25,28 @@ const ViewQuyetDinh = () => {
 	return (
 		<Row gutter={[0, 10]}>
 			<Col sm={12} md={8}>
-				{buildItem('Họ và tên', recordQuyetDinh?.hoVaTen)}
+				{buildItem(intl.formatMessage({ id: 'kyluatkhenthuong.id.hovaten' }), recordQuyetDinh?.hoVaTen)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Mã SV', recordQuyetDinh?.maSinhVien)}
+				{buildItem(intl.formatMessage({ id: 'kyluatkhenthuong.id.masv' }), recordQuyetDinh?.maSinhVien)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Lớp', recordQuyetDinh?.lop.ten)}
+				{buildItem(intl.formatMessage({ id: 'kyluatkhenthuong.id.lop' }), recordQuyetDinh?.lop.ten)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Ngành', recordQuyetDinh?.nganh.ten)}
+				{buildItem(intl.formatMessage({ id: 'kyluatkhenthuong.id.nganh' }), recordQuyetDinh?.nganh.ten)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Ngày sinh', recordQuyetDinh?.ngaySinh ? dayjs(recordQuyetDinh.ngaySinh).format('DD/MM/YYYY') : '')}
+				{buildItem(
+					intl.formatMessage({ id: 'kyluatkhenthuong.id.ngaysinh' }),
+					recordQuyetDinh?.ngaySinh ? dayjs(recordQuyetDinh.ngaySinh).format('DD/MM/YYYY') : '',
+				)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Giới tính', recordQuyetDinh?.gioiTinh)}
+				{buildItem(intl.formatMessage({ id: 'kyluatkhenthuong.id.gioitinh' }), recordQuyetDinh?.gioiTinh)}
 			</Col>
 			<Col sm={12} md={8}>
-				{buildItem('Dân tộc', recordQuyetDinh?.danToc)}
+				{buildItem(intl.formatMessage({ id: 'kyluatkhenthuong.id.dantoc' }), recordQuyetDinh?.danToc)}
 			</Col>
 			{record?.danhSachCauHinhThongTin.map((item) => {
 				if (
