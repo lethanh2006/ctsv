@@ -1,23 +1,29 @@
 export default {
-	'questionsmanagement.title': 'Self-Assessment Questions',
+	'questionsmanagement.title': 'Câu hỏi tự đánh giá',
 
-	'questionsmanagement.column.tieude': 'Title',
-	'questionsmanagement.column.nguoitao': 'Creator',
-	'questionsmanagement.column.mota': 'Description',
-	'questionsmanagement.column.kichhoat': 'Active',
+	'questionsmanagement.column.tieude': 'Tiêu đề',
+	'questionsmanagement.column.nguoitao': 'Người tạo',
+	'questionsmanagement.column.mota': 'Mô tả',
+	'questionsmanagement.column.kichhoat': 'Kích hoạt',
 
-	'questionsmanagement.comfirm.xoa': 'Do you want to remove this Self-Assessment Questions?',
+	'questionsmanagement.comfirm.xoa': 'Bạn có chắc chắn muốn xóa câu hỏi này không?',
 
 	'questionsmanagement.button.xemtruoc': 'Xem trước',
 	'questionsmanagement.button.tieptheo': 'Tiếp theo',
+
+	'questionsmanagement.form.themmoi': 'Thêm câu hỏi mới',
+	'questionsmanagement.form.chinhsua': 'Chỉnh sửa câu hỏi',
+	'questionsmanagement.form.chitiet': 'Chi tiết câu hỏi',
 
 	'questionsmanagement.step.thongtinchung': 'Thông tin chung',
 	'questionsmanagement.step.cauhinh': 'Cấu hình biểu mẫu',
 
 	'questionsmanagement.thongtinchung.tieude': 'Tiêu đề',
 	'questionsmanagement.thongtinchung.tieude.place': 'Nhập tiêu đề',
+	'questionsmanagement.thongtinchung.lever': 'Cấp độ',
 	'questionsmanagement.thongtinchung.mota': 'Mô tả',
 	'questionsmanagement.thongtinchung.mota.place': 'Nhập mô tả',
+	'questionsmanagement.thongtinchung.defaultQuestion': 'Bộ câu hỏi mặc định theo cấp độ',
 	'questionsmanagement.thongtinchung.camket': 'Có cam kết',
 	'questionsmanagement.thongtinchung.noidungcamket': 'Nội dung cam kết',
 	'questionsmanagement.thongtinchung.noidungcamket.place': 'Nhập nội dung cam kết',
@@ -54,7 +60,7 @@ export default {
 	'questionsmanagement.cauhinh.block.question.loai.place': 'Chọn loại câu hỏi',
 	'questionsmanagement.cauhinh.block.question.batbuoc': 'Bắt buộc',
 	'questionsmanagement.cauhinh.block.question.validapan': 'Ít nhất 1 đáp án',
-	'questionsmanagement.cauhinh.block.question.error': 'Đáp án phải khác nhau, bị trùng ở đáp án thứ {duplicateIndex}',
+	'questionsmanagement.cauhinh.block.question.error': 'Các đáp án phải khác nhau, bị trùng tại đáp án {duplicateIndex}',
 	'questionsmanagement.cauhinh.block.question.themdapan': 'Thêm đáp án',
 	'questionsmanagement.cauhinh.block.question.cautlkhac': 'Câu trả lời khác',
 
@@ -77,6 +83,8 @@ export default {
 	'questionsmanagement.cauhinh.numberic.tu': 'Từ',
 	'questionsmanagement.cauhinh.numberic.den': 'Đến',
 
+	'questionsmanagement.chitiet.cau': 'Câu hỏi',
+
 	'questionsmanagement.chitiet.gridchoice.noidung': 'Nội dung',
 
 	'questionsmanagement.chitiet.muntiplechoice.cautlkhac': 'Câu trả lời khác',
@@ -84,4 +92,12 @@ export default {
 	'questionsmanagement.chitiet.renderinput.nhapgiatri': 'Nhập giá trị',
 
 	'questionsmanagement.chitiet.singlechoice.cautlkhac': 'Câu trả lời khác',
+
+	'question.type.SingleChoice': 'Chọn một đáp án',
+	'question.type.MultipleChoice': 'Chọn nhiều đáp án',
+	'question.type.GridSingleChoice': 'Lưới (chọn một đáp án)',
+	'question.type.GridMultipleChoice': 'Lưới (chọn nhiều đáp án)',
+	'question.type.NumericRange': 'Đánh giá bằng số',
+	'question.type.Text': 'Trả lời văn bản',
+	'question.type.UploadFile': 'Tải tệp lên',
 };

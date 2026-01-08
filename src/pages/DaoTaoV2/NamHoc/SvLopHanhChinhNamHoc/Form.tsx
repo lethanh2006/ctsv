@@ -39,20 +39,41 @@ const FormBanCanSuLop = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRec
 		};
 
 		if (edit) {
-			putModel(record?._id ?? '', payload, props.getData);
+			putModel(
+				record?._id ?? '',
+				payload,
+				props.getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			);
 		} else {
-			postModel(payload, props.getData);
+			postModel(payload, props.getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 		}
 	};
 
 	return (
-		<Card title={!edit ? 'Thêm ban cán sự' : 'Chỉnh sửa ban cán sự'}>
+		<Card
+			title={
+				!edit
+					? intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.themmoi' })
+					: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.chinhsua' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Form.Item rules={[...rules.required]} name='maNamHoc' label='Năm học'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='maNamHoc'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.namhoc' })}
+				>
 					<SelectNamHoc selectMa />
 				</Form.Item>
 				{!props?.lopHanhChinh?._id && (
-					<Form.Item rules={[...rules.required]} name='lopHanhChinhId' label='Lớp hành chính'>
+					<Form.Item
+						rules={[...rules.required]}
+						name='lopHanhChinhId'
+						label={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.lop' })}
+					>
 						<SelectLopHanhChinhCondition
 							onChange={(val) => {
 								form.setFieldsValue({
@@ -62,16 +83,24 @@ const FormBanCanSuLop = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRec
 						/>
 					</Form.Item>
 				)}
-				<Form.Item rules={[...rules.required]} name='lopHcSvId' label='Sinh viên'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='lopHcSvId'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.sv' })}
+				>
 					<SelectSinhVienLopHC
 						keyName='_id'
 						hasCreate={false}
 						lopHanhChinhId={props?.lopHanhChinh?._id || lopHanhChinhId}
 					/>
 				</Form.Item>
-				<Form.Item rules={[...rules.required]} name='vaiTro' label='Vai trò'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='vaiTro'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.vaitro' })}
+				>
 					<Select
-						placeholder='Chọn vai trò'
+						placeholder={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.form.vaitro.place' })}
 						options={Object.values(EVaiTroBanCanSuLop).map((item) => ({
 							value: item,
 							label: MapKeyNameVaiTroBanCanSuLop[item],

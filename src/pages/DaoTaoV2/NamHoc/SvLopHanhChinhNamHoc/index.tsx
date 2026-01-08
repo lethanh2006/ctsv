@@ -12,12 +12,13 @@ import type { LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typin
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tag, Tooltip } from 'antd';
 import { useCallback, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FilterLopHanhChinh from '../LopHanhChinh/components/FilterLopHanhChinh';
 import SelectNamHoc from '../NamHoc/components/Select';
 import FormBanCanSuLop from './Form';
 
 const SinhVienLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
+	const intl = useIntl();
 	const { danhSach: danhSachNamHoc, setRecord: setRecNamHoc, record: recNamHoc } = useModel('daotaov2.namhoc.namhoc');
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('daotaov2.lophcsvnamhoc.lophcsvnamhoc');
 	const { record: recLopHanhChinh } = useModel('daotaov2.namhoc.lophanhchinh');
@@ -42,14 +43,14 @@ const SinhVienLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord
 							operator: EOperatorType.EQUAL,
 							values: [props?.lopHanhChinh?._id || recLopHanhChinh?._id || ''],
 						},
-				  ]
-				: undefined,
+					]
+				: (undefined as any),
 		);
 	};
 
 	const columns: IColumn<LopHanhChinhSinhVienNamHoc.IRecord>[] = [
 		{
-			title: 'Năm học',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.column.namhoc' }),
 			width: 100,
 			dataIndex: 'maNamHoc',
 			render: (val, rec) => danhSachNamHoc.find((item) => item.ma === val)?.ten,
@@ -57,28 +58,28 @@ const SinhVienLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord
 			onCell,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.column.masv' }),
 			width: 100,
 			render: (val, rec) => rec?.lopHcSv?.sinhVien?.ma,
 			align: 'center',
 			onCell,
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.column.hoten' }),
 			width: 150,
 			align: 'center',
 			render: (val, rec) => rec?.lopHcSv?.sinhVien?.ten,
 			onCell,
 		},
 		{
-			title: 'Lớp',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.column.lop' }),
 			width: 150,
 			align: 'center',
 			render: (val, rec) => rec?.lopHcSv?.lopHanhChinh?.ten,
 			onCell,
 		},
 		{
-			title: 'Vai trò',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.column.vaitro' }),
 			dataIndex: 'vaiTro',
 			width: 200,
 			align: 'center',
@@ -94,19 +95,23 @@ const SinhVienLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.bcsl.column.thaotac' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
 			render: (record: LopHanhChinhSinhVienNamHoc.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id, getData)}
-							title='Bạn có chắc chắn muốn xóa vai trò sinh viên?'
+							onConfirm={() =>
+								deleteModel(record._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								})
+							}
+							title={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.confirm.xoa' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -142,7 +147,7 @@ const SinhVienLopHanhChinhNamHoc = (props: { lopHanhChinh?: LopHanhChinh.IRecord
 				dependencies={[page, limit, recLopHanhChinh?._id, recNamHoc?.ma]}
 				getData={getData}
 				modelName='daotaov2.lophcsvnamhoc.lophcsvnamhoc'
-				title={'Danh sách ban cán sự lớp'}
+				title={intl.formatMessage({ id: 'lophanhchinh.step.bcsl.title' })}
 				Form={Form}
 			/>
 			<ModalChiTietSinhVien sinhVienSsoId={sinhVienSsoId ?? ''} />

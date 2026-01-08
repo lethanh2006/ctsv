@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -16,6 +16,7 @@ const SelectHinhThuc = (props: {
 	hasDefault?: boolean;
 	disabled?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, placeholder, style, selectMa, hasDefault, disabled } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('daotaov2.danhmuc.hinhthucdaotao');
 
@@ -42,7 +43,7 @@ const SelectHinhThuc = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn hình thức đào tạo'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'lophanhchinh.filterkhoanganh.select.hinhthuc' })}
 			style={{ width: '100%', ...style }}
 			showArrow
 		/>
