@@ -1,9 +1,6 @@
 import activity from './activity';
+import chinhtritutuong from './chinhtritutuong';
 import danhmuc from './danhmuc';
-import hosonguoihoc from './daotao/hosonguoihoc';
-import kyluatkhenthuong from './daotao/kyluatkhenthuong';
-import lichthi from './daotao/lichthi';
-import sinhvienhocvu from './daotao/sinhvienhocvu';
 import donvihanhchinh from './donvihanhchinh';
 import login from './login';
 import loptinchi from './loptinchi';
@@ -19,14 +16,10 @@ export default {
 	...namhoc,
 	...trangchu,
 	...donvihanhchinh,
-	// Đào tạo V2
-	...hosonguoihoc,
-	...lichthi,
 	...loptinchi,
-	...sinhvienhocvu,
-	...kyluatkhenthuong,
 	...thongtinnguoihoc,
 	...activity,
 	...danhmuc,
 	...thongbao,
+	...chinhtritutuong,
 };

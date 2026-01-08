@@ -10,7 +10,7 @@ import rules from '@/utils/rules';
 import { DeleteOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Form, message, Modal, Popconfirm, Space, Spin, Tabs } from 'antd';
 import { useCallback, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormDanhSachSinhVien from './FormDanhSachSinhVien';
 
 interface IProps {
@@ -18,6 +18,7 @@ interface IProps {
 }
 
 const DanhSachSinhVien = (props: IProps) => {
+	const intl = useIntl();
 	const { hoatDongCtsvId } = props;
 	const { getModel, condition, page, limit, loading, deleteModel } = useModel('danhsachsinhvienhoatdong');
 	const [visibleImport, setVisibleImport] = useState<boolean>(false);
@@ -66,42 +67,46 @@ const DanhSachSinhVien = (props: IProps) => {
 
 	const column: IColumn<HoatDongChung.DanhSachSinhVienThamGia>[] = [
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.column.mssv' }),
 			dataIndex: 'ma',
 			width: 150,
 			filterType: 'string',
 			align: 'center',
 		},
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.column.hoten' }),
 			dataIndex: 'ten',
 			width: 150,
 			filterType: 'string',
 			align: 'center',
 		},
 		{
-			title: 'Mã ngành',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.column.manganh' }),
 			dataIndex: 'maNganh',
 			width: 150,
 			filterType: 'string',
 			align: 'center',
 		},
 		{
-			title: 'Tên ngành',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.column.tennganh' }),
 			dataIndex: 'tenNganh',
 			width: 250,
 			filterType: 'string',
 			align: 'center',
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.column.thaotac' }),
 			width: 80,
 			align: 'center',
 			fixed: 'right',
 			render: (rec) => (
 				<Popconfirm
-					title='Bạn có chắc chắn xóa sinh viên khỏi danh sách?'
-					onConfirm={() => deleteModel(rec._id, getData)}
+					title={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.confirm.xoa' })}
+					onConfirm={() =>
+						deleteModel(rec._id, getData, {
+							messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+						})
+					}
 				>
 					<Button type='link' icon={<DeleteOutlined />} danger />
 				</Popconfirm>
@@ -125,7 +130,7 @@ const DanhSachSinhVien = (props: IProps) => {
 					dependencies={[condition, limit, page, hoatDongCtsvId, currentTabs]}
 					modelName={'danhsachsinhvienhoatdong'}
 					columns={column}
-					title='Danh sách sinh viên'
+					title={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.title' })}
 					buttons={{ create: true, export: true }}
 					otherButtons={[
 						<>
@@ -136,7 +141,7 @@ const DanhSachSinhVien = (props: IProps) => {
 									setVisibleImport(true);
 								}}
 							>
-								Nhập dữ liệu
+								{intl.formatMessage({ id: 'global.button.nhapdulieu' })}
 							</ButtonExtend>
 						</>,
 					]}
@@ -147,8 +152,8 @@ const DanhSachSinhVien = (props: IProps) => {
 							setCurrentTabs(val);
 						}}
 					>
-						<Tabs.TabPane tab='Danh sách sinh viên thuộc diện phải tham gia' key='dang-ky' />
-						<Tabs.TabPane tab='Danh sách sinh viên tham gia' key='tham-gia' />
+						<Tabs.TabPane tab={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.khongthamgia' })} key='dang-ky' />
+						<Tabs.TabPane tab={intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.thamgia' })} key='tham-gia' />
 					</Tabs>
 				</TableBase>
 			</Spin>
@@ -157,7 +162,7 @@ const DanhSachSinhVien = (props: IProps) => {
 				onCancel={() => {
 					setVisibleImport(false);
 				}}
-				title='Nhập dữ liệu'
+				title={intl.formatMessage({ id: 'global.button.nhapdulieu' })}
 				footer={null}
 				destroyOnClose
 			>
@@ -177,13 +182,13 @@ const DanhSachSinhVien = (props: IProps) => {
 					<Form.Item
 						extra={
 							<div>
-								Xem file mẫu{' '}
+								{intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.xemfile' })}{' '}
 								<a
 									target='_blank'
 									href='https://ais.aisenote.com/slink/file/6686d9120b258de8a715f4f9/DSSV.xlsx'
 									rel='noreferrer'
 								>
-									tại đây
+									{intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.taiday' })}
 								</a>
 							</div>
 						}
@@ -196,14 +201,14 @@ const DanhSachSinhVien = (props: IProps) => {
 						<Form.Item>
 							<Space>
 								<Button type={'primary'} htmlType='submit'>
-									Lưu dữ liệu
+									{intl.formatMessage({ id: 'tuansinhhoatcongdan.dssv.button.luudulieu' })}
 								</Button>
 								<Button
 									onClick={() => {
 										setVisibleImport(false);
 									}}
 								>
-									Đóng
+									{intl.formatMessage({ id: 'global.button.dong' })}
 								</Button>
 							</Space>
 						</Form.Item>
