@@ -1,8 +1,8 @@
 import { Button, Card, Modal, Tabs } from 'antd';
-import ViewChiTiet from './ViewChiTiet';
-import SinhVienLopHanhChinh from '../../SvLopHanhChinh';
-import { useIntl, useModel } from 'umi';
 import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
+import SinhVienLopHanhChinh from '../../SvLopHanhChinh';
+import ViewChiTiet from './ViewChiTiet';
 
 const ModalChiTiet = (props: { visible: boolean; setVisible: any }) => {
 	const intl = useIntl();
@@ -17,7 +17,7 @@ const ModalChiTiet = (props: { visible: boolean; setVisible: any }) => {
 	return (
 		<Modal
 			footer={<Button onClick={() => setVisible(false)}>Đóng</Button>}
-			styles={{ padding: 0 }}
+			styles={{ body: { padding: 0 } }}
 			width={800}
 			open={visible}
 			onCancel={() => setVisible(false)}

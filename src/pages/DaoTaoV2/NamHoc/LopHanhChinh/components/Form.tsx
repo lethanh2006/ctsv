@@ -1,5 +1,4 @@
 import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
-import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import { EDoiTuongLopHanhChinh, doiTuongLopHanhChinh } from '@/services/DaoTaoV2/NamHoc/constant';
 import rules from '@/utils/rules';
@@ -43,11 +42,18 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 		};
 
 		if (edit) {
-			putModel(record?._id ?? '', payload, getData, undefined, false)
+			putModel(
+				record?._id ?? '',
+				payload,
+				getData,
+				undefined,
+				false,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(payload, getData, false)
+			postModel(payload, getData, false, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then((rec) => {
 					setRecord(rec);
 					setEdit(true);
@@ -60,25 +66,37 @@ const FormLopHanhChinh = (props: { afterAddNew?: (rec: LopHanhChinh.IRecord) => 
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col xs={24} md={12}>
-					<Form.Item name='maKhoaSinhVien' label='Khóa sinh viên' rules={[...rules.required]}>
+					<Form.Item
+						name='maKhoaSinhVien'
+						label={intl.formatMessage({ id: 'lophanhchinh.step.thongtinchung.khoasv' })}
+						rules={[...rules.required]}
+					>
 						<SelectKhoaSinhVien selectMa disabled={edit} />
 					</Form.Item>
 				</Col>
 				<Col xs={24} md={12}>
-					<Form.Item name='maNganh' label='Ngành đào tạo' rules={[...rules.required]}>
+					<Form.Item
+						name='maNganh'
+						label={intl.formatMessage({ id: 'lophanhchinh.step.thongtinchung.nganhdaotao' })}
+						rules={[...rules.required]}
+					>
 						<SelectNganhCoSo selectMa hasDefault={!edit} maKhoaSinhVien={maKhoaSinhVien} disabled={edit} />
 					</Form.Item>
 				</Col>
 
 				<Col xs={24} md={12}>
-					<Form.Item name='ten' label='Mã lớp' rules={[...rules.required, ...rules.text, ...rules.length(250)]}>
-						<Input placeholder='Nhập mã lớp hành chính' />
+					<Form.Item
+						name='ten'
+						label={intl.formatMessage({ id: 'lophanhchinh.step.thongtinchung.malop' })}
+						rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+					>
+						<Input placeholder={intl.formatMessage({ id: 'lophanhchinh.step.thongtinchung.malop.place' })} />
 					</Form.Item>
 				</Col>
 				<Col xs={24} md={12}>
-					<Form.Item name='doiTuong' label='Đối tượng'>
+					<Form.Item name='doiTuong' label={intl.formatMessage({ id: 'lophanhchinh.step.thongtinchung.doituong' })}>
 						<Select
-							placeholder='Chọn đối tượng'
+							placeholder={intl.formatMessage({ id: 'lophanhchinh.step.thongtinchung.doituong.place' })}
 							options={Object.values(EDoiTuongLopHanhChinh).map((item) => ({
 								value: item,
 								key: item,

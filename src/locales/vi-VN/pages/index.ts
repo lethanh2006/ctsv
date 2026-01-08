@@ -1,3 +1,5 @@
+import activity from './activity';
+import danhmuc from './danhmuc';
 import hosonguoihoc from './daotao/hosonguoihoc';
 import kyluatkhenthuong from './daotao/kyluatkhenthuong';
 import lichthi from './daotao/lichthi';
@@ -7,6 +9,7 @@ import login from './login';
 import loptinchi from './loptinchi';
 import namhoc from './namhoc';
 import sinhvien from './sinhvien';
+import thongtinnguoihoc from './thongtinnguoihoc';
 import trangchu from './trangchu';
 
 export default {
@@ -21,4 +24,7 @@ export default {
 	...loptinchi,
 	...sinhvienhocvu,
 	...kyluatkhenthuong,
+	...thongtinnguoihoc,
+	...activity,
+	...danhmuc,
 };

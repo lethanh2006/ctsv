@@ -1,7 +1,7 @@
 import type { KhoaSinhVien } from '@/services/DaoTaoV2/NamHoc/KhoaSinhVien/typings';
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -19,6 +19,7 @@ const SelectKhoaSinhVien = (props: {
 	loadData?: boolean;
 	placeholder?: string;
 }) => {
+	const intl = useIntl();
 	const {
 		value,
 		onChange,
@@ -51,7 +52,7 @@ const SelectKhoaSinhVien = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn khóa sinh viên'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'lophanhchinh.filterkhoanganh.select.khoasv' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			showArrow

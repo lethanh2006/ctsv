@@ -11,12 +11,13 @@ import type { SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tag, Tooltip } from 'antd';
 import { useCallback, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FilterLopHanhChinh from '../../NamHoc/LopHanhChinh/components/FilterLopHanhChinh';
 import SelectHocKy from '../HocKy/components/SelectHocKy';
 import FormBanCanSuLop from './FormBanCanSuLop';
 
 const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
+	const intl = useIntl();
 	const { danhSach: danhSachHocKy, setRecord: setRecNamHoc, record: recHocKy } = useModel('daotaov2.hocky.hocky');
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('daotaov2.hocky.sinhvienhocky');
 	const { record: recLopHanhChinh } = useModel('daotaov2.namhoc.lophanhchinh');
@@ -42,7 +43,7 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 
 	const columns: IColumn<SinhVien.ISinhVienHocKy>[] = [
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.column.hocky' }),
 			width: 200,
 			dataIndex: 'maHocKy',
 			render: (val, rec) => rec?.hocKy?.ten,
@@ -50,7 +51,7 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 			onCell,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.column.masv' }),
 			width: 100,
 			dataIndex: ['sinhVien', 'ma'],
 			render: (val, rec) => rec?.sinhVien?.ma,
@@ -59,7 +60,7 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 			filterType: 'string',
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.column.hoten' }),
 			width: 150,
 			align: 'center',
 			dataIndex: ['sinhVien', 'ten'],
@@ -68,7 +69,7 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 			filterType: 'string',
 		},
 		{
-			title: 'Lớp',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.column.lop' }),
 			width: 150,
 			align: 'center',
 			dataIndex: ['lopHanhChinh', 'ten'],
@@ -76,14 +77,12 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 			onCell,
 		},
 		{
-			title: 'Vai trò',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.column.vaitro' }),
 			dataIndex: 'vaiTro',
 			width: 150,
 			align: 'center',
 			render: (val: EVaiTroBanCanSuLop) => (
-				<Tag color={MapKeyColorVaiTroBanCanSuLop[val || EVaiTroBanCanSuLop.THANH_VIEN]}>
-					{MapKeyNameVaiTroBanCanSuLop[val || EVaiTroBanCanSuLop.THANH_VIEN]}
-				</Tag>
+				<Tag color={MapKeyColorVaiTroBanCanSuLop[val]}>{MapKeyNameVaiTroBanCanSuLop[val]}</Tag>
 			),
 			filterType: 'select',
 			filterData: Object.values(EVaiTroBanCanSuLop).map((item) => ({
@@ -94,19 +93,23 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.column.thaotac' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
 			render: (record: SinhVien.ISinhVienHocKy) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id, getData)}
-							title='Bạn có chắc chắn muốn xóa vai trò sinh viên?'
+							onConfirm={() =>
+								deleteModel(record._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								})
+							}
+							title={intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.confirm.xoa' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -142,7 +145,7 @@ const SinhVienHocKy = (props: { lopHanhChinh?: LopHanhChinh.IRecord }) => {
 				dependencies={[page, limit, recLopHanhChinh?._id, recHocKy?.ma]}
 				getData={getData}
 				modelName='daotaov2.hocky.sinhvienhocky'
-				title={'Danh sách sinh viên và ban cán sự lớp'}
+				title={intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.title' })}
 				Form={Form}
 				params={{
 					lopHanhChinhId: recLopHanhChinh?._id,

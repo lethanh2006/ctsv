@@ -3,43 +3,51 @@ import { type IColumn } from '@/components/Table/typing';
 import type { DotKhamSucKhoe } from '@/services/DotKhamSuKhoe/typing';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormKhoaNganhDotKham from './Form';
 
 const KhoaNganhDotKhamPage = () => {
+	const intl = useIntl();
 	const { page, limit, deleteModel, getModel } = useModel('hosotheodoisuckhoe.dotkhamkhoanganh');
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 
+	const getData = () => {
+		if (recDotKhaiBao?._id) getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id });
+	};
 	const columns: IColumn<DotKhamSucKhoe.IDotKhamKhoaNganh>[] = [
 		{
-			title: 'Khóa sinh viên',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.column.khoasv' }),
 			dataIndex: 'maKhoaSinhVien',
 			width: 100,
 		},
 		{
-			title: 'Ngành đào tạo',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.column.nganh' }),
 			dataIndex: 'tenKhoaNganh',
 			width: 150,
 		},
 		{
-			title: 'Mã ngành',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.column.manganh' }),
 			dataIndex: 'maNganh',
 			width: 100,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.column.thaotac' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
 			render: (rec) => (
 				<>
-					{/* <Tooltip title="Chỉnh sửa">
-            <Button onClick={() => handleEdit(record)} type="link" icon={<EditOutlined />} />
-          </Tooltip> */}
-					<Tooltip title='Loại bỏ'>
+					{/* <Tooltip title='Chỉnh sửa'>
+						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+					</Tooltip> */}
+					<Tooltip title={intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.button.loaibo' })}>
 						<Popconfirm
-							onConfirm={() => deleteModel(rec._id, () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id }))}
-							title='Bạn có chắc chắn muốn bỏ khóa ngành này khỏi đợt khám sức khỏe?'
+							onConfirm={() =>
+								deleteModel(rec._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								})
+							}
+							title={intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.confirm.loaibo' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -53,12 +61,13 @@ const KhoaNganhDotKhamPage = () => {
 	return (
 		<>
 			<TableBase
+				getData={getData}
 				columns={columns}
-				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
-				dependencies={[page, limit]}
+				dependencies={[page, limit, recDotKhaiBao?._id]}
 				modelName='hosotheodoisuckhoe.dotkhamkhoanganh'
-				title='Khóa ngành - đợt khám sức khỏe'
+				title={intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.title' })}
 				Form={FormKhoaNganhDotKham}
+				formProps={{ getData }}
 				hideCard
 				rowSelection
 				deleteMany

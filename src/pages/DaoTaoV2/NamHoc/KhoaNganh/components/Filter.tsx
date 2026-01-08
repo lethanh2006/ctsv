@@ -6,9 +6,10 @@ import { initHinhThuc, initTrinhDo } from '@/utils/constants';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import React, { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FilterKhoaNganh = (props: { width?: number; children?: React.ReactNode; notDefault?: boolean }) => {
+	const intl = useIntl();
 	const { record: recKhoa, setRecord: setKhoa, danhSach: danhSachKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
 	const { record: recNganh, setRecord: setNganh, danhSach: danhSachNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 	const [maTrinhDoDaoTao, setTrinhDoDaoTao] = useState<string>(initTrinhDo); // Đại học
@@ -25,7 +26,7 @@ const FilterKhoaNganh = (props: { width?: number; children?: React.ReactNode; no
 						value={maTrinhDoDaoTao}
 						onChange={(val) => setTrinhDoDaoTao(val as string)}
 						allowClear
-						placeholder='Lọc theo trình độ đào tạo'
+						placeholder={intl.formatMessage({ id: 'lophanhchinh.step.cvht.filterLHC.select.trinhdo' })}
 						style={{ width: 200 }}
 						selectMa
 					/>
@@ -33,7 +34,7 @@ const FilterKhoaNganh = (props: { width?: number; children?: React.ReactNode; no
 						value={maHinhThucDaoTao}
 						onChange={(val) => setHinhThucDaoTao(val as string)}
 						allowClear
-						placeholder='Lọc theo hình thức đào tạo'
+						placeholder={intl.formatMessage({ id: 'lophanhchinh.step.cvht.filterLHC.select.hinhthuc' })}
 						style={{ width: 200 }}
 						selectMa
 					/>

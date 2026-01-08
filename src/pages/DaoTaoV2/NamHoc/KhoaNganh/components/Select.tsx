@@ -53,9 +53,8 @@ const SelectKhoaNganh = (props: {
 				label: `${item?.ten} (${item?.ma})`,
 			}))}
 			showSearch
-			showArrow
 			optionFilterProp='label'
-			placeholder={intl.formatMessage({ id: 'sinhvien.select.chonkhoanganh' })}
+			placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.khoanganh.form.tennganh.place' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 		/>

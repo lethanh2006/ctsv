@@ -70,13 +70,13 @@ const SelectSinhVienDebounce = (props: {
 				loading ? (
 					<Spin
 						spinning={true}
-						tip={intl.formatMessage({ id: 'kyluatkhenthuong.selectsinhvien.loading' })}
+						tip={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.sinhvien.timkiem' })}
 						style={{ width: '100%', margin: 10 }}
 					/>
 				) : (
 					<Empty
 						image={Empty.PRESENTED_IMAGE_SIMPLE}
-						description={intl.formatMessage({ id: 'kyluatkhenthuong.selectsinhvien.description' })}
+						description={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.sinhvien.empty' })}
 					/>
 				)
 			}
@@ -88,7 +88,7 @@ const SelectSinhVienDebounce = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.selectsinhvien.placeholder' })}
+			placeholder={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.form.sinhvien.place' })}
 			style={{ width: '100%', ...style }}
 			showArrow
 		/>

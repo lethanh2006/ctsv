@@ -21,9 +21,11 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 	const { record: recDotKhaiBao } = useModel('hosotheodoisuckhoe.dotkhamsuckhoe');
 	const { handleView: handleViewSinhVien } = useModel('daotaov2.sinhvien.sinhvien');
 	const [sinhVienSsoId, setSinhVienSsoId] = useState<string>();
+
 	const getData = () => {
-		getModel({ sinhVienSsoId: props?.ssoId });
+		getModel(props.ssoId ? { sinhVienSsoId: props?.ssoId } : { dotKhamSucKhoeId: recDotKhaiBao?._id });
 	};
+
 	const onCell = (rec: DotKhamSucKhoe.ISucKhoeSinhVien) => ({
 		onClick: () => {
 			if (rec.sinhVienSsoId && !props.ssoId) {
@@ -36,7 +38,7 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 
 	const columns: IColumn<DotKhamSucKhoe.ISucKhoeSinhVien>[] = [
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.masv' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.masv' }),
 			dataIndex: 'maSinhVien',
 			width: 120,
 			align: 'center',
@@ -44,14 +46,14 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.hoten' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.hoten' }),
 			dataIndex: 'hoTen',
 			width: 170,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.phanloaisuckhoe' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.phanloaisuckhoe' }),
 			dataIndex: 'phanLoaiSucKhoe',
 			width: 120,
 			filterType: 'select',
@@ -60,28 +62,28 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 			filterData: Object.values(EPhanLoaiSucKhoe).map((item) => ({ value: item, label: item })),
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.benhtat' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.benhvatat' }),
 			dataIndex: 'benhTat',
 			width: 170,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.tuvan' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.tuvan' }),
 			dataIndex: 'tuVan',
 			width: 170,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.ghichu' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.ghichu' }),
 			dataIndex: 'ghiChu',
 			width: 170,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.ketluan' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.tinhtrangsuckhoe' }),
 			dataIndex: 'tinhTrangSucKhoe',
 			align: 'center',
 			width: 170,
@@ -93,19 +95,23 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'sinhvien.dotkham.table.column.thaotac' }),
+			title: intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: any) => (
 				<>
-					<Tooltip title={intl.formatMessage({ id: 'global.title.chinhsua' })}>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title={intl.formatMessage({ id: 'sinhvien.dotkham.table.tooltip.loaibo' })}>
+					<Tooltip title={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.button.loaibo' })}>
 						<Popconfirm
-							onConfirm={() => deleteModel(record._id, () => getModel({ dotKhamSucKhoeId: recDotKhaiBao?._id }))}
-							title={intl.formatMessage({ id: 'sinhvien.dotkham.table.popconfirm.title' })}
+							onConfirm={() =>
+								deleteModel(record._id, getData, {
+									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+								})
+							}
+							title={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.confirm.loaibo' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -125,8 +131,9 @@ const SinhVienDotKhamPage = (props: { isKetQua?: boolean; ssoId?: string }) => {
 				params={{ dotKhamSucKhoeId: recDotKhaiBao?._id }}
 				dependencies={[page, limit, recDotKhaiBao?._id, props.ssoId]}
 				modelName='hosotheodoisuckhoe.suckhoesinhvien'
-				title={intl.formatMessage({ id: 'sinhvien.dotkham.title' })}
+				title={intl.formatMessage({ id: 'dotkhamsuckhoe.step.dssv.title' })}
 				Form={FormSinhVienDotKham}
+				formProps={{ getData }}
 				hideCard
 				rowSelection={isKetQua || props.ssoId ? false : true}
 				deleteMany={isKetQua ? false : true}

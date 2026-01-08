@@ -1,7 +1,7 @@
 import { type HocKy } from '@/services/DaoTaoV2/HocKy/HocKy/typing';
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -18,6 +18,7 @@ const SelectHocKy = (props: {
 	selectMa?: boolean;
 	placeHolder?: string;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord, selectMa, disabled, placeHolder } =
 		props;
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('daotaov2.hocky.hocky');
@@ -39,7 +40,7 @@ const SelectHocKy = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeHolder || 'Chọn học kỳ'}
+			placeholder={placeHolder || intl.formatMessage({ id: 'lophanhchinh.step.svbancansu.select.hocky' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			loading={loading}

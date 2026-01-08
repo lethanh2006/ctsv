@@ -9,10 +9,9 @@ import SinhVienLopHanhChinh from '../../SvLopHanhChinh';
 import SinhVienLopHanhChinhNamHoc from '../../SvLopHanhChinhNamHoc';
 import FormLopHanhChinh from './Form';
 
-const ModalLopHanhChinh = (props: any) => {
+const ModalLopHanhChinh = () => {
 	const intl = useIntl();
 	const { record, edit } = useModel('daotaov2.namhoc.lophanhchinh');
-	const title = props?.title ?? '';
 	const [currentStep, setCurrentStep] = useState(0);
 	const { lopTinChiHocKyAccessFilter } = access({});
 
@@ -26,7 +25,13 @@ const ModalLopHanhChinh = (props: any) => {
 
 	if (lopTinChiHocKyAccessFilter()) {
 		return (
-			<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+			<Card
+				title={
+					edit
+						? intl.formatMessage({ id: 'lophanhchinh.chinhsua' })
+						: intl.formatMessage({ id: 'lophanhchinh.themmoi' })
+				}
+			>
 				<Steps
 					current={currentStep}
 					style={{ marginBottom: 18, paddingTop: 0 }}
@@ -35,8 +40,8 @@ const ModalLopHanhChinh = (props: any) => {
 				>
 					{/* <Steps.Step title={intl.formatMessage({ id: 'namhoc.namhoc.step1' })} /> */}
 					{/* <Steps.Step title={intl.formatMessage({ id: 'namhoc.lophanhchinh.tab2' })} disabled={!record?._id} /> */}
-					<Steps.Step title={'Sinh viên và ban cán sự lớp'} disabled={!record?._id} />
-					<Steps.Step title={'Cố vấn học tập'} disabled={!record?._id} />
+					<Steps.Step title={intl.formatMessage({ id: 'lophanhchinh.step.bancansu' })} disabled={!record?._id} />
+					<Steps.Step title={intl.formatMessage({ id: 'lophanhchinh.step.cvht' })} disabled={!record?._id} />
 				</Steps>
 
 				{/* {currentStep === 0 ? (
@@ -54,7 +59,11 @@ const ModalLopHanhChinh = (props: any) => {
 	}
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title?.toLowerCase()}`}>
+		<Card
+			title={
+				edit ? intl.formatMessage({ id: 'lophanhchinh.chinhsua' }) : intl.formatMessage({ id: 'lophanhchinh.themmoi' })
+			}
+		>
 			<Steps
 				current={currentStep}
 				style={{ marginBottom: 18, paddingTop: 0 }}
@@ -63,8 +72,8 @@ const ModalLopHanhChinh = (props: any) => {
 			>
 				<Steps.Step title={intl.formatMessage({ id: 'namhoc.namhoc.step1' })} />
 				<Steps.Step title={intl.formatMessage({ id: 'namhoc.lophanhchinh.tab2' })} disabled={!record?._id} />
-				<Steps.Step title={'Cố vấn học tập'} disabled={!record?._id} />
-				<Steps.Step title={'Ban cán sự lớp'} disabled={!record?._id} />
+				<Steps.Step title={intl.formatMessage({ id: 'lophanhchinh.step.cvht' })} disabled={!record?._id} />
+				<Steps.Step title={intl.formatMessage({ id: 'lophanhchinh.step.bcsl' })} disabled={!record?._id} />
 			</Steps>
 
 			{currentStep === 0 ? (

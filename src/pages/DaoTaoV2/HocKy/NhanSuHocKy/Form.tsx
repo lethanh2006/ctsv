@@ -36,24 +36,49 @@ const FormNhanSuHocKy = (props: { getData: any; lopHanhChinh?: LopHanhChinh.IRec
 			tenLopHc: props?.lopHanhChinh?.ten || values?.tenLopHc,
 		};
 		if (edit) {
-			putModel(record?._id ?? '', payload, props.getData);
+			putModel(
+				record?._id ?? '',
+				payload,
+				props.getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			);
 		} else {
-			postModel(payload, props.getData);
+			postModel(payload, props.getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 		}
 	};
 
 	return (
-		<Card title={!edit ? 'Thêm cố vấn học tập' : 'Chỉnh sửa cố vấn học tập'}>
+		<Card
+			title={
+				!edit
+					? intl.formatMessage({ id: 'lophanhchinh.step.cvhtltc.form.themmoi' })
+					: intl.formatMessage({ id: 'lophanhchinh.step.cvhtltc.form.chinhsua' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Form.Item rules={[...rules.required]} name='maHocKy' label='Học kỳ'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='maHocKy'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.cvhtltc.form.hocky' })}
+				>
 					<SelectHocKy selectMa />
 				</Form.Item>
 				{!props.lopHanhChinh?._id && (
-					<Form.Item rules={[...rules.required]} name='tenLopHc' label='Lớp hành chính'>
+					<Form.Item
+						rules={[...rules.required]}
+						name='tenLopHc'
+						label={intl.formatMessage({ id: 'lophanhchinh.step.cvhtltc.form.lhc' })}
+					>
 						<SelectLopHanhChinhCondition keyName='ten' />
 					</Form.Item>
 				)}
-				<Form.Item rules={[...rules.required]} name='nhanSuSsoId' label='Cán bộ/giảng viên'>
+				<Form.Item
+					rules={[...rules.required]}
+					name='nhanSuSsoId'
+					label={intl.formatMessage({ id: 'lophanhchinh.step.cvhtltc.form.canbo' })}
+				>
 					<SelectNhanSuDebounce />
 				</Form.Item>
 
