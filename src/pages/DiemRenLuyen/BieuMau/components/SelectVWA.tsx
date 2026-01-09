@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectBieuMau = (props: {
 	value?: string;
@@ -12,6 +12,7 @@ const SelectBieuMau = (props: {
 	isSetRecord?: boolean;
 	selectMa?: boolean;
 }) => {
+	const intl = useIntl();
 	const { getAllModel, danhSach, loading } = useModel('diemrenluyen.bieumauvwa');
 	const { value, onChange, multiple, allowClear, style, isSetRecord, selectMa, disabled } = props;
 
@@ -35,7 +36,7 @@ const SelectBieuMau = (props: {
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			loading={loading}
-			placeholder='Chọn biểu mẫu'
+			placeholder={intl.formatMessage({ id: 'dotdanhgia.form.maudanhgia.place' })}
 		/>
 	);
 };

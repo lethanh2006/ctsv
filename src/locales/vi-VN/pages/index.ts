@@ -1,4 +1,5 @@
 import CCT from './CCT';
+import chedochinhsach from './chedochinhsach';
 import chinhtritutuong from './chinhtritutuong';
 import danhmuc from './danhmuc';
 import danhmucchinhsach from './danhmucchinhsach';
@@ -30,4 +31,5 @@ export default {
 	...thongkebaocao,
 	...phuvucongdong,
 	...vanhoathethao,
+	...chedochinhsach,
 };

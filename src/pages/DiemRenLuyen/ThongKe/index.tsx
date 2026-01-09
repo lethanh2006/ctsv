@@ -1,15 +1,14 @@
+import ColumnChart from '@/components/Chart/ColumnChart';
 import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { thongKePhieuDiem } from '@/services/DiemRenLuyen/PhieuDiem';
-import { Card, Col, Row } from 'antd';
-import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
-
-import ColumnChart from '@/components/Chart/ColumnChart';
 import { inputFormat } from '@/utils/utils';
-import styles from './style.less';
+import { Card, Col, Row } from 'antd';
 import numeral from 'numeral';
+import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../DotVWA/components/SelectDot';
+import styles from './style.less';
 
 type Data = {
 	Ngành: string;
@@ -23,9 +22,13 @@ type Data = {
 };
 
 const ThongKePhieuDiem = () => {
+	const intl = useIntl();
+	const t = (id: string) => intl.formatMessage({ id });
+
 	const { record, setRecord, danhSach } = useModel('diemrenluyen.dotvwa');
 	const [data, setData] = useState<Data[]>([]);
 	const [dataBieuDo, setDataBieuDo] = useState<any>();
+
 	const getData = async () => {
 		if (!record?.maHocKy) return;
 		const res = await thongKePhieuDiem(record.maHocKy);
@@ -46,10 +49,10 @@ const ThongKePhieuDiem = () => {
 
 	const columnFinal: IColumn<any>[] = [
 		{
-			title: 'Ngành',
+			title: t('diemrenluyen.column.nganh'),
 			dataIndex: 'Ngành',
 			width: 200,
-			render: (val) => <div style={{ fontWeight: val === 'Tổng cộng' ? 'bold' : undefined }}>{val}</div>,
+			render: (val) => <div style={{ fontWeight: val === t('diemrenluyen.total') ? 'bold' : undefined }}>{val}</div>,
 		},
 		// {
 		// 	title: 'Tổng số sinh viên',
@@ -57,13 +60,13 @@ const ThongKePhieuDiem = () => {
 		// 	align: 'center',
 		// },
 		{
-			title: 'Số sinh viên được đánh giá',
+			title: t('diemrenluyen.column.tongsv'),
 			width: 150,
 			dataIndex: 'Tổng số sinh viên',
 			align: 'center',
 		},
 		{
-			title: 'Xuất sắc',
+			title: t('diemrenluyen.rank.xuatsac'),
 			width: 150,
 			dataIndex: 'Phân loại XS',
 			align: 'center',
@@ -77,7 +80,7 @@ const ThongKePhieuDiem = () => {
 				),
 		},
 		{
-			title: 'Tốt',
+			title: t('diemrenluyen.rank.tot'),
 			width: 150,
 			dataIndex: 'Phân loại Tốt',
 			align: 'center',
@@ -91,7 +94,7 @@ const ThongKePhieuDiem = () => {
 				),
 		},
 		{
-			title: 'Khá',
+			title: t('diemrenluyen.rank.kha'),
 			width: 150,
 			dataIndex: 'Phân loại Khá',
 			align: 'center',
@@ -105,7 +108,7 @@ const ThongKePhieuDiem = () => {
 				),
 		},
 		{
-			title: 'Trung bình',
+			title: t('diemrenluyen.rank.trungbinh'),
 			width: 150,
 			dataIndex: 'Phân loại Trung bình',
 			align: 'center',
@@ -119,7 +122,7 @@ const ThongKePhieuDiem = () => {
 				),
 		},
 		{
-			title: 'Yếu/Kém',
+			title: t('diemrenluyen.rank.yeukem'),
 			width: 150,
 			dataIndex: 'Phân loại Yếu/Kém',
 			align: 'center',
@@ -133,7 +136,7 @@ const ThongKePhieuDiem = () => {
 				),
 		},
 		{
-			title: 'Không tham gia đánh giá',
+			title: t('diemrenluyen.rank.khongthamgia'),
 			width: 150,
 			align: 'center',
 			dataIndex: 'Không tham gia',
@@ -149,40 +152,47 @@ const ThongKePhieuDiem = () => {
 	];
 
 	return (
-		<Card title='Thống kê'>
+		<Card title={t('diemrenluyen.thongke.title')}>
 			<SelectDotDiemRenLuyen
 				value={record?._id}
 				isSetRecord
 				allowClear={false}
 				onChange={(val) => setRecord(danhSach.find((item) => item._id === val))}
 			/>
+
 			<Row gutter={[16, 0]}>
 				<Col xl={18} lg={12} md={12} sm={24} xs={24}>
 					<ColumnChart
 						height={500}
 						title=''
-						yLabel={['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu/kém', 'Không tham gia đánh giá']}
+						yLabel={[
+							t('diemrenluyen.rank.xuatsac'),
+							t('diemrenluyen.rank.tot'),
+							t('diemrenluyen.rank.kha'),
+							t('diemrenluyen.rank.trungbinh'),
+							t('diemrenluyen.rank.yeukem'),
+							t('diemrenluyen.rank.khongthamgia'),
+						]}
 						colors={['#1fba36', '#0d6efd', '#0dcaf0', '#ffca2c', '#dc3545', '#ccc']}
 						xAxis={data.map((item) => item.Ngành)}
 						formatY={(val) => inputFormat(val ?? 0) + ''}
 						yAxis={[
-							dataBieuDo?.['Xuất sắc'],
-							dataBieuDo?.['Tốt'],
-							dataBieuDo?.['Khá'],
-							dataBieuDo?.['Trung bình'],
-							dataBieuDo?.['Yếu/kém'],
-							dataBieuDo?.['Không tham gia đánh giá'],
+							dataBieuDo?.[t('diemrenluyen.rank.xuatsac')],
+							dataBieuDo?.[t('diemrenluyen.rank.tot')],
+							dataBieuDo?.[t('diemrenluyen.rank.kha')],
+							dataBieuDo?.[t('diemrenluyen.rank.trungbinh')],
+							dataBieuDo?.[t('diemrenluyen.rank.yeukem')],
+							dataBieuDo?.[t('diemrenluyen.rank.khongthamgia')],
 						]}
 					/>
 				</Col>
+
 				<Col xl={6} lg={12} md={12} sm={24} xs={24}>
 					<br />
 					<div className={styles.salesRank}>
 						<ul className={styles.rankingList}>
 							{data
-								?.sort((a, b) => {
-									return b['Tổng số sinh viên'] - a['Tổng số sinh viên'];
-								})
+								?.sort((a, b) => b['Tổng số sinh viên'] - a['Tổng số sinh viên'])
 								.map((item, i) => (
 									<li key={item?.Ngành}>
 										<span className={`${styles.rankingItemNumber} ${i < 3 ? styles.active : ''}`}>{i + 1}</span>
@@ -196,33 +206,20 @@ const ThongKePhieuDiem = () => {
 					</div>
 				</Col>
 			</Row>
+
 			<TableStaticData
 				otherProps={{ pagination: false }}
 				data={[
 					...data,
 					{
-						Ngành: 'Tổng cộng',
-						'Phân loại Khá': data.reduce((pre, cur) => {
-							return pre + (cur?.['Phân loại Khá'] ?? 0);
-						}, 0),
-						'Phân loại Trung bình': data.reduce((pre, cur) => {
-							return pre + (cur?.['Phân loại Trung bình'] ?? 0);
-						}, 0),
-						'Phân loại Tốt': data.reduce((pre, cur) => {
-							return pre + (cur?.['Phân loại Tốt'] ?? 0);
-						}, 0),
-						'Phân loại XS': data.reduce((pre, cur) => {
-							return pre + (cur?.['Phân loại XS'] ?? 0);
-						}, 0),
-						'Phân loại Yếu/Kém': data.reduce((pre, cur) => {
-							return pre + (cur?.['Phân loại Yếu/Kém'] ?? 0);
-						}, 0),
-						'Không tham gia': data.reduce((pre, cur) => {
-							return pre + (cur?.['Không tham gia'] ?? 0);
-						}, 0),
-						'Tổng số sinh viên': data.reduce((pre, cur) => {
-							return pre + (cur?.['Tổng số sinh viên'] ?? 0);
-						}, 0),
+						Ngành: t('diemrenluyen.total'),
+						'Phân loại Khá': data.reduce((p, c) => p + (c?.['Phân loại Khá'] ?? 0), 0),
+						'Phân loại Trung bình': data.reduce((p, c) => p + (c?.['Phân loại Trung bình'] ?? 0), 0),
+						'Phân loại Tốt': data.reduce((p, c) => p + (c?.['Phân loại Tốt'] ?? 0), 0),
+						'Phân loại XS': data.reduce((p, c) => p + (c?.['Phân loại XS'] ?? 0), 0),
+						'Phân loại Yếu/Kém': data.reduce((p, c) => p + (c?.['Phân loại Yếu/Kém'] ?? 0), 0),
+						'Không tham gia': data.reduce((p, c) => p + (c?.['Không tham gia'] ?? 0), 0),
+						'Tổng số sinh viên': data.reduce((p, c) => p + (c?.['Tổng số sinh viên'] ?? 0), 0),
 					},
 				]}
 				columns={columnFinal}

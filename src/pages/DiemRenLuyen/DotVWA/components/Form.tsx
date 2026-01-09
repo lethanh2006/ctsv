@@ -2,15 +2,16 @@ import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import { ELoaiDoiTuongChamDiem, MapKeyNameLoaiDoiTuongChamDiem } from '@/services/DiemRenLuyen/constants';
 import rules from '@/utils/rules';
+import { toISOString } from '@/utils/utils';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Divider, Form, Row, Select } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
-import { toISOString } from '@/utils/utils';
+import { useIntl, useModel } from 'umi';
 import SelectBieuMau from '../../BieuMau/components/SelectVWA';
 
 const FormDot = () => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
 		useModel('diemrenluyen.dotvwa');
@@ -44,31 +45,56 @@ const FormDot = () => {
 		};
 
 		if (edit) {
-			putModel(record?._id ?? '', payload)
+			putModel(
+				record?._id ?? '',
+				payload,
+				undefined,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(payload)
+			postModel(payload, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
 
 	return (
-		<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'Đợt'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'dotdanhgia.form.chinhsua' })
+					: intl.formatMessage({ id: 'dotdanhgia.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24} md={24}>
-						<Form.Item name='maHocKy' label='Học kỳ' rules={[...rules.required]}>
+						<Form.Item
+							name='maHocKy'
+							label={intl.formatMessage({ id: 'dotdanhgia.form.hocky' })}
+							rules={[...rules.required]}
+						>
 							<SelectHocKy selectMa />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name='mauDrlId' label='Biểu mẫu áp dụng cho đợt này' rules={[...rules.required]}>
+						<Form.Item
+							name='mauDrlId'
+							label={intl.formatMessage({ id: 'dotdanhgia.form.maudanhgia' })}
+							rules={[...rules.required]}
+						>
 							<SelectBieuMau />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name='thoiGianDot' label='Thời gian sinh viên phản hồi' rules={[...rules.required]}>
+						<Form.Item
+							name='thoiGianDot'
+							label={intl.formatMessage({ id: 'dotdanhgia.form.thoigian' })}
+							rules={[...rules.required]}
+						>
 							<MyDateRangePicker placeholder={['Từ', 'đến']} format={'DD/MM/YYYY'} />
 						</Form.Item>
 					</Col>
@@ -76,7 +102,7 @@ const FormDot = () => {
 				<>
 					<div style={{ marginBottom: 4, display: 'flex', alignItems: 'center' }}>
 						<div style={{ marginRight: 4, color: '#ff4d4f' }}>*</div>
-						<div>Danh sách đối tượng tham gia chấm điểm</div>
+						<div>{intl.formatMessage({ id: 'dotdanhgia.form.danhsach' })}</div>
 					</div>
 					<Form.List
 						name='danhSachDoiTuongChamDiem'
@@ -84,7 +110,7 @@ const FormDot = () => {
 							{
 								validator: async (_, danhSachDoiTuongChamDiem) => {
 									if (!danhSachDoiTuongChamDiem || danhSachDoiTuongChamDiem.length < 1) {
-										return Promise.reject(new Error('Ít nhất 1 đối tượng'));
+										return Promise.reject(new Error(intl.formatMessage({ id: 'dotdanhgia.form.danhsach.vali' })));
 									}
 								},
 							},
@@ -102,10 +128,10 @@ const FormDot = () => {
 														name={[index, 'loaiDoiTuongChamDiem']}
 														validateTrigger={['onChange', 'onBlur']}
 														rules={[...rules.required, ...rules.text]}
-														label='Loại đối tượng'
+														label={intl.formatMessage({ id: 'dotdanhgia.form.danhsach.loaidoituong' })}
 													>
 														<Select
-															placeholder='Loại đối tượng'
+															placeholder={intl.formatMessage({ id: 'dotdanhgia.form.danhsach.loaidoituong.place' })}
 															options={Object.values(ELoaiDoiTuongChamDiem).map((item) => ({
 																value: item,
 																label: MapKeyNameLoaiDoiTuongChamDiem[item],
@@ -119,7 +145,7 @@ const FormDot = () => {
 														name={[index, 'thoiGian']}
 														validateTrigger={['onChange', 'onBlur']}
 														rules={[...rules.required]}
-														label='Thời gian chấm'
+														label={intl.formatMessage({ id: 'dotdanhgia.form.danhsach.thoigianchamdiem' })}
 													>
 														<MyDateRangePicker format={'HH:mm DD/MM/YYYY'} showTime placeholder={['Từ', 'đến']} />
 													</Form.Item>
@@ -143,7 +169,7 @@ const FormDot = () => {
 								))}
 								<Form.Item>
 									<Button type='dashed' onClick={() => add()} style={{ width: '100%' }} icon={<PlusOutlined />}>
-										Thêm giá trị
+										{intl.formatMessage({ id: 'dotdanhgia.form.danhsach.them' })}
 									</Button>
 
 									<Form.ErrorList errors={errors} />
@@ -155,7 +181,9 @@ const FormDot = () => {
 
 				<Form.Item style={{ textAlign: 'center', marginTop: 24 }}>
 					<Button loading={formSubmiting} style={{ marginRight: 8 }} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới ' : 'Lưu lại'}
+						{!edit
+							? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+							: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 					</Button>
 					<Button
 						onClick={() => {
@@ -163,7 +191,7 @@ const FormDot = () => {
 							form.resetFields();
 						}}
 					>
-						Đóng
+						{intl.formatMessage({ id: 'global.button.huy' })}
 					</Button>
 				</Form.Item>
 			</Form>
