@@ -1,15 +1,14 @@
-
 import { Card } from 'antd';
 
+import { useIntl } from '@umijs/max';
 import SoLuongSinhVienLhc from './SoLuongSinhVienLhc';
 
 const ThongKeSoLuongSinhVienPage = () => {
+	const intl = useIntl();
 
 	return (
-		<Card title='Thống kê số lượng sinh viên'>
-			<div style={{ marginBottom: 12 }}>
-				Thống kê số lượng sinh viên bị cảnh báo học tập, buộc thôi học; bảo lưu, thôi học theo từng ngành qua các kỳ học
-			</div>
+		<Card title={intl.formatMessage({ id: 'thongkebaocao.card.title' })}>
+			<div style={{ marginBottom: 12 }}>{intl.formatMessage({ id: 'thongkebaocao.card.description' })}</div>
 			<SoLuongSinhVienLhc />
 		</Card>
 	);

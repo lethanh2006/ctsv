@@ -6,11 +6,12 @@ import type { CauLacBo } from '@/services/CauLacBo/typings';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormCauLacBo from './components/Form';
 import ViewDetailCLB from './components/ViewDetail';
 
 const CauLacBoComponent = () => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, getModel, setRecord, record: recordCLB } = useModel('caulacbo.caulacbo');
 	const { danhSach, getAllModel } = useModel('tochucnhansu.donvi');
 	const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
@@ -48,13 +49,13 @@ const CauLacBoComponent = () => {
 
 	const columns: IColumn<CauLacBo.IRecord>[] = [
 		{
-			title: 'Tên câu lạc bộ',
+			title: intl.formatMessage({ id: 'quanlyclb.column.ten' }),
 			dataIndex: 'ten',
 			width: 200,
 			onCell,
 		},
 		{
-			title: 'Logo',
+			title: intl.formatMessage({ id: 'quanlyclb.column.logo' }),
 			dataIndex: 'logo',
 			width: 100,
 			align: 'center',
@@ -62,7 +63,7 @@ const CauLacBoComponent = () => {
 			onCell,
 		},
 		{
-			title: 'Đơn vị quản lý',
+			title: intl.formatMessage({ id: 'quanlyclb.column.donvi' }),
 			dataIndex: 'donViQuanLy',
 			width: 150,
 			render: (val: string) => danhSach.find((item) => item._id === val)?.ten,
@@ -70,7 +71,7 @@ const CauLacBoComponent = () => {
 			onCell,
 		},
 		{
-			title: 'Thành viên',
+			title: intl.formatMessage({ id: 'quanlyclb.column.thanhvien' }),
 			width: 150,
 			onCell,
 			align: 'center',
@@ -80,15 +81,15 @@ const CauLacBoComponent = () => {
 					<div>
 						{recThongKe?.thanhVien[ETrangThaiThanhVien.DANG_HOAT_DONG] +
 							recThongKe?.thanhVien[ETrangThaiThanhVien.NGUNG_HOAT_DONG]}{' '}
-						thành viên
+						{intl.formatMessage({ id: 'quanlyclb.column.thanhvien' })}
 					</div>
 				) : (
-					'Chưa có thành viên'
+					intl.formatMessage({ id: 'quanlyclb.column.thanhvien.empty' })
 				);
 			},
 		},
 		{
-			title: 'Hoạt động',
+			title: intl.formatMessage({ id: 'quanlyclb.column.hoatdong' }),
 			width: 150,
 			onCell,
 			align: 'center',
@@ -99,43 +100,43 @@ const CauLacBoComponent = () => {
 						{recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.CHUA_THUC_HIEN] +
 							recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.DA_THUC_HIEN] +
 							recThongKe?.tongSoHoatDong[ETrangThaiHoatDong.HUY]}{' '}
-						hoạt động
+						{intl.formatMessage({ id: 'quanlyclb.column.hoatdong' })}
 					</div>
 				) : (
-					'Chưa có hoạt động'
+					intl.formatMessage({ id: 'quanlyclb.column.hoatdong.empty' })
 				);
 			},
 		},
 		{
-			title: 'Nội quy, quy chế',
+			title: intl.formatMessage({ id: 'quanlyclb.column.noiquy' }),
 			dataIndex: 'noiQuyQuyChe',
 			width: 100,
 			align: 'center',
 			render: (val) => (
 				<a href={val} target='_blank' rel='noreferrer'>
-					Xem chi tiết
+					{intl.formatMessage({ id: 'global.button.chitiet' })}
 				</a>
 			),
 		},
 		{
-			title: 'Quyết định thành lập',
+			title: intl.formatMessage({ id: 'quanlyclb.column.quyetdinh' }),
 			dataIndex: 'quyetDinhThanhLap',
 			width: 120,
 			align: 'center',
 			render: (val) => (
 				<a href={val} target='_blank' rel='noreferrer'>
-					Xem chi tiết
+					{intl.formatMessage({ id: 'global.button.chitiet' })}
 				</a>
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'quanlyclb.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (record: CauLacBo.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button
 							onClick={() => {
 								handleEdit(record);
@@ -145,17 +146,17 @@ const CauLacBoComponent = () => {
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								deleteModel(record._id, getModel);
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'global.button.confirm.xoa' })}
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
 					</Tooltip>
-					<Tooltip title='Xem chi tiết'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chitiet' })}>
 						<Button
 							onClick={() => {
 								setRecord(record);
@@ -175,13 +176,13 @@ const CauLacBoComponent = () => {
 			<TableBase
 				widthDrawer={800}
 				Form={FormCauLacBo}
-				title='Quản lý câu lạc bộ'
+				title={intl.formatMessage({ id: 'quanlyclb.title' })}
 				modelName={'caulacbo.caulacbo'}
 				columns={columns}
 			/>
 			<Modal
 				destroyOnClose
-				styles={{ paddingTop: 4 }}
+				styles={{ body: { paddingTop: 4 } }}
 				width={1100}
 				footer={
 					<Button
@@ -189,7 +190,7 @@ const CauLacBoComponent = () => {
 							setVisibleDetail(false);
 						}}
 					>
-						Đóng
+						{intl.formatMessage({ id: 'global.button.dong' })}
 					</Button>
 				}
 				title={recordCLB?.ten}

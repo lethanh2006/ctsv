@@ -10,7 +10,7 @@ import {
 import { primaryColor } from '@/services/base/constant';
 import { Col, Descriptions, Row, Tabs, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import PhongBanCauLacBo from '../PhongBan';
 import ThanhVienCauLacBo from '../ThanhVien';
 
@@ -23,6 +23,7 @@ const ViewDetailCLB = (props: {
 		};
 	};
 }) => {
+	const intl = useIntl();
 	const { record } = useModel('caulacbo.caulacbo');
 	const { danhSach } = useModel('tochucnhansu.donvi');
 	const { condition, filters } = useModel('hoatdongchung');
@@ -50,24 +51,27 @@ const ViewDetailCLB = (props: {
 	}, [condition, record?._id]);
 	return (
 		<Tabs>
-			<Tabs.TabPane key={'1'} tab='Thông tin chung'>
+			<Tabs.TabPane key={'1'} tab={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung' })}>
 				<Row>
 					<Col span={12}>
 						<DonutChart
 							showTotal
-							formatY={(val) => `${val} hoạt động`}
+							formatY={(val) => `${val} ${intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.hd' })}`}
 							height={220}
-							yLabel={['Hoạt động']}
+							yLabel={[intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.hd' })]}
 							xAxis={Object.values(MapKeyLabelTrangThaiThongKe)}
 							yAxis={[[dataThongKe?.chuaDienRa ?? 0, dataThongKe?.dangDienRa ?? 0, dataThongKe?.daDienRa ?? 0]]}
 						/>
 					</Col>
 					<Col span={12}>
 						<DonutChart
-							formatY={(val) => `${val} thành viên`}
+							formatY={(val) => `${val} ${intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.tv' })}`}
 							height={220}
 							showTotal
-							yLabel={['Thành viên đang hoạt động', 'Thành viên ngừng hoạt động']}
+							yLabel={[
+								intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.tvhoatdong' }),
+								intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.tvngunghd' }),
+							]}
 							xAxis={Object.values(ETrangThaiThanhVien)}
 							yAxis={[Object.values(props.dataThongKe?.thanhVien ?? 0)]}
 						/>
@@ -75,50 +79,56 @@ const ViewDetailCLB = (props: {
 				</Row>
 
 				<Descriptions column={{ xs: 2, sm: 2, md: 4, xl: 6, xxl: 6 }}>
-					<Descriptions.Item span={3} label={'Tên câu lạc bộ'}>
+					<Descriptions.Item span={3} label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.ten' })}>
 						{record?.ten}
 					</Descriptions.Item>
-					<Descriptions.Item span={3} label={'Đơn vị quản lý'}>
+					<Descriptions.Item span={3} label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.donviql' })}>
 						{danhSach.find((item) => item._id === record?.donViQuanLy)?.ten}
 					</Descriptions.Item>
 					{record?.logo && (
-						<Descriptions.Item span={3} label={'Logo'}>
+						<Descriptions.Item span={3} label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.logo' })}>
 							<img src={record.logo} style={{ width: 30, height: 30 }} />
 						</Descriptions.Item>
 					)}
-					<Descriptions.Item span={3} label={'Khẩu hiệu'}>
+					<Descriptions.Item
+						span={3}
+						label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.khauhieu' })}
+					>
 						{record?.slogan}
 					</Descriptions.Item>
-					<Descriptions.Item span={6} label={'Mục đích'}>
+					<Descriptions.Item span={6} label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.mucdich' })}>
 						<div dangerouslySetInnerHTML={{ __html: record?.mucDich ?? '' }} />
 					</Descriptions.Item>
-					<Descriptions.Item span={6} label={'Ý nghĩa'}>
+					<Descriptions.Item span={6} label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.ynghia' })}>
 						<div dangerouslySetInnerHTML={{ __html: record?.yNghia ?? '' }} />
 					</Descriptions.Item>
 
-					<Descriptions.Item span={3} label={'Nội quy, quy chế'}>
+					<Descriptions.Item span={3} label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.noiquy' })}>
 						<Tag color={primaryColor}>
 							<a href={record?.noiQuyQuyChe ?? ''} target='_blank' rel='noreferrer'>
-								Xem tập tin
+								{intl.formatMessage({ id: 'global.button.teptin' })}
 							</a>
 						</Tag>
 					</Descriptions.Item>
-					<Descriptions.Item span={3} label={'Quyết định thành lập'}>
+					<Descriptions.Item
+						span={3}
+						label={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.thongtinchung.quyetdinh' })}
+					>
 						<Tag color={primaryColor}>
 							<a href={record?.quyetDinhThanhLap ?? ''} target='_blank' rel='noreferrer'>
-								Xem tập tin
+								{intl.formatMessage({ id: 'global.button.teptin' })}
 							</a>
 						</Tag>
 					</Descriptions.Item>
 				</Descriptions>
 			</Tabs.TabPane>
-			<Tabs.TabPane key={'2'} tab='Danh sách ban/bộ phận'>
+			<Tabs.TabPane key={'2'} tab={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dsban' })}>
 				<PhongBanCauLacBo />
 			</Tabs.TabPane>
-			<Tabs.TabPane key={'3'} tab='Danh sách thành viên'>
+			<Tabs.TabPane key={'3'} tab={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv' })}>
 				<ThanhVienCauLacBo />
 			</Tabs.TabPane>
-			<Tabs.TabPane key={'4'} tab='Hoạt động của CLB'>
+			<Tabs.TabPane key={'4'} tab={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.hd' })}>
 				<HoatDongCauLacBo
 					hideCard
 					paramCondition={{
