@@ -2,7 +2,7 @@ import SelectNamHoc from '@/pages/DaoTaoV2/NamHoc/NamHoc/components/Select';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Space, Tooltip } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectHocKy from './SelectHocKy';
 
 const FilterHocKy = (props: {
@@ -12,6 +12,7 @@ const FilterHocKy = (props: {
 	hideExpand?: boolean;
 	children?: React.ReactNode;
 }) => {
+	const intl = useIntl();
 	const { record: recHocKy, danhSach: danhSachHocKy, setRecord: setHocKy } = useModel('daotaov2.hocky.hocky');
 	const [namHocId, setNamHocId] = useState<string>();
 	const [visibleOption, setVisibleOption] = useState(false);
@@ -22,7 +23,7 @@ const FilterHocKy = (props: {
 		<Space wrap>
 			{visibleOption ? (
 				<>
-					<Tooltip title='Ẩn bộ lọc'>
+					<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.step.cvht.filterHK.tooltip.an' })}>
 						<Button icon={<MinusOutlined />} onClick={() => setVisibleOption(false)} type='dashed' />
 					</Tooltip>
 					<SelectNamHoc
@@ -33,11 +34,11 @@ const FilterHocKy = (props: {
 						hasDefault
 					/>
 					<Checkbox checked={allHocKy} onChange={(e) => setAllHocKy(e.target.checked)}>
-						Hiển thị các học kỳ đã ẩn
+						{intl.formatMessage({ id: 'lophanhchinh.step.cvht.filterHK.checkbox' })}
 					</Checkbox>
 				</>
 			) : !props.hideExpand ? (
-				<Tooltip title='Mở rộng bộ lọc'>
+				<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.step.cvht.filterHK.tooltip.morong' })}>
 					<Button icon={<PlusOutlined />} onClick={() => setVisibleOption(true)} type='dashed' />
 				</Tooltip>
 			) : null}
