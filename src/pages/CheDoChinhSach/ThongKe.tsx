@@ -1,11 +1,12 @@
 import { DeleteOutlined, EditOutlined, ExportOutlined, FileOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Collapse, Empty, Modal, Popconfirm, Spin, Tooltip } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import Form from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/Form';
 import ViewThongKe from '../QuyTrinhDong/QuanLyQuyTrinh/ThongKe/components/ViewThongKe';
 
 const ThongKeBaoCao = () => {
+	const intl = useIntl();
 	const {
 		getAllModel,
 		setEdit,
@@ -29,7 +30,7 @@ const ThongKeBaoCao = () => {
 	}, []);
 
 	return (
-		<Card title='Thống kê'>
+		<Card title={intl.formatMessage({ id: 'chedochinhsach.thongke.title' })}>
 			<div style={{ marginBottom: 8 }}>
 				<Button
 					onClick={() => {
@@ -41,7 +42,7 @@ const ThongKeBaoCao = () => {
 					type='primary'
 					icon={<PlusOutlined />}
 				>
-					Thêm mới
+					{intl.formatMessage({ id: 'global.button.themmoi' })}
 				</Button>
 			</div>
 			<Spin spinning={loading}>
@@ -53,7 +54,7 @@ const ThongKeBaoCao = () => {
 									style={{ border: 'none', backgroundColor: '#f2f2f2', marginBottom: 8, borderRadius: 10 }}
 									extra={
 										<div style={{ display: 'flex', width: 100, justifyContent: 'space-between' }}>
-											<Tooltip title='Xuất excel'>
+											<Tooltip title={intl.formatMessage({ id: 'chedochinhsach.thongke.excel' })}>
 												<Button
 													loading={loading}
 													onClick={(e) => {
@@ -66,7 +67,7 @@ const ThongKeBaoCao = () => {
 												/>
 											</Tooltip>
 											{item.fileId && (
-												<Tooltip title='Xuất docx'>
+												<Tooltip title={intl.formatMessage({ id: 'chedochinhsach.thongke.doc' })}>
 													<Button
 														loading={loading}
 														onClick={(e) => {
@@ -79,7 +80,7 @@ const ThongKeBaoCao = () => {
 													/>
 												</Tooltip>
 											)}
-											<Tooltip title='Chỉnh sửa'>
+											<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 												<Button
 													onClick={(e) => {
 														e.stopPropagation();
@@ -90,9 +91,9 @@ const ThongKeBaoCao = () => {
 													type='link'
 												/>
 											</Tooltip>
-											<Tooltip placement='bottom' title='Xóa'>
+											<Tooltip placement='bottom' title={intl.formatMessage({ id: 'global.button.xoa' })}>
 												<Popconfirm
-													title='Bạn có chắc chắn muốn xóa?'
+													title={intl.formatMessage({ id: 'chedochinhsach.thongke.confirm.xoa' })}
 													onConfirm={() => {
 														deleteModel(item._id, getData);
 													}}
@@ -119,16 +120,14 @@ const ThongKeBaoCao = () => {
 						})}
 					</Collapse>
 				) : (
-					<>
-						<Empty />
-					</>
+					<Empty />
 				)}
 			</Spin>
 			<Modal
 				onCancel={() => setVisibleForm(false)}
 				width={700}
 				footer={null}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				open={visibleForm}
 			>
 				<Form modelName={'chedochinhsach.thongke'} />

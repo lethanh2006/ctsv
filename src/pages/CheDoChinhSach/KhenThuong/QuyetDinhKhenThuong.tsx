@@ -1,8 +1,16 @@
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
+import { useIntl } from 'umi';
 import QuyetDinh from '../QuyetDinh';
 
 const CheDoChinhSach = () => {
-	return <QuyetDinh loaiCheDoSinhVien={ELoaiCheDoSinhVien.KHEN_THUONG} title='Danh sách sinh viên được khen thưởng' />;
+	const intl = useIntl();
+
+	return (
+		<QuyetDinh
+			loaiCheDoSinhVien={ELoaiCheDoSinhVien.KHEN_THUONG}
+			title={intl.formatMessage({ id: 'khenthuong.title' })}
+		/>
+	);
 };
 
 export default CheDoChinhSach;

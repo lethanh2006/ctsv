@@ -191,7 +191,7 @@ const PhieuDiemRenLuyenComponent = (props: { ssoId?: string; hideCard?: boolean 
 					setVisibleFormDoiTrangThai(false);
 				}}
 				footer={null}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 			>
 				<FormCapNhatTrangThai getData={getData} onCancel={() => setVisibleFormDoiTrangThai(false)} />
 			</Modal>
