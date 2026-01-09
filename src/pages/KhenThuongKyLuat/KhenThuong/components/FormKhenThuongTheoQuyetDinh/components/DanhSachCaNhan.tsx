@@ -1,16 +1,17 @@
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
+import { type QuyetDinhKhenThuong } from '@/services/KhenThuong/QuyetDinhKhenThuong/typing';
+import { type ELoaiKhenThuong } from '@/services/KhenThuong/constants';
+import { type SinhVien } from '@/services/SinhVien/typings';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { useIntl } from '@umijs/max';
 import { Button, Form, Popconfirm, Space, Tooltip } from 'antd';
 import { type FormInstance } from 'antd/es/form/Form';
 import { useWatch } from 'antd/lib/form/Form';
 import { useState } from 'react';
 import { type FormValues } from '..';
 import { FormCaNhan, type FormCaNhanValues } from './FormCaNhan';
-import { type QuyetDinhKhenThuong } from '@/services/KhenThuong/QuyetDinhKhenThuong/typing';
-import { type ELoaiKhenThuong } from '@/services/KhenThuong/constants';
 import styles from './styles.less';
-import { type SinhVien } from '@/services/SinhVien/typings';
 
 interface Props {
 	form: FormInstance<FormValues>;
@@ -36,6 +37,7 @@ type TableRecord = {
 };
 
 export const DanhSachCaNhan = ({ form, dataDanhSachCaNhan, isXemDanhSach }: Props) => {
+	const intl = useIntl();
 	const danhSachCaNhanFormValue = useWatch(['danhSachCaNhan'], form) ?? [];
 	const danhSachCaNhanValue: FormValues['danhSachCaNhan'] = dataDanhSachCaNhan ?? danhSachCaNhanFormValue;
 
@@ -124,21 +126,21 @@ export const DanhSachCaNhan = ({ form, dataDanhSachCaNhan, isXemDanhSach }: Prop
 			dataIndex: ['sinhVien', 'ten'],
 			filterType: 'string',
 			onCell,
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.hoten' }),
 		},
 		{
 			width: 140,
 			dataIndex: ['loaiKhenThuong', 'ten'],
 			filterType: 'string',
 			onCell,
-			title: 'Loại khen thưởng',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.loaikhenthuong' }),
 		},
 		{
 			width: 140,
 			dataIndex: ['hinhThucKhenThuong', 'ten'],
 			filterType: 'string',
 			onCell,
-			title: 'Hình thức khen thưởng',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.hinhthuckhenthuong' }),
 		},
 	];
 
@@ -146,17 +148,17 @@ export const DanhSachCaNhan = ({ form, dataDanhSachCaNhan, isXemDanhSach }: Prop
 		columns.push({
 			width: 90,
 			align: 'center',
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.thaotac' }),
 			render: (_, tableRecord, index) => {
 				return (
 					<>
-						<Tooltip title='Sửa thông tin'>
+						<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.sua' })}>
 							<Button onClick={() => handleEditCaNhan(tableRecord, index)} type='link' icon={<EditOutlined />} />
 						</Tooltip>
-						<Tooltip title='Xóa'>
+						<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.xoa' })}>
 							<Popconfirm
 								onConfirm={() => handleDeleteCaNhan(index)}
-								title='Bạn có chắc chắn muốn xóa nhân sự này?'
+								title={intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.column.confirm.delete' })}
 								placement='topLeft'
 							>
 								<Button danger type='link' icon={<DeleteOutlined />} />
@@ -169,7 +171,11 @@ export const DanhSachCaNhan = ({ form, dataDanhSachCaNhan, isXemDanhSach }: Prop
 	}
 
 	return (
-		<Form.Item className={styles.block} name={'danhSachCaNhan'} label='Khen thưởng cá nhân'>
+		<Form.Item
+			className={styles.block}
+			name={'danhSachCaNhan'}
+			label={intl.formatMessage({ id: 'kyluatkhenthuong.dscanhan.title' })}
+		>
 			<TableStaticData
 				hasTotal
 				size='small'
@@ -193,7 +199,7 @@ export const DanhSachCaNhan = ({ form, dataDanhSachCaNhan, isXemDanhSach }: Prop
 				{!isXemDanhSach && (
 					<Space>
 						<Button onClick={() => handleCreateCaNhan(true)} size='small' type='primary' icon={<PlusOutlined />}>
-							Thêm mới
+							{intl.formatMessage({ id: 'global.button.themmoi' })}
 						</Button>
 					</Space>
 				)}
