@@ -11,6 +11,7 @@ import thongbao from './thongbao';
 import thongkebaocao from './thongkebaocao';
 import thongtinnguoihoc from './thongtinnguoihoc';
 import trangchu from './trangchu';
+import vanhoathethao from './vanhoathethao';
 
 export default {
 	...login,
@@ -26,4 +27,5 @@ export default {
 	...CCT,
 	...thongkebaocao,
 	...phuvucongdong,
+	...vanhoathethao,
 };

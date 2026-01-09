@@ -7,9 +7,10 @@ import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormCauLacBo = () => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
@@ -36,53 +37,98 @@ const FormCauLacBo = () => {
 			logo,
 		};
 		if (edit) {
-			putModel(record?._id ?? '', payload);
+			putModel(
+				record?._id ?? '',
+				payload,
+				undefined,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			);
 		} else {
-			postModel(payload);
+			postModel(payload, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 		}
 	};
 
 	return (
-		<Card title={edit ? 'Chỉnh sửa' : 'Thêm mới'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'quanlyclb.form.chinhsua' })
+					: intl.formatMessage({ id: 'quanlyclb.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col xs={24} md={24}>
-						<Form.Item name='ten' label='Tên câu lạc bộ' rules={[...rules.required, ...rules.text]}>
-							<Input.TextArea placeholder='Tên câu lạc bộ' />
+						<Form.Item
+							name='ten'
+							label={intl.formatMessage({ id: 'quanlyclb.form.ten' })}
+							rules={[...rules.required, ...rules.text]}
+						>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'quanlyclb.form.ten.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='logo' label='Logo' rules={[...rules.fileRequired]}>
+						<Form.Item
+							name='logo'
+							label={intl.formatMessage({ id: 'quanlyclb.form.logo' })}
+							rules={[...rules.fileRequired]}
+						>
 							<UploadFile accept='.png, .jpeg, .jpg' isAvatarSmall maxCount={1} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='slogan' label='Khẩu hiệu' rules={[...rules.text]}>
-							<Input.TextArea placeholder='Khẩu hiệu' />
+						<Form.Item
+							name='slogan'
+							label={intl.formatMessage({ id: 'quanlyclb.form.khauhieu' })}
+							rules={[...rules.text]}
+						>
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'quanlyclb.form.khauhieu.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='mucDich' label='Mục đích' rules={[...rules.required]}>
+						<Form.Item
+							name='mucDich'
+							label={intl.formatMessage({ id: 'quanlyclb.form.mucdich' })}
+							rules={[...rules.required]}
+						>
 							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='yNghia' label='Ý nghĩa' rules={[...rules.required]}>
+						<Form.Item
+							name='yNghia'
+							label={intl.formatMessage({ id: 'quanlyclb.form.ynghia' })}
+							rules={[...rules.required]}
+						>
 							<TinyEditor height={350} stickyToolbar={false} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='donViQuanLy' label='Đơn vị quản lý' rules={[...rules.required]}>
+						<Form.Item
+							name='donViQuanLy'
+							label={intl.formatMessage({ id: 'quanlyclb.form.donviql' })}
+							rules={[...rules.required]}
+						>
 							<SelectDonVi />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='noiQuyQuyChe' label='Nội quy, quy chế' rules={[...rules.fileRequired]}>
+						<Form.Item
+							name='noiQuyQuyChe'
+							label={intl.formatMessage({ id: 'quanlyclb.form.noiquy' })}
+							rules={[...rules.fileRequired]}
+						>
 							<UploadFile accept='.pdf, .docx, .doc' maxCount={1} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
-						<Form.Item name='quyetDinhThanhLap' label='Quyết định thành lập' rules={[...rules.fileRequired]}>
+						<Form.Item
+							name='quyetDinhThanhLap'
+							label={intl.formatMessage({ id: 'quanlyclb.form.quyetdinh' })}
+							rules={[...rules.fileRequired]}
+						>
 							<UploadFile accept='.pdf, .docx, .doc' maxCount={1} />
 						</Form.Item>
 					</Col>
@@ -90,9 +136,11 @@ const FormCauLacBo = () => {
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới ' : 'Lưu lại'}
+						{!edit
+							? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+							: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>
