@@ -11,10 +11,11 @@ import type { CauLacBo } from '@/services/CauLacBo/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Switch, Tooltip } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormThanhVienCLB from './Form';
 
 const ThanhVienCauLacBo = () => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, getModel, putModel } = useModel('caulacbo.thanhvien');
 	const { danhSach, getAllModel } = useModel('caulacbo.phongban');
 	const { record: recCLB } = useModel('caulacbo.caulacbo');
@@ -27,7 +28,7 @@ const ThanhVienCauLacBo = () => {
 
 	const columns: IColumn<CauLacBo.ThanhVien>[] = [
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.trangthai' }),
 			dataIndex: 'trangThai',
 			width: 150,
 			filterType: 'select',
@@ -36,8 +37,8 @@ const ThanhVienCauLacBo = () => {
 			render: (val, rec) => (
 				<Switch
 					size='small'
-					checkedChildren='Đang hoạt động'
-					unCheckedChildren='Đang hoạt động'
+					checkedChildren={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.hoatdong' })}
+					unCheckedChildren={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.hoatdong' })}
 					checked={val === ETrangThaiThanhVien.DANG_HOAT_DONG ? true : false}
 					onChange={(checked) =>
 						putModel(rec._id, {
@@ -49,7 +50,7 @@ const ThanhVienCauLacBo = () => {
 			),
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.hoten' }),
 			dataIndex: 'hoTen',
 			width: 200,
 			align: 'center',
@@ -57,14 +58,14 @@ const ThanhVienCauLacBo = () => {
 		},
 
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.masv' }),
 			dataIndex: 'maSinhVien',
 			width: 150,
 			align: 'center',
 			filterType: 'string',
 		},
 		{
-			title: 'Vai trò',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.vaitro' }),
 			width: 200,
 			align: 'center',
 			dataIndex: 'chucVuThanhVienCauLacBo',
@@ -73,7 +74,7 @@ const ThanhVienCauLacBo = () => {
 					{rec.chucVuThanhVienCauLacBo ? (
 						<div>{MapKeyChucVuThanhVienCLB[rec.chucVuThanhVienCauLacBo]}</div>
 					) : (
-						<div>Thành viên</div>
+						<div>{intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.thanhvien' })}</div>
 					)}
 				</div>
 			),
@@ -84,7 +85,7 @@ const ThanhVienCauLacBo = () => {
 			})),
 		},
 		{
-			title: 'Loại',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.loai' }),
 			width: 200,
 			align: 'center',
 			dataIndex: 'loaiThanhVien',
@@ -95,7 +96,7 @@ const ThanhVienCauLacBo = () => {
 			})),
 		},
 		{
-			title: 'Ban/bộ phận',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.banbophan' }),
 			width: 200,
 			dataIndex: 'danhSachBanBoPhan.banBoPhanId',
 			render: (val, rec: CauLacBo.ThanhVien) => (
@@ -120,13 +121,13 @@ const ThanhVienCauLacBo = () => {
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (record: CauLacBo.ThanhVien) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button
 							onClick={() => {
 								handleEdit(record);
@@ -136,12 +137,12 @@ const ThanhVienCauLacBo = () => {
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								deleteModel(record._id, getData);
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.confirm.xoa' })}
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
@@ -160,7 +161,7 @@ const ThanhVienCauLacBo = () => {
 			hideCard
 			widthDrawer={600}
 			Form={FormThanhVienCLB}
-			title='Quản lý câu lạc bộ'
+			title={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dstv.title' })}
 			modelName={'caulacbo.thanhvien'}
 			columns={columns}
 			dependencies={[recCLB?._id]}

@@ -7,10 +7,11 @@ import { jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectHocKy from '../HocKy/components/SelectHocKy';
 
 const ThongKeVanHoaTheThao = () => {
+	const intl = useIntl();
 	const [data, setData] = useState<any[]>([]);
 	const [dataCLB, setDataCLB] = useState<any[]>([]);
 	const { record: recHocKy, setRecord: setRecHocKy, danhSach } = useModel('daotaov2.hocky.hocky');
@@ -75,7 +76,7 @@ const ThongKeVanHoaTheThao = () => {
 
 	const column: IColumn<any>[] = [
 		{
-			title: 'Tên hoạt động',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.kqhdvanhoa.column.ten' }),
 			dataIndex: 'hoatDong',
 			align: 'center',
 			width: 200,
@@ -106,59 +107,59 @@ const ThongKeVanHoaTheThao = () => {
 
 	const columnCLB: IColumn<any>[] = [
 		{
-			title: 'Câu lạc bộ',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.clb' }),
 			dataIndex: 'ten',
 			width: 200,
 		},
 		{
-			title: 'Đơn vị trực thuộc (Khoa/Viện/Đoàn TN)',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.donvi' }),
 			dataIndex: 'donViTrucThuoc',
 			width: 200,
 		},
 		{
-			title: 'Thành viên chính thức',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.tv' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'thanhVienChinhThuc',
 		},
 		{
-			title: 'Cộng tác viên',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.ctv' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'congTacVien',
 		},
 		{
-			title: 'Hoạt động do Học viện tổ chức',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.hdhocvien' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'hoatDongHv',
 		},
 		{
-			title: 'Hoạt động do đơn vị bên ngoài tổ chức',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.hddonvingoai' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'hoatDongNgoaiHv',
 		},
 		{
-			title: 'Lượt sinh viên tham gia hoạt động do Học viện tổ chức',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.ltsvhocvien' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'svThamGiaHv',
 		},
 		{
-			title: 'Lượt sinh viên tham gia hoạt động do đơn vị bên ngoài tổ chức',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.ltsvdonvingoai' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'svThamGiaNgoaiHv',
 		},
 		{
-			title: 'Kinh phí hoạt động - Nguồn do Học viện phân bổ (VNĐ)',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.kinhphi' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'kinhPhiHv',
 		},
 		{
-			title: 'Kinh phí hoạt động - Nguồn khác (VNĐ)',
+			title: intl.formatMessage({ id: 'vanhoathethao.thongke.export.column.kinhphikhac' }),
 			align: 'center',
 			width: 150,
 			dataIndex: 'kinhPhiKhac',
@@ -178,41 +179,47 @@ const ThongKeVanHoaTheThao = () => {
 				</Col>
 				<Col span={24}>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<b>Kết quả hoạt động văn hóa, văn nghệ, thể thao</b>
+						<b>{intl.formatMessage({ id: 'vanhoathethao.thongke.kqhdvanhoa' })}</b>
 						<Button
-							onClick={() => handleExportDuLieu(column, data, 'Kết quả hoạt động văn hóa, văn nghệ, thể thao')}
+							onClick={() =>
+								handleExportDuLieu(column, data, intl.formatMessage({ id: 'vanhoathethao.thongke.kqhdvanhoa' }))
+							}
 							icon={<ExportOutlined />}
 							type='primary'
 						>
-							Xuất dữ liệu
+							{intl.formatMessage({ id: 'vanhoathethao.thongke.export' })}
 						</Button>
 					</div>
 				</Col>
 				<Col span={24}>
 					<TableStaticData
-						otherProps={{
-							pagination: false,
-							summary: (pageData: any[]) => {
-								return (
-									<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
-										<Table.Summary.Cell index={0} />
-										<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
-										{column
-											.filter((item) => item.dataIndex !== 'hoatDong')
-											?.map((item: any, index: number) => {
-												const total = pageData.reduce((pre, cur) => {
-													return pre + cur?.[item?.dataIndex ?? ''] ?? 0;
-												}, 0);
-												return (
-													<Table.Summary.Cell key={index} index={index}>
-														{total || 0}
-													</Table.Summary.Cell>
-												);
-											})}
-									</Table.Summary.Row>
-								);
-							},
-						}}
+						otherProps={
+							{
+								pagination: false,
+								summary: (pageData: any[]) => {
+									return (
+										<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+											<Table.Summary.Cell index={0} />
+											<Table.Summary.Cell index={1}>
+												{intl.formatMessage({ id: 'vanhoathethao.thongke.tongso' })}
+											</Table.Summary.Cell>
+											{column
+												.filter((item) => item.dataIndex !== 'hoatDong')
+												?.map((item: any, index: number) => {
+													const total = pageData.reduce((pre, cur) => {
+														return pre + (cur?.[item?.dataIndex ?? ''] ?? 0);
+													}, 0);
+													return (
+														<Table.Summary.Cell key={index} index={index}>
+															{total || 0}
+														</Table.Summary.Cell>
+													);
+												})}
+										</Table.Summary.Row>
+									);
+								},
+							} as any
+						}
 						addStt
 						columns={column}
 						data={data}
@@ -220,65 +227,71 @@ const ThongKeVanHoaTheThao = () => {
 				</Col>
 				<Col span={24}>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<b>Tổng hợp hoạt động câu lạc bộ sinh viên</b>
+						<b>{intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop' })}</b>
 						<Button
-							onClick={() => handleExportDuLieu(columnCLB, dataCLB, 'Tổng hợp hoạt động câu lạc bộ sinh viên')}
+							onClick={() =>
+								handleExportDuLieu(columnCLB, dataCLB, intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop' }))
+							}
 							icon={<ExportOutlined />}
 							type='primary'
 						>
-							Xuất dữ liệu
+							{intl.formatMessage({ id: 'vanhoathethao.thongke.export' })}
 						</Button>
 					</div>
 				</Col>
 				<Col span={24}>
 					<TableStaticData
-						otherProps={{
-							pagination: false,
-							summary: (pageData: any[]) => {
-								let thanhVienChinhThuc = 0;
-								let congTacVien = 0;
-								let hoatDongHv = 0;
-								let svThamGiaHv = 0;
-								let hoatDongNgoaiHv = 0;
-								let svThamGiaNgoaiHv = 0;
-								let kinhPhiHv = 0;
-								let kinhPhiKhac = 0;
-								pageData.map((item) => {
-									thanhVienChinhThuc += item?.thanhVienChinhThuc ?? 0;
-									congTacVien += item?.congTacVien ?? 0;
-									hoatDongHv += item?.hoatDongHv ?? 0;
-									hoatDongNgoaiHv += item?.hoatDongNgoaiHv;
-									svThamGiaHv += item?.svThamGiaHv;
-									svThamGiaNgoaiHv += item?.svThamGiaNgoaiHv;
-									kinhPhiHv += item?.kinhPhiHv;
-									kinhPhiKhac += item?.kinhPhiKhac;
-								});
-								return (
-									<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
-										<Table.Summary.Cell index={0} />
-										<Table.Summary.Cell index={0} />
-										<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
-										<Table.Summary.Cell index={2}>{thanhVienChinhThuc}</Table.Summary.Cell>
-										<Table.Summary.Cell index={3}>{congTacVien}</Table.Summary.Cell>
-										<Table.Summary.Cell index={4}>{hoatDongHv}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{hoatDongNgoaiHv}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{svThamGiaHv}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{svThamGiaNgoaiHv}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{kinhPhiHv}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{kinhPhiKhac}</Table.Summary.Cell>
-									</Table.Summary.Row>
-								);
-							},
-						}}
+						otherProps={
+							{
+								pagination: false,
+								summary: (pageData: any[]) => {
+									let thanhVienChinhThuc = 0;
+									let congTacVien = 0;
+									let hoatDongHv = 0;
+									let svThamGiaHv = 0;
+									let hoatDongNgoaiHv = 0;
+									let svThamGiaNgoaiHv = 0;
+									let kinhPhiHv = 0;
+									let kinhPhiKhac = 0;
+									pageData.map((item) => {
+										thanhVienChinhThuc += item?.thanhVienChinhThuc ?? 0;
+										congTacVien += item?.congTacVien ?? 0;
+										hoatDongHv += item?.hoatDongHv ?? 0;
+										hoatDongNgoaiHv += item?.hoatDongNgoaiHv;
+										svThamGiaHv += item?.svThamGiaHv;
+										svThamGiaNgoaiHv += item?.svThamGiaNgoaiHv;
+										kinhPhiHv += item?.kinhPhiHv;
+										kinhPhiKhac += item?.kinhPhiKhac;
+									});
+									return (
+										<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+											<Table.Summary.Cell index={0} />
+											<Table.Summary.Cell index={0} />
+											<Table.Summary.Cell index={1}>
+												{intl.formatMessage({ id: 'vanhoathethao.thongke.tongso' })}
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={2}>{thanhVienChinhThuc}</Table.Summary.Cell>
+											<Table.Summary.Cell index={3}>{congTacVien}</Table.Summary.Cell>
+											<Table.Summary.Cell index={4}>{hoatDongHv}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{hoatDongNgoaiHv}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{svThamGiaHv}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{svThamGiaNgoaiHv}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{kinhPhiHv}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{kinhPhiKhac}</Table.Summary.Cell>
+										</Table.Summary.Row>
+									);
+								},
+							} as any
+						}
 						addStt
 						columns={[
 							{
-								title: 'Câu lạc bộ',
+								title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.clb' }),
 								dataIndex: 'ten',
 								width: 200,
 							},
 							{
-								title: 'Đơn vị trực thuộc (Khoa/Viện/Đoàn TN)',
+								title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.donvi' }),
 								dataIndex: 'ten',
 								width: 200,
 								render: (val) =>
@@ -287,18 +300,18 @@ const ThongKeVanHoaTheThao = () => {
 									})?.ten,
 							},
 							{
-								title: 'Thành viên CLB',
+								title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.tv' }),
 								align: 'center',
 								width: 150,
 								children: [
 									{
-										title: 'Thành viên chính thức',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.tv.chinhthuc' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'thanhVienChinhThuc',
 									},
 									{
-										title: 'Cộng tác viên',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.tv.ctv' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'congTacVien',
@@ -306,18 +319,18 @@ const ThongKeVanHoaTheThao = () => {
 								],
 							},
 							{
-								title: 'Hoạt động của CLB',
+								title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.hd' }),
 								align: 'center',
 								width: 150,
 								children: [
 									{
-										title: 'Hoạt động do Học viện tổ chức',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.hd.hocvien' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'hoatDongHv',
 									},
 									{
-										title: 'Hoạt động do đơn vị bên ngoài tổ chức',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.hd.donvingoai' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'hoatDongNgoaiHv',
@@ -325,18 +338,18 @@ const ThongKeVanHoaTheThao = () => {
 								],
 							},
 							{
-								title: 'Lượt sinh viên tham gia họat động',
+								title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.luotsv' }),
 								align: 'center',
 								width: 150,
 								children: [
 									{
-										title: 'Hoạt động do Học viện tổ chức',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.luotsv.hocvien' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'svThamGiaHv',
 									},
 									{
-										title: 'Hoạt động do đơn vị bên ngoài tổ chức',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.luotsv.donvingoai' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'svThamGiaNgoaiHv',
@@ -344,18 +357,18 @@ const ThongKeVanHoaTheThao = () => {
 								],
 							},
 							{
-								title: 'Kinh phí hoạt động',
+								title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.kinhphi' }),
 								align: 'center',
 								width: 150,
 								children: [
 									{
-										title: 'Nguồn do Học viện phân bổ (VNĐ)',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.kinhphi.hocvien' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'kinhPhiHv',
 									},
 									{
-										title: 'Nguồn khác(VNĐ)',
+										title: intl.formatMessage({ id: 'vanhoathethao.thongke.tonghop.column.kinhphi.donvingoai' }),
 										align: 'center',
 										width: 150,
 										dataIndex: 'kinhPhiKhac',

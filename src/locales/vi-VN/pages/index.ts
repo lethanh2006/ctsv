@@ -10,6 +10,7 @@ import sinhvien from './sinhvien';
 import thongbao from './thongbao';
 import thongtinnguoihoc from './thongtinnguoihoc';
 import trangchu from './trangchu';
+import vanhoathethao from './vanhoathethao';
 
 export default {
 	...login,
@@ -24,4 +25,5 @@ export default {
 	...chinhtritutuong,
 	...CCT,
 	...phuvucongdong,
+	...vanhoathethao,
 };

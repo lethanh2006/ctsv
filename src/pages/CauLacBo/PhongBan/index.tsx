@@ -1,13 +1,14 @@
 import TableBase from '@/components/Table';
+import { EOperatorType } from '@/components/Table/constant';
 import type { IColumn } from '@/components/Table/typing';
 import type { CauLacBo } from '@/services/CauLacBo/typings';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormPhongBan from './Form';
-import { EOperatorType } from '@/components/Table/constant';
 
 const PhongBanCauLacBo = () => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, getModel } = useModel('caulacbo.phongban');
 	const { record: recCLB } = useModel('caulacbo.caulacbo');
 	const { filters, setFilters } = useModel('caulacbo.thanhvien');
@@ -28,7 +29,7 @@ const PhongBanCauLacBo = () => {
 
 	const columns: IColumn<CauLacBo.PhongBan>[] = [
 		{
-			title: 'Tên ban/bộ phận',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dsban.column.ten' }),
 			dataIndex: 'ten',
 			width: 200,
 			onCell,
@@ -36,7 +37,7 @@ const PhongBanCauLacBo = () => {
 		},
 
 		{
-			title: 'Mô tả',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dsban.column.mota' }),
 			dataIndex: 'moTa',
 			width: 250,
 			align: 'center',
@@ -52,13 +53,13 @@ const PhongBanCauLacBo = () => {
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dsban.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (record: CauLacBo.PhongBan) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button
 							onClick={() => {
 								handleEdit(record);
@@ -68,12 +69,12 @@ const PhongBanCauLacBo = () => {
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								deleteModel(record._id, getData);
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dsban.column.confirm.xoa' })}
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
@@ -93,7 +94,7 @@ const PhongBanCauLacBo = () => {
 			hideCard
 			widthDrawer={600}
 			Form={FormPhongBan}
-			title='Quản lý câu lạc bộ'
+			title={intl.formatMessage({ id: 'quanlyclb.chitiet.tab.dsban.title' })}
 			modelName={'caulacbo.phongban'}
 			columns={columns}
 			dependencies={[recCLB?._id]}
