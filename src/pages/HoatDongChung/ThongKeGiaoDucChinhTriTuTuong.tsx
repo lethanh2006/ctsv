@@ -6,10 +6,11 @@ import { jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectHocKy from '../HocKy/components/SelectHocKy';
 
 const ThongKeGiaoDucChinhTriTuTuong = () => {
+	const intl = useIntl();
 	const [data, setData] = useState<any[]>([]);
 	const [data2, setData2] = useState<any[]>([]);
 	const { record: recHocKy, setRecord: setRecHocKy, danhSach } = useModel('daotaov2.hocky.hocky');
@@ -46,31 +47,31 @@ const ThongKeGiaoDucChinhTriTuTuong = () => {
 
 	const column2: IColumn<any>[] = [
 		{
-			title: 'Ngành đào tạo',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.export.column.nganh' }),
 			dataIndex: 'nganh',
 			align: 'center',
 			width: 200,
 		},
 		{
-			title: 'Tuần SHCD - số SV thuộc diện phải học',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.export.column.svthuoc' }),
 			width: 400,
 			align: 'center',
 			dataIndex: 'Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|total',
 		},
 		{
-			title: 'Tuần SHCD - số SV tham gia',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.export.column.svthamgia' }),
 			width: 400,
 			align: 'center',
 			dataIndex: 'Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|attended',
 		},
 		{
-			title: 'Hoạt động huy động GDTTCT các cấp (TW Hội, Bộ GD&ĐT...) - Số sinh viên thuộc diện được triệu tập',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.export.column.hdsvthuoc' }),
 			width: 400,
 			align: 'center',
 			dataIndex: 'Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|total',
 		},
 		{
-			title: 'Hoạt động huy động GDTTCT các cấp (TW Hội, Bộ GD&ĐT...) - Số sinh viên tham gia',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.export.column.hdsvthamgia' }),
 			width: 400,
 			align: 'center',
 			dataIndex: 'Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|attended',
@@ -79,31 +80,31 @@ const ThongKeGiaoDucChinhTriTuTuong = () => {
 
 	const columns: IColumn<any>[] = [
 		{
-			title: 'Ngành đào tạo',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc.nganh' }),
 			dataIndex: 'nganh',
 			align: 'center',
 			width: 200,
 		},
 		{
-			title: 'Tổng số sinh viên',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc.tongsv' }),
 			dataIndex: 'tongSoSinhVien',
 			align: 'center',
 			width: 200,
 		},
 		{
-			title: 'Số SV tham gia Ngày hội việc làm',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc.svthamgiangayhoi' }),
 			dataIndex: 'Ngày hội việc làm',
 			align: 'center',
 			width: 200,
 		},
 		{
-			title: 'Số SV tham gia Hội thảo, nói chuyện chuyên đề về việc làm',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc.svthamgiahoithao' }),
 			dataIndex: 'Hội thảo, nói chuyện chuyên đề về việc làm',
 			align: 'center',
 			width: 200,
 		},
 		{
-			title: 'Số SV được đào tạo kỹ năng mềm trong cả năm học',
+			title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc.svdaotao' }),
 			dataIndex: 'Đào tạo kỹ năng mềm',
 			align: 'center',
 			width: 200,
@@ -132,70 +133,75 @@ const ThongKeGiaoDucChinhTriTuTuong = () => {
 				</Col>
 				<Col span={24}>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<b>Kết quả thực hiện công tác giáo dục chính trị tư tưởng</b>
+						<b>{intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien' })}</b>
 						<Button
 							onClick={() =>
-								handleExportDuLieu(column2, data2, 'Kết quả thực hiện công tác giáo dục chính trị tư tưởng')
+								handleExportDuLieu(column2, data2, intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien' }))
 							}
 							icon={<ExportOutlined />}
 							type='primary'
 						>
-							Xuất dữ liệu
+							{intl.formatMessage({ id: 'hoatdongchung.thongke.export' })}
 						</Button>
 					</div>
 				</Col>
 
 				<Col span={24}>
 					<TableStaticData
-						otherProps={{
-							pagination: false,
-							summary: (pageData: any[]) => {
-								let shcdPhaiHoc = 0;
-								let shcdThamgia = 0;
-								let gdctttPhaiHoc = 0;
-								let gdctttThamGia = 0;
-								pageData.map((item) => {
-									shcdPhaiHoc += item?.['Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|total'] ?? 0;
-									shcdThamgia += item?.['Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|attended'] ?? 0;
-									gdctttPhaiHoc +=
-										item?.['Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|total'] ?? 0;
-									gdctttThamGia +=
-										item?.['Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|attended'] ?? 0;
-								});
-								return (
-									<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
-										<Table.Summary.Cell index={0} />
-										<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
-										<Table.Summary.Cell index={2}>{shcdPhaiHoc}</Table.Summary.Cell>
-										<Table.Summary.Cell index={3}>{shcdThamgia}</Table.Summary.Cell>
-										<Table.Summary.Cell index={4}>{gdctttPhaiHoc}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{gdctttThamGia}</Table.Summary.Cell>
-									</Table.Summary.Row>
-								);
-							},
-						}}
+						otherProps={
+							{
+								pagination: false,
+								summary: (pageData: any[]) => {
+									let shcdPhaiHoc = 0;
+									let shcdThamgia = 0;
+									let gdctttPhaiHoc = 0;
+									let gdctttThamGia = 0;
+									pageData.map((item) => {
+										shcdPhaiHoc += item?.['Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|total'] ?? 0;
+										shcdThamgia += item?.['Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|attended'] ?? 0;
+										gdctttPhaiHoc +=
+											item?.['Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|total'] ?? 0;
+										gdctttThamGia +=
+											item?.['Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|attended'] ??
+											0;
+									});
+									return (
+										<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+											<Table.Summary.Cell index={0} />
+											<Table.Summary.Cell index={1}>
+												{intl.formatMessage({ id: 'hoatdongchung.thongke.tongso' })}
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={2}>{shcdPhaiHoc}</Table.Summary.Cell>
+											<Table.Summary.Cell index={3}>{shcdThamgia}</Table.Summary.Cell>
+											<Table.Summary.Cell index={4}>{gdctttPhaiHoc}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{gdctttThamGia}</Table.Summary.Cell>
+										</Table.Summary.Row>
+									);
+								},
+							} as any
+						}
 						addStt
 						columns={[
 							{
-								title: 'Ngành đào tạo',
+								title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.nganh' }),
 								dataIndex: 'nganh',
 								align: 'center',
 								width: 200,
 							},
 							{
-								title: 'Tuần sinh hoạt công dân sinh viên',
+								title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.tuansh' }),
 								width: 400,
 								align: 'center',
 								children: [
 									{
-										title: 'Số sinh viên thuộc diện phải học',
+										title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.tuansh.svthuoc' }),
 										dataIndex: 'Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|total',
 										width: 200,
 										align: 'center',
 										render: (val) => val || 0,
 									},
 									{
-										title: 'Số sinh viên tham gia',
+										title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.tuansh.svthamgia' }),
 										dataIndex: 'Giáo dục chính trị tư tưởng|Tuần sinh hoạt công dân|attended',
 										width: 200,
 										align: 'center',
@@ -203,19 +209,19 @@ const ThongKeGiaoDucChinhTriTuTuong = () => {
 								],
 							},
 							{
-								title: 'Hoạt động huy động giáo dục tư tưởng chính trị các cấp (TW Hội, Bộ GD&ĐT...)',
+								title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.hd' }),
 								width: 400,
 								align: 'center',
 								children: [
 									{
-										title: 'Số sinh viên thuộc diện được triệu tập',
+										title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.hd.svthuoc' }),
 										dataIndex: 'Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|total',
 										width: 200,
 										align: 'center',
 										render: (val) => val || 0,
 									},
 									{
-										title: 'Số sinh viên tham gia',
+										title: intl.formatMessage({ id: 'hoatdongchung.thongke.kqthuchien.column.hd.svthamgia' }),
 										dataIndex: 'Giáo dục chính trị tư tưởng|Hoạt động huy động giáo dục tư tưởng chính trị|attended',
 										width: 200,
 										align: 'center',
@@ -229,50 +235,50 @@ const ThongKeGiaoDucChinhTriTuTuong = () => {
 				</Col>
 				<Col span={24}>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<b>Kết quả tổ chức các hoạt động hướng nghiệp, giới thiệu việc làm, kỹ năng mềm</b>
+						<b>{intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc' })}</b>
 
 						<Button
 							onClick={() =>
-								handleExportDuLieu(
-									columns,
-									data,
-									'Kết quả tổ chức các hoạt động hướng nghiệp, giới thiệu việc làm, kỹ năng mềm',
-								)
+								handleExportDuLieu(columns, data, intl.formatMessage({ id: 'hoatdongchung.thongke.kqtochuc' }))
 							}
 							icon={<ExportOutlined />}
 							type='primary'
 						>
-							Xuất dữ liệu
+							{intl.formatMessage({ id: 'hoatdongchung.thongke.export' })}
 						</Button>
 					</div>
 				</Col>
 				<Col span={24}>
 					<TableStaticData
-						otherProps={{
-							pagination: false,
-							summary: (pageData: any[]) => {
-								let tongSoSinhVien = 0;
-								let ngayHoiViecLam = 0;
-								let hoiThaoViecLam = 0;
-								let kyNangMem = 0;
-								pageData.map((item) => {
-									tongSoSinhVien += item?.tongSoSinhVien ?? 0;
-									ngayHoiViecLam += item?.['Ngày hội việc làm'] ?? 0;
-									hoiThaoViecLam += item?.['Hội thảo, nói chuyện chuyên đề về việc làm'] ?? 0;
-									kyNangMem += item?.['Đào tạo kỹ năng mềm'] ?? 0;
-								});
-								return (
-									<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
-										<Table.Summary.Cell index={0} />
-										<Table.Summary.Cell index={1}>Tổng số</Table.Summary.Cell>
-										<Table.Summary.Cell index={2}>{tongSoSinhVien}</Table.Summary.Cell>
-										<Table.Summary.Cell index={3}>{ngayHoiViecLam}</Table.Summary.Cell>
-										<Table.Summary.Cell index={4}>{hoiThaoViecLam}</Table.Summary.Cell>
-										<Table.Summary.Cell index={5}>{kyNangMem}</Table.Summary.Cell>
-									</Table.Summary.Row>
-								);
-							},
-						}}
+						otherProps={
+							{
+								pagination: false,
+								summary: (pageData: any[]) => {
+									let tongSoSinhVien = 0;
+									let ngayHoiViecLam = 0;
+									let hoiThaoViecLam = 0;
+									let kyNangMem = 0;
+									pageData.map((item) => {
+										tongSoSinhVien += item?.tongSoSinhVien ?? 0;
+										ngayHoiViecLam += item?.['Ngày hội việc làm'] ?? 0;
+										hoiThaoViecLam += item?.['Hội thảo, nói chuyện chuyên đề về việc làm'] ?? 0;
+										kyNangMem += item?.['Đào tạo kỹ năng mềm'] ?? 0;
+									});
+									return (
+										<Table.Summary.Row style={{ textAlign: 'center', fontWeight: 'bold' }}>
+											<Table.Summary.Cell index={0} />
+											<Table.Summary.Cell index={1}>
+												{intl.formatMessage({ id: 'hoatdongchung.thongke.tongso' })}
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={2}>{tongSoSinhVien}</Table.Summary.Cell>
+											<Table.Summary.Cell index={3}>{ngayHoiViecLam}</Table.Summary.Cell>
+											<Table.Summary.Cell index={4}>{hoiThaoViecLam}</Table.Summary.Cell>
+											<Table.Summary.Cell index={5}>{kyNangMem}</Table.Summary.Cell>
+										</Table.Summary.Row>
+									);
+								},
+							} as any
+						}
 						addStt
 						columns={columns}
 						data={data}
