@@ -48,6 +48,10 @@ export default {
 	'lophanhchinh.step.cvht.filterLHC.select.trinhdo': 'Lọc theo trình độ đào tạo',
 	'lophanhchinh.step.cvht.filterLHC.select.hinhthuc': 'Lọc theo hình thức đào tạo',
 
+	'lophanhchinh.step.cvht.filterHK.tooltip.an': 'Ẩn bộ lọc',
+	'lophanhchinh.step.cvht.filterHK.tooltip.morong': 'Mở rộng bộ lọc',
+	'lophanhchinh.step.cvht.filterHK.checkbox': 'Hiển thị các học kỳ đã ẩn',
+
 	'lophanhchinh.step.cvht.column.namhoc': 'Năm học',
 	'lophanhchinh.step.cvht.column.macanbo': 'Mã cán bộ',
 	'lophanhchinh.step.cvht.column.hoten': 'Họ tên',

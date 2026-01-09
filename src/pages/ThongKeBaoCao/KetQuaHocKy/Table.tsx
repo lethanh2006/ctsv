@@ -64,7 +64,12 @@ const KetQuaHocKyTablePage = () => {
 		if (recHocKy?.ma) {
 			setLoadingExport(true);
 			exportSinhVienXetHocBong(recHocKy.ma)
-				.then((res) => fileDownload(res.data, `DS sinh viên xét học bổng ${recHocKy.ten}.xlsx`))
+				.then((res) =>
+					fileDownload(
+						res.data,
+						`${intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.export.filename' }, { tenHocKy: recHocKy.ten })}`,
+					),
+				)
 				.catch((er) => console.log(er))
 				.finally(() => setLoadingExport(false));
 		}
@@ -72,7 +77,7 @@ const KetQuaHocKyTablePage = () => {
 
 	const columns: IColumn<KetQuaHocKy.IRecord>[] = [
 		{
-			title: 'Mã HK',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.mahk' }),
 			dataIndex: 'maHocKy',
 			width: 80,
 			align: 'center',
@@ -80,7 +85,7 @@ const KetQuaHocKyTablePage = () => {
 			hide: !!recHocKy?.ma,
 		},
 		{
-			title: 'Mã SV',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.masv' }),
 			dataIndex: ['sinhVien', 'ma'],
 			width: 120,
 			align: 'center',
@@ -97,7 +102,7 @@ const KetQuaHocKyTablePage = () => {
 			),
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.hoten' }),
 			dataIndex: ['sinhVien', 'ten'],
 			width: 160,
 			// render: (val, rec) => rec.sinhVien?.ten,
@@ -105,11 +110,11 @@ const KetQuaHocKyTablePage = () => {
 			// filterCustomSelect: <SelectSinhVienDebounce multiple allowClear />,
 		},
 		{
-			title: 'Số tín chỉ',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.sotinchi' }),
 			width: 180,
 			children: [
 				{
-					title: 'Đạt',
+					title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.sotinchi.dat' }),
 					dataIndex: 'tongSoTinChiHocKy',
 					width: 60,
 					align: 'center',
@@ -117,7 +122,7 @@ const KetQuaHocKyTablePage = () => {
 					filterType: 'number',
 				},
 				{
-					title: 'TL',
+					title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.sotinchi.tichluy' }),
 					dataIndex: 'tongSoTinChiTichLuyHocKy',
 					width: 60,
 					align: 'center',
@@ -125,7 +130,7 @@ const KetQuaHocKyTablePage = () => {
 					filterType: 'number',
 				},
 				{
-					title: 'Xét HB',
+					title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.sotinchi.xethocbong' }),
 					dataIndex: 'tongSoTinChiHocBongHocKy',
 					width: 60,
 					align: 'center',
@@ -133,7 +138,7 @@ const KetQuaHocKyTablePage = () => {
 					filterType: 'number',
 				},
 				{
-					title: 'Nợ',
+					title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.sotinchi.no' }),
 					dataIndex: 'tongSoTinChiNoHocKy',
 					width: 60,
 					align: 'center',
@@ -143,11 +148,11 @@ const KetQuaHocKyTablePage = () => {
 			],
 		},
 		{
-			title: 'TB học kỳ',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.trungbinhhocky' }),
 			width: 120,
 			children: [
 				{
-					title: 'Hệ 4',
+					title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.trungbinhhocky.he4' }),
 					dataIndex: 'trungBinhHocKyThang4',
 					width: 70,
 					align: 'center',
@@ -155,7 +160,7 @@ const KetQuaHocKyTablePage = () => {
 					filterType: 'number',
 				},
 				{
-					title: 'HB',
+					title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.trungbinhhocky.hocbong' }),
 					dataIndex: 'trungBinhHocBongHocKyThang4',
 					width: 70,
 					align: 'center',
@@ -165,7 +170,7 @@ const KetQuaHocKyTablePage = () => {
 			],
 		},
 		{
-			title: 'Trình độ',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.trinhdo' }),
 			dataIndex: 'trinhDo',
 			align: 'center',
 			width: 120,
@@ -173,7 +178,7 @@ const KetQuaHocKyTablePage = () => {
 			filterData: Object.values(ETrinhDoKqhtHocKy),
 		},
 		{
-			title: 'Học lực HK',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.hocluchocky' }),
 			dataIndex: 'hocLucHocKy',
 			align: 'center',
 			width: 120,
@@ -190,7 +195,7 @@ const KetQuaHocKyTablePage = () => {
 		// 	render: (val, rec) => rec.khoaNganh?.ten ?? val,
 		// },
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.trangthai' }),
 			dataIndex: ['sinhVien', 'trangThaiHoc'],
 			align: 'center',
 			width: 120,
@@ -198,7 +203,11 @@ const KetQuaHocKyTablePage = () => {
 			filterData: Object.values(ETrangThaiHocSv),
 			render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
 		},
-		{ title: 'Khóa ngành', width: 120, dataIndex: 'maKhoaNganh' },
+		{
+			title: intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.column.khoanganh' }),
+			width: 120,
+			dataIndex: 'maKhoaNganh',
+		},
 	];
 
 	return (
@@ -221,7 +230,7 @@ const KetQuaHocKyTablePage = () => {
 						loading={loadingExport}
 						onClick={handleExportSinhVienXetHocBong}
 					>
-						KQ Xét học bổng
+						{intl.formatMessage({ id: 'thongkebaocao.ketquahoctap.button.export.hb' })}
 					</ButtonExtend>,
 				]}
 			/>

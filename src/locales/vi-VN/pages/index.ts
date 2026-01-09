@@ -8,6 +8,7 @@ import namhoc from './namhoc';
 import phuvucongdong from './phuvucongdong';
 import sinhvien from './sinhvien';
 import thongbao from './thongbao';
+import thongkebaocao from './thongkebaocao';
 import thongtinnguoihoc from './thongtinnguoihoc';
 import trangchu from './trangchu';
 
@@ -23,5 +24,6 @@ export default {
 	...thongbao,
 	...chinhtritutuong,
 	...CCT,
+	...thongkebaocao,
 	...phuvucongdong,
 };
