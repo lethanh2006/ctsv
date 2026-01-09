@@ -1,9 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
-import { useEffect } from 'react';
-import { useModel } from 'umi';
-import FormHinhThucKhenThuong from './Form';
 import { type BaseOptionType } from 'antd/lib/select';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
+import FormHinhThucKhenThuong from './Form';
 
 const SelectHinhThucKhenThuong = (props: {
 	value?: string;
@@ -15,6 +15,7 @@ const SelectHinhThucKhenThuong = (props: {
 	allowClear?: boolean;
 	loaiKhenThuongId?: any;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, hasCreate, multiple, listHinhThucKhenThuong, disable, allowClear, loaiKhenThuongId } = props;
 	const { danhSach, getAllModel, setVisibleForm, visibleForm, setEdit, setRecord } =
 		useModel('danhmuc.hinhthuckhenthuong');
@@ -52,7 +53,7 @@ const SelectHinhThucKhenThuong = (props: {
 					showSearch
 					disabled={disable}
 					optionFilterProp='label'
-					placeholder='Chọn hình thức khen thưởng'
+					placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.selecthinhthuckhenthuong.placeholder' })}
 				/>
 			</div>
 
@@ -60,7 +61,9 @@ const SelectHinhThucKhenThuong = (props: {
 				<>
 					<Button icon={<PlusOutlined />} onClick={onAddNew} />
 					<Modal open={visibleForm} styles={{ padding: 0 }} footer={null} onCancel={() => setVisibleForm(false)}>
-						<FormHinhThucKhenThuong title='Hình thức khen thưởng' />
+						<FormHinhThucKhenThuong
+							title={intl.formatMessage({ id: 'kyluatkhenthuong.selecthinhthuckhenthuong.title' })}
+						/>
 					</Modal>
 				</>
 			) : null}
