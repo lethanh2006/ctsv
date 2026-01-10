@@ -15,12 +15,13 @@ import { CloseOutlined, DollarOutlined } from '@ant-design/icons';
 import { Popconfirm, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const LichSuThanhToan = (props: {
 	onPay: (rec: GiaoDich.IRecord) => void;
 	onCancel: (rec: GiaoDich.IRecord) => void;
 }) => {
+	const intl = useIntl();
 	const { record } = useModel('taichinh.hoadon');
 	const { getAllModel, danhSach, loading } = useModel('taichinh.giaodich');
 	const { onPay, onCancel } = props;
@@ -34,44 +35,44 @@ const LichSuThanhToan = (props: {
 
 	const columns: IColumn<GiaoDich.IRecord>[] = [
 		{
-			title: 'Mã TT',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.lichsu' }),
 			dataIndex: 'identityCode',
 			width: 120,
 			align: 'center',
 			filterType: 'string',
 		},
 		{
-			title: 'Loại giao dịch',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.loai' }),
 			align: 'center',
 			width: 100,
 			render: (val, rec) => {
 				switch ((rec.fromAccount, rec.toAccount)) {
 					case (ETransactionSourceType.EXTERNAL, ETransactionSourceType.WALLET):
-						return <Tag color='green'>Nộp tiền</Tag>;
+						return <Tag color='green'>{intl.formatMessage({ id: 'taichinh.hoadon.noptien' })}</Tag>;
 					case (ETransactionSourceType.WALLET, ETransactionSourceType.SYSTEM):
-						return <Tag color='orange'>Thanh toán</Tag>;
+						return <Tag color='orange'>{intl.formatMessage({ id: 'taichinh.hoadon.thanhtoan' })}</Tag>;
 					case (ETransactionSourceType.SYSTEM, ETransactionSourceType.WALLET):
-						return <Tag color='purple'>Hoàn trả</Tag>;
+						return <Tag color='purple'>{intl.formatMessage({ id: 'taichinh.hoadon.hoantra' })}</Tag>;
 					default:
 						return null;
 				}
 			},
 		},
 		{
-			title: 'Số tiền',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.sotien' }),
 			dataIndex: 'amount',
 			align: 'right',
 			width: 120,
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Hình thức',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.hinhthuc' }),
 			dataIndex: 'paymentType',
 			width: 140,
 			render: (val: ETransactionPaymentType, rec) => transactionPaymentLabel?.[val as ETransactionPaymentType] ?? '',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.trangthai' }),
 			dataIndex: 'status',
 			width: 140,
 			align: 'center',
@@ -79,9 +80,14 @@ const LichSuThanhToan = (props: {
 				<Tag color={colorTransactionStatus[val]}>{transactionStatus[val] ?? ''}</Tag>
 			),
 		},
-		{ title: 'Chuyên viên thực hiện', dataIndex: 'manualUserFullname', width: 150, filterType: 'string' },
 		{
-			title: 'Thời gian thực hiện',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.chuyenvien' }),
+			dataIndex: 'manualUserFullname',
+			width: 150,
+			filterType: 'string',
+		},
+		{
+			title: intl.formatMessage({ id: 'taichinh.hoadon.thoigian' }),
 			align: 'center',
 			dataIndex: 'createdAt',
 			width: 120,
@@ -89,7 +95,7 @@ const LichSuThanhToan = (props: {
 			render: (val) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.thaotac' }),
 			width: 90,
 			align: 'center',
 			fixed: 'right',
@@ -98,12 +104,12 @@ const LichSuThanhToan = (props: {
 					<ButtonExtend
 						disabled={rec.status !== ETransactionStatus.PENDING || rec.fromAccount !== ETransactionSourceType.EXTERNAL}
 						icon={<DollarOutlined />}
-						tooltip='Thanh toán'
+						tooltip={intl.formatMessage({ id: 'taichinh.hoadon.button.thanhtoan' })}
 						onClick={() => onPay && onPay(rec)}
 						type='link'
 					/>
 					<Popconfirm
-						title='Xác nhận hủy giao dịch này?'
+						title={intl.formatMessage({ id: 'taichinh.hoadon.confirm.huy' })}
 						onConfirm={() => onCancel && onCancel(rec)}
 						disabled={rec.status !== ETransactionStatus.PENDING || rec.fromAccount !== ETransactionSourceType.EXTERNAL}
 						placement='topRight'
@@ -113,7 +119,7 @@ const LichSuThanhToan = (props: {
 								rec.status !== ETransactionStatus.PENDING || rec.fromAccount !== ETransactionSourceType.EXTERNAL
 							}
 							icon={<CloseOutlined />}
-							tooltip='Hủy'
+							tooltip={intl.formatMessage({ id: 'taichinh.hoadon.button.huy' })}
 							type='link'
 							danger
 						/>

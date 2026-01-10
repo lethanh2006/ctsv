@@ -17,7 +17,7 @@ import { CheckOutlined, CloseOutlined, LeftOutlined, PrinterOutlined, UndoOutlin
 import { Button, Card, Col, Collapse, Form, Input, Modal, Row, Select, Spin, Steps, Tag, message } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { history, useModel } from 'umi';
+import { history, useIntl, useModel } from 'umi';
 import ViewDot from '../../components/DotQuyTrinh/ViewDot';
 import FormRender from '../../components/MauDon/FormRender';
 import FormInHoSo from './FormInHoSo';
@@ -39,6 +39,7 @@ interface Iprops {
 	getData?: (id?: string) => void;
 }
 const View = (props: Iprops) => {
+	const intl = useIntl();
 	const { dataQuyTrinh, current, loadingForm, modalName, FormModal, formProps, type, getData } = props;
 	const model = useModel(modalName);
 	// const { record: recordQuyTrinh } = useModel('quanlykhoahoc.quytrinh.quytrinh');
@@ -147,6 +148,7 @@ const View = (props: Iprops) => {
 			setLoadingDieuPhoi(false);
 		}
 	};
+
 	const handleSubmitDon = async (values: any) => {
 		try {
 			setLoadingDuyet(true);
@@ -201,6 +203,7 @@ const View = (props: Iprops) => {
 			setLoadingDuyet(false);
 		}
 	};
+
 	const renderDescription = (value: any, tienDo?: ETienDoQuyTrinh, isBuocNgoaiHeThong?: boolean) => {
 		if (isBuocNgoaiHeThong) {
 			return (
@@ -237,7 +240,7 @@ const View = (props: Iprops) => {
 			return (
 				<>
 					<div style={{ marginBottom: 8 }}>
-						<Tag color={'gray'}>Chưa đến bước này </Tag>
+						<Tag color={'gray'}>{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.chuadonbuoc' })}</Tag>
 					</div>
 					{tienDo && (
 						<div style={{ marginBottom: 8 }}>
@@ -250,6 +253,7 @@ const View = (props: Iprops) => {
 
 		// }
 	};
+
 	useEffect(() => {
 		if (dataQuyTrinh && type === 'dieu_phoi') {
 			const currentBuocXuLy = dataQuyTrinh?.quyTrinh?.danhSachBuocXuLy?.find(
@@ -267,6 +271,7 @@ const View = (props: Iprops) => {
 		}
 		setCurrentStep(dataQuyTrinh?.danhSachBuocXuLy?.length - 1);
 	}, [dataQuyTrinh]);
+
 	useEffect(() => {
 		if (current) {
 			const arr = dataQuyTrinh?.quyTrinh?.danhSachFormKhaiBao;
@@ -291,7 +296,7 @@ const View = (props: Iprops) => {
 
 	return (
 		<>
-			<Card title={<div>{dataQuyTrinh?.quyTrinh?.ten}</div>} bordered={false}>
+			<Card title={<div>{dataQuyTrinh?.quyTrinh?.ten}</div>} variant='borderless'>
 				<Spin spinning={type ? false : loadingForm}>
 					{!type && (
 						<Button
@@ -302,7 +307,7 @@ const View = (props: Iprops) => {
 								history.push('/quan-ly-khoa-hoc/khai-bao-quy-trinh');
 							}}
 						>
-							Quay lại
+							{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.quaylai' })}
 						</Button>
 					)}
 
@@ -440,7 +445,7 @@ const View = (props: Iprops) => {
 															});
 														}}
 													>
-														Duyệt và in
+														{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.button.duyetvain' })}
 													</Button>
 												)}
 												{(formKhai?.fileId || formTiepNhan?.fileId) && (
@@ -464,7 +469,7 @@ const View = (props: Iprops) => {
 															}
 														}}
 													>
-														In
+														{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.button.in' })}
 													</Button>
 												)}
 
@@ -481,7 +486,7 @@ const View = (props: Iprops) => {
 														setVisibleDuyet(true);
 													}}
 												>
-													Yêu cầu chỉnh sửa
+													{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.button.yccs' })}
 												</Button>
 												<Button
 													disabled={
@@ -498,7 +503,7 @@ const View = (props: Iprops) => {
 														setVisibleDuyet(true);
 													}}
 												>
-													Không duyệt
+													{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.button.khongduyet' })}
 												</Button>
 											</>
 										)}
@@ -511,7 +516,7 @@ const View = (props: Iprops) => {
 											setVisibleForm(false);
 										}}
 									>
-										Đóng
+										{intl.formatMessage({ id: 'global.button.dong' })}
 									</Button>
 								</div>
 							</Col>
@@ -534,7 +539,7 @@ const View = (props: Iprops) => {
 											setVisibleDieuPhoi(true);
 										}}
 									>
-										Điều phối
+										{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.button.dieuphoi' })}
 									</Button>
 									<Button
 										// danger
@@ -544,7 +549,7 @@ const View = (props: Iprops) => {
 										}}
 										icon={<CloseOutlined />}
 									>
-										Đóng
+										{intl.formatMessage({ id: 'global.button.dong' })}
 									</Button>
 								</div>
 							</Col>
@@ -553,7 +558,7 @@ const View = (props: Iprops) => {
 				</Spin>
 				{FormModal && (
 					<Modal
-						title={'Khai báo'}
+						title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.khaobao' })}
 						open={visibleFormKhaiBaoQuyTrinh}
 						onCancel={() => setVisibleFormKhaiBaoQuyTrinh(false)}
 						width={1200}
@@ -568,7 +573,7 @@ const View = (props: Iprops) => {
 					zIndex={100}
 					title={
 						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-							<div>Xử lý đơn</div>
+							<div>{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.xulydon' })}</div>
 							<Button
 								loading={loading}
 								onClick={async () => {
@@ -577,7 +582,7 @@ const View = (props: Iprops) => {
 								}}
 								type='link'
 							>
-								Xem thông tin sinh viên
+								{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtinsv' })}
 							</Button>
 						</div>
 					}
@@ -606,7 +611,7 @@ const View = (props: Iprops) => {
 							)}
 
 							<Form.Item
-								label={'Ghi chú'}
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.ghichu' })}
 								name={'ghiChu'}
 								rules={currentTypeDuyet !== TrangThaiTiepNhanDon.DUYET ? [...rules.requiredHtml] : []}
 							>
@@ -614,7 +619,7 @@ const View = (props: Iprops) => {
 							</Form.Item>
 							{currentTypeDuyet === TrangThaiTiepNhanDon.DUYET && (
 								<Form.Item
-									label={'Văn bản đính kèm'}
+									label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.vanban' })}
 									name={'maVanBan'}
 									rules={currentTypeDuyet !== TrangThaiTiepNhanDon.DUYET ? [...rules.required] : []}
 								>
@@ -624,14 +629,14 @@ const View = (props: Iprops) => {
 							<Form.Item>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
 									<Button style={{ marginRight: 8 }} type={'primary'} htmlType={'submit'}>
-										Xác nhận
+										{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.xacnhan' })}
 									</Button>
 									<Button
 										onClick={() => {
 											setVisibleDuyet(false);
 										}}
 									>
-										Đóng
+										{intl.formatMessage({ id: 'global.button.dong' })}
 									</Button>
 								</div>
 							</Form.Item>
@@ -639,7 +644,7 @@ const View = (props: Iprops) => {
 					</Spin>
 				</Modal>
 				<Modal
-					title={'Điều phối'}
+					title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.dieuphoi' })}
 					open={visibleDieuPhoi}
 					onCancel={() => {
 						setVisibleDieuPhoi(false);
@@ -649,10 +654,14 @@ const View = (props: Iprops) => {
 				>
 					<Spin spinning={loadingDieuPhoi}>
 						<Form onFinish={handleSubmitDieuPhoi} layout={'vertical'}>
-							<Form.Item label={'Bộ phận xử lý'} name={'maBoPhanXuLy'} rules={[...rules.required]}>
+							<Form.Item
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.bophanxuly' })}
+								name={'maBoPhanXuLy'}
+								rules={[...rules.required]}
+							>
 								<Select
 									style={{ width: '100%' }}
-									placeholder={'Chọn bộ phận xử lý'}
+									placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.bophanxuly.place' })}
 									onChange={() => {}}
 									options={danhSachDonViXuLy?.map((val) => {
 										return {
@@ -665,14 +674,14 @@ const View = (props: Iprops) => {
 							<Form.Item>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
 									<Button style={{ marginRight: 8 }} type={'primary'} htmlType={'submit'}>
-										Xác nhận
+										{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.xacnhan' })}
 									</Button>
 									<Button
 										onClick={() => {
 											setVisibleDieuPhoi(false);
 										}}
 									>
-										Đóng
+										{intl.formatMessage({ id: 'global.button.dong' })}
 									</Button>
 								</div>
 							</Form.Item>
@@ -690,7 +699,7 @@ const View = (props: Iprops) => {
 							OK
 						</Button>
 					}
-					styles={{ padding: 0 }}
+					styles={{ body: { padding: 0 } }}
 					open={visibleViewDetailDot}
 					onCancel={() => setVisibleViewDetailDot(false)}
 				>
@@ -704,7 +713,7 @@ const View = (props: Iprops) => {
 						setVisibleFormPrint(false);
 						setFixedCurrent(undefined);
 					}}
-					title='In hồ sơ'
+					title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.in' })}
 				>
 					<FormInHoSo
 						setFixedCurrent={setFixedCurrent}

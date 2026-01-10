@@ -6,9 +6,10 @@ import { ExportOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Row } from 'antd';
 import fileDownload from 'js-file-download';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const ThongKeDichVuHanhChinh = (props: { isTrangChu?: boolean }) => {
+	const intl = useIntl();
 	const [data, setData] = useState<any[]>([]);
 	const { record: recHocKy, setRecord: setRecHocKy, danhSach } = useModel('daotaov2.hocky.hocky');
 	const [loading, setLoading] = useState(false);
@@ -19,10 +20,10 @@ const ThongKeDichVuHanhChinh = (props: { isTrangChu?: boolean }) => {
 			setData(
 				res?.data?.data?.length === 1
 					? []
-					: res?.data?.data?.map((item: any) => ({
+					: (res?.data?.data?.map((item: any) => ({
 							...item,
 							['Loại đơn']: item?.STT === 'Tổng cộng' ? item?.STT : item?.['Loại đơn'],
-					  })) ?? [],
+						})) ?? []),
 			);
 		}
 		setLoading(false);
@@ -51,7 +52,7 @@ const ThongKeDichVuHanhChinh = (props: { isTrangChu?: boolean }) => {
 		}));
 
 	return (
-		<Card title='Thống kê lượt giải quyết dịch vụ hành chính cho sinh viên'>
+		<Card title={intl.formatMessage({ id: 'dichvuhanhchinh.thongke.title' })}>
 			<Row gutter={[8, 8]}>
 				<Col span={24}>
 					<SelectHocKy
@@ -67,7 +68,7 @@ const ThongKeDichVuHanhChinh = (props: { isTrangChu?: boolean }) => {
 						icon={<ExportOutlined />}
 						style={{ marginLeft: 8 }}
 					>
-						Xuất dữ liệu
+						{intl.formatMessage({ id: 'global.button.xuatdulieu' })}
 					</Button>
 				</Col>
 				<Col span={24}>
