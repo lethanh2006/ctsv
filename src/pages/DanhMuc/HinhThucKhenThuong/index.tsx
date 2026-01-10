@@ -3,11 +3,12 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { useModel } from 'umi';
-import FormHinhThucKhenThuong from './components/Form';
 import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
+import FormHinhThucKhenThuong from './components/Form';
 
 const HinhThucKhenThuongPage = () => {
+	const intl = useIntl();
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('danhmuc.hinhthuckhenthuong');
 	const { danhSach, getAllModel } = useModel('danhmuc.loaikhenthuong');
 
@@ -17,7 +18,7 @@ const HinhThucKhenThuongPage = () => {
 
 	const columns: IColumn<HinhThucKhenThuong.IRecord>[] = [
 		{
-			title: 'Mã nội bộ',
+			title: intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.column.ma' }),
 			dataIndex: 'ma',
 			// align: 'center',
 			width: 100,
@@ -26,14 +27,14 @@ const HinhThucKhenThuongPage = () => {
 		},
 
 		{
-			title: 'Tên hình thức khen thưởng',
+			title: intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.column.ten' }),
 			dataIndex: 'ten',
 			width: 300,
 			filterType: 'string',
 			sortable: true,
 		},
 		{
-			title: 'Loại Khen thưởng',
+			title: intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.column.loaikhenthuong' }),
 			dataIndex: 'loaiKhenThuongId',
 			width: 120,
 			sortable: true,
@@ -53,7 +54,7 @@ const HinhThucKhenThuongPage = () => {
 		// 	sortable: true,
 		// },
 		{
-			title: 'Mô tả',
+			title: intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.column.mota' }),
 			dataIndex: 'moTa',
 			width: 150,
 			filterType: 'string',
@@ -73,20 +74,20 @@ const HinhThucKhenThuongPage = () => {
 		//       }}
 		//     />
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: HinhThucKhenThuong.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.tooltip.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.tooltip.xoa' })}>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, getModel)}
-							title='Bạn có chắc chắn muốn xóa hình thức khen thưởng này?'
+							title={intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.tooltip.confirm.delete' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -102,7 +103,7 @@ const HinhThucKhenThuongPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.hinhthuckhenthuong'
-			title='Hình thức khen thưởng'
+			title={intl.formatMessage({ id: 'chinhsach.hinhthuckhenthuong.title' })}
 			Form={FormHinhThucKhenThuong}
 			buttons={{ import: true, export: true }}
 			// deleteMany

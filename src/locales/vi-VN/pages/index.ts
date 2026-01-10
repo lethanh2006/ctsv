@@ -2,6 +2,7 @@ import CCT from './CCT';
 import chedochinhsach from './chedochinhsach';
 import chinhtritutuong from './chinhtritutuong';
 import danhmuc from './danhmuc';
+import danhmucchinhsach from './danhmucchinhsach';
 import dichvuhanhchinh from './dichvuhanhchinh';
 import donvihanhchinh from './donvihanhchinh';
 import login from './login';
@@ -27,6 +28,7 @@ export default {
 	...thongbao,
 	...chinhtritutuong,
 	...CCT,
+	...danhmucchinhsach,
 	...thongkebaocao,
 	...phuvucongdong,
 	...vanhoathethao,

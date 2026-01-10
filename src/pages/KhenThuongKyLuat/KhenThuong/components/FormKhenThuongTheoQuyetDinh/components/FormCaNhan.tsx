@@ -6,6 +6,7 @@ import { ELoaiKhenThuong } from '@/services/KhenThuong/constants';
 import { type SinhVien } from '@/services/SinhVien/typings';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
+import { useIntl } from '@umijs/max';
 import { Button, Card, Col, Form, Row } from 'antd';
 import { useForm, useWatch } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
@@ -39,6 +40,7 @@ interface Props {
 }
 
 export const FormCaNhan = ({ onCancel, onFinish, isEdit, isView, record }: Props) => {
+	const intl = useIntl();
 	const [form] = useForm<any>();
 
 	const loaiKhenThuongId = useWatch(['loaiKhenThuongId'], form);
@@ -48,7 +50,15 @@ export const FormCaNhan = ({ onCancel, onFinish, isEdit, isView, record }: Props
 	}, [isEdit, isView, record]);
 
 	return (
-		<Card title={`${isView ? 'Chi tiết' : isEdit ? 'Chỉnh sửa' : 'Thêm mới'} sinh viên`}>
+		<Card
+			title={intl.formatMessage({
+				id: isView
+					? 'kyluatkhenthuong.formcanhan.title.view'
+					: isEdit
+						? 'kyluatkhenthuong.formcanhan.title.edit'
+						: 'kyluatkhenthuong.formcanhan.title.create',
+			})}
+		>
 			<Form id='FormCaNhan' layout='vertical' form={form as any} onFinish={onFinish} disabled={isView}>
 				<Form.Item hidden name='loai' />
 				<Form.Item hidden name='sinhVien' />
@@ -61,7 +71,11 @@ export const FormCaNhan = ({ onCancel, onFinish, isEdit, isView, record }: Props
 						span={24}
 						// md={12}
 					>
-						<Form.Item name='ssoId' label='Sinh viên' rules={[...rules.required]}>
+						<Form.Item
+							name='ssoId'
+							label={intl.formatMessage({ id: 'kyluatkhenthuong.formcanhan.id.sinhvien' })}
+							rules={[...rules.required]}
+						>
 							<SelectSinhVienDebounce
 								keyValue='ssoId'
 								// ignoreCacCanBo={ignoreCacCanBo}
@@ -74,7 +88,11 @@ export const FormCaNhan = ({ onCancel, onFinish, isEdit, isView, record }: Props
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item hidden name='loaiKhenThuong' />
-						<Form.Item name='loaiKhenThuongId' label='Loại khen thưởng' rules={[...rules.required]}>
+						<Form.Item
+							name='loaiKhenThuongId'
+							label={intl.formatMessage({ id: 'kyluatkhenthuong.formcanhan.id.loaikhenthuong' })}
+							rules={[...rules.required]}
+						>
 							<SelectLoaiKhenThuong
 								hasCreate={false}
 								onChange={(_, option) => {
@@ -91,7 +109,11 @@ export const FormCaNhan = ({ onCancel, onFinish, isEdit, isView, record }: Props
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='hinhThucKhenThuongId' label='Hình thức khen thưởng' rules={[...rules.required]}>
+						<Form.Item
+							name='hinhThucKhenThuongId'
+							label={intl.formatMessage({ id: 'kyluatkhenthuong.formcanhan.id.hinhthuckhenthuong' })}
+							rules={[...rules.required]}
+						>
 							<SelectHinhThucKhenThuong
 								hasCreate={false}
 								disable={!loaiKhenThuongId}
@@ -108,10 +130,10 @@ export const FormCaNhan = ({ onCancel, onFinish, isEdit, isView, record }: Props
 			<div className='form-footer'>
 				{!isView && (
 					<Button form='FormCaNhan' type='primary' htmlType='submit'>
-						{isEdit ? 'Lưu lại' : 'Thêm mới'}
+						{intl.formatMessage({ id: isEdit ? 'global.button.luulai' : 'global.button.themmoi' })}
 					</Button>
 				)}
-				<Button onClick={onCancel}>Đóng</Button>
+				<Button onClick={onCancel}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

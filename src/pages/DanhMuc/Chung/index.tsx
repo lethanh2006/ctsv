@@ -3,7 +3,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormDanhMucChung from './components/Form';
 
 import { useCallback } from 'react';
@@ -12,6 +12,7 @@ import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import type { DanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/typings';
 
 const DanhMucChungComponent = () => {
+	const intl = useIntl();
 	const { getModel, page, limit, deleteModel, handleEdit } = useModel('quytrinh.danhmuc');
 
 	const getData = () => {
@@ -20,13 +21,13 @@ const DanhMucChungComponent = () => {
 
 	const columns: IColumn<DanhMucChung.IRecord>[] = [
 		{
-			title: 'Mã',
+			title: intl.formatMessage({ id: 'chinhsach.danhmucchung.column.ma' }),
 			dataIndex: 'maDanhMuc',
 			width: 80,
 			filterType: 'string',
 		},
 		{
-			title: 'Giá trị',
+			title: intl.formatMessage({ id: 'chinhsach.danhmucchung.column.dsgiatri' }),
 			dataIndex: 'danhSachGiaTri',
 			width: 250,
 			render: (val: any[]) => (
@@ -40,7 +41,7 @@ const DanhMucChungComponent = () => {
 			),
 		},
 		{
-			title: 'Ngày tạo',
+			title: intl.formatMessage({ id: 'chinhsach.danhmucchung.column.ngaytao' }),
 			dataIndex: 'createdAt',
 			align: 'center',
 			width: 120,
@@ -49,19 +50,19 @@ const DanhMucChungComponent = () => {
 			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'chinhsach.danhmucchung.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: DanhMucChung.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'chinhsach.danhmucchung.tooltip.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'chinhsach.danhmucchung.tooltip.xoa' })}>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, getData)}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'chinhsach.danhmucchung.tooltip.confirm.delete' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -79,7 +80,7 @@ const DanhMucChungComponent = () => {
 
 	return (
 		<TableBase
-			title='Danh mục chung'
+			title={intl.formatMessage({ id: 'chinhsach.danhmucchung.title' })}
 			getData={getData}
 			columns={columns}
 			dependencies={[page, limit]}

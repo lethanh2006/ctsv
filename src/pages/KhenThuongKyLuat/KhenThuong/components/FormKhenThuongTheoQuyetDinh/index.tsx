@@ -6,7 +6,7 @@ import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row, message } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { DanhSachCaNhan } from './components/DanhSachCaNhan';
 
 export type FormValues = Omit<QuyetDinhKhenThuong.IRecord, 'danhSachCaNhan'> & {
@@ -19,6 +19,7 @@ export interface FormKhenThuongTheoQuyetDinhProps {
 }
 
 export const FormKhenThuongTheoQuyetDinh = ({ onFinishProps }: FormKhenThuongTheoQuyetDinhProps) => {
+	const intl = useIntl();
 	const {
 		edit,
 		record,
@@ -65,9 +66,9 @@ export const FormKhenThuongTheoQuyetDinh = ({ onFinishProps }: FormKhenThuongThe
 			onFinishProps?.(values);
 			setVisibleForm(false);
 			if (edit) {
-				message.success('Lưu thành công');
+				message.success(intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.message.updatesuccess' }));
 			} else {
-				message.success('Thêm mới thành công');
+				message.success(intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.message.createsuccess' }));
 			}
 			// if (edit) {
 			// 	await putModel(record?._id ?? '', body, getModel)
@@ -84,16 +85,28 @@ export const FormKhenThuongTheoQuyetDinh = ({ onFinishProps }: FormKhenThuongThe
 	};
 
 	return (
-		<Card title={(isView ? 'Chi tiết ' : edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'khen thưởng'} loading={loading}>
+		<Card
+			title={intl.formatMessage({
+				id: isView
+					? 'kyluatkhenthuong.quyetdinh.title.view'
+					: edit
+						? 'kyluatkhenthuong.quyetdinh.title.edit'
+						: 'kyluatkhenthuong.quyetdinh.title.create',
+			})}
+			loading={loading}
+		>
 			<Form id='FormKhenThuongTheoDotKhenThuong' onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={12}>
 					<Col span={24}>
 						<Form.Item
 							name='soQuyetDinh'
-							label='Số quyết định'
+							label={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.soquyetdinh' })}
 							rules={[...rules.required, ...rules.text, ...rules.length(255)]}
 						>
-							<Input disabled={isView} placeholder='Số quyết định' />
+							<Input
+								disabled={isView}
+								placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.soquyetdinh' })}
+							/>
 						</Form.Item>
 					</Col>
 					{/* <Col span={24} md={12}>
@@ -102,27 +115,47 @@ export const FormKhenThuongTheoQuyetDinh = ({ onFinishProps }: FormKhenThuongThe
 						</Form.Item>
 					</Col> */}
 					<Col span={24} md={12}>
-						<Form.Item name='ngayQuyetDinh' label='Ngày quyết định' rules={[...rules.required]}>
-							<MyDatePicker disabled={isView} placeholder='Ngày quyết định' />
+						<Form.Item
+							name='ngayQuyetDinh'
+							label={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.ngayquyetdinh' })}
+							rules={[...rules.required]}
+						>
+							<MyDatePicker
+								disabled={isView}
+								placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.ngayquyetdinh' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='ngayKy' label='Ngày ký'>
-							<MyDatePicker disabled={isView} placeholder='Ngày ký' />
+						<Form.Item name='ngayKy' label={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.ngayky' })}>
+							<MyDatePicker
+								disabled={isView}
+								placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.ngayky' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='nguoiKy' label='Người ký'>
-							<Input disabled={isView} placeholder='Người ký' />
+						<Form.Item name='nguoiKy' label={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.nguoiky' })}>
+							<Input
+								disabled={isView}
+								placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.nguoiky' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name='noiDung' label='Nội dung'>
-							<Input.TextArea disabled={isView} placeholder='Nội dụng' />
+						<Form.Item name='noiDung' label={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.noidung' })}>
+							<Input.TextArea
+								disabled={isView}
+								placeholder={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.noidung' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='fileDinhKem' label='File đính kèm' rules={[...rules.fileRequired]}>
+						<Form.Item
+							name='fileDinhKem'
+							label={intl.formatMessage({ id: 'kyluatkhenthuong.quyetdinh.id.filedinhkem' })}
+							rules={[...rules.fileRequired]}
+						>
 							<UploadFile
 								maxCount={1}
 								otherProps={{
@@ -148,7 +181,7 @@ export const FormKhenThuongTheoQuyetDinh = ({ onFinishProps }: FormKhenThuongThe
 						htmlType='submit'
 						type='primary'
 					>
-						{!edit ? 'Thêm mới ' : 'Lưu lại'}
+						{intl.formatMessage({ id: !edit ? 'global.button.themmoi' : 'global.button.luulai' })}
 					</Button>
 				)}
 				<Button
@@ -157,7 +190,7 @@ export const FormKhenThuongTheoQuyetDinh = ({ onFinishProps }: FormKhenThuongThe
 						form.resetFields();
 					}}
 				>
-					Đóng
+					{intl.formatMessage({ id: 'global.button.dong' })}
 				</Button>
 			</Form.Item>
 		</Card>

@@ -4,14 +4,15 @@ import { type QuyetDinhKhenThuong } from '@/services/KhenThuong/QuyetDinhKhenThu
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
-import { useModel } from 'umi';
+import { useEffect, useRef } from 'react';
+import { useIntl, useModel } from 'umi';
 import {
 	FormKhenThuongTheoQuyetDinh,
 	type FormKhenThuongTheoQuyetDinhProps,
 } from './components/FormKhenThuongTheoQuyetDinh';
-import { useEffect, useRef } from 'react';
 
 export default () => {
+	const intl = useIntl();
 	const {
 		handleEdit: handleEdit_,
 		handleView,
@@ -38,7 +39,7 @@ export default () => {
 	});
 	const columns: IColumn<QuyetDinhKhenThuong.IRecord>[] = [
 		{
-			title: 'Số quyết định',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.catagory.column.soquyetdinh' }),
 			dataIndex: 'soQuyetDinh',
 			width: 160,
 			filterType: 'string',
@@ -52,7 +53,7 @@ export default () => {
 		// onCell,
 		// },
 		{
-			title: 'Ngày quyết định',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.catagory.column.ngayquyetdinh' }),
 			width: 160,
 			dataIndex: 'ngayQuyetDinh',
 			filterType: 'date',
@@ -62,7 +63,7 @@ export default () => {
 			render: (value) => (value ? dayjs(value).format('DD/MM/YYYY') : null),
 		},
 		{
-			title: 'Ngày ký',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.catagory.column.ngayky' }),
 			width: 160,
 			dataIndex: 'ngayKy',
 			filterType: 'date',
@@ -73,30 +74,30 @@ export default () => {
 		},
 
 		{
-			title: 'Người ký',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.catagory.column.nguoiky' }),
 			dataIndex: 'nguoiKy',
 			width: 160,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.catagory.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (_, tableRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.catagory.tooltip.chinhsua' })}>
 						<Button onClick={() => handleEdit(tableRecord)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.catagory.tooltip.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								setDanhSach((state) => state.filter((item) => item._id !== tableRecord._id));
-								message.success('Xóa thành công');
+								message.success(intl.formatMessage({ id: 'kyluatkhenthuong.catagory.message.success.delete' }));
 							}}
-							title='Bạn có chắc chắn muốn xóa khen thưởng này?'
+							title={intl.formatMessage({ id: 'kyluatkhenthuong.catagory.tooltip.confirm.delete' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -132,7 +133,7 @@ export default () => {
 		mounted.current = true;
 	}, []);
 	return (
-		<Card title='Khen thưởng'>
+		<Card title={intl.formatMessage({ id: 'kyluatkhenthuong.catagory.title' })}>
 			<TableStaticData
 				addStt
 				data={danhSach ?? []}

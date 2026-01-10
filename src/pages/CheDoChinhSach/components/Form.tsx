@@ -1,14 +1,15 @@
 import { ELoaiBoLoc, ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { useModel } from 'umi';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Input, Popover, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 import TableCauHinh from './TableCauHinh';
-import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 
 const FormCheDoChinhSach = (props: { getData: any }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { visibleForm, record, formSubmiting, edit, setVisibleForm, putModel, postModel } = useModel(
 		'chedochinhsach.chedochinhsach',
@@ -36,7 +37,7 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 	};
 
 	return (
-		<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'chế độ, chính sách'}>
+		<Card title={intl.formatMessage({ id: edit ? 'chedochinhsach.form.title.sua' : 'chedochinhsach.form.title.them' })}>
 			<Form
 				onValuesChange={(changedValues, values) => {
 					setFormValues(values);
@@ -45,17 +46,25 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 				form={form}
 				layout='vertical'
 			>
-				<Form.Item name='ten' label='Tên' rules={[...rules.required, ...rules.text]}>
-					<Input placeholder='Tên' />
+				<Form.Item
+					name='ten'
+					label={intl.formatMessage({ id: 'chedochinhsach.form.ten' })}
+					rules={[...rules.required, ...rules.text]}
+				>
+					<Input placeholder={intl.formatMessage({ id: 'chedochinhsach.form.ten' })} />
 				</Form.Item>
-				<Form.Item name='loaiCheDoSinhVien' label='Loại' rules={[...rules.required]}>
+				<Form.Item
+					name='loaiCheDoSinhVien'
+					label={intl.formatMessage({ id: 'chedochinhsach.form.loai' })}
+					rules={[...rules.required]}
+				>
 					<Select
-						placeholder='Loại'
+						placeholder={intl.formatMessage({ id: 'chedochinhsach.form.loai' })}
 						options={Object.values(ELoaiCheDoSinhVien).map((item) => ({ value: item, label: item }))}
 					/>
 				</Form.Item>
 
-				<div>Danh sách bộ lọc</div>
+				<div>{intl.formatMessage({ id: 'chedochinhsach.form.danhsachboloc.title' })}</div>
 				<Form.List name='danhSachBoLoc'>
 					{(fields, { add, remove }, { errors }) => (
 						<>
@@ -66,7 +75,9 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 									size='small'
 									title={
 										<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-											<div>Bộ lọc {index + 1}</div>
+											<div>
+												{intl.formatMessage({ id: 'chedochinhsach.form.boloc.title' })} {index + 1}
+											</div>
 											<div>
 												<CloseOutlined className='dynamic-delete-button' onClick={() => remove(field.name)} />
 											</div>{' '}
@@ -75,21 +86,36 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 								>
 									<Row gutter={[8, 0]}>
 										<Col span={16}>
-											<Form.Item {...field} rules={[...rules.required]} label={'Tên bộ lọc'} name={[index, 'ten']}>
-												<Input placeholder='Tên bộ lọc' />
+											<Form.Item
+												{...field}
+												rules={[...rules.required]}
+												label={intl.formatMessage({ id: 'chedochinhsach.form.boloc.ten' })}
+												name={[index, 'ten']}
+											>
+												<Input placeholder={intl.formatMessage({ id: 'chedochinhsach.form.boloc.ten' })} />
 											</Form.Item>
 										</Col>
 										<Col span={8}>
-											<Form.Item {...field} rules={[...rules.required]} label='Loại bộ lọc' name={[index, 'loai']}>
+											<Form.Item
+												{...field}
+												rules={[...rules.required]}
+												label={intl.formatMessage({ id: 'chedochinhsach.form.boloc.loai' })}
+												name={[index, 'loai']}
+											>
 												<Select
-													placeholder='Loại bộ lọc'
+													placeholder={intl.formatMessage({ id: 'chedochinhsach.form.boloc.loai' })}
 													options={Object.values(ELoaiBoLoc).map((item) => ({ value: item, label: item }))}
 												/>
 											</Form.Item>
 										</Col>
 										<Col span={24}>
-											<Form.Item {...field} rules={[...rules.required]} label={'Path'} name={[index, 'path']}>
-												<Input placeholder='Path' />
+											<Form.Item
+												{...field}
+												rules={[...rules.required]}
+												label={intl.formatMessage({ id: 'chedochinhsach.form.boloc.path' })}
+												name={[index, 'path']}
+											>
+												<Input placeholder={intl.formatMessage({ id: 'chedochinhsach.form.boloc.path' })} />
 											</Form.Item>
 										</Col>
 										{danhSachBoLoc[index]?.loai === ELoaiBoLoc.MANG && (
@@ -97,10 +123,13 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 												<Form.Item
 													{...field}
 													rules={[...rules.required]}
-													label='Danh sách giá trị'
+													label={intl.formatMessage({ id: 'chedochinhsach.form.boloc.danhsachgiatri' })}
 													name={[index, 'danhSachGiaTri']}
 												>
-													<Select placeholder='Danh sách giá trị' mode='tags' />
+													<Select
+														placeholder={intl.formatMessage({ id: 'chedochinhsach.form.boloc.danhsachgiatri' })}
+														mode='tags'
+													/>
 												</Form.Item>
 											</Col>
 										)}
@@ -110,11 +139,13 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 													<Form.Item
 														{...field}
 														rules={[...rules.required]}
-														label='Mã Module danh mục'
+														label={intl.formatMessage({ id: 'chedochinhsach.form.boloc.mamoduledanhmuc' })}
 														name={[index, 'maModule']}
 													>
 														<Select
-															placeholder='Mã module'
+															placeholder={intl.formatMessage({
+																id: 'chedochinhsach.form.boloc.mamoduledanhmuc.placeholder',
+															})}
 															options={Object.values(ELoaiDanhMucChung).map((item) => ({ value: item, label: item }))}
 														/>
 													</Form.Item>
@@ -126,7 +157,7 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 														rules={[...rules.required]}
 														label={
 															<span>
-																Danh mục (
+																{intl.formatMessage({ id: 'chedochinhsach.form.boloc.danhmuc' })} (
 																<Button
 																	loading={loadingDanhMucChung}
 																	onClick={() => {
@@ -135,7 +166,7 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 																	style={{ padding: 0 }}
 																	type='link'
 																>
-																	Làm mới
+																	{intl.formatMessage({ id: 'chedochinhsach.form.boloc.danhmuc.lammoi' })}
 																</Button>
 																)
 															</span>
@@ -163,7 +194,7 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 																),
 																value: item.maDanhMuc,
 															}))}
-															placeholder='Danh mục'
+															placeholder={intl.formatMessage({ id: 'chedochinhsach.form.boloc.danhmuc' })}
 														/>
 													</Form.Item>
 												</Col>
@@ -174,7 +205,7 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 							))}
 							<Form.Item>
 								<Button type='dashed' onClick={() => add()} style={{ width: '100%' }} icon={<PlusOutlined />}>
-									Thêm bộ lọc
+									{intl.formatMessage({ id: 'chedochinhsach.form.boloc.them' })}
 								</Button>
 								<Form.ErrorList errors={errors} />
 							</Form.Item>
@@ -198,9 +229,9 @@ const FormCheDoChinhSach = (props: { getData: any }) => {
 				</Form.Item> */}
 				<div className='form-footer' style={{ marginTop: 16 }}>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới' : 'Lưu lại'}
+						{intl.formatMessage({ id: !edit ? 'global.button.themmoi' : 'global.button.luulai' })}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</Card>
