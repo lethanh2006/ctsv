@@ -82,7 +82,10 @@ const FormSuKien = ({ hideCard }: Props) => {
 	const thoiGianBatDauDangKy = useWatch(['thoiGianBatDauDangKy'], form);
 	const thoiGianKetThucDangKy = useWatch(['thoiGianKetThucDangKy'], form);
 	const isQRDangKy = useWatch(['isQRDangKy'], form);
+	const idKhaoSatDangKy = useWatch(['idKhaoSatDangKy'], form);
 	const isQRThamGia = useWatch(['isQRThamGia'], form);
+	const idKhaoSatCheckIn = useWatch(['idKhaoSatCheckIn'], form);
+	const idKhaoSatCheckOut = useWatch(['idKhaoSatCheckOut'], form);
 	const isThongBao = useWatch(['isThongBao'], form);
 	const loaiSuKien = Form.useWatch('loaiSuKien', form);
 	const [activeKey, setActiveKey] = useState<string>();
@@ -151,7 +154,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 					...item,
 					vaiTro: EVaiTroBieuMau.SINH_VIEN,
 				})),
-			];
+			] as any;
 			delete values.filter?.roles;
 		} else {
 			values.users = [];
@@ -417,11 +420,18 @@ const FormSuKien = ({ hideCard }: Props) => {
 						</Col>
 						{isQRDangKy && (
 							<>
-								<Col xs={24} md={12}>
+								<Col xs={24}>
 									<Form.Item name='idKhaoSatDangKy' label='Biểu mẫu khảo sát đăng ký'>
 										<SelectMauKhaoSat allowClear />
 									</Form.Item>
 								</Col>
+								{idKhaoSatDangKy && (
+									<Col xs={24}>
+										<Form.Item name='batBuocKhaoSatDangKy' valuePropName='checked'>
+											<Checkbox>Bắt buộc làm khảo sát khi đăng ký</Checkbox>
+										</Form.Item>
+									</Col>
+								)}
 							</>
 						)}
 						{isQRThamGia && (
@@ -436,6 +446,13 @@ const FormSuKien = ({ hideCard }: Props) => {
 										<SelectMauKhaoSat allowClear />
 									</Form.Item>
 								</Col>
+								{(idKhaoSatCheckIn || idKhaoSatCheckOut) && (
+									<Col xs={24}>
+										<Form.Item name='batBuocKhaoSatThamGia' valuePropName='checked'>
+											<Checkbox>Bắt buộc làm khảo sát khi checkin/checkout</Checkbox>
+										</Form.Item>
+									</Col>
+								)}
 							</>
 						)}
 						{isQRDangKy && (
@@ -477,7 +494,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 							<Form.Item
 								rules={[...rules.required, ...(edit ? [] : rules.sauHomNay)]}
 								name='thoiGianBatDau'
-								label='Thời gian bắt đầu'
+								label='Thời gian bắt đầu sự kiện'
 							>
 								<MyDatePicker
 									disabledDate={thoiGianKetThuc ? (cur) => dayjs(cur).isAfter(thoiGianKetThuc) : undefined}
@@ -498,7 +515,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 							<Form.Item
 								rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'thời gian bắt đầu')]}
 								name='thoiGianKetThuc'
-								label='Thời gian kết thúc'
+								label='Thời gian kết thúc sự kiện'
 							>
 								<MyDatePicker
 									showTime={{ showHour: true, showMinute: true }}
@@ -515,12 +532,12 @@ const FormSuKien = ({ hideCard }: Props) => {
 								/>
 							</Form.Item>
 						</Col>
-						<Col xs={24} md={12}>
+						<Col xs={24}>
 							<Form.Item name='cauHinhMinhChungId' label='Tham gia sự kiện được tính điểm rèn luyện?'>
 								<SelectMinhChung allowClear isSuKien />
 							</Form.Item>
 						</Col>
-						<Col xs={24} md={loaiSuKien !== ESuKienType.TUAN_LE_CONG_DAN ? 12 : 24}>
+						<Col xs={24}>
 							<Form.Item rules={[...rules.text, ...rules.length(250)]} name='diaDiem' label='Địa điểm'>
 								<Input placeholder='Địa điểm' />
 							</Form.Item>

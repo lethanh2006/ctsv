@@ -1,11 +1,10 @@
+import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
 import { ETrangThaiDienRaMappingToTagColor, ETrangThaiDienRaMappingToTagLabel } from '@/services/SuKien/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { Descriptions, Divider, Modal, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { Link } from 'umi';
-import { useModel } from 'umi';
-import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
 import { useState } from 'react';
+import { Link, useModel } from 'umi';
 
 interface IProps {
 	data: SuKienV2.IRecord;
@@ -13,6 +12,7 @@ interface IProps {
 const ThongTinChung = (props: IProps) => {
 	const { data } = props;
 	const { getByIdModel: getBieuMau } = useModel('tienich.bieumau');
+	const { danhSach: danhSachCauHinhMinhChungDRL } = useModel('diemrenluyen.minhchung.cauhinh');
 	const [visibleKhaoSat, setVisibleKhaoSat] = useState<boolean>(false);
 
 	const handleViewBieuMau = async (idBieuMau: string) => {
@@ -54,8 +54,11 @@ const ThongTinChung = (props: IProps) => {
 				<Descriptions.Item label='Thời gian kết thúc'>
 					{data?.thoiGianKetThuc ? dayjs(data?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
-				<Descriptions.Item span={6} label='Địa điểm'>
+				<Descriptions.Item span={3} label='Địa điểm'>
 					{data?.diaDiem ?? '--'}
+				</Descriptions.Item>
+				<Descriptions.Item span={3} label='Tham gia sự kiện được tính điểm rèn luyện?'>
+					{danhSachCauHinhMinhChungDRL?.find((item) => item._id === data.cauHinhMinhChungId)?.tenMinhChung ?? '--'}
 				</Descriptions.Item>
 				{/*<Descriptions.Item label='Kinh phí'>{data?.kinhPhi ? tienVietNam(data?.kinhPhi) : '--'}</Descriptions.Item>*/}
 				{/*<Descriptions.Item label='Số lượng'>{data?.soLuong ?? data?.users?.length ?? '--'}</Descriptions.Item>*/}

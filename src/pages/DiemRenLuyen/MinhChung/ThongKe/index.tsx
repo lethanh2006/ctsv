@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { useModel } from 'umi';
-import { Card, Space, Table } from 'antd';
-import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
-import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import ColumnChart from '@/components/Chart/ColumnChart';
 import TableStaticData from '@/components/Table/TableStaticData';
-import { IColumn } from '@/components/Table/typing';
-import { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
-import { inputFormat } from '@/utils/utils';
+import type { IColumn } from '@/components/Table/typing';
+import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
+import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
 import { ETrangThaiTiepNhanMinhChung } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
+import type { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
+import { inputFormat } from '@/utils/utils';
+import { Card, Space, Table } from 'antd';
 import _ from 'lodash';
+import { useEffect } from 'react';
+import { useModel } from 'umi';
 
 const ThongKeMinhChung = () => {
 	const { getAllModel, danhSach, record } = useModel('diemrenluyen.minhchung.cauhinh');
@@ -67,10 +67,7 @@ const ThongKeMinhChung = () => {
 
 		return () => {};
 	}, [recordDot, recordLopHanhChinh]);
-	console.log(
-		"danhSach.map((item) => item.trangThaiMinhChung?.['Chờ xử lý'])",
-		danhSach.map((item) => item.trangThaiMinhChung?.['Chờ xử lý']),
-	);
+
 	return (
 		<>
 			<Card title={'Thống kê'}>
@@ -153,43 +150,45 @@ const ThongKeMinhChung = () => {
 					hasTotal
 					data={danhSach}
 					columns={columns}
-					otherProps={{
-						summary: (data: any[]) => {
-							const dataFiltered: MinhChungDrl.IBieuMau[] = danhSach as MinhChungDrl.IBieuMau[];
-							const sumChoXuLy = _.sumBy(
-								dataFiltered,
-								(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.CHO_XU_LY] ?? 0,
-							);
-							const sumDuyet = _.sumBy(
-								dataFiltered,
-								(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.DUYET] ?? 0,
-							);
-							const sumKhongDuyet = _.sumBy(
-								dataFiltered,
-								(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.KHONG_DUYET] ?? 0,
-							);
+					otherProps={
+						{
+							summary: (data: any[]) => {
+								const dataFiltered: MinhChungDrl.IBieuMau[] = danhSach as MinhChungDrl.IBieuMau[];
+								const sumChoXuLy = _.sumBy(
+									dataFiltered,
+									(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.CHO_XU_LY] ?? 0,
+								);
+								const sumDuyet = _.sumBy(
+									dataFiltered,
+									(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.DUYET] ?? 0,
+								);
+								const sumKhongDuyet = _.sumBy(
+									dataFiltered,
+									(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.KHONG_DUYET] ?? 0,
+								);
 
-							return (
-								<Table.Summary fixed>
-									<Table.Summary.Row>
-										<Table.Summary.Cell index={0} colSpan={2} align='center'>
-											<b>Tổng cộng</b>
-										</Table.Summary.Cell>
+								return (
+									<Table.Summary fixed>
+										<Table.Summary.Row>
+											<Table.Summary.Cell index={0} colSpan={2} align='center'>
+												<b>Tổng cộng</b>
+											</Table.Summary.Cell>
 
-										<Table.Summary.Cell index={1} align='right'>
-											<b>{inputFormat(sumChoXuLy ?? 0)} </b>
-										</Table.Summary.Cell>
-										<Table.Summary.Cell index={2} align='right'>
-											<b>{inputFormat(sumDuyet ?? 0)} </b>
-										</Table.Summary.Cell>
-										<Table.Summary.Cell index={3} align='right'>
-											<b>{inputFormat(sumKhongDuyet ?? 0)} </b>
-										</Table.Summary.Cell>
-									</Table.Summary.Row>
-								</Table.Summary>
-							);
-						},
-					}}
+											<Table.Summary.Cell index={1} align='right'>
+												<b>{inputFormat(sumChoXuLy ?? 0)} </b>
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={2} align='right'>
+												<b>{inputFormat(sumDuyet ?? 0)} </b>
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={3} align='right'>
+												<b>{inputFormat(sumKhongDuyet ?? 0)} </b>
+											</Table.Summary.Cell>
+										</Table.Summary.Row>
+									</Table.Summary>
+								);
+							},
+						} as any
+					}
 				/>
 			</Card>
 		</>

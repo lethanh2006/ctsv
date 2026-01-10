@@ -1,6 +1,6 @@
 import rules from '@/utils/rules';
 import { removeVietnameseTones } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import _ from 'lodash';
 import { useModel } from 'umi';
 import TableCauHinh from './MauDon/TableCauHinh';
@@ -12,7 +12,7 @@ import {
 	MapEDoiTuongNhap,
 	MapELoaiMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/MauDon/constants';
-import { QuyTrinh } from '@/services/FormDong/QuyTrinh/typing';
+import type { QuyTrinh } from '@/services/FormDong/QuyTrinh/typing';
 
 const FormThemMoiBieuMau = () => {
 	const [form] = Form.useForm();
@@ -38,13 +38,18 @@ const FormThemMoiBieuMau = () => {
 
 	useEffect(() => {
 		if (edit && record) {
-			form.setFieldsValue({ ...record });
+			form.setFieldsValue({
+				...record,
+				isDuyetMacDinh: record?.isDuyetMacDinh ?? false,
+				choPhepNhieuMinhChung: record?.choPhepNhieuMinhChung ?? false,
+			});
 			setRecordMauDon({ cauHinhLoaiHinh: record?.danhSachCauHinhMinhChung ?? [] } as QuyTrinh.IMauDon);
 		} else {
 			form.setFieldsValue({
 				isDanhMucDiemQuyDoi: false,
 				dungChoSuKien: false,
 				isDuyetMacDinh: false,
+				choPhepNhieuMinhChung: false,
 			});
 			setRecordMauDon({} as QuyTrinh.IMauDon);
 		}
@@ -52,7 +57,7 @@ const FormThemMoiBieuMau = () => {
 
 	return (
 		<>
-			<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'biểu mẫu minh chứng'}>
+			<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'cấu hình minh chứng'}>
 				<Form
 					onValuesChange={(changedValues, values) => {
 						setFormValues(values);
@@ -158,9 +163,25 @@ const FormThemMoiBieuMau = () => {
 								/>
 							</Form.Item>
 						</Col>
+						<Col span={12}>
+							<Form.Item name='choPhepNhieuMinhChung' label='Cho phép nhiều minh chứng'>
+								<Select
+									options={[
+										{
+											value: true,
+											label: 'Có',
+										},
+										{
+											value: false,
+											label: 'Không',
+										},
+									]}
+								/>
+							</Form.Item>
+						</Col>
 						{isDanhMucDiemQuyDoi && !dungChoSuKien && (
 							<>
-								<Col span={12}>
+								<Col span={24}>
 									<Form.Item
 										name={'tenDanhMucQuyDoi'}
 										label={'Tên danh mục quy đổi'}
@@ -183,6 +204,11 @@ const FormThemMoiBieuMau = () => {
 								</Form.Item>
 							</Col>
 						)}
+						<Col span={24} md={12}>
+							<Form.Item name='dungChoBanCanSuLop' valuePropName='checked'>
+								<Checkbox>Dùng cho ban cán sự lớp</Checkbox>
+							</Form.Item>
+						</Col>
 					</Row>
 
 					<TableCauHinh form={form} formValues={formValues} />

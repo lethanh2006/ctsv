@@ -3,7 +3,9 @@ import type { IColumn } from '@/components/Table/typing';
 import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
 import FormNhapPhieuDiem from '@/pages/DiemRenLuyen/PhieuDiem/FormPhieuDiem/Form';
+import { exportPhieuDiem } from '@/services/DiemRenLuyen';
 import {
+	ENguoiTraLoiDrl,
 	ETrangThaiPhieuDiemRL,
 	MapColorETrangThaiPhieuDiemRL,
 	MapTitleETrangThaiPhieuDiemRL,
@@ -12,9 +14,10 @@ import type { PhieuDiemRenLuyen } from '@/services/DiemRenLuyen/PhieuDiemRenLuye
 import { useModel } from 'umi';
 import { ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Spin, Tag, Tooltip } from 'antd';
+import fileDownload from 'js-file-download';
 import { useEffect } from 'react';
 const DanhSachSinhVien = (props: { idLop?: string }) => {
-	const { getModel, page, limit, condition, handleView, loading, exportThongKeModel } = useModel(
+	const { getModel, page, limit, condition, handleView, loading, exportThongKeModel, setLoading } = useModel(
 		'diemrenluyen.phieudiemrenluyen',
 	);
 	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
@@ -42,6 +45,14 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 		onClick: () => handleView(rec),
 		style: { cursor: 'pointer' },
 	});
+
+	const exportPhieuDiemRenLuyen = async (recPhieu: PhieuDiemRenLuyen.IRecord) => {
+		if (!recodDot) return;
+		setLoading(true);
+		const res = await exportPhieuDiem(recodDot?._id, ENguoiTraLoiDrl.KHOA, recPhieu.ssoId);
+		fileDownload(res?.data, `PhieuDRL_${recodDot.kyHoc}_${recPhieu.hoTen}_${recPhieu.maSinhVien}.docx`);
+		setLoading(false);
+	};
 
 	const columns: IColumn<PhieuDiemRenLuyen.IRecord>[] = [
 		{
@@ -119,6 +130,14 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 				<>
 					<Tooltip title='Xem chi tiết'>
 						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
+					</Tooltip>
+					<Tooltip title='Xuất phiếu điểm'>
+						<Button
+							loading={loading}
+							onClick={() => exportPhieuDiemRenLuyen(record)}
+							type='link'
+							icon={<ExportOutlined />}
+						/>
 					</Tooltip>
 				</>
 			),

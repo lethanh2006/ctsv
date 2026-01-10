@@ -2,8 +2,9 @@ import * as Crypto from 'crypto';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { history, useModel, useParams } from 'umi';
+import { history, useModel, useParams, useSearchParams } from 'umi';
 // @ts-ignore
+import { OIDCBounder } from '@/components/OIDCBounder';
 import JoinDisplay from '@/pages/SuKienV2/QRCode/JoinDisplay';
 import { tenTruongVietTatTiengAnh } from '@/services/base/constant';
 import CryptoJS from 'crypto-js';
@@ -11,21 +12,23 @@ import { useAuth } from 'react-oidc-context';
 
 const QRCodePage = () => {
 	const { id } = useParams<{ id: string }>();
+	const { initialState } = useModel('@@initialState');
 	const isSmScreen = useMediaQuery({
 		query: '(min-width: 576px)',
 	});
-	const query = history?.location?.query;
+	const [searchParams] = useSearchParams();
+	const query = Object.fromEntries(searchParams);
 	const { getThongTinSuKien, isLoadingThongTinSuKien, thongTinSuKien, handleGetQRSuKien, maQRSuKien } =
 		useModel('sukienv2');
+
 	const [otp, setOtp] = useState<string | undefined>(undefined);
 	const [maDiemDanh, setMaDiemDanh] = useState<string | undefined>(undefined);
-	const [expiredAt, setExpiredAt] = useState(dayjs().add('s', 10).toDate().toISOString());
+	const [expiredAt, setExpiredAt] = useState(dayjs().add(10, 's').toDate().toISOString());
 	const auth = useAuth();
+	console.log('auth in qr', auth);
 
 	const isKetThuc =
-		thongTinSuKien?.thoiGianBatDau &&
-		thongTinSuKien.thoiGianKetThuc &&
-		dayjs().isAfter(thongTinSuKien.thoiGianKetThuc);
+		thongTinSuKien?.thoiGianBatDau && thongTinSuKien.thoiGianKetThuc && dayjs().isAfter(thongTinSuKien.thoiGianKetThuc);
 
 	const getOtp = async (dis: any) => {
 		let newMaDiemDanh: string | undefined = undefined;
@@ -58,17 +61,17 @@ const QRCodePage = () => {
 				history.push('/su-kien');
 			}
 		}
-	}, [id, query]);
+	}, [id, query?.type]);
 
 	useEffect(() => {
-		if (id && query) {
+		if (id && query && initialState?.currentUser?.ssoId) {
 			handleGetQRSuKien(id, (query?.type ?? '') as string);
 		}
-	}, [id, query, expiredAt, auth]);
+	}, [id, query?.type, expiredAt, initialState?.currentUser?.ssoId]);
 
 	useEffect(() => {
 		const interval = window.setInterval(() => {
-			setExpiredAt(dayjs().add('s', 10).toDate().toISOString());
+			setExpiredAt(dayjs().add(10, 's').toDate().toISOString());
 		}, 10000);
 
 		return () => {
@@ -95,7 +98,7 @@ const QRCodePage = () => {
 		// 	);
 		// }
 		return (
-			<>
+			<OIDCBounder>
 				<JoinDisplay
 					// valueQR={{ maDiemDanh: maDiemDanh ?? '', idSuKien: thongTinSuKien?._id }}
 					valueQR={
@@ -103,7 +106,7 @@ const QRCodePage = () => {
 							? `${tenTruongVietTatTiengAnh?.toUpperCase() ?? 'APP'}|SU_KIEN|CHECK_IN|${JSON.stringify({
 									maDiemDanh: maDiemDanh ?? '',
 									idSuKien: thongTinSuKien?._id,
-							  })}`
+								})}`
 							: undefined
 					}
 					thongTinSuKien={thongTinSuKien}
@@ -149,7 +152,7 @@ const QRCodePage = () => {
 				{/*    </Row>*/}
 				{/*  </div>*/}
 				{/*</div>*/}
-			</>
+			</OIDCBounder>
 		);
 	};
 

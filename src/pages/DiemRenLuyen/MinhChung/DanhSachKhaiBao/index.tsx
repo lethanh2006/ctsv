@@ -13,8 +13,6 @@ const DanhSachKhaiBao = (props: { tenLop?: string; idLop?: string }) => {
 	const handlePaneSizeChange = (size: any) => setPaneSize(size[0]);
 	const minhChungDrlRef = useRef(null);
 
-	// const accessDuyetTongMinhChung = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
-
 	const MainContent = (
 		<>
 			<StepDotChamDiemRenLuyen />

@@ -7,7 +7,6 @@ import {
 	ELoaiCauHoiDrl,
 	TU_DANH_GIA_PREFIX,
 } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
-import rules from '@/utils/rules';
 import { Form, Table, Typography } from 'antd';
 import { type ColumnType } from 'antd/lib/table';
 import type { ReactNode } from 'react';

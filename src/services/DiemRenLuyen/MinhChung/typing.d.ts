@@ -1,4 +1,4 @@
-import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
+import type { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
 
 declare module MinhChungDrl {
 	export interface IRecord {
@@ -39,6 +39,9 @@ declare module MinhChungDrl {
 		dungChoSuKien: boolean;
 		tenDanhMucQuyDoi: string;
 		danhSachCauHinhMinhChung: LoaiHinh.Cot[];
+		isDuyetMacDinh: boolean;
+		choPhepNhieuMinhChung: boolean;
+		dungChoBanCanSuLop: boolean;
 		doiTuongNhap: string[];
 		loaiMinhChung: string;
 		tenMinhChung: string;
@@ -48,7 +51,7 @@ declare module MinhChungDrl {
 		updatedAt: string;
 		trangThaiMinhChung: {
 			'Chờ xử lý': number;
-			'Duyệt': number;
+			Duyệt: number;
 			'Không duyệt': number;
 			'Xác nhận': number;
 		};

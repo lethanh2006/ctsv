@@ -1,20 +1,20 @@
-import { useModel } from 'umi';
 import TableBase from '@/components/Table';
-import { IColumn } from '@/components/Table/typing';
-import FormThemMoiBieuMau from '@/pages/DiemRenLuyen/MinhChung/CauHinh/components/Form';
 import ButtonExtend from '@/components/Table/ButtonExtend';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import PreviewForm from './components/MauDon/Preview';
-import { Button, Checkbox, Modal, Popconfirm, Space, Tag } from 'antd';
+import type { IColumn } from '@/components/Table/typing';
+import FormThemMoiBieuMau from '@/pages/DiemRenLuyen/MinhChung/CauHinh/components/Form';
 import {
 	EDoiTuongNhap,
 	ELoaiMinhChung,
 	MapEDoiTuongNhap,
 	MapELoaiMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/MauDon/constants';
-import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
-import { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
+import type { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
+import type { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Modal, Popconfirm, Space, Tag } from 'antd';
 import { useEffect } from 'react';
+import { useModel } from 'umi';
+import PreviewForm from './components/MauDon/Preview';
 
 const CauHinh = () => {
 	const { handleEdit, deleteModel, setRecord } = useModel('diemrenluyen.minhchung.cauhinh');
@@ -144,7 +144,7 @@ const CauHinh = () => {
 		<>
 			<TableBase
 				Form={FormThemMoiBieuMau}
-				title={'Cấu hình biểu mẫu minh chứng'}
+				title={'Cấu hình minh chứng'}
 				modelName={'diemrenluyen.minhchung.cauhinh'}
 				columns={columns}
 				widthDrawer={800}
@@ -153,7 +153,7 @@ const CauHinh = () => {
 
 			<Modal
 				zIndex={1000}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				footer={
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
 						<Button onClick={() => setVisiblePreview(false)}>Đóng</Button>
