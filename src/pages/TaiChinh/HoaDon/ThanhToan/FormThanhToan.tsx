@@ -7,10 +7,11 @@ import { inputFormat, inputParse } from '@/utils/utils';
 import { Button, Col, Form, InputNumber, Popconfirm, Row, Table } from 'antd';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import HuongDanThanhToan from './HuongDanThanhToan';
 
 const FormThanhToan = (props: { getData?: () => void }) => {
+	const intl = useIntl();
 	const { getData } = props;
 	const { record: recHoaDon } = useModel('taichinh.hoadon');
 	const { danhSach, visibleThanhToan, setVisibleThanhToan, getAllModel } = useModel('taichinh.hoadonchitiet');
@@ -79,40 +80,40 @@ const FormThanhToan = (props: { getData?: () => void }) => {
 
 	const columns: IColumn<HoaDon.IBillItem & { index: number }>[] = [
 		{
-			title: 'Nội dung',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.noidung' }),
 			dataIndex: 'ten',
 			width: 200,
 		},
 		{
-			title: 'Thành tiền',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.thanhtien' }),
 			dataIndex: 'amountDue',
 			width: 110,
 			align: 'right',
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Ưu đãi',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.uudai' }),
 			dataIndex: 'amountDiscount',
 			width: 110,
 			align: 'right',
 			render: (val) => `${inputFormat(val ?? 0)} VND`,
 		},
 		{
-			title: 'Đã nộp',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.danop' }),
 			dataIndex: 'amountPaid',
 			width: 110,
 			align: 'right',
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Còn lại',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.conlai' }),
 			dataIndex: 'amountRemaining',
 			width: 110,
 			align: 'right',
 			render: (val) => `${inputFormat(val)} VND`,
 		},
 		{
-			title: 'Thanh toán',
+			title: intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.thanhtoan' }),
 			width: 140,
 			align: 'right',
 			render: (val, rec) => (
@@ -124,7 +125,7 @@ const FormThanhToan = (props: { getData?: () => void }) => {
 						formatter={inputFormat}
 						parser={inputParse}
 						style={{ width: '100%' }}
-						placeholder='Nhập số tiền'
+						placeholder={intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.nhapsotien' })}
 						addonAfter='VND'
 						disabled
 					/>
@@ -138,7 +139,7 @@ const FormThanhToan = (props: { getData?: () => void }) => {
 			<Form layout='vertical' form={form} onFinish={onFinish}>
 				<Row gutter={[12, 12]}>
 					<Col span={24} md={8}>
-						<Form.Item label='Số dư hiện tại'>
+						<Form.Item label={intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.sodu' })}>
 							<InputNumber
 								value={soDuVi?.totalRemain ?? 0}
 								disabled
@@ -153,50 +154,52 @@ const FormThanhToan = (props: { getData?: () => void }) => {
 				<Row gutter={[12, 8]}>
 					<Col span={24}>
 						<div className='fw500' style={{ marginTop: 12 }}>
-							Danh sách khoản phí
+							{intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.dskhoanphi' })}
 						</div>
 						<TableStaticData
 							data={dataHienThi}
 							addStt
 							columns={columns}
 							size='small'
-							otherProps={{
-								pagination: false,
-								summary: (pageData: HoaDon.IBillItem[]) => {
-									const totalDue = _.sumBy(pageData, (item) => item.amountDue);
-									const totalPaid = _.sumBy(pageData, (item) => item.amountPaid);
-									const totalRemain = _.sumBy(pageData, (item) => item.amountRemaining);
+							otherProps={
+								{
+									pagination: false,
+									summary: (pageData: HoaDon.IBillItem[]) => {
+										const totalDue = _.sumBy(pageData, (item) => item.amountDue);
+										const totalPaid = _.sumBy(pageData, (item) => item.amountPaid);
+										const totalRemain = _.sumBy(pageData, (item) => item.amountRemaining);
 
-									return (
-										<Table.Summary.Row>
-											<Table.Summary.Cell index={0} colSpan={2}>
-												<b>Tổng</b>
-											</Table.Summary.Cell>
-											<Table.Summary.Cell align={'right'} index={1}>
-												<b> {inputFormat(totalDue ?? 0)} VND</b>
-											</Table.Summary.Cell>
-											<Table.Summary.Cell align={'right'} index={2}>
-												<b>{inputFormat(totalUuDai ?? 0)} VND</b>
-											</Table.Summary.Cell>
-											<Table.Summary.Cell align={'right'} index={3}>
-												<b>{inputFormat(totalPaid ?? 0)} VND</b>
-											</Table.Summary.Cell>
-											<Table.Summary.Cell align={'right'} index={4}>
-												<b>{inputFormat(totalRemain ?? 0)} VND</b>
-											</Table.Summary.Cell>
-											<Table.Summary.Cell align={'right'} index={5}>
-												<b>{inputFormat(totalPay ?? 0)} VND</b>
-											</Table.Summary.Cell>
-										</Table.Summary.Row>
-									);
-								},
-							}}
+										return (
+											<Table.Summary.Row>
+												<Table.Summary.Cell index={0} colSpan={2}>
+													<b>{intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.tongso' })}</b>
+												</Table.Summary.Cell>
+												<Table.Summary.Cell align={'right'} index={1}>
+													<b> {inputFormat(totalDue ?? 0)} VND</b>
+												</Table.Summary.Cell>
+												<Table.Summary.Cell align={'right'} index={2}>
+													<b>{inputFormat(totalUuDai ?? 0)} VND</b>
+												</Table.Summary.Cell>
+												<Table.Summary.Cell align={'right'} index={3}>
+													<b>{inputFormat(totalPaid ?? 0)} VND</b>
+												</Table.Summary.Cell>
+												<Table.Summary.Cell align={'right'} index={4}>
+													<b>{inputFormat(totalRemain ?? 0)} VND</b>
+												</Table.Summary.Cell>
+												<Table.Summary.Cell align={'right'} index={5}>
+													<b>{inputFormat(totalPay ?? 0)} VND</b>
+												</Table.Summary.Cell>
+											</Table.Summary.Row>
+										);
+									},
+								} as any
+							}
 						/>
 					</Col>
 
 					<Col span={24}>
 						<div className='fw500' style={{ marginTop: 12 }}>
-							Hình thức thanh toán
+							{intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.hinhthuc' })}
 						</div>
 					</Col>
 					<Col span={24}>
@@ -210,13 +213,16 @@ const FormThanhToan = (props: { getData?: () => void }) => {
 				</Row>
 
 				<div className='form-footer' style={{ marginTop: 18 }}>
-					<Popconfirm title='Xác nhận thanh toán?' onConfirm={() => form.submit()}>
+					<Popconfirm
+						title={intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.confirm.thanhtoan' })}
+						onConfirm={() => form.submit()}
+					>
 						<Button loading={formSubmiting} type='primary' htmlType='submit'>
-							Thanh toán
+							{intl.formatMessage({ id: 'taichinh.hoadon.formthanhtoan.button.thanhtoan' })}
 						</Button>
 					</Popconfirm>
 
-					<Button onClick={() => setVisibleThanhToan(false)}>Hủy</Button>
+					<Button onClick={() => setVisibleThanhToan(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 		</>

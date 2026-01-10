@@ -4,10 +4,11 @@ import type { KhaiBaoQuyTrinh } from '@/services/QuyTrinhDong/KhaiBaoQuyTrinh/ty
 import { EMauTrangThaiThanhToanTable, ETrangThaiThanhToan } from '@/services/TaiChinh/constant';
 import { Button, Collapse, Descriptions, Modal, Tag } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import ViewFromCauHinh from './ViewFromCauHinh';
 
 const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: any; isBuocNgoaiHeThong?: boolean }) => {
+	const intl = useIntl();
 	const { data, modelName } = props;
 	const model = useModel(modelName);
 	const { dataQuyTrinh } = model;
@@ -26,10 +27,17 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 	return (
 		<>
 			<Collapse defaultActiveKey={['thongtinchung']} ghost>
-				<Collapse.Panel style={{ padding: 0 }} key={'thongtinchung'} header={<b>Thông tin chung</b>}>
+				<Collapse.Panel
+					style={{ padding: 0 }}
+					key={'thongtinchung'}
+					header={<b>{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.thongtinchung' })}</b>}
+				>
 					<Descriptions column={2} bordered>
 						{buocHienTai?.moTa || buocHienTai?.danhSachVanBanLuuTru?.length ? (
-							<Descriptions.Item span={24} label='Mô tả'>
+							<Descriptions.Item
+								span={24}
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.mota' })}
+							>
 								<div
 									dangerouslySetInnerHTML={{
 										__html: buocHienTai?.moTa ?? '',
@@ -37,7 +45,7 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 								/>
 								{buocHienTai?.danhSachVanBanLuuTru?.length ? (
 									<div>
-										Biểu mẫu kèm theo:
+										{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.bieumau' })}
 										{buocHienTai.danhSachVanBanLuuTru.map((item: { url: string; tenFile: string }, index: number) => (
 											<div key={item.url}>
 												<a href={item.url} target='_blank' rel='noreferrer'>
@@ -49,7 +57,9 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 								) : null}
 							</Descriptions.Item>
 						) : null}
-						<Descriptions.Item label='Bộ phận xử lý'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.bophan' })}
+						>
 							{
 								dataQuyTrinh?.quyTrinh?.danhSachBoPhanXuLy?.find(
 									(item: { ma: string }) => item?.ma === data?.maBoPhanXuLy,
@@ -58,7 +68,9 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 						</Descriptions.Item>
 						{!props.isBuocNgoaiHeThong && data?.coKhaiBao && (
 							<>
-								<Descriptions.Item label='Trạng thái xử lý'>
+								<Descriptions.Item
+									label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.trangthai' })}
+								>
 									<Tag
 										color={MapColorTrangThaiTiepNhanDon?.[data?.trangThaiTiepNhan as TrangThaiTiepNhanDon] ?? 'yellow'}
 									>
@@ -72,7 +84,7 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 											type='link'
 											size='small'
 										>
-											(Xem chi tiết)
+											({intl.formatMessage({ id: 'global.button.chitiet' })})
 										</Button>
 									) : (
 										''
@@ -80,11 +92,13 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 								</Descriptions.Item>
 
 								{dataQuyTrinh?.idHoaDon && (
-									<Descriptions.Item label='Trạng thái thanh toán'>
+									<Descriptions.Item
+										label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.thanhtoan' })}
+									>
 										<Tag color={EMauTrangThaiThanhToanTable?.[dataQuyTrinh?.trangThaiThanhToan ?? ''] ?? 'gray'}>
 											{dataQuyTrinh?.trangThaiThanhToan
 												? ETrangThaiThanhToan[dataQuyTrinh.trangThaiThanhToan]
-												: 'Dịch vụ không tính phí'}
+												: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.phi' })}
 										</Tag>{' '}
 										{dataQuyTrinh?.idHoaDon ? (
 											<Button
@@ -95,7 +109,7 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 												type='link'
 												size='small'
 											>
-												(Xem chi tiết)
+												({intl.formatMessage({ id: 'global.button.chitiet' })})
 											</Button>
 										) : (
 											''
@@ -103,12 +117,18 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 									</Descriptions.Item>
 								)}
 								{data?.ghiChu && (
-									<Descriptions.Item span={24} label='Ghi chú của bộ phận xử lý'>
+									<Descriptions.Item
+										span={24}
+										label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ghichu' })}
+									>
 										<div dangerouslySetInnerHTML={{ __html: data?.ghiChu ?? '' }} />
 									</Descriptions.Item>
 								)}
 								{data?.vanBan?.url && (
-									<Descriptions.Item span={24} label='Văn bản kèm theo của bộ phận xử lý'>
+									<Descriptions.Item
+										span={24}
+										label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.vanban' })}
+									>
 										<a href={data?.vanBan?.url} target='_blank' rel='noreferrer'>
 											{data?.vanBan?.ten}
 										</a>
@@ -123,14 +143,14 @@ const ThongTinTiepNhan = (props: { data: KhaiBaoQuyTrinh.IBuocXuLy; modelName: a
 				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				footer={null}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				width={1000}
 				destroyOnClose
 			>
 				{record?._id ? <ThongTinThanhToan setVisible={setVisibleModal} /> : null}
 			</Modal>
 			<Modal
-				title='Thông tin xử lý'
+				title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.xuly' })}
 				open={visibleThongTinDuyet}
 				onCancel={() => setVisibleThongTinDuyet(false)}
 				footer={null}

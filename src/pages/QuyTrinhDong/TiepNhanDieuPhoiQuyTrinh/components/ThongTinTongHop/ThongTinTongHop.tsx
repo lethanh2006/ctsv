@@ -8,10 +8,11 @@ import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import SplitPane from 'react-split-pane';
 import Pane from 'react-split-pane/lib/Pane';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import BlockSoLuongDon from './BlockSoLuongDon';
 import BlockSoLuongDonTheoBuoc from './BlockSoLuongDonTheoBuoc';
 import DanhSachQuyTrinh from './DanhSachQuyTrinh';
+
 export interface DataSoLuongDon {
 	_id: string;
 	sum: number;
@@ -22,6 +23,7 @@ interface IProps {
 }
 
 const ThongTinTongHop = (props: IProps) => {
+	const intl = useIntl();
 	const { type } = props;
 	const { quyTrinhSelect, maBuoc } = useModel('quytrinh.khaibaoquytrinh');
 	const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
@@ -104,13 +106,13 @@ const ThongTinTongHop = (props: IProps) => {
 
 	const columns: IColumn<any>[] = [
 		{
-			title: 'Tên đơn',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.ten' }),
 			dataIndex: 'ten',
 			width: 150,
 			onCell,
 		},
 		{
-			title: 'Số đơn đã tiếp nhận/ tổng',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.sl' }),
 			dataIndex: typeBuoc === 'BUOC_HIEN_TAI' ? 'daTiepNhan' : 'buocDaTiepNhan',
 			width: 80,
 			align: 'center',
@@ -167,13 +169,13 @@ const ThongTinTongHop = (props: IProps) => {
 	];
 	const columnsBuoc: IColumn<any>[] = [
 		{
-			title: 'Bước',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.buoc' }),
 			dataIndex: 'tenBuoc',
 			align: 'center',
 			width: 150,
 		},
 		{
-			title: 'Đã tiếp nhận',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.datiepnhan' }),
 			dataIndex: 'daTiepNhan',
 			width: 80,
 			align: 'center',
@@ -187,7 +189,7 @@ const ThongTinTongHop = (props: IProps) => {
 			// },
 		},
 		{
-			title: 'Đã tiếp nhận',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.chuatiepnhan' }),
 			dataIndex: 'chuaTiepNhan',
 			width: 80,
 			align: 'center',
@@ -206,7 +208,7 @@ const ThongTinTongHop = (props: IProps) => {
 		<>
 			<SplitPane split={isMobile ? 'horizontal' : 'vertical'} onChange={handlePaneSizeChange}>
 				<Pane initialSize={paneSize} minSize='10%'>
-					<Card title={'Danh sách dịch vụ'}>
+					<Card title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.dsdichvu.title' })}>
 						<DanhSachQuyTrinh type={type} />
 					</Card>
 				</Pane>
@@ -219,16 +221,28 @@ const ThongTinTongHop = (props: IProps) => {
 										<Col span={24}>
 											<Row gutter={[12, 12]}>
 												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-													<BlockSoLuongDon title='Tổng số đơn' data={tongSoDon || []} />
+													<BlockSoLuongDon
+														title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.tongdon' })}
+														data={tongSoDon || []}
+													/>
 												</Col>
 												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-													<BlockSoLuongDon title='Số lượng đơn hôm nay' data={donHomNay || []} />
+													<BlockSoLuongDon
+														title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.tongdonhomnay' })}
+														data={donHomNay || []}
+													/>
 												</Col>
 												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-													<BlockSoLuongDon title='Số lượng đơn tuần này' data={donTuanNay || []} />
+													<BlockSoLuongDon
+														title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.tongdontuannay' })}
+														data={donTuanNay || []}
+													/>
 												</Col>
 												<Col xs={24} md={12} lg={12} xl={6} xxl={6}>
-													<BlockSoLuongDon title='Số lượng đơn tháng này' data={donThangNay || []} />
+													<BlockSoLuongDon
+														title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.tongdonthangnay' })}
+														data={donThangNay || []}
+													/>
 												</Col>
 											</Row>
 										</Col>
@@ -287,13 +301,13 @@ const ThongTinTongHop = (props: IProps) => {
 			</SplitPane>
 
 			<Modal
-				title={'Chi tiết'}
+				title={intl.formatMessage({ id: 'global.button.chitiet' })}
 				open={visibleChiTiet}
 				onCancel={() => setVisibleChiTiet(false)}
 				destroyOnClose
 				footer={
 					<>
-						<Button onClick={() => setVisibleChiTiet(false)}>Đóng</Button>
+						<Button onClick={() => setVisibleChiTiet(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 					</>
 				}
 			>

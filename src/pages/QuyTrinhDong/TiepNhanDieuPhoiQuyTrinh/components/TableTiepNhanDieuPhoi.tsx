@@ -22,13 +22,14 @@ import { Button, DatePicker, Dropdown, Menu, Modal, Select, Tabs, Tag, Tooltip }
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 interface IProps {
 	type: 'dieu_phoi' | 'tiep_nhan';
 	title?: string;
 }
 const TableTiepNhanDieuPhoi = (props: IProps) => {
+	const intl = useIntl();
 	const { type, title } = props;
 	const {
 		getQuyTrinhChuyenVienModel,
@@ -128,7 +129,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		// 	onCell,
 		// },
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.hoten' }),
 			dataIndex: 'nguoiKhaiBao.ten',
 			width: 150,
 			filterType: 'string',
@@ -145,7 +146,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 							style={{ padding: 0 }}
 							type='link'
 						>
-							Chi tiết
+							{intl.formatMessage({ id: 'global.button.chitiet' })}
 						</Button>
 					</div>
 				);
@@ -153,18 +154,20 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			// onCell,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.masv' }),
 			dataIndex: 'nguoiKhaiBao.ma',
 			width: 120,
 			filterType: 'string',
 			align: 'center',
 			render: (val, recordVal) => {
-				return recordVal?.nguoiKhaiBao?.ma ? recordVal?.nguoiKhaiBao?.ma : 'Không có dữ liệu';
+				return recordVal?.nguoiKhaiBao?.ma
+					? recordVal?.nguoiKhaiBao?.ma
+					: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.empty' });
 			},
 			onCell,
 		},
 		{
-			title: 'Tiến trình',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.tientrinh' }),
 			dataIndex: 'quyTrinh',
 			width: 180,
 			align: 'center',
@@ -172,14 +175,15 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				const buocHienTai = recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1];
 				return (
 					<>
-						Bước {recordVal?.danhSachBuocXuLy?.length}/{val?.danhSachBuocXuLy?.length} : {buocHienTai.ten}
+						{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.buoc' })} {recordVal?.danhSachBuocXuLy?.length}/
+						{val?.danhSachBuocXuLy?.length} : {buocHienTai.ten}
 					</>
 				);
 			},
 			onCell,
 		},
 		{
-			title: 'Trạng thái xử lý',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.trangthai' }),
 			dataIndex: 'trangThaiTiepNhan',
 			width: 200,
 			align: 'center',
@@ -198,13 +202,13 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			onCell,
 		},
 		{
-			title: 'Trạng thái thanh toán',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.thanhtoan' }),
 			dataIndex: 'trangThaiThanhToan',
 			width: 200,
 			align: 'center',
 			render: (val: EMaTrangThaiThanhToan) => (
 				<Tag color={EMauTrangThaiThanhToanTable?.[val] ?? 'gray'}>
-					{val ? ETrangThaiThanhToan[val] : 'Dịch vụ không tính phí'}
+					{val ? ETrangThaiThanhToan[val] : intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.dichvu' })}
 				</Tag>
 			),
 			onCell,
@@ -223,18 +227,22 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 		// 	onCell,
 		// },
 		{
-			title: !isTabTraKetQua ? 'Hạn xử lý' : 'Ngày hẹn trả kết quả',
+			title: !isTabTraKetQua
+				? intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.hanxuly' })
+				: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.ngayhen' }),
 			width: 120,
 			align: 'center',
 			render: (val, recordVal) => {
 				const buocHienTai = recordVal?.danhSachBuocXuLy?.[recordVal?.danhSachBuocXuLy?.length - 1];
 				const thoiGianTemp = isTabTraKetQua ? recordVal?.ngayHenTraKetQua : buocHienTai?.hanCuoiTiepNhan;
-				return thoiGianTemp ? dayjs(thoiGianTemp).format('DD/MM/YYYY') : 'Không có dữ liệu';
+				return thoiGianTemp
+					? dayjs(thoiGianTemp).format('DD/MM/YYYY')
+					: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.empty' });
 			},
 			onCell,
 		},
 		{
-			title: 'Người trả kết quả',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.nguoihen' }),
 			width: 140,
 			align: 'center',
 			hide: !condition?.daTraKetQua === true,
@@ -243,13 +251,13 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 					{recordVal?.hoTenNguoiTraKetQua} (
 					{recordVal?.thoiGianTraKetQua
 						? dayjs(recordVal?.thoiGianTraKetQua).format('HH:mm DD/MM/YYYY')
-						: 'Không có dữ liệu về thời gian trả kết quả'}
+						: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.nguoihen.empty' })}
 					)
 				</div>
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.column.thaotac' }),
 			align: 'center',
 			width: 100,
 			fixed: 'right',
@@ -277,7 +285,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 						: formTiepNhan;
 				return (
 					<>
-						<Tooltip title='Xem chi tiết'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.chitiet' })}>
 							<Button
 								onClick={() => {
 									setCurrentRecord(recordVal);
@@ -290,7 +298,13 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 							/>
 						</Tooltip>
 						{recordVal.idHoaDon && (
-							<Tooltip title={<div style={{ maxWidth: 100 }}>Thông tin thanh toán</div>}>
+							<Tooltip
+								title={
+									<div style={{ maxWidth: 100 }}>
+										{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.thanhtoan' })}
+									</div>
+								}
+							>
 								<Button
 									onClick={() => {
 										getByIdModel(recordVal.idHoaDon);
@@ -302,7 +316,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 							</Tooltip>
 						)}
 						{(formKhai?.fileId || formTiepNhan?.fileId) && (
-							<Tooltip title='Xuất mẫu đơn'>
+							<Tooltip title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.xuatmaudon' })}>
 								<Dropdown
 									overlay={
 										<Menu
@@ -312,8 +326,16 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 												else exportMauTraKetQuaTheoBuocModel(recordVal._id, buocFinal?.ma ?? '', formFinal?.ten ?? '');
 											}}
 										>
-											{formKhai?.fileId && <Menu.Item key={'MAU_DON'}>Mẫu đơn</Menu.Item>}
-											{formFinal?.fileId && <Menu.Item key={'MAU_TRA_KET_QUA'}>Mẫu trả kết quả</Menu.Item>}
+											{formKhai?.fileId && (
+												<Menu.Item key={'MAU_DON'}>
+													{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.maudon' })}
+												</Menu.Item>
+											)}
+											{formFinal?.fileId && (
+												<Menu.Item key={'MAU_TRA_KET_QUA'}>
+													{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.maukq' })}
+												</Menu.Item>
+											)}
 										</Menu>
 									}
 									placement='bottomLeft'
@@ -325,7 +347,13 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 						{buocHienTai?.laBuocCuoi &&
 							recordVal?.daTraKetQua === false &&
 							buocHienTai?.trangThaiTiepNhan === TrangThaiTiepNhan.DA_DUYET && (
-								<Tooltip title={<div style={{ maxWidth: 100 }}>Trả kết quả</div>}>
+								<Tooltip
+									title={
+										<div style={{ maxWidth: 100 }}>
+											{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.traketqua' })}
+										</div>
+									}
+								>
 									<Button
 										loading={loading}
 										onClick={() => {
@@ -479,7 +507,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 										setVisibleTiepNhanNhieuDon(true);
 									}}
 								>
-									Tiếp nhận nhiều đơn
+									{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.tiepnhan' })}
 								</Button>
 							)}
 						</div>
@@ -537,7 +565,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 						/> */}
 						<Select
 							size={'small'}
-							placeholder={'Chọn trạng thái'}
+							placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.select.trangthai' })}
 							style={{ width: 220 }}
 							allowClear
 							onChange={(val) => {
@@ -576,7 +604,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 									handleDownloadMauDon();
 								}}
 							>
-								Xuất mẫu đơn ({selectedIds?.length})
+								{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.xuatmaudon' })} ({selectedIds?.length})
 							</Button>
 						)}
 						{selectedIdsMauTiepNhan && selectedIdsMauTiepNhan?.length > 0 && (
@@ -588,7 +616,8 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 									handleDownloadMauDonTiepNhan();
 								}}
 							>
-								Xuất mẫu trả kết quả ({selectedIdsMauTiepNhan?.length})
+								{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.xuatmauketqua' })} (
+								{selectedIdsMauTiepNhan?.length})
 							</Button>
 						)}
 					</>,
@@ -602,7 +631,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 							...condition,
 							danhSachBuocXuLy: [ELoaiTinhTrangDon.CAN_XU_LY, ELoaiTinhTrangDon.TAT_CA].includes(val)
 								? undefined
-								: { $elemMatch: { laBuocCuoi: true, trangThaiTiepNhan: TrangThaiTiepNhan.DA_DUYET } },
+								: ({ $elemMatch: { laBuocCuoi: true, trangThaiTiepNhan: TrangThaiTiepNhan.DA_DUYET } } as any),
 							daTraKetQua: [ELoaiTinhTrangDon.CAN_XU_LY, ELoaiTinhTrangDon.TAT_CA].includes(val)
 								? undefined
 								: val === ELoaiTinhTrangDon.DA_TRA_KET_QUA,
@@ -631,7 +660,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				)}
 			</Modal>
 			<Modal
-				title={'Tiếp nhận nhiều đơn'}
+				title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.button.tiepnhan' })}
 				open={visibleTiepNhanNhieuDon}
 				onCancel={() => setVisibleTiepNhanNhieuDon(false)}
 				width={800}
@@ -650,7 +679,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 				open={visibleModal}
 				onCancel={() => setVisibleModal(false)}
 				footer={null}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				width={1000}
 				destroyOnClose
 			>
@@ -658,7 +687,7 @@ const TableTiepNhanDieuPhoi = (props: IProps) => {
 			</Modal>
 			<Modal
 				footer={null}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				width={1200}
 				open={visibleModalSinhVien}
 				onCancel={() => setVisibleModalSinhVien(false)}

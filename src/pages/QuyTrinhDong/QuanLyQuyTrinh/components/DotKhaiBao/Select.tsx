@@ -1,7 +1,7 @@
 import { Select, Spin } from 'antd';
 import type { CSSProperties } from 'react';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -18,7 +18,8 @@ const SelectDotKhaiBao = (props: {
 	idQuyTrinh: string;
 	size?: 'small' | 'middle' | 'large' | undefined;
 }) => {
-	const { value, onChange, multiple, loadData, allowClear, placeholder, disabled, style, idQuyTrinh,size } = props;
+	const intl = useIntl();
+	const { value, onChange, multiple, loadData, allowClear, placeholder, disabled, style, idQuyTrinh, size } = props;
 	const { danhSach, loading, getAllModel } = useModel('quytrinh.dotquytrinh');
 
 	useEffect(() => {
@@ -27,7 +28,7 @@ const SelectDotKhaiBao = (props: {
 
 	return (
 		<Select
-      size={size}
+			size={size}
 			notFoundContent={loading ? <Spin spinning={true} /> : undefined}
 			mode={multiple ? 'multiple' : undefined}
 			value={value}
@@ -42,7 +43,7 @@ const SelectDotKhaiBao = (props: {
 			style={style}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn đợt khai báo'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.select.dot' })}
 		/>
 	);
 };
