@@ -29,7 +29,6 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 	} = useModel('diemrenluyen.bieumau');
 
 	const { record: recordDot, dataPhanQuyen, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
-	
 	const {
 		record: recPhieuDiem,
 		xuLyKhieuNaiModel,
@@ -43,6 +42,7 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 	useEffect(() => {
 		handleCheckPhanQuyen(idDuyet, isKhoa);
 	}, []);
+
 
 	const isCVHT = false;
 	const { initialState } = useModel('@@initialState');

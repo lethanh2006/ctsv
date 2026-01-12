@@ -27,6 +27,7 @@ const KhaiBaoMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
 
+
 	const {
 		record: recordDot,
 		setRecord: setRecortdDot,
@@ -34,10 +35,6 @@ const KhaiBaoMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 		dataPhanQuyen,
 		handleCheckPhanQuyen,
 	} = useModel('diemrenluyen.dot');
-
-	useEffect(() => {
-		handleCheckPhanQuyen(idDuyet, isKhoa);
-	}, []);
 
 	const { record: recordLopHanhChinh } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 
@@ -56,6 +53,11 @@ const KhaiBaoMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 			lopHanhChinh: recordLopHanhChinh?.ten,
 		});
 	};
+	
+	useEffect(() => {
+		handleCheckPhanQuyen(idDuyet, isKhoa);
+	}, []);
+
 
 	const handleCheckTrangThaiKhaiBaoMinhChung = async () => {
 		try {

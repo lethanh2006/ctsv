@@ -27,6 +27,7 @@ declare module SuKienV2 {
 	}
 
 	export interface IRecord {
+		cauHinhMinhChungId: string;
 		_id: string;
 		loaiSuKien: ESuKienType;
 		tenSuKien: string;
@@ -41,7 +42,9 @@ declare module SuKienV2 {
 		idKhaoSatCheckOut?: string;
 		anhBia?: string | null | undefined;
 		isQRDangKy?: boolean;
+		batBuocKhaoSatDangKy?: boolean;
 		isQRThamGia?: boolean;
+		batBuocKhaoSatThamGia?: boolean;
 		isThongBao?: boolean;
 		kinhPhi?: number;
 		soCheckIn?: number;

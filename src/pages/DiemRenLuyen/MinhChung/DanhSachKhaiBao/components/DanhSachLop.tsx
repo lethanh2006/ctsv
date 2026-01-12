@@ -26,7 +26,7 @@ const DanhSachLop = () => {
 		danhSach: danhSachLopNhanSu,
 	} = useModel('daotaov2.lophanhchinh.lophanhchinhnhansu');
 	const { record: recKhoa } = useModel('daotaov2.namhoc.khoasinhvien');
-	const { record: recordDot, setRecord: setRecordDot } = useModel('diemrenluyen.dot');
+	const { record: recordDot, setRecord: setRecordDot, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
 	const { record: recNganh, setRecord: setRecordNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 	const { record: recKhoaSinhVien, setRecord: setRecKhoaSinhVien } = useModel('daotaov2.khoasinhvien.khoasinhvien');
 	const isCVHT = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao-cvht');
@@ -34,6 +34,13 @@ const DanhSachLop = () => {
 	const currentUser = initialState?.currentUser;
 	const isAdmin = currentUser?.preferred_username === 'admin';
 	const [dataTrangThai, setDataTrangThai] = useState<any>();
+	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
+	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
+
+	useEffect(() => {
+		handleCheckPhanQuyen(idDuyet, isKhoa);
+	}, []);
+
 	// useEffect(() => {
 	// 	if (isCVHT) {
 	// 		getAllModelLopNhanSu(true, undefined);

@@ -1,7 +1,6 @@
 import ExpandText from '@/components/ExpandText';
 import type { IColumn } from '@/components/Table/typing';
 import DanhSachSinhVien from '@/pages/SuKienV2/components/DanhSachSinhVien';
-import ThongKeKhaoSat from '@/pages/SuKienV2/components/ThongKeKhaoSat';
 import ThongTinChung from '@/pages/SuKienV2/components/ThongTinChung';
 import { ELoaiSoLuong, ETrangThaiDienRa } from '@/services/SuKienV2/constant';
 import { type SuKienV2 } from '@/services/SuKienV2/typings';
@@ -12,6 +11,7 @@ import { Button, Modal, Popconfirm, Tabs, Tag } from 'antd';
 import { first } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import ThongKeKhaoSat from './ThongKeKhaoSat';
 
 export const Detail = () => {
 	const { deleteModel, handleEdit, setIsVisibleFormDetail, record, isVisibleFormDetail, getModel } =
@@ -169,7 +169,7 @@ export const Detail = () => {
 
 	return (
 		<Modal
-			styles={{ paddingTop: 4 }}
+			styles={{ body: { paddingTop: 4 } }}
 			width={1000}
 			open={isVisibleFormDetail}
 			title='Chi tiết sự kiện'
@@ -197,11 +197,11 @@ export const Detail = () => {
 						// )}
 					/>
 				</Tabs.TabPane>
-				{(record?.idKhaoSatCheckOut || record?.idKhaoSatDangKy || record?.idKhaoSatCheckIn) && (
-					<Tabs.TabPane tab='Thống kê khảo sát' key='item-4'>
-						<ThongKeKhaoSat />
-					</Tabs.TabPane>
-				)}
+				{/* {(record?.idKhaoSatCheckOut || record?.idKhaoSatDangKy || record?.idKhaoSatCheckIn) && ( */}
+				<Tabs.TabPane tab='Thống kê khảo sát' key='item-4'>
+					<ThongKeKhaoSat />
+				</Tabs.TabPane>
+				{/* )} */}
 			</Tabs>
 			<div className='form-footer'>
 				<Button

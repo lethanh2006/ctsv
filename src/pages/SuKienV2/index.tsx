@@ -12,12 +12,13 @@ import {
 } from '@/services/SuKien/constant';
 import { ESuKienType } from '@/services/SuKienV2/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
+import dayjs from '@/utils/dayjs';
 import { CalendarOutlined, DeleteOutlined, EditOutlined, PieChartOutlined, TableOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Modal, Popconfirm, Row, Segmented, Spin, Switch, Tag, Tooltip } from 'antd';
+import { View } from 'bizcharts';
+import { Dayjs } from 'dayjs';
 import { sum } from 'lodash';
-import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
-import type { DateRange, View } from 'react-big-calendar';
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useModel } from 'umi';
@@ -48,10 +49,14 @@ const SuKienPage = () => {
 		danhSach,
 	} = useModel('sukienv2');
 
+	const { danhSach: danhSachCauHinhMinhChungDRL, getAllModel: getAllCauHinhMinhChungDRL } = useModel(
+		'diemrenluyen.minhchung.cauhinh',
+	);
+
 	const [layout, setLayout] = useState<'listing' | 'time'>('listing');
 	const [calendarView, setCalendarView] = useState<View>(Views.MONTH);
 	const [date, setDate] = useState(new Date());
-	const [dateRange, setDateRange] = useState<dayjs[]>([dayjs().startOf('month'), dayjs().endOf('month')]);
+	const [dateRange, setDateRange] = useState<Dayjs[]>([dayjs().startOf('month'), dayjs().endOf('month')]);
 	const [dataCalendar, setDataCalendar] = useState<{ title: string; rawData: SuKienV2.IRecord }[]>([]);
 
 	const eventPropGetter = (event: { title: string; rawData: SuKienV2.IRecord }) => ({
@@ -99,7 +104,7 @@ const SuKienPage = () => {
 		{
 			title: 'Loại sự kiện',
 			dataIndex: 'loaiSuKien',
-			width: 170,
+			width: 120,
 			align: 'center',
 			filterType: 'select',
 			filterData: Object.values(ESuKienType).filter(
@@ -115,29 +120,37 @@ const SuKienPage = () => {
 			onCell,
 		},
 		{
-			title: 'Thời gian bắt đầu đăng ký',
-			align: 'center',
-			sortable: true,
-			dataIndex: 'thoiGianBatDauDangKy',
-			filterType: 'datetime',
-			width: 160,
+			title: 'Tham gia sự kiện được tính điểm rèn luyện?',
+			dataIndex: 'cauHinhMinhChungId',
+			width: 200,
 			onCell,
-			render: (_, record) => {
-				return record.thoiGianBatDauDangKy ? dayjs(record.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--';
-			},
+			render: (val: string) =>
+				val ? danhSachCauHinhMinhChungDRL.find((item) => item._id === val)?.tenMinhChung : 'Không',
 		},
-		{
-			title: 'Thời gian kết thúc đăng ký',
-			align: 'center',
-			sortable: true,
-			dataIndex: 'thoiGianKetThucDangKy',
-			filterType: 'datetime',
-			width: 160,
-			onCell,
-			render: (_, record) => {
-				return record.thoiGianKetThucDangKy ? dayjs(record.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--';
-			},
-		},
+		// {
+		// 	title: 'Thời gian bắt đầu đăng ký',
+		// 	align: 'center',
+		// 	sortable: true,
+		// 	dataIndex: 'thoiGianBatDauDangKy',
+		// 	filterType: 'datetime',
+		// 	width: 160,
+		// 	onCell,
+		// 	render: (_, record) => {
+		// 		return record.thoiGianBatDauDangKy ? dayjs(record.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--';
+		// 	},
+		// },
+		// {
+		// 	title: 'Thời gian kết thúc đăng ký',
+		// 	align: 'center',
+		// 	sortable: true,
+		// 	dataIndex: 'thoiGianKetThucDangKy',
+		// 	filterType: 'datetime',
+		// 	width: 160,
+		// 	onCell,
+		// 	render: (_, record) => {
+		// 		return record.thoiGianKetThucDangKy ? dayjs(record.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--';
+		// 	},
+		// },
 		{
 			title: 'Thời gian diễn ra',
 			align: 'center',
@@ -146,7 +159,11 @@ const SuKienPage = () => {
 			width: 160,
 			onCell,
 			render: (_, record) => {
-				return record.thoiGianBatDau ? dayjs(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : null;
+				return record.thoiGianBatDau
+					? `${dayjs(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY')} - ${dayjs(record.thoiGianKetThuc).format(
+							'HH:mm DD/MM/YYYY',
+						)}`
+					: null;
 			},
 		},
 		// {
@@ -157,15 +174,15 @@ const SuKienPage = () => {
 		// 	onCell,
 		// 	sortable: true,
 		// },
-		{
-			title: 'Số lượng đăng ký',
-			dataIndex: 'soDangKy',
-			width: 140,
-			filterType: 'number',
-			sortable: true,
-			onCell,
-			align: 'center',
-		},
+		// {
+		// 	title: 'Số lượng đăng ký',
+		// 	dataIndex: 'soDangKy',
+		// 	width: 140,
+		// 	filterType: 'number',
+		// 	sortable: true,
+		// 	onCell,
+		// 	align: 'center',
+		// },
 		{
 			title: 'Số lượng tham gia',
 			dataIndex: 'soCheckIn',
@@ -223,9 +240,9 @@ const SuKienPage = () => {
 						)}
 						<Tooltip title='Chỉnh sửa'>
 							<Button
-								disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
-									record?.trangThai as ETrangThaiDienRa,
-								)}
+								// disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
+								// 	record?.trangThai as ETrangThaiDienRa,
+								// )}
 								onClick={() => handleEdit(record)}
 								type='link'
 								icon={<EditOutlined />}
@@ -320,6 +337,10 @@ const SuKienPage = () => {
 			})),
 		);
 	}, [danhSach, layout]);
+
+	useEffect(() => {
+		if (!danhSachCauHinhMinhChungDRL.length) getAllCauHinhMinhChungDRL(false, undefined, { dungChoSuKien: true });
+	}, []);
 
 	const renderContent = () => {
 		if (layout === 'listing') {

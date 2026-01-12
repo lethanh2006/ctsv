@@ -4,7 +4,7 @@ import type { IColumn } from '@/components/Table/typing';
 import FormThemMoiSinhVien from '@/pages/SuKienV2/components/FormThemMoiSinhVien';
 import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
 import { exportDanhSachSinhVien, getThongKeSinhVien, xemKhaoSat } from '@/services/SuKienV2';
-import { ELoaiKhaoSatSuKien, ETrangThaiThamGia, MapColorETrangThaiThamGia } from '@/services/SuKienV2/constant';
+import { ELoaiKhaoSatSuKien, ETrangThaiThamGia } from '@/services/SuKienV2/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { getFilenameHeader } from '@/utils/utils';
 import {
@@ -17,21 +17,7 @@ import {
 	ProfileOutlined,
 	UndoOutlined,
 } from '@ant-design/icons';
-import {
-	Badge,
-	Button,
-	Card,
-	Checkbox,
-	Col,
-	Divider,
-	Modal,
-	Popconfirm,
-	Popover,
-	Row,
-	Tag,
-	Tooltip,
-	message,
-} from 'antd';
+import { Badge, Button, Card, Checkbox, Col, Divider, Modal, Popconfirm, Popover, Row, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
 import fileDownload from 'js-file-download';
 import { useState } from 'react';
@@ -101,13 +87,14 @@ const DanhSachSinhVien = (props: IProps) => {
 	};
 
 	const columns: IColumn<SuKienV2.IRecordSinhVienSuKien>[] = [
-		// {
-		// 	title: 'Mã SV/CB',
-		// 	width: 90,
-		// 	dataIndex: 'maSv',
-		// 	filterType: 'string',
-		// 	align: 'center',
-		// },
+		{
+			title: 'Mã SV',
+			width: 90,
+			dataIndex: 'maSv',
+			filterType: 'string',
+			align: 'center',
+			render: (val: string) => val.toUpperCase(),
+		},
 		{
 			title: 'Họ tên',
 			dataIndex: 'tenSv',
@@ -163,14 +150,14 @@ const DanhSachSinhVien = (props: IProps) => {
 			align: 'center',
 			render: (val) => <Checkbox checked={val ?? false} />,
 		},
-		{
-			title: 'Trạng thái',
-			dataIndex: 'trangThaiThamGia',
-			width: 120,
-			hide: type !== 'Đăng ký',
-			align: 'center',
-			render: (val) => (val ? <Tag color={MapColorETrangThaiThamGia?.[val as ETrangThaiThamGia]}>{val}</Tag> : ''),
-		},
+		// {
+		// 	title: 'Trạng thái',
+		// 	dataIndex: 'trangThaiThamGia',
+		// 	width: 120,
+		// 	hide: type !== 'Đăng ký',
+		// 	align: 'center',
+		// 	render: (val) => (val ? <Tag color={MapColorETrangThaiThamGia?.[val as ETrangThaiThamGia]}>{val}</Tag> : ''),
+		// },
 		{
 			title: 'Thao tác',
 			align: 'center',
@@ -379,7 +366,7 @@ const DanhSachSinhVien = (props: IProps) => {
 				<Row gutter={[12, 12]}>
 					{type === 'Đăng ký' && (
 						<>
-							<Col span={24}>
+							{/* <Col span={24}>
 								<Card style={{ borderRadius: 5 }} hoverable>
 									<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 										<div>
@@ -405,7 +392,7 @@ const DanhSachSinhVien = (props: IProps) => {
 										</div>
 									</div>
 								</Card>
-							</Col>
+							</Col> */}
 							{recSuKien?.idKhaoSatDangKy && (
 								<Col span={24}>
 									<Card style={{ borderRadius: 5 }} hoverable>
@@ -501,7 +488,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			<TableBase
 				otherProps={{ size: 'small' }}
 				hideCard
-				buttons={{ create: true, import: false, export: false }}
+				buttons={{ create: true, import: true, export: false }}
 				dependencies={[page, limit, type, condition]}
 				getData={getData}
 				modelName={'sinhviensukien'}
@@ -511,7 +498,7 @@ const DanhSachSinhVien = (props: IProps) => {
 					getData: getData,
 					type: type,
 				}}
-				params={{ idSuKien: recSuKien?._id }}
+				params={{ idSuKien: recSuKien?._id, loaiQR: type }}
 				otherButtons={[
 					<>
 						<Button
