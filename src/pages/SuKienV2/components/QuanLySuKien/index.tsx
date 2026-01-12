@@ -3,6 +3,7 @@ import type { IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, type FormInstance, Popconfirm, Tooltip } from 'antd';
 import { useState } from 'react';
+import { useIntl } from 'umi';
 import FormThemMoi from './components/form';
 
 interface IProps {
@@ -34,6 +35,7 @@ interface IDataTable {
 }
 
 const QuanLySuKien = (props: IProps) => {
+	const intl = useIntl();
 	const { value, form, fieldName, disabled } = props;
 	const [edit, setEdit] = useState<boolean>(false);
 	const [isView, setIsView] = useState<boolean>(false);
@@ -42,26 +44,26 @@ const QuanLySuKien = (props: IProps) => {
 
 	const columns: IColumn<IDataTable>[] = [
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'sukien.form.thongtinchung.qlsk.hoten' }),
 			dataIndex: 'fullname',
 			width: 150,
 			align: 'center',
 		},
 		{
-			title: 'email',
+			title: intl.formatMessage({ id: 'sukien.form.thongtinchung.qlsk.email' }),
 			dataIndex: 'email',
 			width: 120,
 			align: 'center',
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sukien.form.thongtinchung.qlsk.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (recordVal: any) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button
 							onClick={() => {
 								setEdit(true);
@@ -73,7 +75,7 @@ const QuanLySuKien = (props: IProps) => {
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								const data = form.getFieldValue(fieldName ?? 'danhSachTrucTiepTrenLop') ?? [];
@@ -82,7 +84,7 @@ const QuanLySuKien = (props: IProps) => {
 									[fieldName]: data?.filter((item: any) => item?.id !== recordVal?.id),
 								});
 							}}
-							title='Bạn có chắc chắn muốn xóa khai báo này?'
+							title={intl.formatMessage({ id: 'sukien.form.thongtinchung.qlsk.confirm.xoa' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />

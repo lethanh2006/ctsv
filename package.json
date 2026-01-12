@@ -50,6 +50,7 @@
     "@react-pdf-viewer/pdfjs-dist-signature": "2.5.207",
     "@sentry/react": "^9.3.0",
     "@tinymce/tinymce-react": "^6.0.0",
+    "@types/crypto-js": "^4.2.2",
     "@types/lodash.debounce": "^4.0.9",
     "@types/react-highlight-words": "^0.20.0",
     "@types/react-stickynode": "^4.0.3",

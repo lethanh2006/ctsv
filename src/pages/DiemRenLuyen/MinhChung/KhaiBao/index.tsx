@@ -1,6 +1,7 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
+import useCheckAccess from '@/hooks/useCheckAccess';
 import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
 import FormKhaiBao from '@/pages/DiemRenLuyen/MinhChung/KhaiBao/components/FormKhaiBao';
@@ -8,23 +9,34 @@ import {
 	ETrangThaiTiepNhanMinhChung,
 	MapColorETrangThaiTiepNhanMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
-import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,
 	DeleteOutlined,
 	EditOutlined,
+	ImportOutlined,
 	MenuOutlined,
 	UndoOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, Popconfirm, Popover, Spin, Tag } from 'antd';
+import { Button, Divider, Dropdown, Menu, Modal, Popconfirm, Popover, Spin, Tag } from 'antd';
 import { useEffect } from 'react';
-import useCheckAccess from '@/hooks/useCheckAccess';
+import { useModel } from 'umi';
+import FormImport from './components/FormImport';
 
 const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: () => void }) => {
-	const { getModel, page, limit, condition, handleEdit, deleteModel, handleView, putModel } = useModel(
-		'diemrenluyen.minhchung.khaibao',
-	);
+	const {
+		getModel,
+		page,
+		limit,
+		condition,
+		handleEdit,
+		deleteModel,
+		handleView,
+		putModel,
+		getTemplateImportMinhChungModel,
+		setVisibleFormImport,
+		visibleFormImport,
+	} = useModel('diemrenluyen.minhchung.khaibao');
 	const { record: recordCauHinh } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { getAllModel, danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
 	const { loading } = useModel('diemrenluyen.minhchung.cauhinh');
@@ -35,16 +47,17 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 		dataPhanQuyen,
 		handleCheckPhanQuyen,
 	} = useModel('diemrenluyen.dot');
+
+	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
+		'daotaov2.lophanhchinh.lophanhchinh',
+	);
+
 	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
 
 	useEffect(() => {
 		handleCheckPhanQuyen(idDuyet, isKhoa);
 	}, []);
-
-	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
-		'daotaov2.lophanhchinh.lophanhchinh',
-	);
 
 	const getData = () => {
 		if (
@@ -234,11 +247,33 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 					create: dataPhanQuyen?.isPhongCTSV
 						? true
 						: dataPhanQuyen?.isKhoa
-						? false
-						: recordCauHinh?.doiTuongNhap?.includes('CAN_BO'),
+							? false
+							: recordCauHinh?.doiTuongNhap?.includes('CAN_BO'),
 				}}
 				otherButtons={[
 					<>
+						<Dropdown
+							overlay={
+								<Menu>
+									<Menu.Item
+										onClick={() => {
+											getTemplateImportMinhChungModel(recordCauHinh?._id ?? '', recordCauHinh?.tenMinhChung ?? '');
+										}}
+									>
+										Tải mẫu import
+									</Menu.Item>
+									<Menu.Item
+										onClick={() => {
+											setVisibleFormImport(true);
+										}}
+									>
+										Import dữ liệu
+									</Menu.Item>
+								</Menu>
+							}
+						>
+							<Button icon={<ImportOutlined />}>Import dữ liệu</Button>
+						</Dropdown>
 						<SelectDotDiemRenLuyen
 							style={{ width: 300 }}
 							value={recordDot?._id}
@@ -262,6 +297,17 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 					</>,
 				]}
 			/>
+			<Modal
+				destroyOnClose
+				open={visibleFormImport}
+				title={'Import minh chứng'}
+				onCancel={() => {
+					setVisibleFormImport(false);
+				}}
+				footer={null}
+			>
+				<FormImport getData={getData} />
+			</Modal>
 		</Spin>
 	);
 };

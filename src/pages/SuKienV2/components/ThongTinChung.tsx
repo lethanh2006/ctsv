@@ -1,19 +1,24 @@
+import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
 import { ETrangThaiDienRaMappingToTagColor, ETrangThaiDienRaMappingToTagLabel } from '@/services/SuKien/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
 import { Descriptions, Divider, Modal, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { Link } from 'umi';
-import { useModel } from 'umi';
-import ViewKhaoSat from '@/pages/SuKienV2/components/ViewKhaoSat/View';
 import { useState } from 'react';
+import { Link, useIntl, useModel } from 'umi';
 
 interface IProps {
 	data: SuKienV2.IRecord;
 }
+
 const ThongTinChung = (props: IProps) => {
 	const { data } = props;
+	const intl = useIntl();
+
 	const { getByIdModel: getBieuMau } = useModel('tienich.bieumau');
+	const { danhSach: danhSachCauHinhMinhChungDRL } = useModel('diemrenluyen.minhchung.cauhinh');
 	const [visibleKhaoSat, setVisibleKhaoSat] = useState<boolean>(false);
+
+	const t = (id: string) => intl.formatMessage({ id });
 
 	const handleViewBieuMau = async (idBieuMau: string) => {
 		try {
@@ -28,8 +33,8 @@ const ThongTinChung = (props: IProps) => {
 	return (
 		<>
 			<Descriptions column={2}>
-				<Descriptions.Item label='Tên sự kiện'>{data?.tenSuKien}</Descriptions.Item>
-				<Descriptions.Item label='Trạng thái'>
+				<Descriptions.Item label={t('sukien.chitiet.thongtin.ten')}>{data?.tenSuKien}</Descriptions.Item>
+				<Descriptions.Item label={t('sukien.chitiet.thongtin.trangthai')}>
 					{data?.trangThai ? (
 						<Tag color={ETrangThaiDienRaMappingToTagColor[data.trangThai]}>
 							{ETrangThaiDienRaMappingToTagLabel[data.trangThai]}
@@ -39,27 +44,30 @@ const ThongTinChung = (props: IProps) => {
 					)}
 				</Descriptions.Item>
 				{data?.thoiGianBatDauDangKy && (
-					<Descriptions.Item label='Thời gian bắt đầu đăng ký'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.batdaudangky')}>
 						{data?.thoiGianBatDauDangKy ? dayjs(data?.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--'}
 					</Descriptions.Item>
 				)}
 				{data?.thoiGianKetThucDangKy && (
-					<Descriptions.Item label='Thời gian kết thúc đăng ký'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.ketthucdangky')}>
 						{data?.thoiGianKetThucDangKy ? dayjs(data?.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--'}
 					</Descriptions.Item>
 				)}
-				<Descriptions.Item label='Thời gian bắt đầu'>
+				<Descriptions.Item label={t('sukien.chitiet.thongtin.batdau')}>
 					{data?.thoiGianBatDau ? dayjs(data?.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
-				<Descriptions.Item label='Thời gian kết thúc'>
+				<Descriptions.Item label={t('sukien.chitiet.thongtin.ketthuc')}>
 					{data?.thoiGianKetThuc ? dayjs(data?.thoiGianKetThuc).format('HH:mm DD/MM/YYYY') : '--'}
 				</Descriptions.Item>
-				<Descriptions.Item span={6} label='Địa điểm'>
+				<Descriptions.Item span={3} label={t('sukien.chitiet.thongtin.diadiem')}>
 					{data?.diaDiem ?? '--'}
+				</Descriptions.Item>
+				<Descriptions.Item span={3} label={t('sukien.chitiet.thongtin.diemrenluyen')}>
+					{danhSachCauHinhMinhChungDRL?.find((item) => item._id === data.cauHinhMinhChungId)?.tenMinhChung ?? '--'}
 				</Descriptions.Item>
 				{/*<Descriptions.Item label='Kinh phí'>{data?.kinhPhi ? tienVietNam(data?.kinhPhi) : '--'}</Descriptions.Item>*/}
 				{/*<Descriptions.Item label='Số lượng'>{data?.soLuong ?? data?.users?.length ?? '--'}</Descriptions.Item>*/}
-				<Descriptions.Item span={6} label='Ghi chú'>
+				<Descriptions.Item span={6} label={t('sukien.chitiet.thongtin.ghichu')}>
 					{data?.ghiChu ?? '--'}
 				</Descriptions.Item>
 				{/*<Descriptions.Item label='Mã hoạt động'>*/}
@@ -68,42 +76,35 @@ const ThongTinChung = (props: IProps) => {
 				{/*	</Link>*/}
 				{/*</Descriptions.Item>*/}
 				{data?.idKhaoSatDangKy && (
-					<Descriptions.Item label='Biểu mẫu khảo sát đăng ký'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.khaosatdangky')}>
 						<div
 							style={{ color: '#0090d5', cursor: 'pointer' }}
-							onClick={() => {
-								handleViewBieuMau(data?.idKhaoSatDangKy ?? '');
-							}}
+							onClick={() => handleViewBieuMau(data?.idKhaoSatDangKy ?? '')}
 						>
-							Biểu mẫu
+							{t('common.form')}
 						</div>
 					</Descriptions.Item>
 				)}
 				{data?.idKhaoSatCheckIn && (
-					<Descriptions.Item label='Biểu mẫu khảo sát checkin'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.khaosatcheckin')}>
 						<div
 							style={{ color: '#0090d5', cursor: 'pointer' }}
-							onClick={() => {
-								handleViewBieuMau(data?.idKhaoSatCheckIn ?? '');
-							}}
+							onClick={() => handleViewBieuMau(data?.idKhaoSatCheckIn ?? '')}
 						>
-							Biểu mẫu
+							{t('common.form')}
 						</div>
 					</Descriptions.Item>
 				)}
 				{data?.idKhaoSatCheckOut && (
-					<Descriptions.Item label='Biểu mẫu khảo sát checkout'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.khaosatcheckout')}>
 						<div
 							style={{ color: '#0090d5', cursor: 'pointer' }}
-							onClick={() => {
-								handleViewBieuMau(data?.idKhaoSatCheckOut ?? '');
-							}}
+							onClick={() => handleViewBieuMau(data?.idKhaoSatCheckOut ?? '')}
 						>
-							Biểu mẫu
+							{t('common.form')}
 						</div>
 					</Descriptions.Item>
 				)}
-
 				{/*{data?.receiverType && (*/}
 				{/*	<Descriptions.Item label='Đối tượng tham gia'>*/}
 				{/*		<Space style={{ width: '100%' }} direction='vertical'>*/}
@@ -132,17 +133,17 @@ const ThongTinChung = (props: IProps) => {
 			<Divider />
 			<Descriptions column={2}>
 				{data?.isQRDangKy && (
-					<Descriptions.Item label='Đường dẫn đăng ký sự kiện'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.qrdangky')}>
 						{dayjs(data?.thoiGianBatDauDangKy).isAfter(dayjs()) ? (
-							<Tag color={'orange'}>Chưa đến thời gian đăng ký</Tag>
+							<Tag color='orange'>{t('sukien.trangthai.chuadangky')}</Tag>
 						) : (
 							<>
 								{dayjs(data?.thoiGianKetThucDangKy).isBefore(dayjs()) ? (
-									<Tag color={'red'}>Đã hết thời gian đăng ký</Tag>
+									<Tag color={'red'}>{t('sukien.trangthai.hetdangky')}</Tag>
 								) : (
 									<>
 										<Link target='_blank' to={`/qr-tham-gia/${data?._id}?type=Đăng ký`}>
-											Mã QR
+											{t('common.qr')}
 										</Link>
 									</>
 								)}
@@ -150,8 +151,9 @@ const ThongTinChung = (props: IProps) => {
 						)}
 					</Descriptions.Item>
 				)}
+
 				{data?.isQRThamGia && (
-					<Descriptions.Item label='Đường dẫn điểm danh sự kiện'>
+					<Descriptions.Item label={t('sukien.chitiet.thongtin.qrthamgia')}>
 						{/* {dayjs(data?.thoiGianBatDau).isAfter(dayjs()) ? (
 							<Tag color={'orange'}>Chưa đến thời gian điểm danh</Tag>
 						) : (
@@ -161,7 +163,7 @@ const ThongTinChung = (props: IProps) => {
 								) : ( */}
 						<>
 							<Link target='_blank' to={`/qr-su-kien-v2/${data?._id}?type=Điểm danh`}>
-								Mã QR
+								{t('common.qr')}
 							</Link>
 						</>
 						{/* )}
@@ -171,20 +173,13 @@ const ThongTinChung = (props: IProps) => {
 				)}
 			</Descriptions>
 			<Modal
-				title={'Khảo sát'}
+				title={t('sukien.chitiet.khaosat')}
 				open={visibleKhaoSat}
-				onCancel={() => {
-					setVisibleKhaoSat(false);
-				}}
+				onCancel={() => setVisibleKhaoSat(false)}
 				width={800}
 				footer={null}
 			>
-				<ViewKhaoSat
-					hideCard
-					onCancel={() => {
-						setVisibleKhaoSat(false);
-					}}
-				/>
+				<ViewKhaoSat hideCard onCancel={() => setVisibleKhaoSat(false)} />
 			</Modal>
 		</>
 	);

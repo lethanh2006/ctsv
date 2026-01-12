@@ -1,6 +1,4 @@
-import { type EPhamViChuDe } from '@/services/TinTuc/constant';
-import { type ELoaiDoiTuong } from '../constant';
-import { type ELoaiCauHoi, type ELoaiBieuMau } from '../constants';
+import { type ELoaiBieuMau, type ELoaiCauHoi } from '../constants';
 
 declare module BieuMau {
 	export interface LuaChon {

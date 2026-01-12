@@ -1,11 +1,11 @@
-import ThongKe from '@/pages/SuKienV2/components/ThongKeKhaoSat/components/thongKe';
 import { ELoaiKhaoSatSuKien } from '@/services/SuKienV2/constant';
-import { exportKetQuaKhaoSat } from '@/services/TienIch/DotKhaoSat';
-import { useModel } from 'umi';
+import { exportKetQuaKhaoSatSuKien } from '@/services/TienIch/DotKhaoSat';
 import { ExportOutlined } from '@ant-design/icons';
 import { Button, Segmented } from 'antd';
 import fileDownload from 'js-file-download';
 import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
+import ThongKe from './components/thongKe';
 
 const ThongKeKhaoSat = () => {
 	const { record: recSuKien, handleGetThongKeKhaoSat } = useModel('sukienv2');
@@ -25,6 +25,7 @@ const ThongKeKhaoSat = () => {
 	useEffect(() => {
 		getData();
 	}, [recSuKien, dataSeg]);
+
 	return (
 		<>
 			<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -33,13 +34,14 @@ const ThongKeKhaoSat = () => {
 					type='primary'
 					onClick={() => {
 						setLoading(true);
-						exportKetQuaKhaoSat({
+						exportKetQuaKhaoSatSuKien({
 							idKhaoSat:
 								dataSeg === 'check-in'
-									? recSuKien?.idKhaoSatCheckIn ?? ''
+									? (recSuKien?.idKhaoSatCheckIn ?? '')
 									: dataSeg === 'dang-ky'
-									? recSuKien?.idKhaoSatDangKy ?? ''
-									: recSuKien?.idKhaoSatCheckOut ?? '',
+										? (recSuKien?.idKhaoSatDangKy ?? '')
+										: (recSuKien?.idKhaoSatCheckOut ?? ''),
+							idSuKien: recSuKien?._id ?? '',
 						}).then((res) => fileDownload(res.data, `Kết quả khảo sát_${dataSeg}.xlsx`));
 						setLoading(false);
 					}}
@@ -60,9 +62,7 @@ const ThongKeKhaoSat = () => {
 					]}
 				/>
 			</div>
-			<div>
-				<ThongKe />
-			</div>
+			<ThongKe />
 		</>
 	);
 };

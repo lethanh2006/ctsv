@@ -12,15 +12,16 @@ import {
 } from '@/services/SuKien/constant';
 import { ESuKienType } from '@/services/SuKienV2/constant';
 import type { SuKienV2 } from '@/services/SuKienV2/typings';
+import dayjs from '@/utils/dayjs';
 import { CalendarOutlined, DeleteOutlined, EditOutlined, PieChartOutlined, TableOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Modal, Popconfirm, Row, Segmented, Spin, Switch, Tag, Tooltip } from 'antd';
+import { View } from 'bizcharts';
+import { Dayjs } from 'dayjs';
 import { sum } from 'lodash';
-import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
-import type { DateRange, View } from 'react-big-calendar';
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { Detail } from './components/Detail';
 import Form from './components/Form';
 import { ThongKeNguoiThamDu } from './components/ThongKeNguoiThamDu';
@@ -28,6 +29,7 @@ import { ThongKeNguoiThamDu } from './components/ThongKeNguoiThamDu';
 const localizer = dayjsLocalizer(dayjs);
 
 const SuKienPage = () => {
+	const intl = useIntl();
 	const {
 		getModel,
 		deleteModel,
@@ -48,10 +50,14 @@ const SuKienPage = () => {
 		danhSach,
 	} = useModel('sukienv2');
 
+	const { danhSach: danhSachCauHinhMinhChungDRL, getAllModel: getAllCauHinhMinhChungDRL } = useModel(
+		'diemrenluyen.minhchung.cauhinh',
+	);
+
 	const [layout, setLayout] = useState<'listing' | 'time'>('listing');
 	const [calendarView, setCalendarView] = useState<View>(Views.MONTH);
 	const [date, setDate] = useState(new Date());
-	const [dateRange, setDateRange] = useState<dayjs[]>([dayjs().startOf('month'), dayjs().endOf('month')]);
+	const [dateRange, setDateRange] = useState<Dayjs[]>([dayjs().startOf('month'), dayjs().endOf('month')]);
 	const [dataCalendar, setDataCalendar] = useState<{ title: string; rawData: SuKienV2.IRecord }[]>([]);
 
 	const eventPropGetter = (event: { title: string; rawData: SuKienV2.IRecord }) => ({
@@ -90,16 +96,16 @@ const SuKienPage = () => {
 
 	const columns: IColumn<SuKienV2.IRecord>[] = [
 		{
-			title: 'Tên sự kiện',
+			title: intl.formatMessage({ id: 'sukien.column.ten' }),
 			dataIndex: 'tenSuKien',
 			width: 250,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Loại sự kiện',
+			title: intl.formatMessage({ id: 'sukien.column.loai' }),
 			dataIndex: 'loaiSuKien',
-			width: 170,
+			width: 120,
 			align: 'center',
 			filterType: 'select',
 			filterData: Object.values(ESuKienType).filter(
@@ -108,45 +114,57 @@ const SuKienPage = () => {
 			onCell,
 		},
 		{
-			title: 'Địa điểm',
+			title: intl.formatMessage({ id: 'sukien.column.diadiem' }),
 			dataIndex: 'diaDiem',
 			width: 200,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Thời gian bắt đầu đăng ký',
-			align: 'center',
-			sortable: true,
-			dataIndex: 'thoiGianBatDauDangKy',
-			filterType: 'datetime',
-			width: 160,
+			title: intl.formatMessage({ id: 'sukien.column.thamgia' }),
+			dataIndex: 'cauHinhMinhChungId',
+			width: 200,
 			onCell,
-			render: (_, record) => {
-				return record.thoiGianBatDauDangKy ? dayjs(record.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--';
-			},
+			render: (val: string) =>
+				val ? danhSachCauHinhMinhChungDRL.find((item) => item._id === val)?.tenMinhChung : 'Không',
 		},
+		// {
+		// 	title: 'Thời gian bắt đầu đăng ký',
+		// 	align: 'center',
+		// 	sortable: true,
+		// 	dataIndex: 'thoiGianBatDauDangKy',
+		// 	filterType: 'datetime',
+		// 	width: 160,
+		// 	onCell,
+		// 	render: (_, record) => {
+		// 		return record.thoiGianBatDauDangKy ? dayjs(record.thoiGianBatDauDangKy).format('HH:mm DD/MM/YYYY') : '--';
+		// 	},
+		// },
+		// {
+		// 	title: 'Thời gian kết thúc đăng ký',
+		// 	align: 'center',
+		// 	sortable: true,
+		// 	dataIndex: 'thoiGianKetThucDangKy',
+		// 	filterType: 'datetime',
+		// 	width: 160,
+		// 	onCell,
+		// 	render: (_, record) => {
+		// 		return record.thoiGianKetThucDangKy ? dayjs(record.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--';
+		// 	},
+		// },
 		{
-			title: 'Thời gian kết thúc đăng ký',
-			align: 'center',
-			sortable: true,
-			dataIndex: 'thoiGianKetThucDangKy',
-			filterType: 'datetime',
-			width: 160,
-			onCell,
-			render: (_, record) => {
-				return record.thoiGianKetThucDangKy ? dayjs(record.thoiGianKetThucDangKy).format('HH:mm DD/MM/YYYY') : '--';
-			},
-		},
-		{
-			title: 'Thời gian diễn ra',
+			title: intl.formatMessage({ id: 'sukien.column.thoigian' }),
 			align: 'center',
 			sortable: true,
 			dataIndex: 'thoiGianBatDau',
 			width: 160,
 			onCell,
 			render: (_, record) => {
-				return record.thoiGianBatDau ? dayjs(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY') : null;
+				return record.thoiGianBatDau
+					? `${dayjs(record.thoiGianBatDau).format('HH:mm DD/MM/YYYY')} - ${dayjs(record.thoiGianKetThuc).format(
+							'HH:mm DD/MM/YYYY',
+						)}`
+					: null;
 			},
 		},
 		// {
@@ -157,17 +175,17 @@ const SuKienPage = () => {
 		// 	onCell,
 		// 	sortable: true,
 		// },
+		// {
+		// 	title: 'Số lượng đăng ký',
+		// 	dataIndex: 'soDangKy',
+		// 	width: 140,
+		// 	filterType: 'number',
+		// 	sortable: true,
+		// 	onCell,
+		// 	align: 'center',
+		// },
 		{
-			title: 'Số lượng đăng ký',
-			dataIndex: 'soDangKy',
-			width: 140,
-			filterType: 'number',
-			sortable: true,
-			onCell,
-			align: 'center',
-		},
-		{
-			title: 'Số lượng tham gia',
+			title: intl.formatMessage({ id: 'sukien.column.sl' }),
 			dataIndex: 'soCheckIn',
 			width: 140,
 			filterType: 'number',
@@ -176,7 +194,7 @@ const SuKienPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sukien.column.trangthai' }),
 			dataIndex: 'trangThai',
 			width: 160,
 			filterType: 'select',
@@ -195,7 +213,7 @@ const SuKienPage = () => {
 			},
 		},
 		{
-			title: 'Kích hoạt',
+			title: intl.formatMessage({ id: 'sukien.column.kichhoat' }),
 			dataIndex: 'isHieuLuc',
 			width: 100,
 			align: 'center',
@@ -209,7 +227,7 @@ const SuKienPage = () => {
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sukien.column.thaotac' }),
 			align: 'center',
 			width: 130,
 			fixed: 'right',
@@ -217,27 +235,31 @@ const SuKienPage = () => {
 				return (
 					<>
 						{record.trangThai !== ETrangThaiDienRa.CHUA_DIEN_RA && (
-							<Tooltip title='Thống kê người tham dự'>
+							<Tooltip title={intl.formatMessage({ id: 'sukien.column.button.thongke' })}>
 								<Button onClick={() => handleView(record)} type='link' icon={<PieChartOutlined />} />
 							</Tooltip>
 						)}
-						<Tooltip title='Chỉnh sửa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 							<Button
-								disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
-									record?.trangThai as ETrangThaiDienRa,
-								)}
+								// disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
+								// 	record?.trangThai as ETrangThaiDienRa,
+								// )}
 								onClick={() => handleEdit(record)}
 								type='link'
 								icon={<EditOutlined />}
 							/>
 						</Tooltip>
-						<Tooltip title='Xóa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 							<Popconfirm
 								disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
 									record?.trangThai as ETrangThaiDienRa,
 								)}
-								onConfirm={() => deleteModel(record._id, () => getData())}
-								title='Bạn có chắc chắn muốn xóa sự kiện này?'
+								onConfirm={() =>
+									deleteModel(record._id, getData, {
+										messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+									})
+								}
+								title={intl.formatMessage({ id: 'sukien.column.confirm.xoa' })}
 								placement='topLeft'
 							>
 								<Button
@@ -321,6 +343,10 @@ const SuKienPage = () => {
 		);
 	}, [danhSach, layout]);
 
+	useEffect(() => {
+		if (!danhSachCauHinhMinhChungDRL.length) getAllCauHinhMinhChungDRL(false, undefined, { dungChoSuKien: true });
+	}, []);
+
 	const renderContent = () => {
 		if (layout === 'listing') {
 			return (
@@ -374,7 +400,13 @@ const SuKienPage = () => {
 				<Modal
 					onCancel={() => setVisibleForm(false)}
 					footer={null}
-					title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} hoạt động`}
+					title={
+						isView
+							? intl.formatMessage({ id: 'sukien.form.chitiet' })
+							: edit
+								? intl.formatMessage({ id: 'sukien.form.chinhsua' })
+								: intl.formatMessage({ id: 'sukien.form.themmoi' })
+					}
 					open={visibleForm}
 					width={900}
 				>
@@ -389,7 +421,7 @@ const SuKienPage = () => {
 			<Col span={24}>
 				<Row gutter={[12, 12]}>
 					<Col span={24} md={12} lg={6}>
-						<Card styles={{ padding: '8px 14px' }}>
+						<Card styles={{ body: { padding: '8px 14px' } }}>
 							<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 								<div style={{ fontSize: 18, fontWeight: 700, color: '#007EB9' }}>
 									{sum([
@@ -398,7 +430,7 @@ const SuKienPage = () => {
 										thongKeTheoNamData?.suKienDaDienRa ?? 0,
 									])}
 								</div>
-								<div>Tổng số hoạt động</div>
+								<div>{intl.formatMessage({ id: 'sukien.thongke' })}</div>
 							</div>
 						</Card>
 					</Col>
@@ -406,7 +438,7 @@ const SuKienPage = () => {
 						const key = ETrangThaiDienRaMappingToThongKeKey[item];
 						return (
 							<Col key={item} span={24} md={12} lg={6}>
-								<Card styles={{ padding: '8px 14px' }}>
+								<Card styles={{ body: { padding: '8px 14px' } }}>
 									<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 										<div style={{ fontSize: 18, fontWeight: 700, color: ETrangThaiDienRaMappingToHexColor[item] }}>
 											{thongKeTheoNamData?.[key]}
@@ -430,7 +462,7 @@ const SuKienPage = () => {
 					<Card
 						title={
 							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<div>Sự kiện</div>
+								<div>{intl.formatMessage({ id: 'sukien.title' })}</div>
 								<Segmented
 									value={layout}
 									onChange={(value) => setLayout(value as typeof layout)}

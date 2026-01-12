@@ -6,7 +6,7 @@ import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
 import { useEffect } from 'react';
 import { resetFieldsForm } from '@/utils/utils';
 import SelectMauDiemRenLuyen from '@/pages/DiemRenLuyen/BieuMau/components/Select';
-import { ELoaiBieuMau } from '@/services/DiemRenLuyen/BieuMau/constants';
+import { ELoaiBieuMau } from '@/services/KhaoSat/constant';
 
 const FormThemMoi = () => {
 	const { edit, setVisibleForm, formSubmiting, postModel, putModel, record, visibleForm } =

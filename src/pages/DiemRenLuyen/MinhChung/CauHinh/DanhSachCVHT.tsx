@@ -17,8 +17,10 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	const accessDuyetMinhChung = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const [dataCheckTrangThaiMinhChung, setDataCheckTrangThaiMinhChung] = useState<boolean>(false);
 	const { record: recordCauHinh } = useModel('diemrenluyen.minhchung.cauhinh');
+
 	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
+
 
 	const getData = async (isSetRecord: boolean) => {
 		try {
