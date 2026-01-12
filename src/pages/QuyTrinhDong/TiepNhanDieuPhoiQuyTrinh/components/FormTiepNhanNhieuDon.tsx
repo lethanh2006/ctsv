@@ -12,9 +12,11 @@ import rules from '@/utils/rules';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 const { TextArea } = Input;
+
 const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
+	const intl = useIntl();
 	const { handleCancel } = props;
 	const { danhSach } = useModel('quytrinh.quanlyquytrinh');
 	const [curentQuyTrinhSelect, setCurentQuyTrinhSelect] = useState<QuyTrinh.IRecord>();
@@ -51,18 +53,18 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 	};
 	const columns: IColumn<any>[] = [
 		{
-			title: 'Tên',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ten' }),
 			dataIndex: 'ten',
 			width: 150,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.thaotac' }),
 			width: 150,
 			align: 'center',
 			render: (recordVal) => {
 				return (
 					<>
-						<Tooltip title='Chỉnh sửa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 							<Button
 								onClick={() => {
 									setRecordThamChieu(recordVal);
@@ -74,7 +76,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 								icon={<EditOutlined />}
 							/>
 						</Tooltip>
-						<Tooltip title='Xoá'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 							<Button
 								onClick={() => {
 									if (dataDanhSachThamChieu) {
@@ -118,7 +120,11 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 				<Form layout={'vertical'} onFinish={onFinish}>
 					<Row>
 						<Col span={24}>
-							<Form.Item name={'quyTrinhId'} label={'Quy trình'} rules={[...rules.required]}>
+							<Form.Item
+								name={'quyTrinhId'}
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.quytrinh' })}
+								rules={[...rules.required]}
+							>
 								<SelectQuyTrinh
 									allowClear
 									onChange={(val: any) => {
@@ -129,9 +135,13 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<Form.Item name={'maBuoc'} label={'Bước'} rules={[...rules.required]}>
+							<Form.Item
+								name={'maBuoc'}
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.buoc' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder={'Chọn bước'}
+									placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.buoc.place' })}
 									style={{ width: '100%' }}
 									allowClear
 									onChange={(val) => {
@@ -144,7 +154,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 										//   maBuoc: val,
 										// });
 									}}
-									notFoundContent={'Vui lòng chọn quy trình trước'}
+									notFoundContent={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.buoc.empty' })}
 									options={curentQuyTrinhSelect?.danhSachBuocXuLy?.map((val) => {
 										return {
 											value: val?.ma,
@@ -155,9 +165,13 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<Form.Item name={'trangThaiTiepNhan'} label={'Kết quả tiếp nhận'} rules={[...rules.required]}>
+							<Form.Item
+								name={'trangThaiTiepNhan'}
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ketqua' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder={'Chọn trạng thái'}
+									placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ketqua.place' })}
 									style={{ width: '100%' }}
 									allowClear
 									onChange={(val) => {
@@ -175,7 +189,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 						{currentTypeDuyet === TrangThaiTiepNhanDon.DUYET && (
 							<Col span={24}>
 								<Form.Item
-									label={'Văn bản đính kèm'}
+									label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.vanban' })}
 									name={'maVanBan'}
 									rules={currentTypeDuyet !== TrangThaiTiepNhanDon.DUYET ? [...rules.required] : []}
 								>
@@ -184,12 +198,15 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 							</Col>
 						)}
 						<Col span={24}>
-							<Form.Item name={'ghiChu'} label={'Ghi chú'}>
-								<TextArea rows={4} placeholder={'Nhập ghi chú'} />
+							<Form.Item name={'ghiChu'} label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ghichu' })}>
+								<TextArea
+									rows={4}
+									placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ghichu.place' })}
+								/>
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<Form.Item name={'quyTrinhId'} label={'Danh sách tham chiếu đơn'}>
+							<Form.Item name={'quyTrinhId'} label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.dsdon' })}>
 								<TableStaticData
 									setShowEdit={() => {
 										setVisbleThamChieu(true);
@@ -204,15 +221,19 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 											setImportExcelType('MaThanToan');
 										}}
 									>
-										Nhập dữ liệu
+										{intl.formatMessage({ id: 'global.button.nhapdulieu' })}
 									</Button>
 								</TableStaticData>
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<Form.Item name={'maTruongThamChieu'} label={'Trường thông tin tham chiếu'} rules={[...rules.required]}>
+							<Form.Item
+								name={'maTruongThamChieu'}
+								label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.truongtt' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder={'Chọn trường thông tin'}
+									placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.truongtt.place' })}
 									style={{ width: '100%' }}
 									allowClear
 									onChange={(val) => {
@@ -237,14 +258,14 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 							<Form.Item>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
 									<Button style={{ marginRight: 8 }} type={'primary'} htmlType={'submit'}>
-										Tiếp nhận
+										{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.button.tiepnhan' })}
 									</Button>
 									<Button
 										onClick={() => {
 											handleCancel();
 										}}
 									>
-										Đóng
+										{intl.formatMessage({ id: 'global.button.dong' })}
 									</Button>
 								</div>
 							</Form.Item>
@@ -254,7 +275,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 			</Spin>
 
 			<Modal
-				title={'Thêm mới'}
+				title={intl.formatMessage({ id: 'global.button.themmoi' })}
 				open={visibleThamChieu}
 				onCancel={() => setVisbleThamChieu(false)}
 				width={800}
@@ -296,15 +317,17 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 					}}
 					initialValues={editThamChieu ? recordThamChieu : undefined}
 				>
-					<Form.Item label={'Tên'} name={'ten'}>
-						<Input placeholder={'Nhập tên'} />
+					<Form.Item label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ten' })} name={'ten'}>
+						<Input placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.form.ten.place' })} />
 					</Form.Item>
 					<Form.Item>
 						<div style={{ display: 'flex', justifyContent: 'center' }}>
 							<Button style={{ marginRight: 8 }} type={'primary'} htmlType={'submit'}>
-								Thêm mới
+								{intl.formatMessage({ id: 'global.button.themmoi' })}
 							</Button>
-							<Button onClick={() => setVisbleThamChieu(false)}>Đóng</Button>
+							<Button onClick={() => setVisbleThamChieu(false)}>
+								{intl.formatMessage({ id: 'global.button.dong' })}
+							</Button>
 						</div>
 					</Form.Item>
 				</Form>
@@ -312,7 +335,7 @@ const FormTiepNhanNhieuDon = (props: { handleCancel: () => void }) => {
 			<Modal
 				footer={null}
 				open={visible}
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				onCancel={() => {
 					setVisible(false);
 				}}

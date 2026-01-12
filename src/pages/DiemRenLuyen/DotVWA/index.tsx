@@ -1,16 +1,16 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
+import type { BieuMau } from '@/services/DiemRenLuyen/BieuMau/typing';
+import { MapKeyNameLoaiDoiTuongChamDiem } from '@/services/DiemRenLuyen/constants';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { useModel } from 'umi';
-import FormBieuMau from './components/Form';
-import { MapKeyNameLoaiDoiTuongChamDiem } from '@/services/DiemRenLuyen/constants';
 import dayjs from 'dayjs';
-
 import { useEffect } from 'react';
-import type { BieuMau } from '@/services/DiemRenLuyen/BieuMau/typing';
+import { useIntl, useModel } from 'umi';
+import FormBieuMau from './components/Form';
 
 const DotDiemRenLuyenComponent = () => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, page, limit } = useModel('diemrenluyen.dotvwa');
 	const { danhSach, getAllModel } = useModel('daotaov2.hocky.hocky');
 
@@ -20,13 +20,13 @@ const DotDiemRenLuyenComponent = () => {
 
 	const column: IColumn<DotChamDiemRenLuyen.IRecordVWA>[] = [
 		{
-			title: 'Học kỳ',
+			title: intl.formatMessage({ id: 'dotdanhgia.column.hocky' }),
 			dataIndex: 'maHocKy',
 			width: 300,
 			render: (val) => danhSach.find((item) => item.ma === val)?.ten,
 		},
 		{
-			title: 'Đối tượng',
+			title: intl.formatMessage({ id: 'dotdanhgia.column.doituong' }),
 			dataIndex: 'danhSachDoiTuongChamDiem',
 			width: 300,
 			render: (val: DotChamDiemRenLuyen.DoiTuongChamDiem[]) => (
@@ -42,26 +42,26 @@ const DotDiemRenLuyenComponent = () => {
 			),
 		},
 		{
-			title: 'Mẫu đánh giá',
+			title: intl.formatMessage({ id: 'dotdanhgia.column.maudanhgia' }),
 			dataIndex: 'mauDrl',
 			width: 300,
 			render: (val: BieuMau.IRecordVWA) => val?.ten,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'dotdanhgia.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: DotChamDiemRenLuyen.IRecordVWA) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id)}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'dotdanhgia.confirm.xoa' })}
 							placement='topLeft'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -77,7 +77,7 @@ const DotDiemRenLuyenComponent = () => {
 			<TableBase
 				widthDrawer={700}
 				Form={FormBieuMau}
-				title='Đợt đánh giá'
+				title={intl.formatMessage({ id: 'dotdanhgia.title' })}
 				columns={column}
 				modelName={'diemrenluyen.dotvwa'}
 				dependencies={[page, limit]}

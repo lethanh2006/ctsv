@@ -2,15 +2,16 @@ import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import { ELoaiCheDoSinhVien } from '@/services/CheDoSinhVien/constant';
 import type { CheDoSinhVien } from '@/services/CheDoSinhVien/typings';
+import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useCallback, useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 import FormCheDoChinhSach from './Form';
 import FormGiaoNopSanPham from './FormGiaoNopSanPham';
-import { useCallback, useEffect } from 'react';
-import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 
 const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; title: string }) => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, getModel, setRecord, setVisibleViewForm, visibleViewForm, postModel } = useModel(
 		'chedochinhsach.chedochinhsach',
 	);
@@ -39,7 +40,7 @@ const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; 
 
 	const columns: IColumn<CheDoSinhVien.IRecord>[] = [
 		{
-			title: 'Tên',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.column.ten' }),
 			dataIndex: 'ten',
 			width: 200,
 			onCell,
@@ -47,7 +48,7 @@ const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; 
 		},
 
 		{
-			title: 'Loại',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.column.loai' }),
 			dataIndex: 'loaiCheDoSinhVien',
 			width: 120,
 			align: 'center',
@@ -56,13 +57,13 @@ const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; 
 			filterData: Object.values(ELoaiCheDoSinhVien).map((item) => ({ value: item, label: item })),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (record: CheDoSinhVien.IRecord) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.tooltip.edit' })}>
 						<Button
 							onClick={() => {
 								handleEdit(record);
@@ -72,22 +73,28 @@ const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; 
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.tooltip.delete' })}>
 						<Popconfirm
 							onConfirm={() => {
 								deleteModel(record._id, getData);
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.popconfirm.delete' })}
 						>
 							<Button type='link' danger icon={<DeleteOutlined />} />
 						</Popconfirm>
 					</Tooltip>
-					<Tooltip title='Sao chép'>
+					<Tooltip title={intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.tooltip.copy' })}>
 						<Button
 							type='link'
 							icon={<CopyOutlined />}
 							onClick={() => {
-								postModel({ ...record, ten: record.ten + ' - sao chép' }, getData);
+								postModel(
+									{
+										...record,
+										ten: record.ten + intl.formatMessage({ id: 'kyluatkhenthuong.chedosinhvien.copy.suffix' }),
+									},
+									getData,
+								);
 							}}
 						/>
 					</Tooltip>
@@ -113,7 +120,7 @@ const CheDoSinhVienComponent = (props: { loaiCheDoSinhVien: ELoaiCheDoSinhVien; 
 				styles={{ padding: 0 }}
 				footer={
 					<Button type='primary' onClick={onCancelPreview}>
-						OK
+						{intl.formatMessage({ id: 'chedosinhvien.button.ok' })}
 					</Button>
 				}
 				width={900}

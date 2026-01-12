@@ -7,12 +7,13 @@ import { ELoaiDanhMucChung } from '@/services/QuyTrinhDong/DanhMuc/constants';
 import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Input, Select, Spin, Tabs, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import ViewColumnThongKe from './ViewColumn';
 import ViewDonutThongKe from './ViewDonut';
 import ViewTableThongKe from './ViewTable';
 
 const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTrinhDong' }) => {
+	const intl = useIntl();
 	const { danhSach }: any = useModel(props.type === 'CheDoChinhSach' ? 'chedochinhsach.thongke' : 'quytrinh.thongke');
 	const getDataThongKeJson =
 		props.type === 'CheDoChinhSach' ? getDataThongKeJsonCheDoChinhSach : getDataThongKeJsonQuyTrinhDong;
@@ -130,7 +131,7 @@ const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTr
 									</>
 								),
 							)}
-							<Tooltip title='Làm mới dữ liệu'>
+							<Tooltip title={intl.formatMessage({ id: 'chedochinhsach.thongke.lammoi' })}>
 								<Button loading={loading} onClick={getData} size='small' type='link' icon={<ReloadOutlined />} />
 							</Tooltip>
 						</div>
@@ -138,16 +139,24 @@ const ViewThongKe = (props: { idThongKe: string; type: 'CheDoChinhSach' | 'QuyTr
 				}
 				style={{ marginTop: -8 }}
 			>
-				<Tabs.TabPane tab='Bảng' key={'table'} tabKey='table'>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'chedochinhsach.thongke.bang' })} key={'table'} tabKey='table'>
 					<ViewTableThongKe data={data} />
 				</Tabs.TabPane>
 				{data.length && Object.keys(data?.[0])?.length === 2 && (
-					<Tabs.TabPane tab='Biểu đồ tròn' key={'donut'} tabKey='donut'>
+					<Tabs.TabPane
+						tab={intl.formatMessage({ id: 'chedochinhsach.thongke.biendotron' })}
+						key={'donut'}
+						tabKey='donut'
+					>
 						<ViewDonutThongKe data={data} />
 					</Tabs.TabPane>
 				)}
 				{data.length && Object.keys(data?.[0])?.length === 2 && (
-					<Tabs.TabPane tab='Biểu đồ cột' key={'column'} tabKey='column'>
+					<Tabs.TabPane
+						tab={intl.formatMessage({ id: 'chedochinhsach.thongke.biendocot' })}
+						key={'column'}
+						tabKey='column'
+					>
 						<ViewColumnThongKe data={data} />
 					</Tabs.TabPane>
 				)}

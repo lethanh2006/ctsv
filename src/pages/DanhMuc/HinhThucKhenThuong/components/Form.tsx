@@ -1,10 +1,11 @@
 import rules from '@/utils/rules';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectLoaiKhenThuong from '../../LoaiKhenThuong/components/Select';
 
 const FormHinhThucKhenThuong = (props: any) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	// const anhHuongThoiGianKhenThuong = useWatch(['anhHuongThoiGianKhenThuong'], form);
 
@@ -34,22 +35,28 @@ const FormHinhThucKhenThuong = (props: any) => {
 	};
 
 	return (
-		<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + title?.toLowerCase()}>
+		<Card
+			title={intl.formatMessage({ id: edit ? 'global.title.chinhsua' : 'global.title.themmoi' }) + title?.toLowerCase()}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24} md={12}>
-						<Form.Item name='ma' label='Mã nội bộ' rules={[...rules.required, ...rules.text, ...rules.length(20)]}>
-							<Input placeholder='Mã nội bộ' />
+						<Form.Item
+							name='ma'
+							label={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.ma' })}
+							rules={[...rules.required, ...rules.text, ...rules.length(20)]}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.ma' })} />
 						</Form.Item>
 					</Col>
 
 					<Col span={24} md={12}>
 						<Form.Item
 							name='ten'
-							label='Tên hình thức khen thưởng'
+							label={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.ten' })}
 							rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 						>
-							<Input placeholder='Tên hình thức khen thưởng' />
+							<Input placeholder={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.ten' })} />
 						</Form.Item>
 					</Col>
 
@@ -57,7 +64,11 @@ const FormHinhThucKhenThuong = (props: any) => {
 						span={24}
 						// md={12}
 					>
-						<Form.Item name='loaiKhenThuongId' label='Loại khen thưởng' rules={[...rules.required]}>
+						<Form.Item
+							name='loaiKhenThuongId'
+							label={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.loaikhenthuong' })}
+							rules={[...rules.required]}
+						>
 							<SelectLoaiKhenThuong hasCreate={false} />
 						</Form.Item>
 					</Col>
@@ -78,8 +89,12 @@ const FormHinhThucKhenThuong = (props: any) => {
 					</Col> */}
 
 					<Col span={24} md={24}>
-						<Form.Item name='moTa' label='Mô tả' rules={[...rules.text, ...rules.length(550)]}>
-							<TextArea placeholder='Mô tả' />
+						<Form.Item
+							name='moTa'
+							label={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.mota' })}
+							rules={[...rules.text, ...rules.length(550)]}
+						>
+							<TextArea placeholder={intl.formatMessage({ id: 'chinhsach.formhinhthuckhenthuong.id.mota' })} />
 						</Form.Item>
 					</Col>
 
@@ -103,7 +118,7 @@ const FormHinhThucKhenThuong = (props: any) => {
 
 				<Form.Item style={{ textAlign: 'center', marginTop: 24 }}>
 					<Button loading={formSubmiting} style={{ marginRight: 8 }} htmlType='submit' type='primary'>
-						{!edit ? 'Thêm mới' : 'Lưu lại'}
+						{intl.formatMessage({ id: edit ? 'global.button.luulai' : 'global.button.themmoi' })}
 					</Button>
 					<Button
 						onClick={() => {
@@ -111,7 +126,7 @@ const FormHinhThucKhenThuong = (props: any) => {
 							form.resetFields();
 						}}
 					>
-						Đóng
+						{intl.formatMessage({ id: 'global.button.dong' })}
 					</Button>
 				</Form.Item>
 			</Form>

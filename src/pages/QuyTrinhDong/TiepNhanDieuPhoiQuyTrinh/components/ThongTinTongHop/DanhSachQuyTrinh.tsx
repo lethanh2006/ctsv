@@ -3,7 +3,6 @@ import { MapCurrentRoles } from '@/services/QuyTrinhDong/TiepNhanDeuPhoi/constan
 import { getQuyTrinhLinhVuc } from '@/services/QuyTrinhDong/quytrinh';
 import type { QuyTrinh } from '@/services/QuyTrinhDong/typings';
 import { currentRole } from '@/utils/ip';
-import { useModel } from 'umi';
 import { DownOutlined, FileAddOutlined, FolderOutlined } from '@ant-design/icons';
 import type { TreeProps } from 'antd';
 import { Input, Tree } from 'antd';
@@ -11,7 +10,10 @@ import { type DataNode } from 'antd/lib/tree';
 import { nanoid } from 'nanoid';
 import { useEffect, useMemo, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { useIntl, useModel } from 'umi';
+
 const DanhSachQuyTrinh = (props: { type: string }) => {
+	const intl = useIntl();
 	const { dataQuyTrinh, getDataByChuyenVien } = useModel('quytrinh.quanlyquytrinh');
 	const { setQuyTrinhSelect, setMaBuoc, setSelectedIds, setSelectedIdsMauTiepNhan } =
 		useModel('quytrinh.khaibaoquytrinh');
@@ -157,7 +159,7 @@ const DanhSachQuyTrinh = (props: { type: string }) => {
 			<Input.Search
 				value={includeSearch}
 				style={{ marginBottom: 8 }}
-				placeholder='Tìm kiếm quy trình'
+				placeholder={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.dsdichvu.timkiem' })}
 				onChange={onChange}
 				allowClear
 			/>

@@ -1,4 +1,3 @@
-import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { GiaoDich } from '@/services/TaiChinh/GiaoDich/typing';
 import {
 	EMaTrangThaiThanhToan,
@@ -9,16 +8,16 @@ import {
 	ETransactionStatus,
 } from '@/services/TaiChinh/constant';
 import { inputFormat } from '@/utils/utils';
-import { AppstoreAddOutlined, DollarOutlined } from '@ant-design/icons';
-import { Alert, Button, Card, Col, Descriptions, Modal, Popconfirm, Row, Space, Tabs, Tag } from 'antd';
+import { Button, Card, Col, Descriptions, Modal, Row, Tabs, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormItemHoaDonChiTiet from '../ChiTiet/FormItem';
 import FormThanhToan from '../ThanhToan/FormThanhToan';
 import LichSuThanhToan from '../ThanhToan/LichSuThanhToan';
 import ModalThanhToanNganHang from './ModalThanhToanNganHang';
 
 const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?: () => void }) => {
+	const intl = useIntl();
 	const { setVisible, getData } = props;
 	const { record: recHoaDon } = useModel('taichinh.hoadon');
 	const { visibleThanhToan, setVisibleThanhToan } = useModel('taichinh.hoadonchitiet');
@@ -70,23 +69,35 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 	};
 
 	return (
-		<Card title='Thông tin thanh toán'>
+		<Card title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.trangthai' })}>
 			<Row gutter={[12, 12]} style={{ marginBottom: 12 }}>
 				<Col span={24}>
 					<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }} bordered>
-						<Descriptions.Item label='Trạng thái'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.trangthai' })}
+						>
 							{recHoaDon?.status ? (
 								<Tag color={EMauTrangThaiThanhToanTable?.[recHoaDon.status]}>
 									{ETrangThaiThanhToan?.[recHoaDon.status] ?? ''}
 								</Tag>
 							) : (
-								<i>Đang cập nhật</i>
+								<i>
+									{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.capnhat' })}
+								</i>
 							)}
 						</Descriptions.Item>
-						<Descriptions.Item label='Họ tên người nộp'>
-							{recHoaDon?.userFullname ?? <i>Đang cập nhật</i>}
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.hoten' })}
+						>
+							{recHoaDon?.userFullname ?? (
+								<i>
+									{intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.capnhat' })}
+								</i>
+							)}
 						</Descriptions.Item>
-						<Descriptions.Item label='Tổng thành tiền'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.tongtien' })}
+						>
 							{inputFormat(
 								recHoaDon?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -94,7 +105,9 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 							)}{' '}
 							VNĐ
 						</Descriptions.Item>
-						<Descriptions.Item label='Số tiền ưu đãi'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.uudai' })}
+						>
 							{inputFormat(
 								recHoaDon?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -102,7 +115,9 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 							)}{' '}
 							VNĐ
 						</Descriptions.Item>
-						<Descriptions.Item label='Số tiền đã nộp'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.danop' })}
+						>
 							{inputFormat(
 								recHoaDon?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -110,7 +125,9 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 							)}{' '}
 							VNĐ
 						</Descriptions.Item>
-						<Descriptions.Item label='Số tiền còn lại phải nộp'>
+						<Descriptions.Item
+							label={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.phainop' })}
+						>
 							{inputFormat(
 								recHoaDon?.billItems
 									?.filter((item) => item.status !== EMaTrangThaiThanhToan.DONG)
@@ -123,8 +140,14 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 
 				<Col span={24}>
 					<Tabs activeKey={activeTab} onChange={(tab) => onChangeTab(tab)}>
-						<Tabs.TabPane key={'1'} tab='Chi tiết' />
-						<Tabs.TabPane key={'2'} tab='Lịch sử thanh toán' />
+						<Tabs.TabPane
+							key={'1'}
+							tab={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.chitiet' })}
+						/>
+						<Tabs.TabPane
+							key={'2'}
+							tab={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.lichsu' })}
+						/>
 					</Tabs>
 
 					{activeTab === '1' ? (
@@ -176,11 +199,11 @@ const ThongTinThanhToan = (props: { setVisible: (val: boolean) => void; getData?
 			</Row>
 
 			<div style={{ marginTop: 18 }} className='form-footer'>
-				<Button onClick={() => setVisible(false)}>Đóng</Button>
+				<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 
 			<Modal
-				title='Thông tin thanh toán'
+				title={intl.formatMessage({ id: 'dichvuhanhchinh.tiepnhan.view.thongtintiepnhan.ttthanhtoan.capnhat' })}
 				open={visibleThanhToan}
 				onCancel={() => setVisibleThanhToan(false)}
 				footer={null}

@@ -51,4 +51,57 @@ export default {
 	'kyluatkhenthuong.formgiaonopsp.sinhvien': 'Sinh viên',
 	//Form import
 	'kyluatkhenthuong.formimport.file': 'File dữ liệu',
+
+	//Catagory management
+	'kyluatkhenthuong.catagory.column.soquyetdinh': 'Số quyết định',
+	'kyluatkhenthuong.catagory.column.ngayquyetdinh': 'Ngày quyết định',
+	'kyluatkhenthuong.catagory.column.ngayky': 'Ngày ký',
+	'kyluatkhenthuong.catagory.column.nguoiky': 'Người ký',
+	'kyluatkhenthuong.catagory.column.thaotac': 'Thao tác',
+	'kyluatkhenthuong.catagory.tooltip.chinhsua': 'Chỉnh sửa',
+	'kyluatkhenthuong.catagory.tooltip.xoa': 'Xóa',
+	'kyluatkhenthuong.catagory.tooltip.confirm.delete': 'Bạn có chắc chắn muốn xóa khen thưởng này?',
+	'kyluatkhenthuong.catagory.message.success.delete': 'Xóa thành công',
+	'kyluatkhenthuong.catagory.title': 'Khen thưởng',
+
+	'kyluatkhenthuong.quyetdinh.title.view': 'Chi tiết khen thưởng',
+	'kyluatkhenthuong.quyetdinh.title.edit': 'Chỉnh sửa khen thưởng',
+	'kyluatkhenthuong.quyetdinh.title.create': 'Thêm mới khen thưởng',
+	'kyluatkhenthuong.quyetdinh.id.soquyetdinh': 'Số quyết định',
+	'kyluatkhenthuong.quyetdinh.id.ngayquyetdinh': 'Ngày quyết định',
+	'kyluatkhenthuong.quyetdinh.id.ngayky': 'Ngày ký',
+	'kyluatkhenthuong.quyetdinh.id.nguoiky': 'Người ký',
+	'kyluatkhenthuong.quyetdinh.id.noidung': 'Nội dung',
+	'kyluatkhenthuong.quyetdinh.id.filedinhkem': 'File đính kèm',
+	'kyluatkhenthuong.quyetdinh.message.createsuccess': 'Thêm mới thành công',
+	'kyluatkhenthuong.quyetdinh.message.updatesuccess': 'Lưu thành công',
+
+	//Khen thưởng kỷ luật form cá nhân
+	'kyluatkhenthuong.formcanhan.title.view': 'Chi tiết sinh viên',
+	'kyluatkhenthuong.formcanhan.title.edit': 'Chỉnh sửa sinh viên',
+	'kyluatkhenthuong.formcanhan.title.create': 'Thêm mới sinh viên',
+	'kyluatkhenthuong.formcanhan.id.sinhvien': 'Sinh viên',
+	'kyluatkhenthuong.formcanhan.id.loaikhenthuong': 'Loại khen thưởng',
+	'kyluatkhenthuong.formcanhan.id.hinhthuckhenthuong': 'Hình thức khen thưởng',
+
+	//danh sách cá nhân
+	'kyluatkhenthuong.dscanhan.title': 'Khen thưởng cá nhân',
+	'kyluatkhenthuong.dscanhan.column.hoten': 'Họ và tên',
+	'kyluatkhenthuong.dscanhan.column.loaikhenthuong': 'Loại khen thưởng',
+	'kyluatkhenthuong.dscanhan.column.hinhthuckhenthuong': 'Hình thức khen thưởng',
+	'kyluatkhenthuong.dscanhan.column.thaotac': 'Thao tác',
+	'kyluatkhenthuong.dscanhan.column.sua': 'Sửa thông tin',
+	'kyluatkhenthuong.dscanhan.column.xoa': 'Xóa',
+	'kyluatkhenthuong.dscanhan.column.confirm.delete': 'Bạn có chắc chắn muốn xóa nhân sự này?',
+
+	'kyluatkhenthuong.chedokhenthuong.title': 'Khen thưởng',
+	'kyluatkhenthuong.chedosinhvien.column.ten': 'Tên',
+	'kyluatkhenthuong.chedosinhvien.column.loai': 'Loại',
+	'kyluatkhenthuong.chedosinhvien.column.thaotac': 'Thao tác',
+	'kyluatkhenthuong.chedosinhvien.tooltip.edit': 'Chỉnh sửa',
+	'kyluatkhenthuong.chedosinhvien.tooltip.delete': 'Xóa',
+	'kyluatkhenthuong.chedosinhvien.tooltip.copy': 'Sao chép',
+	'kyluatkhenthuong.chedosinhvien.popconfirm.delete': 'Bạn có chắc chắn muốn xóa?',
+	'kyluatkhenthuong.chedosinhvien.button.ok': 'OK',
+	'kyluatkhenthuong.chedosinhvien.copy.suffix': ' - sao chép',
 };

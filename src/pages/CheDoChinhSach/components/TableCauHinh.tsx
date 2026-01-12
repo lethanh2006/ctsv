@@ -6,10 +6,11 @@ import { DeleteOutlined, EditOutlined, EyeOutlined, PlusCircleOutlined } from '@
 import { Button, Modal, Popconfirm, Space, Tooltip } from 'antd';
 import type { FormInstance } from 'antd/es/form/Form';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormCauHinh from './FormCauHinh';
 
 const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: string; dataSetState?: string }) => {
+	const intl = useIntl();
 	const { record, setRecord, setRecordCauHinh, loading, setEditCauHinh, setVisibleViewForm } = useModel(
 		'chedochinhsach.chedochinhsach',
 	);
@@ -30,33 +31,33 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 
 	const columns: IColumn<LoaiHinh.TruongThongTin>[] = [
 		{
-			title: 'Mã',
+			title: intl.formatMessage({ id: 'chedochinhsach.cauhinh.column.ma' }),
 			dataIndex: 'ma',
 			align: 'center',
 			width: 100,
 			filterType: 'string',
 		},
 		{
-			title: 'Tên',
+			title: intl.formatMessage({ id: 'chedochinhsach.cauhinh.column.ten' }),
 			dataIndex: 'ten',
 			width: 170,
 			filterType: 'string',
 		},
 		{
-			title: 'Kiểu dữ liệu',
+			title: intl.formatMessage({ id: 'chedochinhsach.cauhinh.column.kieudulieu' }),
 			align: 'center',
 			dataIndex: 'kieuDuLieu',
 			width: 100,
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'chedochinhsach.cauhinh.column.thaotac' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
 			render: (rec: LoaiHinh.TruongThongTin) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'chedochinhsach.cauhinh.tooltip.chinhsua' })}>
 						<Button
 							onClick={() => {
 								setVisibleCauHinh(true);
@@ -68,7 +69,7 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'chedochinhsach.cauhinh.tooltip.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								if (record) {
@@ -83,7 +84,7 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 									});
 								}
 							}}
-							title='Bạn có chắc chắn muốn xóa?'
+							title={intl.formatMessage({ id: 'chedochinhsach.cauhinh.tooltip.confirm.delete' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -104,7 +105,7 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 	return (
 		<div>
 			<div className='ant-descriptions-title' style={{ marginTop: 12, marginBottom: 12 }}>
-				Danh sách các trường thông tin
+				{intl.formatMessage({ id: 'chedochinhsach.cauhinh.dsthongtin.title' })}
 			</div>
 			<TableStaticData
 				otherProps={{ pagination: false }}
@@ -128,7 +129,7 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 							setVisibleCauHinh(true);
 						}}
 					>
-						Thêm mới
+						{intl.formatMessage({ id: 'global.button.themmoi' })}
 					</Button>
 					<Button
 						icon={<EyeOutlined />}
@@ -138,7 +139,7 @@ const TableCauHinh = (props: { form: FormInstance; formValues: any; dataState?: 
 							setVisibleViewForm(true);
 						}}
 					>
-						Xem trước
+						{intl.formatMessage({ id: 'chedochinhsach.cauhinh.button.xemtruoc' })}
 					</Button>
 				</Space>
 			</TableStaticData>
