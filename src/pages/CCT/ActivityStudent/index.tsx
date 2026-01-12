@@ -113,7 +113,7 @@ const HistoryActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.cca' }),
 			dataIndex: 'activitiesTypeId',
-			width: 160,
+			width: 180,
 			render: (val, rec) => rec?.activitiesType?.name,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectActivitiesManagement multiple />,
@@ -122,7 +122,7 @@ const HistoryActivityPage = () => {
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.activity' }),
-			width: 150,
+			width: 180,
 			render: (val, rec) => rec?.activities?.name,
 			onCell,
 			hide: tabActive === EActivityCategory.PERSONAL_CO_CURRICULAR,
@@ -141,7 +141,7 @@ const HistoryActivityPage = () => {
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.cca' }),
-			width: 170,
+			width: 200,
 			render: (val, rec) => rec?.activities?.activitiesType?.name,
 			onCell,
 			hide: tabActive === EActivityCategory.PERSONAL_CO_CURRICULAR,
@@ -167,7 +167,7 @@ const HistoryActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.role' }),
 			dataIndex: 'rolesId',
-			width: 120,
+			width: 180,
 			render: (val, rec) => rec?.roles?.name,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectRolesManagement multiple />,
@@ -202,7 +202,15 @@ const HistoryActivityPage = () => {
 			align: 'center',
 			width: 120,
 			render: (val, rec) => (
-				<Tag color={mapColorApprovalStatus[val as EApprovalStatus]}>
+				<Tag
+					color={mapColorApprovalStatus[val as EApprovalStatus]}
+					style={{
+						maxWidth: 120,
+						whiteSpace: 'normal',
+						wordBreak: 'break-word',
+						textAlign: 'center',
+					}}
+				>
 					{mapNameApprovalStatus[val as EApprovalStatus]}
 				</Tag>
 			),
