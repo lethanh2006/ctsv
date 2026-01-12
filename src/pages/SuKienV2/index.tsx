@@ -21,7 +21,7 @@ import { sum } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { Detail } from './components/Detail';
 import Form from './components/Form';
 import { ThongKeNguoiThamDu } from './components/ThongKeNguoiThamDu';
@@ -29,6 +29,7 @@ import { ThongKeNguoiThamDu } from './components/ThongKeNguoiThamDu';
 const localizer = dayjsLocalizer(dayjs);
 
 const SuKienPage = () => {
+	const intl = useIntl();
 	const {
 		getModel,
 		deleteModel,
@@ -95,14 +96,14 @@ const SuKienPage = () => {
 
 	const columns: IColumn<SuKienV2.IRecord>[] = [
 		{
-			title: 'Tên sự kiện',
+			title: intl.formatMessage({ id: 'sukien.column.ten' }),
 			dataIndex: 'tenSuKien',
 			width: 250,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Loại sự kiện',
+			title: intl.formatMessage({ id: 'sukien.column.loai' }),
 			dataIndex: 'loaiSuKien',
 			width: 120,
 			align: 'center',
@@ -113,14 +114,14 @@ const SuKienPage = () => {
 			onCell,
 		},
 		{
-			title: 'Địa điểm',
+			title: intl.formatMessage({ id: 'sukien.column.diadiem' }),
 			dataIndex: 'diaDiem',
 			width: 200,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Tham gia sự kiện được tính điểm rèn luyện?',
+			title: intl.formatMessage({ id: 'sukien.column.thamgia' }),
 			dataIndex: 'cauHinhMinhChungId',
 			width: 200,
 			onCell,
@@ -152,7 +153,7 @@ const SuKienPage = () => {
 		// 	},
 		// },
 		{
-			title: 'Thời gian diễn ra',
+			title: intl.formatMessage({ id: 'sukien.column.thoigian' }),
 			align: 'center',
 			sortable: true,
 			dataIndex: 'thoiGianBatDau',
@@ -184,7 +185,7 @@ const SuKienPage = () => {
 		// 	align: 'center',
 		// },
 		{
-			title: 'Số lượng tham gia',
+			title: intl.formatMessage({ id: 'sukien.column.sl' }),
 			dataIndex: 'soCheckIn',
 			width: 140,
 			filterType: 'number',
@@ -193,7 +194,7 @@ const SuKienPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'sukien.column.trangthai' }),
 			dataIndex: 'trangThai',
 			width: 160,
 			filterType: 'select',
@@ -212,7 +213,7 @@ const SuKienPage = () => {
 			},
 		},
 		{
-			title: 'Kích hoạt',
+			title: intl.formatMessage({ id: 'sukien.column.kichhoat' }),
 			dataIndex: 'isHieuLuc',
 			width: 100,
 			align: 'center',
@@ -226,7 +227,7 @@ const SuKienPage = () => {
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sukien.column.thaotac' }),
 			align: 'center',
 			width: 130,
 			fixed: 'right',
@@ -234,11 +235,11 @@ const SuKienPage = () => {
 				return (
 					<>
 						{record.trangThai !== ETrangThaiDienRa.CHUA_DIEN_RA && (
-							<Tooltip title='Thống kê người tham dự'>
+							<Tooltip title={intl.formatMessage({ id: 'sukien.column.button.thongke' })}>
 								<Button onClick={() => handleView(record)} type='link' icon={<PieChartOutlined />} />
 							</Tooltip>
 						)}
-						<Tooltip title='Chỉnh sửa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 							<Button
 								// disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
 								// 	record?.trangThai as ETrangThaiDienRa,
@@ -248,13 +249,17 @@ const SuKienPage = () => {
 								icon={<EditOutlined />}
 							/>
 						</Tooltip>
-						<Tooltip title='Xóa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 							<Popconfirm
 								disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
 									record?.trangThai as ETrangThaiDienRa,
 								)}
-								onConfirm={() => deleteModel(record._id, () => getData())}
-								title='Bạn có chắc chắn muốn xóa sự kiện này?'
+								onConfirm={() =>
+									deleteModel(record._id, getData, {
+										messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+									})
+								}
+								title={intl.formatMessage({ id: 'sukien.column.confirm.xoa' })}
 								placement='topLeft'
 							>
 								<Button
@@ -395,7 +400,13 @@ const SuKienPage = () => {
 				<Modal
 					onCancel={() => setVisibleForm(false)}
 					footer={null}
-					title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} hoạt động`}
+					title={
+						isView
+							? intl.formatMessage({ id: 'sukien.form.chitiet' })
+							: edit
+								? intl.formatMessage({ id: 'sukien.form.chinhsua' })
+								: intl.formatMessage({ id: 'sukien.form.themmoi' })
+					}
 					open={visibleForm}
 					width={900}
 				>
@@ -410,7 +421,7 @@ const SuKienPage = () => {
 			<Col span={24}>
 				<Row gutter={[12, 12]}>
 					<Col span={24} md={12} lg={6}>
-						<Card styles={{ padding: '8px 14px' }}>
+						<Card styles={{ body: { padding: '8px 14px' } }}>
 							<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 								<div style={{ fontSize: 18, fontWeight: 700, color: '#007EB9' }}>
 									{sum([
@@ -419,7 +430,7 @@ const SuKienPage = () => {
 										thongKeTheoNamData?.suKienDaDienRa ?? 0,
 									])}
 								</div>
-								<div>Tổng số hoạt động</div>
+								<div>{intl.formatMessage({ id: 'sukien.thongke' })}</div>
 							</div>
 						</Card>
 					</Col>
@@ -427,7 +438,7 @@ const SuKienPage = () => {
 						const key = ETrangThaiDienRaMappingToThongKeKey[item];
 						return (
 							<Col key={item} span={24} md={12} lg={6}>
-								<Card styles={{ padding: '8px 14px' }}>
+								<Card styles={{ body: { padding: '8px 14px' } }}>
 									<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 										<div style={{ fontSize: 18, fontWeight: 700, color: ETrangThaiDienRaMappingToHexColor[item] }}>
 											{thongKeTheoNamData?.[key]}
@@ -451,7 +462,7 @@ const SuKienPage = () => {
 					<Card
 						title={
 							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<div>Sự kiện</div>
+								<div>{intl.formatMessage({ id: 'sukien.title' })}</div>
 								<Segmented
 									value={layout}
 									onChange={(value) => setLayout(value as typeof layout)}

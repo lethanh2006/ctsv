@@ -48,7 +48,7 @@ import { useWatch } from 'antd/lib/form/Form';
 import dayjs from 'dayjs';
 import { first } from 'lodash';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import QuanLySuKien from './QuanLySuKien';
 
 interface Props {
@@ -61,6 +61,7 @@ export type FormValues = SuKienV2.IRecord & {
 };
 
 const FormSuKien = ({ hideCard }: Props) => {
+	const intl = useIntl();
 	const {
 		record,
 		edit,
@@ -185,26 +186,26 @@ const FormSuKien = ({ hideCard }: Props) => {
 
 	const columns: IColumn<SuKienV2.IKinhPhiDuTru>[] = [
 		{
-			title: 'Nội dung',
+			title: intl.formatMessage({ id: 'sukien.form.noidung' }),
 			width: 200,
 			dataIndex: 'noiDung',
 			align: 'center',
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Đơn vị tính',
+			title: intl.formatMessage({ id: 'sukien.form.dvt' }),
 			width: 90,
 			dataIndex: 'dvTinh',
 			align: 'center',
 		},
 		{
-			title: 'Số lượng',
+			title: intl.formatMessage({ id: 'sukien.form.sl' }),
 			// dataIndex: 'soLuong',
 			width: 150,
 			// align: 'center',
 			children: [
 				{
-					title: 'Người',
+					title: intl.formatMessage({ id: 'sukien.form.sl.nguoi' }),
 					dataIndex: 'soLuong',
 					align: 'center',
 					width: 80,
@@ -213,7 +214,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 					},
 				},
 				{
-					title: 'Ngày',
+					title: intl.formatMessage({ id: 'sukien.form.sl.ngay' }),
 					dataIndex: 'soLuong',
 					align: 'center',
 					width: 80,
@@ -222,7 +223,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 					},
 				},
 				{
-					title: 'Khác',
+					title: intl.formatMessage({ id: 'sukien.form.sl.khac' }),
 					dataIndex: 'soLuong',
 					align: 'center',
 					width: 80,
@@ -233,54 +234,54 @@ const FormSuKien = ({ hideCard }: Props) => {
 			],
 		},
 		{
-			title: 'Lượt',
+			title: intl.formatMessage({ id: 'sukien.form.luot' }),
 			dataIndex: 'luot',
 			width: 90,
 			align: 'center',
 			render: (val) => inputFormat(+val),
 		},
 		{
-			title: 'Phòng',
+			title: intl.formatMessage({ id: 'sukien.form.phong' }),
 			dataIndex: 'phong',
 			width: 120,
 			align: 'center',
 		},
 		{
-			title: 'Định mức',
+			title: intl.formatMessage({ id: 'sukien.form.dinhmuc' }),
 			dataIndex: 'dinhMuc',
 			width: 90,
 			align: 'center',
 			render: (val) => inputFormat(+val),
 		},
 		{
-			title: 'Dự toán',
+			title: intl.formatMessage({ id: 'sukien.form.dutoan' }),
 			dataIndex: 'duToan',
 			width: 120,
 			align: 'center',
 			render: (val) => inputFormat(+val),
 		},
 		{
-			title: 'Phân bổ nguồn',
+			title: intl.formatMessage({ id: 'sukien.form.phanbo' }),
 			// dataIndex: 'phanBoNguon',
 			width: 300,
 			align: 'center',
 			children: [
 				{
-					title: 'NSNN',
+					title: intl.formatMessage({ id: 'sukien.form.phanbo.nsnn' }),
 					dataIndex: 'nguonNSNN',
 					width: 100,
 					align: 'center',
 					render: (val) => inputFormat(+val),
 				},
 				{
-					title: 'Tự chủ',
+					title: intl.formatMessage({ id: 'sukien.form.phanbo.tuchu' }),
 					dataIndex: 'nguonTuChu',
 					width: 100,
 					align: 'center',
 					render: (val) => inputFormat(+val),
 				},
 				{
-					title: 'Vận động tài trợ',
+					title: intl.formatMessage({ id: 'sukien.form.phanbo.vandong' }),
 					dataIndex: 'nguonTaiTro',
 					width: 100,
 					align: 'center',
@@ -289,34 +290,39 @@ const FormSuKien = ({ hideCard }: Props) => {
 			],
 		},
 		{
-			title: 'Tiến độ hoàn thành',
+			title: intl.formatMessage({ id: 'sukien.form.tiendo' }),
 			dataIndex: 'hoanThanh',
 			width: 120,
 			align: 'center',
-			render: (val) => (val ? <Tag color={'green'}>Hoàn thành</Tag> : <Tag color={'red'}>Chưa hoàn thành</Tag>),
+			render: (val) =>
+				val ? (
+					<Tag color={'green'}>{intl.formatMessage({ id: 'sukien.form.tiendo.hoanthanh' })}</Tag>
+				) : (
+					<Tag color={'red'}>{intl.formatMessage({ id: 'sukien.form.tiendo.chuahoanthanh' })}</Tag>
+				),
 		},
 		{
-			title: 'Chứng từ yêu cầu',
+			title: intl.formatMessage({ id: 'sukien.form.chungtu' }),
 			dataIndex: 'chungTuYeuCau',
 			width: 150,
 			align: 'center',
 		},
 		{
-			title: 'Ý kiến TCKT',
+			title: intl.formatMessage({ id: 'sukien.form.ykien' }),
 			dataIndex: 'yKienTCKT',
 			width: 200,
 			align: 'center',
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sukien.form.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (_, recordVal) => {
 				return (
 					<>
-						<Tooltip title='Chỉnh sửa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 							<Button
 								onClick={() => {
 									setRecordKinhPhi(recordVal);
@@ -327,14 +333,14 @@ const FormSuKien = ({ hideCard }: Props) => {
 								icon={<EditOutlined />}
 							/>
 						</Tooltip>
-						<Tooltip title='Xóa'>
+						<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 							<Popconfirm
 								onConfirm={() => {
 									if (dataKinhPhi) {
 										setDataKinhPhi(dataKinhPhi?.filter((item) => item?.id !== recordVal?.id));
 									}
 								}}
-								title='Bạn có chắc chắn muốn xóa ngành đào tạo này?'
+								title={intl.formatMessage({ id: 'sukien.form.confirm.xoa' })}
 								placement='topLeft'
 							>
 								<Button danger type='link' icon={<DeleteOutlined />} />
@@ -358,24 +364,24 @@ const FormSuKien = ({ hideCard }: Props) => {
 					disabled={isView}
 				>
 					<Row gutter={[12, 0]}>
-						<Divider>Thông tin chung</Divider>
+						<Divider>{intl.formatMessage({ id: 'sukien.form.thongtinchung' })}</Divider>
 						<Col xs={24}>
 							<Form.Item
 								rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 								name='tenSuKien'
-								label='Tên hoạt động'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.tenhd' })}
 							>
-								<Input placeholder='Tên hoạt động' />
+								<Input placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.tenhd.place' })} />
 							</Form.Item>
 						</Col>
 						<Col xs={12}>
 							<Form.Item
 								rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 								name='loaiSuKien'
-								label='Loại sự kiện'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.loaisk' })}
 							>
 								<Select
-									placeholder='Loại sự kiện'
+									placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.loaisk.place' })}
 									options={Object.values(ESuKienType)
 										.filter((item) => item !== ESuKienType.CA_NHAN)
 										.map((item) => ({
@@ -390,10 +396,10 @@ const FormSuKien = ({ hideCard }: Props) => {
 								<Form.Item
 									rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 									name='tuanLeCongDan'
-									label='Loại'
+									label={intl.formatMessage({ id: 'sukien.form.thongtinchung.loai' })}
 								>
 									<Select
-										placeholder='Loại'
+										placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.loai.place' })}
 										options={Object.values(ETuanLeCongDan).map((item) => ({
 											value: item,
 											label: item,
@@ -404,31 +410,38 @@ const FormSuKien = ({ hideCard }: Props) => {
 						)}
 
 						<Col xs={12}>
-							<Form.Item rules={[...rules.required, ...rules.text, ...rules.length(250)]} name='kyHoc' label='Học kỳ'>
+							<Form.Item
+								rules={[...rules.required, ...rules.text, ...rules.length(250)]}
+								name='kyHoc'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.hk' })}
+							>
 								<SelectHocKy />
 							</Form.Item>
 						</Col>
 						<Col xs={24} md={12}>
 							<Form.Item name='isQRDangKy' valuePropName='checked'>
-								<Checkbox>Có QR đăng ký</Checkbox>
+								<Checkbox>{intl.formatMessage({ id: 'sukien.form.thongtinchung.qrdk' })}</Checkbox>
 							</Form.Item>
 						</Col>
 						<Col xs={24} md={12}>
 							<Form.Item name='isQRThamGia' valuePropName='checked'>
-								<Checkbox>Có QR tham gia</Checkbox>
+								<Checkbox>{intl.formatMessage({ id: 'sukien.form.thongtinchung.qrthamgia' })}</Checkbox>
 							</Form.Item>
 						</Col>
 						{isQRDangKy && (
 							<>
 								<Col xs={24}>
-									<Form.Item name='idKhaoSatDangKy' label='Biểu mẫu khảo sát đăng ký'>
+									<Form.Item
+										name='idKhaoSatDangKy'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.bieumau' })}
+									>
 										<SelectMauKhaoSat allowClear />
 									</Form.Item>
 								</Col>
 								{idKhaoSatDangKy && (
 									<Col xs={24}>
 										<Form.Item name='batBuocKhaoSatDangKy' valuePropName='checked'>
-											<Checkbox>Bắt buộc làm khảo sát khi đăng ký</Checkbox>
+											<Checkbox>{intl.formatMessage({ id: 'sukien.form.thongtinchung.batbuoc' })}</Checkbox>
 										</Form.Item>
 									</Col>
 								)}
@@ -437,19 +450,25 @@ const FormSuKien = ({ hideCard }: Props) => {
 						{isQRThamGia && (
 							<>
 								<Col xs={24} md={12}>
-									<Form.Item name='idKhaoSatCheckIn' label='Biểu mẫu khảo sát checkin'>
+									<Form.Item
+										name='idKhaoSatCheckIn'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.bieumaucheckin' })}
+									>
 										<SelectMauKhaoSat allowClear />
 									</Form.Item>
 								</Col>
 								<Col xs={24} md={12}>
-									<Form.Item name='idKhaoSatCheckOut' label='Biểu mẫu khảo sát checkout'>
+									<Form.Item
+										name='idKhaoSatCheckOut'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.bieumaucheckout' })}
+									>
 										<SelectMauKhaoSat allowClear />
 									</Form.Item>
 								</Col>
 								{(idKhaoSatCheckIn || idKhaoSatCheckOut) && (
 									<Col xs={24}>
 										<Form.Item name='batBuocKhaoSatThamGia' valuePropName='checked'>
-											<Checkbox>Bắt buộc làm khảo sát khi checkin/checkout</Checkbox>
+											<Checkbox>{intl.formatMessage({ id: 'sukien.form.thongtinchung.batbuoccheckout' })}</Checkbox>
 										</Form.Item>
 									</Col>
 								)}
@@ -461,7 +480,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 									<Form.Item
 										rules={[...rules.required, ...(edit ? [] : rules.sauHomNay)]}
 										name='thoiGianBatDauDangKy'
-										label='Thời gian bắt đầu đăng ký'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgdk' })}
 									>
 										<MyDatePicker
 											disabledDate={
@@ -469,14 +488,21 @@ const FormSuKien = ({ hideCard }: Props) => {
 											}
 											showTime={{ showHour: true, showMinute: true }}
 											format='HH:mm DD/MM/YYYY'
+											placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgdk.place' })}
 										/>
 									</Form.Item>
 								</Col>
 								<Col xs={24} md={12}>
 									<Form.Item
-										rules={[...rules.required, ...rules.sauNgay(thoiGianBatDauDangKy, 'thời gian bắt đầu đăng ký')]}
+										rules={[
+											...rules.required,
+											...rules.sauNgay(
+												thoiGianBatDauDangKy,
+												intl.formatMessage({ id: 'sukien.form.thongtinchung.tgdk' }),
+											),
+										]}
 										name='thoiGianKetThucDangKy'
-										label='Thời gian kết thúc đăng ký'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgktdk' })}
 									>
 										<MyDatePicker
 											showTime={{ showHour: true, showMinute: true }}
@@ -484,6 +510,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 											disabledDate={
 												thoiGianBatDauDangKy ? (cur) => dayjs(cur).isBefore(thoiGianBatDauDangKy) : undefined
 											}
+											placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgktdk.place' })}
 										/>
 									</Form.Item>
 								</Col>
@@ -494,7 +521,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 							<Form.Item
 								rules={[...rules.required, ...(edit ? [] : rules.sauHomNay)]}
 								name='thoiGianBatDau'
-								label='Thời gian bắt đầu sự kiện'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgsk' })}
 							>
 								<MyDatePicker
 									disabledDate={thoiGianKetThuc ? (cur) => dayjs(cur).isAfter(thoiGianKetThuc) : undefined}
@@ -505,17 +532,20 @@ const FormSuKien = ({ hideCard }: Props) => {
 									// 		dayjs(thoiGianKetThuc).hour()?.toString(),
 									// 		dayjs(thoiGianKetThuc).minutes()?.toString(),
 									// 	)
-									// }
 									showTime={{ showHour: true, showMinute: true }}
 									format='HH:mm DD/MM/YYYY'
+									placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgsk.place' })}
 								/>
 							</Form.Item>
 						</Col>
 						<Col xs={24} md={12}>
 							<Form.Item
-								rules={[...rules.required, ...rules.sauNgay(thoiGianBatDau, 'thời gian bắt đầu')]}
+								rules={[
+									...rules.required,
+									...rules.sauNgay(thoiGianBatDau, intl.formatMessage({ id: 'sukien.form.thongtinchung.tgsk' })),
+								]}
 								name='thoiGianKetThuc'
-								label='Thời gian kết thúc sự kiện'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgskkt' })}
 							>
 								<MyDatePicker
 									showTime={{ showHour: true, showMinute: true }}
@@ -528,18 +558,25 @@ const FormSuKien = ({ hideCard }: Props) => {
 									// 		dayjs(thoiGianBatDau).hour()?.toString(),
 									// 		dayjs(thoiGianBatDau).minutes()?.toString(),
 									// 	)
-									// }
+									placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.tgskkt.place' })}
 								/>
 							</Form.Item>
 						</Col>
 						<Col xs={24}>
-							<Form.Item name='cauHinhMinhChungId' label='Tham gia sự kiện được tính điểm rèn luyện?'>
+							<Form.Item
+								name='cauHinhMinhChungId'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.tinhdrl' })}
+							>
 								<SelectMinhChung allowClear isSuKien />
 							</Form.Item>
 						</Col>
 						<Col xs={24}>
-							<Form.Item rules={[...rules.text, ...rules.length(250)]} name='diaDiem' label='Địa điểm'>
-								<Input placeholder='Địa điểm' />
+							<Form.Item
+								rules={[...rules.text, ...rules.length(250)]}
+								name='diaDiem'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.diadiem' })}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.diadiem.place' })} />
 							</Form.Item>
 						</Col>
 						{/*<Col xs={24}>*/}
@@ -563,7 +600,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 							</Col>
 						)} */}
 						<Col span={24}>
-							<Form.Item name='anhBia' label={'Ảnh bìa'}>
+							<Form.Item name='anhBia' label={intl.formatMessage({ id: 'sukien.form.thongtinchung.anhbia' })}>
 								<UploadFile
 									maxCount={1}
 									otherProps={{
@@ -606,43 +643,52 @@ const FormSuKien = ({ hideCard }: Props) => {
 						</Col> */}
 						<Col xs={24} md={24}>
 							<Form.Item name='isThongBao' valuePropName='checked'>
-								<Checkbox>Thông báo trước khi diễn ra sự kiện</Checkbox>
+								<Checkbox>{intl.formatMessage({ id: 'sukien.form.thongtinchung.thongbao' })}</Checkbox>
 							</Form.Item>
 						</Col>
 						<Col xs={24}>
-							<Form.Item rules={[...rules.text, ...rules.length(1000)]} name='ghiChu' label='Ghi chú'>
-								<Input.TextArea placeholder='Ghi chú' rows={3} />
+							<Form.Item
+								rules={[...rules.text, ...rules.length(1000)]}
+								name='ghiChu'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.ghichu' })}
+							>
+								<Input.TextArea
+									placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.ghichu.place' })}
+									rows={3}
+								/>
 							</Form.Item>
 						</Col>
 						{isThongBao && (
 							<>
-								<Divider>Thời gian gửi thông báo (Trước khi diễn ra sự kiện)</Divider>
+								<Divider>{intl.formatMessage({ id: 'sukien.form.thongtinchung.thoigianthongbao' })}</Divider>
 								<Col xs={12}>
 									<Form.Item
 										// rules={[...rules.text, ...rules.length(250)]}
 										name={['cauHinhThongBao', 'giaTri']}
-										label='Giá trị'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.giatri' })}
 										tooltip={{
-											title: 'Giá trị thời gian cấu hình trước khi diễn ra sự kiện.',
+											title: intl.formatMessage({ id: 'sukien.form.thongtinchung.giatri.tooltip' }),
 											icon: <InfoCircleOutlined />,
 										}}
 									>
-										<InputNumber style={{ width: '100%' }} placeholder='Giá trị' />
+										<InputNumber
+											style={{ width: '100%' }}
+											placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.giatri.place' })}
+										/>
 									</Form.Item>
 								</Col>
 								<Col xs={12}>
 									<Form.Item
 										name={['cauHinhThongBao', 'loaiGiatri']}
-										label='Loại giá trị'
+										label={intl.formatMessage({ id: 'sukien.form.thongtinchung.loaigiatri' })}
 										tooltip={{
-											title:
-												'Loại thời gian cấu hình trước khi diễn ra sự kiện.VD: 5 Phút trước khi diễn ra sự kiện sẽ có thông báo',
+											title: intl.formatMessage({ id: 'sukien.form.thongtinchung.loaigiatri.tooltip' }),
 											icon: <InfoCircleOutlined />,
 										}}
 									>
 										<Select
 											allowClear
-											placeholder={'Chọn loại thời gian'}
+											placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.loaigiatri.place' })}
 											options={Object.values(ELoaiGiaTri)?.map((val) => ({ value: val, label: val }))}
 										/>
 									</Form.Item>
@@ -650,14 +696,22 @@ const FormSuKien = ({ hideCard }: Props) => {
 							</>
 						)}
 
-						<Divider>Đối tượng tham gia</Divider>
+						<Divider>{intl.formatMessage({ id: 'sukien.form.thongtinchung.doituong' })}</Divider>
 						<Col span={24} md={24}>
-							<Form.Item name='nguoiQuanLySK' label='Người quản lý sự kiện' rules={[...rules.required]}>
+							<Form.Item
+								name='nguoiQuanLySK'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.qlsk' })}
+								rules={[...rules.required]}
+							>
 								<QuanLySuKien form={form} fieldName={'nguoiQuanLySK'} />
 							</Form.Item>
 						</Col>
 						<Col span={24} md={12}>
-							<Form.Item name='receiverType' label='Đối tượng tham gia' rules={[...rules.required]}>
+							<Form.Item
+								name='receiverType'
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.doituongthamgia' })}
+								rules={[...rules.required]}
+							>
 								<Select
 									options={Object.entries(LoaiDoiTuongThamGia)
 										.filter(([value, label]) => value !== EReceiverType.User)
@@ -667,7 +721,7 @@ const FormSuKien = ({ hideCard }: Props) => {
 											label,
 											disabled: value === EReceiverType.User,
 										}))}
-									placeholder='Đối tượng tham gia'
+									placeholder={intl.formatMessage({ id: 'sukien.form.thongtinchung.doituongthamgia.place' })}
 									onChange={() => {
 										form.setFieldsValue({
 											filter: { roles: [] } as any,
@@ -682,7 +736,11 @@ const FormSuKien = ({ hideCard }: Props) => {
 
 						{/* {receiverType !== EReceiverType.Khac && ( */}
 						<Col span={24} md={8}>
-							<Form.Item name={['filter', 'roles']} label='Thành phần' rules={[...rules.required]}>
+							<Form.Item
+								name={['filter', 'roles']}
+								label={intl.formatMessage({ id: 'sukien.form.thongtinchung.thanhphan' })}
+								rules={[...rules.required]}
+							>
 								<GroupTagVaiTro
 									onChange={(arr) => {
 										setActiveKey(arr?.[0]);
@@ -702,7 +760,10 @@ const FormSuKien = ({ hideCard }: Props) => {
 						{/* )} */}
 						{roles?.length ? (
 							<Col span={24} md={8}>
-								<Form.Item name='variantDanhSachThamGia' label='Danh sách người tham gia'>
+								<Form.Item
+									name='variantDanhSachThamGia'
+									label={intl.formatMessage({ id: 'sukien.form.thongtinchung.dsthamgia' })}
+								>
 									<Radio.Group
 										buttonStyle='solid'
 										optionType='button'
@@ -710,8 +771,12 @@ const FormSuKien = ({ hideCard }: Props) => {
 											setActiveKey(first(roles));
 										}}
 									>
-										<Radio value={'Tất cả'}>Tất cả</Radio>
-										<Radio value={'Cụ thể'}>Cụ thể</Radio>
+										<Radio value={'Tất cả'}>
+											{intl.formatMessage({ id: 'sukien.form.thongtinchung.dsthamgia.tatca' })}
+										</Radio>
+										<Radio value={'Cụ thể'}>
+											{intl.formatMessage({ id: 'sukien.form.thongtinchung.dsthamgia.cuthe' })}
+										</Radio>
 									</Radio.Group>
 								</Form.Item>
 							</Col>
@@ -765,10 +830,12 @@ const FormSuKien = ({ hideCard }: Props) => {
 				<div className='form-footer'>
 					{!isView && (
 						<Button form='FormSuKien' loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit ? 'Thêm mới' : 'Lưu lại'}
+							{!edit
+								? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+								: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 						</Button>
 					)}
-					<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</>
 		);
@@ -778,7 +845,19 @@ const FormSuKien = ({ hideCard }: Props) => {
 		return <div>{renderContent()}</div>;
 	}
 
-	return <Card title={`${isView ? 'Chi tiết' : edit ? 'Chỉnh sửa' : 'Thêm mới'} hoạt động`}>{renderContent()}</Card>;
+	return (
+		<Card
+			title={
+				isView
+					? intl.formatMessage({ id: 'sukien.form.chitiet' })
+					: edit
+						? intl.formatMessage({ id: 'sukien.form.chinhsua' })
+						: intl.formatMessage({ id: 'sukien.form.themmoi' })
+			}
+		>
+			{renderContent()}
+		</Card>
+	);
 };
 
 export default FormSuKien;

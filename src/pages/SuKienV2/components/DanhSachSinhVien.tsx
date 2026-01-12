@@ -14,14 +14,13 @@ import {
 	EditOutlined,
 	ExportOutlined,
 	MenuOutlined,
-	ProfileOutlined,
 	UndoOutlined,
 } from '@ant-design/icons';
 import { Badge, Button, Card, Checkbox, Col, Divider, Modal, Popconfirm, Popover, Row, Tooltip, message } from 'antd';
 import dayjs from 'dayjs';
 import fileDownload from 'js-file-download';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 interface IProps {
 	type: 'Đăng ký' | 'Tham gia';
@@ -29,6 +28,7 @@ interface IProps {
 }
 const color = ['blue', 'green', 'yellow', 'red', 'pink', 'orange'];
 const DanhSachSinhVien = (props: IProps) => {
+	const intl = useIntl();
 	const { type } = props;
 	const {
 		getModel,
@@ -88,7 +88,7 @@ const DanhSachSinhVien = (props: IProps) => {
 
 	const columns: IColumn<SuKienV2.IRecordSinhVienSuKien>[] = [
 		{
-			title: 'Mã SV',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.masv' }),
 			width: 90,
 			dataIndex: 'maSv',
 			filterType: 'string',
@@ -96,14 +96,14 @@ const DanhSachSinhVien = (props: IProps) => {
 			render: (val: string) => val.toUpperCase(),
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.hoten' }),
 			dataIndex: 'tenSv',
 			width: 90,
 			filterType: 'string',
 			align: 'center',
 		},
 		{
-			title: 'Thời gian đăng ký',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.thoigiandangky' }),
 			dataIndex: 'thoiGian',
 			width: 120,
 			hide: type !== 'Đăng ký',
@@ -111,7 +111,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
-			title: 'Thời gian checkin',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.thoigiancheckin' }),
 			dataIndex: 'thoiGianCheckIn',
 			width: 120,
 			hide: type !== 'Tham gia',
@@ -119,7 +119,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
-			title: 'Thời gian checkout',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.thoigiancheckout' }),
 			dataIndex: 'thoiGianCheckOut',
 			width: 120,
 			hide: type !== 'Tham gia',
@@ -127,7 +127,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			render: (val) => (val ? dayjs(val).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
-			title: 'Làm khảo sát đăng ký',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.khaosatdangky' }),
 			dataIndex: 'isLamKhaoSatDangKy',
 			width: 120,
 			hide: !(type === 'Đăng ký' && recSuKien?.idKhaoSatDangKy),
@@ -135,7 +135,7 @@ const DanhSachSinhVien = (props: IProps) => {
 			render: (val) => <Checkbox checked={val ?? false} />,
 		},
 		{
-			title: 'Làm khảo sát checkin',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.khaosatcheckin' }),
 			dataIndex: 'isLamKhaoSatCheckIn',
 			width: 120,
 			hide: !(type === 'Tham gia' && recSuKien?.idKhaoSatCheckIn),
@@ -143,23 +143,15 @@ const DanhSachSinhVien = (props: IProps) => {
 			render: (val) => <Checkbox checked={val ?? false} />,
 		},
 		{
-			title: 'Làm khảo sát checkout',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.khaosatcheckout' }),
 			dataIndex: 'isLamKhaoSatCheckOut',
 			width: 120,
 			hide: !(type === 'Tham gia' && recSuKien?.idKhaoSatCheckOut),
 			align: 'center',
 			render: (val) => <Checkbox checked={val ?? false} />,
 		},
-		// {
-		// 	title: 'Trạng thái',
-		// 	dataIndex: 'trangThaiThamGia',
-		// 	width: 120,
-		// 	hide: type !== 'Đăng ký',
-		// 	align: 'center',
-		// 	render: (val) => (val ? <Tag color={MapColorETrangThaiThamGia?.[val as ETrangThaiThamGia]}>{val}</Tag> : ''),
-		// },
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.column.thaotac' }),
 			align: 'center',
 			width: 80,
 			fixed: 'right',
@@ -172,7 +164,7 @@ const DanhSachSinhVien = (props: IProps) => {
 								{type === 'Đăng ký' && (
 									<>
 										<Popconfirm
-											title={'Bạn có chắc chắn duyệt'}
+											title={intl.formatMessage({ id: 'common.confirm.approve' })}
 											disabled={
 												rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
 												rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
@@ -181,161 +173,50 @@ const DanhSachSinhVien = (props: IProps) => {
 												putModel(rec?._id, { trangThaiThamGia: ETrangThaiThamGia.XAC_NHAN }, getData);
 											}}
 										>
-											<Tooltip title={'Duyệt'}>
-												<Button
-													disabled={
-														rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
-														rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
-													}
-													// onClick={() => {
-													//   putModel(rec?._id, { trangThaiThamGia: ETrangThaiThamGia.XAC_NHAN }, getData);
-													// }}
-													type='link'
-													icon={<CheckOutlined />}
-												/>
+											<Tooltip title={intl.formatMessage({ id: 'common.button.approve' })}>
+												<Button type='link' icon={<CheckOutlined />} />
 											</Tooltip>
 										</Popconfirm>
 										<Divider type={'vertical'} />
 										<Popconfirm
-											title={'Bạn có chắc chắn không duyệt'}
-											disabled={
-												rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
-												rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
-											}
+											title={intl.formatMessage({ id: 'common.confirm.reject' })}
 											onConfirm={() => {
 												putModel(rec?._id, { trangThaiThamGia: ETrangThaiThamGia.TU_CHOI }, getData);
 											}}
 										>
-											<Tooltip title={'Không duyệt'}>
-												<Button
-													disabled={
-														rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
-														rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
-													}
-													// onClick={() => {
-													// 	putModel(rec?._id, { trangThaiThamGia: ETrangThaiThamGia.TU_CHOI }, getData);
-													// }}
-													danger
-													type='link'
-													icon={<CloseOutlined />}
-												/>
+											<Tooltip title={intl.formatMessage({ id: 'common.button.reject' })}>
+												<Button danger type='link' icon={<CloseOutlined />} />
 											</Tooltip>
 										</Popconfirm>
 										<Divider type={'vertical'} />
 										<Popconfirm
-											title={'Bạn có chắc chắn đặt lại trạng thái'}
-											disabled={rec?.trangThaiThamGia === ETrangThaiThamGia.CHUA_XAC_NHAN}
+											title={intl.formatMessage({ id: 'common.confirm.reset' })}
 											onConfirm={() => {
 												putModel(rec?._id, { trangThaiThamGia: ETrangThaiThamGia.CHUA_XAC_NHAN }, getData);
 											}}
 										>
-											<Tooltip title={'Đặt lại trạng thái'}>
-												<Button
-													disabled={rec?.trangThaiThamGia === ETrangThaiThamGia.CHUA_XAC_NHAN}
-													// onClick={() => {
-													// 	putModel(rec?._id, { trangThaiThamGia: ETrangThaiThamGia.TU_CHOI }, getData);
-													// }}
-													danger
-													type='link'
-													icon={<UndoOutlined />}
-												/>
+											<Tooltip title={intl.formatMessage({ id: 'common.button.reset' })}>
+												<Button danger type='link' icon={<UndoOutlined />} />
 											</Tooltip>
 										</Popconfirm>
 										<Divider type={'vertical'} />
 									</>
 								)}
 
-								<>
-									<Tooltip title={'Chỉnh sửa'}>
-										<Button
-											// disabled={
-											// 	disabled ||
-											// 	(type === 'Đăng ký'
-											// 		? rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
-											// 		  rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
-											// 		: false)
-											// }
-											onClick={() => handleEdit(rec)}
-											type='link'
-											icon={<EditOutlined />}
-										/>
-									</Tooltip>
-									<Divider type={'vertical'} />
-									<Tooltip title={'Xoá'}>
-										<Popconfirm
-											// disabled={
-											// 	disabled ||
-											// 	(type === 'Đăng ký'
-											// 		? rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
-											// 		  rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
-											// 		: false)
-											// }
-											title='Bạn có chắc chắn muốn xoá?'
-											onConfirm={() => {
-												deleteModel(rec?._id, getData);
-											}}
-										>
-											<Button
-												// disabled={
-												// 	disabled ||
-												// 	(type === 'Đăng ký'
-												// 		? rec?.trangThaiThamGia === ETrangThaiThamGia.XAC_NHAN ||
-												// 		  rec?.trangThaiThamGia === ETrangThaiThamGia.TU_CHOI
-												// 		: false)
-												// }
-												danger
-												type='link'
-												icon={<DeleteOutlined />}
-											/>
-										</Popconfirm>
-									</Tooltip>
-								</>
-
-								{rec?.isLamKhaoSatDangKy && type === 'Đăng ký' && (
-									<>
-										<Divider type={'vertical'} />
-										<Tooltip title={'Khảo sát'}>
-											<Button
-												type={'link'}
-												icon={<ProfileOutlined />}
-												onClick={() => {
-													setRecord(rec);
-													handleViewKhaoSat(rec?.ssoId, ELoaiKhaoSatSuKien.DANG_KY);
-												}}
-											/>
-										</Tooltip>
-									</>
-								)}
-								{rec?.isLamKhaoSatCheckIn && type === 'Tham gia' && (
-									<>
-										<Divider type={'vertical'} />
-										<Tooltip title={'Khảo sát checkin'}>
-											<Button
-												type={'link'}
-												icon={<ProfileOutlined />}
-												onClick={() => {
-													setRecord(rec);
-													handleViewKhaoSat(rec?.ssoId, ELoaiKhaoSatSuKien.CHECK_IN);
-												}}
-											/>
-										</Tooltip>
-									</>
-								)}
-								{rec?.isLamKhaoSatCheckOut && type === 'Tham gia' && (
-									<>
-										<Divider type={'vertical'} />
-										<Tooltip title={'Khảo sát checkout'}>
-											<Button
-												type={'link'}
-												icon={<ProfileOutlined />}
-												onClick={() => {
-													setRecord(rec);
-													handleViewKhaoSat(rec?.ssoId, ELoaiKhaoSatSuKien.CHECK_OUT);
-												}}
-											/>
-										</Tooltip>
-									</>
-								)}
+								<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
+									<Button onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} />
+								</Tooltip>
+								<Divider type={'vertical'} />
+								<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
+									<Popconfirm
+										title={intl.formatMessage({ id: 'common.confirm.delete' })}
+										onConfirm={() => {
+											deleteModel(rec?._id, getData);
+										}}
+									>
+										<Button danger type='link' icon={<DeleteOutlined />} />
+									</Popconfirm>
+								</Tooltip>
 							</>
 						}
 					>
@@ -400,14 +281,14 @@ const DanhSachSinhVien = (props: IProps) => {
 											<div>
 												<Badge style={{ marginRight: 4 }} color={color?.[0]} />
 												<span>
-													Làm khảo sát đăng ký:
+													{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.lamks' })}:
 													<b style={{ marginLeft: 4 }}>{dataThongKe?.tongLamKhaoSatDangKy ?? 0}</b>
 												</span>
 											</div>
 											<div>
 												<Badge style={{ marginRight: 4 }} color={color?.[1]} />
 												<span>
-													Chưa làm khảo sát đăng ký:
+													{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.chualamks' })}:
 													<b style={{ marginLeft: 4 }}>{dataThongKe?.tongChuaLamKhaoSatDangKy ?? 0}</b>
 												</span>
 											</div>
@@ -432,13 +313,13 @@ const DanhSachSinhVien = (props: IProps) => {
 								<Card style={{ borderRadius: 5 }} hoverable>
 									<Badge style={{ marginRight: 4 }} color={color?.[0]} />
 									<span>
-										Check in:
+										{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.checkin' })}:
 										<b style={{ marginLeft: 4 }}>{dataThongKe?.tongCheckin ?? 0}</b>
 									</span>
 									<br />
 									<Badge style={{ marginRight: 4 }} color={color?.[1]} />
 									<span>
-										Check out:
+										{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.checkout' })}:
 										<b style={{ marginLeft: 4 }}>{dataThongKe?.tongCheckOut ?? 0}</b>
 									</span>
 									<br />
@@ -449,13 +330,13 @@ const DanhSachSinhVien = (props: IProps) => {
 									<Card style={{ borderRadius: 5 }} hoverable>
 										<Badge style={{ marginRight: 4 }} color={color?.[0]} />
 										<span>
-											Làm khảo sát check in:
+											{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.lamkscheckin' })}:
 											<b style={{ marginLeft: 4 }}>{dataThongKe?.tongLamKhaoSatCheckIn ?? 0}</b>
 										</span>
 										<br />
 										<Badge style={{ marginRight: 4 }} color={color?.[1]} />
 										<span>
-											Chưa làm khảo sát check in:
+											{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.chualamkscheckin' })}:
 											<b style={{ marginLeft: 4 }}>{dataThongKe?.tongChuaLamKhaoCheckIn ?? 0}</b>
 										</span>
 										<br />
@@ -467,13 +348,13 @@ const DanhSachSinhVien = (props: IProps) => {
 									<Card style={{ borderRadius: 5 }} hoverable>
 										<Badge style={{ marginRight: 4 }} color={color?.[0]} />
 										<span>
-											Làm khảo sát checkout:
+											{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.lamkscheckout' })}:
 											<b style={{ marginLeft: 4 }}>{dataThongKe?.tongLamKhaoSatCheckOut ?? 0}</b>
 										</span>
 										<br />
 										<Badge style={{ marginRight: 4 }} color={color?.[1]} />
 										<span>
-											Chưa làm khảo sát checkout:
+											{intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky.chualamkscheckout' })}:
 											<b style={{ marginLeft: 4 }}>{dataThongKe?.tongChuaLamKhaoCheckOut ?? 0}</b>
 										</span>
 										<br />
@@ -508,7 +389,7 @@ const DanhSachSinhVien = (props: IProps) => {
 								handleExportDanhSach();
 							}}
 						>
-							Xuất dữ liệu
+							{intl.formatMessage({ id: 'global.button.xuatdulieu' })}
 						</Button>
 					</>,
 				]}
@@ -516,7 +397,7 @@ const DanhSachSinhVien = (props: IProps) => {
 
 			<Modal
 				destroyOnClose
-				title={`Khảo sát ${record?._id ? `sinh viên ${record?.tenSv} (${record?.maSv})` : ''}`}
+				title={intl.formatMessage({ id: 'sukien.khaosat.title' }, { ten: record?.tenSv, ma: record?.maSv })}
 				open={visibleKhaoSat}
 				onCancel={() => {
 					setVisibleKhaoSat(false);

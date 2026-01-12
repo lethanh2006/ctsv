@@ -3,10 +3,11 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { type SuKienV2 } from '@/services/SuKienV2/typings';
 import { EVaiTroBieuMau, TenVaiTroBieuMau } from '@/services/TienIch/constant';
-import { Button, Descriptions, Empty, Modal, Spin } from 'antd';
-import { useModel } from 'umi';
+import { Button, Empty, Modal, Spin } from 'antd';
+import { useIntl, useModel } from 'umi';
 
 export const ThongKeNguoiThamDu = () => {
+	const intl = useIntl();
 	const { isLoadingThongKeTheoSuKien, thongKeTheoSuKienData, setIsVisibleThongKe, isVisibleThongKe, record } =
 		useModel('sukienv2');
 
@@ -15,19 +16,19 @@ export const ThongKeNguoiThamDu = () => {
 
 	const columns: IColumn<SuKienV2.IUser>[] = [
 		{
-			title: 'Mã cán bộ/ Sinh viên',
+			title: intl.formatMessage({ id: 'sukien.thongke.ma' }),
 			dataIndex: 'code',
 			width: 80,
 			filterType: 'string',
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'sukien.thongke.hoten' }),
 			width: 150,
 			dataIndex: 'fullname',
 			filterType: 'string',
 		},
 		{
-			title: 'Vai trò',
+			title: intl.formatMessage({ id: 'sukien.thongke.vaitro' }),
 			width: 150,
 			dataIndex: 'vaiTro',
 			filterType: 'select',
@@ -36,27 +37,27 @@ export const ThongKeNguoiThamDu = () => {
 			align: 'center',
 		},
 		{
-			title: 'Trạng thái tham gia',
+			title: intl.formatMessage({ id: 'sukien.thongke.thamgia' }),
 			width: 150,
 			dataIndex: 'thamGia',
 			align: 'center',
 			filterType: 'select',
 			filterData: [
-				{ value: true, label: 'Đã tham gia' },
-				{ value: false, label: 'Chưa tham gia' },
+				{ value: true, label: intl.formatMessage({ id: 'sukien.thongke.thamgia.dathamgia' }) },
+				{ value: false, label: intl.formatMessage({ id: 'sukien.thongke.thamgia.chuthamgia' }) },
 			],
 			render: (_, rec) => {
 				if (rec.thamGia) {
-					return 'Đã tham gia';
+					return intl.formatMessage({ id: 'sukien.thongke.thamgia.dathamgia' });
 				}
-				return 'Chưa tham gia';
+				return intl.formatMessage({ id: 'sukien.thongke.thamgia.chuthamgia' });
 			},
 		},
 	];
 
 	const renderContent = () => {
 		if (!isLoadingThongKeTheoSuKien && !thongKeTheoSuKienData) {
-			return <Empty description='Không có dữ liệu' />;
+			return <Empty description={intl.formatMessage({ id: 'sukien.thongke.empty' })} />;
 		}
 		// if (thongKeTheoSuKienData?.tongusers === 0) {
 		// 	return (
@@ -71,14 +72,17 @@ export const ThongKeNguoiThamDu = () => {
 				<DonutChart
 					showTotal
 					height={300}
-					xAxis={['Người đã tham dự', 'Người chưa tham dự']}
+					xAxis={[
+						intl.formatMessage({ id: 'sukien.thongke.nguoidathamdu' }),
+						intl.formatMessage({ id: 'sukien.thongke.nguoichuathamdu' }),
+					]}
 					yAxis={[[tongNguoiDaThamDu, tongNguoiChuaThamDu]]}
-					yLabel={['Người tham dự']}
+					yLabel={[intl.formatMessage({ id: 'sukien.thongke.nguoithamdu' })]}
 					formatY={(vsl) => vsl.toString()}
 				/>
 				<TableStaticData addStt data={thongKeTheoSuKienData?.danhSach ?? []} columns={columns} />
 				<div style={{ textAlign: 'center' }}>
-					<Button onClick={() => setIsVisibleThongKe(false)}>Đóng</Button>
+					<Button onClick={() => setIsVisibleThongKe(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Spin>
 		);
@@ -87,7 +91,7 @@ export const ThongKeNguoiThamDu = () => {
 	return (
 		<Modal
 			width={900}
-			title={`Thống kê người tham dự ${record?.tenSuKien}`}
+			title={intl.formatMessage({ id: 'sukien.thongke.title' }, { tenSuKien: record?.tenSuKien })}
 			open={isVisibleThongKe}
 			footer={null}
 			onCancel={() => setIsVisibleThongKe(false)}

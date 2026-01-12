@@ -10,6 +10,7 @@ import loptinchi from './loptinchi';
 import namhoc from './namhoc';
 import phuvucongdong from './phuvucongdong';
 import sinhvien from './sinhvien';
+import sukien from './sukien';
 import thongbao from './thongbao';
 import thongkebaocao from './thongkebaocao';
 import thongtinnguoihoc from './thongtinnguoihoc';
@@ -34,4 +35,5 @@ export default {
 	...vanhoathethao,
 	...chedochinhsach,
 	...dichvuhanhchinh,
+	...sukien,
 };

@@ -10,10 +10,11 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tabs, Tag } from 'antd';
 import { first } from 'lodash';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import ThongKeKhaoSat from './ThongKeKhaoSat';
 
 export const Detail = () => {
+	const intl = useIntl();
 	const { deleteModel, handleEdit, setIsVisibleFormDetail, record, isVisibleFormDetail, getModel } =
 		useModel('sukienv2');
 
@@ -31,26 +32,26 @@ export const Detail = () => {
 	];
 	const columns: IColumn<SuKienV2.IKinhPhiDuTru>[] = [
 		{
-			title: 'Nội dung',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.noidung' }),
 			width: 200,
 			dataIndex: 'noiDung',
 			align: 'center',
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Đơn vị tính',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.donvitinh' }),
 			width: 90,
 			dataIndex: 'dvTinh',
 			align: 'center',
 		},
 		{
-			title: 'Số lượng',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.soluong' }),
 			// dataIndex: 'soLuong',
 			width: 150,
 			// align: 'center',
 			children: [
 				{
-					title: 'Người',
+					title: intl.formatMessage({ id: 'sukien.chitiet.column.nguoi' }),
 					dataIndex: 'soLuong',
 					align: 'center',
 					width: 80,
@@ -59,7 +60,7 @@ export const Detail = () => {
 					},
 				},
 				{
-					title: 'Ngày',
+					title: intl.formatMessage({ id: 'sukien.chitiet.column.ngay' }),
 					dataIndex: 'soLuong',
 					align: 'center',
 					width: 80,
@@ -68,7 +69,7 @@ export const Detail = () => {
 					},
 				},
 				{
-					title: 'Khác',
+					title: intl.formatMessage({ id: 'sukien.chitiet.column.khac' }),
 					dataIndex: 'soLuong',
 					align: 'center',
 					width: 80,
@@ -79,54 +80,54 @@ export const Detail = () => {
 			],
 		},
 		{
-			title: 'Lượt',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.luot' }),
 			dataIndex: 'luot',
 			width: 90,
 			align: 'center',
 			render: (val) => inputFormat(+val),
 		},
 		{
-			title: 'Phòng',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.phong' }),
 			dataIndex: 'phong',
 			width: 120,
 			align: 'center',
 		},
 		{
-			title: 'Định mức',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.dinhmuc' }),
 			dataIndex: 'dinhMuc',
 			width: 90,
 			align: 'center',
 			render: (val) => inputFormat(+val),
 		},
 		{
-			title: 'Dự toán',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.dutoan' }),
 			dataIndex: 'duToan',
 			width: 120,
 			align: 'center',
 			render: (val) => inputFormat(+val),
 		},
 		{
-			title: 'Phân bổ nguồn',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.phanbonguon' }),
 			// dataIndex: 'phanBoNguon',
 			width: 300,
 			align: 'center',
 			children: [
 				{
-					title: 'NSNN',
+					title: intl.formatMessage({ id: 'sukien.chitiet.column.nsnn' }),
 					dataIndex: 'nguonNSNN',
 					width: 100,
 					align: 'center',
 					render: (val) => inputFormat(+val),
 				},
 				{
-					title: 'Tự chủ',
+					title: intl.formatMessage({ id: 'sukien.chitiet.column.tuchu' }),
 					dataIndex: 'nguonTuChu',
 					width: 100,
 					align: 'center',
 					render: (val) => inputFormat(+val),
 				},
 				{
-					title: 'Vận động tài trợ',
+					title: intl.formatMessage({ id: 'sukien.chitiet.column.taitro' }),
 					dataIndex: 'nguonTaiTro',
 					width: 100,
 					align: 'center',
@@ -135,20 +136,25 @@ export const Detail = () => {
 			],
 		},
 		{
-			title: 'Tiến độ hoàn thành',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.tiendo' }),
 			dataIndex: 'hoanThanh',
 			width: 120,
 			align: 'center',
-			render: (val) => (val ? <Tag color={'green'}>Hoàn thành</Tag> : <Tag color={'red'}>Chưa hoàn thành</Tag>),
+			render: (val) =>
+				val ? (
+					<Tag color={'green'}>{intl.formatMessage({ id: 'sukien.chitiet.column.hoanthanh' })}</Tag>
+				) : (
+					<Tag color={'red'}>{intl.formatMessage({ id: 'sukien.chitiet.column.chuahoanthanh' })}</Tag>
+				),
 		},
 		{
-			title: 'Chứng từ yêu cầu',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.chungtu' }),
 			dataIndex: 'chungTuYeuCau',
 			width: 150,
 			align: 'center',
 		},
 		{
-			title: 'Ý kiến TCKT',
+			title: intl.formatMessage({ id: 'sukien.chitiet.column.ykientckt' }),
 			dataIndex: 'yKienTCKT',
 			width: 200,
 			align: 'center',
@@ -172,16 +178,16 @@ export const Detail = () => {
 			styles={{ body: { paddingTop: 4 } }}
 			width={1000}
 			open={isVisibleFormDetail}
-			title='Chi tiết sự kiện'
+			title={intl.formatMessage({ id: 'sukien.chitiet.title' })}
 			destroyOnClose
 			onCancel={() => setIsVisibleFormDetail(false)}
 			footer={null}
 		>
 			<Tabs destroyInactiveTabPane>
-				<Tabs.TabPane tab='Thông tin chung' key='item-1'>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sukien.chitiet.thongtin' })} key='item-1'>
 					<ThongTinChung data={record as SuKienV2.IRecord} />
 				</Tabs.TabPane>
-				<Tabs.TabPane tab='Danh sách người đăng ký' key='item-2'>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sukien.chitiet.danhsachdangky' })} key='item-2'>
 					<DanhSachSinhVien
 						type={'Đăng ký'}
 						// disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
@@ -189,7 +195,7 @@ export const Detail = () => {
 						// )}
 					/>
 				</Tabs.TabPane>
-				<Tabs.TabPane tab='Danh sách người tham gia' key='item-3'>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sukien.chitiet.danhsachthamgia' })} key='item-3'>
 					<DanhSachSinhVien
 						type={'Tham gia'}
 						// disabled={[ETrangThaiDienRa.DANG_DIEN_RA, ETrangThaiDienRa.DA_DIEN_RA].includes(
@@ -198,7 +204,7 @@ export const Detail = () => {
 					/>
 				</Tabs.TabPane>
 				{/* {(record?.idKhaoSatCheckOut || record?.idKhaoSatDangKy || record?.idKhaoSatCheckIn) && ( */}
-				<Tabs.TabPane tab='Thống kê khảo sát' key='item-4'>
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'sukien.chitiet.thongkekhaosat' })} key='item-4'>
 					<ThongKeKhaoSat />
 				</Tabs.TabPane>
 				{/* )} */}
@@ -215,10 +221,10 @@ export const Detail = () => {
 					}}
 					icon={<EditOutlined />}
 				>
-					Chỉnh sửa
+					{intl.formatMessage({ id: 'global.button.chinhsua' })}
 				</Button>
 				<Popconfirm
-					title='Bạn có chắc chắn muốn xóa hoạt động này không?'
+					title={intl.formatMessage({ id: 'sukien.chitiet.confirm.delete' })}
 					onConfirm={() => {
 						deleteModel(record?._id ?? '', getModel);
 						setIsVisibleFormDetail(false);
@@ -234,11 +240,13 @@ export const Detail = () => {
 						danger
 						icon={<DeleteOutlined />}
 					>
-						Xóa
+						{intl.formatMessage({ id: 'global.button.xoa' })}
 					</Button>
 				</Popconfirm>
 
-				<Button onClick={() => setIsVisibleFormDetail(false)}>Đóng</Button>
+				<Button onClick={() => setIsVisibleFormDetail(false)}>
+					{intl.formatMessage({ id: 'global.button.dong' })}
+				</Button>
 			</div>
 		</Modal>
 	);
