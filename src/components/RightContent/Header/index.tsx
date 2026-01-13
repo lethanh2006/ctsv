@@ -1,5 +1,3 @@
-import { AppModules } from '@/services/base/constant';
-import { currentRole } from '@/utils/ip';
 import { Link, history, useIntl } from 'umi';
 import './style.less';
 
@@ -12,8 +10,8 @@ const HeaderContentPage = () => {
 			<div>
 				{/* <div className='text-error'>{intl.formatMessage({ id: 'global.rightcontent.header.title' })}</div> */}
 				<Link to='/'>
-				CO-CURRICULAR ACTIVITIES
-				{/* {AppModules[currentRole].title?.toLocaleUpperCase()} */}
+					CO-CURRICULAR ACTIVITIES
+					{/* {AppModules[currentRole].title?.toLocaleUpperCase()} */}
 				</Link>
 			</div>
 		</div>

@@ -178,7 +178,7 @@
 		icon: 'AppstoreOutlined',
 		path: '/activity-management',
 		component: 'CCT/Activity',
-		access: 'cctFilter',
+		// access: 'cctFilter',
 	},
 
 	{
@@ -186,7 +186,7 @@
 		icon: 'TrophyOutlined',
 		path: '/activity-results-approval',
 		component: 'CCT/ActivityStudent',
-		access: 'cctFilter',
+		// access: 'cctFilter',
 	},
 
 	// {
@@ -777,43 +777,43 @@
 				name: 'Attributes',
 				component: 'DanhMuc/Attributes',
 				path: 'attribute',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 			{
 				name: 'Levels',
 				component: 'DanhMuc/Levels',
 				path: 'level',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 			{
 				name: 'Roles',
 				component: 'DanhMuc/Roles',
 				path: 'role',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 			{
 				name: 'CCD',
 				component: 'DanhMuc/CCD',
 				path: 'co-curricular-domain',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 			{
 				name: 'Activities',
 				component: 'DanhMuc/Activities',
 				path: 'co-curricular-ctivities',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 			{
 				name: 'Competency',
 				component: 'DanhMuc/Competency',
 				path: 'competency',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 			{
 				name: 'Questions',
 				path: 'self-assessment-questions',
 				component: 'TienIch/KhaoSat',
-				access: 'cctFilter',
+				// access: 'cctFilter',
 			},
 		],
 	},

@@ -43,14 +43,14 @@ const ActivitiesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.name' }),
 			dataIndex: 'name',
-			width: 170,
+			width: 150,
 			filterType: 'string',
 			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.des' }),
 			dataIndex: 'description',
-			width: 220,
+			width: 180,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
 			onCell,

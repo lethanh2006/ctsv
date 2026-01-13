@@ -49,7 +49,7 @@ const ActivitiesTypeDomain = () => {
 		{
 			title: intl.formatMessage({ id: 'activitiestypedomain.column.des' }),
 			dataIndex: 'description',
-			width: 220,
+			width: 180,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
 			onCell,

@@ -14,6 +14,7 @@ const ipCore = ipRoot + 'core';
 const ipTaiChinh = ipRoot + 'tai-chinh-api-v2';
 const ipSlink = ipRoot + 'slink'; // ip dev
 const ipCCT = ipRoot + 'co-curriculum'; // ip dev
+// const ipCCT = 'http://192.168.1.146:3010'; // ip dev
 const ipCsvc = ipRoot + 'csvc';
 // const ipCCT = 'http://192.168.1.38:3010'; // ip dev
 const ipKhaoThi = ipRoot + 'khao-thi';

@@ -57,7 +57,9 @@ const HistoryActivityPage = () => {
 				? {
 						activityCategory: tabActive as any,
 					}
-				: undefined,
+				: {
+						activityCategory: EActivityCategory.PERSONAL_CO_CURRICULAR,
+					},
 			undefined,
 			undefined,
 			undefined,
@@ -75,8 +77,7 @@ const HistoryActivityPage = () => {
 
 		return dsAtribute.map((attr: any) => ({
 			title: attr.code,
-			width: 90,
-			align: 'center',
+			width: 60,
 			render: (val, rec) => {
 				const check = rec?.activities?.coCurricularActivityEquivalency;
 				const checkPertion = rec?.activitiesType?.attributesId === attr?._id;
@@ -105,7 +106,7 @@ const HistoryActivityPage = () => {
 		{
 			title: 'Email',
 			dataIndex: 'email',
-			width: 160,
+			width: 130,
 			filterType: 'string',
 			onCell,
 		},
@@ -205,7 +206,7 @@ const HistoryActivityPage = () => {
 		{
 			title: 'Rejection Note',
 			dataIndex: 'activityRejectionNote',
-			width: 180,
+			width: 150,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
 			onCell,
@@ -213,7 +214,7 @@ const HistoryActivityPage = () => {
 		{
 			title: 'Revision Note',
 			dataIndex: 'revisionNote',
-			width: 180,
+			width: 150,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
 			onCell,

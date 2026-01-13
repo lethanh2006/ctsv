@@ -6,6 +6,7 @@ export default {
 	'activitiesmanagement.column.name': 'Name',
 	'activitiesmanagement.column.des': 'Description',
 	'activitiesmanagement.column.attribute': 'Attribute',
+	'activitiesmanagement.column.domain': 'Co-curricular Domain (CCD)',
 	'activitiesmanagement.column.active': 'Active',
 
 	'activitiesmanagement.confirm.delete': 'Do you want to remove this co-curricular activity?',

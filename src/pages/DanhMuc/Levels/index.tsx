@@ -41,7 +41,7 @@ const LevelsPage = () => {
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.name' }),
 			dataIndex: 'name',
-			width: 170,
+			width: 120,
 			filterType: 'string',
 			onCell,
 		},
@@ -55,7 +55,7 @@ const LevelsPage = () => {
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.des' }),
 			dataIndex: 'description',
-			width: 220,
+			width: 180,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
 			onCell,

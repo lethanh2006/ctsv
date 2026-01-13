@@ -207,4 +207,11 @@ export default {
 	'global.uploadfile.text': 'Click or drag a file to upload',
 	'global.uploadfile.text1': 'Add profile picture',
 	'global.uploadfile.button.chontep': 'Select file',
+
+	// PDFViewer
+	'global.pdfviewer.dangtai': 'Loading...',
+	'global.pdfviewer.dangtaitailieu': 'Loading document. Please wait...',
+	'global.pdfviewer.truoc': 'Previous',
+	'global.pdfviewer.sau': 'Next',
+	'global.pdfviewer.trang': 'Page {pageNumber} of {numPages}',
 };
