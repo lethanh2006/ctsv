@@ -1,40 +1,41 @@
-import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import SelectCompetency from '@/pages/DanhMuc/Competency/components/Select';
+import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Row } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormStudent = (props: { onOk: (val: ActivitiesManagement.IStudentDeclaration) => void }) => {
+const FormCompetencyMapping = (props: { onOk: (val: ActivityOutCome.ICompetencyMapping[]) => void }) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { onOk } = props;
-	const { setVisibleForm, visibleForm, edit } = useModel('danhmuc.student');
+	const { setVisibleForm, visibleForm, edit } = useModel('cct.competencyoutcome');
+	const { danhSach: dscompetency } = useModel('danhmuc.competency');
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 	}, [visibleForm]);
 
-	const onFinish = async (values: ActivitiesManagement.IStudentDeclaration) => {
-		onOk({ ...values });
+	const onFinish = async (values: any) => {
+		const list = values.competencieId?.map((id: any) => {
+			const competencie = dscompetency?.find((c) => c._id === id);
+			return {
+				...values,
+				competencieId: id,
+				competencie,
+			};
+		});
+
+		onOk(list);
 	};
 
 	return (
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col span={24}>
-					<Form.Item name='ssoId' label={intl.formatMessage({ id: 'activitiesmanagement.form.student' })}>
-						<SelectNhanSuDebounce
-							onChange={(val, option) => {
-								const nhanSu = option?.rawData;
-								form.setFieldsValue({
-									name: nhanSu?.hoTen ? nhanSu?.hoTen : [nhanSu?.hoDem, nhanSu?.ten].filter(Boolean).join(' '),
-									email: nhanSu?.emailCanBo ?? nhanSu?.email,
-								});
-							}}
-						/>
+					<Form.Item name='competencieId' label='Competency'>
+						<SelectCompetency multiple />
 					</Form.Item>
-					<Form.Item name='name' hidden />
-					<Form.Item name='email' hidden />
 				</Col>
 			</Row>
 
@@ -51,4 +52,4 @@ const FormStudent = (props: { onOk: (val: ActivitiesManagement.IStudentDeclarati
 	);
 };
 
-export default FormStudent;
+export default FormCompetencyMapping;

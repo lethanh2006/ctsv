@@ -3,7 +3,7 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch } from 'antd';
+import { Popconfirm, Switch, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormAttributes from './components/Form';
 
@@ -41,7 +41,8 @@ const AttributesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'attributesmanagement.column.name' }),
 			dataIndex: 'name',
-			width: 170,
+			width: 200,
+			render: (val, rec) => <Tag color={rec?.color}>{rec?.name}</Tag>,
 			filterType: 'string',
 			onCell,
 		},

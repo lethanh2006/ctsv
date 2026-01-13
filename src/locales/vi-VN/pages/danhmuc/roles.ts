@@ -5,7 +5,6 @@ export default {
 	'rolesmanagement.column.id': 'Mã',
 	'rolesmanagement.column.name': 'Tên',
 	'rolesmanagement.column.des': 'Mô tả',
-	'rolesmanagement.column.level': 'Cấp độ',
 	'rolesmanagement.column.active': 'Kích hoạt',
 
 	'rolesmanagement.confirm.delete': 'Bạn có muốn xóa vai trò này không?',

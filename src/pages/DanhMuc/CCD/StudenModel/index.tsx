@@ -4,21 +4,21 @@ import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
-import FormStudentModel from './Form';
+import FormStudentDomainModel from './Form';
 
-const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?: boolean }) => {
+const StudenDomainModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?: boolean }) => {
 	const intl = useIntl();
 	const { disabled, mode } = props;
 	const { record: recActivity } = useModel('cct.activity');
-	const { record: recActiType } = useModel('danhmuc.activities');
-	const { getModel, page, limit, deleteModel } = useModel('danhmuc.student');
+	const { record: recActiType } = useModel('danhmuc.ccd');
+	const { getModel, page, limit, deleteModel } = useModel('danhmuc.studentdomain');
 
 	const getData = () => {
 		if (recActiType?._id || recActivity?._id)
 			getModel(
 				mode === 'activitiesType'
 					? {
-							activitiesTypeId: recActiType?._id,
+							activitiesTypeDomainId: recActiType?._id,
 						}
 					: {
 							activitiesId: recActivity?._id,
@@ -26,15 +26,15 @@ const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?
 			);
 	};
 
-	const columns: IColumn<ActivitiesManagement.IStudentDeclaration>[] = [
+	const columns: IColumn<ActivitiesTypeDomain.IStudentDeclaration>[] = [
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten' }),
+			title: intl.formatMessage({ id: 'activitiestypedomain.student.column.hoten' }),
 			dataIndex: 'name',
 			width: 220,
 			filterType: 'string',
 		},
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.student.column.email' }),
+			title: intl.formatMessage({ id: 'activitiestypedomain.student.column.email' }),
 			dataIndex: 'email',
 			width: 100,
 			filterType: 'string',
@@ -52,7 +52,7 @@ const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
-						title={intl.formatMessage({ id: 'activitiesmanagement.student.comfirm.xoa' })}
+						title={intl.formatMessage({ id: 'activitiestypedomain.student.comfirm.xoa' })}
 						placement='topLeft'
 					>
 						<ButtonExtend
@@ -73,9 +73,9 @@ const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?
 			getData={getData}
 			columns={columns}
 			dependencies={[page, limit, recActiType?._id, recActivity?._id]}
-			modelName='danhmuc.student'
-			title={intl.formatMessage({ id: 'activitiesmanagement.title' })}
-			Form={FormStudentModel}
+			modelName='danhmuc.studentdomain'
+			title={intl.formatMessage({ id: 'activitiestypedomain.title' })}
+			Form={FormStudentDomainModel}
 			formProps={{ getData, mode }}
 			buttons={{ create: !disabled }}
 			hideCard
@@ -86,4 +86,4 @@ const StudenModelPage = (props: { mode: 'activitiesType' | 'activity'; disabled?
 	);
 };
 
-export default StudenModelPage;
+export default StudenDomainModelPage;

@@ -792,9 +792,21 @@
 				access: 'cctFilter',
 			},
 			{
+				name: 'CCD',
+				component: 'DanhMuc/CCD',
+				path: 'co-curricular-domain',
+				access: 'cctFilter',
+			},
+			{
 				name: 'Activities',
 				component: 'DanhMuc/Activities',
 				path: 'co-curricular-ctivities',
+				access: 'cctFilter',
+			},
+			{
+				name: 'Competency',
+				component: 'DanhMuc/Competency',
+				path: 'competency',
 				access: 'cctFilter',
 			},
 			{

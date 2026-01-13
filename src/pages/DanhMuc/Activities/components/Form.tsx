@@ -4,8 +4,7 @@ import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectAttributesManagement from '../../Attributes/components/Select';
-import StudenModelPage from '../StudenModel';
-import FormItemStudent from '../Student/FormItem';
+import SelectActivitiesTypeDomain from '../../CCD/components/Select';
 
 const FormActivities = (props: any) => {
 	const intl = useIntl();
@@ -77,11 +76,28 @@ const FormActivities = (props: any) => {
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item
+							name='activitiesTypeDomainId'
+							label={intl.formatMessage({ id: 'activitiesmanagement.form.domain' })}
+							rules={[...rules.required]}
+						>
+							<SelectActivitiesTypeDomain
+								disabled={isView}
+								onChange={(val, option) => {
+									const rawData = option?.rawData;
+									form.setFieldsValue({
+										attributesId: rawData?.attributesId,
+									});
+								}}
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item
 							name='attributesId'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.attributes' })}
 							rules={[...rules.required]}
 						>
-							<SelectAttributesManagement disabled={isView} />
+							<SelectAttributesManagement disabled />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
@@ -118,24 +134,6 @@ const FormActivities = (props: any) => {
 								placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.des.place' })}
 							/>
 						</Form.Item>
-					</Col>
-
-					<Col span={24}>
-						{record?._id ? (
-							<>
-								<div className='fw500' style={{ marginBottom: 8 }}>
-									{intl.formatMessage({ id: 'activitiesmanagement.form.student' })}
-								</div>
-								<StudenModelPage disabled={isView} mode='activitiesType' />
-							</>
-						) : (
-							<Form.Item
-								name='studentDeclarationApproverList'
-								label={intl.formatMessage({ id: 'activitiesmanagement.form.student' })}
-							>
-								<FormItemStudent />
-							</Form.Item>
-						)}
 					</Col>
 				</Row>
 

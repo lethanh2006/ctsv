@@ -38,6 +38,8 @@ export default {
 	'activityresult.perstion.activitiesTypeId.select': 'Select Co-curricular Activities (CCA)',
 	'activityresult.perstion.startDate': 'Start date',
 	'activityresult.perstion.startDate.place': 'Select start date',
+	'activityresult.perstion.endDate': 'End date',
+	'activityresult.perstion.endDate.place': 'Select end date',
 	'activityresult.perstion.organizer': 'Organizer',
 	'activityresult.perstion.organizer.place': 'Enter organizer',
 	'activityresult.perstion.location': 'Location',

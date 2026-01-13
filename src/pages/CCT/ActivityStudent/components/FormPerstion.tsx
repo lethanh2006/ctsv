@@ -1,16 +1,19 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import UploadFile from '@/components/Upload/UploadFile';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
+import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { EparticipantRole, EParticipantScope } from '@/services/CCT/constant';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, Row } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
+import FormItemCompetencyMapping from '../CompetencyMapping/FormItem';
+import CompetencyMappingModelPage from '../CompetencyMappingModel';
 
 const FormPerstionActivityOutCome = (props: any) => {
 	const { getData } = props;
@@ -19,15 +22,18 @@ const FormPerstionActivityOutCome = (props: any) => {
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm, setFormSubmiting } =
 		useModel('cct.activityoutcome');
 	const { danhSach: dsActivitiType } = useModel('danhmuc.activities');
-	const { danhSach: dsRoles } = useModel('danhmuc.roles');
 
 	const startDate: Date = Form.useWatch('startDate', form);
 	const activitiesTypeId: string = Form.useWatch('activitiesTypeId', form);
-	const rolesId: string = Form.useWatch('rolesId', form);
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 		else if (record?._id) form.setFieldsValue(record);
+		// else if (record?._id)
+		// 	form.setFieldsValue({
+		// 		...record,
+		// 		listAchievedCompetencies: record?.listAchievedCompetencies?.map((item) => item?.competencieId),
+		// 	});
 
 		if (!record?._id) {
 			form.setFieldsValue({
@@ -46,12 +52,28 @@ const FormPerstionActivityOutCome = (props: any) => {
 		values.file = file;
 		setFormSubmiting(false);
 
+		// values.listAchievedCompetencies = values.listAchievedCompetencies?.map((item) => ({
+		// 	competencieId: item,
+		// })) as any;
+
+		values.listAchievedCompetencies = values.listAchievedCompetencies?.map((item) => ({
+			activityOutcomeId: record?._id ?? '',
+			competencieId: item.competencieId,
+		})) as any;
+
 		if (edit) {
-			putModel(`me/${record?._id}`, values, getData)
+			putModel(
+				record?._id ?? '',
+				values,
+				getData,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			)
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, getData)
+			postModel(values, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 	};
@@ -92,6 +114,26 @@ const FormPerstionActivityOutCome = (props: any) => {
 							/>
 						</Form.Item>
 					</Col>
+
+					{/* <Col span={24}>
+						<Form.Item name='listAchievedCompetencies' label='Competency Mapping'>
+							<SelectCompetency multiple />
+						</Form.Item>
+					</Col> */}
+
+					<Col span={24}>
+						{record?._id ? (
+							<>
+								<div className='fw500'>Competency Mapping</div>
+								<CompetencyMappingModelPage disabled={isView} />
+							</>
+						) : (
+							<Form.Item name='listAchievedCompetencies' label='Competency Mapping'>
+								<FormItemCompetencyMapping disabled={isView || !activitiesTypeId} />
+							</Form.Item>
+						)}
+					</Col>
+
 					<Col span={24} md={12}>
 						<Form.Item
 							name='startDate'
@@ -110,7 +152,10 @@ const FormPerstionActivityOutCome = (props: any) => {
 						<Form.Item
 							name='endDate'
 							label={intl.formatMessage({ id: 'activityresult.perstion.endDate' })}
-							rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}
+							rules={[
+								...rules.required,
+								...rules.sauNgay(dayjs(startDate), intl.formatMessage({ id: 'activity.perstion.startDate' })),
+							]}
 						>
 							<MyDatePicker
 								showTime={{ showHour: true, showMinute: true }}
@@ -161,14 +206,8 @@ const FormPerstionActivityOutCome = (props: any) => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item label='Level'>
-							<Input
-								disabled
-								value={
-									dsRoles?.find((item) => item?._id === rolesId)?.level?.name ??
-									intl.formatMessage({ id: 'activityresult.perstion.rolesId.select' })
-								}
-							/>
+						<Form.Item name='levelsId' label='Level' rules={[...rules.required]}>
+							<SelectLevelsManagement disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
@@ -187,34 +226,6 @@ const FormPerstionActivityOutCome = (props: any) => {
 						<Form.Item name='file' label={intl.formatMessage({ id: 'activityresult.perstion.file' })}>
 							<UploadFile maxCount={5} disabled={isView} />
 						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item
-							name='studentDeclarationApproverSsoId'
-							label={intl.formatMessage({ id: 'activityresult.perstion.studentDeclarationApproverSsoId' })}
-							rules={[...rules.required]}
-						>
-							<Select
-								placeholder={intl.formatMessage({
-									id: 'activityresult.perstion.studentDeclarationApproverSsoId.select',
-								})}
-								options={dsActivitiType
-									?.find((item) => item?._id === activitiesTypeId)
-									?.studentDeclarationApproverList?.map((item) => ({
-										value: item._id,
-										label: item.name,
-										rawData: item,
-									}))}
-								onChange={(val, option: any) => {
-									const nhanSu = option?.rawData;
-									form.setFieldsValue({
-										studentDeclarationApproverName: nhanSu?.name,
-									});
-								}}
-								disabled={isView}
-							/>
-						</Form.Item>
-						<Form.Item name='studentDeclarationApproverName' hidden />
 					</Col>
 				</Row>
 

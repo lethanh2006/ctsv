@@ -4,15 +4,17 @@ import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
-import FormStudent from './Form';
+import FormStudentDomain from './Form';
 
-const FormItemStudent = (props: {
-	value?: ActivitiesManagement.IStudentDeclaration[];
-	onChange?: (data: ActivitiesManagement.IStudentDeclaration[]) => void;
+const FormItemStudentDomain = (props: {
+	value?: ActivitiesTypeDomain.IStudentDeclaration[];
+	onChange?: (data: ActivitiesTypeDomain.IStudentDeclaration[]) => void;
+	disabled?: boolean;
 }) => {
 	const intl = useIntl();
-	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView } = useModel('danhmuc.student');
-	const { value = [], onChange } = props;
+	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView } =
+		useModel('danhmuc.studentdomain');
+	const { value = [], onChange, disabled } = props;
 
 	const onDelete = (index: number) => {
 		const data = [...value];
@@ -20,7 +22,7 @@ const FormItemStudent = (props: {
 		if (onChange) onChange(data);
 	};
 
-	const onAdd = (rec: ActivitiesManagement.IStudentDeclaration) => {
+	const onAdd = (rec: ActivitiesTypeDomain.IStudentDeclaration) => {
 		if (!record?.index) {
 			const data = [...value, rec];
 			if (onChange) onChange(data);
@@ -33,14 +35,14 @@ const FormItemStudent = (props: {
 		}
 	};
 
-	const columns: IColumn<ActivitiesManagement.IStudentDeclaration>[] = [
+	const columns: IColumn<ActivitiesTypeDomain.IStudentDeclaration>[] = [
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten' }),
+			title: intl.formatMessage({ id: 'activitiestypedomain.student.column.hoten' }),
 			dataIndex: 'name',
 			width: 220,
 		},
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.student.column.email' }),
+			title: intl.formatMessage({ id: 'activitiestypedomain.student.column.email' }),
 			dataIndex: 'email',
 			width: 100,
 		},
@@ -53,14 +55,16 @@ const FormItemStudent = (props: {
 				<>
 					<Popconfirm
 						onConfirm={() => onDelete(rec.index - 1)}
-						title={intl.formatMessage({ id: 'activitiesmanagement.student.comfirm.xoa' })}
+						title={intl.formatMessage({ id: 'activitiestypedomain.student.comfirm.xoa' })}
 						placement='topLeft'
+						disabled={disabled}
 					>
 						<ButtonExtend
 							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
 							danger
 							type='link'
 							icon={<DeleteOutlined />}
+							disabled={disabled}
 						/>
 					</Popconfirm>
 				</>
@@ -71,36 +75,38 @@ const FormItemStudent = (props: {
 	return (
 		<>
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
-				<Button
-					icon={<PlusCircleOutlined />}
-					onClick={() => {
-						setRecord({} as ActivitiesManagement.IStudentDeclaration);
-						setEdit(false);
-						setIsView(false);
-						setVisibleForm(true);
-					}}
-					size='small'
-					type='primary'
-				>
-					{intl.formatMessage({ id: 'global.button.themmoi' })}
-				</Button>
+				{!disabled && (
+					<Button
+						icon={<PlusCircleOutlined />}
+						onClick={() => {
+							setRecord({} as ActivitiesTypeDomain.IStudentDeclaration);
+							setEdit(false);
+							setIsView(false);
+							setVisibleForm(true);
+						}}
+						size='small'
+						type='primary'
+					>
+						{intl.formatMessage({ id: 'global.button.themmoi' })}
+					</Button>
+				)}
 			</TableStaticData>
 
 			<Modal
 				title={
 					edit
-						? intl.formatMessage({ id: 'activitiesmanagement.student.form.chinhsua' })
-						: intl.formatMessage({ id: 'activitiesmanagement.student.form.themmoi' })
+						? intl.formatMessage({ id: 'activitiestypedomain.student.form.chinhsua' })
+						: intl.formatMessage({ id: 'activitiestypedomain.student.form.themmoi' })
 				}
 				open={visibleForm}
 				width={600}
 				footer={null}
 				onCancel={() => setVisibleForm(false)}
 			>
-				<FormStudent onOk={onAdd} />
+				<FormStudentDomain onOk={onAdd} />
 			</Modal>
 		</>
 	);
 };
 
-export default FormItemStudent;
+export default FormItemStudentDomain;

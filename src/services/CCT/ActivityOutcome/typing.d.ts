@@ -13,6 +13,8 @@ declare module ActivityOutCome {
 		activitiesType: ActivitiesManagement.IRecord;
 		rolesId: string;
 		roles?: RolesManagement.IRecord;
+		levelsId: string;
+		level?: LevelsManagement.IRecord;
 		organizer: string;
 		description: string;
 		location: string;
@@ -27,6 +29,8 @@ declare module ActivityOutCome {
 		activityRejectionNote: string;
 		revisionNote: string;
 
+		listAchievedCompetencies: Activity.ICompetencyMapping[];
+
 		createdAt: Date;
 		updatedAt: Date;
 	}
@@ -35,5 +39,14 @@ declare module ActivityOutCome {
 		pending: number;
 		processed: number;
 		total: number;
+	}
+
+	export interface ICompetencyMapping {
+		_id: string;
+		index?: number;
+		activityOutcomeId: string;
+		activityOutcome?: IRecord;
+		competencieId: string;
+		competencie?: Competency.IRecord;
 	}
 }

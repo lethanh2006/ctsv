@@ -33,7 +33,9 @@ declare module Activity {
 		featuredActivities: boolean;
 
 		studentDeclarationApproverList: ActivitiesManagement.IStudentDeclaration[];
+
 		coCurricularActivityEquivalency: IEquivalency[];
+		coCurricularAttributesEquivalency: ICompetencyMapping[];
 
 		//fake
 		cct?: boolean;
@@ -69,4 +71,18 @@ declare module Activity {
 		total: number;
 		upcoming: number;
 	};
+
+	export interface ICompetencyMapping {
+		_id: string;
+		index?: number;
+		activitiesId: string;
+		activities?: IRecord;
+		competencieId: string;
+		competencie?: Competency.IRecord;
+		attributesId: string;
+		attributes?: AttributesManagement.IRecord;
+
+		//fake
+		dsCompetencie?: Competency.IRecord[];
+	}
 }

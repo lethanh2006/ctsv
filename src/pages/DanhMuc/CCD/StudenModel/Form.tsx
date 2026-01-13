@@ -4,24 +4,24 @@ import { Button, Card, Col, Form, Row } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormStudentModel = (props: any) => {
+const FormStudentDomainModel = (props: any) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { getData, mode } = props;
 	const { record: recActivity } = useModel('cct.activity');
-	const { record: recActiType } = useModel('danhmuc.activities');
-	const { setVisibleForm, visibleForm, edit, postModel, formSubmiting } = useModel('danhmuc.student');
+	const { record: recActiType } = useModel('danhmuc.ccd');
+	const { setVisibleForm, visibleForm, edit, postModel, formSubmiting } = useModel('danhmuc.studentdomain');
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 	}, [visibleForm]);
 
-	const onFinish = async (values: ActivitiesManagement.IStudentDeclaration) => {
+	const onFinish = async (values: ActivitiesTypeDomain.IStudentDeclaration) => {
 		postModel(
 			mode === 'activitiesType'
 				? {
 						...values,
-						activitiesTypeId: recActiType?._id,
+						activitiesTypeDomainId: recActiType?._id,
 					}
 				: {
 						...values,
@@ -39,14 +39,14 @@ const FormStudentModel = (props: any) => {
 		<Card
 			title={
 				edit
-					? intl.formatMessage({ id: 'activitiesmanagement.student.form.chinhsua' })
-					: intl.formatMessage({ id: 'activitiesmanagement.student.form.themmoi' })
+					? intl.formatMessage({ id: 'activitiestypedomain.student.form.chinhsua' })
+					: intl.formatMessage({ id: 'activitiestypedomain.student.form.themmoi' })
 			}
 		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='ssoId' label={intl.formatMessage({ id: 'activitiesmanagement.form.student' })}>
+						<Form.Item name='ssoId' label={intl.formatMessage({ id: 'activitiestypedomain.form.student' })}>
 							<SelectNhanSuDebounce
 								onChange={(val, option) => {
 									const nhanSu = option?.rawData;
@@ -76,4 +76,4 @@ const FormStudentModel = (props: any) => {
 	);
 };
 
-export default FormStudentModel;
+export default FormStudentDomainModel;

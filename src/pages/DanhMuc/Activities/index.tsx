@@ -6,6 +6,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm, Switch, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import SelectAttributesManagement from '../Attributes/components/Select';
+import SelectActivitiesTypeDomain from '../CCD/components/Select';
 import FormActivities from './components/Form';
 
 const ActivitiesPage = () => {
@@ -57,11 +58,19 @@ const ActivitiesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.attribute' }),
 			dataIndex: 'attributesId',
-			align: 'center',
 			width: 200,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectAttributesManagement multiple />,
+		},
+		{
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.domain' }),
+			dataIndex: 'activitiesTypeDomainId',
+			align: 'center',
+			width: 200,
+			render: (val, rec) => rec?.activitiesTypeDomain?.name ?? val,
+			filterType: 'customselect',
+			filterCustomSelect: <SelectActivitiesTypeDomain multiple />,
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.active' }),

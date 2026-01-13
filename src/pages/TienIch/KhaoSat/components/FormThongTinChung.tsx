@@ -1,4 +1,3 @@
-import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
@@ -44,25 +43,6 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 				</Col>
 
 				<Col span={24}>
-					<Form.Item
-						name='levelId'
-						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.lever' })}
-						rules={[...rules.required]}
-					>
-						<SelectLevelsManagement
-							onChange={(val, option) => {
-								const level = option?.rawData;
-								form.setFieldsValue({
-									levelName: level?.name,
-								});
-							}}
-						/>
-					</Form.Item>
-
-					<Form.Item name='levelName' hidden />
-				</Col>
-
-				<Col span={24}>
 					<Form.Item name='moTa' label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.mota' })}>
 						<Input.TextArea
 							rows={3}
@@ -76,32 +56,6 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 						<Checkbox>{intl.formatMessage({ id: 'questionsmanagement.thongtinchung.defaultQuestion' })}</Checkbox>
 					</Form.Item>
 				</Col>
-
-				{/* <Col span={24}>
-					<Form.Item
-						name='coCamKet'
-						label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.camket' })}
-						initialValue={record?.coCamKet}
-						valuePropName='checked'
-					>
-						<Switch onChange={(val) => setCamKet(val)} />
-					</Form.Item>
-				</Col> */}
-
-				{/* {camKet && (
-					<Col span={24}>
-						<Form.Item
-							rules={[...rules.required]}
-							name='noiDungCamKet'
-							label={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.noidungcamket' })}
-							initialValue={record?.noiDungCamKet}
-						>
-							<Input
-								placeholder={intl.formatMessage({ id: 'questionsmanagement.thongtinchung.noidungcamket.place' })}
-							/>
-						</Form.Item>
-					</Col>
-				)} */}
 			</Row>
 
 			<div className='form-footer'>

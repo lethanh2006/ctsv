@@ -3,9 +3,8 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch } from 'antd';
+import { Checkbox, Popconfirm, Switch } from 'antd';
 import { useIntl, useModel } from 'umi';
-import SelectLevelsManagement from '../Levels/components/Select';
 import FormRoles from './components/Form';
 
 const RolesPage = () => {
@@ -55,12 +54,11 @@ const RolesPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'rolesmanagement.column.level' }),
-			dataIndex: 'levelId',
-			width: 120,
-			render: (val, rec) => rec?.level?.name,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectLevelsManagement multiple />,
+			title: intl.formatMessage({ id: 'rolesmanagement.column.auto' }),
+			dataIndex: 'autoApproval',
+			align: 'center',
+			width: 90,
+			render: (val, rec) => <Checkbox checked={val} />,
 		},
 		{
 			title: intl.formatMessage({ id: 'rolesmanagement.column.active' }),

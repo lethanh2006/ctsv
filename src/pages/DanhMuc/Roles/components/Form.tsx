@@ -1,9 +1,8 @@
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
-import SelectLevelsManagement from '../../Levels/components/Select';
 
 const FormRoles = (props: any) => {
 	const intl = useIntl();
@@ -18,6 +17,7 @@ const FormRoles = (props: any) => {
 		if (!record?._id) {
 			form.setFieldsValue({
 				isActive: true,
+				autoApproval: true,
 			});
 		}
 	}, [record?._id, visibleForm]);
@@ -74,16 +74,7 @@ const FormRoles = (props: any) => {
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.name.place' })} />
 						</Form.Item>
 					</Col>
-					<Col span={24} md={12}>
-						<Form.Item
-							name='levelId'
-							label={intl.formatMessage({ id: 'rolesmanagement.form.level' })}
-							rules={[...rules.required]}
-						>
-							<SelectLevelsManagement disabled={isView} />
-						</Form.Item>
-					</Col>
-					<Col span={24} md={12}>
+					<Col span={24}>
 						<Form.Item
 							name='order'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}
@@ -103,6 +94,15 @@ const FormRoles = (props: any) => {
 							valuePropName='checked'
 						>
 							<Switch disabled={isView} />
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item
+							name='autoApproval'
+							label={intl.formatMessage({ id: 'rolesmanagement.form.auto' })}
+							valuePropName='checked'
+						>
+							<Checkbox disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>

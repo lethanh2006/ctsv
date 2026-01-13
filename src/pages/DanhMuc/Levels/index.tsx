@@ -46,6 +46,13 @@ const LevelsPage = () => {
 			onCell,
 		},
 		{
+			title: intl.formatMessage({ id: 'levelsmanagement.column.question' }),
+			dataIndex: 'selfAssessmentQuestionsName',
+			width: 180,
+			filterType: 'string',
+			onCell,
+		},
+		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.des' }),
 			dataIndex: 'description',
 			width: 220,
