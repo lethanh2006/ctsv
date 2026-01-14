@@ -1,6 +1,6 @@
 import ExpandText from '@/components/ExpandText';
 import { Button, Card, Table, Typography } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import NumberInputRating from './QuestionView/Numberinputrating';
 
 interface TableRecord {
@@ -11,23 +11,28 @@ interface TableRecord {
 	isTieuDeDanhMuc?: boolean;
 }
 const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean }) => {
+	const intl = useIntl();
 	const { loading, record, setVisibleForm } = useModel('khaosat.bieumau');
 
 	const columns = [
 		{
-			title: 'NỘI DUNG',
+			title: intl.formatMessage({ id: 'bieumau.viewdrl.noidung' }),
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord?.isTieuDeDanhMuc) {
 					return <ExpandText style={{ fontWeight: 'bold' }}>{tableRecord.noiDung}</ExpandText>;
 				}
 				if (tableRecord.type === 'tongDiem') {
-					return <Typography.Text style={{ fontSize: '18px' }}>TỔNG ĐIỂM</Typography.Text>;
+					return (
+						<Typography.Text style={{ fontSize: '18px' }}>
+							{intl.formatMessage({ id: 'bieumau.viewdrl.tongdiem' })}
+						</Typography.Text>
+					);
 				}
 				return <ExpandText>{tableRecord.noiDung}</ExpandText>;
 			},
 		},
 		{
-			title: 'Điểm tối đa',
+			title: intl.formatMessage({ id: 'bieumau.viewdrl.diemtoida' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				return tableRecord?.isTieuDeDanhMuc ? (
@@ -43,7 +48,7 @@ const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean
 			},
 		},
 		{
-			title: 'Sinh viên tự đánh giá',
+			title: intl.formatMessage({ id: 'bieumau.viewdrl.diemtudanhgia' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem' || tableRecord.type === 'khoi') {
@@ -53,7 +58,7 @@ const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean
 			},
 		},
 		{
-			title: 'BCS chấm điểm',
+			title: intl.formatMessage({ id: 'bieumau.viewdrl.diembcs' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem' || tableRecord.type === 'khoi') {
@@ -63,7 +68,7 @@ const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean
 			},
 		},
 		{
-			title: 'CVHT xác nhận',
+			title: intl.formatMessage({ id: 'bieumau.viewdrl.cvhtxacnhan' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem' || tableRecord.type === 'khoi') {
@@ -74,7 +79,7 @@ const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean
 		},
 
 		{
-			title: 'Phòng CTSV chấm điểm',
+			title: intl.formatMessage({ id: 'bieumau.viewdrl.ctsvxacnhan' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem' || tableRecord.type === 'khoi') {
@@ -110,7 +115,7 @@ const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean
 			<Table pagination={false} columns={columns as any} dataSource={dataSource} />
 			{!props?.hideClose && (
 				<div className='form-footer'>
-					<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			)}
 		</>
@@ -118,7 +123,7 @@ const ViewDetailDiemRenLuyen = (props: { hideCard?: boolean; hideClose?: boolean
 
 	if (!props?.hideCard)
 		return (
-			<Card loading={loading} title='Chi tiết biểu mẫu điểm rèn luyện'>
+			<Card loading={loading} title={intl.formatMessage({ id: 'bieumau.viewdrl.title' })}>
 				{renderContent}
 			</Card>
 		);

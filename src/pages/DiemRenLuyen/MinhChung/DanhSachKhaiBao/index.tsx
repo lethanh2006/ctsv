@@ -6,8 +6,10 @@ import { useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import SplitPane from 'react-split-pane';
 import Pane from 'react-split-pane/lib/Pane';
+import { useIntl } from 'umi';
 
 const DanhSachKhaiBao = (props: { tenLop?: string; idLop?: string }) => {
+	const intl = useIntl();
 	const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 	const [paneSize, setPaneSize] = useState('20%');
 	const handlePaneSizeChange = (size: any) => setPaneSize(size[0]);
@@ -36,6 +38,14 @@ const DanhSachKhaiBao = (props: { tenLop?: string; idLop?: string }) => {
 		</>
 	);
 
-	return <>{props.idLop ? MainContent : <Card title={'Danh sách khai báo minh chứng'}>{MainContent}</Card>}</>;
+	return (
+		<>
+			{props.idLop ? (
+				MainContent
+			) : (
+				<Card title={intl.formatMessage({ id: 'lophanhchinh.minhchung.title' })}>{MainContent}</Card>
+			)}
+		</>
+	);
 };
 export default DanhSachKhaiBao;

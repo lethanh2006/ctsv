@@ -11,12 +11,14 @@ import {
 	MapTitleETrangThaiPhieuDiemRL,
 } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
 import type { PhieuDiemRenLuyen } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/typing';
-import { useModel } from 'umi';
 import { ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Spin, Tag, Tooltip } from 'antd';
 import fileDownload from 'js-file-download';
 import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
+
 const DanhSachSinhVien = (props: { idLop?: string }) => {
+	const intl = useIntl();
 	const { getModel, page, limit, condition, handleView, loading, exportThongKeModel, setLoading } = useModel(
 		'diemrenluyen.phieudiemrenluyen',
 	);
@@ -56,7 +58,7 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 
 	const columns: IColumn<PhieuDiemRenLuyen.IRecord>[] = [
 		{
-			title: 'Mã SV',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.masv' }),
 			dataIndex: 'maSinhVien',
 			width: 120,
 			sortable: true,
@@ -65,14 +67,14 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 			onCell,
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.hoten' }),
 			dataIndex: 'hoTen',
 			width: 160,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Lớp hành chính',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.lophc' }),
 			dataIndex: 'lopHanhChinh',
 			width: 100,
 			align: 'center',
@@ -80,7 +82,7 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 			onCell,
 		},
 		{
-			title: 'Sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.sinhvien' }),
 			dataIndex: 'trangThaiNopSV',
 			width: 160,
 			align: 'center',
@@ -94,7 +96,7 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 				val ? <Tag color={MapColorETrangThaiPhieuDiemRL?.[val]}>{MapTitleETrangThaiPhieuDiemRL?.[val]}</Tag> : '',
 		},
 		{
-			title: 'Ban cán sự',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.bancansu' }),
 			dataIndex: 'trangThaiNopBCS',
 			width: 160,
 			align: 'center',
@@ -108,7 +110,7 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 				val ? <Tag color={MapColorETrangThaiPhieuDiemRL?.[val]}>{MapTitleETrangThaiPhieuDiemRL?.[val]}</Tag> : '',
 		},
 		{
-			title: 'Cố vấn học tập',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.covanht' }),
 			dataIndex: 'trangThaiNopCoVan',
 			width: 160,
 			align: 'center',
@@ -122,16 +124,16 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 				val ? <Tag color={MapColorETrangThaiPhieuDiemRL?.[val]}>{MapTitleETrangThaiPhieuDiemRL?.[val]}</Tag> : '',
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: PhieuDiemRenLuyen.IRecord) => (
 				<>
-					<Tooltip title='Xem chi tiết'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chitiet' })}>
 						<Button onClick={() => handleView(record)} type='link' icon={<EyeOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xuất phiếu điểm'>
+					<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.button.xuatphieudiem' })}>
 						<Button
 							loading={loading}
 							onClick={() => exportPhieuDiemRenLuyen(record)}
@@ -266,14 +268,14 @@ const DanhSachSinhVien = (props: { idLop?: string }) => {
 								}}
 							/>
 						)}
-						<Tooltip title='Xuất thống kê kết quả'>
+						<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.button.xuathongke' })}>
 							<Button
 								loading={loading}
 								onClick={() => exportThongKeModel(recodDot?._id ?? '', recordLopHanhChinh?.ten)}
 								type='primary'
 								icon={<ExportOutlined />}
 							>
-								Xuất kết quả
+								{intl.formatMessage({ id: 'lophanhchinh.phieudiem.dssv.button.xuatkq' })}
 							</Button>
 						</Tooltip>
 					</>,

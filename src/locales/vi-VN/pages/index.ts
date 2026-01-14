@@ -4,6 +4,7 @@ import chinhtritutuong from './chinhtritutuong';
 import danhmuc from './danhmuc';
 import danhmucchinhsach from './danhmucchinhsach';
 import dichvuhanhchinh from './dichvuhanhchinh';
+import diemrenluyen from './diemrenluyen';
 import donvihanhchinh from './donvihanhchinh';
 import login from './login';
 import loptinchi from './loptinchi';
@@ -36,4 +37,5 @@ export default {
 	...chedochinhsach,
 	...dichvuhanhchinh,
 	...sukien,
+	...diemrenluyen,
 };

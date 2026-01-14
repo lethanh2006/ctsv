@@ -20,10 +20,11 @@ import {
 } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, Modal, Popconfirm, Popover, Spin, Tag } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormImport from './components/FormImport';
 
 const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: () => void }) => {
+	const intl = useIntl();
 	const {
 		getModel,
 		page,
@@ -90,14 +91,14 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 
 	const columns: IColumn<KhaiBaoDRL.IRecord>[] = [
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.hoten' }),
 			dataIndex: 'hoTen',
 			filterType: 'string',
 			onCell,
 			width: 150,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.masv' }),
 			dataIndex: 'maSinhVien',
 			align: 'center',
 			filterType: 'string',
@@ -105,7 +106,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			width: 150,
 		},
 		{
-			title: 'Lớp hành chính',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.lhc' }),
 			dataIndex: 'lopHanhChinh',
 			align: 'center',
 			filterType: 'string',
@@ -113,7 +114,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			width: 150,
 		},
 		{
-			title: 'Người khai báo',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.nguoikhaobao' }),
 			dataIndex: 'nguoiKhaiBao',
 			align: 'center',
 			onCell,
@@ -121,7 +122,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			render: (val) => val?.ten ?? '',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.trangthai' }),
 			dataIndex: 'trangThai',
 			align: 'center',
 			onCell,
@@ -133,7 +134,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
@@ -143,7 +144,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 					content={
 						<>
 							<Popconfirm
-								title={'Bạn có chắc chắn muốn duyệt minh chứng này'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.duyet' })}
 								placement={'topLeft'}
 								disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 								onConfirm={() => {
@@ -152,14 +153,14 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-									tooltip='Duyệt'
+									tooltip={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.duyet' })}
 									type='link'
 									icon={<CheckOutlined />}
 								/>
 							</Popconfirm>
 							<Divider type={'vertical'} />
 							<Popconfirm
-								title={'Bạn có chắc chắn muốn từ chối minh chứng này'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.tuchoi' })}
 								placement={'topLeft'}
 								disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 								onConfirm={() => {
@@ -168,7 +169,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-									tooltip='Từ chối'
+									tooltip={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.tuchoi' })}
 									type='link'
 									danger
 									icon={<CloseOutlined />}
@@ -176,7 +177,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							</Popconfirm>
 							<Divider type={'vertical'} />
 							<Popconfirm
-								title={'Bạn có chắc chắn chuyển về trạng thái chờ xử lý'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.chuyenvechoxuly' })}
 								placement={'topLeft'}
 								disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 								onConfirm={() => {
@@ -185,7 +186,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-									tooltip='Chuyển vể chờ xử lý'
+									tooltip={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.chuyenvechoxuly' })}
 									type='link'
 									icon={<UndoOutlined />}
 								/>
@@ -194,7 +195,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 
 							<ButtonExtend
 								disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.DUYET}
-								tooltip='Chỉnh sửa'
+								tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
 								type='link'
 								icon={<EditOutlined />}
 								onClick={() => {
@@ -204,15 +205,17 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							<Divider type={'vertical'} />
 							<Popconfirm
 								disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.DUYET}
-								title={'Bạn có chắc chắn muốn xoá minh chứng này'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.xoa' })}
 								placement={'topLeft'}
 								onConfirm={() => {
-									deleteModel(rec?._id, getData);
+									deleteModel(rec?._id, getData, {
+										messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+									});
 								}}
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.DUYET}
-									tooltip='Xoá'
+									tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
 									type='link'
 									danger
 									icon={<DeleteOutlined />}
@@ -260,19 +263,21 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 											getTemplateImportMinhChungModel(recordCauHinh?._id ?? '', recordCauHinh?.tenMinhChung ?? '');
 										}}
 									>
-										Tải mẫu import
+										{intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.taimau' })}
 									</Menu.Item>
 									<Menu.Item
 										onClick={() => {
 											setVisibleFormImport(true);
 										}}
 									>
-										Import dữ liệu
+										{intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.import' })}
 									</Menu.Item>
 								</Menu>
 							}
 						>
-							<Button icon={<ImportOutlined />}>Import dữ liệu</Button>
+							<Button icon={<ImportOutlined />}>
+								{intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.import' })}
+							</Button>
 						</Dropdown>
 						<SelectDotDiemRenLuyen
 							style={{ width: 300 }}
@@ -300,7 +305,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			<Modal
 				destroyOnClose
 				open={visibleFormImport}
-				title={'Import minh chứng'}
+				title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.importminhchung' })}
 				onCancel={() => {
 					setVisibleFormImport(false);
 				}}
