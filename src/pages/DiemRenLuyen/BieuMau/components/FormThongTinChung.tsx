@@ -1,21 +1,22 @@
-import {ELoaiBieuMau, ELoaiDoiTuong} from '@/services/KhaoSat/constant';
+import { ELoaiBieuMau, ELoaiDoiTuong } from '@/services/KhaoSat/constant';
 import rules from '@/utils/rules';
-import {resetFieldsForm} from '@/utils/utils';
-import {Button, Form, Input, Switch} from 'antd';
-import {useEffect, useState} from 'react';
-import {useModel} from 'umi';
+import { resetFieldsForm } from '@/utils/utils';
+import { Button, Form, Input, Switch } from 'antd';
+import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 	const [form] = Form.useForm();
 	const { formSubmiting, record, setRecord, setVisibleForm, visibleForm } = useModel('khaosat.bieumau');
 	const [camKet, setCamKet] = useState<boolean | undefined>(record?.coCamKet);
+	const intl = useIntl();
 
 	const onFinish = async (values: any) => {
 		setRecord({
 			...record,
 			...values,
 			doiTuong: ELoaiDoiTuong.TAT_CA,
-      loai:ELoaiBieuMau.CHAM_DIEM_REN_LUYEN
+			loai: ELoaiBieuMau.CHAM_DIEM_REN_LUYEN,
 		});
 		if (props.afterAddNew) props.afterAddNew();
 	};
@@ -40,17 +41,27 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 			{/*</Form.Item>*/}
 			<Form.Item
 				name='tieuDe'
-				label='Tiêu đề'
+				label={intl.formatMessage({ id: 'bieumau.column.tieude' })}
 				rules={[...rules.required, ...rules.text, ...rules.length(250)]}
 				initialValue={record?.tieuDe}
 			>
-				<Input placeholder='Nhập tiêu đề' />
+				<Input placeholder={intl.formatMessage({ id: 'bieumau.title.nhaptieude' })} />
 			</Form.Item>
-			<Form.Item name='moTa' label='Mô tả' rules={[...rules.length(2000)]} initialValue={record?.moTa}>
-				<Input.TextArea rows={3} placeholder='Nhập mô tả' />
+			<Form.Item
+				name='moTa'
+				label={intl.formatMessage({ id: 'bieumau.column.mota' })}
+				rules={[...rules.length(2000)]}
+				initialValue={record?.moTa}
+			>
+				<Input.TextArea rows={3} placeholder={intl.formatMessage({ id: 'bieumau.title.nhapmota' })} />
 			</Form.Item>
 
-			<Form.Item name='coCamKet' label='Có cam kết' initialValue={record?.coCamKet} valuePropName='checked'>
+			<Form.Item
+				name='coCamKet'
+				label={intl.formatMessage({ id: 'bieumau.cocamket' })}
+				initialValue={record?.coCamKet}
+				valuePropName='checked'
+			>
 				<Switch onChange={(val) => setCamKet(val)} />
 			</Form.Item>
 
@@ -58,18 +69,18 @@ const FormThongTinChungKhaoSat = (props: { afterAddNew?: () => void }) => {
 				<Form.Item
 					rules={[...rules.required]}
 					name='noiDungCamKet'
-					label='Nội dung cam kết'
+					label={intl.formatMessage({ id: 'bieumau.noidungcamket' })}
 					initialValue={record?.noiDungCamKet}
 				>
-					<Input placeholder='Nội dung cam kết' />
+					<Input placeholder={intl.formatMessage({ id: 'bieumau.noidungcamket' })} />
 				</Form.Item>
 			)}
 
 			<div className='form-footer'>
 				<Button loading={formSubmiting} htmlType='submit' type='primary'>
-					Tiếp theo
+					{intl.formatMessage({ id: 'global.button.tieptheo' })}
 				</Button>
-				<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 			</div>
 		</Form>
 	);
