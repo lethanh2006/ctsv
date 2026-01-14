@@ -1,9 +1,10 @@
-import { useModel } from 'umi';
-import { useEffect } from 'react';
-import { IColumn } from '@/components/Table/typing';
 import TableStaticData from '@/components/Table/TableStaticData';
+import { IColumn } from '@/components/Table/typing';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const DanhSachKhoa = () => {
+	const intl = useIntl();
 	const { getAllModel, danhSach, setRecord, record } = useModel('daotaov2.khoasinhvien.khoasinhvien');
 
 	useEffect(() => {
@@ -24,7 +25,7 @@ const DanhSachKhoa = () => {
 
 	const columns: IColumn<KhoaSinhVien.IRecord>[] = [
 		{
-			title: `Tên khoá sinh viên`,
+			title: intl.formatMessage({ id: 'phieudiem.tenkhoasinhvien' }),
 			dataIndex: 'ten',
 			width: 200,
 			onCell,

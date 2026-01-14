@@ -1,7 +1,7 @@
+import type { ENguoiTraLoiDrl, ETrangThaiDanhGia } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
 import { SaveOutlined, SendOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import type { ENguoiTraLoiDrl, ETrangThaiDanhGia } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
-import { ENguoiTraLoi } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
+import { useIntl } from 'umi';
 
 interface Props {
 	onLuuVaGuiSau?: () => void;
@@ -30,6 +30,7 @@ export const Footer = ({
 	disableKetThuc,
 	disabled,
 }: Props) => {
+	const intl = useIntl();
 	const renderButtonGuiNgay = () => {
 		return (
 			<Button
@@ -38,7 +39,8 @@ export const Footer = ({
 				loading={formSubmiting && dangGuiNgay}
 				type='primary'
 			>
-				Gửi <SendOutlined style={{ transform: 'translate(1px, -1px) rotate(-45deg)' }} />
+				{intl.formatMessage({ id: 'phieudiem.gui' })}{' '}
+				<SendOutlined style={{ transform: 'translate(1px, -1px) rotate(-45deg)' }} />
 			</Button>
 		);
 	};
@@ -57,7 +59,7 @@ export const Footer = ({
 				loading={formSubmiting && !dangGuiNgay}
 				disabled={(formSubmiting && dangGuiNgay) || disabled}
 			>
-				Lưu & Gửi sau <SaveOutlined />
+				{intl.formatMessage({ id: 'phieudiem.luuvaguisau' })} <SaveOutlined />
 			</Button>
 		);
 	};
