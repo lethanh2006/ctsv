@@ -6,13 +6,14 @@ import { ETrangThaiKhieuNai, MapKeyColorTrangThaiKhieuNai } from '@/services/Die
 import type { PhieuDiemRenLuyen } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/typing';
 import { CheckOutlined, CloseOutlined, ExportOutlined, RedoOutlined } from '@ant-design/icons';
 import { Button, Tag, Tooltip } from 'antd';
+import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/Select';
 import FormNhapPhieuDiem from '../PhieuDiem/FormPhieuDiem/Form';
-import dayjs from 'dayjs';
 
 const DonKhieuNaiPage = () => {
+	const intl = useIntl();
 	const {
 		getModel,
 		exportDonKhieuNaiModel,
@@ -50,7 +51,7 @@ const DonKhieuNaiPage = () => {
 
 	const columns: IColumn<PhieuDiemRenLuyen.IRecord>[] = [
 		{
-			title: 'Thời gian gửi khiếu nại',
+			title: intl.formatMessage({ id: 'donkhieunai.thoigiangui' }),
 			align: 'center',
 			sortable: true,
 			dataIndex: 'thoiGianGuiKhieuNai',
@@ -58,7 +59,7 @@ const DonKhieuNaiPage = () => {
 			render: (val) => dayjs(val).format('HH:mm DD/MM/YYYY'),
 		},
 		{
-			title: 'Họ tên',
+			title: intl.formatMessage({ id: 'donkhieunai.hoten' }),
 			align: 'center',
 			dataIndex: 'hoTen',
 			width: 200,
@@ -66,7 +67,7 @@ const DonKhieuNaiPage = () => {
 			onCell,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'donkhieunai.msv' }),
 			align: 'center',
 			dataIndex: 'maSinhVien',
 			width: 150,
@@ -74,7 +75,7 @@ const DonKhieuNaiPage = () => {
 			onCell,
 		},
 		{
-			title: 'Lớp',
+			title: intl.formatMessage({ id: 'donkhieunai.lop' }),
 			align: 'center',
 			dataIndex: 'lopHanhChinh',
 			width: 150,
@@ -82,7 +83,7 @@ const DonKhieuNaiPage = () => {
 			onCell,
 		},
 		{
-			title: 'Nội dung khiếu nại',
+			title: intl.formatMessage({ id: 'donkhieunai.noidung' }),
 			// align: 'center',
 			dataIndex: 'noiDungKhieuNai',
 			width: 300,
@@ -90,7 +91,7 @@ const DonKhieuNaiPage = () => {
 			onCell,
 		},
 		{
-			title: 'File minh chứng',
+			title: intl.formatMessage({ id: 'donkhieunai.fileminhchung' }),
 			dataIndex: 'urlFileDinhKem',
 			align: 'center',
 			onCell,
@@ -100,7 +101,7 @@ const DonKhieuNaiPage = () => {
 					{val.map((item) => (
 						<Tag key={item} color={primaryColor}>
 							<a href={item} target='_blank' rel='noreferrer'>
-								Xem tập tin
+								{intl.formatMessage({ id: 'donkhieunai.xemteptin' })}
 							</a>
 						</Tag>
 					))}
@@ -108,7 +109,7 @@ const DonKhieuNaiPage = () => {
 			),
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'donkhieunai.trangthai' }),
 			dataIndex: 'trangThaiXuLyKhieuNai',
 			width: 120,
 			align: 'center',
@@ -118,13 +119,13 @@ const DonKhieuNaiPage = () => {
 			render: (val: ETrangThaiKhieuNai) => <Tag color={MapKeyColorTrangThaiKhieuNai[val]}>{val}</Tag>,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'donkhieunai.thaotac' }),
 			width: 120,
 			align: 'center',
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
-					<Tooltip title='Xuất đơn khiếu nại'>
+					<Tooltip title={intl.formatMessage({ id: 'donkhieunai.tooltip.xuatdon' })}>
 						<Button
 							loading={loading}
 							onClick={() => {
@@ -135,7 +136,7 @@ const DonKhieuNaiPage = () => {
 						/>
 					</Tooltip>
 					{rec.trangThaiXuLyKhieuNai !== ETrangThaiKhieuNai.CHO_XU_LY && (
-						<Tooltip title='Chuyển về chờ xử lý'>
+						<Tooltip title={intl.formatMessage({ id: 'donkhieunai.tooltip.chuyenvechoxuly' })}>
 							<Button
 								loading={loading}
 								onClick={() => {
@@ -153,7 +154,7 @@ const DonKhieuNaiPage = () => {
 							/>
 						</Tooltip>
 					)}
-					<Tooltip title='Duyệt đơn khiếu nại'>
+					<Tooltip title={intl.formatMessage({ id: 'donkhieunai.tooltip.duyet' })}>
 						<Button
 							disabled={rec.trangThaiXuLyKhieuNai !== ETrangThaiKhieuNai.CHO_XU_LY}
 							loading={loading}
@@ -165,7 +166,7 @@ const DonKhieuNaiPage = () => {
 							icon={<CheckOutlined />}
 						/>
 					</Tooltip>
-					<Tooltip title='Không duyệt đơn khiếu nại'>
+					<Tooltip title={intl.formatMessage({ id: 'donkhieunai.tooltip.khongduyet' })}>
 						<Button
 							disabled={rec.trangThaiXuLyKhieuNai !== ETrangThaiKhieuNai.CHO_XU_LY}
 							loading={loading}
@@ -219,7 +220,7 @@ const DonKhieuNaiPage = () => {
 			]}
 			modelName={'diemrenluyen.phieudiemrenluyen'}
 			columns={columns}
-			title='Đơn khiếu nại'
+			title={intl.formatMessage({ id: 'donkhieunai.title' })}
 		/>
 	);
 };

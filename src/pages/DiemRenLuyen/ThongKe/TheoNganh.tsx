@@ -3,12 +3,12 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import { getThongKe } from '@/services/DiemRenLuyen';
 import { inputFormat, jsonToXlsx, transformDataColumnsTableToJson } from '@/utils/utils';
+import { ExportOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Spin } from 'antd';
 import numeral from 'numeral';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import styles from './style.less';
-import { ExportOutlined } from '@ant-design/icons';
 
 type Data = {
 	Ngành: string;
@@ -50,6 +50,7 @@ interface IDataThongKe {
 }
 
 const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string }) => {
+	const intl = useIntl();
 	const { record } = useModel('diemrenluyen.dot');
 	const [data, setData] = useState<Data[]>([]);
 	const [dataBieuDo, setDataBieuDo] = useState<any>();
@@ -104,10 +105,14 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 
 	const columnFinal: IColumn<any>[] = [
 		{
-			title: 'Ngành',
+			title: intl.formatMessage({ id: 'thongke.nganh' }),
 			dataIndex: 'Ngành',
 			width: 200,
-			render: (val) => <div style={{ fontWeight: val === 'Tổng cộng' ? 'bold' : undefined }}>{val}</div>,
+			render: (val) => (
+				<div style={{ fontWeight: val === intl.formatMessage({ id: 'thongke.tongcong' }) ? 'bold' : undefined }}>
+					{val}
+				</div>
+			),
 		},
 		// {
 		// 	title: 'Tổng số sinh viên',
@@ -115,13 +120,13 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 		// 	align: 'center',
 		// },
 		{
-			title: 'Tổng số sinh viên',
+			title: intl.formatMessage({ id: 'thongke.tongsv' }),
 			width: 150,
 			dataIndex: 'Tổng số sinh viên',
 			align: 'center',
 		},
 		{
-			title: 'Chưa đánh giá',
+			title: intl.formatMessage({ id: 'thongke.chuadanhgia' }),
 			width: 150,
 			dataIndex: 'Chưa đánh giá',
 			align: 'center',
@@ -135,7 +140,7 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 				),
 		},
 		{
-			title: 'Xuất sắc',
+			title: intl.formatMessage({ id: 'thongke.xuatsac' }),
 			width: 150,
 			dataIndex: 'Phân loại XS',
 			align: 'center',
@@ -149,7 +154,7 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 				),
 		},
 		{
-			title: 'Tốt',
+			title: intl.formatMessage({ id: 'thongke.tot' }),
 			width: 150,
 			dataIndex: 'Phân loại Tốt',
 			align: 'center',
@@ -163,7 +168,7 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 				),
 		},
 		{
-			title: 'Khá',
+			title: intl.formatMessage({ id: 'thongke.kha' }),
 			width: 150,
 			dataIndex: 'Phân loại Khá',
 			align: 'center',
@@ -177,7 +182,7 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 				),
 		},
 		{
-			title: 'Trung bình',
+			title: intl.formatMessage({ id: 'thongke.trungbinh' }),
 			width: 150,
 			dataIndex: 'Phân loại Trung bình',
 			align: 'center',
@@ -191,7 +196,7 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 				),
 		},
 		{
-			title: 'Yếu/Kém',
+			title: intl.formatMessage({ id: 'thongke.yeukem' }),
 			width: 150,
 			dataIndex: 'Phân loại Yếu/Kém',
 			align: 'center',
@@ -213,7 +218,13 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 					<ColumnChart
 						height={500}
 						title=''
-						yLabel={['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu/kém']}
+						yLabel={[
+							intl.formatMessage({ id: 'thongke.xuatsac' }),
+							intl.formatMessage({ id: 'thongke.tot' }),
+							intl.formatMessage({ id: 'thongke.kha' }),
+							intl.formatMessage({ id: 'thongke.trungbinh' }),
+							intl.formatMessage({ id: 'thongke.yeukem' }),
+						]}
 						colors={['#1fba36', '#0d6efd', '#0dcaf0', '#ffca2c', '#dc3545']}
 						xAxis={data?.map((item) => `${item.Ngành} - ${item.tenVietTat}`)}
 						formatY={(val) => inputFormat(val ?? 0) + ''}
@@ -252,7 +263,7 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 				data={[
 					...data,
 					{
-						Ngành: 'Tổng cộng',
+						Ngành: intl.formatMessage({ id: 'thongke.tongcong' }),
 						'Phân loại Khá': data.reduce((pre, cur) => {
 							return pre + (cur?.['Phân loại Khá'] ?? 0);
 						}, 0),
@@ -312,13 +323,13 @@ const ThongKePhieuDiemTheoNganh = (props: { trinhDo: string; hinhThuc: string })
 									).toFixed(2)}%)`,
 								};
 							}),
-							`Thống kê theo ngành_${record?.tenDot}`,
+							intl.formatMessage({ id: 'thongke.export.filename.nganh' }, { tenDot: record?.tenDot ?? '' }),
 						)
 					}
 					icon={<ExportOutlined />}
 					type='primary'
 				>
-					Xuất dữ liệu
+					{intl.formatMessage({ id: 'global.button.xuatdulieu' })}
 				</Button>
 			</TableStaticData>
 		</Spin>

@@ -108,4 +108,15 @@ export default {
 	'lophanhchinh.phieutonghop.rank.yeu': 'Loại yếu (từ 35 đến dưới 50 điểm)',
 	'lophanhchinh.phieutonghop.rank.kem': 'Loại kém (dưới 35 điểm)',
 	'lophanhchinh.phieutonghop.unit.sv': 'Sinh viên',
+
+	'bienbanhop.lop': 'Lớp',
+	'bienbanhop.chutri': 'Chủ trì',
+	'bienbanhop.thuky': 'Thư ký',
+	'bienbanhop.trangthai': 'Trạng thái',
+	'bienbanhop.thaotac': 'Thao tác',
+	'bienbanhop.tooltip.xemchitiet': 'Xem chi tiết',
+	'bienbanhop.tooltip.xoabienban': 'Xóa biên bản',
+	'bienbanhop.popconfirm.xoabienban': 'Bạn có chắc chắn xóa biên bản họp này?',
+	'bienbanhop.title.form': 'Biên bản họp lớp {tenLopHC}',
+	'bienbanhop.title.page': 'Biên bản họp',
 };
