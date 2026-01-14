@@ -4,9 +4,10 @@ import UploadFile from '@/components/Upload/UploadFile';
 import rules from '@/utils/rules';
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Form, Modal, Tabs } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const FormImport = (props: { getData: any }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { importMinhChungModel, setVisibleFormImport, loading, formSubmiting } = useModel(
 		'diemrenluyen.minhchung.khaibao',
@@ -43,18 +44,26 @@ const FormImport = (props: { getData: any }) => {
 
 						Modal.info({
 							width: 1000,
-							title: 'Kết quả import',
+							title: intl.formatMessage({ id: 'minhchung.khaibao.ketquaimport' }),
 							content: (
 								<div>
 									<Tabs type='card'>
 										<Tabs.TabPane
-											tab={`${dataResult?.insertSuccess?.length ?? 0} thành công`}
+											tab={`${dataResult?.insertSuccess?.length ?? 0} ${intl.formatMessage({
+												id: 'minhchung.khaibao.thanhcong',
+											})}`}
 											key={'success'}
 											tabKey='success'
 										>
 											<TableStaticData columns={columns} data={dataResult?.insertSuccess ?? []} addStt />
 										</Tabs.TabPane>
-										<Tabs.TabPane tab={`${dataResult?.insertError?.length ?? 0} gặp lỗi`} key={'error'} tabKey='error'>
+										<Tabs.TabPane
+											tab={`${dataResult?.insertError?.length ?? 0} ${intl.formatMessage({
+												id: 'minhchung.khaibao.gaploi',
+											})}`}
+											key={'error'}
+											tabKey='error'
+										>
 											<TableStaticData columns={columns} data={dataResult?.insertError ?? []} addStt />
 										</Tabs.TabPane>
 									</Tabs>
@@ -65,16 +74,20 @@ const FormImport = (props: { getData: any }) => {
 				}
 			}}
 		>
-			<Form.Item rules={[...rules.required]} name='file' label='File dữ liệu'>
+			<Form.Item
+				rules={[...rules.required]}
+				name='file'
+				label={intl.formatMessage({ id: 'minhchung.khaibao.filedulieu' })}
+			>
 				<UploadFile maxCount={1} accept='.xlsx' />
 			</Form.Item>
 
 			<div className='form-footer'>
 				<Button icon={<SaveOutlined />} loading={formSubmiting || loading} htmlType='submit' type='primary'>
-					{'Lưu lại'}
+					{intl.formatMessage({ id: 'global.button.luulai' })}
 				</Button>
 				<Button icon={<CloseOutlined />} onClick={() => setVisibleFormImport(false)}>
-					Hủy
+					{intl.formatMessage({ id: 'global.button.huy' })}
 				</Button>
 			</div>
 		</Form>

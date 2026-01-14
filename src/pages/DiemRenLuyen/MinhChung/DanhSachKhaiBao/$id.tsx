@@ -1,13 +1,13 @@
-import { useModel, history } from 'umi';
-import { useMediaQuery } from 'react-responsive';
-import { useEffect, useState } from 'react';
-import { Button, Card } from 'antd';
 import StepDotChamDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Step';
-import SplitPane from 'react-split-pane';
-import Pane from 'react-split-pane/lib/Pane';
 import DanhSachMinhChung from '@/pages/DiemRenLuyen/MinhChung/CauHinh/DanhSach';
 import KhaiBaoMinhChung from '@/pages/DiemRenLuyen/MinhChung/KhaiBao';
 import { LeftOutlined } from '@ant-design/icons';
+import { Button, Card } from 'antd';
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import SplitPane from 'react-split-pane';
+import Pane from 'react-split-pane/lib/Pane';
+import { history, useIntl, useModel } from 'umi';
 
 const DetailDanhSachKhaiBao = ({
 	match: {
@@ -16,6 +16,7 @@ const DetailDanhSachKhaiBao = ({
 }: {
 	match: { params: { id: string } };
 }) => {
+	const intl = useIntl();
 	const { getByIdModel, record: recordLopHanhChinh } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 	const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 	const [paneSize, setPaneSize] = useState('25%');
@@ -39,10 +40,12 @@ const DetailDanhSachKhaiBao = ({
 									history.push('/diem-ren-luyen/minh-chung/danh-sach-khai-bao');
 								}}
 							>
-								Quay lại
+								{intl.formatMessage({ id: 'minhchung.action.quaylai' })}
 							</Button>
 							<div>
-								{`Danh sách khai báo minh chứng ${recordLopHanhChinh?._id ? `(${recordLopHanhChinh?.ten})` : ''}`}
+								{`${intl.formatMessage({ id: 'minhchung.danhsach.title' })} ${
+									recordLopHanhChinh?._id ? `(${recordLopHanhChinh?.ten})` : ''
+								}`}
 							</div>
 						</div>
 					</>

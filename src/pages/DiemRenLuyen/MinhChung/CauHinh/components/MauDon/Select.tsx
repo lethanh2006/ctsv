@@ -1,6 +1,6 @@
 import { QuyTrinh } from '@/services/FormDong/QuyTrinh/typing';
 import { Button, Select } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const SelectMauDon = (props: {
 	value?: string | null;
@@ -9,6 +9,7 @@ const SelectMauDon = (props: {
 	multiple?: boolean;
 	hasCreate?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, hasCreate, onChangeGetAllData } = props;
 	const { record } = useModel('formdong.formdong');
 	const { setRecord: setRecordLoaiHinh, setVisiblePreview } = useModel('quytrinh.loaihinh');
@@ -47,7 +48,7 @@ const SelectMauDon = (props: {
 									type='link'
 									size='small'
 								>
-									Chi tiết
+									{intl.formatMessage({ id: 'global.button.chitiet' })}
 								</Button>
 								)
 							</span>
@@ -55,7 +56,7 @@ const SelectMauDon = (props: {
 					}))}
 					showSearch
 					optionFilterProp='label'
-					placeholder='Chọn mẫu đơn'
+					placeholder={intl.formatMessage({ id: 'minhchung.form.chonmaudon' })}
 				/>
 			</div>
 		</div>

@@ -87,11 +87,11 @@ const CauHinh = () => {
 			filterData: [
 				{
 					value: true,
-					label: 'Dùng cho sự kiện',
+					label: intl.formatMessage({ id: 'minhchung.form.dungsk.option1' }),
 				},
 				{
 					value: false,
-					label: 'Không dùng cho sự kiện',
+					label: intl.formatMessage({ id: 'minhchung.form.dungsk.option2' }),
 				},
 			],
 			onCell,

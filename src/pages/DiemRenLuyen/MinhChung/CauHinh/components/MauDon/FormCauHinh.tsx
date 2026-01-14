@@ -77,7 +77,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 			: recordMauDon.cauHinhLoaiHinh;
 
 		if (listMaCauHinh?.map((item: { ma: any }) => item.ma)?.includes(values?.ma)) {
-			message.error('Mã đã tồn tại');
+			message.error(intl.formatMessage({ id: 'minhchung.error.matontai' }));
 			return;
 		}
 
@@ -97,7 +97,11 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				],
 			});
 		}
-		message.success(editCauHinh ? 'Sửa thành công' : 'Thêm thành công');
+		message.success(
+			editCauHinh
+				? intl.formatMessage({ id: 'minhchung.message.suathanhcong' })
+				: intl.formatMessage({ id: 'minhchung.message.themthanhcong' }),
+		);
 		if (isContinue) {
 			form.resetFields();
 			setTruongThongTinLienQuan(undefined);
@@ -337,8 +341,8 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						>
 							<Radio.Group
 								options={[
-									{ value: true, label: 'Có' },
-									{ value: false, label: 'Không' },
+									{ value: true, label: intl.formatMessage({ id: 'minhchung.value.co' }) },
+									{ value: false, label: intl.formatMessage({ id: 'minhchung.value.khong' }) },
 								]}
 							/>
 						</Form.Item>
@@ -353,8 +357,8 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 							>
 								<Radio.Group
 									options={[
-										{ value: true, label: 'Có' },
-										{ value: false, label: 'Không' },
+										{ value: true, label: intl.formatMessage({ id: 'minhchung.value.co' }) },
+										{ value: false, label: intl.formatMessage({ id: 'minhchung.value.khong' }) },
 									]}
 								/>
 							</Form.Item>
@@ -373,18 +377,27 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				</Row>
 				{kieuDuLieu === EKieuDuLieu.FILE && (
 					<>
-						<Form.Item name='danhSachFileDinhKem' label='File đính kèm (nếu có)'>
+						<Form.Item
+							name='danhSachFileDinhKem'
+							label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.file.label' })}
+						>
 							<UploadFile maxCount={5} />
 						</Form.Item>
-						<Form.Item name='ghiChuFileDinhKem' label='Ghi chú File đính kèm (nếu có)'>
-							<Input placeholder='Nhập ghi chú nếu có' />
+						<Form.Item
+							name='ghiChuFileDinhKem'
+							label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.file.ghichu' })}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.file.ghichu.place' })} />
 						</Form.Item>
 					</>
 				)}
 				{kieuDuLieu === EKieuDuLieu.TEXT && (
-					<Form.Item name='textDisplay' label='Kiểu hiển thị đặc biệt (nếu có)'>
+					<Form.Item
+						name='textDisplay'
+						label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.textdisplay.label' })}
+					>
 						<Select
-							placeholder='Chọn kiểu hiển thị'
+							placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.textdisplay.place' })}
 							options={Object.values(ETextDisplay).map((item) => ({ value: item, label: MapKeyNameTextDisplay[item] }))}
 						/>
 					</Form.Item>
@@ -394,7 +407,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						name='maDanhMuc'
 						label={
 							<span>
-								Danh mục (
+								{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.danhmuc.label' })} (
 								<Button
 									loading={loadingDanhMucChung}
 									onClick={() => {
@@ -403,7 +416,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 									style={{ padding: 0 }}
 									type='link'
 								>
-									Làm mới
+									{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.lammoi' })}
 								</Button>
 								)
 							</span>
@@ -430,14 +443,14 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 								),
 								value: item.maDanhMuc,
 							}))}
-							placeholder='Danh mục'
+							placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.danhmuc.place' })}
 						/>
 					</Form.Item>
 				)}
 				{kieuDuLieu === EKieuDuLieu.TABLE && (
 					<>
 						<div className='ant-descriptions-title' style={{ marginTop: 12, marginBottom: 12 }}>
-							Danh sách cột
+							{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.danhsachcot' })}
 						</div>
 						<TableStaticData
 							onSortEnd={onSortEnd}
@@ -460,16 +473,16 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 										setRecordCot(undefined);
 									}}
 								>
-									Thêm mới
+									{intl.formatMessage({ id: 'global.button.themmoi' })}
 								</Button>
 							</Space>
 						</TableStaticData>
 
 						<Form.Item
-							extra={'Để trống nếu muốn hiển thị tất cả các cột'}
+							extra={intl.formatMessage({ id: 'minhchung.form.extra.tronghienthitatca' })}
 							style={{ marginTop: 8 }}
 							name='danhSachCotHienThi'
-							label='Danh sách cột hiển thị'
+							label={intl.formatMessage({ id: 'minhchung.form.danhsachcothienthi' })}
 							// rules={[...rules.required]}
 						>
 							<Select
@@ -479,7 +492,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 									value: item.ma,
 								}))}
 								mode='multiple'
-								placeholder='Danh sách cột hiển thị'
+								placeholder={intl.formatMessage({ id: 'minhchung.form.placeholder.danhsachtruonghienthi' })}
 							/>
 						</Form.Item>
 					</>
@@ -490,7 +503,10 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 					</Form.Item>
 				)} */}
 
-				<Form.Item name='truongThongTinLienQuan' label='Trường thông tin liên quan'>
+				<Form.Item
+					name='truongThongTinLienQuan'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglienquan.label' })}
+				>
 					<Select
 						allowClear
 						onChange={(val) => {
@@ -500,30 +516,39 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						options={recordMauDon?.cauHinhLoaiHinh
 							?.filter((item: { ma: any }) => item.ma !== recordCauHinh?.ma)
 							?.map((item: { ten: any; ma: any }) => ({ label: item.ten, value: item.ma }))}
-						placeholder='Trường thông tin liên quan'
+						placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglienquan.place' })}
 					/>
 				</Form.Item>
 				{truongThongTinLienQuan?.kieuDuLieu ? (
 					<FormGiaTriLienQuan truongThongTinLienQuan={truongThongTinLienQuan} />
 				) : null}
 
-				<Form.Item name='layDuLieuTu' label='Lấy dữ liệu từ trường thông tin'>
+				<Form.Item
+					name='layDuLieuTu'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laydulieutu.label' })}
+				>
 					<Select
 						allowClear
 						options={recordMauDon?.cauHinhLoaiHinh
 							?.filter((item: { ma: any }) => item.ma !== recordCauHinh?.ma)
 							?.map((item: { ten: any; ma: any }) => ({ label: item.ten, value: item.ma }))}
-						placeholder='Lấy dữ liệu từ trường thông tin'
+						placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laydulieutu.place' })}
 					/>
 				</Form.Item>
 
-				<Form.Item name='truongLayDuLieu' label='Trường lấy dữ liệu' rules={[...rules.text]}>
-					<Input placeholder='Trường lấy dữ liệu' />
+				<Form.Item
+					name='truongLayDuLieu'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglaydulieu.label' })}
+					rules={[...rules.text]}
+				>
+					<Input placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglaydulieu.place' })} />
 				</Form.Item>
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!editCauHinh ? 'Thêm mới' : 'Lưu lại'}
+						{!editCauHinh
+							? intl.formatMessage({ id: 'global.button.themmoi' })
+							: intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 					{!editCauHinh && (
 						<Button
@@ -535,10 +560,10 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 							}}
 							type='primary'
 						>
-							Thêm mới và tiếp tục
+							{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.themmoi.tieptuc' })}
 						</Button>
 					)}
-					<Button onClick={() => props.onCancel()}>Hủy</Button>
+					<Button onClick={() => props.onCancel()}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 			<Modal
