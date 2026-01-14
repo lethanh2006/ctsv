@@ -1,10 +1,3 @@
-import rules from '@/utils/rules';
-import { removeVietnameseTones } from '@/utils/utils';
-import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
-import _ from 'lodash';
-import { useModel } from 'umi';
-import TableCauHinh from './MauDon/TableCauHinh';
-import { useEffect } from 'react';
 import TableDanhMucDiemQuyDoi from '@/pages/DiemRenLuyen/MinhChung/CauHinh/components/TableDanhMucDiemQuyDoi';
 import {
 	EDoiTuongNhap,
@@ -13,8 +6,16 @@ import {
 	MapELoaiMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/MauDon/constants';
 import type { QuyTrinh } from '@/services/FormDong/QuyTrinh/typing';
+import rules from '@/utils/rules';
+import { removeVietnameseTones } from '@/utils/utils';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import _ from 'lodash';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
+import TableCauHinh from './MauDon/TableCauHinh';
 
 const FormThemMoiBieuMau = () => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { recordMauDon, setRecordMauDon } = useModel('formdong.formdong');
 	const { edit, formSubmiting, setVisibleForm, setFormValues, formValues, postModel, putModel, record } = useModel(
@@ -30,9 +31,16 @@ const FormThemMoiBieuMau = () => {
 		};
 
 		if (edit) {
-			putModel(record?._id ?? '', { ...payload });
+			putModel(
+				record?._id ?? '',
+				{ ...payload },
+				undefined,
+				undefined,
+				undefined,
+				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+			);
 		} else {
-			postModel({ ...payload });
+			postModel({ ...payload }, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 		}
 	};
 
@@ -57,7 +65,13 @@ const FormThemMoiBieuMau = () => {
 
 	return (
 		<>
-			<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'cấu hình minh chứng'}>
+			<Card
+				title={
+					edit
+						? intl.formatMessage({ id: 'minhchung.form.chinhsua' })
+						: intl.formatMessage({ id: 'minhchung.form.themmoi' })
+				}
+			>
 				<Form
 					onValuesChange={(changedValues, values) => {
 						setFormValues(values);
@@ -68,25 +82,37 @@ const FormThemMoiBieuMau = () => {
 				>
 					<Row gutter={[12, 0]}>
 						<Col span={12}>
-							<Form.Item name='tenMinhChung' label='Tên minh chứng' rules={[...rules.required, ...rules.text]}>
+							<Form.Item
+								name='tenMinhChung'
+								label={intl.formatMessage({ id: 'minhchung.form.tenminhchung' })}
+								rules={[...rules.required, ...rules.text]}
+							>
 								<Input
 									onChange={(e) => {
 										if (!edit)
 											form.setFieldsValue({ maMinhChung: _.camelCase(removeVietnameseTones(e?.target?.value ?? '')) });
 									}}
-									placeholder='Tên minh chứng'
+									placeholder={intl.formatMessage({ id: 'minhchung.form.tenminhchung.place' })}
 								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='maMinhChung' label='Mã minh chứng' rules={[...rules.required, ...rules.text]}>
-								<Input placeholder='Mã minh chứng' disabled={edit} />
+							<Form.Item
+								name='maMinhChung'
+								label={intl.formatMessage({ id: 'minhchung.form.maminhchung' })}
+								rules={[...rules.required, ...rules.text]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'minhchung.form.maminhchung.place' })} disabled={edit} />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='doiTuongNhap' label='Đối tượng nhập' rules={[...rules.required]}>
+							<Form.Item
+								name='doiTuongNhap'
+								label={intl.formatMessage({ id: 'minhchung.form.doituong' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder={'Chọn đối tượng'}
+									placeholder={intl.formatMessage({ id: 'minhchung.form.doituong.place' })}
 									mode={'multiple'}
 									options={Object.values(EDoiTuongNhap)?.map((val) => ({
 										value: val,
@@ -96,9 +122,13 @@ const FormThemMoiBieuMau = () => {
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='loaiMinhChung' label='Loại minh chứng' rules={[...rules.required]}>
+							<Form.Item
+								name='loaiMinhChung'
+								label={intl.formatMessage({ id: 'minhchung.form.loai' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder={'Chọn loại minh chứng'}
+									placeholder={intl.formatMessage({ id: 'minhchung.form.loai.place' })}
 									options={Object.values(ELoaiMinhChung)?.map((val) => ({
 										value: val,
 										label: MapELoaiMinhChung?.[val as ELoaiMinhChung],
@@ -108,7 +138,7 @@ const FormThemMoiBieuMau = () => {
 						</Col>
 
 						<Col span={12}>
-							<Form.Item name='dungChoSuKien' label='Dùng cho sự kiện'>
+							<Form.Item name='dungChoSuKien' label={intl.formatMessage({ id: 'minhchung.form.dungsk' })}>
 								<Select
 									onChange={(val) => {
 										if (val === true) {
@@ -120,60 +150,63 @@ const FormThemMoiBieuMau = () => {
 									options={[
 										{
 											value: true,
-											label: 'Dùng cho sự kiện',
+											label: intl.formatMessage({ id: 'minhchung.form.dungsk.option1' }),
 										},
 										{
 											value: false,
-											label: 'Không dùng cho sự kiện',
+											label: intl.formatMessage({ id: 'minhchung.form.dungsk.option2' }),
 										},
 									]}
 								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='isDanhMucDiemQuyDoi' label='Là danh mục điểm quy đổi'>
+							<Form.Item name='isDanhMucDiemQuyDoi' label={intl.formatMessage({ id: 'minhchung.form.danhmuc' })}>
 								<Select
 									disabled={dungChoSuKien}
 									options={[
 										{
 											value: true,
-											label: 'Là danh mục',
+											label: intl.formatMessage({ id: 'minhchung.form.danhmuc.option1' }),
 										},
 										{
 											value: false,
-											label: 'Không là danh mục',
+											label: intl.formatMessage({ id: 'minhchung.form.danhmuc.option2' }),
 										},
 									]}
 								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='isDuyetMacDinh' label='Tự động duyệt minh chứng'>
+							<Form.Item name='isDuyetMacDinh' label={intl.formatMessage({ id: 'minhchung.form.tudongduyet' })}>
 								<Select
 									options={[
 										{
 											value: true,
-											label: 'Có',
+											label: intl.formatMessage({ id: 'minhchung.form.tudongduyet.option1' }),
 										},
 										{
 											value: false,
-											label: 'Không',
+											label: intl.formatMessage({ id: 'minhchung.form.tudongduyet.option2' }),
 										},
 									]}
 								/>
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='choPhepNhieuMinhChung' label='Cho phép nhiều minh chứng'>
+							<Form.Item
+								name='choPhepNhieuMinhChung'
+								label={intl.formatMessage({ id: 'minhchung.form.chophepnhiemchung' })}
+							>
 								<Select
 									options={[
 										{
 											value: true,
-											label: 'Có',
+											label: intl.formatMessage({ id: 'minhchung.form.chophepnhiemchung.option1' }),
 										},
 										{
 											value: false,
-											label: 'Không',
+											label: intl.formatMessage({ id: 'minhchung.form.chophepnhiemchung.option2' }),
 										},
 									]}
 								/>
@@ -184,14 +217,17 @@ const FormThemMoiBieuMau = () => {
 								<Col span={24}>
 									<Form.Item
 										name={'tenDanhMucQuyDoi'}
-										label={'Tên danh mục quy đổi'}
+										label={intl.formatMessage({ id: 'minhchung.form.tendanhmucquydoi' })}
 										rules={[...rules.required, ...rules.text]}
 									>
-										<Input placeholder={'Tên danh mục quy đổi'} />
+										<Input placeholder={intl.formatMessage({ id: 'minhchung.form.tendanhmucquydoi.place' })} />
 									</Form.Item>
 								</Col>
 								<Col span={24}>
-									<Form.Item name={'danhMucDiemQuyDoi'} label={'Danh mục điểm quy đổi'}>
+									<Form.Item
+										name={'danhMucDiemQuyDoi'}
+										label={intl.formatMessage({ id: 'minhchung.form.danhmucquydoi' })}
+									>
 										<TableDanhMucDiemQuyDoi formProps={form} />
 									</Form.Item>
 								</Col>
@@ -199,14 +235,21 @@ const FormThemMoiBieuMau = () => {
 						)}
 						{!isDanhMucDiemQuyDoi && (
 							<Col span={12}>
-								<Form.Item name='diemQuyDoi' label='Điểm quy đổi' rules={[...rules.required]}>
-									<InputNumber style={{ width: '100%' }} placeholder='Điểm quy đổi' />
+								<Form.Item
+									name='diemQuyDoi'
+									label={intl.formatMessage({ id: 'minhchung.form.diemquydoi' })}
+									rules={[...rules.required]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										placeholder={intl.formatMessage({ id: 'minhchung.form.diemquydoi.place' })}
+									/>
 								</Form.Item>
 							</Col>
 						)}
 						<Col span={24} md={12}>
 							<Form.Item name='dungChoBanCanSuLop' valuePropName='checked'>
-								<Checkbox>Dùng cho ban cán sự lớp</Checkbox>
+								<Checkbox>{intl.formatMessage({ id: 'minhchung.form.bcs' })}</Checkbox>
 							</Form.Item>
 						</Col>
 					</Row>
@@ -215,9 +258,11 @@ const FormThemMoiBieuMau = () => {
 
 					<div className='form-footer' style={{ marginTop: 16 }}>
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit ? 'Thêm mới' : 'Lưu lại'}
+							{!edit
+								? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+								: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 						</Button>
-						<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+						<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 					</div>
 				</Form>
 			</Card>

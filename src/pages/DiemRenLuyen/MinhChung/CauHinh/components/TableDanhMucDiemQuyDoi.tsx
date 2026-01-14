@@ -4,6 +4,7 @@ import { IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Form, FormInstance, Input, InputNumber, message, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
+import { useIntl } from 'umi';
 
 interface Iprop {
 	value?: any;
@@ -11,6 +12,7 @@ interface Iprop {
 }
 
 const TableDanhMucDiemQuyDoi = (props: Iprop) => {
+	const intl = useIntl();
 	const { value, formProps } = props;
 	const [visibleForm, setVisibleForm] = useState<boolean>(false);
 	const [record, setRecord] = useState<any>();
@@ -18,25 +20,25 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 
 	const columns: IColumn<any>[] = [
 		{
-			title: 'Nội dung',
+			title: intl.formatMessage({ id: 'minhchung.danhmuc.noidung' }),
 			dataIndex: 'tieuDe',
 			width: 150,
 		},
 		{
-			title: 'Điểm quy đổi',
+			title: intl.formatMessage({ id: 'minhchung.danhmuc.diemquydoi' }),
 			dataIndex: 'diemQuyDoi',
 			align: 'center',
 			width: 150,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'minhchung.khaibao.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
 					<ButtonExtend
-						tooltip='Chỉnh sửa'
+						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
 						type='link'
 						icon={<EditOutlined />}
 						onClick={() => {
@@ -46,7 +48,7 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 						}}
 					/>
 					<Popconfirm
-						title={'Bạn có chắc chắn muốn xoá danh mục này?'}
+						title={intl.formatMessage({ id: 'minhchung.danhmuc.confirm.xoa' })}
 						onConfirm={() => {
 							const dataOrigin = formProps.getFieldValue('danhMucDiemQuyDoi') ?? [];
 							formProps.setFieldsValue({
@@ -54,7 +56,12 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 							});
 						}}
 					>
-						<ButtonExtend tooltip='Xoá' type='link' danger icon={<DeleteOutlined />} />
+						<ButtonExtend
+							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+							type='link'
+							danger
+							icon={<DeleteOutlined />}
+						/>
 					</Popconfirm>
 				</>
 			),
@@ -78,7 +85,7 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 			/>
 
 			<Modal
-				title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} danh mục điểm quy đổi`}
+				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'minhchung.danhmuc.title' })}`}
 				footer={null}
 				open={visibleForm}
 				onCancel={() => setVisibleForm(false)}
@@ -90,7 +97,7 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 						const dataOrigin = formProps.getFieldValue('danhMucDiemQuyDoi') ?? [];
 
 						if (dataOrigin?.find((item: any) => item?.tieuDe === values?.tieuDe) && !edit) {
-							message.warning('Không được trùng tiêu đề');
+							message.warning(intl.formatMessage({ id: 'minhchung.danhmuc.error.trungtieude' }));
 							return;
 						}
 
@@ -109,23 +116,26 @@ const TableDanhMucDiemQuyDoi = (props: Iprop) => {
 					}}
 					initialValues={record}
 				>
-					<Form.Item name={'tieuDe'} label={'Nội dung'}>
-						<Input disabled={edit} placeholder={'Nội dung'} />
+					<Form.Item name={'tieuDe'} label={intl.formatMessage({ id: 'minhchung.danhmuc.noidung' })}>
+						<Input disabled={edit} placeholder={intl.formatMessage({ id: 'minhchung.danhmuc.noidung' })} />
 					</Form.Item>
-					<Form.Item name={'diemQuyDoi'} label={'Điểm quy đổi'}>
-						<InputNumber placeholder={'Nhập điểm quy đổi'} style={{ width: '100%' }} />
+					<Form.Item name={'diemQuyDoi'} label={intl.formatMessage({ id: 'minhchung.danhmuc.diemquydoi' })}>
+						<InputNumber
+							placeholder={intl.formatMessage({ id: 'minhchung.danhmuc.nhapdiem' })}
+							style={{ width: '100%' }}
+						/>
 					</Form.Item>
 
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
 						<Button style={{ marginRight: 8 }} type={'primary'} htmlType={'submit'}>
-							Lưu
+							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 						<Button
 							onClick={() => {
 								setVisibleForm(false);
 							}}
 						>
-							Đóng
+							{intl.formatMessage({ id: 'global.button.dong' })}
 						</Button>
 					</div>
 				</Form>

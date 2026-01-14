@@ -1,19 +1,20 @@
+import SelectHinhThuc from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/HinhThuc/components/Select';
+import SelectTrinhDo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/TrinhDo/components/Select';
 import { Card, Segmented } from 'antd';
 import { useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/Select';
 import ThongKePhieuDiemTheoKhoaHoc from './TheoKhoaHoc';
 import ThongKePhieuDiemTheoNganh from './TheoNganh';
-import SelectTrinhDo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/TrinhDo/components/Select';
-import SelectHinhThuc from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/HinhThuc/components/Select';
 
 const ThongKePhieuDiem = () => {
+	const intl = useIntl();
 	const { record, setRecord, danhSach } = useModel('diemrenluyen.dot');
 	const [type, setType] = useState<string>('nganh');
 	const [trinhdo, setTrinhdo] = useState('7');
 	const [hinhThuc, setHinhThuc] = useState('1');
 	return (
-		<Card title='Thống kê'>
+		<Card title={intl.formatMessage({ id: 'thongke.title' })}>
 			<SelectDotDiemRenLuyen
 				value={record?._id}
 				isSetRecord
@@ -39,8 +40,8 @@ const ThongKePhieuDiem = () => {
 				value={type}
 				onChange={(val: any) => setType(val)}
 				options={[
-					{ value: 'nganh', label: 'Ngành' },
-					{ value: 'khoa', label: 'Khóa' },
+					{ value: 'nganh', label: intl.formatMessage({ id: 'thongke.nganh' }) },
+					{ value: 'khoa', label: intl.formatMessage({ id: 'thongke.khoa' }) },
 				]}
 			/>
 			{type === 'nganh' && <ThongKePhieuDiemTheoNganh trinhDo={trinhdo} hinhThuc={hinhThuc} />}

@@ -13,9 +13,10 @@ import type { ETrangThaiTiepNhanMinhChung } from '@/services/DiemRenLuyen/MinhCh
 import { MapTitleETrangThaiTiepNhanMinhChung } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
 import { Card, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { history, useModel } from 'umi';
+import { history, useIntl, useModel } from 'umi';
 
 const DanhSachLop = () => {
+	const intl = useIntl();
 	const { setRecord, getModel, page, limit, condition, danhSach } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 	const {
 		getModel: getModelLopNhanSu,
@@ -68,7 +69,7 @@ const DanhSachLop = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecord>[] = [
 		{
-			title: 'Tên lớp',
+			title: intl.formatMessage({ id: 'minhchung.danhsach.tenlop' }),
 			dataIndex: 'ten',
 			width: 120,
 			filterType: 'string',
@@ -86,7 +87,7 @@ const DanhSachLop = () => {
 		// 	onCell,
 		// },
 		{
-			title: 'Khóa sinh viên',
+			title: intl.formatMessage({ id: 'minhchung.danhsach.khoasv' }),
 			width: 120,
 			dataIndex: 'maKhoaSinhVien',
 			render: (val, rec) => <a onClick={() => {}}>{rec?.khoaSinhVien?.ten}</a>,
@@ -96,7 +97,7 @@ const DanhSachLop = () => {
 			hide: !!recKhoa?.ma,
 		},
 		{
-			title: 'Ngành đào tạo',
+			title: intl.formatMessage({ id: 'minhchung.danhsach.nganh' }),
 			width: 180,
 			dataIndex: 'maNganh',
 			render: (val, rec) => `${rec?.nganh?.dmNganh?.ten ?? ''} - ${rec?.nganh?.ma ?? ''}`,
@@ -106,7 +107,7 @@ const DanhSachLop = () => {
 			onCell,
 		},
 		{
-			title: 'Trạng thái duyệt',
+			title: intl.formatMessage({ id: 'minhchung.danhsach.trangthaiduyet' }),
 			width: 120,
 			dataIndex: 'doiTuong',
 			align: 'center',
@@ -114,7 +115,7 @@ const DanhSachLop = () => {
 				val && (
 					<Tag color={dataTrangThai?.[rec?.ten] === 'Chờ xử lý' ? 'default' : 'green'}>
 						{MapTitleETrangThaiTiepNhanMinhChung?.[dataTrangThai?.[rec?.ten] as ETrangThaiTiepNhanMinhChung] ??
-							'Chờ xử lý'}
+							intl.formatMessage({ id: 'minhchung.khaibao.choxuly' })}
 					</Tag>
 				),
 			onCell,
@@ -145,28 +146,28 @@ const DanhSachLop = () => {
 		//
 		// 			<>
 		// 				<Popconfirm
-		// 					title={'Bạn có chắc chắn muốn duyệt minh chứng này'}
+		// 					title={intl.formatMessage({ id: 'minhchung.khaibao.confirm.duyet' })}
 		// 					placement={'topLeft'}
 		// 					// disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 		// 					onConfirm={() => {}}
 		// 				>
 		// 					<ButtonExtend
 		// 						// disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-		// 						tooltip='Duyệt'
+		// 						tooltip={intl.formatMessage({ id: 'minhchung.khaibao.duyet' })}
 		// 						type='link'
 		// 						icon={<CheckOutlined />}
 		// 					/>
 		// 				</Popconfirm>
 		// 				{/*<Divider type={'vertical'} />*/}
 		// 				<Popconfirm
-		// 					title={'Bạn có chắc chắn muốn từ chối minh chứng này'}
+		// 					title={intl.formatMessage({ id: 'minhchung.khaibao.confirm.tuchoi' })}
 		// 					placement={'topLeft'}
 		// 					// disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 		// 					onConfirm={() => {}}
 		// 				>
 		// 					<ButtonExtend
 		// 						// disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-		// 						tooltip='Từ chối'
+		// 						tooltip={intl.formatMessage({ id: 'minhchung.khaibao.tuchoi' })}
 		// 						type='link'
 		// 						danger
 		// 						icon={<CloseOutlined />}
@@ -200,7 +201,7 @@ const DanhSachLop = () => {
 	return (
 		<>
 			{/*{(dataPhanQuyen?.isKhoa === true || isCVHT) && !isAdmin && !dataPhanQuyen?.isPhongCTSV ? (*/}
-			<Card title={'Danh sách lớp hành chính'}>
+			<Card title={intl.formatMessage({ id: 'minhchung.danhsach.danhsachlop' })}>
 				{/*<TableStaticData columns={columns} data={isCVHT ? danhSachLopNhanSu : danhSach}>*/}
 				{/*	{!isCVHT && (*/}
 				{/*		<SelectNganh*/}

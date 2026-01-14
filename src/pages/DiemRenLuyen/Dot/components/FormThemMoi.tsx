@@ -1,14 +1,15 @@
-import { Button, Card, Col, Form, Input, Row } from 'antd';
-import rules from '@/utils/rules';
-import { useModel } from 'umi';
-import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import MyDateRangePicker from '@/components/MyDatePicker/RangePicker';
-import { useEffect } from 'react';
-import { resetFieldsForm } from '@/utils/utils';
+import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import SelectMauDiemRenLuyen from '@/pages/DiemRenLuyen/BieuMau/components/Select';
 import { ELoaiBieuMau } from '@/services/KhaoSat/constant';
+import rules from '@/utils/rules';
+import { resetFieldsForm } from '@/utils/utils';
+import { Button, Card, Col, Form, Input, Row } from 'antd';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const FormThemMoi = () => {
+	const intl = useIntl();
 	const { edit, setVisibleForm, formSubmiting, postModel, putModel, record, visibleForm } =
 		useModel('diemrenluyen.dot');
 	const [form] = Form.useForm();
@@ -43,9 +44,16 @@ const FormThemMoi = () => {
 				},
 			};
 			if (edit) {
-				putModel(record?._id ?? '', { ...payload });
+				putModel(
+					record?._id ?? '',
+					{ ...payload },
+					undefined,
+					undefined,
+					undefined,
+					intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+				);
 			} else {
-				postModel({ ...payload });
+				postModel({ ...payload }, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 			}
 		} catch (e) {
 			console.log(e);
@@ -80,23 +88,37 @@ const FormThemMoi = () => {
 
 	return (
 		<>
-			<Card title={(edit ? 'Chỉnh sửa ' : 'Thêm mới ') + 'đợt'}>
+			<Card
+				title={
+					edit
+						? intl.formatMessage({ id: 'diemrenluyen.dot.form.chinhsua' })
+						: intl.formatMessage({ id: 'diemrenluyen.dot.form.themmoi' })
+				}
+			>
 				<Form onFinish={onFinish} form={form} layout='vertical'>
 					<Row gutter={[12, 0]}>
 						<Col span={12}>
-							<Form.Item name='tenDot' label='Tên đợt' rules={[...rules.required, ...rules.text]}>
-								<Input placeholder='Tên đợt' />
+							<Form.Item
+								name='tenDot'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.tendot' })}
+								rules={[...rules.required, ...rules.text]}
+							>
+								<Input placeholder={intl.formatMessage({ id: 'diemrenluyen.dot.form.tendot.place' })} />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='kyHoc' label='Kỳ học' rules={[...rules.required]}>
+							<Form.Item
+								name='kyHoc'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.kyhoc' })}
+								rules={[...rules.required]}
+							>
 								<SelectHocKy selectMa />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
 							<Form.Item
 								name='thoiGianTiepNhanMinhChung'
-								label='Thời gian tiếp nhận minh chứng'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.tgtiepnhan' })}
 								rules={[...rules.required]}
 							>
 								<MyDateRangePicker
@@ -106,7 +128,11 @@ const FormThemMoi = () => {
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='thoiGianSVChamDiem' label='Thời gian sinh viên chấm điểm' rules={[...rules.required]}>
+							<Form.Item
+								name='thoiGianSVChamDiem'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.tgsvcham' })}
+								rules={[...rules.required]}
+							>
 								<MyDateRangePicker
 									showTime={{ showHour: true, showMinute: true, minuteStep: 15 }}
 									format={'HH:mm DD/MM/YYYY'}
@@ -114,7 +140,11 @@ const FormThemMoi = () => {
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item name='thoiGianBCSChamDiem' label='Thời gian ban cán sự chấm điểm' rules={[...rules.required]}>
+							<Form.Item
+								name='thoiGianBCSChamDiem'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.tgbcscham' })}
+								rules={[...rules.required]}
+							>
 								<MyDateRangePicker
 									showTime={{ showHour: true, showMinute: true, minuteStep: 15 }}
 									format={'HH:mm DD/MM/YYYY'}
@@ -124,7 +154,7 @@ const FormThemMoi = () => {
 						<Col span={12}>
 							<Form.Item
 								name='thoiGianCoVanChamDiem'
-								label='Thời gian chủ nhiệm lớp xác nhận'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.tgchunhiem' })}
 								rules={[...rules.required]}
 							>
 								<MyDateRangePicker
@@ -134,7 +164,11 @@ const FormThemMoi = () => {
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<Form.Item name='thoiGianKhieuNai' label='Thời gian gửi khiếu nại' rules={[...rules.required]}>
+							<Form.Item
+								name='thoiGianKhieuNai'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.tgkhieunai' })}
+								rules={[...rules.required]}
+							>
 								<MyDateRangePicker
 									showTime={{ showHour: true, showMinute: true, minuteStep: 15 }}
 									format={'HH:mm DD/MM/YYYY'}
@@ -155,22 +189,35 @@ const FormThemMoi = () => {
 						{/*	</Form.Item>*/}
 						{/*</Col>*/}
 						<Col span={24}>
-							<Form.Item name='idBieuMau' label='Biểu mẫu' rules={[...rules.required]}>
+							<Form.Item
+								name='idBieuMau'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.bieumau' })}
+								rules={[...rules.required]}
+							>
 								<SelectMauDiemRenLuyen loai={ELoaiBieuMau.CHAM_DIEM_REN_LUYEN} />
 							</Form.Item>
 						</Col>
 						<Col span={24}>
-							<Form.Item name='ghiChu' label='Ghi chú' rules={[...rules.text]}>
-								<Input.TextArea placeholder={'Nhập ghi chú'} rows={3} />
+							<Form.Item
+								name='ghiChu'
+								label={intl.formatMessage({ id: 'diemrenluyen.dot.form.ghichu' })}
+								rules={[...rules.text]}
+							>
+								<Input.TextArea
+									placeholder={intl.formatMessage({ id: 'diemrenluyen.dot.form.ghichu.place' })}
+									rows={3}
+								/>
 							</Form.Item>
 						</Col>
 					</Row>
 
 					<div className='form-footer' style={{ marginTop: 16 }}>
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit ? 'Thêm mới' : 'Lưu lại'}
+							{!edit
+								? `${intl.formatMessage({ id: 'global.button.themmoi' })}`
+								: `${intl.formatMessage({ id: 'global.button.luulai' })}`}
 						</Button>
-						<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+						<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 					</div>
 				</Form>
 			</Card>

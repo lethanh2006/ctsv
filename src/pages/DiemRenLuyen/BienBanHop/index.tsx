@@ -8,11 +8,12 @@ import type { BienBanHopDiemRenLuyen } from '@/services/DiemRenLuyen/BienBanHop/
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Tag, Tooltip } from 'antd';
 import { useCallback } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/Select';
 import ViewDetailBienBanHopDrl from './ViewDetail';
 
 const BienBanHopPage = () => {
+	const intl = useIntl();
 	const { getModel, handleEdit, deleteModel, record: recBienBanHop } = useModel('diemrenluyen.bienbanhop');
 	const { record: recDot, setRecord: setRecDot } = useModel('diemrenluyen.dot');
 	const getData = () => {
@@ -28,7 +29,7 @@ const BienBanHopPage = () => {
 
 	const columns: IColumn<BienBanHopDiemRenLuyen.IRecord>[] = [
 		{
-			title: 'Lớp',
+			title: intl.formatMessage({ id: 'bienbanhop.lop' }),
 			align: 'center',
 			dataIndex: 'tenLopHC',
 			width: 200,
@@ -36,7 +37,7 @@ const BienBanHopPage = () => {
 			onCell,
 		},
 		{
-			title: 'Chủ trì',
+			title: intl.formatMessage({ id: 'bienbanhop.chutri' }),
 			dataIndex: ['chuTri', 'ten'],
 			width: 200,
 			align: 'center',
@@ -44,7 +45,7 @@ const BienBanHopPage = () => {
 			onCell,
 		},
 		{
-			title: 'Thư ký',
+			title: intl.formatMessage({ id: 'bienbanhop.thuky' }),
 			dataIndex: ['thuKy', 'ten'],
 			width: 200,
 			align: 'center',
@@ -52,7 +53,7 @@ const BienBanHopPage = () => {
 			onCell,
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'bienbanhop.trangthai' }),
 			dataIndex: 'trangThaiDuyet',
 			width: 200,
 			align: 'center',
@@ -64,12 +65,12 @@ const BienBanHopPage = () => {
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'bienbanhop.thaotac' }),
 			width: 200,
 			align: 'center',
 			render: (val, rec) => (
 				<>
-					<Tooltip title='Xem chi tiêt'>
+					<Tooltip title={intl.formatMessage({ id: 'bienbanhop.tooltip.xemchitiet' })}>
 						<Button
 							onClick={() => {
 								handleEdit(rec);
@@ -103,10 +104,10 @@ const BienBanHopPage = () => {
 							</Tooltip>
 						</>
 					)} */}
-					<Tooltip title='Xóa biên bản'>
+					<Tooltip title={intl.formatMessage({ id: 'bienbanhop.tooltip.xoabienban' })}>
 						<Popconfirm
 							onConfirm={() => deleteModel(rec._id, getData)}
-							title={'Bạn có chắc chắn xóa biên bản họp này?'}
+							title={intl.formatMessage({ id: 'bienbanhop.popconfirm.xoabienban' })}
 						>
 							<Button type='link' icon={<DeleteOutlined />} />
 						</Popconfirm>
@@ -118,7 +119,7 @@ const BienBanHopPage = () => {
 
 	const Form = useCallback(
 		() => (
-			<Card title={`Biên bản họp lớp ${recBienBanHop?.tenLopHC}`}>
+			<Card title={intl.formatMessage({ id: 'bienbanhop.title.form' }, { tenLopHC: recBienBanHop?.tenLopHC ?? '' })}>
 				<ViewDetailBienBanHopDrl getData={getData} />
 			</Card>
 		),
@@ -147,7 +148,7 @@ const BienBanHopPage = () => {
 			]}
 			modelName={'diemrenluyen.bienbanhop'}
 			columns={columns}
-			title='Biên bản họp'
+			title={intl.formatMessage({ id: 'bienbanhop.title.page' })}
 		/>
 	);
 };

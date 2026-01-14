@@ -10,7 +10,7 @@ import {
 import { Form, Table, Typography } from 'antd';
 import { type ColumnType } from 'antd/lib/table';
 import type { ReactNode } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { FieldWithTitle } from '../FieldWithTitle';
 import '../styles.less';
 
@@ -61,21 +61,26 @@ export const FieldsNhapDiem = ({
 	tongDiemKhoaDanhGia,
 	title,
 }: Props) => {
+	const intl = useIntl();
 	const { record } = useModel('diemrenluyen.bieumau');
 
 	const columns: ColumnType<TableRecord>[] = [
 		{
-			title: 'NỘI DUNG',
+			title: intl.formatMessage({ id: 'phieudiem.noidung' }),
 			width: 420,
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem') {
-					return <Typography.Text style={{ fontSize: '18px' }}>TỔNG ĐIỂM</Typography.Text>;
+					return (
+						<Typography.Text style={{ fontSize: '18px' }}>
+							{intl.formatMessage({ id: 'phieudiem.tongdiem' })}
+						</Typography.Text>
+					);
 				}
 				return <ExpandText>{tableRecord.noiDung}</ExpandText>;
 			},
 		},
 		{
-			title: 'Điểm tối đa',
+			title: intl.formatMessage({ id: 'phieudiem.diemtoida' }),
 			align: 'center',
 			width: 106,
 			render: (_: any, tableRecord: TableRecord) => {
@@ -91,7 +96,7 @@ export const FieldsNhapDiem = ({
 			},
 		},
 		{
-			title: 'Sinh viên tự đánh giá',
+			title: intl.formatMessage({ id: 'phieudiem.svtudanhgia' }),
 			align: 'center',
 			width: 80,
 			render: (_: any, tableRecord: TableRecord) => {
@@ -121,7 +126,7 @@ export const FieldsNhapDiem = ({
 			},
 		},
 		{
-			title: 'Ban cán sự chấm điểm',
+			title: intl.formatMessage({ id: 'phieudiem.bcschamdiem' }),
 			align: 'center',
 			width: 80,
 			render: (_: any, tableRecord: TableRecord) => {
@@ -151,7 +156,7 @@ export const FieldsNhapDiem = ({
 			},
 		},
 		{
-			title: 'CVHT chấm điểm',
+			title: intl.formatMessage({ id: 'phieudiem.cvhtchamdiem' }),
 			align: 'center',
 			width: 80,
 			render: (_: any, tableRecord: TableRecord) => {
@@ -250,7 +255,7 @@ export const FieldsNhapDiem = ({
 		.concat({ rowKey: 'tongDiem', type: 'tongDiem', tongDiemToiDa: tongDiemCuaForm });
 
 	return (
-		<FieldWithTitle title={title ?? 'PHIẾU ĐIỂM RÈN LUYỆN'}>
+		<FieldWithTitle title={title ?? intl.formatMessage({ id: 'phieudiem.phieudiemrenluyen.uppercase' })}>
 			<Table rowKey={(item) => item.rowKey} pagination={false} columns={columns} dataSource={dataSource} />
 		</FieldWithTitle>
 	);

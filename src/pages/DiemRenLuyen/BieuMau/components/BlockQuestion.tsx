@@ -1,21 +1,22 @@
+import SelectMinhChung from '@/pages/DiemRenLuyen/MinhChung/CauHinh/Select';
 import { ELoaiBieuMau, ELoaiCauHoi, ELoaiCauHoiDrl, ELoaiCauHoiMappingToLabel } from '@/services/KhaoSat/constant';
 import rules from '@/utils/rules';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { type FormInstance } from 'antd/es/form/Form';
+import { type BaseOptionType } from 'antd/lib/select';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import GridChoice from './QuestionType/GridChoice';
 import NumericRange from './QuestionType/NumericChoice';
 import SingleChoice from './QuestionType/SingleChoice';
-import { type BaseOptionType } from 'antd/lib/select';
-import { type FormInstance } from 'antd/es/form/Form';
-import SelectMinhChung from '@/pages/DiemRenLuyen/MinhChung/CauHinh/Select';
 
 const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: number }) => {
 	const { record } = useModel('khaosat.bieumau');
+	const intl = useIntl();
 	const [questionType, setQuestionType] = useState<string>(
-		record?.danhSachKhoi?.[props.block]?.danhSachCauHoi?.[props.index]?.loai ??
-			record?.loai === ELoaiBieuMau.DANH_GIA_CAN_BO
+		(record?.danhSachKhoi?.[props.block]?.danhSachCauHoi?.[props.index]?.loai ??
+			record?.loai === ELoaiBieuMau.DANH_GIA_CAN_BO)
 			? ELoaiCauHoi.NumberInputRating
 			: ELoaiCauHoi.NumberInputRating,
 	);
@@ -36,7 +37,11 @@ const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: n
 		} else {
 			if (questionType === ELoaiCauHoi.MINH_CHUNG) {
 				return (
-					<Form.Item name={[props.index, 'cauHinhMinhChungId']} label='Minh chứng' rules={[...rules.required]}>
+					<Form.Item
+						name={[props.index, 'cauHinhMinhChungId']}
+						label={intl.formatMessage({ id: 'bieumau.minhchung' })}
+						rules={[...rules.required]}
+					>
 						<SelectMinhChung />
 					</Form.Item>
 				);
@@ -49,15 +54,24 @@ const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: n
 		<>
 			<Row gutter={[12, 0]}>
 				<Col md={12} lg={16}>
-					<Form.Item name={[props.index, 'noiDungCauHoi']} label='Nội dung câu hỏi' rules={[...rules.required]}>
-						<Input placeholder='Nội dung câu hỏi' />
+					<Form.Item
+						name={[props.index, 'noiDungCauHoi']}
+						label={intl.formatMessage({ id: 'bieumau.noidungcauhoi' })}
+						rules={[...rules.required]}
+					>
+						<Input placeholder={intl.formatMessage({ id: 'bieumau.noidungcauhoi' })} />
 					</Form.Item>
 				</Col>
 				<Col md={12} lg={8}>
-					<Form.Item name={[props.index, 'loai']} label='Loại' rules={[...rules.required]} initialValue={questionType}>
+					<Form.Item
+						name={[props.index, 'loai']}
+						label={intl.formatMessage({ id: 'bieumau.loai' })}
+						rules={[...rules.required]}
+						initialValue={questionType}
+					>
 						<Select
 							onChange={(val: string) => setQuestionType(val)}
-							placeholder='Chọn loại câu hỏi'
+							placeholder={intl.formatMessage({ id: 'bieumau.chonloaicauhoi' })}
 							options={Object.values(ELoaiCauHoiDrl).reduce<BaseOptionType[]>((result, value) => {
 								if (record?.loai === ELoaiBieuMau.DANH_GIA_CAN_BO) {
 									if (value === ELoaiCauHoi.NumberInputRating) {
@@ -81,11 +95,11 @@ const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: n
 			</Row>
 
 			<Form.Item valuePropName='checked' name={[props.index, 'batBuoc']}>
-				<Checkbox>Bắt buộc</Checkbox>
+				<Checkbox>{intl.formatMessage({ id: 'bieumau.batbuoc' })}</Checkbox>
 			</Form.Item>
 			{questionType === ELoaiCauHoi.MINH_CHUNG && (
 				<Form.Item valuePropName='checked' name={[props.index, 'choPhepVuotKhung']}>
-					<Checkbox>Cho phép vượt khung</Checkbox>
+					<Checkbox>{intl.formatMessage({ id: 'bieumau.chopheppuotkhung' })}</Checkbox>
 				</Form.Item>
 			)}
 
@@ -96,7 +110,7 @@ const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: n
 						{
 							validator: async (_, names) => {
 								if (!names || names.length < 1) {
-									return Promise.reject(new Error('Ít nhất 1 đáp án'));
+									return Promise.reject(new Error(intl.formatMessage({ id: 'bieumau.error.itnhat1dapan' })));
 								}
 								return '';
 							},
@@ -110,7 +124,7 @@ const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: n
 							))}
 							<Form.ErrorList errors={errors} />
 							<Button onClick={() => add()} icon={<PlusOutlined />} size='small' type='primary'>
-								Thêm đáp án
+								{intl.formatMessage({ id: 'bieumau.action.themdapan' })}
 							</Button>
 						</>
 					)}
@@ -131,10 +145,17 @@ const BlockQuestion = (props: { form: FormInstance<any>; index: number; block: n
 			)}
 			{questionType === ELoaiCauHoi.MINH_CHUNG && (
 				<>
-					<Form.Item name={[props.index, 'diemMacDinh']} label='Điểm mặc định'>
-						<InputNumber style={{ width: '100%' }} placeholder={'Nhập điểm mặc định'} />
+					<Form.Item name={[props.index, 'diemMacDinh']} label={intl.formatMessage({ id: 'bieumau.diemmacdinh' })}>
+						<InputNumber
+							style={{ width: '100%' }}
+							placeholder={intl.formatMessage({ id: 'bieumau.nhapdiemmacdinh' })}
+						/>
 					</Form.Item>
-					<Form.Item name={[props.index, 'cauHinhMinhChungId']} label='Minh chứng' rules={[...rules.required]}>
+					<Form.Item
+						name={[props.index, 'cauHinhMinhChungId']}
+						label={intl.formatMessage({ id: 'bieumau.minhchung' })}
+						rules={[...rules.required]}
+					>
 						<SelectMinhChung multiple />
 					</Form.Item>
 					<NumericRange blockIndex={props.block} form={props.form} index={props.index} />

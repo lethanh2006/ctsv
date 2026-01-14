@@ -13,10 +13,11 @@ import type { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Modal, Popconfirm, Space, Tag } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import PreviewForm from './components/MauDon/Preview';
 
 const CauHinh = () => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, setRecord } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { setVisiblePreview, visiblePreview, setRecord: setRecordLoaiHinh } = useModel('formdong.loaihinh');
 	const { getAllModel } = useModel('quytrinh.danhmuc');
@@ -32,14 +33,14 @@ const CauHinh = () => {
 
 	const columns: IColumn<MinhChungDrl.IBieuMau>[] = [
 		{
-			title: 'Tên minh chứng',
+			title: intl.formatMessage({ id: 'minhchung.column.tenminhchung' }),
 			dataIndex: 'tenMinhChung',
 			filterType: 'string',
 			width: 150,
 			onCell,
 		},
 		{
-			title: 'Mã minh chứng',
+			title: intl.formatMessage({ id: 'minhchung.column.maminhchung' }),
 			dataIndex: 'maMinhChung',
 			align: 'center',
 			filterType: 'string',
@@ -47,7 +48,7 @@ const CauHinh = () => {
 			onCell,
 		},
 		{
-			title: 'Loại minh chứng',
+			title: intl.formatMessage({ id: 'minhchung.column.loaiminhchung' }),
 			dataIndex: 'loaiMinhChung',
 			align: 'center',
 			filterType: 'select',
@@ -60,7 +61,7 @@ const CauHinh = () => {
 			render: (val) => MapELoaiMinhChung?.[val as ELoaiMinhChung],
 		},
 		{
-			title: 'Đối tượng',
+			title: intl.formatMessage({ id: 'minhchung.column.doituong' }),
 			dataIndex: 'doiTuongNhap',
 			align: 'center',
 			filterType: 'select',
@@ -79,18 +80,18 @@ const CauHinh = () => {
 			),
 		},
 		{
-			title: 'Dùng cho sự kiện',
+			title: intl.formatMessage({ id: 'minhchung.column.dungchosukien' }),
 			dataIndex: 'dungChoSuKien',
 			align: 'center',
 			filterType: 'select',
 			filterData: [
 				{
 					value: true,
-					label: 'Dùng cho sự kiện',
+					label: intl.formatMessage({ id: 'minhchung.form.dungsk.option1' }),
 				},
 				{
 					value: false,
-					label: 'Không dùng cho sự kiện',
+					label: intl.formatMessage({ id: 'minhchung.form.dungsk.option2' }),
 				},
 			],
 			onCell,
@@ -98,14 +99,14 @@ const CauHinh = () => {
 			render: (val) => <Checkbox checked={val} />,
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'minhchung.column.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
 					<ButtonExtend
-						tooltip='Xem chi tiết'
+						tooltip={intl.formatMessage({ id: 'global.button.chitiet' })}
 						type='link'
 						icon={<EyeOutlined />}
 						onClick={() => {
@@ -115,7 +116,7 @@ const CauHinh = () => {
 						}}
 					/>
 					<ButtonExtend
-						tooltip='Chỉnh sửa'
+						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
 						type='link'
 						icon={<EditOutlined />}
 						onClick={() => {
@@ -123,13 +124,18 @@ const CauHinh = () => {
 						}}
 					/>
 					<Popconfirm
-						title={'Bạn có chắc chắn muốn xoá biểu mẫu này'}
+						title={intl.formatMessage({ id: 'minhchung.confirm.xoa' })}
 						placement={'topLeft'}
 						onConfirm={() => {
 							deleteModel(rec?._id);
 						}}
 					>
-						<ButtonExtend tooltip='Xoá' type='link' danger icon={<DeleteOutlined />} />
+						<ButtonExtend
+							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+							type='link'
+							danger
+							icon={<DeleteOutlined />}
+						/>
 					</Popconfirm>
 				</>
 			),
@@ -144,7 +150,7 @@ const CauHinh = () => {
 		<>
 			<TableBase
 				Form={FormThemMoiBieuMau}
-				title={'Cấu hình minh chứng'}
+				title={intl.formatMessage({ id: 'minhchung.title' })}
 				modelName={'diemrenluyen.minhchung.cauhinh'}
 				columns={columns}
 				widthDrawer={800}
@@ -156,7 +162,7 @@ const CauHinh = () => {
 				styles={{ body: { padding: 0 } }}
 				footer={
 					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<Button onClick={() => setVisiblePreview(false)}>Đóng</Button>
+						<Button onClick={() => setVisiblePreview(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 					</div>
 				}
 				width={900}

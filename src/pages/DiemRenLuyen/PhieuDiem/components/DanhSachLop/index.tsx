@@ -3,9 +3,10 @@ import type { IColumn } from '@/components/Table/typing';
 import SelectNganh from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 import SelectKhoaSinhVien from '@/pages/DaoTaoV2/SinhVien/KhoaSinhVien/SelectKhoaSinhVien';
 import { LopHanhChinh } from '@/services/DaoTaoV2/LopHanhChinh/typing';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const DanhSachLop = () => {
+	const intl = useIntl();
 	const { setRecord, record, getModel, page, limit, condition } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 	const {
 		getModel: getModelLopNhanSu,
@@ -65,14 +66,14 @@ const DanhSachLop = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecord>[] = [
 		{
-			title: 'TT',
+			title: intl.formatMessage({ id: 'phieudiem.tt' }),
 			dataIndex: 'index',
 			align: 'center',
 			width: 50,
 			onCell,
 		},
 		{
-			title: 'Tên lớp hành chính',
+			title: intl.formatMessage({ id: 'phieudiem.tenlophanhchinh' }),
 			dataIndex: 'ten',
 			width: 200,
 			onCell,

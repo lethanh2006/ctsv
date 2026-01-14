@@ -2,16 +2,17 @@ import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { type LopHanhChinh } from '@/services/DaoTaoV2/NamHoc/LopHanhChinh/typings';
 import { ExportOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Tooltip, Tag, Select } from 'antd';
+import { Button, Select, Tag, Tooltip } from 'antd';
 import { history, useIntl, useModel } from 'umi';
 
 import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 import FilterKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/FilterKhoaSinhVien';
 import SelectKhoaSinhVien from '@/pages/DaoTaoV2/SinhVien/KhoaSinhVien/SelectKhoaSinhVien';
-import { ip3 } from '@/utils/ip';
+import {
+	ETrangThaiDuyetBienBanHopDiemRenLuyen,
+	MapKeyColorTrangThaiDuyetBienBanHopDiemRenLuyen,
+} from '@/services/DiemRenLuyen/BienBanHop/constant';
 import SelectDotDiemRenLuyen from '../Dot/Select';
-import { ETrangThaiDuyetBienBanHopDiemRenLuyen } from '@/services/DiemRenLuyen/BienBanHop/constant';
-import { MapKeyColorTrangThaiDuyetBienBanHopDiemRenLuyen } from '@/services/DiemRenLuyen/BienBanHop/constant';
 
 const LopHanhChinhPage = () => {
 	const intl = useIntl();
@@ -33,8 +34,6 @@ const LopHanhChinhPage = () => {
 				undefined,
 				true,
 				true,
-				undefined,
-				ip3,
 			);
 	};
 
@@ -45,7 +44,7 @@ const LopHanhChinhPage = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecord & { trangThaiDuyet: ETrangThaiDuyetBienBanHopDiemRenLuyen }>[] = [
 		{
-			title: 'Tên lớp',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.tenlop' }),
 			dataIndex: 'ten',
 			width: 120,
 			filterType: 'string',
@@ -54,7 +53,7 @@ const LopHanhChinhPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Khóa sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.khoa' }),
 			width: 120,
 			dataIndex: 'maKhoaSinhVien',
 			align: 'center',
@@ -72,7 +71,7 @@ const LopHanhChinhPage = () => {
 			filterCustomSelect: <SelectKhoaSinhVien multiple selectMa />,
 		},
 		{
-			title: 'Ngành đào tạo',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.nganh' }),
 			width: 180,
 			dataIndex: 'maNganh',
 			render: (val, rec) => `${rec?.nganh?.dmNganh?.ten ?? ''} - ${rec?.nganh?.ma ?? ''}`,
@@ -82,7 +81,7 @@ const LopHanhChinhPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.trangthai' }),
 			dataIndex: 'trangThaiDuyet',
 			width: 100,
 			align: 'center',
@@ -93,20 +92,20 @@ const LopHanhChinhPage = () => {
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.column.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (record: LopHanhChinh.IRecord) => (
 				<>
-					<Tooltip title='Xem chi tiết'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chitiet' })}>
 						<Button
 							onClick={() => history.push(`/diem-ren-luyen/lop-hanh-chinh/${record._id}`)}
 							type='link'
 							icon={<EyeOutlined />}
 						/>
 					</Tooltip>
-					<Tooltip title='Xuất thống kê kết quả'>
+					<Tooltip title={intl.formatMessage({ id: 'lophanhchinh.button.xuatthongke' })}>
 						<Button
 							loading={loading}
 							onClick={() => exportThongKeModel(recordDot?._id ?? '', record.ten)}
@@ -156,7 +155,7 @@ const LopHanhChinhPage = () => {
 						type='primary'
 						icon={<ExportOutlined />}
 					>
-						Xuất kết quả
+						{intl.formatMessage({ id: 'lophanhchinh.button.xuatkq' })}
 					</Button>,
 				]}
 			/>

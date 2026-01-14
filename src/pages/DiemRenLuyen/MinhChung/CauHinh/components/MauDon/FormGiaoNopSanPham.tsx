@@ -1,14 +1,15 @@
 import { Card, Form, Row } from 'antd';
-import { useModel } from 'umi';
-import FormRender from './FormRender';
 import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
+import FormRender from './FormRender';
 // import TableThanhVien from './TableThanhVien';
+import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
+import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import { resetFieldsForm } from '@/utils/utils';
 import dayjs from 'dayjs';
-import { buildUpLoadMultiFile } from '@/services/uploadFile';
-import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
 
 const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; mode: 'quytrinh' | 'loaihinh' }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record } = useModel('quytrinh.loaihinh');
 	const { recordQuyTrinhForm, visibleForm, edit } = useModel('quytrinh.quanlyquytrinh');
@@ -44,7 +45,17 @@ const FormGiaoNopSanPham = (props: { isView?: boolean; getData: any; mode: 'quyt
 	};
 
 	return (
-		<Card title={props.mode === 'loaihinh' ? `${!edit ? 'Thêm mới' : 'Chỉnh sửa'} ${record?.ten}` : record?.ten}>
+		<Card
+			title={
+				props.mode === 'loaihinh'
+					? `${
+							!edit
+								? intl.formatMessage({ id: 'global.button.themmoi' })
+								: intl.formatMessage({ id: 'global.button.chinhsua' })
+						} ${record?.ten}`
+					: record?.ten
+			}
+		>
 			<Form
 				labelCol={{ span: 24 }}
 				form={form}

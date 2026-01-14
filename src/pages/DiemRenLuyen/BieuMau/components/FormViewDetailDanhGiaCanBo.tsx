@@ -1,6 +1,6 @@
 import ExpandText from '@/components/ExpandText';
 import { Button, Card, Table, Typography } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import NumberInputRating from './QuestionView/Numberinputrating';
 
 interface TableRecord {
@@ -9,27 +9,32 @@ interface TableRecord {
 	diemToiDa: number;
 }
 const ViewDetailDanhGiaCanBo = () => {
+	const intl = useIntl();
 	const { loading, record, setVisibleForm } = useModel('khaosat.bieumau');
 
 	const columns = [
 		{
-			title: 'NỘI DUNG',
+			title: intl.formatMessage({ id: 'bieumau.viewcanbo.noidung' }),
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem') {
-					return <Typography.Text style={{ fontSize: '18px' }}>TỔNG ĐIỂM</Typography.Text>;
+					return (
+						<Typography.Text style={{ fontSize: '18px' }}>
+							{intl.formatMessage({ id: 'bieumau.viewcanbo.tongdiem' })}
+						</Typography.Text>
+					);
 				}
 				return <ExpandText>{tableRecord.noiDung}</ExpandText>;
 			},
 		},
 		{
-			title: 'Điểm tối đa',
+			title: intl.formatMessage({ id: 'bieumau.viewcanbo.diemtoida' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				return <ExpandText>{tableRecord.diemToiDa}</ExpandText>;
 			},
 		},
 		{
-			title: 'Điểm tự đánh giá',
+			title: intl.formatMessage({ id: 'bieumau.viewcanbo.diemtudanhgia' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem') {
@@ -39,7 +44,7 @@ const ViewDetailDanhGiaCanBo = () => {
 			},
 		},
 		{
-			title: 'Điểm của tập thể quản lý đơn vị',
+			title: intl.formatMessage({ id: 'bieumau.viewcanbo.diemquanly' }),
 			align: 'center',
 			render: (_: any, tableRecord: TableRecord) => {
 				if (tableRecord.type === 'tongDiem') {
@@ -68,10 +73,10 @@ const ViewDetailDanhGiaCanBo = () => {
 		.concat({ type: 'tongDiem', noiDung: '', diemToiDa: tongDiemCuaForm });
 
 	return (
-		<Card loading={loading} title='Chi tiết biểu mẫu đánh giá cán bộ'>
+		<Card loading={loading} title={intl.formatMessage({ id: 'bieumau.viewcanbo.title' })}>
 			<Table pagination={false} columns={columns as any} dataSource={dataSource} />
 			<div className='form-footer'>
-				<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

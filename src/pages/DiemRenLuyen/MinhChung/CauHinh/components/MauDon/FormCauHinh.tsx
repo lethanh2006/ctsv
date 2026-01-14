@@ -30,11 +30,12 @@ import {
 } from 'antd';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import FormCot from './FormCot';
 import FormGiaTriLienQuan from './FormGiaTriLienQuan';
 
 const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: string }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const {
 		setRecordCauHinh,
@@ -76,7 +77,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 			: recordMauDon.cauHinhLoaiHinh;
 
 		if (listMaCauHinh?.map((item: { ma: any }) => item.ma)?.includes(values?.ma)) {
-			message.error('Mã đã tồn tại');
+			message.error(intl.formatMessage({ id: 'minhchung.error.matontai' }));
 			return;
 		}
 
@@ -96,7 +97,11 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				],
 			});
 		}
-		message.success(editCauHinh ? 'Sửa thành công' : 'Thêm thành công');
+		message.success(
+			editCauHinh
+				? intl.formatMessage({ id: 'minhchung.message.suathanhcong' })
+				: intl.formatMessage({ id: 'minhchung.message.themthanhcong' }),
+		);
 		if (isContinue) {
 			form.resetFields();
 			setTruongThongTinLienQuan(undefined);
@@ -109,33 +114,33 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 
 	const columns: IColumn<LoaiHinh.Cot>[] = [
 		{
-			title: 'Mã cột',
+			title: intl.formatMessage({ id: 'minhchung.form.cauhinh.form.macot' }),
 			dataIndex: 'ma',
 			align: 'center',
 			width: 100,
 			filterType: 'string',
 		},
 		{
-			title: 'Tên cột',
+			title: intl.formatMessage({ id: 'minhchung.form.cauhinh.form.tencot' }),
 			dataIndex: 'ten',
 			width: 170,
 			filterType: 'string',
 		},
 		{
-			title: 'Kiểu dữ liệu',
+			title: intl.formatMessage({ id: 'minhchung.form.cauhinh.form.kieudulieu' }),
 			align: 'center',
 			dataIndex: 'kieuDuLieu',
 			width: 60,
 		},
 
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'minhchung.form.cauhinh.form.thaotac' }),
 			align: 'center',
 			width: 60,
 			fixed: 'right',
 			render: (rec: LoaiHinh.Cot) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.chinhsua' })}>
 						<Button
 							onClick={() => {
 								setVisibleCot(true);
@@ -147,7 +152,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						/>
 					</Tooltip>
 
-					<Tooltip title='Xóa'>
+					<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 						<Popconfirm
 							onConfirm={() => {
 								if (recordCauHinh) {
@@ -160,7 +165,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 									});
 								}
 							}}
-							title='Bạn có chắc chắn muốn xóa ?'
+							title={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.confirm.xoa' })}
 							placement='topRight'
 						>
 							<Button danger type='link' icon={<DeleteOutlined />} />
@@ -187,7 +192,13 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 	].includes(kieuDuLieu);
 
 	return (
-		<Card title={(editCauHinh ? 'Chỉnh sửa ' : 'Thêm mới ') + 'cấu hình'}>
+		<Card
+			title={
+				editCauHinh
+					? intl.formatMessage({ id: 'minhchung.form.cauhinh.form.chinhsua' })
+					: intl.formatMessage({ id: 'minhchung.form.cauhinh.form.themmoi' })
+			}
+		>
 			<Form
 				onValuesChange={(changedValues, values) => {
 					setFormValues(values);
@@ -196,10 +207,18 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				form={form}
 				layout='vertical'
 			>
-				<Form.Item name='ma' label='Mã' rules={[...rules.required, ...rules.text]}>
-					<Input placeholder='Mã' />
+				<Form.Item
+					name='ma'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.ma' })}
+					rules={[...rules.required, ...rules.text]}
+				>
+					<Input placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.ma.place' })} />
 				</Form.Item>
-				<Form.Item name='ten' label='Tên' rules={[...rules.required, ...rules.text]}>
+				<Form.Item
+					name='ten'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.ten' })}
+					rules={[...rules.required, ...rules.text]}
+				>
 					<Input
 						autoFocus
 						onChange={(e) => {
@@ -207,7 +226,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 								form.setFieldsValue({ ma: _.camelCase(removeVietnameseTones(e?.target?.value ?? '')) });
 							}
 						}}
-						placeholder='Tên'
+						placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.ten.place' })}
 					/>
 				</Form.Item>
 				{/*<Form.Item name='loaiDefaultValue' label='Loại giá trị mặc định'>*/}
@@ -224,18 +243,22 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				{/*	/>*/}
 				{/*</Form.Item>*/}
 				{loaiMacDinh === LoaiDefaultValue.CUSTOM && (
-					<Form.Item name='customDefaultValue' label='Giá trị mặc định tuỳ biến'>
-						<Input placeholder='Nhập giá trị mặc định' />
+					<Form.Item name='customDefaultValue' label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.giatri' })}>
+						<Input placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.giatri.place' })} />
 					</Form.Item>
 				)}
 				{kieuDuLieu === EKieuDuLieu.DOAN_VAN_BAN && (
-					<Form.Item rules={[...rules.requiredHtml]} name='customDefaultValue' label='Đoạn văn bản'>
+					<Form.Item
+						rules={[...rules.requiredHtml]}
+						name='customDefaultValue'
+						label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.vanban' })}
+					>
 						<TinyEditor height={350} />
 					</Form.Item>
 				)}
 				{loaiMacDinh === LoaiDefaultValue.THONG_KE_DON_QUY_TRINH && (
 					<Form.Item
-						label='Cấu hình thống kê'
+						label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.cauhinh' })}
 						name={'customAggregationArray'}
 						rules={[...rules.required, ...rules.json]}
 					>
@@ -245,14 +268,18 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				{loaiMacDinh === LoaiDefaultValue.LAY_TU_KHAI_BAO && (
 					<Row gutter={[12, 0]}>
 						<Col span={12}>
-							<Form.Item name='maFormLayDefaultValue' label='Lấy dữ liệu từ biểu mẫu' rules={[...rules.required]}>
+							<Form.Item
+								name='maFormLayDefaultValue'
+								label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laydulieu' })}
+								rules={[...rules.required]}
+							>
 								<Select
 									onChange={() => {
 										form.setFieldsValue({
 											maFieldLayDefaultValue: undefined,
 										});
 									}}
-									placeholder='Chọn biểu mẫu khai báo'
+									placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laydulieu.place' })}
 									options={recordQuyTrinh?.danhSachFormKhaiBao?.map((item) => ({ value: item.ma, label: item.ten }))}
 								/>
 							</Form.Item>
@@ -260,7 +287,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						<Col span={12}>
 							<Form.Item
 								name='maFieldLayDefaultValue'
-								label='Lấy dữ liệu từ trường thông tin'
+								label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laytruong' })}
 								rules={[...rules.required]}
 							>
 								<Select
@@ -273,7 +300,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 										});
 										setKieuDuLieu(kieuDuLieuTemp);
 									}}
-									placeholder='Chọn trường thông tin'
+									placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laytruong.place' })}
 									options={recordQuyTrinh?.danhSachFormKhaiBao
 										?.find((item) => item.ma === maFormLayDefaultValue)
 										?.cauHinhLoaiHinh?.map((item) => ({ value: item.ma, label: item.ten }))}
@@ -286,24 +313,36 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 				{/*<Form.Item name='readonly' valuePropName='checked'>*/}
 				{/*	<Checkbox>Chỉ đọc</Checkbox>*/}
 				{/*</Form.Item>*/}
-				<Form.Item name='ghiChu' label='Ghi chú' rules={[...rules.text]}>
-					<Input.TextArea placeholder='Ghi chú' />
+				<Form.Item
+					name='ghiChu'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.ghichu' })}
+					rules={[...rules.text]}
+				>
+					<Input.TextArea placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.ghichu.place' })} />
 				</Form.Item>
 
-				<Form.Item name='kieuDuLieu' label='Kiểu dữ liệu' rules={[...rules.required]}>
+				<Form.Item
+					name='kieuDuLieu'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.kieudulieu' })}
+					rules={[...rules.required]}
+				>
 					<Select
 						onChange={(val) => setKieuDuLieu(val)}
 						options={Object.values(EKieuDuLieu).map((item) => ({ label: item, value: item }))}
-						placeholder='Kiểu dữ liệu'
+						placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.kieudulieu.place' })}
 					/>
 				</Form.Item>
 				<Row gutter={[12, 0]}>
 					<Col span={isAvailableDangMang ? 8 : 12}>
-						<Form.Item name='batBuoc' label='Bắt buộc' rules={[...rules.required]}>
+						<Form.Item
+							name='batBuoc'
+							label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.batbuoc' })}
+							rules={[...rules.required]}
+						>
 							<Radio.Group
 								options={[
-									{ value: true, label: 'Có' },
-									{ value: false, label: 'Không' },
+									{ value: true, label: intl.formatMessage({ id: 'minhchung.value.co' }) },
+									{ value: false, label: intl.formatMessage({ id: 'minhchung.value.khong' }) },
 								]}
 							/>
 						</Form.Item>
@@ -311,36 +350,54 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 
 					{isAvailableDangMang && (
 						<Col span={isAvailableDangMang ? 8 : 12}>
-							<Form.Item name='laDangMang' label='Cho phép nhập nhiều giá trị' rules={[...rules.required]}>
+							<Form.Item
+								name='laDangMang'
+								label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.nhieugiatri' })}
+								rules={[...rules.required]}
+							>
 								<Radio.Group
 									options={[
-										{ value: true, label: 'Có' },
-										{ value: false, label: 'Không' },
+										{ value: true, label: intl.formatMessage({ id: 'minhchung.value.co' }) },
+										{ value: false, label: intl.formatMessage({ id: 'minhchung.value.khong' }) },
 									]}
 								/>
 							</Form.Item>
 						</Col>
 					)}
 					<Col span={isAvailableDangMang ? 8 : 12}>
-						<Form.Item name='colspan' label='Chiều rộng'>
-							<InputNumber style={{ width: '100%' }} min={0} max={24} placeholder='Nhập giá trị' />
+						<Form.Item name='colspan' label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.chieurong' })}>
+							<InputNumber
+								style={{ width: '100%' }}
+								min={0}
+								max={24}
+								placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.chieurong.place' })}
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
 				{kieuDuLieu === EKieuDuLieu.FILE && (
 					<>
-						<Form.Item name='danhSachFileDinhKem' label='File đính kèm (nếu có)'>
+						<Form.Item
+							name='danhSachFileDinhKem'
+							label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.file.label' })}
+						>
 							<UploadFile maxCount={5} />
 						</Form.Item>
-						<Form.Item name='ghiChuFileDinhKem' label='Ghi chú File đính kèm (nếu có)'>
-							<Input placeholder='Nhập ghi chú nếu có' />
+						<Form.Item
+							name='ghiChuFileDinhKem'
+							label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.file.ghichu' })}
+						>
+							<Input placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.file.ghichu.place' })} />
 						</Form.Item>
 					</>
 				)}
 				{kieuDuLieu === EKieuDuLieu.TEXT && (
-					<Form.Item name='textDisplay' label='Kiểu hiển thị đặc biệt (nếu có)'>
+					<Form.Item
+						name='textDisplay'
+						label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.textdisplay.label' })}
+					>
 						<Select
-							placeholder='Chọn kiểu hiển thị'
+							placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.textdisplay.place' })}
 							options={Object.values(ETextDisplay).map((item) => ({ value: item, label: MapKeyNameTextDisplay[item] }))}
 						/>
 					</Form.Item>
@@ -350,7 +407,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						name='maDanhMuc'
 						label={
 							<span>
-								Danh mục (
+								{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.danhmuc.label' })} (
 								<Button
 									loading={loadingDanhMucChung}
 									onClick={() => {
@@ -359,7 +416,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 									style={{ padding: 0 }}
 									type='link'
 								>
-									Làm mới
+									{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.lammoi' })}
 								</Button>
 								)
 							</span>
@@ -386,14 +443,14 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 								),
 								value: item.maDanhMuc,
 							}))}
-							placeholder='Danh mục'
+							placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.danhmuc.place' })}
 						/>
 					</Form.Item>
 				)}
 				{kieuDuLieu === EKieuDuLieu.TABLE && (
 					<>
 						<div className='ant-descriptions-title' style={{ marginTop: 12, marginBottom: 12 }}>
-							Danh sách cột
+							{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.danhsachcot' })}
 						</div>
 						<TableStaticData
 							onSortEnd={onSortEnd}
@@ -416,16 +473,16 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 										setRecordCot(undefined);
 									}}
 								>
-									Thêm mới
+									{intl.formatMessage({ id: 'global.button.themmoi' })}
 								</Button>
 							</Space>
 						</TableStaticData>
 
 						<Form.Item
-							extra={'Để trống nếu muốn hiển thị tất cả các cột'}
+							extra={intl.formatMessage({ id: 'minhchung.form.extra.tronghienthitatca' })}
 							style={{ marginTop: 8 }}
 							name='danhSachCotHienThi'
-							label='Danh sách cột hiển thị'
+							label={intl.formatMessage({ id: 'minhchung.form.danhsachcothienthi' })}
 							// rules={[...rules.required]}
 						>
 							<Select
@@ -435,7 +492,7 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 									value: item.ma,
 								}))}
 								mode='multiple'
-								placeholder='Danh sách cột hiển thị'
+								placeholder={intl.formatMessage({ id: 'minhchung.form.placeholder.danhsachtruonghienthi' })}
 							/>
 						</Form.Item>
 					</>
@@ -446,7 +503,10 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 					</Form.Item>
 				)} */}
 
-				<Form.Item name='truongThongTinLienQuan' label='Trường thông tin liên quan'>
+				<Form.Item
+					name='truongThongTinLienQuan'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglienquan.label' })}
+				>
 					<Select
 						allowClear
 						onChange={(val) => {
@@ -456,30 +516,39 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 						options={recordMauDon?.cauHinhLoaiHinh
 							?.filter((item: { ma: any }) => item.ma !== recordCauHinh?.ma)
 							?.map((item: { ten: any; ma: any }) => ({ label: item.ten, value: item.ma }))}
-						placeholder='Trường thông tin liên quan'
+						placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglienquan.place' })}
 					/>
 				</Form.Item>
 				{truongThongTinLienQuan?.kieuDuLieu ? (
 					<FormGiaTriLienQuan truongThongTinLienQuan={truongThongTinLienQuan} />
 				) : null}
 
-				<Form.Item name='layDuLieuTu' label='Lấy dữ liệu từ trường thông tin'>
+				<Form.Item
+					name='layDuLieuTu'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laydulieutu.label' })}
+				>
 					<Select
 						allowClear
 						options={recordMauDon?.cauHinhLoaiHinh
 							?.filter((item: { ma: any }) => item.ma !== recordCauHinh?.ma)
 							?.map((item: { ten: any; ma: any }) => ({ label: item.ten, value: item.ma }))}
-						placeholder='Lấy dữ liệu từ trường thông tin'
+						placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.laydulieutu.place' })}
 					/>
 				</Form.Item>
 
-				<Form.Item name='truongLayDuLieu' label='Trường lấy dữ liệu' rules={[...rules.text]}>
-					<Input placeholder='Trường lấy dữ liệu' />
+				<Form.Item
+					name='truongLayDuLieu'
+					label={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglaydulieu.label' })}
+					rules={[...rules.text]}
+				>
+					<Input placeholder={intl.formatMessage({ id: 'minhchung.form.cauhinh.form.truonglaydulieu.place' })} />
 				</Form.Item>
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!editCauHinh ? 'Thêm mới' : 'Lưu lại'}
+						{!editCauHinh
+							? intl.formatMessage({ id: 'global.button.themmoi' })
+							: intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 					{!editCauHinh && (
 						<Button
@@ -491,10 +560,10 @@ const FormCauHinh = (props: { onCancel: any; dataState?: string; dataSetState?: 
 							}}
 							type='primary'
 						>
-							Thêm mới và tiếp tục
+							{intl.formatMessage({ id: 'minhchung.form.cauhinh.form.themmoi.tieptuc' })}
 						</Button>
 					)}
-					<Button onClick={() => props.onCancel()}>Hủy</Button>
+					<Button onClick={() => props.onCancel()}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				</div>
 			</Form>
 			<Modal
