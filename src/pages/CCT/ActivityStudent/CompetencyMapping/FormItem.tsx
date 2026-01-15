@@ -4,7 +4,7 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm, Tag } from 'antd';
+import { Button, Modal, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormCompetencyMapping from './Form';
 
@@ -34,11 +34,6 @@ const FormItemCompetencyMapping = (props: {
 			title: 'Competency',
 			width: 150,
 			render: (val, rec) => rec?.competencie?.name,
-		},
-		{
-			title: 'Attributes',
-			width: 200,
-			render: (val, rec) => <Tag color={rec?.competencie?.attributes?.color}>{rec?.competencie?.attributes?.name}</Tag>,
 		},
 		{
 			title: 'Description',

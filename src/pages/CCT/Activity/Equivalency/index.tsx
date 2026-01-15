@@ -75,7 +75,7 @@ const EquivalencyPage = () => {
 
 			return {
 				title: attr.code,
-				width: 90,
+				width: 60,
 				align: 'center',
 				render: (_: any, field: any) => (
 					<Form.Item className='table-form-item' name={[field.name, 'attributes', attr._id]} valuePropName='checked'>

@@ -72,13 +72,13 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 
 	const columns: IColumn<Activity.ICompetencyMapping>[] = [
 		{
-			title: 'Attributes',
+			title: intl.formatMessage({ id: 'activity.info.form.ccd.attribute' }),
 			dataIndex: 'attributesId',
 			width: 200,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 		},
 		{
-			title: 'Competency',
+			title: intl.formatMessage({ id: 'activity.info.form.ccd.competency' }),
 			dataIndex: 'dsCompetencie',
 			width: 250,
 			render: (val, rec: any) =>
@@ -106,7 +106,7 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 
 					<Popconfirm
 						onConfirm={() => handleDelete(rec)}
-						title={intl.formatMessage({ id: 'activity.info.participantsList.confirm.xoa' })}
+						title={intl.formatMessage({ id: 'activity.info.form.ccd.comfirm.xoa' })}
 						placement='topLeft'
 						disabled={disabled || rec?.index === 1}
 					>
@@ -124,7 +124,7 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 	];
 
 	return (
-		<>
+		<div style={{ padding: '0px 16px 0px 16px' }}>
 			<TableStaticData
 				columns={columns}
 				data={groupByAttributes(danhSach ?? [])}
@@ -152,7 +152,7 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 			</TableStaticData>
 
 			<Modal
-				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} Attributes Competency Mapping`}
+				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.ccd' })}`}
 				open={visibleForm}
 				width={600}
 				footer={null}
@@ -160,7 +160,7 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 			>
 				<FormCompetencyMappingModel getData={getData} />
 			</Modal>
-		</>
+		</div>
 	);
 };
 

@@ -5,7 +5,7 @@ import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Se
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Tag } from 'antd';
+import { Card, Popconfirm, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import ModalActivity from './components/Modal';
 import StatActivity from './components/Stat';
@@ -97,26 +97,35 @@ const ActivityPage = () => {
 	];
 
 	return (
-		<TableBase
-			columns={columns}
-			dependencies={[page, limit]}
-			modelName='cct.activity'
-			title={intl.formatMessage({ id: 'activity.title' })}
-			Form={ModalActivity}
-			formProps={{
-				getData: () => {
-					getModel();
-					getAnalyticsActivityModel();
-				},
-			}}
-			widthDrawer={1200}
-			onReload={() => {
-				getModel();
-				getAnalyticsActivityModel();
-			}}
-		>
+		<Card title={intl.formatMessage({ id: 'activity.title' })}>
 			<StatActivity />
-		</TableBase>
+
+			<div
+				style={{
+					padding: '0px 12px 0px 12px',
+				}}
+			>
+				<TableBase
+					columns={columns}
+					dependencies={[page, limit]}
+					modelName='cct.activity'
+					title={intl.formatMessage({ id: 'activity.title' })}
+					Form={ModalActivity}
+					formProps={{
+						getData: () => {
+							getModel();
+							getAnalyticsActivityModel();
+						},
+					}}
+					widthDrawer={1200}
+					onReload={() => {
+						getModel();
+						getAnalyticsActivityModel();
+					}}
+					hideCard
+				/>
+			</div>
+		</Card>
 	);
 };
 

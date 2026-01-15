@@ -4,8 +4,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { DeleteOutlined } from '@ant-design/icons';
-import { Popconfirm, Tag } from 'antd';
-import { useEffect } from 'react';
+import { Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormCompetencyMappingModel from './Form';
 
@@ -22,20 +21,11 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 			});
 	};
 
-	useEffect(() => {
-		getData();
-	}, [recOutCome?._id]);
-
 	const columns: IColumn<ActivityOutCome.ICompetencyMapping>[] = [
 		{
 			title: 'Competency',
 			width: 150,
 			render: (val, rec) => rec?.competencie?.name,
-		},
-		{
-			title: 'Attributes',
-			width: 200,
-			render: (val, rec) => <Tag color={rec?.competencie?.attributes?.color}>{rec?.competencie?.attributes?.name}</Tag>,
 		},
 		{
 			title: 'Description',
@@ -69,20 +59,22 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 	];
 
 	return (
-		<TableBase
-			getData={getData}
-			columns={columns}
-			dependencies={[page, limit, recOutCome?._id]}
-			modelName='cct.competencymapping'
-			title='Competency Mapping'
-			Form={FormCompetencyMappingModel}
-			formProps={{ getData }}
-			buttons={{ create: !disabled }}
-			hideCard
-			otherProps={{
-				size: 'small',
-			}}
-		/>
+		<div style={{ padding: '0px 18px 0px 18px' }}>
+			<TableBase
+				getData={getData}
+				columns={columns}
+				dependencies={[page, limit, recOutCome?._id]}
+				modelName='cct.competencyoutcome'
+				title='Competency Mapping'
+				Form={FormCompetencyMappingModel}
+				formProps={{ getData }}
+				buttons={{ create: !disabled }}
+				hideCard
+				otherProps={{
+					size: 'small',
+				}}
+			/>
+		</div>
 	);
 };
 

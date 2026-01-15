@@ -69,20 +69,22 @@ const StudenDomainModelPage = (props: { mode: 'activitiesType' | 'activity'; dis
 	];
 
 	return (
-		<TableBase
-			getData={getData}
-			columns={columns}
-			dependencies={[page, limit, recActiType?._id, recActivity?._id]}
-			modelName='danhmuc.studentdomain'
-			title={intl.formatMessage({ id: 'activitiestypedomain.title' })}
-			Form={FormStudentDomainModel}
-			formProps={{ getData, mode }}
-			buttons={{ create: !disabled }}
-			hideCard
-			otherProps={{
-				size: 'small',
-			}}
-		/>
+		<div style={{ padding: '0px 16px 0px 16px' }}>
+			<TableBase
+				getData={getData}
+				columns={columns}
+				dependencies={[page, limit, recActiType?._id, recActivity?._id]}
+				modelName='danhmuc.studentdomain'
+				title={intl.formatMessage({ id: 'activitiestypedomain.title' })}
+				Form={FormStudentDomainModel}
+				formProps={{ getData, mode }}
+				buttons={{ create: !disabled }}
+				hideCard
+				otherProps={{
+					size: 'small',
+				}}
+			/>
+		</div>
 	);
 };
 

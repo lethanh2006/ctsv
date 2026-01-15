@@ -38,13 +38,13 @@ const FormItemCompetencyMapping = (props: {
 
 	const columns: IColumn<Activity.ICompetencyMapping>[] = [
 		{
-			title: 'Attributes',
+			title: intl.formatMessage({ id: 'activity.info.form.ccd.attribute' }),
 			dataIndex: 'attributesId',
 			width: 200,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 		},
 		{
-			title: 'Competency',
+			title: intl.formatMessage({ id: 'activity.info.form.ccd.competency' }),
 			dataIndex: 'dsCompetencie',
 			width: 250,
 			render: (val, rec) =>
@@ -72,7 +72,7 @@ const FormItemCompetencyMapping = (props: {
 
 					<Popconfirm
 						onConfirm={() => onDelete((rec?.index ?? 0) - 1)}
-						title={intl.formatMessage({ id: 'activity.info.participantsList.confirm.xoa' })}
+						title={intl.formatMessage({ id: 'activity.info.form.ccd.comfirm.xoa' })}
 						placement='topLeft'
 						disabled={disabled || rec?.index === 1}
 					>
@@ -90,7 +90,7 @@ const FormItemCompetencyMapping = (props: {
 	];
 
 	return (
-		<>
+		<div style={{ padding: '0px 16px 0px 16px' }}>
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
 				<Button
 					disabled={disabled}
@@ -109,7 +109,7 @@ const FormItemCompetencyMapping = (props: {
 			</TableStaticData>
 
 			<Modal
-				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} Attributes Competency Mapping`}
+				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.ccd' })}`}
 				open={visibleForm}
 				width={600}
 				footer={null}
@@ -117,7 +117,7 @@ const FormItemCompetencyMapping = (props: {
 			>
 				<FormCompetencyMapping onOk={onAdd} />
 			</Modal>
-		</>
+		</div>
 	);
 };
 

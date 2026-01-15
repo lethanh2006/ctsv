@@ -51,7 +51,8 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 	const activitiesTypeId: string = Form.useWatch('activitiesTypeId', form);
 
 	useEffect(() => {
-		if (!visibleForm) resetFieldsForm(form);
+		if (!visibleForm)
+			resetFieldsForm(form, { coCurricularAttributesEquivalency: null, studentDeclarationApproverList: null });
 		else if (record?._id)
 			form.setFieldsValue({
 				...record,
@@ -163,7 +164,10 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 					<Form.Item
 						name='endDate'
 						label={intl.formatMessage({ id: 'activity.info.form.endDate' })}
-						rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}
+						rules={[
+							...rules.required,
+							...rules.sauNgay(dayjs(startDate), intl.formatMessage({ id: 'activity.info.form.startDate' })),
+						]}
 					>
 						<MyDatePicker
 							showTime={{ showHour: true, showMinute: true }}
@@ -355,7 +359,11 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 						</Col>
 
 						<Col span={24} md={12}>
-							<Form.Item name='activitiesTypeDomainId' label='Co-curricular Domain (CCD)' rules={[...rules.required]}>
+							<Form.Item
+								name='activitiesTypeDomainId'
+								label={intl.formatMessage({ id: 'activity.info.form.ccd' })}
+								rules={[...rules.required]}
+							>
 								<SelectActivitiesTypeDomain disabled={isView} onChange={() => form.resetFields(['activitiesTypeId'])} />
 							</Form.Item>
 						</Col>

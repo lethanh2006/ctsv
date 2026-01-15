@@ -51,6 +51,11 @@ export default {
 	'activity.info.form.activitiesTypeId.mapping': 'Attributes Competency Mapping',
 	'activity.info.form.student': 'Student Declaration Approver',
 
+	'activity.info.form.ccd': 'Co-curricular Domain (CCD)',
+	'activity.info.form.ccd.attribute': 'Attributes',
+	'activity.info.form.ccd.competency': 'Competency',
+	'activity.info.form.ccd.comfirm.xoa': 'Do you want to remove?',
+
 	'activity.info.participantsList.column.name': 'Full name',
 	'activity.info.participantsList.column.email': 'Email',
 	'activity.info.participantsList.column.role': 'Role',

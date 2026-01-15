@@ -73,7 +73,7 @@ const FormItemStudentDomain = (props: {
 	];
 
 	return (
-		<>
+		<div style={{ padding: '0px 16px 0px 16px' }}>
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
 				{!disabled && (
 					<Button
@@ -105,7 +105,7 @@ const FormItemStudentDomain = (props: {
 			>
 				<FormStudentDomain onOk={onAdd} />
 			</Modal>
-		</>
+		</div>
 	);
 };
 

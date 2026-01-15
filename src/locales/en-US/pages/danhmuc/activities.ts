@@ -19,6 +19,7 @@ export default {
 	'activitiesmanagement.form.id.place': 'Enter ID',
 	'activitiesmanagement.form.name': 'Name',
 	'activitiesmanagement.form.name.place': 'Enter name',
+	'activitiesmanagement.form.domain': 'Co-curricular Domain (CCD)',
 	'activitiesmanagement.form.attributes': 'Attribute',
 	'activitiesmanagement.form.order': 'Display order',
 	'activitiesmanagement.form.order.place': 'Enter display order',

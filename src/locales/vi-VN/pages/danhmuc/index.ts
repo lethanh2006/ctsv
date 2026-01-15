@@ -5,4 +5,4 @@ import levels from './levels';
 import questions from './questions';
 import roles from './roles';
 
-export default { ...roles, ...attributes, ...levels, ...questions, ...activities, competency };
+export default { ...roles, ...attributes, ...levels, ...questions, ...activities, ...competency };

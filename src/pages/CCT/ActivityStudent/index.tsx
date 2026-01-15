@@ -1,4 +1,3 @@
-import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
@@ -22,7 +21,7 @@ import {
 	RedoOutlined,
 	UserSwitchOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Checkbox, Popconfirm, Popover, Tabs, Tag } from 'antd';
+import { Button, Card, Checkbox, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
@@ -46,6 +45,12 @@ const HistoryActivityPage = () => {
 		title: string;
 		trangThai: EApprovalStatus;
 	}>();
+
+	const TAB_ORDER = [
+		EActivityCategory.REGISTERED,
+		'STUDENT_DECLARATION_APPROVERS',
+		EActivityCategory.PERSONAL_CO_CURRICULAR,
+	];
 
 	useEffect(() => {
 		getAllModel(undefined, { order: 1 });
@@ -97,14 +102,14 @@ const HistoryActivityPage = () => {
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
 		{
-			title: 'Name',
+			title: intl.formatMessage({ id: 'activityresult.column.sv.name' }),
 			dataIndex: 'name',
 			width: 120,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'activityresult.column.sv.email' }),
 			dataIndex: 'email',
 			width: 130,
 			filterType: 'string',
@@ -129,16 +134,13 @@ const HistoryActivityPage = () => {
 			hide: tabActive === EActivityCategory.REGISTERED,
 		},
 		{
-			title: 'Competency',
-			dataIndex: 'listAchievedCompetencies',
-			width: 140,
-			render: (val, rec) =>
-				rec?.listAchievedCompetencies
-					?.map((item) => item?.competencie?.name)
-					.filter(Boolean)
-					.join(', '),
+			title: intl.formatMessage({ id: 'activityresult.column.approvers' }),
+			dataIndex: 'studentDeclarationApproverName',
+			align: 'center',
+			width: 180,
+			filterType: 'string',
 			onCell,
-			hide: tabActive === EActivityCategory.REGISTERED,
+			hide: tabActive !== 'STUDENT_DECLARATION_APPROVERS',
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.activity' }),
@@ -149,7 +151,6 @@ const HistoryActivityPage = () => {
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.attribute' }),
-			align: 'center',
 			width: 200,
 			render: (val, rec) => (
 				<Tag color={rec?.activities?.activitiesType?.attributes?.color}>
@@ -203,31 +204,7 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		...attributeColumns,
-		{
-			title: 'Rejection Note',
-			dataIndex: 'activityRejectionNote',
-			width: 150,
-			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
-			onCell,
-		},
-		{
-			title: 'Revision Note',
-			dataIndex: 'revisionNote',
-			width: 150,
-			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
-			onCell,
-		},
-		{
-			title: 'Declaration Approvers',
-			dataIndex: 'studentDeclarationApproverName',
-			align: 'center',
-			width: 180,
-			filterType: 'string',
-			onCell,
-			hide: tabActive !== 'STUDENT_DECLARATION_APPROVERS',
-		},
+
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.status' }),
 			dataIndex: 'workflow',
@@ -264,7 +241,7 @@ const HistoryActivityPage = () => {
 					return (
 						<ButtonExtend
 							disabled={rec?.workflow !== EApprovalStatus.SUBMITTED}
-							tooltip='Approvers'
+							tooltip={intl.formatMessage({ id: 'activityresult.button.decla' })}
 							onClick={() => {
 								setRecord(rec);
 								setVisibleDieuPhoi(true);
@@ -294,7 +271,7 @@ const HistoryActivityPage = () => {
 
 						<Popover
 							content={
-								<>
+								<Space direction='vertical' size={'small'}>
 									<ButtonExtend
 										disabled={rec?.workflow === EApprovalStatus.REJECTED}
 										tooltip={intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
@@ -309,6 +286,7 @@ const HistoryActivityPage = () => {
 										type='link'
 										icon={<CloseCircleOutlined />}
 										danger
+										size='small'
 									>
 										{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
 									</ButtonExtend>
@@ -325,6 +303,7 @@ const HistoryActivityPage = () => {
 										}}
 										type='link'
 										icon={<RedoOutlined />}
+										size='small'
 									>
 										{intl.formatMessage({ id: 'activityresult.button.yccs' })}
 									</ButtonExtend>
@@ -350,11 +329,12 @@ const HistoryActivityPage = () => {
 											danger
 											type='link'
 											icon={<DeleteOutlined />}
+											size='small'
 										>
 											{intl.formatMessage({ id: 'global.button.xoa' })}
 										</ButtonExtend>
 									</Popconfirm>
-								</>
+								</Space>
 							}
 							placement='bottomLeft'
 						>
@@ -369,37 +349,49 @@ const HistoryActivityPage = () => {
 	return (
 		<Card title={intl.formatMessage({ id: 'activityresult.title' })}>
 			<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
-				{Object.values(EActivityCategory).map((item) => (
-					<Tabs.TabPane tab={mapNameActivityCategory[item]} key={item} />
+				{TAB_ORDER.map((item) => (
+					<Tabs.TabPane
+						key={item}
+						tab={
+							item === 'STUDENT_DECLARATION_APPROVERS'
+								? 'Student Declaration Approvers'
+								: mapNameActivityCategory[item as EActivityCategory]
+						}
+					/>
 				))}
-				<Tabs.TabPane tab='Student Declaration Approvers' key='STUDENT_DECLARATION_APPROVERS' />
 			</Tabs>
 
 			{tabActive !== 'STUDENT_DECLARATION_APPROVERS' && (
 				<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
 			)}
 
-			<TableBase
-				getData={getData}
-				formProps={{
-					getData: () => {
+			<div
+				style={{
+					padding: '0px 12px 0px 12px',
+				}}
+			>
+				<TableBase
+					getData={getData}
+					formProps={{
+						getData: () => {
+							getData();
+							getThongKe();
+						},
+					}}
+					columns={columns}
+					dependencies={[page, limit, tabActive]}
+					modelName='cct.activityoutcome'
+					title={intl.formatMessage({ id: 'activityresult.title' })}
+					Form={tabActive === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome}
+					widthDrawer={tabActive === EActivityCategory.REGISTERED ? 800 : 1000}
+					hideCard
+					buttons={{ create: false }}
+					onReload={() => {
 						getData();
 						getThongKe();
-					},
-				}}
-				columns={columns}
-				dependencies={[page, limit, tabActive]}
-				modelName='cct.activityoutcome'
-				title={intl.formatMessage({ id: 'activityresult.title' })}
-				Form={tabActive === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome}
-				widthDrawer={tabActive === EActivityCategory.REGISTERED ? 800 : 1000}
-				hideCard
-				buttons={{ create: false }}
-				onReload={() => {
-					getData();
-					getThongKe();
-				}}
-			/>
+					}}
+				/>
+			</div>
 
 			<ModalXuLyActivityStudent
 				visible={visibleXuLy}

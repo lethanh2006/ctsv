@@ -46,12 +46,12 @@ const FormCompetencyMappingModel = (props: any) => {
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col span={24}>
-					<Form.Item name='attributesId' label='Attributes'>
+					<Form.Item name='attributesId' label={intl.formatMessage({ id: 'activity.info.form.ccd.attribute' })}>
 						<SelectAttributesManagement onChange={() => form.resetFields(['competencieId'])} />
 					</Form.Item>
 				</Col>
 				<Col span={24}>
-					<Form.Item name='competencieId' label='Competency'>
+					<Form.Item name='competencieId' label={intl.formatMessage({ id: 'activity.info.form.ccd.competency' })}>
 						<SelectCompetency multiple condition={{ attributesId: attributesId }} />
 					</Form.Item>
 				</Col>
