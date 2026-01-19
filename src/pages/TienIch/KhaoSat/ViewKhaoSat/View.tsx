@@ -91,8 +91,8 @@ const ViewTraLoiKhaoSat = (prosp: { khaoSat?: BieuMau.Record; cauTraLoi?: BieuMa
 
 	return (
 		<>
-			<h3>{khaoSat?.tieuDe}</h3>
-			<p>{khaoSat?.moTa}</p>
+			{/* <h3>{khaoSat?.tieuDe}</h3>
+			<p>{khaoSat?.moTa}</p> */}
 
 			{khaoSat?.danhSachKhoi?.map((item, indexKhoi) => (
 				// eslint-disable-next-line react/no-array-index-key

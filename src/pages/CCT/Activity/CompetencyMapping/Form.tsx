@@ -42,7 +42,7 @@ const FormCompetencyMapping = (props: { onOk: (val: Activity.ICompetencyMapping)
 				</Col>
 				<Col span={24}>
 					<Form.Item name='competencieId' label={intl.formatMessage({ id: 'activity.info.form.ccd.competency' })}>
-						<SelectCompetency multiple condition={{ attributesId: attributesId }} />
+						<SelectCompetency multiple condition={{ attributesId: attributesId }} allowClear />
 					</Form.Item>
 				</Col>
 			</Row>

@@ -2,7 +2,7 @@ export default {
 	'levelsmanagement.title': 'Level',
 
 	'levelsmanagement.column.order': 'Display order',
-	'levelsmanagement.column.id': 'ID',
+	'levelsmanagement.column.id': 'Code',
 	'levelsmanagement.column.name': 'Name',
 	'levelsmanagement.column.question': 'Self-Assessment Questions',
 	'levelsmanagement.column.des': 'Description',
@@ -15,8 +15,8 @@ export default {
 	'levelsmanagement.form.chinhsua': 'Edit level',
 	'levelsmanagement.form.chitiet': 'Detail level',
 
-	'levelsmanagement.form.id': 'ID',
-	'levelsmanagement.form.id.place': 'Enter ID',
+	'levelsmanagement.form.id': 'Code',
+	'levelsmanagement.form.id.place': 'Enter code',
 	'levelsmanagement.form.name': 'Name',
 	'levelsmanagement.form.question': 'Self-Assessment Questions',
 	'levelsmanagement.form.name.place': 'Enter name',

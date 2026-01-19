@@ -3,7 +3,6 @@ import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
-import SelectAttributesManagement from '../../Attributes/components/Select';
 import StudenDomainModelPage from '../StudenModel';
 import FormItemStudentDomain from '../Student/FormItem';
 
@@ -73,15 +72,6 @@ const FormActivitiesTypeDomain = (props: any) => {
 								disabled={isView}
 								placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.name.place' })}
 							/>
-						</Form.Item>
-					</Col>
-					<Col span={24} md={12}>
-						<Form.Item
-							name='attributesId'
-							label={intl.formatMessage({ id: 'activitiestypedomain.form.attributes' })}
-							rules={[...rules.required]}
-						>
-							<SelectAttributesManagement disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>

@@ -2,7 +2,7 @@ export default {
 	'rolesmanagement.title': 'Role',
 
 	'rolesmanagement.column.order': 'Display order',
-	'rolesmanagement.column.id': 'ID',
+	'rolesmanagement.column.id': 'Code',
 	'rolesmanagement.column.name': 'Name',
 	'rolesmanagement.column.des': 'Description',
 	'rolesmanagement.column.active': 'Active',
@@ -14,8 +14,8 @@ export default {
 	'rolesmanagement.form.chinhsua': 'Edit role',
 	'rolesmanagement.form.chitiet': 'Detail role',
 
-	'rolesmanagement.form.id': 'ID',
-	'rolesmanagement.form.id.place': 'Enter ID',
+	'rolesmanagement.form.id': 'Code',
+	'rolesmanagement.form.id.place': 'Enter code',
 	'rolesmanagement.form.name': 'Name',
 	'rolesmanagement.form.name.place': 'Enter name',
 	'rolesmanagement.form.level': 'Level',

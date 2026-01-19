@@ -2,7 +2,7 @@ export default {
 	'activitiesmanagement.title': 'Co-curricular Activities (CCA)',
 
 	'activitiesmanagement.column.order': 'Display order',
-	'activitiesmanagement.column.id': 'ID',
+	'activitiesmanagement.column.id': 'Code',
 	'activitiesmanagement.column.name': 'Name',
 	'activitiesmanagement.column.des': 'Description',
 	'activitiesmanagement.column.attribute': 'Attribute',
@@ -15,8 +15,8 @@ export default {
 	'activitiesmanagement.form.chinhsua': 'Edit co-curricular activity',
 	'activitiesmanagement.form.chitiet': 'Detail co-curricular activity',
 
-	'activitiesmanagement.form.id': 'ID',
-	'activitiesmanagement.form.id.place': 'Enter ID',
+	'activitiesmanagement.form.id': 'Code',
+	'activitiesmanagement.form.id.place': 'Enter code',
 	'activitiesmanagement.form.name': 'Name',
 	'activitiesmanagement.form.name.place': 'Enter name',
 	'activitiesmanagement.form.domain': 'Co-curricular Domain (CCD)',

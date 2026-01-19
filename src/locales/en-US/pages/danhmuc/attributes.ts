@@ -2,7 +2,7 @@ export default {
 	'attributesmanagement.title': 'Attribute',
 
 	'attributesmanagement.column.order': 'Display order',
-	'attributesmanagement.column.id': 'ID',
+	'attributesmanagement.column.id': 'Code',
 	'attributesmanagement.column.name': 'Name',
 	'attributesmanagement.column.des': 'Description',
 	'attributesmanagement.column.active': 'Active',
@@ -15,8 +15,8 @@ export default {
 
 	'attributesmanagement.form.icon': 'Icon',
 	'attributesmanagement.form.color': 'Color',
-	'attributesmanagement.form.id': 'ID',
-	'attributesmanagement.form.id.place': 'Enter ID',
+	'attributesmanagement.form.id': 'Code',
+	'attributesmanagement.form.id.place': 'Enter code',
 	'attributesmanagement.form.name': 'Name',
 	'attributesmanagement.form.name.place': 'Enter name',
 	'attributesmanagement.form.order': 'Display order',

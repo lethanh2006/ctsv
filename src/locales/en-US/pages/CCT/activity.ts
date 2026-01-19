@@ -50,6 +50,8 @@ export default {
 	'activity.info.form.activitiesTypeId.select': 'Select co-curricular activities (CCA)',
 	'activity.info.form.activitiesTypeId.mapping': 'Attributes Competency Mapping',
 	'activity.info.form.student': 'Student Declaration Approver',
+	'activity.info.form.duedate': 'Due date',
+	'activity.info.form.duedate.place': 'Select due date',
 
 	'activity.info.form.ccd': 'Co-curricular Domain (CCD)',
 	'activity.info.form.ccd.attribute': 'Attributes',

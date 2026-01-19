@@ -9,3 +9,7 @@ export async function putApproveActivity(idActivity: string, payLoad: any) {
 export async function getAnalyticsStaff(activityCategory: EActivityCategory) {
 	return axios.get(`${ipCCT}/activity-outcome/analytics/staff/${activityCategory}`);
 }
+
+export async function getAnalyticsApprovers() {
+	return axios.get(`${ipCCT}/activity-outcome/analytics/overview`);
+}

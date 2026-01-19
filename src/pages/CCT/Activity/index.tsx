@@ -5,7 +5,7 @@ import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Se
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Card, Popconfirm, Tag } from 'antd';
+import { Popconfirm, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import ModalActivity from './components/Modal';
 import StatActivity from './components/Stat';
@@ -50,7 +50,9 @@ const ActivityPage = () => {
 			dataIndex: 'startDate',
 			width: 220,
 			render: (val, rec) =>
-				`${dayjs(rec?.startDate).format('DD/MM/YYYY')} - ${dayjs(rec?.endDate).format('DD/MM/YYYY')}`,
+				[dayjs(rec?.startDate).format('HH:mm DD/MM/YYYY'), dayjs(rec?.endDate).format('HH:mm DD/MM/YYYY')]
+					.filter(Boolean)
+					.join(' - '),
 			sortable: true,
 			onCell,
 		},
@@ -97,35 +99,28 @@ const ActivityPage = () => {
 	];
 
 	return (
-		<Card title={intl.formatMessage({ id: 'activity.title' })}>
-			<StatActivity />
-
-			<div
-				style={{
-					padding: '0px 12px 0px 12px',
-				}}
-			>
-				<TableBase
-					columns={columns}
-					dependencies={[page, limit]}
-					modelName='cct.activity'
-					title={intl.formatMessage({ id: 'activity.title' })}
-					Form={ModalActivity}
-					formProps={{
-						getData: () => {
-							getModel();
-							getAnalyticsActivityModel();
-						},
-					}}
-					widthDrawer={1200}
-					onReload={() => {
-						getModel();
-						getAnalyticsActivityModel();
-					}}
-					hideCard
-				/>
+		<TableBase
+			columns={columns}
+			dependencies={[page, limit]}
+			modelName='cct.activity'
+			title={intl.formatMessage({ id: 'activity.title' })}
+			Form={ModalActivity}
+			formProps={{
+				getData: () => {
+					getModel();
+					getAnalyticsActivityModel();
+				},
+			}}
+			widthDrawer={1200}
+			onReload={() => {
+				getModel();
+				getAnalyticsActivityModel();
+			}}
+		>
+			<div style={{ padding: 12 }}>
+				<StatActivity />
 			</div>
-		</Card>
+		</TableBase>
 	);
 };
 

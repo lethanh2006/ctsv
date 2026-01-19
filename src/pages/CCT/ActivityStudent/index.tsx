@@ -21,7 +21,7 @@ import {
 	RedoOutlined,
 	UserSwitchOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Checkbox, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
+import { Button, Checkbox, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
@@ -29,12 +29,13 @@ import FormPerstionActivityOutCome from './components/FormPerstion';
 import ModalDieuPhoiActivityStudent from './components/ModalDieuPhoi';
 import ModalXuLyActivityStudent from './components/ModalXuLy';
 import StatActivityOutCome from './components/Stat';
+import StatActivityApprovers from './components/StatApprovers';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
 	const { getModel, page, limit, handleView, deleteModel, setRecord } = useModel('cct.activityoutcome');
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
-	const { getAnalyticsStaffModel } = useModel('cct.activityoutcome');
+	const { getAnalyticsStaffModel, getAnalyticsApproversModel } = useModel('cct.activityoutcome');
 
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
 	const [visibleDieuPhoi, setVisibleDieuPhoi] = useState<boolean>(false);
@@ -75,6 +76,7 @@ const HistoryActivityPage = () => {
 
 	const getThongKe = () => {
 		getAnalyticsStaffModel(tabActive as any);
+		tabActive === 'STUDENT_DECLARATION_APPROVERS' && getAnalyticsApproversModel();
 	};
 
 	const attributeColumns: IColumn<any>[] = useMemo(() => {
@@ -347,51 +349,48 @@ const HistoryActivityPage = () => {
 	];
 
 	return (
-		<Card title={intl.formatMessage({ id: 'activityresult.title' })}>
-			<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
-				{TAB_ORDER.map((item) => (
-					<Tabs.TabPane
-						key={item}
-						tab={
-							item === 'STUDENT_DECLARATION_APPROVERS'
-								? 'Student Declaration Approvers'
-								: mapNameActivityCategory[item as EActivityCategory]
-						}
-					/>
-				))}
-			</Tabs>
-
-			{tabActive !== 'STUDENT_DECLARATION_APPROVERS' && (
-				<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
-			)}
-
-			<div
-				style={{
-					padding: '0px 12px 0px 12px',
-				}}
-			>
-				<TableBase
-					getData={getData}
-					formProps={{
-						getData: () => {
-							getData();
-							getThongKe();
-						},
-					}}
-					columns={columns}
-					dependencies={[page, limit, tabActive]}
-					modelName='cct.activityoutcome'
-					title={intl.formatMessage({ id: 'activityresult.title' })}
-					Form={tabActive === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome}
-					widthDrawer={tabActive === EActivityCategory.REGISTERED ? 800 : 1000}
-					hideCard
-					buttons={{ create: false }}
-					onReload={() => {
+		<>
+			<TableBase
+				getData={getData}
+				formProps={{
+					getData: () => {
 						getData();
 						getThongKe();
-					}}
-				/>
-			</div>
+					},
+				}}
+				columns={columns}
+				dependencies={[page, limit, tabActive]}
+				modelName='cct.activityoutcome'
+				title={intl.formatMessage({ id: 'activityresult.title' })}
+				Form={tabActive === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome}
+				widthDrawer={tabActive === EActivityCategory.REGISTERED ? 800 : 1000}
+				buttons={{ create: false }}
+				onReload={() => {
+					getData();
+					getThongKe();
+				}}
+			>
+				<div style={{ padding: '0px 12px 0px 12px' }}>
+					<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
+						{TAB_ORDER.map((item) => (
+							<Tabs.TabPane
+								key={item}
+								tab={
+									item === 'STUDENT_DECLARATION_APPROVERS'
+										? 'Student Declaration Approvers'
+										: mapNameActivityCategory[item as EActivityCategory]
+								}
+							/>
+						))}
+					</Tabs>
+
+					{tabActive !== 'STUDENT_DECLARATION_APPROVERS' ? (
+						<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
+					) : (
+						<StatActivityApprovers getData={getThongKe} />
+					)}
+				</div>
+			</TableBase>
 
 			<ModalXuLyActivityStudent
 				visible={visibleXuLy}
@@ -405,7 +404,7 @@ const HistoryActivityPage = () => {
 			/>
 
 			<ModalDieuPhoiActivityStudent visible={visibleDieuPhoi} setVisible={setVisibleDieuPhoi} getData={getData} />
-		</Card>
+		</>
 	);
 };
 

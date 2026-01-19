@@ -2,7 +2,7 @@ export default {
 	'competency.title': 'Competency',
 
 	'competency.column.order': 'Display order',
-	'competency.column.id': 'ID',
+	'competency.column.id': 'Code',
 	'competency.column.name': 'Name',
 	'competency.column.des': 'Description',
 	'competency.column.attribute': 'Attribute',
@@ -14,8 +14,8 @@ export default {
 	'competency.form.chinhsua': 'Edit competency',
 	'competency.form.chitiet': 'Detail competency',
 
-	'competency.form.id': 'ID',
-	'competency.form.id.place': 'Enter ID',
+	'competency.form.id': 'Code',
+	'competency.form.id.place': 'Enter code',
 	'competency.form.name': 'Name',
 	'competency.form.name.place': 'Enter name',
 	'competency.form.attributes': 'Attribute',

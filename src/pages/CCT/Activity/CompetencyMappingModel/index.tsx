@@ -152,7 +152,7 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 			</TableStaticData>
 
 			<Modal
-				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.ccd' })}`}
+				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}`}
 				open={visibleForm}
 				width={600}
 				footer={null}
