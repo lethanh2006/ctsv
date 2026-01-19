@@ -1,8 +1,11 @@
 export default {
 	'activityresult.title': 'Activity Results Approval',
 
+	'activityresult.column.sv.name': 'Name',
+	'activityresult.column.sv.email': 'Email',
 	'activityresult.column.name': 'Co Curicular Name',
 	'activityresult.column.cca': 'Co-curricular Activities (CCA)',
+	'activityresult.column.approvers': 'Declaration Approvers',
 	'activityresult.column.activity': 'Activity name',
 	'activityresult.column.attribute': 'Activity attributes',
 	'activityresult.column.startdate': 'Start Date',
@@ -11,6 +14,14 @@ export default {
 	'activityresult.column.level': 'Level',
 	'activityresult.column.status': 'Status',
 
+	'activityresult.column.organizer': 'Organizer',
+	'activityresult.column.facility': 'Facility',
+	'activityresult.column.enddate': 'End Date',
+	'activityresult.column.work': 'Workflow',
+	'activityresult.column.reject': 'Rejection Note',
+	'activityresult.column.revi': 'Revision Note',
+
+	'activityresult.button.decla': 'Declaration Approvers',
 	'activityresult.button.duyet': 'Approval',
 	'activityresult.button.tuchoi': 'Reject',
 	'activityresult.button.yccs': 'Request for editing',

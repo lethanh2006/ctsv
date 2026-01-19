@@ -41,6 +41,13 @@ declare module ActivityOutCome {
 		total: number;
 	}
 
+	export interface IAnalyticsApprovers {
+		total: number;
+		processed: number;
+		pending: number;
+		unassigned: number;
+	}
+
 	export interface ICompetencyMapping {
 		_id: string;
 		index?: number;

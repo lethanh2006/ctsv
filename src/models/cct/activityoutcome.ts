@@ -1,5 +1,5 @@
 import useInitModel from '@/hooks/useInitModel';
-import { getAnalyticsStaff, putApproveActivity } from '@/services/CCT/ActivityOutcome';
+import { getAnalyticsApprovers, getAnalyticsStaff, putApproveActivity } from '@/services/CCT/ActivityOutcome';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { EActivityCategory, EApprovalStatus } from '@/services/CCT/constant';
 import { ipCCT } from '@/utils/ip';
@@ -11,6 +11,8 @@ export default () => {
 	const { formSubmiting, setFormSubmiting } = objInit;
 	const [loadingThongKe, setLoadingThongKe] = useState<boolean>(false);
 	const [dataThongKe, setDataThongKe] = useState<ActivityOutCome.IAnalyticsStaff>();
+	const [dataThongKeApprovers, setDataThongKeAppreovers] = useState<ActivityOutCome.IAnalyticsApprovers>();
+	const [loadingThongKeApprovers, setLoadingThongKeApprovers] = useState<boolean>(false);
 
 	const putApproveActivityModel = async (
 		idActivity: string,
@@ -52,11 +54,27 @@ export default () => {
 		}
 	};
 
+	const getAnalyticsApproversModel = async (): Promise<ActivityOutCome.IAnalyticsStaff> => {
+		setLoadingThongKeApprovers(true);
+		try {
+			const res = await getAnalyticsApprovers();
+			setDataThongKeAppreovers(res.data?.data);
+			return res.data?.data;
+		} catch (err) {
+			return Promise.reject(err);
+		} finally {
+			setLoadingThongKeApprovers(false);
+		}
+	};
+
 	return {
 		...objInit,
 		dataThongKe,
 		loadingThongKe,
 		putApproveActivityModel,
 		getAnalyticsStaffModel,
+		dataThongKeApprovers,
+		loadingThongKeApprovers,
+		getAnalyticsApproversModel,
 	};
 };

@@ -1,10 +1,19 @@
-import { accentColors, highlightColor, officialColors, primaryColor, statusBgColors, statusColors, textColors } from '@/services/base/constant';
-import { getLocale } from '@umijs/max';
+import {
+	accentColors,
+	highlightColor,
+	officialColors,
+	primaryColor,
+	statusBgColors,
+	statusColors,
+	textColors,
+} from '@/services/base/constant';
+import { getIntl, getLocale } from '@umijs/max';
 import { ConfigProvider, Empty, Spin } from 'antd';
 import { useEffect } from 'react';
 
 /** Chú ý các route để layout: false thì phải bọc bởi ConfigBound để nhận styles */
 const ConfigBounder = (props: { children?: any }) => {
+	const intl = getIntl();
 	useEffect(() => {
 		// Đổi màu real time => Hỗ trợ đổi tenant
 		ConfigProvider.config({
@@ -29,13 +38,19 @@ const ConfigBounder = (props: { children?: any }) => {
 			renderEmpty={() => (
 				<Empty
 					style={{ marginTop: 32, marginBottom: 32 }}
-					image='/empty.png'
+					image='/images/empty.png'
+					description={intl.formatMessage({ id: 'global.table.index.empty' })}
 				/>
 			)}
 			theme={{
 				token: {
-					borderRadius: 4, colorPrimary: primaryColor, colorLink: primaryColor, controlHeight: 36, controlHeightSM: 28,
-					colorError: '#E20404', colorTextDisabled: '#707070',
+					borderRadius: 4,
+					colorPrimary: primaryColor,
+					colorLink: primaryColor,
+					controlHeight: 36,
+					controlHeightSM: 28,
+					colorError: '#E20404',
+					colorTextDisabled: '#707070',
 				},
 				hashed: false,
 				cssVar: { prefix: '' },
@@ -50,7 +65,7 @@ const ConfigBounder = (props: { children?: any }) => {
 						dotWidth: 16,
 						dotGap: 4,
 						dotActiveWidth: 16,
-						arrowOffset: 8
+						arrowOffset: 8,
 					},
 					Spin: {
 						dotSize: 45,
@@ -81,7 +96,7 @@ const ConfigBounder = (props: { children?: any }) => {
 						colorPrimary: primaryColor,
 						borderRadius: 4,
 						fontWeightStrong: 700,
-						colorTextDisabled: textColors.text100
+						colorTextDisabled: textColors.text100,
 					},
 					Calendar: {
 						itemActiveBg: statusBgColors.statusBg400,
@@ -109,7 +124,7 @@ const ConfigBounder = (props: { children?: any }) => {
 					},
 					Input: {
 						colorTextDisabled: '#707070',
-						activeBorderColor: '#0047FF'
+						activeBorderColor: '#0047FF',
 					},
 					Segmented: {
 						itemSelectedColor: primaryColor,
@@ -130,7 +145,7 @@ const ConfigBounder = (props: { children?: any }) => {
 						fontSizeLG: 14,
 					},
 					Badge: {
-						colorInfo: '#0051FF'
+						colorInfo: '#0051FF',
 					},
 					Avatar: {
 						containerSizeLG: 48,
@@ -155,7 +170,7 @@ const ConfigBounder = (props: { children?: any }) => {
 						colorSplit: accentColors.accent700,
 						lineWidth: 2,
 						orientationMargin: 0,
-						textPaddingInline: 8
+						textPaddingInline: 8,
 					},
 					Select: {
 						optionSelectedColor: primaryColor,

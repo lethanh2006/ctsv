@@ -3,9 +3,8 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch, Tag } from 'antd';
+import { Popconfirm, Switch } from 'antd';
 import { useIntl, useModel } from 'umi';
-import SelectAttributesManagement from '../Attributes/components/Select';
 import Form from './components/Form';
 
 const ActivitiesTypeDomain = () => {
@@ -53,14 +52,6 @@ const ActivitiesTypeDomain = () => {
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
 			onCell,
-		},
-		{
-			title: intl.formatMessage({ id: 'activitiestypedomain.column.attribute' }),
-			dataIndex: 'attributesId',
-			width: 200,
-			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectAttributesManagement multiple />,
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiestypedomain.column.active' }),

@@ -80,15 +80,7 @@ const FormActivities = (props: any) => {
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.domain' })}
 							rules={[...rules.required]}
 						>
-							<SelectActivitiesTypeDomain
-								disabled={isView}
-								onChange={(val, option) => {
-									const rawData = option?.rawData;
-									form.setFieldsValue({
-										attributesId: rawData?.attributesId,
-									});
-								}}
-							/>
+							<SelectActivitiesTypeDomain disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
@@ -97,7 +89,7 @@ const FormActivities = (props: any) => {
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.attributes' })}
 							rules={[...rules.required]}
 						>
-							<SelectAttributesManagement disabled />
+							<SelectAttributesManagement />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>

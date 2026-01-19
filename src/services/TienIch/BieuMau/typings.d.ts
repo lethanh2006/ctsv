@@ -67,7 +67,7 @@ declare module BieuMau {
 		// doiTuong: string;
 		defaultQuestion?: boolean;
 
-		levelId: string;
+		levelsId: string;
 		levelName: string;
 		khaoSatChaId: string;
 		thongTinNguoiTao: {

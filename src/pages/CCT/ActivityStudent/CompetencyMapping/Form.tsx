@@ -34,7 +34,7 @@ const FormCompetencyMapping = (props: { onOk: (val: ActivityOutCome.ICompetencyM
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col span={24}>
 					<Form.Item name='competencieId' label='Competency'>
-						<SelectCompetency multiple />
+						<SelectCompetency multiple allowClear />
 					</Form.Item>
 				</Col>
 			</Row>

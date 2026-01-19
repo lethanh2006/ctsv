@@ -6,7 +6,7 @@ import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
 import rules from '@/utils/rules';
 import { DeleteOutlined, PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, message, Popconfirm } from 'antd';
+import { Alert, Button, Checkbox, Form, message, Popconfirm } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -75,7 +75,7 @@ const EquivalencyPage = () => {
 
 			return {
 				title: attr.code,
-				width: 90,
+				width: 60,
 				align: 'center',
 				render: (_: any, field: any) => (
 					<Form.Item className='table-form-item' name={[field.name, 'attributes', attr._id]} valuePropName='checked'>
@@ -190,6 +190,10 @@ const EquivalencyPage = () => {
 
 	return (
 		<Form form={form} layout='vertical' onFinish={onFinish}>
+			<div style={{ marginBottom: 8 }}>
+				<Alert showIcon type='warning' description={'Note'} />
+			</div>
+
 			<Form.List name='listCoCurricularActivityEquivalency'>
 				{(fields, { add, remove }) => (
 					<TableStaticData
@@ -224,9 +228,16 @@ const EquivalencyPage = () => {
 								type='primary'
 								icon={<PlusCircleOutlined />}
 								onClick={() => {
-									const defaultAttributes = recActi?.activitiesType?.attributesId
-										? { [recActi?.activitiesType?.attributesId]: true }
-										: {};
+									// const defaultAttributes = recActi?.activitiesType?.attributesId
+									// 	? { [recActi?.activitiesType?.attributesId]: true }
+									// 	: {};
+
+									const defaultAttributes = (dsAtribute || []).reduce((acc: any, attr: any) => {
+										if (allowAttributeIds.includes(attr._id)) {
+											acc[attr._id] = true;
+										}
+										return acc;
+									}, {});
 
 									add({
 										role: null,

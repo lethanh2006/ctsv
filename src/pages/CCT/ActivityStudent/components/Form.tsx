@@ -38,30 +38,42 @@ const FormActivityStudent = (props: any) => {
 		<Card title='Detail activity'>
 			<Spin spinning={loadingCauTraLoi || loading}>
 				<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }} style={{ marginBottom: 12 }}>
-					<Descriptions.Item label='Name'>{record?.name}</Descriptions.Item>
-					<Descriptions.Item label='Email'>{record?.email}</Descriptions.Item>
-					<Descriptions.Item label='Role'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.sv.name' })}>
+						{record?.name}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.sv.email' })}>
+						{record?.email}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.role' })}>
 						{record?.roles?.name} ({record?.roles?.code})
 					</Descriptions.Item>
-					<Descriptions.Item label='Level'>{record?.roles?.level?.name}</Descriptions.Item>
-					<Descriptions.Item label='Activity Name'>{record?.activities?.name}</Descriptions.Item>
-					<Descriptions.Item label='Co-curricular Activities (CCA)'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.level' })}>
+						{record?.level?.name}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.activity' })} span={24}>
+						{record?.activities?.name}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.cca' })} span={24}>
 						{record?.activities?.activitiesType?.name}
 					</Descriptions.Item>
-					<Descriptions.Item label='Attribute'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.attribute' })}>
 						<Tag color={record?.activities?.activitiesType?.attributes?.color}>
 							{record?.activities?.activitiesType?.attributes?.name}
 						</Tag>
 					</Descriptions.Item>
-					<Descriptions.Item label='Organizer'>{record?.activities?.organizer}</Descriptions.Item>
-					<Descriptions.Item label='Facility'>{record?.activities?.facilityName}</Descriptions.Item>
-					<Descriptions.Item label='Start Date'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.organizer' })}>
+						{record?.activities?.organizer}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.facility' })}>
+						{record?.activities?.facilityName}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.startdate' })}>
 						{record?.activities?.startDate ? dayjs(record.activities.startDate).format('HH:mm DD/MM/YYYY') : '-'}
 					</Descriptions.Item>
-					<Descriptions.Item label='End Date'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.enddate' })}>
 						{record?.activities?.endDate ? dayjs(record.activities.endDate).format('HH:mm DD/MM/YYYY') : '-'}
 					</Descriptions.Item>
-					<Descriptions.Item label='Workflow'>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.work' })}>
 						<Tag
 							color={
 								record?.workflow === EApprovalStatus.APPROVED
@@ -74,8 +86,15 @@ const FormActivityStudent = (props: any) => {
 							{record?.workflow}
 						</Tag>
 					</Descriptions.Item>
-					<Descriptions.Item label='Rejection Note'>{record?.activityRejectionNote}</Descriptions.Item>
-					<Descriptions.Item label='Revision Note'>{record?.revisionNote}</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.reject' })}>
+						{record?.activityRejectionNote}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.revi' })}>
+						{record?.revisionNote}
+					</Descriptions.Item>
+					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.approvers' })}>
+						{record?.studentDeclarationApproverName}
+					</Descriptions.Item>
 				</Descriptions>
 
 				<ViewTraLoiKhaoSat khaoSat={recBieuMau} cauTraLoi={cauTraLoi} />

@@ -27,6 +27,7 @@ declare module Activity {
 		unitCode: string;
 
 		allowPostEventResultsUpdate?: boolean;
+		dueDate: Date;
 
 		activitiesTypeId: string | null;
 		activitiesType: ActivitiesManagement.IRecord;

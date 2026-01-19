@@ -43,15 +43,18 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 	} = useModel('cct.activity');
 
 	const startDate: Date = Form.useWatch('startDate', form);
+	const endDate: Date = Form.useWatch('endDate', form);
 	const onCampus: Boolean = Form.useWatch('onCampus', form);
 	const participantScope: EParticipantScope = Form.useWatch('participantScope', form);
 	const cct: boolean = Form.useWatch('cct', form);
 	const participantRole: EparticipantRole = Form.useWatch('participantRole', form);
 	const activitiesTypeDomainId: string = Form.useWatch('activitiesTypeDomainId', form);
 	const activitiesTypeId: string = Form.useWatch('activitiesTypeId', form);
+	const allowPostEventResultsUpdate: boolean = Form.useWatch('allowPostEventResultsUpdate', form);
 
 	useEffect(() => {
-		if (!visibleForm) resetFieldsForm(form);
+		if (!visibleForm)
+			resetFieldsForm(form, { coCurricularAttributesEquivalency: null, studentDeclarationApproverList: null });
 		else if (record?._id)
 			form.setFieldsValue({
 				...record,
@@ -156,6 +159,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 							format='HH:mm DD/MM/YYYY'
 							disabled={isView}
 							placeholder={intl.formatMessage({ id: 'activity.info.form.startDate.place' })}
+							allowClear
 						/>
 					</Form.Item>
 				</Col>
@@ -163,7 +167,10 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 					<Form.Item
 						name='endDate'
 						label={intl.formatMessage({ id: 'activity.info.form.endDate' })}
-						rules={[...rules.required, ...rules.sauNgay(dayjs(startDate))]}
+						rules={[
+							...rules.required,
+							...rules.sauNgay(dayjs(startDate), intl.formatMessage({ id: 'activity.info.form.startDate' })),
+						]}
 					>
 						<MyDatePicker
 							showTime={{ showHour: true, showMinute: true }}
@@ -171,6 +178,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 							disabled={isView}
 							disabledDate={(cur) => (startDate ? dayjs(cur).isBefore(startDate) : false)}
 							placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}
+							allowClear
 						/>
 					</Form.Item>
 				</Col>
@@ -338,14 +346,8 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 					) : null}
 				</Col>
 
-				<Col span={24} md={12}>
-					<Form.Item name='cct' valuePropName='checked'>
-						<Checkbox disabled={isView}>{intl.formatMessage({ id: 'activity.info.form.cct' })}</Checkbox>
-					</Form.Item>
-				</Col>
-
-				{cct && (
-					<>
+				<Col span={24}>
+					<Row gutter={[12, 0]}>
 						<Col span={24} md={12}>
 							<Form.Item name='allowPostEventResultsUpdate' valuePropName='checked'>
 								<Checkbox disabled={isView}>
@@ -354,75 +356,118 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 							</Form.Item>
 						</Col>
 
-						<Col span={24} md={12}>
-							<Form.Item name='activitiesTypeDomainId' label='Co-curricular Domain (CCD)' rules={[...rules.required]}>
-								<SelectActivitiesTypeDomain disabled={isView} onChange={() => form.resetFields(['activitiesTypeId'])} />
+						{allowPostEventResultsUpdate && (
+							<Col span={24} md={12}>
+								<Form.Item
+									name='dueDate'
+									label={intl.formatMessage({ id: 'activity.info.form.duedate' })}
+									rules={[
+										...rules.required,
+										...rules.sauNgay(dayjs(endDate), intl.formatMessage({ id: 'activity.info.form.endDate' })),
+									]}
+								>
+									<MyDatePicker
+										showTime={{ showHour: true, showMinute: true }}
+										format='HH:mm DD/MM/YYYY'
+										disabled={isView}
+										disabledDate={(cur) => (endDate ? dayjs(cur).isBefore(endDate) : false)}
+										placeholder={intl.formatMessage({ id: 'activity.info.form.duedate.place' })}
+										allowClear
+									/>
+								</Form.Item>
+							</Col>
+						)}
+					</Row>
+				</Col>
+
+				<Col span={24}>
+					<Row gutter={[12, 0]}>
+						<Col span={24} md={8}>
+							<Form.Item name='cct' valuePropName='checked'>
+								<Checkbox disabled={isView}>{intl.formatMessage({ id: 'activity.info.form.cct' })}</Checkbox>
 							</Form.Item>
 						</Col>
 
-						<Col span={24} md={12}>
-							<Form.Item
-								name='activitiesTypeId'
-								label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId' })}
-								rules={[...rules.required]}
-							>
-								<SelectActivitiesManagement
-									disabled={isView}
-									condition={{ activitiesTypeDomainId: activitiesTypeDomainId }}
-									onChange={(val, option) => {
-										const rawData = option?.rawData;
+						{cct && (
+							<>
+								<Col span={24} md={8}>
+									<Form.Item
+										name='activitiesTypeDomainId'
+										label={intl.formatMessage({ id: 'activity.info.form.ccd' })}
+										rules={[...rules.required]}
+									>
+										<SelectActivitiesTypeDomain
+											disabled={isView}
+											onChange={() => form.resetFields(['activitiesTypeId'])}
+										/>
+									</Form.Item>
+								</Col>
 
-										const old = form.getFieldValue('coCurricularAttributesEquivalency') || [];
+								<Col span={24} md={8}>
+									<Form.Item
+										name='activitiesTypeId'
+										label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId' })}
+										rules={[...rules.required]}
+									>
+										<SelectActivitiesManagement
+											disabled={isView}
+											condition={{ activitiesTypeDomainId: activitiesTypeDomainId }}
+											onChange={(val, option) => {
+												const rawData = option?.rawData;
 
-										form.setFieldsValue({
-											coCurricularAttributesEquivalency: [
-												{
-													attributesId: rawData?.attributesId,
-													attributes: rawData?.attributes,
-												},
-												...old.slice(1),
-											],
-										});
-									}}
-								/>
-							</Form.Item>
-						</Col>
+												const old = form.getFieldValue('coCurricularAttributesEquivalency') || [];
 
-						<Col span={24}>
-							{record?._id ? (
-								<>
-									<div className='fw500'>
-										{intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}
-									</div>
-									<CompetencyMappingModelPage disabled={isView} />
-								</>
-							) : (
-								<Form.Item
-									name='coCurricularAttributesEquivalency'
-									label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}
-								>
-									<FormItemCompetencyMapping disabled={isView || !activitiesTypeId} />
-								</Form.Item>
-							)}
-						</Col>
+												form.setFieldsValue({
+													coCurricularAttributesEquivalency: [
+														{
+															attributesId: rawData?.attributesId,
+															attributes: rawData?.attributes,
+														},
+														...old.slice(1),
+													],
+												});
+											}}
+										/>
+									</Form.Item>
+								</Col>
 
-						<Col span={24}>
-							{record?._id ? (
-								<>
-									<div className='fw500'>{intl.formatMessage({ id: 'activity.info.form.student' })}</div>
-									<StudenDomainModelPage disabled={isView} mode='activity' />
-								</>
-							) : (
-								<Form.Item
-									name='studentDeclarationApproverList'
-									label={intl.formatMessage({ id: 'activity.info.form.student' })}
-								>
-									<FormItemStudentDomain disabled={isView} />
-								</Form.Item>
-							)}
-						</Col>
-					</>
-				)}
+								<Col span={24}>
+									{record?._id ? (
+										<>
+											<div className='fw500'>
+												{intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}
+											</div>
+											<CompetencyMappingModelPage disabled={isView} />
+										</>
+									) : (
+										<Form.Item
+											name='coCurricularAttributesEquivalency'
+											label={intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}
+										>
+											<FormItemCompetencyMapping disabled={isView || !activitiesTypeId} />
+										</Form.Item>
+									)}
+								</Col>
+
+								<Col span={24}>
+									{record?._id ? (
+										<>
+											<div className='fw500'>{intl.formatMessage({ id: 'activity.info.form.student' })}</div>
+											<StudenDomainModelPage disabled={isView} mode='activity' />
+										</>
+									) : (
+										<Form.Item
+											name='studentDeclarationApproverList'
+											label={intl.formatMessage({ id: 'activity.info.form.student' })}
+										>
+											<FormItemStudentDomain disabled={isView} />
+										</Form.Item>
+									)}
+								</Col>
+							</>
+						)}
+					</Row>
+				</Col>
 			</Row>
 
 			<div className='form-footer'>

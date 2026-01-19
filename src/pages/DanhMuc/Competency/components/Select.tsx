@@ -1,13 +1,15 @@
-import { Select } from 'antd';
+import { Divider, Select, Space, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
+const { Text } = Typography;
+
 /**
- * Secect Căn cứ pháp lý để cho vào FormItem
+ * Select Căn cứ pháp lý để cho vào FormItem
  */
 const SelectCompetency = (props: {
-	value?: string;
-	onChange?: (val?: string) => void;
+	value?: string | string[];
+	onChange?: (val?: string | string[]) => void;
 	multiple?: boolean;
 	allowClear?: boolean;
 	style?: React.CSSProperties;
@@ -29,14 +31,16 @@ const SelectCompetency = (props: {
 			undefined,
 			undefined,
 			{
-				population: [
-					{
-						path: 'attributes',
-					},
-				],
+				population: [{ path: 'attributes' }],
 			},
 		);
 	}, [JSON.stringify(condition)]);
+
+	const handleSelectAll = () => {
+		if (!multiple) return;
+		const allIds = danhSach.map((i) => i._id);
+		onChange?.(allIds);
+	};
 
 	return (
 		<Select
@@ -54,6 +58,27 @@ const SelectCompetency = (props: {
 			optionFilterProp='label'
 			placeholder={intl.formatMessage({ id: 'competency.select.place' })}
 			style={{ width: '100%', ...style }}
+			dropdownRender={(menu) =>
+				multiple ? (
+					<>
+						<Space
+							style={{
+								padding: '8px 12px',
+								cursor: 'pointer',
+								width: '100%',
+							}}
+							onMouseDown={(e) => e.preventDefault()}
+							onClick={handleSelectAll}
+						>
+							<Text strong>Chọn tất cả</Text>
+						</Space>
+						<Divider style={{ margin: '4px 0' }} />
+						{menu}
+					</>
+				) : (
+					menu
+				)
+			}
 		/>
 	);
 };

@@ -50,7 +50,9 @@ const ActivityPage = () => {
 			dataIndex: 'startDate',
 			width: 220,
 			render: (val, rec) =>
-				`${dayjs(rec?.startDate).format('DD/MM/YYYY')} - ${dayjs(rec?.endDate).format('DD/MM/YYYY')}`,
+				[dayjs(rec?.startDate).format('HH:mm DD/MM/YYYY'), dayjs(rec?.endDate).format('HH:mm DD/MM/YYYY')]
+					.filter(Boolean)
+					.join(' - '),
 			sortable: true,
 			onCell,
 		},
@@ -115,7 +117,9 @@ const ActivityPage = () => {
 				getAnalyticsActivityModel();
 			}}
 		>
-			<StatActivity />
+			<div style={{ padding: 12 }}>
+				<StatActivity />
+			</div>
 		</TableBase>
 	);
 };

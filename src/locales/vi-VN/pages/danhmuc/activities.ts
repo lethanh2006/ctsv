@@ -6,6 +6,7 @@ export default {
 	'activitiesmanagement.column.name': 'Tên',
 	'activitiesmanagement.column.des': 'Mô tả',
 	'activitiesmanagement.column.attribute': 'Thuộc tính',
+	'activitiesmanagement.column.domain': 'Lĩnh vực hoạt động đồng chương trình (CCD)',
 	'activitiesmanagement.column.active': 'Kích hoạt',
 
 	'activitiesmanagement.confirm.delete': 'Bạn có muốn xóa hoạt động ngoại khóa này không?',
