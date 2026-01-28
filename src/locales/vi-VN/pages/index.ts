@@ -38,4 +38,9 @@ export default {
 	...dichvuhanhchinh,
 	...sukien,
 	...diemrenluyen,
+
+	'pages.trangchu.title': 'PHÂN HỆ CÔNG TÁC SINH VIÊN',
+	'pages.trangchu.subtitle': 'HỆ THỐNG ĐẠI HỌC SỐ',
+	'pages.gioithieu.title': 'GIỚI THIỆU',
+	'pages.gioithieu.subtitle': 'HỆ THỐNG ĐẠI HỌC SỐ',
 };

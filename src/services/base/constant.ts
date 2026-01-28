@@ -174,7 +174,7 @@ export const statusBgColors = {
 } as const;
 
 /** Màu sắc nổi bật */
-export const highlightColor = officialColors.official100
+export const highlightColor = officialColors.official100;
 
 /** Màu sắc chủ đạo */
 export const primaryColor = officialColors.official300;
@@ -189,7 +189,7 @@ export const coQuanChuQuan = 'config.co-quan-chu-quan';
 export const unitPrefix = 'config.tien-to-truong';
 
 /** Tên tiếng anh của trường */
-export const tenTruongVietTatTiengAnh = 'config.ten-truong-viet-tat-tieng-anh';
+export const tenTruongVietTatTiengAnh = APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH;
 
 /** Cài đặt hệ thống */
 export enum ESettingKey {
@@ -240,16 +240,16 @@ export enum ETagColor {
 /** Mapping từ màu tag antd sang color code */
 export const colorList: { [key in keyof typeof ETagColor]: ColorType } = {
 	MAGENTA: { name: 'magenta', hexColor: '#eb2f96' },
-	RED: { name: 'red', hexColor: '#f5222d' },
+	RED: { name: 'red', hexColor: statusColors.status400 },
 	VOLCANO: { name: 'volcano', hexColor: '#fa541c' },
-	ORANGE: { name: 'orange', hexColor: '#fa8c16' },
+	ORANGE: { name: 'orange', hexColor: statusColors.status300 },
 	GOLD: { name: 'gold', hexColor: '#faad14' },
 	YELLOW: { name: 'yellow', hexColor: '#fadb14' },
 	LIME: { name: 'lime', hexColor: '#a0d911' },
-	GREEN: { name: 'green', hexColor: '#52c41a' },
+	GREEN: { name: 'green', hexColor: statusColors.status100 },
 	CYAN: { name: 'cyan', hexColor: '#13c2c2' },
-	BLUE: { name: 'blue', hexColor: '#1890ff' },
+	BLUE: { name: 'blue', hexColor: statusColors.status200 },
 	GEEKBLUE: { name: 'geekblue', hexColor: '#2f54eb' },
-	PURPLE: { name: 'purple', hexColor: '#722ed1' },
-	DEFAULT: { name: 'default', hexColor: '#bfbfbf' },
+	PURPLE: { name: 'purple', hexColor: statusColors.status500 },
+	DEFAULT: { name: 'default', hexColor: statusColors.status600 },
 };
