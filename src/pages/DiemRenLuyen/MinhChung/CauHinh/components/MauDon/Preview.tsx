@@ -1,15 +1,16 @@
 import { Card, Col, Form, Row, Select } from 'antd';
-import { useModel } from 'umi';
-import FormRender from './FormRender';
 import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
+import FormRender from './FormRender';
 // import TableThanhVien from './TableThanhVien';
+import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
+import { buildUpLoadMultiFile } from '@/services/uploadFile';
+import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import dayjs from 'dayjs';
-import { buildUpLoadMultiFile } from '@/services/uploadFile';
-import { LoaiHinh } from '@/services/FormDong/LoaiHinh/typing';
-import rules from '@/utils/rules';
 
 const PreviewForm = (props: { isView?: boolean; getData: any; mode: 'quytrinh' | 'loaihinh' }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record: recordLoaiHinh } = useModel('formdong.loaihinh');
 	const { record } = useModel('diemrenluyen.minhchung.cauhinh');
@@ -47,7 +48,15 @@ const PreviewForm = (props: { isView?: boolean; getData: any; mode: 'quytrinh' |
 
 	return (
 		<Card
-			title={props.mode === 'loaihinh' ? `${!edit ? 'Thêm mới' : 'Chỉnh sửa'} ${record?.ten}` : record?.tenMinhChung}
+			title={
+				props.mode === 'loaihinh'
+					? `${
+							!edit
+								? intl.formatMessage({ id: 'global.button.themmoi' })
+								: intl.formatMessage({ id: 'global.button.chinhsua' })
+						} ${record?.ten}`
+					: record?.tenMinhChung
+			}
 		>
 			<Form
 				labelCol={{ span: 24 }}
@@ -68,9 +77,13 @@ const PreviewForm = (props: { isView?: boolean; getData: any; mode: 'quytrinh' |
 				<Row gutter={[12, 0]}>
 					{record?.isDanhMucDiemQuyDoi && (
 						<Col span={24}>
-							<Form.Item name={'diemQuyDoi'} label={record?.tenDanhMucQuyDoi ?? 'Hạng mục'} rules={[...rules.required]}>
+							<Form.Item
+								name={'diemQuyDoi'}
+								label={record?.tenDanhMucQuyDoi ?? intl.formatMessage({ id: 'minhchung.khaibao.hangmuc' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder={record?.tenDanhMucQuyDoi ?? 'Chọn hạng mục'}
+									placeholder={record?.tenDanhMucQuyDoi ?? intl.formatMessage({ id: 'minhchung.khaibao.chonhangmuc' })}
 									options={record?.danhMucDiemQuyDoi?.map((val) => ({
 										value: val?.diemQuyDoi,
 										label: `${val?.tieuDe}`,

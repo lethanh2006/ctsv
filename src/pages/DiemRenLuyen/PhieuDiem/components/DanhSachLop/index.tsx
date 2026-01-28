@@ -1,13 +1,12 @@
-import { useModel } from 'umi';
+import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import SelectNganh from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
-import useCheckAccess from '@/hooks/useCheckAccess';
-import TableBase from '@/components/Table';
 import SelectKhoaSinhVien from '@/pages/DaoTaoV2/SinhVien/KhoaSinhVien/SelectKhoaSinhVien';
-import { useEffect } from 'react';
 import { LopHanhChinh } from '@/services/DaoTaoV2/LopHanhChinh/typing';
+import { useIntl, useModel } from 'umi';
 
 const DanhSachLop = () => {
+	const intl = useIntl();
 	const { setRecord, record, getModel, page, limit, condition } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 	const {
 		getModel: getModelLopNhanSu,
@@ -17,19 +16,13 @@ const DanhSachLop = () => {
 		limit: limitLopNhanSu,
 		condition: conditionLopNhanSu,
 	} = useModel('daotaov2.lophanhchinh.lophanhchinhnhansu');
-	const { dataPhanQuyen, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
+	const { dataPhanQuyen } = useModel('diemrenluyen.dot');
 	const { record: recNganh, setRecord: setRecordNganh } = useModel('daotaov2.danhmuc.nganhdaotao');
 	const { record: recKhoaSinhVien, setRecord: setRecKhoaSinhVien } = useModel('daotaov2.khoasinhvien.khoasinhvien');
 	const isCVHT = false;
 	const { initialState } = useModel('@@initialState');
 	const currentUser = initialState?.currentUser;
 	const isAdmin = currentUser?.preferred_username === 'admin';
-	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
-	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
-
-	useEffect(() => {
-		handleCheckPhanQuyen(idDuyet, isKhoa);
-	}, []);
 
 	// useEffect(() => {
 	// 	if (isCVHT) {
@@ -73,14 +66,14 @@ const DanhSachLop = () => {
 
 	const columns: IColumn<LopHanhChinh.IRecord>[] = [
 		{
-			title: 'TT',
+			title: intl.formatMessage({ id: 'phieudiem.tt' }),
 			dataIndex: 'index',
 			align: 'center',
 			width: 50,
 			onCell,
 		},
 		{
-			title: 'Tên lớp hành chính',
+			title: intl.formatMessage({ id: 'phieudiem.tenlophanhchinh' }),
 			dataIndex: 'ten',
 			width: 200,
 			onCell,

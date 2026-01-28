@@ -10,12 +10,13 @@ import rules from '@/utils/rules';
 import { ArrowLeftOutlined, CheckOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Tag } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/Select';
 import StepDotChamDiemRenLuyen from '../Dot/Step';
 import FormYeuCauChinhSua from './FormYeuCauChinhSua';
 
 const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getData?: any }) => {
+	const intl = useIntl();
 	const {
 		getAllModel,
 		loading,
@@ -87,12 +88,12 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 								icon={<DownloadOutlined />}
 								type='primary'
 							>
-								Tải biên bản họp
+								{intl.formatMessage({ id: 'lophanhchinh.bienban.button.taibienban' })}
 							</Button>
 						)}
 					</div>
 					<div style={{ fontSize: 16, fontWeight: 'bold' }}>
-						Trạng thái biên bản họp:{' '}
+						{intl.formatMessage({ id: 'lophanhchinh.bienban.trangthai' })}:{' '}
 						<Tag
 							color={
 								MapKeyColorTrangThaiDuyetBienBanHopDiemRenLuyen[
@@ -107,12 +108,16 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 				{record?.trangThaiDuyet === ETrangThaiDuyetBienBanHopDiemRenLuyen.YEU_CAU_CHINH_SUA &&
 					record?.noiDungYeuCauChinhSua && (
 						<div>
-							<b>Nội dung yêu cầu chỉnh sửa:</b> {record?.noiDungYeuCauChinhSua ?? ''}
+							<b>{intl.formatMessage({ id: 'lophanhchinh.bienban.yccs' })}:</b> {record?.noiDungYeuCauChinhSua ?? ''}
 						</div>
 					)}
 				<Row gutter={[16, 0]}>
 					<Col xs={24} sm={24} md={8}>
-						<Form.Item name='thoiGian' label='Thời gian' rules={[...rules.required]}>
+						<Form.Item
+							name='thoiGian'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.thoigian' })}
+							rules={[...rules.required]}
+						>
 							<MyDatePicker
 								disabled={disableForm}
 								format={'HH:mm DD/MM/YYYY'}
@@ -122,38 +127,61 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 						</Form.Item>
 					</Col>
 					<Col xs={24} sm={24} md={8}>
-						<Form.Item name='diaDiem' label='Địa điểm' rules={[...rules.required]}>
-							<Input disabled={disableForm} placeholder='Nhập địa điểm họp' />
+						<Form.Item
+							name='diaDiem'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.diadiem' })}
+							rules={[...rules.required]}
+						>
+							<Input
+								disabled={disableForm}
+								placeholder={intl.formatMessage({ id: 'lophanhchinh.bienban.diadiem.place' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} sm={24} md={8}>
-						<Form.Item name={['chuTri', 'ssoId']} label='Chủ trì' rules={[...rules.required]}>
+						<Form.Item
+							name={['chuTri', 'ssoId']}
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.chutri' })}
+							rules={[...rules.required]}
+						>
 							<SelectNhanSuDebounce disabled />
 						</Form.Item>
 					</Col>
 					<Col xs={24} sm={24} md={8}>
-						<Form.Item name={['thuKy', 'ten']} label='Thư ký' rules={[...rules.required]}>
-							<Input disabled placeholder='Thư ký' />
+						<Form.Item
+							name={['thuKy', 'ten']}
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.thuky' })}
+							rules={[...rules.required]}
+						>
+							<Input disabled placeholder={intl.formatMessage({ id: 'lophanhchinh.bienban.thuky.place' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} sm={24} md={8}>
-						<Form.Item name='soCoMat' label='Có mặt' rules={[...rules.required]}>
+						<Form.Item
+							name='soCoMat'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.socomat' })}
+							rules={[...rules.required]}
+						>
 							<InputNumber
 								disabled={disableForm}
 								style={{ width: '100%' }}
 								min={0}
 								max={1000}
-								placeholder='Số lượng sinh viên có mặt'
+								placeholder={intl.formatMessage({ id: 'lophanhchinh.bienban.socomat.place' })}
 								addonAfter='Sinh viên'
 							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} sm={24} md={8}>
-						<Form.Item name='soVangMat' label='Vắng mặt' rules={[...rules.required]}>
+						<Form.Item
+							name='soVangMat'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.sovangmat' })}
+							rules={[...rules.required]}
+						>
 							<InputNumber
 								disabled={disableForm}
 								style={{ width: '100%' }}
-								placeholder='Số lượng sinh viên vắng mặt'
+								placeholder={intl.formatMessage({ id: 'lophanhchinh.bienban.sovangmat.place' })}
 								min={0}
 								max={1000}
 								addonAfter='Sinh viên'
@@ -163,11 +191,11 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 					<Col span={24}>
 						<Form.Item
 							tooltip={{
-								title: 'Định dạng: "Họ và tên: ...... Lý do vắng mặt ........"',
+								title: intl.formatMessage({ id: 'lophanhchinh.bienban.svvang.tooltip' }),
 								overlayStyle: { maxWidth: '340px' },
 							}}
 							name='sinhVienVang'
-							label='Sinh viên vắng'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.svvang' })}
 							rules={soVangMat && soVangMat > 0 ? [...rules.requiredHtml] : undefined}
 						>
 							<TinyEditor disabled={disableForm} height={600} />
@@ -176,15 +204,25 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 					<Col span={24}>
 						<Form.Item
 							name='yKien'
-							label='Ý kiến của sinh viên hoặc tập thể lớp'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.ykien' })}
 							rules={[...rules.required, ...rules.text]}
 						>
-							<Input.TextArea disabled={disableForm} placeholder='Ý kiến của sinh viên hoặc tập thể lớp' />
+							<Input.TextArea
+								disabled={disableForm}
+								placeholder={intl.formatMessage({ id: 'lophanhchinh.bienban.ykien.place' })}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name='kienNghiDeXuat' label='Kiến nghị, đề xuất (nếu có)' rules={[...rules.text]}>
-							<Input.TextArea disabled={disableForm} placeholder='Kiến nghị, đề xuất (nếu có)' />
+						<Form.Item
+							name='kienNghiDeXuat'
+							label={intl.formatMessage({ id: 'lophanhchinh.bienban.khuyennghi' })}
+							rules={[...rules.text]}
+						>
+							<Input.TextArea
+								disabled={disableForm}
+								placeholder={intl.formatMessage({ id: 'lophanhchinh.bienban.khuyennghi.place' })}
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
@@ -209,7 +247,7 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 								onClick={() => handleGuiBienBanHop(ETrangThaiDuyetBienBanHopDiemRenLuyen.CHO_DUYET)}
 								loading={loading}
 							>
-								Chuyển về chờ duyệt
+								{intl.formatMessage({ id: 'lophanhchinh.bienban.button.chuyenchoduyet' })}
 							</Button>
 						)}
 					{record?._id &&
@@ -225,7 +263,7 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 									onClick={() => handleGuiBienBanHop(ETrangThaiDuyetBienBanHopDiemRenLuyen.DA_DUYET)}
 									loading={loading}
 								>
-									Xác nhận
+									{intl.formatMessage({ id: 'lophanhchinh.bienban.button.xacnhan' })}
 								</Button>
 								<Button
 									icon={<EditOutlined />}
@@ -233,14 +271,14 @@ const ViewDetailBienBanHopDrl = (props: { tenLop?: string; idLop?: string; getDa
 									onClick={() => setVisibleFormYeuCauChinhSua(true)}
 									loading={loading}
 								>
-									Yêu cầu chỉnh sửa
+									{intl.formatMessage({ id: 'lophanhchinh.bienban.button.yccs' })}
 								</Button>
 							</>
 						)}
 				</div>
 			</Form>
 			<Modal
-				styles={{ padding: 0 }}
+				styles={{ body: { padding: 0 } }}
 				open={visibleFormYeuCauChinhSua}
 				footer={null}
 				onCancel={() => setVisibleFormYeuCauChinhSua(false)}

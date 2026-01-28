@@ -1,15 +1,16 @@
-import { IColumn } from '@/components/Table/typing';
-import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
 import TableStaticData from '@/components/Table/TableStaticData';
-import { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
-import { Button, message, Popconfirm, Space, Tag } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
+import { IColumn } from '@/components/Table/typing';
 import useCheckAccess from '@/hooks/useCheckAccess';
 import { duyetTheoLopHanhChinh } from '@/services/DiemRenLuyen';
 import { ETrangThaiTiepNhanMinhChung } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
+import { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
+import { CheckOutlined } from '@ant-design/icons';
+import { Button, message, Popconfirm, Space, Tag } from 'antd';
+import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
+	const intl = useIntl();
 	const { getAllModel, danhSach, record, setRecord } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { dataPhanQuyen, record: recordDot, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
 	const { getModel, getAllModel: getAllMinhChung } = useModel('diemrenluyen.minhchung.khaibao');
@@ -17,6 +18,7 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 	const accessDuyetMinhChung = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const [dataCheckTrangThaiMinhChung, setDataCheckTrangThaiMinhChung] = useState<boolean>(false);
 	const { record: recordCauHinh } = useModel('diemrenluyen.minhchung.cauhinh');
+
 	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
 
@@ -87,7 +89,11 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 				dataPhanQuyen?.isKhoa ? ETrangThaiTiepNhanMinhChung.XAC_NHAN : ETrangThaiTiepNhanMinhChung.DUYET,
 			);
 			if (res) {
-				message.success(dataPhanQuyen?.isKhoa ? 'Xác nhận thành công' : 'Duyệt thành công');
+				message.success(
+					dataPhanQuyen?.isKhoa
+						? intl.formatMessage({ id: 'minhchung.khaibao.xacnhanthanhcong' })
+						: intl.formatMessage({ id: 'minhchung.khaibao.duyetthanhcong' }),
+				);
 				// getData();
 				getDataDanhSachKhaiBao();
 				getData(false);
@@ -111,7 +117,7 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 
 	const columns: IColumn<MinhChungDrl.IBieuMau>[] = [
 		{
-			title: `Tên minh chứng`,
+			title: intl.formatMessage({ id: 'minhchung.column.tenminhchung' }),
 			dataIndex: 'tenMinhChung',
 			width: 200,
 			filterType: 'string',
@@ -124,7 +130,9 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 							{rec?.doiTuongNhap?.map((item) => {
 								return (
 									<Tag color={item === 'CAN_BO' ? 'orange' : 'yellow'}>
-										{item === 'CAN_BO' ? 'Cán bộ' : 'Sinh viên'}
+										{item === 'CAN_BO'
+											? intl.formatMessage({ id: 'minhchung.doituong.canbo' })
+											: intl.formatMessage({ id: 'minhchung.doituong.sinhvien' })}
 									</Tag>
 								);
 							})}
@@ -133,7 +141,8 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 							<div>
 								({/*<b>{rec?.trangThaiMinhChung?.['Xác nhận']}</b> Xác nhận,*/}
 								{/*<b>{rec?.trangThaiMinhChung?.['Duyệt']}</b> Duyệt,*/}
-								<b style={{ color: 'red' }}>{rec?.trangThaiMinhChung?.['Chờ xử lý']}</b> Chờ xử lý
+								<b style={{ color: 'red' }}>{rec?.trangThaiMinhChung?.['Chờ xử lý']}</b>{' '}
+								{intl.formatMessage({ id: 'minhchung.khaibao.choxuly' })}
 								{/*<b>{rec?.trangThaiMinhChung?.['Không duyệt']}</b> Không duyệt*/})
 							</div>
 						)}
@@ -156,13 +165,13 @@ const DanhSachMinhChungCVHT = (props: { idLopHanhChinh?: string }) => {
 					<>
 						{accessDuyetMinhChung ? (
 							<Popconfirm
-								title={'Bạn có chắc chắn duyệt tất cả minh chứng'}
+								title={intl.formatMessage({ id: 'minhchung.confirm.duyettatca' })}
 								onConfirm={() => {
 									handleDuyetTheoLopHanhChinh();
 								}}
 							>
 								<Button type={'primary'} icon={<CheckOutlined />}>
-									Duyệt tất cả
+									{intl.formatMessage({ id: 'minhchung.action.duyettatca' })}
 								</Button>
 							</Popconfirm>
 						) : (

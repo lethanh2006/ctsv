@@ -1,6 +1,7 @@
+import { ENguoiTraLoiDrl, ETrangThaiDanhGia } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
 import { SaveOutlined, SendOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Space } from 'antd';
-import { ENguoiTraLoiDrl, ETrangThaiDanhGia } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
+import { useIntl } from 'umi';
 
 interface Props {
 	onLuuVaGuiSau?: () => void;
@@ -27,6 +28,7 @@ export const Header = ({
 	dangGuiNgay,
 	disabled,
 }: Props) => {
+	const intl = useIntl();
 	const canBoKhongTheSuaDanhGia =
 		nguoiTraLoi === ENguoiTraLoiDrl.SINH_VIEN &&
 		trangThaiDanhGia !== ETrangThaiDanhGia.CHUA_DANH_GIA &&
@@ -49,7 +51,8 @@ export const Header = ({
 				disabled={(formSubmiting && !dangGuiNgay) || disabled}
 				type='primary'
 			>
-				Gửi phòng TCHC <SendOutlined style={{ transform: 'translate(1px, -1px) rotate(-45deg)' }} />
+				{intl.formatMessage({ id: 'phieudiem.guiphongtchc' })}{' '}
+				<SendOutlined style={{ transform: 'translate(1px, -1px) rotate(-45deg)' }} />
 			</Button>
 		);
 	};
@@ -68,7 +71,7 @@ export const Header = ({
 				loading={formSubmiting && !dangGuiNgay}
 				disabled={(formSubmiting && dangGuiNgay) || disabled}
 			>
-				Lưu & Gửi sau <SaveOutlined />
+				{intl.formatMessage({ id: 'phieudiem.luuvaguisau' })} <SaveOutlined />
 			</Button>
 		);
 	};

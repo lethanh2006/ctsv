@@ -26,7 +26,13 @@ declare module BieuMau {
 		_id: string;
 	}
 
+	export type TGridItem = {
+		noiDung: string;
+		_id: string;
+	};
+
 	export interface Khoi {
+		_id: string;
 		tieuDe: string;
 		moTa: string;
 		danhSachCauHoi: CauHoi[];
@@ -44,6 +50,7 @@ declare module BieuMau {
 		_id: string;
 		tieuDe: string;
 		moTa: string;
+		createdAt: string;
 		// phamVi: EPhamViChuDe;
 		// hinhThucDaoTaoId?: number;
 		// isTatCaHe?: boolean;
@@ -70,6 +77,9 @@ declare module BieuMau {
 		levelsId: string;
 		levelName: string;
 		khaoSatChaId: string;
+		maDonVi: string;
+		tenDonVi: string;
+		idDonVi: string;
 		thongTinNguoiTao: {
 			nhanSuSsoId: string;
 			ten: string;
@@ -79,7 +89,57 @@ declare module BieuMau {
 			idDonVi: string;
 			_id: string;
 		};
-		kichHoat: boolean;
+	}
+	export interface IDataThongKe {
+		_id: '655dc81a67710b35cb807d3d';
+		idDot: '655db9ea0048361119673bea';
+		idKhaoSat: '655db9840048361119673bac';
+		userId: '010101010';
+		__v: 0;
+		createdAt: '2023-11-22T09:21:30.440Z';
+		danhSachTraLoi: {
+			idCauHoi: string;
+			listLuaChon: [];
+			listLuaChonBang: [
+				{
+					idCot: '655db9840048361119673b9f';
+					textCot: '6';
+					idHang: '655db9840048361119673ba2';
+					textHang: '3';
+					_id: '655dc83767710b35cb807d91';
+				},
+				{
+					idCot: '655db9840048361119673b9f';
+					textCot: '6';
+					idHang: '655db9840048361119673ba1';
+					textHang: '2';
+					_id: '655dc83767710b35cb807d92';
+				},
+				{
+					idCot: '655db9840048361119673b9f';
+					textCot: '6';
+					idHang: '655db9840048361119673ba0';
+					textHang: '1';
+					_id: '655dc83767710b35cb807d93';
+				},
+			];
+			listUrlFile: [];
+			_id: '655dc83767710b35cb807d90';
+		}[];
+
+		hoTen: 'Sinh viên không xóa';
+		khoaHoc: '7_1_2018';
+		nganh: '7810103';
+		saved: false;
+		startedAt: '2023-11-22T09:21:30.448Z';
+		updatedAt: '2023-11-22T09:21:59.846Z';
+		userCode: '010101010';
+		nguoiTraLoi: 'Sinh viên không xóa';
+		maDinhDanh: '010101010';
+		thoiGianTraLoi: '16:21:30 22/11/2023';
+		khaoSat: Record;
+		index: 1;
+		key: 0;
 	}
 
 	export interface ThongKeLuaChon {
@@ -143,20 +203,6 @@ declare module BieuMau {
 		idCauHoi: string;
 		luaChonTuyenTinh?: number;
 		listUrlFile?: string[];
-	}
-
-	export interface ICauTraLoiKhaoSat {
-		id: string;
-		answered: boolean;
-		danhSachTraLoi: BieuMau.TraLoiRecord[];
-		idDot: string;
-		idKhaoSat: string;
-		saved: boolean;
-
-		soLuotDaTraLoi: number;
-		soLuotTraLoiToiDa: number;
-
-		userSsoId: string;
-		giangVienSsoId: string;
+		traLoiKhac?: string;
 	}
 }

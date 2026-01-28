@@ -1,7 +1,7 @@
+import { ELoaiBieuMau } from '@/services/KhaoSat/constant';
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
-import { ELoaiBieuMau } from '@/services/KhaoSat/constant';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Select để cho vào FormItem
@@ -16,6 +16,7 @@ const SelectMauDiemRenLuyen = (props: {
 	disabled?: boolean;
 	loai?: ELoaiBieuMau;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, placeholder, style, disabled, loai } = props;
 	const { danhSach, getAllModel, visibleForm } = useModel('khaosat.bieumau');
 
@@ -37,7 +38,7 @@ const SelectMauDiemRenLuyen = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn biểu mẫu điểm rèn luyện'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'diemrenluyen.dot.form.bieumau.place' })}
 			style={{ width: '100%', ...style }}
 		/>
 	);

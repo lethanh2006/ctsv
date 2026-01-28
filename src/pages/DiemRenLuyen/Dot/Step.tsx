@@ -1,31 +1,32 @@
 import { Steps } from 'antd';
-import { useModel } from 'umi';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const StepDotChamDiemRenLuyen = () => {
+	const intl = useIntl();
 	const { record } = useModel('diemrenluyen.dot');
 	const [step, setStep] = useState(0);
 	const steps = [
 		{
 			thoiGian: record?.thoiGianTiepNhanMinhChung?.thoiGianBatDau,
 			thoiGianKetThuc: record?.thoiGianTiepNhanMinhChung?.thoiGianKetThuc,
-			title: 'Cập nhật, duyệt minh chứng',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.stat.capnhat' }),
 		},
 		{
 			thoiGian: record?.thoiGianSVChamDiem?.thoiGianBatDau,
 			thoiGianKetThuc: record?.thoiGianSVChamDiem?.thoiGianKetThuc,
-			title: 'Sinh viên đánh giá',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.stat.svdanhgia' }),
 		},
 		{
 			thoiGian: record?.thoiGianBCSChamDiem?.thoiGianBatDau,
 			thoiGianKetThuc: record?.thoiGianBCSChamDiem?.thoiGianKetThuc,
-			title: 'Ban cán sự đánh giá',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.stat.bancansu' }),
 		},
 		{
 			thoiGian: record?.thoiGianCoVanChamDiem?.thoiGianBatDau,
 			thoiGianKetThuc: record?.thoiGianCoVanChamDiem?.thoiGianKetThuc,
-			title: 'CVHT đánh giá',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.stat.cvht' }),
 		},
 
 		// {

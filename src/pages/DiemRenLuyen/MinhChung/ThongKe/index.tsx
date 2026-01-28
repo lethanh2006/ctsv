@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
-import { useModel } from 'umi';
-import { Card, Space, Table } from 'antd';
-import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
-import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import ColumnChart from '@/components/Chart/ColumnChart';
 import TableStaticData from '@/components/Table/TableStaticData';
-import { IColumn } from '@/components/Table/typing';
-import { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
-import { inputFormat } from '@/utils/utils';
+import type { IColumn } from '@/components/Table/typing';
+import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
+import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
 import { ETrangThaiTiepNhanMinhChung } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
+import type { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
+import { inputFormat } from '@/utils/utils';
+import { Card, Space, Table } from 'antd';
 import _ from 'lodash';
+import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const ThongKeMinhChung = () => {
+	const intl = useIntl();
 	const { getAllModel, danhSach, record } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { record: recordDot, setRecord: setRecortdDot } = useModel('diemrenluyen.dot');
 	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
@@ -31,34 +32,34 @@ const ThongKeMinhChung = () => {
 
 	const columns: IColumn<MinhChungDrl.IBieuMau>[] = [
 		{
-			title: 'Minh chứng',
+			title: intl.formatMessage({ id: 'minhchung.khaibao.minhchung' }),
 			dataIndex: 'tenMinhChung',
 			width: 120,
 			filterType: 'string',
 		},
 		{
-			title: 'Chờ xử lý',
+			title: intl.formatMessage({ id: 'minhchung.khaibao.choxuly' }),
 			dataIndex: 'tenMinhChung',
 			width: 100,
 			align: 'right',
 			sortable: true,
-			render: (val, rec) => rec?.trangThaiMinhChung?.['Chờ xử lý'],
+			render: (val, rec) => rec?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.CHO_XU_LY],
 		},
 		{
-			title: 'Duyệt',
+			title: intl.formatMessage({ id: 'minhchung.khaibao.duyet' }),
 			dataIndex: 'tenMinhChung',
 			width: 100,
 			align: 'right',
 			sortable: true,
-			render: (val, rec) => rec?.trangThaiMinhChung?.['Duyệt'],
+			render: (val, rec) => rec?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.DUYET],
 		},
 		{
-			title: 'Không duyệt',
+			title: intl.formatMessage({ id: 'minhchung.khaibao.khongduyet' }),
 			dataIndex: 'tenMinhChung',
 			width: 100,
 			align: 'right',
 			sortable: true,
-			render: (val, rec) => rec?.trangThaiMinhChung?.['Không duyệt'],
+			render: (val, rec) => rec?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.KHONG_DUYET],
 		},
 	];
 
@@ -67,13 +68,10 @@ const ThongKeMinhChung = () => {
 
 		return () => {};
 	}, [recordDot, recordLopHanhChinh]);
-	console.log(
-		"danhSach.map((item) => item.trangThaiMinhChung?.['Chờ xử lý'])",
-		danhSach.map((item) => item.trangThaiMinhChung?.['Chờ xử lý']),
-	);
+
 	return (
 		<>
-			<Card title={'Thống kê'}>
+			<Card title={intl.formatMessage({ id: 'minhchung.khaibao.thongke' })}>
 				<Space style={{ marginBottom: 12 }}>
 					<SelectDotDiemRenLuyen
 						style={{ width: 300 }}
@@ -96,23 +94,23 @@ const ThongKeMinhChung = () => {
 				</Space>
 				<ColumnChart
 					height={320}
-					yLabel={['Minh chứng']}
+					yLabel={[intl.formatMessage({ id: 'minhchung.khaibao.minhchung' })]}
 					// yAxis={[combinedArr?.map((val) => val?.tongLuongMotVaHai)]}
 					xAxis={danhSach?.map((val) => val?.tenMinhChung)}
 					colors={['#27AE60', '#BA4A00', '#3498DB']}
 					series={[
 						{
-							name: ETrangThaiTiepNhanMinhChung.CHO_XU_LY,
+							name: intl.formatMessage({ id: 'minhchung.khaibao.choxuly' }),
 							data: danhSach.map((item) => item.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.CHO_XU_LY]),
 							color: '#3498DB',
 						},
 						{
-							name: ETrangThaiTiepNhanMinhChung.DUYET,
+							name: intl.formatMessage({ id: 'minhchung.khaibao.duyet' }),
 							data: danhSach.map((item) => item.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.DUYET]),
 							color: 'var(--ant-success-color)',
 						},
 						{
-							name: ETrangThaiTiepNhanMinhChung.KHONG_DUYET,
+							name: intl.formatMessage({ id: 'minhchung.khaibao.khongduyet' }),
 							data: danhSach.map((item) => item.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.KHONG_DUYET]),
 							color: 'var(--ant-error-color)',
 						},
@@ -153,43 +151,45 @@ const ThongKeMinhChung = () => {
 					hasTotal
 					data={danhSach}
 					columns={columns}
-					otherProps={{
-						summary: (data: any[]) => {
-							const dataFiltered: MinhChungDrl.IBieuMau[] = danhSach as MinhChungDrl.IBieuMau[];
-							const sumChoXuLy = _.sumBy(
-								dataFiltered,
-								(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.CHO_XU_LY] ?? 0,
-							);
-							const sumDuyet = _.sumBy(
-								dataFiltered,
-								(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.DUYET] ?? 0,
-							);
-							const sumKhongDuyet = _.sumBy(
-								dataFiltered,
-								(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.KHONG_DUYET] ?? 0,
-							);
+					otherProps={
+						{
+							summary: (data: any[]) => {
+								const dataFiltered: MinhChungDrl.IBieuMau[] = danhSach as MinhChungDrl.IBieuMau[];
+								const sumChoXuLy = _.sumBy(
+									dataFiltered,
+									(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.CHO_XU_LY] ?? 0,
+								);
+								const sumDuyet = _.sumBy(
+									dataFiltered,
+									(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.DUYET] ?? 0,
+								);
+								const sumKhongDuyet = _.sumBy(
+									dataFiltered,
+									(item) => item?.trangThaiMinhChung?.[ETrangThaiTiepNhanMinhChung.KHONG_DUYET] ?? 0,
+								);
 
-							return (
-								<Table.Summary fixed>
-									<Table.Summary.Row>
-										<Table.Summary.Cell index={0} colSpan={2} align='center'>
-											<b>Tổng cộng</b>
-										</Table.Summary.Cell>
+								return (
+									<Table.Summary fixed>
+										<Table.Summary.Row>
+											<Table.Summary.Cell index={0} colSpan={2} align='center'>
+												<b>{intl.formatMessage({ id: 'minhchung.khaibao.tongcong' })}</b>
+											</Table.Summary.Cell>
 
-										<Table.Summary.Cell index={1} align='right'>
-											<b>{inputFormat(sumChoXuLy ?? 0)} </b>
-										</Table.Summary.Cell>
-										<Table.Summary.Cell index={2} align='right'>
-											<b>{inputFormat(sumDuyet ?? 0)} </b>
-										</Table.Summary.Cell>
-										<Table.Summary.Cell index={3} align='right'>
-											<b>{inputFormat(sumKhongDuyet ?? 0)} </b>
-										</Table.Summary.Cell>
-									</Table.Summary.Row>
-								</Table.Summary>
-							);
-						},
-					}}
+											<Table.Summary.Cell index={1} align='right'>
+												<b>{inputFormat(sumChoXuLy ?? 0)} </b>
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={2} align='right'>
+												<b>{inputFormat(sumDuyet ?? 0)} </b>
+											</Table.Summary.Cell>
+											<Table.Summary.Cell index={3} align='right'>
+												<b>{inputFormat(sumKhongDuyet ?? 0)} </b>
+											</Table.Summary.Cell>
+										</Table.Summary.Row>
+									</Table.Summary>
+								);
+							},
+						} as any
+					}
 				/>
 			</Card>
 		</>

@@ -4,12 +4,14 @@ import chinhtritutuong from './chinhtritutuong';
 import danhmuc from './danhmuc';
 import danhmucchinhsach from './danhmucchinhsach';
 import dichvuhanhchinh from './dichvuhanhchinh';
+import diemrenluyen from './diemrenluyen';
 import donvihanhchinh from './donvihanhchinh';
 import login from './login';
 import loptinchi from './loptinchi';
 import namhoc from './namhoc';
 import phuvucongdong from './phuvucongdong';
 import sinhvien from './sinhvien';
+import sukien from './sukien';
 import thongbao from './thongbao';
 import thongkebaocao from './thongkebaocao';
 import thongtinnguoihoc from './thongtinnguoihoc';
@@ -34,4 +36,6 @@ export default {
 	...vanhoathethao,
 	...chedochinhsach,
 	...dichvuhanhchinh,
+	...sukien,
+	...diemrenluyen,
 };

@@ -3,7 +3,7 @@ import type { BieuMau } from '@/services/TienIch/BieuMau/typings';
 import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Select để cho vào FormItem
@@ -19,6 +19,7 @@ const SelectMauKhaoSat = (props: {
 	condition?: Partial<BieuMau.Record>;
 	size?: 'small' | 'middle' | 'large';
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, placeholder, style, disabled, condition, size } = props;
 	const { danhSach, getAllModel, visibleForm, loading } = useModel('tienich.bieumau');
 
@@ -56,7 +57,7 @@ const SelectMauKhaoSat = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder={placeholder ?? 'Chọn biểu mẫu khảo sát'}
+			placeholder={placeholder ?? intl.formatMessage({ id: 'sukien.form.thongtinchung.bieumau.place' })}
 			style={{ width: '100%', ...style }}
 		/>
 	);

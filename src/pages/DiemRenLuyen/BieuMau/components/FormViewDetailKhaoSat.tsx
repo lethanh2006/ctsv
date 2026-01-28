@@ -2,7 +2,7 @@ import UploadFile from '@/components/Upload/UploadFile';
 import { type BieuMau } from '@/services/KhaoSat/BieuMau/typing';
 import { ELoaiCauHoi } from '@/services/KhaoSat/constant';
 import { Button, Card, Divider } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import GridChoice from './QuestionView/GridChoice';
 import MultipleChoice from './QuestionView/MultipleChoice';
 import NumberInputRating from './QuestionView/Numberinputrating';
@@ -12,6 +12,7 @@ import Text from './QuestionView/Text';
 
 const ViewDetailKhaoSat = () => {
 	const { loading, record, setVisibleForm } = useModel('khaosat.bieumau');
+	const intl = useIntl();
 
 	const renderQuestion = (question: BieuMau.CauHoi, index: number) => {
 		let questionEleMent = <div />;
@@ -42,7 +43,8 @@ const ViewDetailKhaoSat = () => {
 		return (
 			<div key={question._id}>
 				<div className='fw500'>
-					Câu {index + 1}: {question.noiDungCauHoi} {question.batBuoc ? <span style={{ color: 'red' }}>*</span> : null}
+					{intl.formatMessage({ id: 'bieumau.cau' })} {index + 1}: {question.noiDungCauHoi}{' '}
+					{question.batBuoc ? <span style={{ color: 'red' }}>*</span> : null}
 				</div>
 				{questionEleMent}
 			</div>
@@ -50,7 +52,7 @@ const ViewDetailKhaoSat = () => {
 	};
 
 	return (
-		<Card loading={loading} title='Chi tiết biểu mẫu khảo sát'>
+		<Card loading={loading} title={intl.formatMessage({ id: 'bieumau.view.chitietkhaosat' })}>
 			<h3>{record?.tieuDe}</h3>
 			<p>{record?.moTa}</p>
 
@@ -66,7 +68,7 @@ const ViewDetailKhaoSat = () => {
 			))}
 
 			<div className='form-footer'>
-				<Button onClick={() => setVisibleForm(false)}>Đóng</Button>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Card>
 	);

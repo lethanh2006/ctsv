@@ -9,6 +9,7 @@ import { currencyFormat } from '@/utils/utils';
 import { Modal, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { useIntl } from 'umi';
 import FormTable from './FormTable';
 
 const ViewRender = (props: {
@@ -19,6 +20,7 @@ const ViewRender = (props: {
 	// const { danhSach } = useModel('quanlykhoahoc.danhmuc.chung');
 	// const { danhSach: danhSachLoaiHinh } = useModel('quanlykhoahoc.loaihinhnckh');
 	const { cauHinh, recordSanPham, isCot } = props;
+	const intl = useIntl();
 
 	const [visibleFormTable, setVisibleFormTable] = useState<boolean>(false);
 	const [editFormTable, setEditFormTable] = useState<boolean>(false);
@@ -56,7 +58,13 @@ const ViewRender = (props: {
 			break;
 
 		case EKieuDuLieu.BOOLEAN:
-			value = <div>{valueFinal ? 'Có' : 'Không'}</div>;
+			value = (
+				<div>
+					{valueFinal
+						? intl.formatMessage({ id: 'minhchung.value.co' })
+						: intl.formatMessage({ id: 'minhchung.value.khong' })}
+				</div>
+			);
 			break;
 
 		case EKieuDuLieu.DANHMUC:
@@ -97,7 +105,7 @@ const ViewRender = (props: {
 					<div>
 						<Tag color={primaryColor} key={cauHinh.ma}>
 							<a href={valueFinal} target='_blank' rel='noreferrer'>
-								Xem tập tin
+								{intl.formatMessage({ id: 'minhchung.action.xemtaptin' })}
 							</a>
 						</Tag>
 					</div>
@@ -108,7 +116,7 @@ const ViewRender = (props: {
 							valueFinal?.map((item: string) => (
 								<Tag color={primaryColor} key={cauHinh.ma}>
 									<a href={item} target='_blank' rel='noreferrer'>
-										Xem tập tin
+										{intl.formatMessage({ id: 'minhchung.action.xemtaptin' })}
 									</a>
 								</Tag>
 							))}
@@ -150,7 +158,11 @@ const ViewRender = (props: {
 						destroyOnClose
 						width={700}
 						footer={null}
-						title={`${editFormTable ? 'Chỉnh sửa' : 'Thêm mới'} ${cauHinh.ten}`}
+						title={`${
+							editFormTable
+								? intl.formatMessage({ id: 'global.button.chinhsua' })
+								: intl.formatMessage({ id: 'global.button.themmoi' })
+						} ${cauHinh.ten}`}
 						open={visibleFormTable}
 						onCancel={() => setVisibleFormTable(false)}
 					>

@@ -1,3 +1,4 @@
+import useCheckAccess from '@/hooks/useCheckAccess';
 import type { FormDanhGiaValues } from '@/models/diemrenluyen/bieumau';
 import type { BieuMau } from '@/services/DiemRenLuyen/BieuMau/typing';
 import {
@@ -14,11 +15,11 @@ import rules from '@/utils/rules';
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message, Spin, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { FieldsNhapDiem } from './FieldsNhapDiem';
-import useCheckAccess from '@/hooks/useCheckAccess';
 
 const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhieuNai?: boolean; getData?: any }) => {
+	const intl = useIntl();
 	const [form] = Form.useForm();
 	const {
 		formValuesTuDanhGiaVaDonViDanhGia,
@@ -29,7 +30,6 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 	} = useModel('diemrenluyen.bieumau');
 
 	const { record: recordDot, dataPhanQuyen, handleCheckPhanQuyen } = useModel('diemrenluyen.dot');
-	
 	const {
 		record: recPhieuDiem,
 		xuLyKhieuNaiModel,
@@ -52,8 +52,8 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 		isAdmin || dataPhanQuyen?.isPhongCTSV
 			? ENguoiTraLoiDrl.CTSV
 			: isCVHT
-			? ENguoiTraLoiDrl.CO_VAN_HOC_TAP
-			: ENguoiTraLoiDrl.KHOA;
+				? ENguoiTraLoiDrl.CO_VAN_HOC_TAP
+				: ENguoiTraLoiDrl.KHOA;
 
 	const [tongDiemTuDanhGia, setTongDiemTuDanhGia] = useState(0);
 	const [tongDiemCVHTDanhGia, setTongDiemCVHTDanhGia] = useState(0);
@@ -156,12 +156,12 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 				setVisibleForm(false);
 			} else {
 				if (props.trangThai === ETrangThaiKhieuNai.DA_DUYET)
-					message.warning('Một số điểm chưa nhập vui lòng kiểm tra lại');
+					message.warning(intl.formatMessage({ id: 'phieudiem.nhapdiem.canhbaochuanhap' }));
 			}
 		} catch (e) {
 			console.log(e);
 			if (props.trangThai === ETrangThaiKhieuNai.DA_DUYET)
-				message.warning('Một số điểm chưa nhập vui lòng kiểm tra lại');
+				message.warning(intl.formatMessage({ id: 'phieudiem.nhapdiem.canhbaochuanhap' }));
 		}
 	};
 
@@ -256,7 +256,7 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 						inline: 'center',
 					}}
 					onFinishFailed={() => {
-						message.warning('Một số điểm chưa nhập vui lòng kiểm tra lại');
+						message.warning(intl.formatMessage({ id: 'phieudiem.nhapdiem.canhbaochuanhap' }));
 					}}
 				>
 					<FieldsNhapDiem
@@ -268,10 +268,10 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 						nguoiTraLoi={nguoiTraLoi}
 						title={
 							<>
-								<div>I.PHIẾU ĐIỂM RÈN LUYỆN</div>
+								<div>{intl.formatMessage({ id: 'phieudiem.phieudiemrenluyen' })}</div>
 								{props.isSuaDiemKhieuNai && (
 									<div>
-										Trạng thái khiếu nại:{' '}
+										{intl.formatMessage({ id: 'phieudiem.trangthaikhieunai' })}:{' '}
 										<Tag
 											color={
 												MapKeyColorTrangThaiKhieuNai[
@@ -283,8 +283,10 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 										</Tag>
 										{recPhieuDiem?.traLoiNoiDungKhieuNai && (
 											<span style={{ marginLeft: 10 }}>
-												{recPhieuDiem.trangThaiXuLyKhieuNai === ETrangThaiKhieuNai.KHONG_DUYET ? 'Lý do' : 'Ghi chú'}:{' '}
-												{recPhieuDiem.traLoiNoiDungKhieuNai}
+												{recPhieuDiem.trangThaiXuLyKhieuNai === ETrangThaiKhieuNai.KHONG_DUYET
+													? intl.formatMessage({ id: 'phieudiem.lydo' })
+													: intl.formatMessage({ id: 'phieudiem.ghichu' })}
+												: {recPhieuDiem.traLoiNoiDungKhieuNai}
 											</span>
 										)}
 									</div>
@@ -303,23 +305,25 @@ const FormNhapPhieuDiem = (props: { trangThai?: ETrangThaiKhieuNai; isSuaDiemKhi
 							style={{ marginTop: 8 }}
 							label={
 								<b style={{ marginLeft: 4 }}>
-									{props?.trangThai === ETrangThaiKhieuNai.DA_DUYET ? 'Ghi chú' : 'Lý do'}
+									{props?.trangThai === ETrangThaiKhieuNai.DA_DUYET
+										? intl.formatMessage({ id: 'phieudiem.ghichu' })
+										: intl.formatMessage({ id: 'phieudiem.lydo' })}
 								</b>
 							}
 							name={'traLoiNoiDungKhieuNai'}
 						>
-							<Input.TextArea placeholder='Nhập ghi chú' />
+							<Input.TextArea placeholder={intl.formatMessage({ id: 'phieudiem.nhapghichu' })} />
 						</Form.Item>
 					)}
 				</Form>
 				{props.isSuaDiemKhieuNai && props.trangThai && (
 					<div className='form-footer'>
 						<Button icon={<SaveOutlined />} type='primary' onClick={() => handleSave()} loading={loading}>
-							Lưu
+							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 
 						<Button icon={<CloseOutlined />} onClick={() => setVisibleForm(false)} loading={loading}>
-							Đóng
+							{intl.formatMessage({ id: 'global.button.dong' })}
 						</Button>
 					</div>
 				)}

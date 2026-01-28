@@ -9,7 +9,7 @@ import { useIntl, useModel } from 'umi';
  */
 const SelectNganhCoSo = (props: {
 	value?: string;
-	onChange?: (val: string | string[] | null) => void;
+	onChange?: (val: string | string[] | null, option?: any) => void;
 	multiple?: boolean;
 	allowClear?: boolean;
 	hasDefault?: boolean;

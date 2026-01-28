@@ -1,10 +1,10 @@
+import { ELoaiBieuMau, ELoaiCauHoi } from '@/services/KhaoSat/constant';
 import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Form, Input, Tooltip } from 'antd';
-import BlockQuestion from './BlockQuestion';
-import { useModel } from 'umi';
-import { ELoaiBieuMau, ELoaiCauHoi } from '@/services/KhaoSat/constant';
 import { type FormInstance } from 'antd/es/form/Form';
 import { useState } from 'react';
+import { useIntl, useModel } from 'umi';
+import BlockQuestion from './BlockQuestion';
 
 const Block = (props: {
 	form: FormInstance<any>;
@@ -12,13 +12,18 @@ const Block = (props: {
 	index?: number;
 }) => {
 	const { record } = useModel('khaosat.bieumau');
+	const intl = useIntl();
 	const [isTieuDeDanhMuc, setIsTieuDeDanhMuc] = useState<boolean>(
 		record?.danhSachKhoi?.[props?.field?.name]?.isTieuDeDanhMuc ?? false,
 	);
 	return (
 		<>
-			<Form.Item style={{ marginBottom: 12 }} name={[props.field.name, 'tieuDe']} label='Tiêu đề'>
-				<Input placeholder='Tiêu đề' />
+			<Form.Item
+				style={{ marginBottom: 12 }}
+				name={[props.field.name, 'tieuDe']}
+				label={intl.formatMessage({ id: 'bieumau.column.tieude' })}
+			>
+				<Input placeholder={intl.formatMessage({ id: 'bieumau.column.tieude' })} />
 			</Form.Item>
 			<Form.Item name={[props.field.name, 'isTieuDeDanhMuc']} valuePropName='checked'>
 				<Checkbox
@@ -37,11 +42,11 @@ const Block = (props: {
 						}
 					}}
 				>
-					Là tiêu đề danh mục
+					{intl.formatMessage({ id: 'bieumau.latieudedanhmuc' })}
 				</Checkbox>
 			</Form.Item>
-			<Form.Item name={[props.field.name, 'moTa']} label='Mô tả'>
-				<Input.TextArea rows={2} placeholder='Mô tả' />
+			<Form.Item name={[props.field.name, 'moTa']} label={intl.formatMessage({ id: 'bieumau.column.mota' })}>
+				<Input.TextArea rows={2} placeholder={intl.formatMessage({ id: 'bieumau.column.mota' })} />
 			</Form.Item>
 			{!isTieuDeDanhMuc && (
 				<Form.List
@@ -51,7 +56,7 @@ const Block = (props: {
 							validator: async (_, names) => {
 								if (!isTieuDeDanhMuc) {
 									if (!names || names.length < 1) {
-										return Promise.reject(new Error('Ít nhất 1 câu hỏi'));
+										return Promise.reject(new Error(intl.formatMessage({ id: 'bieumau.error.itnhat1cauhoi' })));
 									}
 								}
 
@@ -72,20 +77,22 @@ const Block = (props: {
 											key={field.key}
 											title={
 												<>
-													<div style={{ float: 'left' }}>Câu hỏi {index + 1}</div>
-													<Tooltip title='Xóa'>
+													<div style={{ float: 'left' }}>
+														{intl.formatMessage({ id: 'bieumau.cauhoi' })} {index + 1}
+													</div>
+													<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 														<CloseOutlined
 															style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
 															onClick={() => remove(field.name)}
 														/>
 													</Tooltip>
-													<Tooltip title='Di chuyển lên'>
+													<Tooltip title={intl.formatMessage({ id: 'bieumau.action.up' })}>
 														<ArrowUpOutlined
 															style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
 															onClick={() => move(field.name, field.name - 1)}
 														/>
 													</Tooltip>
-													<Tooltip title='Di chuyển xuống'>
+													<Tooltip title={intl.formatMessage({ id: 'bieumau.action.down' })}>
 														<ArrowDownOutlined
 															style={{ float: 'right', marginTop: 4 }}
 															onClick={() => move(field.name, field.name + 1)}
@@ -114,7 +121,7 @@ const Block = (props: {
 										icon={<PlusOutlined />}
 										size='small'
 									>
-										Thêm câu hỏi
+										{intl.formatMessage({ id: 'bieumau.action.themcauhoi' })}
 									</Button>
 									<Form.ErrorList errors={errors} />
 								</Form.Item>

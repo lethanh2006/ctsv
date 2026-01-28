@@ -2,9 +2,10 @@ import TableStaticData from '@/components/Table/TableStaticData';
 import type { IColumn } from '@/components/Table/typing';
 import type { MinhChungDrl } from '@/services/DiemRenLuyen/MinhChung/typing';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const DanhSachMinhChung = React.forwardRef((props: { idLopHanhChinh?: string }, ref) => {
+	const intl = useIntl();
 	const { getAllModel, danhSach, record, setRecord } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { record: recordDot } = useModel('diemrenluyen.dot');
 
@@ -41,7 +42,7 @@ const DanhSachMinhChung = React.forwardRef((props: { idLopHanhChinh?: string }, 
 
 	const columns: IColumn<MinhChungDrl.IBieuMau>[] = [
 		{
-			title: 'Loại minh chứng',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.ds.loaiminhchung' }),
 			dataIndex: 'tenMinhChung',
 			width: 200,
 			filterType: 'string',
@@ -52,7 +53,8 @@ const DanhSachMinhChung = React.forwardRef((props: { idLopHanhChinh?: string }, 
 						{val}
 						{rec?.trangThaiMinhChung && (
 							<div>
-								<b style={{ color: 'red' }}>{rec?.trangThaiMinhChung?.['Chờ xử lý']}</b> Chờ xử lý
+								<b style={{ color: 'red' }}>{rec?.trangThaiMinhChung?.['Chờ xử lý']}</b>{' '}
+								{intl.formatMessage({ id: 'lophanhchinh.minhchung.ds.choxuly' })}
 							</div>
 						)}
 					</>

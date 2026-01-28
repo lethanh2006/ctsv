@@ -4,14 +4,15 @@ import {
 	EXepLoaiDiemRenLuyenLabel,
 	MapKeyColorXepLoaiDiemRenLuyenLabel,
 } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/constants';
+import type { PhieuDiemRenLuyen } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/typing';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Descriptions, Tag } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import SelectDotDiemRenLuyen from '../Dot/Select';
-import type { PhieuDiemRenLuyen } from '@/services/DiemRenLuyen/PhieuDiemRenLuyen/typing';
 
 const PhieuTongHop = (props: { tenLop?: string; idLop: string }) => {
+	const intl = useIntl();
 	const { getPhieuTongHopModel, recPhieuTongHop, loading, exportPhieuTongHopModel } = useModel(
 		'diemrenluyen.phieudiemrenluyen',
 	);
@@ -21,87 +22,78 @@ const PhieuTongHop = (props: { tenLop?: string; idLop: string }) => {
 	useEffect(() => {
 		if (props?.tenLop && recDot?._id) getPhieuTongHopModel(recDot._id, props.tenLop);
 	}, [props.tenLop, recDot?._id]);
+
 	const columns: IColumn<PhieuDiemRenLuyen.PhieuTongHopSV>[] = [
 		{
-			title: 'Họ đệm',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.hodem' }),
 			dataIndex: 'hoDem',
 			align: 'center',
 			filterType: 'string',
 			width: 120,
 		},
 		{
-			title: 'Tên',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.ten' }),
 			dataIndex: 'ten',
 			align: 'center',
 			filterType: 'string',
 			width: 100,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.msv' }),
 			dataIndex: 'msv',
 			align: 'center',
 			filterType: 'string',
 			width: 100,
 		},
 		{
-			title: 'Điểm đánh giá',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.danhgia' }),
 			align: 'center',
 			width: 400,
 			children: [
 				{
-					title: 'ND1',
-					align: 'center',
+					title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.nd1' }),
 					dataIndex: 'nd1',
+					align: 'center',
 					width: 80,
 					sortable: true,
-					render: (val) => {
-						return val ?? '--';
-					},
+					render: (val) => val ?? '--',
 				},
 				{
-					title: 'ND2',
+					title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.nd2' }),
 					dataIndex: 'nd2',
 					align: 'center',
 					width: 80,
 					sortable: true,
-					render: (val) => {
-						return val ?? '--';
-					},
+					render: (val) => val ?? '--',
 				},
 				{
-					title: 'ND3',
-					align: 'center',
+					title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.nd3' }),
 					dataIndex: 'nd3',
+					align: 'center',
 					width: 80,
 					sortable: true,
-					render: (val) => {
-						return val ?? '--';
-					},
+					render: (val) => val ?? '--',
 				},
 				{
-					title: 'ND4',
+					title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.nd4' }),
 					dataIndex: 'nd4',
 					align: 'center',
 					width: 80,
 					sortable: true,
-					render: (val) => {
-						return val ?? '--';
-					},
+					render: (val) => val ?? '--',
 				},
 				{
-					title: 'ND5',
+					title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.nd5' }),
 					dataIndex: 'nd5',
 					align: 'center',
 					width: 80,
 					sortable: true,
-					render: (val) => {
-						return val ?? '--';
-					},
+					render: (val) => val ?? '--',
 				},
 			],
 		},
 		{
-			title: 'Tổng điểm',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.tongdiem' }),
 			dataIndex: 'tongDiem',
 			align: 'center',
 			width: 100,
@@ -109,7 +101,7 @@ const PhieuTongHop = (props: { tenLop?: string; idLop: string }) => {
 			render: (val) => (val ? val : '--'),
 		},
 		{
-			title: 'Xếp hạng rèn luyện',
+			title: intl.formatMessage({ id: 'lophanhchinh.phieutonghop.column.xephang' }),
 			dataIndex: 'xepHang',
 			align: 'center',
 			width: 100,
@@ -122,16 +114,17 @@ const PhieuTongHop = (props: { tenLop?: string; idLop: string }) => {
 
 	return (
 		<>
-			{' '}
-			<h2 style={{ textAlign: 'center', marginBottom: 18 }}>TỔNG HỢP KẾT QUẢ RÈN LUYỆN CỦA SINH VIÊN</h2>
+			<h2 style={{ textAlign: 'center', marginBottom: 18 }}>
+				{intl.formatMessage({ id: 'lophanhchinh.phieutonghop.title' })}
+			</h2>
 			<Descriptions column={{ xs: 1, md: 3 }}>
-				<Descriptions.Item label='Lớp'>
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.label.lop' })}>
 					<b>{recPhieuTongHop?.lopHC ?? ''}</b>
 				</Descriptions.Item>
-				<Descriptions.Item label='Khoa'>
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.label.khoa' })}>
 					<b>{recPhieuTongHop?.khoa ?? ''}</b>
 				</Descriptions.Item>
-				<Descriptions.Item label='Đợt'>
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.label.dot' })}>
 					<b>{recDot?.tenDot}</b>
 				</Descriptions.Item>
 			</Descriptions>
@@ -157,38 +150,39 @@ const PhieuTongHop = (props: { tenLop?: string; idLop: string }) => {
 							icon={<DownloadOutlined />}
 							type='primary'
 						>
-							Tải phiếu tổng hợp
+							{intl.formatMessage({ id: 'lophanhchinh.phieutonghop.button.download' })}
 						</Button>
 					</div>
 				</TableStaticData>
 			</>
 			<p style={{ marginTop: 18 }}>
-				<b> Lưu ý: Kết quả điểm rèn luyện được phân thành các loại: </b>Xuất sắc, Tốt, Khá, Trung bình, Yếu, Kém
+				<b>{intl.formatMessage({ id: 'lophanhchinh.phieutonghop.note.title' })}</b>
+				{intl.formatMessage({ id: 'lophanhchinh.phieutonghop.note.content' })}
 			</p>
 			<Descriptions column={1} bordered>
-				<Descriptions.Item label='Loại xuất sắc (từ 90 đến 100 điểm)'>
-					{recPhieuTongHop?.sv1 ?? '--'} Sinh viên ({recPhieuTongHop?.xuatSac}
-					%)
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.rank.xuatsac' })}>
+					{recPhieuTongHop?.sv1 ?? '--'} {intl.formatMessage({ id: 'lophanhchinh.phieutonghop.unit.sv' })} (
+					{recPhieuTongHop?.xuatSac}%)
 				</Descriptions.Item>
-				<Descriptions.Item label='Loại tốt (từ 80 đến 90 điểm)'>
-					{recPhieuTongHop?.sv2 ?? '--'} Sinh viên ({recPhieuTongHop?.tot}
-					%)
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.rank.tot' })}>
+					{recPhieuTongHop?.sv2 ?? '--'} {intl.formatMessage({ id: 'lophanhchinh.phieutonghop.unit.sv' })} (
+					{recPhieuTongHop?.tot}%)
 				</Descriptions.Item>
-				<Descriptions.Item label='Loại khá (từ 65 đến dưới 80 điểm)'>
-					{recPhieuTongHop?.sv3 ?? '--'} Sinh viên ({recPhieuTongHop?.kha}
-					%)
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.rank.kha' })}>
+					{recPhieuTongHop?.sv3 ?? '--'} {intl.formatMessage({ id: 'lophanhchinh.phieutonghop.unit.sv' })} (
+					{recPhieuTongHop?.kha}%)
 				</Descriptions.Item>
-				<Descriptions.Item label='Loại trung bình (từ 50 đến dưới 65 điểm)'>
-					{recPhieuTongHop?.sv4 ?? '--'} Sinh viên ({recPhieuTongHop?.tb}
-					%)
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.rank.tb' })}>
+					{recPhieuTongHop?.sv4 ?? '--'} {intl.formatMessage({ id: 'lophanhchinh.phieutonghop.unit.sv' })} (
+					{recPhieuTongHop?.tb}%)
 				</Descriptions.Item>
-				<Descriptions.Item label='Loại yếu (từ 35 đến dưới 50 điểm)'>
-					{recPhieuTongHop?.sv5 ?? '--'} Sinh viên ({recPhieuTongHop?.y}
-					%)
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.rank.yeu' })}>
+					{recPhieuTongHop?.sv5 ?? '--'} {intl.formatMessage({ id: 'lophanhchinh.phieutonghop.unit.sv' })} (
+					{recPhieuTongHop?.y}%)
 				</Descriptions.Item>
-				<Descriptions.Item label='Loại kém (dưới 35 điểm)'>
-					{recPhieuTongHop?.sv6 ?? '--'} Sinh viên ({recPhieuTongHop?.k}
-					%)
+				<Descriptions.Item label={intl.formatMessage({ id: 'lophanhchinh.phieutonghop.rank.kem' })}>
+					{recPhieuTongHop?.sv6 ?? '--'} {intl.formatMessage({ id: 'lophanhchinh.phieutonghop.unit.sv' })} (
+					{recPhieuTongHop?.k}%)
 				</Descriptions.Item>
 			</Descriptions>
 		</>

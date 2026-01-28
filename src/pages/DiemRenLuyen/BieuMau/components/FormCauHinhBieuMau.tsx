@@ -1,3 +1,6 @@
+import ViewDetailDiemRenLuyen from '@/pages/DiemRenLuyen/BieuMau/components/FormViewDetailDiemRenLuyen';
+import type { BieuMau } from '@/services/KhaoSat/BieuMau/typing';
+import { resetFieldsForm } from '@/utils/utils';
 import {
 	ArrowDownOutlined,
 	ArrowLeftOutlined,
@@ -9,17 +12,15 @@ import {
 	SaveOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Form, Modal, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
 import Block from './Block';
 import styles from './block.css';
-import { resetFieldsForm } from '@/utils/utils';
-import { useEffect, useState } from 'react';
-import type { BieuMau } from '@/services/KhaoSat/BieuMau/typing';
-import ViewDetailDiemRenLuyen from '@/pages/DiemRenLuyen/BieuMau/components/FormViewDetailDiemRenLuyen';
 
 const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void }) => {
 	const { loading, record, edit, postModel, putModel, setRecord, visibleForm } = useModel('khaosat.bieumau');
 	const [visibleView, setVisibleView] = useState<boolean>(false);
+	const intl = useIntl();
 
 	const [form] = Form.useForm();
 
@@ -31,7 +32,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 				props?.getData
 					? () => {
 							if (props?.getData) props?.getData();
-					  }
+						}
 					: undefined,
 			)
 				.then()
@@ -45,7 +46,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 				props?.getData
 					? () => {
 							if (props?.getData) props?.getData();
-					  }
+						}
 					: undefined,
 			)
 				.then()
@@ -72,7 +73,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 						setVisibleView(true);
 					}}
 				>
-					Xem trước
+					{intl.formatMessage({ id: 'bieumau.action.preview' })}
 				</Button>
 				<Form.List
 					name='danhSachKhoi'
@@ -81,7 +82,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 						{
 							validator: async (validate, names) => {
 								if (!names || names.length < 1) {
-									return Promise.reject(new Error('Ít nhất 1 khối'));
+									return Promise.reject(new Error(intl.formatMessage({ id: 'bieumau.error.itnhat1khoi' })));
 								}
 								return '';
 							},
@@ -100,20 +101,22 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 											className={styles.block}
 											title={
 												<>
-													<div style={{ float: 'left' }}>Khối {index + 1}</div>
-													<Tooltip title='Xóa'>
+													<div style={{ float: 'left' }}>
+														{intl.formatMessage({ id: 'bieumau.khoi' })} {index + 1}
+													</div>
+													<Tooltip title={intl.formatMessage({ id: 'global.button.xoa' })}>
 														<CloseOutlined
 															style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
 															onClick={() => remove(field.name)}
 														/>
 													</Tooltip>
-													<Tooltip title='Di chuyển lên'>
+													<Tooltip title={intl.formatMessage({ id: 'bieumau.action.up' })}>
 														<ArrowUpOutlined
 															style={{ float: 'right', marginTop: 4, marginLeft: 8 }}
 															onClick={() => move(field.name, field.name - 1)}
 														/>
 													</Tooltip>
-													<Tooltip title='Di chuyển xuống'>
+													<Tooltip title={intl.formatMessage({ id: 'bieumau.action.down' })}>
 														<ArrowDownOutlined
 															style={{ float: 'right', marginTop: 4 }}
 															onClick={() => move(field.name, field.name + 1)}
@@ -129,7 +132,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 								))}
 								<Form.Item>
 									<Button type='dashed' onClick={() => add()} style={{ width: '100%' }} icon={<PlusOutlined />}>
-										Thêm khối
+										{intl.formatMessage({ id: 'bieumau.action.themkhoi' })}
 									</Button>
 									<Form.ErrorList errors={errors} />
 								</Form.Item>
@@ -145,7 +148,9 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 						htmlType='submit'
 						type='primary'
 					>
-						{!edit ? 'Thêm mới' : 'Lưu Lại'}
+						{!edit
+							? intl.formatMessage({ id: 'global.button.themmoi' })
+							: intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 					<Button
 						icon={<ArrowLeftOutlined />}
@@ -155,7 +160,7 @@ const FormCauHinhBieuMau = (props: { onBack: () => void; getData?: () => void })
 							props.onBack();
 						}}
 					>
-						Quay lại
+						{intl.formatMessage({ id: 'bieumau.action.quaylai' })}
 					</Button>
 				</div>
 			</Form>

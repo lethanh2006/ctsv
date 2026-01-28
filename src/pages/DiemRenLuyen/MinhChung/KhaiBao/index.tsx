@@ -1,6 +1,7 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import type { IColumn } from '@/components/Table/typing';
+import useCheckAccess from '@/hooks/useCheckAccess';
 import SelectLopHanhChinh from '@/pages/DaoTaoV2/NamHoc/LopHanhChinh/components/SelectLopHanhChinh';
 import SelectDotDiemRenLuyen from '@/pages/DiemRenLuyen/Dot/Select';
 import FormKhaiBao from '@/pages/DiemRenLuyen/MinhChung/KhaiBao/components/FormKhaiBao';
@@ -8,23 +9,35 @@ import {
 	ETrangThaiTiepNhanMinhChung,
 	MapColorETrangThaiTiepNhanMinhChung,
 } from '@/services/DiemRenLuyen/MinhChung/KhaiBao/constants';
-import { useModel } from 'umi';
 import {
 	CheckOutlined,
 	CloseOutlined,
 	DeleteOutlined,
 	EditOutlined,
+	ImportOutlined,
 	MenuOutlined,
 	UndoOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, Popconfirm, Popover, Spin, Tag } from 'antd';
+import { Button, Divider, Dropdown, Menu, Modal, Popconfirm, Popover, Spin, Tag } from 'antd';
 import { useEffect } from 'react';
-import useCheckAccess from '@/hooks/useCheckAccess';
+import { useIntl, useModel } from 'umi';
+import FormImport from './components/FormImport';
 
 const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: () => void }) => {
-	const { getModel, page, limit, condition, handleEdit, deleteModel, handleView, putModel } = useModel(
-		'diemrenluyen.minhchung.khaibao',
-	);
+	const intl = useIntl();
+	const {
+		getModel,
+		page,
+		limit,
+		condition,
+		handleEdit,
+		deleteModel,
+		handleView,
+		putModel,
+		getTemplateImportMinhChungModel,
+		setVisibleFormImport,
+		visibleFormImport,
+	} = useModel('diemrenluyen.minhchung.khaibao');
 	const { record: recordCauHinh } = useModel('diemrenluyen.minhchung.cauhinh');
 	const { getAllModel, danhSach: danhSachDanhMuc } = useModel('quytrinh.danhmuc');
 	const { loading } = useModel('diemrenluyen.minhchung.cauhinh');
@@ -35,16 +48,17 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 		dataPhanQuyen,
 		handleCheckPhanQuyen,
 	} = useModel('diemrenluyen.dot');
+
+	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
+		'daotaov2.lophanhchinh.lophanhchinh',
+	);
+
 	const idDuyet = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet');
 	const isKhoa = useCheckAccess('ctsv|diem-ren-luyen|minh-chung|khai-bao|duyet-tong');
 
 	useEffect(() => {
 		handleCheckPhanQuyen(idDuyet, isKhoa);
 	}, []);
-
-	const { record: recordLopHanhChinh, setRecord: setRecordLopHanhChinh } = useModel(
-		'daotaov2.lophanhchinh.lophanhchinh',
-	);
 
 	const getData = () => {
 		if (
@@ -77,14 +91,14 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 
 	const columns: IColumn<KhaiBaoDRL.IRecord>[] = [
 		{
-			title: 'Họ và tên',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.hoten' }),
 			dataIndex: 'hoTen',
 			filterType: 'string',
 			onCell,
 			width: 150,
 		},
 		{
-			title: 'Mã sinh viên',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.masv' }),
 			dataIndex: 'maSinhVien',
 			align: 'center',
 			filterType: 'string',
@@ -92,7 +106,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			width: 150,
 		},
 		{
-			title: 'Lớp hành chính',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.lhc' }),
 			dataIndex: 'lopHanhChinh',
 			align: 'center',
 			filterType: 'string',
@@ -100,7 +114,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			width: 150,
 		},
 		{
-			title: 'Người khai báo',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.nguoikhaobao' }),
 			dataIndex: 'nguoiKhaiBao',
 			align: 'center',
 			onCell,
@@ -108,7 +122,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			render: (val) => val?.ten ?? '',
 		},
 		{
-			title: 'Trạng thái',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.trangthai' }),
 			dataIndex: 'trangThai',
 			align: 'center',
 			onCell,
@@ -120,7 +134,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.thaotac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
@@ -130,7 +144,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 					content={
 						<>
 							<Popconfirm
-								title={'Bạn có chắc chắn muốn duyệt minh chứng này'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.duyet' })}
 								placement={'topLeft'}
 								disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 								onConfirm={() => {
@@ -139,14 +153,14 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-									tooltip='Duyệt'
+									tooltip={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.duyet' })}
 									type='link'
 									icon={<CheckOutlined />}
 								/>
 							</Popconfirm>
 							<Divider type={'vertical'} />
 							<Popconfirm
-								title={'Bạn có chắc chắn muốn từ chối minh chứng này'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.tuchoi' })}
 								placement={'topLeft'}
 								disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 								onConfirm={() => {
@@ -155,7 +169,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai !== ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-									tooltip='Từ chối'
+									tooltip={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.tuchoi' })}
 									type='link'
 									danger
 									icon={<CloseOutlined />}
@@ -163,7 +177,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							</Popconfirm>
 							<Divider type={'vertical'} />
 							<Popconfirm
-								title={'Bạn có chắc chắn chuyển về trạng thái chờ xử lý'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.chuyenvechoxuly' })}
 								placement={'topLeft'}
 								disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
 								onConfirm={() => {
@@ -172,7 +186,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.CHO_XU_LY}
-									tooltip='Chuyển vể chờ xử lý'
+									tooltip={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.chuyenvechoxuly' })}
 									type='link'
 									icon={<UndoOutlined />}
 								/>
@@ -181,7 +195,7 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 
 							<ButtonExtend
 								disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.DUYET}
-								tooltip='Chỉnh sửa'
+								tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
 								type='link'
 								icon={<EditOutlined />}
 								onClick={() => {
@@ -191,15 +205,17 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 							<Divider type={'vertical'} />
 							<Popconfirm
 								disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.DUYET}
-								title={'Bạn có chắc chắn muốn xoá minh chứng này'}
+								title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.confirm.xoa' })}
 								placement={'topLeft'}
 								onConfirm={() => {
-									deleteModel(rec?._id, getData);
+									deleteModel(rec?._id, getData, {
+										messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+									});
 								}}
 							>
 								<ButtonExtend
 									disabled={rec?.trangThai === ETrangThaiTiepNhanMinhChung.DUYET}
-									tooltip='Xoá'
+									tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
 									type='link'
 									danger
 									icon={<DeleteOutlined />}
@@ -234,11 +250,35 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 					create: dataPhanQuyen?.isPhongCTSV
 						? true
 						: dataPhanQuyen?.isKhoa
-						? false
-						: recordCauHinh?.doiTuongNhap?.includes('CAN_BO'),
+							? false
+							: recordCauHinh?.doiTuongNhap?.includes('CAN_BO'),
 				}}
 				otherButtons={[
 					<>
+						<Dropdown
+							overlay={
+								<Menu>
+									<Menu.Item
+										onClick={() => {
+											getTemplateImportMinhChungModel(recordCauHinh?._id ?? '', recordCauHinh?.tenMinhChung ?? '');
+										}}
+									>
+										{intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.taimau' })}
+									</Menu.Item>
+									<Menu.Item
+										onClick={() => {
+											setVisibleFormImport(true);
+										}}
+									>
+										{intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.import' })}
+									</Menu.Item>
+								</Menu>
+							}
+						>
+							<Button icon={<ImportOutlined />}>
+								{intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.import' })}
+							</Button>
+						</Dropdown>
 						<SelectDotDiemRenLuyen
 							style={{ width: 300 }}
 							value={recordDot?._id}
@@ -262,6 +302,17 @@ const KhaiBaoMinhChung = (props: { idLopHanhChinh?: string; getDataMinhChung?: (
 					</>,
 				]}
 			/>
+			<Modal
+				destroyOnClose
+				open={visibleFormImport}
+				title={intl.formatMessage({ id: 'lophanhchinh.minhchung.khaobai.button.importminhchung' })}
+				onCancel={() => {
+					setVisibleFormImport(false);
+				}}
+				footer={null}
+			>
+				<FormImport getData={getData} />
+			</Modal>
 		</Spin>
 	);
 };

@@ -4,13 +4,14 @@ import type { IColumn } from '@/components/Table/typing';
 import SelectHocKy from '@/pages/DaoTaoV2/HocKy/HocKy/components/SelectHocKy';
 import FormThemMoi from '@/pages/DiemRenLuyen/Dot/components/FormThemMoi';
 import ViewChiTiet from '@/pages/DiemRenLuyen/Dot/components/ViewChiTiet';
-import { useModel } from 'umi';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
+import { useIntl, useModel } from 'umi';
 
 const DotPage = () => {
+	const intl = useIntl();
 	const { handleEdit, deleteModel, isView, handleView } = useModel('diemrenluyen.dot');
 	const { danhSach: danhSachKyHoc, getAllModel: getAllKyHoc } = useModel('daotaov2.hocky.hocky');
 
@@ -23,14 +24,14 @@ const DotPage = () => {
 
 	const columns: IColumn<DotChamDiemRenLuyen.IRecord>[] = [
 		{
-			title: 'Tên đợt',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.title' }),
 			dataIndex: 'tenDot',
 			filterType: 'string',
 			width: 150,
 			onCell,
 		},
 		{
-			title: 'Kỳ học',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.kyhoc' }),
 			dataIndex: 'kyHoc',
 			align: 'center',
 			filterType: 'customselect',
@@ -43,7 +44,7 @@ const DotPage = () => {
 			},
 		},
 		{
-			title: 'Thời gian tiếp nhận minh chứng',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.tgtiepnhan' }),
 			render: (val, rec) =>
 				`${
 					rec.thoiGianTiepNhanMinhChung?.thoiGianBatDau
@@ -59,7 +60,7 @@ const DotPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Thời gian SV tự chấm điểm',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.tgsvcham' }),
 			render: (val, rec) =>
 				`${
 					rec.thoiGianSVChamDiem?.thoiGianBatDau
@@ -75,7 +76,7 @@ const DotPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Thời gian BCS chấm điểm',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.tgbcscham' }),
 			render: (val, rec) =>
 				`${
 					rec.thoiGianBCSChamDiem?.thoiGianBatDau
@@ -91,7 +92,7 @@ const DotPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Thời gian chủ nhiệm lớp xác nhận',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.tgchunhiem' }),
 			render: (val, rec) =>
 				`${
 					rec.thoiGianCoVanChamDiem?.thoiGianBatDau
@@ -107,7 +108,7 @@ const DotPage = () => {
 			align: 'center',
 		},
 		{
-			title: 'Thời gian gửi khiếu nại',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.tgkhieunai' }),
 			render: (val, rec) =>
 				`${
 					rec.thoiGianKhieuNai?.thoiGianBatDau
@@ -140,14 +141,14 @@ const DotPage = () => {
 		// 	align: 'center',
 		// },
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'diemrenluyen.dot.thaotac' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
 					<ButtonExtend
-						tooltip='Xem chi tiết'
+						tooltip={intl.formatMessage({ id: 'global.button.chitiet' })}
 						type='link'
 						icon={<EyeOutlined />}
 						onClick={() => {
@@ -155,7 +156,7 @@ const DotPage = () => {
 						}}
 					/>
 					<ButtonExtend
-						tooltip='Chỉnh sửa'
+						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
 						type='link'
 						icon={<EditOutlined />}
 						onClick={() => {
@@ -163,13 +164,20 @@ const DotPage = () => {
 						}}
 					/>
 					<Popconfirm
-						title={'Bạn có chắc chắn muốn xoá biểu mẫu này'}
+						title={intl.formatMessage({ id: 'diemrenluyen.dot.confirm.xoa' })}
 						placement={'topLeft'}
 						onConfirm={() => {
-							deleteModel(rec?._id);
+							deleteModel(rec?._id, undefined, {
+								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+							});
 						}}
 					>
-						<ButtonExtend tooltip='Xoá' type='link' danger icon={<DeleteOutlined />} />
+						<ButtonExtend
+							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+							type='link'
+							danger
+							icon={<DeleteOutlined />}
+						/>
 					</Popconfirm>
 				</>
 			),

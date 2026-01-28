@@ -2,7 +2,7 @@ import { CarryOutOutlined } from '@ant-design/icons';
 import { Breadcrumb, Card, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
-import { history, useModel } from 'umi';
+import { history, useIntl, useModel } from 'umi';
 import ViewDetailBienBanHopDrl from '../BienBanHop/ViewDetail';
 import DanhSachKhaiBao from '../MinhChung/DanhSachKhaiBao';
 import PhieuDiemRenLuyen from '../PhieuDiem';
@@ -15,6 +15,7 @@ const DetailLopHanhChinh = ({
 }: {
 	match: { params: { id: string } };
 }) => {
+	const intl = useIntl();
 	const { setRecord: setRecLopHanhChinh, record, getByIdModel } = useModel('daotaov2.lophanhchinh.lophanhchinh');
 	const { setDanhSach: setDanhSachMinhChung, setTotal: setTotalMinhChung } = useModel('diemrenluyen.minhchung.khaibao');
 	const { setDanhSach: setDanhSachPhieuDiem, setTotal: setTotalPhieuDiem } = useModel('diemrenluyen.phieudiemrenluyen');
@@ -53,21 +54,21 @@ const DetailLopHanhChinh = ({
 
 	return (
 		<Card
-			styles={{ paddingTop: 4 }}
+			styles={{ body: { paddingTop: 4 } }}
 			title={
 				<Breadcrumb style={{ cursor: 'pointer' }}>
 					<Breadcrumb.Item onClick={() => history.push('/diem-ren-luyen/lop-hanh-chinh')}>
-						<CarryOutOutlined /> Lớp hành chính
+						<CarryOutOutlined /> {intl.formatMessage({ id: 'lophanhchinh.title' })}
 					</Breadcrumb.Item>
 					<Breadcrumb.Item>{record?.ten ?? ''}</Breadcrumb.Item>
 				</Breadcrumb>
 			}
 		>
 			<Tabs onChange={onChangeTab} activeKey={tabActive}>
-				<Tabs.TabPane tab='Minh chứng' key={paths[0]} />
-				<Tabs.TabPane tab='Phiếu điểm' key={paths[1]} />
-				<Tabs.TabPane tab='Biên bản họp' key={paths[2]} />
-				<Tabs.TabPane tab='Phiếu tổng hợp' key={paths[3]} />
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'lophanhchinh.minhchung' })} key={paths[0]} />
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'lophanhchinh.phieudiem' })} key={paths[1]} />
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'lophanhchinh.bienban' })} key={paths[2]} />
+				<Tabs.TabPane tab={intl.formatMessage({ id: 'lophanhchinh.phieutonghop' })} key={paths[3]} />
 			</Tabs>
 
 			{tabActive === paths[0] ? (

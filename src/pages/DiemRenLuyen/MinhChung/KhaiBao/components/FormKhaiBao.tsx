@@ -1,15 +1,16 @@
-import { Button, Card, Col, Divider, Form, Row, Select } from 'antd';
-import { useEffect, useState } from 'react';
-import FormRender from '../../CauHinh/components/MauDon/FormRender';
-import { useModel } from 'umi';
-import { EKieuDuLieu, ETextDisplay } from '@/services/FormDong/LoaiHinh/constants';
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import type { SinhVien } from '@/services/DaoTaoV2/SinhVien/typings';
+import { EKieuDuLieu, ETextDisplay } from '@/services/FormDong/LoaiHinh/constants';
+import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
+import { Button, Card, Col, Divider, Form, Row, Select } from 'antd';
+import { useEffect, useState } from 'react';
+import { useIntl, useModel } from 'umi';
+import FormRender from '../../CauHinh/components/MauDon/FormRender';
 import ViewRender from '../../CauHinh/components/MauDon/ViewRender';
-import { buildUpLoadMultiFile } from '@/services/uploadFile';
 const FormKhaiBao = (props: { getData?: () => void }) => {
+	const intl = useIntl();
 	const { getData } = props;
 	const [form] = Form.useForm();
 	const [formValues, setFormValues] = useState<any>({});
@@ -94,8 +95,8 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 
 	if (isView) {
 		return (
-			<Card title={`${recordCauHinh?.tenMinhChung ?? 'Khai báo minh chứng'}`}>
-				<Divider orientation={'center'}>Thông tin chung</Divider>
+			<Card title={`${recordCauHinh?.tenMinhChung ?? intl.formatMessage({ id: 'minhchung.khaibao.title.khaibao' })}`}>
+				<Divider orientation={'center'}>{intl.formatMessage({ id: 'minhchung.khaibao.thongtinchung' })}</Divider>
 				<Row gutter={[0, 10]}>
 					<Col xs={24} sm={24} md={12}>
 						<div
@@ -104,7 +105,7 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 							}}
 						>
 							<div style={{ marginRight: 4 }}>
-								<b>Sinh viên: </b>
+								<b>{intl.formatMessage({ id: 'minhchung.khaibao.sinhvien' })}: </b>
 							</div>
 							<div>{record?.hoTen}</div>
 						</div>
@@ -116,7 +117,7 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 							}}
 						>
 							<div style={{ marginRight: 4 }}>
-								<b>Mã sinh viên: </b>
+								<b>{intl.formatMessage({ id: 'minhchung.khaibao.masv' })}: </b>
 							</div>
 							<div>{record?.maSinhVien}</div>
 						</div>
@@ -137,7 +138,7 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 							</div>
 						</Col>
 					)}
-					<Divider orientation={'center'}>Thông tin khai báo</Divider>
+					<Divider orientation={'center'}>{intl.formatMessage({ id: 'minhchung.khaibao.thongtinkhaibao' })}</Divider>
 					{recordCauHinh?.danhSachCauHinhMinhChung.map((item) => {
 						if (
 							!item?.truongThongTinLienQuan ||
@@ -180,7 +181,7 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 		);
 	} else {
 		return (
-			<Card title={`${recordCauHinh?.tenMinhChung ?? 'Khai báo minh chứng'}`}>
+			<Card title={`${recordCauHinh?.tenMinhChung ?? intl.formatMessage({ id: 'minhchung.khaibao.title.khaibao' })}`}>
 				<Form
 					style={{ position: 'relative' }}
 					scrollToFirstError
@@ -197,7 +198,11 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 							<Form.Item name={'ssoId'} hidden />
 							<Form.Item name={'hoTen'} hidden />
 							<Form.Item name={'lopHanhChinh'} hidden />
-							<Form.Item name={'maSinhVien'} label={'Sinh viên'} rules={[...rules.required]}>
+							<Form.Item
+								name={'maSinhVien'}
+								label={intl.formatMessage({ id: 'minhchung.khaibao.sinhvien' })}
+								rules={[...rules.required]}
+							>
 								<SelectSinhVienDebounce
 									selectMa
 									onChange={(val, option) => {
@@ -215,11 +220,13 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 							<Col span={24}>
 								<Form.Item
 									name={'diemQuyDoi'}
-									label={recordCauHinh?.tenDanhMucQuyDoi ?? 'Hạng mục'}
+									label={recordCauHinh?.tenDanhMucQuyDoi ?? intl.formatMessage({ id: 'minhchung.khaibao.hangmuc' })}
 									rules={[...rules.required]}
 								>
 									<Select
-										placeholder={recordCauHinh?.tenDanhMucQuyDoi ?? 'Chọn hạng mục'}
+										placeholder={
+											recordCauHinh?.tenDanhMucQuyDoi ?? intl.formatMessage({ id: 'minhchung.khaibao.chonhangmuc' })
+										}
 										options={recordCauHinh?.danhMucDiemQuyDoi?.map((val) => ({
 											value: val?.diemQuyDoi,
 											label: `${val?.tieuDe}`,
@@ -240,9 +247,11 @@ const FormKhaiBao = (props: { getData?: () => void }) => {
 					</Row>
 					<div className='form-footer'>
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit ? 'Thêm mới' : 'Lưu lại'}
+							{!edit
+								? intl.formatMessage({ id: 'global.button.themmoi' })
+								: intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
-						<Button onClick={() => setVisibleForm(false)}>Hủy</Button>
+						<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 					</div>
 				</Form>
 			</Card>
