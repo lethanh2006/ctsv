@@ -5,7 +5,7 @@ import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm, Switch } from 'antd';
 import { useIntl, useModel } from 'umi';
-import FormAttributes from './components/Form';
+import FormTrack from './components/Form';
 
 const TrackPage = () => {
 	const intl = useIntl();
@@ -102,8 +102,8 @@ const TrackPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.track'
-			title={intl.formatMessage({ id: 'attributesmanagement.title' })}
-			Form={FormAttributes}
+			title='Career Track'
+			Form={FormTrack}
 			buttons={{ import: true, export: true }}
 			widthDrawer={800}
 		/>

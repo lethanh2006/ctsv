@@ -49,7 +49,7 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activity.column.cca' }),
+			title: 'Activity Type',
 			dataIndex: 'activitiesTypeId',
 			width: 170,
 			render: (val, rec) => rec?.activitiesType?.name,

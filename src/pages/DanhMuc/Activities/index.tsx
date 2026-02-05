@@ -83,7 +83,7 @@ const ActivitiesPage = () => {
 			render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
 		},
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.column.domain' }),
+			title: 'Activity Group',
 			dataIndex: 'activitiesTypeDomainId',
 			align: 'center',
 			width: 200,

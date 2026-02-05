@@ -463,11 +463,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 								</Col>
 
 								<Col span={24} md={8}>
-									<Form.Item
-										name='activitiesTypeDomainId'
-										label={intl.formatMessage({ id: 'activity.info.form.ccd' })}
-										rules={[...rules.required]}
-									>
+									<Form.Item name='activitiesTypeDomainId' label='Activity Group' rules={[...rules.required]}>
 										<SelectActivitiesTypeDomain
 											disabled={isView}
 											onChange={() => form.resetFields(['activitiesTypeId'])}

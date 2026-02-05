@@ -1,14 +1,17 @@
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Col, Form, Row } from 'antd';
+import { Button, Col, Form, message, Row } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectAttributesManagement from '../../Attributes/components/Select';
 
-const FormAttributesCCA = (props: { onOk: (val: ActivitiesManagement.IActivitiesTypeAttributes[]) => void }) => {
+const FormAttributesCCA = (props: {
+	onOk: (val: ActivitiesManagement.IActivitiesTypeAttributes[]) => void;
+	value?: ActivitiesManagement.IActivitiesTypeAttributes[];
+}) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
-	const { onOk } = props;
+	const { onOk, value } = props;
 	const { setVisibleForm, visibleForm, edit } = useModel('danhmuc.ccaattributes');
 	const { danhSach } = useModel('danhmuc.attributes');
 
@@ -17,6 +20,10 @@ const FormAttributesCCA = (props: { onOk: (val: ActivitiesManagement.IActivities
 	}, [visibleForm]);
 
 	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes) => {
+		if ((value?.length ?? 0) + (values.attributesId?.length ?? 0) > 2) {
+			return message.error('An activity type can have a maximum of 2 attributes.');
+		}
+
 		const attrIds = values.attributesId;
 
 		const records =
@@ -27,7 +34,7 @@ const FormAttributesCCA = (props: { onOk: (val: ActivitiesManagement.IActivities
 					attributes: item,
 				})) || [];
 
-		onOk(records as any);
+		return onOk(records as any);
 	};
 
 	return (

@@ -12,9 +12,9 @@ export default {
 	'menu.DanhMuc.Attributes': 'Attribute',
 	'menu.DanhMuc.Levels': 'Level',
 	'menu.DanhMuc.Roles': 'Role',
-	'menu.DanhMuc.Track': 'Track',
+	'menu.DanhMuc.Track': 'Career Track',
 	'menu.DanhMuc.CCD': 'Activity Group',
-	'menu.DanhMuc.Activities': 'Activity Bank',
+	'menu.DanhMuc.Activities': 'Activity Type',
 	'menu.DanhMuc.Competency': 'Competency',
 	'menu.DanhMuc.Questions': 'Self-Assessment Questions',
 

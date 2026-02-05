@@ -26,7 +26,7 @@ export default {
 	'activitiestypedomain.form.des.place': 'Enter description',
 	'activitiestypedomain.form.student': 'Student Declaration Approvers',
 
-	'activitiestypedomain.select.place': 'Select Co-curricular Domain',
+	'activitiestypedomain.select.place': 'Select Activity Group',
 
 	'activitiestypedomain.student.column.hoten': 'Full name',
 	'activitiestypedomain.student.column.hoten.select': 'Select staff/lecturers (search by name)',

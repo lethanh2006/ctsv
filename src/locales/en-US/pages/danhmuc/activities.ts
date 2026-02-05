@@ -1,5 +1,5 @@
 export default {
-	'activitiesmanagement.title': 'Activity Bank',
+	'activitiesmanagement.title': 'Activity Type',
 
 	'activitiesmanagement.column.order': 'Display order',
 	'activitiesmanagement.column.id': 'Activity Type ID',
@@ -28,7 +28,7 @@ export default {
 	'activitiesmanagement.form.des.place': 'Enter description',
 	'activitiesmanagement.form.student': 'Student Declaration Approvers',
 
-	'activitiesmanagement.select.place': 'Select activity bank',
+	'activitiesmanagement.select.place': 'Select Activity Type',
 
 	'activitiesmanagement.student.column.hoten': 'Full name',
 	'activitiesmanagement.student.column.hoten.select': 'Select staff/lecturers (search by name)',

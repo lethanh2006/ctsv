@@ -91,11 +91,7 @@ const FormActivities = (props: any) => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item
-							name='activitiesTypeDomainId'
-							label={intl.formatMessage({ id: 'activitiesmanagement.form.domain' })}
-							rules={[...rules.required]}
-						>
+						<Form.Item name='activitiesTypeDomainId' label='Activity Group' rules={[...rules.required]}>
 							<SelectActivitiesTypeDomain disabled={isView} />
 						</Form.Item>
 					</Col>

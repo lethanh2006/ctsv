@@ -105,7 +105,7 @@ const FormItemAttributesCCA = (props: {
 				footer={null}
 				onCancel={() => setVisibleForm(false)}
 			>
-				<FormAttributesCCA onOk={onAdd} />
+				<FormAttributesCCA onOk={onAdd} value={value} />
 			</Modal>
 		</>
 	);

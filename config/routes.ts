@@ -780,18 +780,6 @@
 				// access: 'cctFilter',
 			},
 			{
-				name: 'Levels',
-				component: 'DanhMuc/Levels',
-				path: 'level',
-				// access: 'cctFilter',
-			},
-			{
-				name: 'Roles',
-				component: 'DanhMuc/Roles',
-				path: 'role',
-				// access: 'cctFilter',
-			},
-			{
 				name: 'Track',
 				component: 'DanhMuc/Track',
 				path: 'track',
@@ -815,6 +803,19 @@
 				path: 'competency',
 				// access: 'cctFilter',
 			},
+			{
+				name: 'Levels',
+				component: 'DanhMuc/Levels',
+				path: 'level',
+				// access: 'cctFilter',
+			},
+			{
+				name: 'Roles',
+				component: 'DanhMuc/Roles',
+				path: 'role',
+				// access: 'cctFilter',
+			},
+
 			// {
 			// 	name: 'Questions',
 			// 	path: 'self-assessment-questions',

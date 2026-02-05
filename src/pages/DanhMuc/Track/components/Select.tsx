@@ -36,7 +36,7 @@ const SelectTrack = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Select Track'
+			placeholder='Select Career Track'
 			style={{ width: '100%', ...style }}
 		/>
 	);
