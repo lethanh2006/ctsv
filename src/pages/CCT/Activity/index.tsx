@@ -5,14 +5,16 @@ import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Se
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Tag } from 'antd';
+import { Card, Popconfirm, Space, Tag } from 'antd';
+import { uniqBy } from 'lodash';
 import { useIntl, useModel } from 'umi';
+import FormActivity from './components/Form';
 import ModalActivity from './components/Modal';
 import StatActivity from './components/Stat';
 
 const ActivityPage = () => {
 	const intl = useIntl();
-	const { getModel, page, limit, deleteModel, handleEdit, handleView } = useModel('cct.activity');
+	const { getModel, page, limit, deleteModel, handleEdit, handleView, edit, isView } = useModel('cct.activity');
 	const { getAnalyticsActivityModel } = useModel('cct.activity');
 
 	const onCell = (rec: Activity.IRecord) => ({
@@ -31,9 +33,19 @@ const ActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activity.column.attribute' }),
 			width: 200,
-			render: (val, rec) => (
-				<Tag color={rec?.activitiesType?.attributes?.color}>{rec?.activitiesType?.attributes?.name}</Tag>
-			),
+			render: (val, rec) => {
+				const attri = uniqBy(rec?.coCurricularActivityEquivalency ?? [], 'attributesId');
+
+				if (attri) {
+					return (
+						<Space wrap>
+							{attri?.map((item: any) => (
+								<Tag color={item?.attributes?.color}>{item?.attributes?.name}</Tag>
+							))}
+						</Space>
+					);
+				} else return null;
+			},
 			onCell,
 		},
 		{
@@ -59,7 +71,7 @@ const ActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
@@ -99,28 +111,46 @@ const ActivityPage = () => {
 	];
 
 	return (
-		<TableBase
-			columns={columns}
-			dependencies={[page, limit]}
-			modelName='cct.activity'
+		<Card
 			title={intl.formatMessage({ id: 'activity.title' })}
-			Form={ModalActivity}
-			formProps={{
-				getData: () => {
-					getModel();
-					getAnalyticsActivityModel();
-				},
-			}}
-			widthDrawer={1200}
-			onReload={() => {
-				getModel();
-				getAnalyticsActivityModel();
-			}}
+			className='card-big-title card-borderless'
+			variant='borderless'
 		>
-			<div style={{ padding: 12 }}>
+			<Card style={{ marginBottom: 12 }}>
 				<StatActivity />
-			</div>
-		</TableBase>
+			</Card>
+
+			<Card>
+				<TableBase
+					columns={columns}
+					dependencies={[page, limit]}
+					modelName='cct.activity'
+					title={intl.formatMessage({ id: 'activity.title' })}
+					// Form={ModalActivity}
+					Form={isView ? ModalActivity : FormActivity}
+					showModalTitle
+					modalTitle={
+						edit
+							? intl.formatMessage({ id: 'activity.form.chinhsua' })
+							: isView
+								? intl.formatMessage({ id: 'activity.form.chitet' })
+								: intl.formatMessage({ id: 'activity.form.themmoi' })
+					}
+					formProps={{
+						getData: () => {
+							getModel();
+							getAnalyticsActivityModel();
+						},
+					}}
+					widthDrawer={1200}
+					onReload={() => {
+						getModel();
+						getAnalyticsActivityModel();
+					}}
+					hideCard
+				/>
+			</Card>
+		</Card>
 	);
 };
 

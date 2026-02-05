@@ -12,8 +12,9 @@ export default {
 	'menu.DanhMuc.Attributes': 'Attribute',
 	'menu.DanhMuc.Levels': 'Level',
 	'menu.DanhMuc.Roles': 'Role',
-	'menu.DanhMuc.CCD': 'Co-curricular Domain (CCD)',
-	'menu.DanhMuc.Activities': 'Co-curricular Activities (CCA)',
+	'menu.DanhMuc.Track': 'Track',
+	'menu.DanhMuc.CCD': 'Activity Group',
+	'menu.DanhMuc.Activities': 'Activity Bank',
 	'menu.DanhMuc.Competency': 'Competency',
 	'menu.DanhMuc.Questions': 'Self-Assessment Questions',
 

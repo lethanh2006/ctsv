@@ -1,5 +1,5 @@
 export default {
-	'activitiestypedomain.title': 'Co-curricular Domain (CCD)',
+	'activitiestypedomain.title': 'Activity Group',
 
 	'activitiestypedomain.column.order': 'Display order',
 	'activitiestypedomain.column.id': 'Code',
@@ -8,11 +8,11 @@ export default {
 	'activitiestypedomain.column.attribute': 'Attribute',
 	'activitiestypedomain.column.active': 'Active',
 
-	'activitiestypedomain.confirm.delete': 'Do you want to remove this Co-curricular Domain (CCD)?',
+	'activitiestypedomain.confirm.delete': 'Do you want to remove this Activity Group?',
 
-	'activitiestypedomain.form.themmoi': 'Add new Co-curricular Domain (CCD)',
-	'activitiestypedomain.form.chinhsua': 'Edit Co-curricular Domain (CCD)',
-	'activitiestypedomain.form.chitiet': 'Detail Co-curricular Domain (CCD)',
+	'activitiestypedomain.form.themmoi': 'Add new Activity Group',
+	'activitiestypedomain.form.chinhsua': 'Edit Activity Group',
+	'activitiestypedomain.form.chitiet': 'Detail Activity Group',
 
 	'activitiestypedomain.form.id': 'Code',
 	'activitiestypedomain.form.id.place': 'Enter code',

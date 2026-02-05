@@ -166,7 +166,7 @@ const TableStaticData = (props: TableStaticProps) => {
 			title: intl.formatMessage({ id: 'global.table.column.tt' }),
 			dataIndex: 'index',
 			align: 'center',
-			width: 40,
+			width: 60,
 			children: undefined,
 			render: (val: string, rec: any) => {
 				const phanVungHienTai = dsPhanVung?.find((item) => item?.ma === rec?.dataPartitionCode);
@@ -293,9 +293,7 @@ const TableStaticData = (props: TableStaticProps) => {
 					<Empty
 						style={{ marginTop: 32, marginBottom: 32 }}
 						description={props.emptyText ?? intl.formatMessage({ id: 'global.table.index.empty' })}
-						image={
-							props.otherProps?.size === 'small' || props.size === 'small' ? Empty.PRESENTED_IMAGE_SIMPLE : undefined
-						}
+						image='/images/empty.png'
 					/>
 				)}
 			>

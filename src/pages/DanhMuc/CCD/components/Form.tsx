@@ -3,8 +3,6 @@ import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
-import StudenDomainModelPage from '../StudenModel';
-import FormItemStudentDomain from '../Student/FormItem';
 
 const FormActivitiesTypeDomain = (props: any) => {
 	const intl = useIntl();
@@ -78,7 +76,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 						<Form.Item
 							name='order'
 							label={intl.formatMessage({ id: 'activitiestypedomain.form.order' })}
-							rules={[...rules.required]}
+							// rules={[...rules.required]}
 						>
 							<InputNumber
 								disabled={isView}
@@ -108,24 +106,6 @@ const FormActivitiesTypeDomain = (props: any) => {
 								placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.des.place' })}
 							/>
 						</Form.Item>
-					</Col>
-
-					<Col span={24}>
-						{record?._id ? (
-							<>
-								<div className='fw500' style={{ marginBottom: 8 }}>
-									{intl.formatMessage({ id: 'activitiestypedomain.form.student' })}
-								</div>
-								<StudenDomainModelPage disabled={isView} mode='activitiesType' />
-							</>
-						) : (
-							<Form.Item
-								name='studentDeclarationApproverList'
-								label={intl.formatMessage({ id: 'activitiestypedomain.form.student' })}
-							>
-								<FormItemStudentDomain disabled={isView} />
-							</Form.Item>
-						)}
 					</Col>
 				</Row>
 

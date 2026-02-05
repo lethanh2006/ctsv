@@ -14,7 +14,7 @@ declare module ActivityOutCome {
 		rolesId: string;
 		roles?: RolesManagement.IRecord;
 		levelsId: string;
-		level?: LevelsManagement.IRecord;
+		levels?: LevelsManagement.IRecord;
 		organizer: string;
 		description: string;
 		location: string;
@@ -28,8 +28,17 @@ declare module ActivityOutCome {
 		studentDeclarationApproverSsoId: string;
 		activityRejectionNote: string;
 		revisionNote: string;
+		validation: Evalidation;
+		reflection: string;
+		evidenceFile: {
+			name: string;
+			file: string[];
+		}[];
+		startDate: Date;
+		endDate: Date;
 
 		listAchievedCompetencies: Activity.ICompetencyMapping[];
+		competencyList: ICompetencyActivity[];
 
 		createdAt: Date;
 		updatedAt: Date;
@@ -55,5 +64,17 @@ declare module ActivityOutCome {
 		activityOutcome?: IRecord;
 		competencieId: string;
 		competencie?: Competency.IRecord;
+		attributesId: string;
+		attributes?: AttributesManagement.IRecord;
+
+		dsCompetencie?: Competency.IRecord[];
+	}
+
+	export interface ICompetencyActivity {
+		_id: string;
+		competencyId: string;
+		activitiesId: string;
+		competency: Competency.IRecord;
+		activities: IRecord;
 	}
 }

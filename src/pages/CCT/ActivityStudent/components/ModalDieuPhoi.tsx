@@ -47,7 +47,7 @@ const ModalDieuPhoiActivityStudent = (props: {
 						>
 							<Select
 								placeholder='Select student seclaration approver'
-								options={record?.activitiesType?.activitiesTypeDomain?.studentDeclarationApproverList?.map((item) => ({
+								options={record?.activitiesType?.studentDeclarationApproverList?.map((item) => ({
 									value: item.ssoId,
 									label: item.name,
 									rawData: item,

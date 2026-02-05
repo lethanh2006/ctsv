@@ -10,15 +10,15 @@ const StudenDomainModelPage = (props: { mode: 'activitiesType' | 'activity'; dis
 	const intl = useIntl();
 	const { disabled, mode } = props;
 	const { record: recActivity } = useModel('cct.activity');
-	const { record: recActiType } = useModel('danhmuc.ccd');
+	const { record: recActi } = useModel('danhmuc.activities');
 	const { getModel, page, limit, deleteModel } = useModel('danhmuc.studentdomain');
 
 	const getData = () => {
-		if (recActiType?._id || recActivity?._id)
+		if (recActi?._id || recActivity?._id)
 			getModel(
 				mode === 'activitiesType'
 					? {
-							activitiesTypeDomainId: recActiType?._id,
+							activitiesTypeId: recActi?._id,
 						}
 					: {
 							activitiesId: recActivity?._id,
@@ -26,7 +26,7 @@ const StudenDomainModelPage = (props: { mode: 'activitiesType' | 'activity'; dis
 			);
 	};
 
-	const columns: IColumn<ActivitiesTypeDomain.IStudentDeclaration>[] = [
+	const columns: IColumn<ActivitiesManagement.IStudentDeclaration>[] = [
 		{
 			title: intl.formatMessage({ id: 'activitiestypedomain.student.column.hoten' }),
 			dataIndex: 'name',
@@ -69,22 +69,20 @@ const StudenDomainModelPage = (props: { mode: 'activitiesType' | 'activity'; dis
 	];
 
 	return (
-		<div style={{ padding: '0px 16px 0px 16px' }}>
-			<TableBase
-				getData={getData}
-				columns={columns}
-				dependencies={[page, limit, recActiType?._id, recActivity?._id]}
-				modelName='danhmuc.studentdomain'
-				title={intl.formatMessage({ id: 'activitiestypedomain.title' })}
-				Form={FormStudentDomainModel}
-				formProps={{ getData, mode }}
-				buttons={{ create: !disabled }}
-				hideCard
-				otherProps={{
-					size: 'small',
-				}}
-			/>
-		</div>
+		<TableBase
+			getData={getData}
+			columns={columns}
+			dependencies={[page, limit, recActi?._id, recActivity?._id]}
+			modelName='danhmuc.studentdomain'
+			title={intl.formatMessage({ id: 'activitiestypedomain.title' })}
+			Form={FormStudentDomainModel}
+			formProps={{ getData, mode }}
+			buttons={{ create: !disabled }}
+			hideCard
+			otherProps={{
+				size: 'small',
+			}}
+		/>
 	);
 };
 

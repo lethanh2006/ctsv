@@ -1,8 +1,8 @@
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
-import { EApprovalStatus } from '@/services/CCT/constant';
+import { EApprovalStatus, Evalidation } from '@/services/CCT/constant';
 import { resetFieldsForm } from '@/utils/utils';
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, Modal, Row } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -22,7 +22,10 @@ const ModalXuLyActivityStudent = (props: {
 		if (!visible) {
 			resetFieldsForm(form);
 		} else if (record?._id) {
-			form.setFieldsValue(record);
+			form.setFieldsValue({
+				...record,
+				validation: record?.validation ?? Evalidation?.VERIFIED,
+			});
 		}
 	}, [record?._id, visible]);
 
@@ -95,6 +98,20 @@ const ModalXuLyActivityStudent = (props: {
 								<Input.TextArea
 									rows={3}
 									placeholder={intl.formatMessage({ id: 'activityresult.xuly.revisionNote.place' })}
+								/>
+							</Form.Item>
+						</Col>
+					)}
+
+					{trangThai === EApprovalStatus.APPROVED && (
+						<Col span={24}>
+							<Form.Item name='validation' label='Impact'>
+								<Select
+									placeholder='Select impact'
+									options={Object.values(Evalidation).map((item) => ({
+										value: item,
+										label: item,
+									}))}
 								/>
 							</Form.Item>
 						</Col>

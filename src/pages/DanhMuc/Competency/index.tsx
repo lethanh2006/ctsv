@@ -3,9 +3,8 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch, Tag } from 'antd';
+import { Popconfirm, Switch } from 'antd';
 import { useIntl, useModel } from 'umi';
-import SelectAttributesManagement from '../Attributes/components/Select';
 import FormCompetency from './components/Form';
 
 const CompetencyPage = () => {
@@ -22,19 +21,19 @@ const CompetencyPage = () => {
 	});
 
 	const columns: IColumn<Competency.IRecord>[] = [
-		{
-			title: intl.formatMessage({ id: 'competency.column.order' }),
-			dataIndex: 'order',
-			align: 'center',
-			width: 100,
-			sortable: true,
-			onCell,
-		},
+		// {
+		// 	title: intl.formatMessage({ id: 'competency.column.order' }),
+		// 	dataIndex: 'order',
+		// 	align: 'center',
+		// 	width: 150,
+		// 	sortable: true,
+		// 	onCell,
+		// },
 		{
 			title: intl.formatMessage({ id: 'competency.column.id' }),
 			dataIndex: 'code',
 			align: 'center',
-			width: 100,
+			width: 120,
 			filterType: 'string',
 			sortable: true,
 			onCell,
@@ -54,13 +53,30 @@ const CompetencyPage = () => {
 			filterType: 'string',
 			onCell,
 		},
+		// {
+		// 	title: intl.formatMessage({ id: 'competency.column.attribute' }),
+		// 	dataIndex: 'attributes',
+		// 	width: 220,
+		// 	render: (val, rec) =>
+		// 		val && (
+		// 			<Space wrap>
+		// 				{val?.map((item: any) => (
+		// 					<Tag color={item?.color}>{item?.name}</Tag>
+		// 				))}
+		// 			</Space>
+		// 		),
+		// },
+		// {
+		// 	title: 'Evidence Example',
+		// 	dataIndex: 'evidenceLExampleList',
+		// 	width: 180,
+		// 	render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
+		// },
 		{
-			title: intl.formatMessage({ id: 'competency.column.attribute' }),
-			dataIndex: 'attributesId',
-			width: 200,
-			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectAttributesManagement multiple />,
+			title: 'Typical Activity',
+			dataIndex: 'typicalActivityList',
+			width: 180,
+			render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
 		},
 		{
 			title: intl.formatMessage({ id: 'competency.column.active' }),
@@ -74,7 +90,7 @@ const CompetencyPage = () => {
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>

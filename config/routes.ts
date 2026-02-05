@@ -792,6 +792,12 @@
 				// access: 'cctFilter',
 			},
 			{
+				name: 'Track',
+				component: 'DanhMuc/Track',
+				path: 'track',
+				// access: 'cctFilter',
+			},
+			{
 				name: 'CCD',
 				component: 'DanhMuc/CCD',
 				path: 'co-curricular-domain',
@@ -809,12 +815,12 @@
 				path: 'competency',
 				// access: 'cctFilter',
 			},
-			{
-				name: 'Questions',
-				path: 'self-assessment-questions',
-				component: 'TienIch/KhaoSat',
-				// access: 'cctFilter',
-			},
+			// {
+			// 	name: 'Questions',
+			// 	path: 'self-assessment-questions',
+			// 	component: 'TienIch/KhaoSat',
+			// 	// access: 'cctFilter',
+			// },
 		],
 	},
 

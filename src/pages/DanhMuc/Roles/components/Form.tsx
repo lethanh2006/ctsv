@@ -78,7 +78,7 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='order'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}
-							rules={[...rules.required]}
+							// rules={[...rules.required]}
 						>
 							<InputNumber
 								disabled={isView}

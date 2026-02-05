@@ -21,14 +21,14 @@ const RolesPage = () => {
 	});
 
 	const columns: IColumn<RolesManagement.IRecord>[] = [
-		{
-			title: intl.formatMessage({ id: 'rolesmanagement.column.order' }),
-			dataIndex: 'order',
-			align: 'center',
-			width: 100,
-			sortable: true,
-			onCell,
-		},
+		// {
+		// 	title: intl.formatMessage({ id: 'rolesmanagement.column.order' }),
+		// 	dataIndex: 'order',
+		// 	align: 'center',
+		// 	width: 150,
+		// 	sortable: true,
+		// 	onCell,
+		// },
 		{
 			title: intl.formatMessage({ id: 'rolesmanagement.column.id' }),
 			dataIndex: 'code',
@@ -57,7 +57,7 @@ const RolesPage = () => {
 			title: intl.formatMessage({ id: 'rolesmanagement.column.auto' }),
 			dataIndex: 'autoApproval',
 			align: 'center',
-			width: 90,
+			width: 120,
 			render: (val, rec) => <Checkbox checked={val} />,
 		},
 		{
@@ -72,7 +72,7 @@ const RolesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>

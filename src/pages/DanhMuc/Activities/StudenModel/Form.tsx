@@ -9,19 +9,19 @@ const FormStudentDomainModel = (props: any) => {
 	const [form] = Form.useForm();
 	const { getData, mode } = props;
 	const { record: recActivity } = useModel('cct.activity');
-	const { record: recActiType } = useModel('danhmuc.ccd');
+	const { record: recActi } = useModel('danhmuc.activities');
 	const { setVisibleForm, visibleForm, edit, postModel, formSubmiting } = useModel('danhmuc.studentdomain');
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 	}, [visibleForm]);
 
-	const onFinish = async (values: ActivitiesTypeDomain.IStudentDeclaration) => {
+	const onFinish = async (values: ActivitiesManagement.IStudentDeclaration) => {
 		postModel(
 			mode === 'activitiesType'
 				? {
 						...values,
-						activitiesTypeDomainId: recActiType?._id,
+						activitiesTypeId: recActi?._id,
 					}
 				: {
 						...values,

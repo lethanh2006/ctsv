@@ -37,6 +37,7 @@ declare module Activity {
 
 		coCurricularActivityEquivalency: IEquivalency[];
 		coCurricularAttributesEquivalency: ICompetencyMapping[];
+		competencyList: ICompetencyActivity[];
 
 		//fake
 		cct?: boolean;
@@ -85,5 +86,13 @@ declare module Activity {
 
 		//fake
 		dsCompetencie?: Competency.IRecord[];
+	}
+
+	export interface ICompetencyActivity {
+		_id: string;
+		competencyId: string;
+		activitiesId: string;
+		competency: Competency.IRecord;
+		activities: IRecord;
 	}
 }

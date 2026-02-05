@@ -2,7 +2,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { Activity } from '@/services/CCT/Activity/typing';
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormCompetencyMapping from './Form';
@@ -40,13 +40,13 @@ const FormItemCompetencyMapping = (props: {
 		{
 			title: intl.formatMessage({ id: 'activity.info.form.ccd.attribute' }),
 			dataIndex: 'attributesId',
-			width: 200,
+			width: 180,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 		},
 		{
 			title: intl.formatMessage({ id: 'activity.info.form.ccd.competency' }),
 			dataIndex: 'dsCompetencie',
-			width: 250,
+			width: 280,
 			render: (val, rec) =>
 				rec?.dsCompetencie
 					?.map((item) => item?.name)
@@ -74,10 +74,10 @@ const FormItemCompetencyMapping = (props: {
 						onConfirm={() => onDelete((rec?.index ?? 0) - 1)}
 						title={intl.formatMessage({ id: 'activity.info.form.ccd.comfirm.xoa' })}
 						placement='topLeft'
-						disabled={disabled || rec?.index === 1}
+						disabled={disabled}
 					>
 						<ButtonExtend
-							disabled={disabled || rec?.index === 1}
+							disabled={disabled}
 							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
 							danger
 							type='link'
@@ -90,11 +90,10 @@ const FormItemCompetencyMapping = (props: {
 	];
 
 	return (
-		<div style={{ padding: '0px 16px 0px 16px' }}>
+		<>
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
 				<Button
 					disabled={disabled}
-					icon={<PlusCircleOutlined />}
 					onClick={() => {
 						setRecord({} as Activity.ICompetencyMapping);
 						setEdit(false);
@@ -111,13 +110,13 @@ const FormItemCompetencyMapping = (props: {
 			<Modal
 				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}`}
 				open={visibleForm}
-				width={600}
+				width={700}
 				footer={null}
 				onCancel={() => setVisibleForm(false)}
 			>
-				<FormCompetencyMapping onOk={onAdd} />
+				<FormCompetencyMapping onOk={onAdd} value={value} />
 			</Modal>
-		</div>
+		</>
 	);
 };
 

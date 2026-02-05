@@ -1,25 +1,25 @@
 export default {
-	'activitiesmanagement.title': 'Co-curricular Activities (CCA)',
+	'activitiesmanagement.title': 'Activity Bank',
 
 	'activitiesmanagement.column.order': 'Display order',
-	'activitiesmanagement.column.id': 'Code',
+	'activitiesmanagement.column.id': 'Activity Type ID',
 	'activitiesmanagement.column.name': 'Name',
 	'activitiesmanagement.column.des': 'Description',
 	'activitiesmanagement.column.attribute': 'Attribute',
-	'activitiesmanagement.column.domain': 'Co-curricular Domain (CCD)',
+	'activitiesmanagement.column.domain': 'Activity Group',
 	'activitiesmanagement.column.active': 'Active',
 
-	'activitiesmanagement.confirm.delete': 'Do you want to remove this co-curricular activity?',
+	'activitiesmanagement.confirm.delete': 'Do you want to remove this activity?',
 
-	'activitiesmanagement.form.themmoi': 'Add new co-curricular activity',
-	'activitiesmanagement.form.chinhsua': 'Edit co-curricular activity',
-	'activitiesmanagement.form.chitiet': 'Detail co-curricular activity',
+	'activitiesmanagement.form.themmoi': 'Add new activity bank',
+	'activitiesmanagement.form.chinhsua': 'Edit activity bank',
+	'activitiesmanagement.form.chitiet': 'Detail activity bank',
 
 	'activitiesmanagement.form.id': 'Code',
 	'activitiesmanagement.form.id.place': 'Enter code',
 	'activitiesmanagement.form.name': 'Name',
 	'activitiesmanagement.form.name.place': 'Enter name',
-	'activitiesmanagement.form.domain': 'Co-curricular Domain (CCD)',
+	'activitiesmanagement.form.domain': 'Activity Group',
 	'activitiesmanagement.form.attributes': 'Attribute',
 	'activitiesmanagement.form.order': 'Display order',
 	'activitiesmanagement.form.order.place': 'Enter display order',
@@ -28,7 +28,7 @@ export default {
 	'activitiesmanagement.form.des.place': 'Enter description',
 	'activitiesmanagement.form.student': 'Student Declaration Approvers',
 
-	'activitiesmanagement.select.place': 'Select Co-curricular Activities',
+	'activitiesmanagement.select.place': 'Select activity bank',
 
 	'activitiesmanagement.student.column.hoten': 'Full name',
 	'activitiesmanagement.student.column.hoten.select': 'Select staff/lecturers (search by name)',

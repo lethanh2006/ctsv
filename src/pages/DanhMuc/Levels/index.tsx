@@ -21,19 +21,19 @@ const LevelsPage = () => {
 	});
 
 	const columns: IColumn<LevelsManagement.IRecord>[] = [
-		{
-			title: intl.formatMessage({ id: 'levelsmanagement.column.order' }),
-			dataIndex: 'order',
-			align: 'center',
-			width: 100,
-			sortable: true,
-			onCell,
-		},
+		// {
+		// 	title: intl.formatMessage({ id: 'levelsmanagement.column.order' }),
+		// 	dataIndex: 'order',
+		// 	align: 'center',
+		// 	width: 150,
+		// 	sortable: true,
+		// 	onCell,
+		// },
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.id' }),
 			dataIndex: 'code',
 			align: 'center',
-			width: 100,
+			width: 120,
 			filterType: 'string',
 			sortable: true,
 			onCell,
@@ -45,13 +45,13 @@ const LevelsPage = () => {
 			filterType: 'string',
 			onCell,
 		},
-		{
-			title: intl.formatMessage({ id: 'levelsmanagement.column.question' }),
-			dataIndex: 'selfAssessmentQuestionsName',
-			width: 180,
-			filterType: 'string',
-			onCell,
-		},
+		// {
+		// 	title: intl.formatMessage({ id: 'levelsmanagement.column.question' }),
+		// 	dataIndex: 'selfAssessmentQuestionsName',
+		// 	width: 180,
+		// 	filterType: 'string',
+		// 	onCell,
+		// },
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.des' }),
 			dataIndex: 'description',
@@ -64,7 +64,7 @@ const LevelsPage = () => {
 			title: intl.formatMessage({ id: 'levelsmanagement.column.auto' }),
 			dataIndex: 'autoApproval',
 			align: 'center',
-			width: 90,
+			width: 120,
 			render: (val, rec) => <Checkbox checked={val} />,
 		},
 		{
@@ -79,7 +79,7 @@ const LevelsPage = () => {
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>

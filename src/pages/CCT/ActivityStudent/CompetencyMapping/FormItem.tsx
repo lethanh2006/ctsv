@@ -1,10 +1,9 @@
-import ExpandText from '@/components/ExpandText';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
-import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Modal, Popconfirm, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormCompetencyMapping from './Form';
 
@@ -14,7 +13,14 @@ const FormItemCompetencyMapping = (props: {
 	disabled?: boolean;
 }) => {
 	const intl = useIntl();
-	const { setVisibleForm, visibleForm, setEdit, edit, setRecord, setIsView } = useModel('cct.competencyoutcome');
+	const {
+		setVisibleForm,
+		visibleForm,
+		edit,
+		record,
+		// setEdit, setRecord, setIsView
+		handleEdit,
+	} = useModel('cct.competencyoutcome');
 	const { value = [], onChange, disabled } = props;
 
 	const onDelete = (index: number) => {
@@ -23,22 +29,35 @@ const FormItemCompetencyMapping = (props: {
 		if (onChange) onChange(data);
 	};
 
-	const onAdd = (recs: ActivityOutCome.ICompetencyMapping[]) => {
-		const data = [...value, ...recs];
-		if (onChange) onChange(data);
-		setVisibleForm(false);
+	const onAdd = (rec: ActivityOutCome.ICompetencyMapping) => {
+		if (!record?.index) {
+			const data = [...value, rec];
+			if (onChange) onChange(data);
+			setVisibleForm(false);
+		} else {
+			const data = [...value];
+			data.splice(record?.index - 1, 1, rec);
+			if (onChange) onChange(data);
+			setVisibleForm(false);
+		}
 	};
 
 	const columns: IColumn<ActivityOutCome.ICompetencyMapping>[] = [
 		{
-			title: 'Competency',
-			width: 150,
-			render: (val, rec) => rec?.competencie?.name,
+			title: 'Attributes',
+			dataIndex: 'attributesId',
+			width: 180,
+			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 		},
 		{
-			title: 'Description',
-			width: 220,
-			render: (val, rec) => <ExpandText>{rec?.competencie?.description}</ExpandText>,
+			title: 'Competency',
+			dataIndex: 'dsCompetencie',
+			width: 280,
+			render: (val, rec) =>
+				rec?.dsCompetencie
+					?.map((item) => item?.name)
+					.filter(Boolean)
+					.join(', '),
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
@@ -47,9 +66,19 @@ const FormItemCompetencyMapping = (props: {
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
+					<ButtonExtend
+						disabled={disabled}
+						type='link'
+						icon={<EditOutlined />}
+						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
+						onClick={() => {
+							handleEdit(rec);
+						}}
+					/>
+
 					<Popconfirm
 						onConfirm={() => onDelete((rec?.index ?? 0) - 1)}
-						title='Do you want to remove'
+						title='Do you want to remove?'
 						placement='topLeft'
 						disabled={disabled}
 					>
@@ -67,11 +96,13 @@ const FormItemCompetencyMapping = (props: {
 	];
 
 	return (
-		<div style={{ padding: '0px 18px 0px 18px' }}>
+		<>
+			{value?.length > 2
+				? [<i className='text-info'>The activity should only have 2 Attributes Competency Mapping.</i>]
+				: undefined}
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
-				<Button
+				{/* <Button
 					disabled={disabled}
-					icon={<PlusCircleOutlined />}
 					onClick={() => {
 						setRecord({} as ActivityOutCome.ICompetencyMapping);
 						setEdit(false);
@@ -82,19 +113,19 @@ const FormItemCompetencyMapping = (props: {
 					type='primary'
 				>
 					{intl.formatMessage({ id: 'global.button.themmoi' })}
-				</Button>
+				</Button> */}
 			</TableStaticData>
 
 			<Modal
-				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} ${intl.formatMessage({ id: 'activity.info.form.activitiesTypeId.mapping' })}`}
+				title={`${edit ? intl.formatMessage({ id: 'global.button.chinhsua' }) : intl.formatMessage({ id: 'global.button.themmoi' })} Competency Mapping`}
 				open={visibleForm}
-				width={600}
+				width={700}
 				footer={null}
 				onCancel={() => setVisibleForm(false)}
 			>
-				<FormCompetencyMapping onOk={onAdd} />
+				<FormCompetencyMapping onOk={onAdd} value={value} />
 			</Modal>
-		</div>
+		</>
 	);
 };
 

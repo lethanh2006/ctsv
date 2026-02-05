@@ -2,7 +2,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { Activity } from '@/services/CCT/Activity/typing';
-import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Tag } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
@@ -19,7 +19,6 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 		setIsView,
 		setVisibleForm,
 		deleteManyModel,
-		// handleEdit,
 		danhSach,
 		loading,
 		visibleForm,
@@ -93,38 +92,31 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 			width: 60,
 			fixed: 'right',
 			render: (val, rec) => (
-				<>
-					{/* <ButtonExtend
+				<Popconfirm
+					onConfirm={() => handleDelete(rec)}
+					title={intl.formatMessage({ id: 'activity.info.form.ccd.comfirm.xoa' })}
+					placement='topLeft'
+					disabled={disabled}
+				>
+					<ButtonExtend
 						disabled={disabled}
+						tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+						danger
 						type='link'
-						icon={<EditOutlined />}
-						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
-						onClick={() => {
-							handleEdit(rec);
-						}}
-					/> */}
-
-					<Popconfirm
-						onConfirm={() => handleDelete(rec)}
-						title={intl.formatMessage({ id: 'activity.info.form.ccd.comfirm.xoa' })}
-						placement='topLeft'
-						disabled={disabled || rec?.index === 1}
-					>
-						<ButtonExtend
-							disabled={disabled || rec?.index === 1}
-							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
-							danger
-							type='link'
-							icon={<DeleteOutlined />}
-						/>
-					</Popconfirm>
-				</>
+						icon={<DeleteOutlined />}
+					/>
+				</Popconfirm>
 			),
 		},
 	];
 
 	return (
-		<div style={{ padding: '0px 16px 0px 16px' }}>
+		<>
+			{groupByAttributes(danhSach ?? [])?.length > 2 ? (
+				<div style={{ marginBottom: 6 }}>
+					<i className='text-info'>The activity should only have 2 Attributes Competency Mapping.</i>
+				</div>
+			) : undefined}
 			<TableStaticData
 				columns={columns}
 				data={groupByAttributes(danhSach ?? [])}
@@ -136,7 +128,6 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 				{!disabled && (
 					<Button
 						disabled={disabled}
-						icon={<PlusCircleOutlined />}
 						onClick={() => {
 							setRecord({} as Activity.ICompetencyMapping);
 							setEdit(false);
@@ -160,7 +151,7 @@ const CompetencyMappingModelPage = (props: { disabled?: boolean }) => {
 			>
 				<FormCompetencyMappingModel getData={getData} />
 			</Modal>
-		</div>
+		</>
 	);
 };
 

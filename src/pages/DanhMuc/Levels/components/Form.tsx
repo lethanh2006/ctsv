@@ -1,5 +1,3 @@
-import SelectMauKhaoSat from '@/pages/TienIch/KhaoSat/components/Select';
-import { ELoaiBieuMau } from '@/services/TienIch/constant';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
@@ -72,7 +70,7 @@ const FormLevels = () => {
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'levelsmanagement.form.name.place' })} />
 						</Form.Item>
 					</Col>
-					<Col span={24} md={12}>
+					{/* <Col span={24} md={12}>
 						<Form.Item
 							name='selfAssessmentQuestionsId'
 							label={intl.formatMessage({ id: 'levelsmanagement.form.question' })}
@@ -86,15 +84,16 @@ const FormLevels = () => {
 										selfAssessmentQuestionsName: rawData?.tieuDe,
 									});
 								}}
+								placeholder='Select Self-Assessment Questions'
 							/>
 						</Form.Item>
-						<Form.Item name='selfAssessmentQuestionsName' />
-					</Col>
+						<Form.Item name='selfAssessmentQuestionsName' hidden />
+					</Col> */}
 					<Col span={24} md={12}>
 						<Form.Item
 							name='order'
 							label={intl.formatMessage({ id: 'levelsmanagement.form.order' })}
-							rules={[...rules.required]}
+							// rules={[...rules.required]}
 						>
 							<InputNumber
 								disabled={isView}

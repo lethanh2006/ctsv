@@ -3,7 +3,7 @@ export default {
 
 	'activity.column.name': 'Activity name',
 	'activity.column.attribute': 'Activity attributes',
-	'activity.column.cca': 'Co-curricular activity (CCA)',
+	'activity.column.cca': 'Activity',
 	'activity.column.date': 'Date',
 
 	'activity.confirm.xoa': 'Do you want to remove this activity?',
@@ -46,14 +46,14 @@ export default {
 	'activity.info.form.unitCode.place': 'Select unit',
 	'activity.info.form.cct': 'CCT Transcript',
 	'activity.info.form.allowPostEventResultsUpdate': 'Allow post-event results update',
-	'activity.info.form.activitiesTypeId': 'Co-curricular Activities (CCA)',
-	'activity.info.form.activitiesTypeId.select': 'Select co-curricular activities (CCA)',
+	'activity.info.form.activitiesTypeId': 'Activity',
+	'activity.info.form.activitiesTypeId.select': 'Select activity bank',
 	'activity.info.form.activitiesTypeId.mapping': 'Attributes Competency Mapping',
 	'activity.info.form.student': 'Student Declaration Approver',
 	'activity.info.form.duedate': 'Due date',
 	'activity.info.form.duedate.place': 'Select due date',
 
-	'activity.info.form.ccd': 'Co-curricular Domain (CCD)',
+	'activity.info.form.ccd': 'Activity Group',
 	'activity.info.form.ccd.attribute': 'Attributes',
 	'activity.info.form.ccd.competency': 'Competency',
 	'activity.info.form.ccd.comfirm.xoa': 'Do you want to remove?',

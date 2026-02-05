@@ -1,10 +1,15 @@
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Divider, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
-import SelectAttributesManagement from '../../Attributes/components/Select';
 import SelectActivitiesTypeDomain from '../../CCD/components/Select';
+import SelectTrack from '../../Track/components/Select';
+import FormItemAttributesCCA from '../Attributes/FormItem';
+import AttributesCCAModel from '../AttributesModel';
+import StudenDomainModelPage from '../StudenModel';
+import FormItemStudentDomain from '../Student/FormItem';
 
 const FormActivities = (props: any) => {
 	const intl = useIntl();
@@ -23,6 +28,11 @@ const FormActivities = (props: any) => {
 		}
 	}, [record?._id, visibleForm]);
 
+	const normalizeCompetencyAttributesForCreate = (list?: ActivitiesManagement.IActivitiesTypeAttributes[]) =>
+		list?.map((item) => ({
+			attributesId: item.attributesId,
+		}));
+
 	const onFinish = async (values: ActivitiesManagement.IRecord) => {
 		if (edit) {
 			putModel(
@@ -35,10 +45,16 @@ const FormActivities = (props: any) => {
 			)
 				.then()
 				.catch((er) => console.log(er));
-		} else
-			postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
-				.then(() => form.resetFields())
+		} else {
+			const payload = {
+				...values,
+				activitiesTypeAttributesList: normalizeCompetencyAttributesForCreate(values.activitiesTypeAttributesList),
+			};
+
+			postModel(payload as any, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+				.then()
 				.catch((er) => console.log(er));
+		}
 	};
 
 	return (
@@ -85,18 +101,9 @@ const FormActivities = (props: any) => {
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item
-							name='attributesId'
-							label={intl.formatMessage({ id: 'activitiesmanagement.form.attributes' })}
-							rules={[...rules.required]}
-						>
-							<SelectAttributesManagement />
-						</Form.Item>
-					</Col>
-					<Col span={24} md={12}>
-						<Form.Item
 							name='order'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.order' })}
-							rules={[...rules.required]}
+							// rules={[...rules.required]}
 						>
 							<InputNumber
 								disabled={isView}
@@ -106,12 +113,8 @@ const FormActivities = (props: any) => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item
-							name='isActive'
-							label={intl.formatMessage({ id: 'activitiesmanagement.form.active' })}
-							valuePropName='checked'
-						>
-							<Switch disabled={isView} />
+						<Form.Item name='trackId' label='Track' rules={[...rules.required]}>
+							<SelectTrack />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
@@ -126,6 +129,89 @@ const FormActivities = (props: any) => {
 								placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.des.place' })}
 							/>
 						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item
+							name='isActive'
+							label={intl.formatMessage({ id: 'activitiesmanagement.form.active' })}
+							valuePropName='checked'
+						>
+							<Switch disabled={isView} />
+						</Form.Item>
+					</Col>
+
+					<Col span={24}>
+						<Divider className='divider-big-title' orientation='left'>
+							Required Evidence
+						</Divider>
+					</Col>
+
+					<Col span={24}>
+						<Form.List name='requiredEvidenceList'>
+							{(fields, { add, remove }) => (
+								<>
+									{fields.map((field) => (
+										<Form.Item key={field.key} required={false}>
+											<Form.Item {...field} rules={[...rules.required]} noStyle>
+												<Input placeholder='Enter value' style={{ width: '95%' }} disabled={isView} />
+											</Form.Item>
+
+											<Button
+												icon={<CloseOutlined />}
+												type='link'
+												danger
+												onClick={() => remove(field.name)}
+												disabled={isView}
+											/>
+										</Form.Item>
+									))}
+
+									<Form.Item>
+										<Button
+											type='dashed'
+											onClick={() => add('')}
+											style={{ width: '100%' }}
+											icon={<PlusOutlined />}
+											disabled={isView}
+										>
+											Add new
+										</Button>
+									</Form.Item>
+								</>
+							)}
+						</Form.List>
+					</Col>
+
+					<Col span={24}>
+						<Divider className='divider-big-title' orientation='left'>
+							Approvers
+						</Divider>
+					</Col>
+
+					<Col span={24}>
+						{record?._id ? (
+							<StudenDomainModelPage disabled={isView} mode='activitiesType' />
+						) : (
+							<Form.Item name='studentDeclarationApproverList'>
+								<FormItemStudentDomain disabled={isView} />
+							</Form.Item>
+						)}
+					</Col>
+
+					<Col span={24}>
+						<Divider className='divider-big-title' orientation='left'>
+							Attributes
+						</Divider>
+					</Col>
+
+					<Col span={24}>
+						{record?._id ? (
+							<AttributesCCAModel disabled={isView} />
+						) : (
+							<Form.Item name='activitiesTypeAttributesList'>
+								<FormItemAttributesCCA disabled={isView} />
+							</Form.Item>
+						)}
 					</Col>
 				</Row>
 

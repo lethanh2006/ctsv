@@ -1,14 +1,15 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
-import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
 import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import {
 	EActivityCategory,
 	EApprovalStatus,
+	Evalidation,
 	mapColorApprovalStatus,
+	mapEvalidation,
 	mapNameActivityCategory,
 	mapNameApprovalStatus,
 } from '@/services/CCT/constant';
@@ -21,24 +22,35 @@ import {
 	RedoOutlined,
 	UserSwitchOutlined,
 } from '@ant-design/icons';
-import { Button, Checkbox, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { Button, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
+import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
 import FormPerstionActivityOutCome from './components/FormPerstion';
 import ModalDieuPhoiActivityStudent from './components/ModalDieuPhoi';
+import ModalChinhSuaImpact from './components/ModalImpact';
 import ModalXuLyActivityStudent from './components/ModalXuLy';
 import StatActivityOutCome from './components/Stat';
 import StatActivityApprovers from './components/StatApprovers';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
-	const { getModel, page, limit, handleView, deleteModel, setRecord } = useModel('cct.activityoutcome');
+	const {
+		getModel,
+		page,
+		limit,
+		handleView,
+		deleteModel,
+		record,
+		setRecord,
+		getAnalyticsStaffModel,
+		getAnalyticsApproversModel,
+	} = useModel('cct.activityoutcome');
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
-	const { getAnalyticsStaffModel, getAnalyticsApproversModel } = useModel('cct.activityoutcome');
 
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
 	const [visibleDieuPhoi, setVisibleDieuPhoi] = useState<boolean>(false);
+	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
 
 	const [tabActive, setTabActive] = useState<EActivityCategory | string>(EActivityCategory.REGISTERED);
 
@@ -51,6 +63,7 @@ const HistoryActivityPage = () => {
 		EActivityCategory.REGISTERED,
 		'STUDENT_DECLARATION_APPROVERS',
 		EActivityCategory.PERSONAL_CO_CURRICULAR,
+		'IMPACT',
 	];
 
 	useEffect(() => {
@@ -59,18 +72,20 @@ const HistoryActivityPage = () => {
 
 	const getData = () => {
 		getModel(
-			tabActive !== 'STUDENT_DECLARATION_APPROVERS'
+			tabActive === 'STUDENT_DECLARATION_APPROVERS'
 				? {
-						activityCategory: tabActive as any,
-					}
-				: {
 						activityCategory: EActivityCategory.PERSONAL_CO_CURRICULAR,
-					},
+					}
+				: tabActive === 'IMPACT'
+					? { workflow: EApprovalStatus.APPROVED }
+					: {
+							activityCategory: tabActive as any,
+						},
 			undefined,
 			undefined,
 			undefined,
 			undefined,
-			tabActive !== 'STUDENT_DECLARATION_APPROVERS' ? 'approval-task-list/page' : undefined,
+			tabActive !== 'STUDENT_DECLARATION_APPROVERS' && tabActive !== 'IMPACT' ? 'approval-task-list/page' : undefined,
 		);
 	};
 
@@ -79,30 +94,21 @@ const HistoryActivityPage = () => {
 		tabActive === 'STUDENT_DECLARATION_APPROVERS' && getAnalyticsApproversModel();
 	};
 
-	const attributeColumns: IColumn<any>[] = useMemo(() => {
-		if (!dsAtribute?.length) return [];
-
-		return dsAtribute.map((attr: any) => ({
-			title: attr.code,
-			width: 60,
-			render: (val, rec) => {
-				const check = rec?.activities?.coCurricularActivityEquivalency;
-				const checkPertion = rec?.activitiesType?.attributesId === attr?._id;
-
-				const isChecked = check?.some((item: any) => item.rolesId === rec.rolesId && item.attributesId === attr._id);
-
-				return <Checkbox checked={isChecked || checkPertion} />;
-			},
-			onCell,
-		}));
-	}, [dsAtribute]);
-
 	const onCell = (rec: ActivityOutCome.IRecord) => ({
 		onClick: () => handleView(rec),
 		style: { cursor: 'pointer' },
 	});
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
+		{
+			title: intl.formatMessage({ id: 'activityresult.column.level' }),
+			dataIndex: 'levelsId',
+			width: 140,
+			render: (val, rec) => rec?.levels?.name ?? <i className='text-warning'>No info</i>,
+			filterType: 'customselect',
+			filterCustomSelect: <SelectLevelsManagement multiple />,
+			onCell,
+		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.sv.name' }),
 			dataIndex: 'name',
@@ -111,77 +117,86 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.sv.email' }),
-			dataIndex: 'email',
-			width: 130,
-			filterType: 'string',
-			onCell,
-		},
-		{
 			title: intl.formatMessage({ id: 'activityresult.column.name' }),
-			dataIndex: 'activitiesOutcomeName',
-			width: 150,
-			filterType: 'string',
+			width: 180,
+			render: (val, rec) =>
+				rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.name : rec?.activitiesOutcomeName,
 			onCell,
-			hide: tabActive === EActivityCategory.REGISTERED,
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.cca' }),
-			dataIndex: 'activitiesTypeId',
-			width: 180,
-			render: (val, rec) => rec?.activitiesType?.name,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectActivitiesManagement multiple />,
+			width: 200,
+			render: (val, rec) =>
+				rec?.activityCategory === EActivityCategory.REGISTERED
+					? rec?.activities?.activitiesType?.name
+					: rec?.activitiesType?.name,
 			onCell,
-			hide: tabActive === EActivityCategory.REGISTERED,
+		},
+		{
+			title: intl.formatMessage({ id: 'activityresult.column.attribute' }),
+			width: 200,
+			render: (val, rec) => {
+				const attriRe = rec?.activities?.coCurricularActivityEquivalency?.filter(
+					(item) => item?.rolesId === rec?.rolesId,
+				);
+
+				const attriDec = rec?.activitiesType?.attributes;
+
+				if (rec?.activityCategory === EActivityCategory.REGISTERED) {
+					return (
+						<Space wrap>
+							{attriRe?.map((item: any) => (
+								<Tag color={item?.attributes?.color}>{item?.attributes?.name}</Tag>
+							))}
+						</Space>
+					);
+				} else
+					return (
+						<Space wrap>
+							{attriDec?.map((item: any) => (
+								<Tag color={item?.attributes?.color}>{item?.attributes?.name}</Tag>
+							))}
+						</Space>
+					);
+			},
+			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.approvers' }),
 			dataIndex: 'studentDeclarationApproverName',
 			align: 'center',
 			width: 180,
+			render: (val, rec) => val ?? <i className='text-warning'>No info</i>,
 			filterType: 'string',
 			onCell,
 			hide: tabActive !== 'STUDENT_DECLARATION_APPROVERS',
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.activity' }),
-			width: 180,
-			render: (val, rec) => rec?.activities?.name,
+			title: 'Competency',
+			width: 220,
+			render: (val, rec) =>
+				(rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.competencyList : rec?.competencyList)
+					?.map((item) => item?.competency?.name)
+					.filter(Boolean)
+					.join(', '),
 			onCell,
-			hide: tabActive !== EActivityCategory.REGISTERED,
-		},
-		{
-			title: intl.formatMessage({ id: 'activityresult.column.attribute' }),
-			width: 200,
-			render: (val, rec) => (
-				<Tag color={rec?.activities?.activitiesType?.attributes?.color}>
-					{rec?.activities?.activitiesType?.attributes?.name}
-				</Tag>
-			),
-			onCell,
-			hide: tabActive !== EActivityCategory.REGISTERED,
-		},
-		{
-			title: intl.formatMessage({ id: 'activityresult.column.cca' }),
-			width: 200,
-			render: (val, rec) => rec?.activities?.activitiesType?.name,
-			onCell,
-			hide: tabActive !== EActivityCategory.REGISTERED,
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.startdate' }),
 			align: 'center',
 			width: 120,
-			render: (val, rec) => rec?.activities?.startDate && dayjs(rec?.activities?.startDate).format('DD/MM/YYYY'),
+			render: (val, rec) =>
+				(rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.startDate : rec?.startDate) &&
+				dayjs(
+					rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.startDate : rec?.startDate,
+				).format('DD/MM/YYYY'),
 			onCell,
-			hide: tabActive !== EActivityCategory.REGISTERED,
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.created' }),
 			dataIndex: 'createdAt',
 			align: 'center',
-			width: 120,
+			width: 150,
 			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
 			onCell,
 			sortable: true,
@@ -190,28 +205,43 @@ const HistoryActivityPage = () => {
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.role' }),
 			dataIndex: 'rolesId',
-			width: 180,
-			render: (val, rec) => rec?.roles?.name,
+			width: 200,
+			render: (val, rec) => rec?.roles?.name ?? <i className='text-warning'>No info</i>,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectRolesManagement multiple />,
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.level' }),
-			dataIndex: 'levelsId',
-			width: 140,
-			render: (val, rec) => rec?.level?.name,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectLevelsManagement multiple />,
+			title: 'Impact',
+			dataIndex: 'validation',
+			align: 'center',
+			width: 110,
+			render: (val, rec) => (
+				<Tag
+					color={mapEvalidation[val as Evalidation]}
+					style={{
+						maxWidth: 120,
+						whiteSpace: 'normal',
+						wordBreak: 'break-word',
+						textAlign: 'center',
+					}}
+				>
+					{val}
+				</Tag>
+			),
+			fixed: 'right',
+			filterType: 'select',
+			filterData: Object.values(Evalidation).map((item) => ({
+				value: item,
+				label: item,
+			})),
 			onCell,
 		},
-		...attributeColumns,
-
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.status' }),
 			dataIndex: 'workflow',
 			align: 'center',
-			width: 120,
+			width: 100,
 			render: (val, rec) => (
 				<Tag
 					color={mapColorApprovalStatus[val as EApprovalStatus]}
@@ -232,13 +262,28 @@ const HistoryActivityPage = () => {
 				label: mapNameApprovalStatus[item as EApprovalStatus],
 			})),
 			onCell,
+			hide: tabActive === 'IMPACT',
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: tabActive === 'STUDENT_DECLARATION_APPROVERS' ? 60 : 90,
+			width: tabActive === 'STUDENT_DECLARATION_APPROVERS' || tabActive === 'IMPACT' ? 90 : 120,
 			fixed: 'right',
 			render: (val, rec) => {
+				if (tabActive === 'IMPACT') {
+					return (
+						<ButtonExtend
+							tooltip='Verify impact'
+							onClick={() => {
+								setRecord(rec);
+								setVisibleImpact(true);
+							}}
+							type='link'
+							icon={<CheckCircleOutlined />}
+							className='btn-success'
+						/>
+					);
+				}
 				if (tabActive === 'STUDENT_DECLARATION_APPROVERS')
 					return (
 						<ButtonExtend
@@ -357,39 +402,46 @@ const HistoryActivityPage = () => {
 						getData();
 						getThongKe();
 					},
+					tabActive,
 				}}
 				columns={columns}
 				dependencies={[page, limit, tabActive]}
 				modelName='cct.activityoutcome'
 				title={intl.formatMessage({ id: 'activityresult.title' })}
-				Form={tabActive === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome}
-				widthDrawer={tabActive === EActivityCategory.REGISTERED ? 800 : 1000}
+				Form={
+					record?.activityCategory === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome
+				}
+				widthDrawer={record?.activityCategory === EActivityCategory.REGISTERED ? 800 : 1000}
 				buttons={{ create: false }}
 				onReload={() => {
 					getData();
 					getThongKe();
 				}}
 			>
-				<div style={{ padding: '0px 12px 0px 12px' }}>
-					<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
-						{TAB_ORDER.map((item) => (
-							<Tabs.TabPane
-								key={item}
-								tab={
-									item === 'STUDENT_DECLARATION_APPROVERS'
-										? 'Student Declaration Approvers'
+				<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
+					{TAB_ORDER.map((item) => (
+						<Tabs.TabPane
+							key={item}
+							tab={
+								item === 'STUDENT_DECLARATION_APPROVERS'
+									? 'Student Declaration Approvers'
+									: item === 'IMPACT'
+										? 'Impact'
 										: mapNameActivityCategory[item as EActivityCategory]
-								}
-							/>
-						))}
-					</Tabs>
+							}
+						/>
+					))}
+				</Tabs>
 
-					{tabActive !== 'STUDENT_DECLARATION_APPROVERS' ? (
-						<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
-					) : (
-						<StatActivityApprovers getData={getThongKe} />
-					)}
-				</div>
+				{tabActive !== 'IMPACT' && (
+					<>
+						{tabActive !== 'STUDENT_DECLARATION_APPROVERS' ? (
+							<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
+						) : (
+							<StatActivityApprovers getData={getThongKe} />
+						)}
+					</>
+				)}
 			</TableBase>
 
 			<ModalXuLyActivityStudent
@@ -404,6 +456,7 @@ const HistoryActivityPage = () => {
 			/>
 
 			<ModalDieuPhoiActivityStudent visible={visibleDieuPhoi} setVisible={setVisibleDieuPhoi} getData={getData} />
+			<ModalChinhSuaImpact visible={visibleImpact} setVisible={setVisibleImpact} getData={getData} />
 		</>
 	);
 };

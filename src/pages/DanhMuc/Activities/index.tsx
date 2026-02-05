@@ -3,10 +3,10 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch, Tag } from 'antd';
+import { Popconfirm, Space, Switch, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
-import SelectAttributesManagement from '../Attributes/components/Select';
 import SelectActivitiesTypeDomain from '../CCD/components/Select';
+import SelectTrack from '../Track/components/Select';
 import FormActivities from './components/Form';
 
 const ActivitiesPage = () => {
@@ -23,19 +23,19 @@ const ActivitiesPage = () => {
 	});
 
 	const columns: IColumn<ActivitiesManagement.IRecord>[] = [
-		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.column.order' }),
-			dataIndex: 'order',
-			align: 'center',
-			width: 100,
-			sortable: true,
-			onCell,
-		},
+		// {
+		// 	title: intl.formatMessage({ id: 'activitiesmanagement.column.order' }),
+		// 	dataIndex: 'order',
+		// 	align: 'center',
+		// 	width: 150,
+		// 	sortable: true,
+		// 	onCell,
+		// },
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.id' }),
 			dataIndex: 'code',
 			align: 'center',
-			width: 100,
+			width: 150,
 			filterType: 'string',
 			sortable: true,
 			onCell,
@@ -57,11 +57,30 @@ const ActivitiesPage = () => {
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.attribute' }),
-			dataIndex: 'attributesId',
-			width: 200,
-			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
+			dataIndex: 'attributes',
+			width: 180,
+			render: (val, rec) =>
+				val && (
+					<Space wrap>
+						{val?.map((item: any) => (
+							<Tag color={item?.color}>{item?.name}</Tag>
+						))}
+					</Space>
+				),
+		},
+		{
+			title: 'Track',
+			dataIndex: 'track',
+			width: 120,
+			render: (val, rec) => rec?.track?.name,
 			filterType: 'customselect',
-			filterCustomSelect: <SelectAttributesManagement multiple />,
+			filterCustomSelect: <SelectTrack multiple />,
+		},
+		{
+			title: 'Required evidence',
+			dataIndex: 'requiredEvidenceList',
+			width: 180,
+			render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.domain' }),
@@ -84,7 +103,7 @@ const ActivitiesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>

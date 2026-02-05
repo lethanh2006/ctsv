@@ -9,7 +9,7 @@ import NumericChoice from './Question/NumericChoice';
 import SingleChoice from './Question/SingleChoice';
 import Text from './Question/Text';
 
-const ViewTraLoiKhaoSat = (prosp: { khaoSat?: BieuMau.Record; cauTraLoi?: BieuMau.ICauTraLoiKhaoSat }) => {
+const ViewTraLoiKhaoSat = (prosp: { khaoSat?: BieuMau.Record; cauTraLoi?: any }) => {
 	const { khaoSat, cauTraLoi } = prosp;
 
 	const renderQuestion = (question: BieuMau.CauHoi, indexKhoi: number, indexCauHoi: number) => {
@@ -97,7 +97,7 @@ const ViewTraLoiKhaoSat = (prosp: { khaoSat?: BieuMau.Record; cauTraLoi?: BieuMa
 			{khaoSat?.danhSachKhoi?.map((item, indexKhoi) => (
 				// eslint-disable-next-line react/no-array-index-key
 				<div key={indexKhoi} className='section-item'>
-					<Divider />
+					{indexKhoi > 0 && <Divider />}
 					<div className='section-title'>{item?.tieuDe}</div>
 					<div className='section-description'>{item?.moTa}</div>
 

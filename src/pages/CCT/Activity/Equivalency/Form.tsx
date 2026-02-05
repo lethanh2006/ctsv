@@ -5,8 +5,8 @@ import { type IColumn } from '@/components/Table/typing';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
 import rules from '@/utils/rules';
-import { DeleteOutlined, PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Alert, Button, Checkbox, Form, message, Popconfirm } from 'antd';
+import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, message, Popconfirm } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -33,14 +33,16 @@ const normalizeEquivalencyData = (data: any[]) => {
 	return Object.values(map);
 };
 
-const EquivalencyPage = () => {
+const EquivalencyForm = (props: { disabled?: boolean }) => {
+	const { disabled } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 
-	const { record: recActi, setVisibleForm, isView, getByIdModel } = useModel('cct.activity');
+	const { record: recActi } = useModel('cct.activity');
 	const { getModel, danhSach, loading, formSubmiting, postManyEquivalencyModel } = useModel('cct.equivalency');
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
-	const allowAttributeIds = recActi?.coCurricularAttributesEquivalency?.map((i: any) => i.attributesId) || [];
+	const { danhSach: dsCompetencymapping } = useModel('cct.competencymapping');
+	const allowAttributeIds = dsCompetencymapping?.map((i: any) => i.attributesId) || [];
 
 	useEffect(() => {
 		getAllModel(undefined, { order: 1 });
@@ -54,9 +56,6 @@ const EquivalencyPage = () => {
 
 	useEffect(() => {
 		getData();
-		if (recActi?._id) {
-			getByIdModel(recActi?._id);
-		}
 	}, [recActi?._id]);
 
 	useEffect(() => {
@@ -67,24 +66,55 @@ const EquivalencyPage = () => {
 		}
 	}, [JSON.stringify(danhSach)]);
 
+	const highlightAttributeColorMap = useMemo(() => {
+		const map: Record<string, string> = {};
+
+		(dsCompetencymapping || []).forEach((item: any) => {
+			if (item.attributesId && item.attributes?.color) {
+				map[item.attributesId] = item.attributes.color;
+			}
+		});
+
+		return map;
+	}, [dsCompetencymapping]);
+
 	const attributeColumns: IColumn<any>[] = useMemo(() => {
 		if (!dsAtribute?.length) return [];
 
 		return dsAtribute.map((attr: any) => {
 			const isAllow = allowAttributeIds.includes(attr._id);
+			const highlightColor = highlightAttributeColorMap[attr._id];
 
 			return {
-				title: attr.code,
+				title: (
+					<div
+						className='attribute-header'
+						style={
+							highlightColor
+								? {
+										background: `${highlightColor}11`,
+										border: `1px solid ${highlightColor}`,
+										color: highlightColor,
+										borderRadius: 4,
+										padding: '2px 4px',
+										textAlign: 'center',
+									}
+								: undefined
+						}
+					>
+						{attr.code}
+					</div>
+				),
 				width: 60,
 				align: 'center',
 				render: (_: any, field: any) => (
 					<Form.Item className='table-form-item' name={[field.name, 'attributes', attr._id]} valuePropName='checked'>
-						<Checkbox disabled={isView || !isAllow} />
+						<Checkbox disabled={disabled || !isAllow} />
 					</Form.Item>
 				),
 			};
 		});
-	}, [dsAtribute]);
+	}, [dsAtribute, allowAttributeIds, highlightAttributeColorMap]);
 
 	const columns: IColumn<any>[] = [
 		{
@@ -117,7 +147,7 @@ const EquivalencyPage = () => {
 					]}
 				>
 					<SelectRolesManagement
-						disabled={isView}
+						disabled={disabled}
 						size='small'
 						allowClear
 						onChange={(val, option) => {
@@ -184,16 +214,12 @@ const EquivalencyPage = () => {
 			getData,
 			intl.formatMessage({ id: 'global.message.luuthanhcong' }),
 		)
-			.then(() => setVisibleForm(false))
-			.catch(() => {});
+			.then()
+			.catch();
 	};
 
 	return (
-		<Form form={form} layout='vertical' onFinish={onFinish}>
-			<div style={{ marginBottom: 8 }}>
-				<Alert showIcon type='warning' description={'Note'} />
-			</div>
-
+		<Form form={form} layout='vertical' onFinish={onFinish} component={false}>
 			<Form.List name='listCoCurricularActivityEquivalency'>
 				{(fields, { add, remove }) => (
 					<TableStaticData
@@ -201,7 +227,7 @@ const EquivalencyPage = () => {
 							...columns,
 							{
 								title: intl.formatMessage({ id: 'global.column.action' }),
-								width: 60,
+								width: 90,
 								fixed: 'right',
 								align: 'center',
 								render: (_, field) => (
@@ -210,9 +236,9 @@ const EquivalencyPage = () => {
 											id: 'activity.equivalency.comfirm.xoa',
 										})}
 										onConfirm={() => remove(field.name)}
-										disabled={isView}
+										disabled={disabled}
 									>
-										<ButtonExtend type='link' icon={<DeleteOutlined />} disabled={isView} />
+										<ButtonExtend type='link' icon={<DeleteOutlined />} disabled={disabled} />
 									</Popconfirm>
 								),
 							},
@@ -221,17 +247,15 @@ const EquivalencyPage = () => {
 						loading={loading}
 						size='small'
 						otherProps={{ pagination: false }}
-						otherButtons={[
+						onReload={getData}
+						hasTotal
+					>
+						{!disabled && (
 							<ButtonExtend
 								key='add'
 								size='small'
 								type='primary'
-								icon={<PlusCircleOutlined />}
 								onClick={() => {
-									// const defaultAttributes = recActi?.activitiesType?.attributesId
-									// 	? { [recActi?.activitiesType?.attributesId]: true }
-									// 	: {};
-
 									const defaultAttributes = (dsAtribute || []).reduce((acc: any, attr: any) => {
 										if (allowAttributeIds.includes(attr._id)) {
 											acc[attr._id] = true;
@@ -244,32 +268,30 @@ const EquivalencyPage = () => {
 										attributes: defaultAttributes,
 									});
 								}}
-								disabled={isView}
+								disabled={disabled}
 							>
 								{intl.formatMessage({ id: 'global.button.themmoi' })}
-							</ButtonExtend>,
-							recActi?._id ? (
-								<ButtonExtend key='reload' size='small' icon={<ReloadOutlined />} onClick={getData}>
-									{intl.formatMessage({ id: 'global.button.tailai' })}
-								</ButtonExtend>
-							) : (
-								<></>
-							),
-						]}
-					/>
+							</ButtonExtend>
+						)}
+					</TableStaticData>
 				)}
 			</Form.List>
 
-			<div className='form-footer'>
-				{!isView && (
-					<Button loading={formSubmiting} type='primary' htmlType='submit'>
+			{!disabled && (
+				<div className='form-footer'>
+					<Button
+						loading={formSubmiting}
+						type='primary'
+						size='small'
+						icon={<SaveOutlined />}
+						onClick={() => form.submit()}
+					>
 						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
-				)}
-				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
-			</div>
+				</div>
+			)}
 		</Form>
 	);
 };
 
-export default EquivalencyPage;
+export default EquivalencyForm;

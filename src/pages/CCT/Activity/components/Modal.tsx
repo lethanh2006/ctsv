@@ -1,13 +1,12 @@
-import { Card, Steps } from 'antd';
+import { Steps } from 'antd';
 import { useEffect, useState } from 'react';
-import { useIntl, useModel } from 'umi';
-import EquivalencyPage from '../Equivalency';
+import { useModel } from 'umi';
+import ListStudentActivity from '../ListStudent';
 import FormActivity from './Form';
 
 const ModalActivity = (props: any) => {
-	const intl = useIntl();
 	const { getData } = props;
-	const { record, edit, isView, visibleForm } = useModel('cct.activity');
+	const { visibleForm } = useModel('cct.activity');
 	const [currentStep, setCurrentStep] = useState<number>(0);
 
 	useEffect(() => {
@@ -21,34 +20,21 @@ const ModalActivity = (props: any) => {
 	};
 
 	return (
-		<Card
-			title={
-				edit
-					? intl.formatMessage({ id: 'activity.form.chinhsua' })
-					: isView
-						? intl.formatMessage({ id: 'activity.form.chitet' })
-						: intl.formatMessage({ id: 'activity.form.themmoi' })
-			}
-		>
-			<Steps
-				current={currentStep}
-				type='navigation'
-				style={{ marginBottom: 18, paddingTop: 0 }}
-				onChange={record?._id ? onChangeStep : undefined}
-			>
-				<Steps.Step title={intl.formatMessage({ id: 'activity.step.info' })} />
-				<Steps.Step
-					title={intl.formatMessage({ id: 'activity.step.cca' })}
-					disabled={!record?._id || !record?.activitiesTypeId}
-				/>
+		<>
+			<Steps current={currentStep} style={{ marginBottom: 18, paddingTop: 0 }} onChange={onChangeStep}>
+				<Steps.Step title='Thông tin chung' />
+				<Steps.Step title='Danh sách đăng ký' />
+				<Steps.Step title='Danh sách minh chứng' />
 			</Steps>
 
 			{currentStep === 0 ? (
 				<FormActivity afterAddNew={() => setCurrentStep(1)} getData={getData} />
+			) : currentStep === 1 ? (
+				<ListStudentActivity />
 			) : (
-				<EquivalencyPage />
+				<></>
 			)}
-		</Card>
+		</>
 	);
 };
 

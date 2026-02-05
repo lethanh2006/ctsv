@@ -4,7 +4,7 @@ import { Button, Col, Form, Row } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormStudentDomain = (props: { onOk: (val: ActivitiesTypeDomain.IStudentDeclaration) => void }) => {
+const FormStudentDomain = (props: { onOk: (val: ActivitiesManagement.IStudentDeclaration) => void }) => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { onOk } = props;
@@ -14,7 +14,7 @@ const FormStudentDomain = (props: { onOk: (val: ActivitiesTypeDomain.IStudentDec
 		if (!visibleForm) resetFieldsForm(form);
 	}, [visibleForm]);
 
-	const onFinish = async (values: ActivitiesTypeDomain.IStudentDeclaration) => {
+	const onFinish = async (values: ActivitiesManagement.IStudentDeclaration) => {
 		onOk({ ...values });
 	};
 

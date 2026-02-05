@@ -1,14 +1,14 @@
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
-import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormStudentDomain from './Form';
 
 const FormItemStudentDomain = (props: {
-	value?: ActivitiesTypeDomain.IStudentDeclaration[];
-	onChange?: (data: ActivitiesTypeDomain.IStudentDeclaration[]) => void;
+	value?: ActivitiesManagement.IStudentDeclaration[];
+	onChange?: (data: ActivitiesManagement.IStudentDeclaration[]) => void;
 	disabled?: boolean;
 }) => {
 	const intl = useIntl();
@@ -22,7 +22,7 @@ const FormItemStudentDomain = (props: {
 		if (onChange) onChange(data);
 	};
 
-	const onAdd = (rec: ActivitiesTypeDomain.IStudentDeclaration) => {
+	const onAdd = (rec: ActivitiesManagement.IStudentDeclaration) => {
 		if (!record?.index) {
 			const data = [...value, rec];
 			if (onChange) onChange(data);
@@ -35,7 +35,7 @@ const FormItemStudentDomain = (props: {
 		}
 	};
 
-	const columns: IColumn<ActivitiesTypeDomain.IStudentDeclaration>[] = [
+	const columns: IColumn<ActivitiesManagement.IStudentDeclaration>[] = [
 		{
 			title: intl.formatMessage({ id: 'activitiestypedomain.student.column.hoten' }),
 			dataIndex: 'name',
@@ -73,13 +73,12 @@ const FormItemStudentDomain = (props: {
 	];
 
 	return (
-		<div style={{ padding: '0px 16px 0px 16px' }}>
+		<>
 			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
 				{!disabled && (
 					<Button
-						icon={<PlusCircleOutlined />}
 						onClick={() => {
-							setRecord({} as ActivitiesTypeDomain.IStudentDeclaration);
+							setRecord({} as ActivitiesManagement.IStudentDeclaration);
 							setEdit(false);
 							setIsView(false);
 							setVisibleForm(true);
@@ -105,7 +104,7 @@ const FormItemStudentDomain = (props: {
 			>
 				<FormStudentDomain onOk={onAdd} />
 			</Modal>
-		</div>
+		</>
 	);
 };
 

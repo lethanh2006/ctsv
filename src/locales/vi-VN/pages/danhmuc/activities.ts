@@ -2,7 +2,7 @@ export default {
 	'activitiesmanagement.title': 'Hoạt động ngoại khóa (CCA)',
 
 	'activitiesmanagement.column.order': 'Thứ tự hiển thị',
-	'activitiesmanagement.column.id': 'Mã',
+	'activitiesmanagement.column.id': 'ID loại hoạt động',
 	'activitiesmanagement.column.name': 'Tên',
 	'activitiesmanagement.column.des': 'Mô tả',
 	'activitiesmanagement.column.attribute': 'Thuộc tính',

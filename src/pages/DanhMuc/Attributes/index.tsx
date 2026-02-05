@@ -3,7 +3,7 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Popconfirm, Switch, Tag } from 'antd';
+import { Image, Popconfirm, Switch, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormAttributes from './components/Form';
 
@@ -22,11 +22,12 @@ const AttributesPage = () => {
 
 	const columns: IColumn<AttributesManagement.IRecord>[] = [
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.order' }),
-			dataIndex: 'order',
+			title: 'Icon',
+			dataIndex: 'icon',
 			align: 'center',
-			width: 100,
-			sortable: true,
+			width: 90,
+			render: (val) =>
+				val ? <Image src={val} width={64} height={64} preview={false} style={{ objectFit: 'contain' }} /> : null,
 			onCell,
 		},
 		{
@@ -66,7 +67,7 @@ const AttributesPage = () => {
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: 90,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => (
 				<>
