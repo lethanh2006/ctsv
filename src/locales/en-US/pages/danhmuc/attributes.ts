@@ -1,5 +1,5 @@
 export default {
-	'attributesmanagement.title': 'Attribute',
+	'attributesmanagement.title': 'Graduating Attribute',
 
 	'attributesmanagement.column.order': 'Display order',
 	'attributesmanagement.column.id': 'Code',
@@ -25,5 +25,5 @@ export default {
 	'attributesmanagement.form.des': 'Description',
 	'attributesmanagement.form.des.place': 'Enter description',
 
-	'attributesmanagement.select.place': 'Select attribute',
+	'attributesmanagement.select.place': 'Select Graduating Attribute',
 };

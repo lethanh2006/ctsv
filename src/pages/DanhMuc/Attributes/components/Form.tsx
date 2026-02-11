@@ -19,7 +19,7 @@ const FormAttributes = () => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 			});
 		}
 	}, [record?._id, visibleForm]);
@@ -66,7 +66,7 @@ const FormAttributes = () => {
 							rules={[...rules.required]}
 							extra='Only .png, .jpeg, and .jpg files are allowed'
 						>
-							<UploadFile disabled={isView} accept='.png, .jpeg, .jpg' />
+							<UploadFile isAvatarSmall disabled={isView} accept='.png, .jpeg, .jpg' buttonDescription='Add Icon' />
 						</Form.Item>
 					</Col>
 

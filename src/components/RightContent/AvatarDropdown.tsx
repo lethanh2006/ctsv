@@ -13,6 +13,7 @@ const AvatarDropdown = () => {
 	const { initialState } = useModel('@@initialState');
 	const { danhSach: dsPhanVung, getPartitionCodeMeModel } = useModel('core.phanvunguser');
 	const { getAllModel: getAllPhanVung } = useModel('core.phanvungdulieu');
+	const { getByIdModel } = useModel('tochucnhansu.nhansu');
 
 	const currentPartition = localStorage.getItem('partitionCode');
 
@@ -22,6 +23,9 @@ const AvatarDropdown = () => {
 			//Get All phân vùng để lấy mã màu
 			getAllPhanVung();
 			getPartitionCodeMeModel(currentPartition?.toString());
+
+			//Get thông tin nhân sự (Chỉ get 1 lần)
+			getByIdModel('me', true);
 		}
 	}, [initialState?.currentUser?.ssoId]);
 
@@ -58,11 +62,11 @@ const AvatarDropdown = () => {
 				label: item?.dataPartition?.name ?? item?.dataPartition?.ma,
 				style: isActive
 					? {
-						backgroundColor: activeBgColor,
-						borderLeft: `3px solid ${activeColor}`,
-						color: activeColor,
-						fontWeight: 'bold',
-					}
+							backgroundColor: activeBgColor,
+							borderLeft: `3px solid ${activeColor}`,
+							color: activeColor,
+							fontWeight: 'bold',
+						}
 					: undefined,
 				onClick: () => {
 					localStorage.setItem('partitionCode', code);
@@ -97,8 +101,7 @@ const AvatarDropdown = () => {
 		{
 			key: 'portal',
 			icon: <GlobalOutlined />,
-			label:
-				`${intl.formatMessage({ id: `modules.cong-thong-tin` }) ?? intl.formatMessage({ id: 'app.header.portal', defaultMessage: 'Cổng thông tin' })}`,
+			label: `${intl.formatMessage({ id: `modules.cong-thong-tin` }) ?? intl.formatMessage({ id: 'app.header.portal', defaultMessage: 'Cổng thông tin' })}`,
 			onClick: () => window.open(landingUrl),
 		},
 		{ type: 'divider', key: 'divider' },

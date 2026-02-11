@@ -40,10 +40,10 @@ export enum EApprovalStatus {
 
 export const mapNameApprovalStatus: Record<EApprovalStatus, string> = {
 	[EApprovalStatus.DRAFT]: 'Draft',
-	[EApprovalStatus.SUBMITTED]: 'Submitted',
+	[EApprovalStatus.SUBMITTED]: 'Pending For Approval',
 	[EApprovalStatus.APPROVED]: 'Approved',
 	[EApprovalStatus.REJECTED]: 'Rejected',
-	[EApprovalStatus.CHANGES_REQUIRED]: 'Changes Required',
+	[EApprovalStatus.CHANGES_REQUIRED]: 'Change Required',
 };
 
 export const mapColorApprovalStatus: Record<EApprovalStatus, ETagColor> = {

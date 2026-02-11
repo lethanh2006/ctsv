@@ -16,7 +16,7 @@ const FormRoles = (props: any) => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 				autoApproval: true,
 			});
 		}

@@ -35,7 +35,7 @@ const FormCompetencyAttributeModel = (props: any) => {
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='attributesId' label='Attributes' rules={[...rules.required]}>
+						<Form.Item name='attributesId' label='Graduating Attribute' rules={[...rules.required]}>
 							<SelectAttributesManagement />
 						</Form.Item>
 					</Col>

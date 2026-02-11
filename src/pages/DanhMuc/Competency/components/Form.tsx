@@ -17,7 +17,7 @@ const FormCompetency = (props: any) => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 			});
 		}
 	}, [record?._id, visibleForm]);

@@ -8,7 +8,8 @@ declare module Activity {
 		endDate: Date;
 		banner: string;
 		backgroundImage: string;
-		organizer: string;
+		organizer?: string;
+		codeOrganizer?: string;
 
 		onCampus: boolean;
 		facilityCode: string;
@@ -38,6 +39,16 @@ declare module Activity {
 		coCurricularActivityEquivalency: IEquivalency[];
 		coCurricularAttributesEquivalency: ICompetencyMapping[];
 		competencyList: ICompetencyActivity[];
+
+		numberOfRegisteredActivityOutcomes?: number;
+		numberOfApprovedActivityOutcomes?: number;
+		numberOfAddEvidenceActivityOutcomes?: number;
+
+		allowActivityRegistration: boolean;
+		capacity: number | null;
+		dueDateRegistration: Date | null;
+
+		activityOutcomes: ActivityOutCome.IRecord;
 
 		//fake
 		cct?: boolean;

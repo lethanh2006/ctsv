@@ -8,8 +8,6 @@ import SelectActivitiesTypeDomain from '../../CCD/components/Select';
 import SelectTrack from '../../Track/components/Select';
 import FormItemAttributesCCA from '../Attributes/FormItem';
 import AttributesCCAModel from '../AttributesModel';
-import StudenDomainModelPage from '../StudenModel';
-import FormItemStudentDomain from '../Student/FormItem';
 
 const FormActivities = (props: any) => {
 	const intl = useIntl();
@@ -23,7 +21,7 @@ const FormActivities = (props: any) => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 			});
 		}
 	}, [record?._id, visibleForm]);
@@ -90,6 +88,25 @@ const FormActivities = (props: any) => {
 							/>
 						</Form.Item>
 					</Col>
+					<Col span={24}>
+						<Divider className='divider-big-title' orientation='left'>
+							Attributes
+						</Divider>
+					</Col>
+					<Col span={24}>
+						{record?._id ? (
+							<AttributesCCAModel disabled={isView} />
+						) : (
+							<Form.Item name='activitiesTypeAttributesList'>
+								<FormItemAttributesCCA disabled={isView} />
+							</Form.Item>
+						)}
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='trackId' label='Track' rules={[...rules.required]}>
+							<SelectTrack />
+						</Form.Item>
+					</Col>
 					<Col span={24} md={12}>
 						<Form.Item name='activitiesTypeDomainId' label='Activity Group' rules={[...rules.required]}>
 							<SelectActivitiesTypeDomain disabled={isView} />
@@ -109,8 +126,12 @@ const FormActivities = (props: any) => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='trackId' label='Track' rules={[...rules.required]}>
-							<SelectTrack />
+						<Form.Item
+							name='isActive'
+							label={intl.formatMessage({ id: 'activitiesmanagement.form.active' })}
+							valuePropName='checked'
+						>
+							<Switch disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
@@ -124,15 +145,6 @@ const FormActivities = (props: any) => {
 								rows={3}
 								placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.des.place' })}
 							/>
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item
-							name='isActive'
-							label={intl.formatMessage({ id: 'activitiesmanagement.form.active' })}
-							valuePropName='checked'
-						>
-							<Switch disabled={isView} />
 						</Form.Item>
 					</Col>
 
@@ -178,7 +190,7 @@ const FormActivities = (props: any) => {
 						</Form.List>
 					</Col>
 
-					<Col span={24}>
+					{/* <Col span={24}>
 						<Divider className='divider-big-title' orientation='left'>
 							Approvers
 						</Divider>
@@ -192,23 +204,7 @@ const FormActivities = (props: any) => {
 								<FormItemStudentDomain disabled={isView} />
 							</Form.Item>
 						)}
-					</Col>
-
-					<Col span={24}>
-						<Divider className='divider-big-title' orientation='left'>
-							Attributes
-						</Divider>
-					</Col>
-
-					<Col span={24}>
-						{record?._id ? (
-							<AttributesCCAModel disabled={isView} />
-						) : (
-							<Form.Item name='activitiesTypeAttributesList'>
-								<FormItemAttributesCCA disabled={isView} />
-							</Form.Item>
-						)}
-					</Col>
+					</Col> */}
 				</Row>
 
 				<div className='form-footer'>

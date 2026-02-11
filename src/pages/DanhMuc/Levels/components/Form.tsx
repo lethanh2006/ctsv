@@ -16,7 +16,7 @@ const FormLevels = () => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 				autoApproval: true,
 			});
 		}

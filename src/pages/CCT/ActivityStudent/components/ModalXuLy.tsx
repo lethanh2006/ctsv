@@ -1,5 +1,8 @@
+import MyDatePicker from '@/components/MyDatePicker';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { EApprovalStatus, Evalidation } from '@/services/CCT/constant';
+import dayjs from '@/utils/dayjs';
+import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd';
@@ -25,6 +28,7 @@ const ModalXuLyActivityStudent = (props: {
 			form.setFieldsValue({
 				...record,
 				validation: record?.validation ?? Evalidation?.VERIFIED,
+				dueDate: dayjs(record?.activities?.dueDate),
 			});
 		}
 	}, [record?._id, visible]);
@@ -93,14 +97,31 @@ const ModalXuLyActivityStudent = (props: {
 					)}
 
 					{trangThai === EApprovalStatus.CHANGES_REQUIRED && (
-						<Col span={24}>
-							<Form.Item name='revisionNote' label={intl.formatMessage({ id: 'activityresult.xuly.revisionNote' })}>
-								<Input.TextArea
-									rows={3}
-									placeholder={intl.formatMessage({ id: 'activityresult.xuly.revisionNote.place' })}
-								/>
-							</Form.Item>
-						</Col>
+						<>
+							<Col span={24}>
+								<Form.Item
+									name='dueDate'
+									label={intl.formatMessage({ id: 'activity.info.form.duedate' })}
+									rules={[...rules.required]}
+								>
+									<MyDatePicker
+										showTime={{ showHour: true, showMinute: true }}
+										format='HH:mm DD/MM/YYYY'
+										disabledDate={(current) => !!dayjs(current).isBefore(dayjs().startOf('day'))}
+										placeholder='Select Due Date'
+										allowClear
+									/>
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Form.Item name='revisionNote' label={intl.formatMessage({ id: 'activityresult.xuly.revisionNote' })}>
+									<Input.TextArea
+										rows={3}
+										placeholder={intl.formatMessage({ id: 'activityresult.xuly.revisionNote.place' })}
+									/>
+								</Form.Item>
+							</Col>
+						</>
 					)}
 
 					{trangThai === EApprovalStatus.APPROVED && (

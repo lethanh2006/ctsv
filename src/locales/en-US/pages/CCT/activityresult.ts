@@ -22,7 +22,7 @@ export default {
 	'activityresult.column.revi': 'Revision Note',
 
 	'activityresult.button.decla': 'Declaration Approvers',
-	'activityresult.button.duyet': 'Approval',
+	'activityresult.button.duyet': 'Approve',
 	'activityresult.button.tuchoi': 'Reject',
 	'activityresult.button.yccs': 'Request for editing',
 

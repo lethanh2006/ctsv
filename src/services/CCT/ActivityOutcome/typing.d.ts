@@ -40,6 +40,10 @@ declare module ActivityOutCome {
 		listAchievedCompetencies: Activity.ICompetencyMapping[];
 		competencyList: ICompetencyActivity[];
 
+		supervisorSsoId: string;
+		supervisorName: string;
+		supervisorCode: string;
+
 		createdAt: Date;
 		updatedAt: Date;
 	}

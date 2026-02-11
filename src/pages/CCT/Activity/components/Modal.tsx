@@ -1,40 +1,43 @@
-import { Steps } from 'antd';
+import { Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import ListStudentActivity from '../ListStudent';
+import PersonalActivity from '../ListStudent/Personal';
+import RegisteredActivity from '../ListStudent/Registered';
 import FormActivity from './Form';
 
 const ModalActivity = (props: any) => {
 	const { getData } = props;
 	const { visibleForm } = useModel('cct.activity');
-	const [currentStep, setCurrentStep] = useState<number>(0);
+	const [activeKey, setActiveKey] = useState<string>('0');
 
 	useEffect(() => {
 		if (!visibleForm) {
-			setCurrentStep(0);
+			setActiveKey('0');
 		}
 	}, [visibleForm]);
 
-	const onChangeStep = (step: number) => {
-		setCurrentStep(step);
-	};
-
 	return (
-		<>
-			<Steps current={currentStep} style={{ marginBottom: 18, paddingTop: 0 }} onChange={onChangeStep}>
-				<Steps.Step title='Thông tin chung' />
-				<Steps.Step title='Danh sách đăng ký' />
-				<Steps.Step title='Danh sách minh chứng' />
-			</Steps>
-
-			{currentStep === 0 ? (
-				<FormActivity afterAddNew={() => setCurrentStep(1)} getData={getData} />
-			) : currentStep === 1 ? (
-				<ListStudentActivity />
-			) : (
-				<></>
-			)}
-		</>
+		<Tabs
+			activeKey={activeKey}
+			onChange={setActiveKey}
+			items={[
+				{
+					key: '0',
+					label: 'General Information',
+					children: <FormActivity getData={getData} />,
+				},
+				{
+					key: '1',
+					label: 'Registration List',
+					children: <RegisteredActivity />,
+				},
+				{
+					key: '2',
+					label: 'Evidence Declaration List',
+					children: <PersonalActivity />,
+				},
+			]}
+		/>
 	);
 };
 

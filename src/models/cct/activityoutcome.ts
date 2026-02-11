@@ -1,7 +1,7 @@
 import useInitModel from '@/hooks/useInitModel';
 import { getAnalyticsApprovers, getAnalyticsStaff, putApproveActivity } from '@/services/CCT/ActivityOutcome';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
-import { EActivityCategory, EApprovalStatus } from '@/services/CCT/constant';
+import { EApprovalStatus } from '@/services/CCT/constant';
 import { ipCCT } from '@/utils/ip';
 import { message } from 'antd';
 import { useState } from 'react';
@@ -20,6 +20,7 @@ export default () => {
 			workflow: EApprovalStatus;
 			activityRejectionNote?: string;
 			revisionNote?: string;
+			dueDate?: Date;
 		},
 		getData?: () => void,
 		messageText?: string,
@@ -39,12 +40,10 @@ export default () => {
 		}
 	};
 
-	const getAnalyticsStaffModel = async (
-		activityCategory: EActivityCategory,
-	): Promise<ActivityOutCome.IAnalyticsStaff> => {
+	const getAnalyticsStaffModel = async (): Promise<ActivityOutCome.IAnalyticsStaff> => {
 		setLoadingThongKe(true);
 		try {
-			const res = await getAnalyticsStaff(activityCategory);
+			const res = await getAnalyticsStaff();
 			setDataThongKe(res.data?.data);
 			return res.data?.data;
 		} catch (err) {

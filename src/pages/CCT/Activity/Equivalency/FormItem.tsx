@@ -20,6 +20,7 @@ const EquivalencyFormItem = (props: {
 	const intl = useIntl();
 
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { danhSach: dsLevel } = useModel('danhmuc.levels');
 	const allowAttributeIds = coCurricularAttributesEquivalency?.map((i: any) => i.attributesId) || [];
 
 	useEffect(() => {
@@ -68,16 +69,14 @@ const EquivalencyFormItem = (props: {
 										color: highlightColor,
 										borderRadius: 4,
 										padding: '2px 4px',
-										textAlign: 'center',
 									}
-								: { textAlign: 'center' }
+								: undefined
 						}
 					>
 						{attr.code}
 					</div>
 				),
 				width: 60,
-				align: 'center',
 				render: (_: any, field: any) => (
 					<Form.Item shouldUpdate noStyle>
 						{({ getFieldValue }) => {
@@ -114,43 +113,65 @@ const EquivalencyFormItem = (props: {
 			width: 240,
 			fixed: 'left',
 			render: (_, field) => (
-				<Form.Item
-					className='table-form-item'
-					name={[field.name, 'rolesId']}
-					rules={[
-						...rules.required,
-						() => ({
-							validator(_, value) {
-								if (!value) return Promise.resolve();
-								const list = form.getFieldValue('coCurricularActivityEquivalency') || [];
-								const duplicated = list.some((item: any, idx: number) => idx !== field.name && item?.rolesId === value);
-								if (duplicated) {
-									return Promise.reject(
-										new Error(
-											intl.formatMessage({
-												id: 'activity.equivalency.role.vali',
-											}),
-										),
-									);
-								}
-								return Promise.resolve();
-							},
-						}),
-					]}
-				>
-					<SelectRolesManagement
-						disabled={disabled}
-						size='small'
-						allowClear
-						onChange={(val, option) => {
-							const role = option?.rawData;
+				<Form.Item shouldUpdate noStyle>
+					{({ getFieldValue }) => {
+						const role = getFieldValue(['coCurricularActivityEquivalency', field.name, 'role']);
 
-							form.setFieldValue(['coCurricularActivityEquivalency', field.name, 'role'], role);
-						}}
-					/>
+						return (
+							<>
+								<Form.Item
+									className='table-form-item'
+									name={[field.name, 'rolesId']}
+									rules={[
+										...rules.required,
+										() => ({
+											validator(_, value) {
+												if (!value) return Promise.resolve();
+												const list = getFieldValue('coCurricularActivityEquivalency') || [];
+												const duplicated = list.some(
+													(item: any, idx: number) => idx !== field.name && item?.rolesId === value,
+												);
+												if (duplicated) {
+													return Promise.reject(
+														new Error(
+															intl.formatMessage({
+																id: 'activity.equivalency.role.vali',
+															}),
+														),
+													);
+												}
+												return Promise.resolve();
+											},
+										}),
+									]}
+								>
+									<SelectRolesManagement
+										disabled={disabled}
+										size='small'
+										allowClear
+										onChange={(_, option) => {
+											const role = option?.rawData;
+											form.setFieldValue(['coCurricularActivityEquivalency', field.name, 'role'], role);
+										}}
+									/>
+								</Form.Item>
+
+								{role?.autoApproval && (
+									<i className='text-info'>
+										Auto Approve applies to levels:{' '}
+										{dsLevel
+											?.map((item) => item?.name)
+											.filter(Boolean)
+											.join(', ')}
+									</i>
+								)}
+							</>
+						);
+					}}
 				</Form.Item>
 			),
 		},
+
 		{
 			title: intl.formatMessage({ id: 'activity.equivalency.description' }),
 			width: 280,

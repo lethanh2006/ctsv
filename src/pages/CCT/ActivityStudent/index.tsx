@@ -1,5 +1,6 @@
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
+import { EOperatorType } from '@/components/Table/constant';
 import { type IColumn } from '@/components/Table/typing';
 import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
@@ -17,81 +18,59 @@ import dayjs from '@/utils/dayjs';
 import {
 	CheckCircleOutlined,
 	CloseCircleOutlined,
-	DeleteOutlined,
+	EditOutlined,
 	MenuOutlined,
-	RedoOutlined,
-	UserSwitchOutlined,
+	SafetyCertificateOutlined,
+	SyncOutlined,
 } from '@ant-design/icons';
-import { Button, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Card, Popover, Space, Tabs, Tag } from 'antd';
+import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
-import FormPerstionActivityOutCome from './components/FormPerstion';
-import ModalDieuPhoiActivityStudent from './components/ModalDieuPhoi';
 import ModalChinhSuaImpact from './components/ModalImpact';
+import ModalChinhSuaTrangThai from './components/ModalTrangThai';
 import ModalXuLyActivityStudent from './components/ModalXuLy';
 import StatActivityOutCome from './components/Stat';
-import StatActivityApprovers from './components/StatApprovers';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
-	const {
-		getModel,
-		page,
-		limit,
-		handleView,
-		deleteModel,
-		record,
-		setRecord,
-		getAnalyticsStaffModel,
-		getAnalyticsApproversModel,
-	} = useModel('cct.activityoutcome');
-	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { getModel, page, limit, handleView, setRecord, getAnalyticsStaffModel } = useModel('cct.activityoutcome');
 
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
-	const [visibleDieuPhoi, setVisibleDieuPhoi] = useState<boolean>(false);
 	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
-
-	const [tabActive, setTabActive] = useState<EActivityCategory | string>(EActivityCategory.REGISTERED);
-
+	const [visibleStatus, setVisibleStatus] = useState<boolean>(false);
+	const [tabActive, setTabActive] = useState<string>('1');
 	const [trangThai, setTrangThai] = useState<{
 		title: string;
 		trangThai: EApprovalStatus;
 	}>();
 
-	const TAB_ORDER = [
-		EActivityCategory.REGISTERED,
-		'STUDENT_DECLARATION_APPROVERS',
-		EActivityCategory.PERSONAL_CO_CURRICULAR,
-		'IMPACT',
-	];
-
-	useEffect(() => {
-		getAllModel(undefined, { order: 1 });
-	}, []);
-
 	const getData = () => {
-		getModel(
-			tabActive === 'STUDENT_DECLARATION_APPROVERS'
-				? {
-						activityCategory: EActivityCategory.PERSONAL_CO_CURRICULAR,
-					}
-				: tabActive === 'IMPACT'
-					? { workflow: EApprovalStatus.APPROVED }
-					: {
-							activityCategory: tabActive as any,
-						},
-			undefined,
-			undefined,
-			undefined,
-			undefined,
-			tabActive !== 'STUDENT_DECLARATION_APPROVERS' && tabActive !== 'IMPACT' ? 'approval-task-list/page' : undefined,
-		);
+		const filters: any[] = [];
+
+		if (tabActive === '1') {
+			filters.push({
+				active: true,
+				field: 'workflow',
+				values: [EApprovalStatus.SUBMITTED],
+				operator: EOperatorType.INCLUDE,
+			});
+		}
+
+		if (tabActive === '2') {
+			filters.push({
+				active: true,
+				field: 'workflow',
+				values: [EApprovalStatus.APPROVED, EApprovalStatus.REJECTED, EApprovalStatus.CHANGES_REQUIRED],
+				operator: EOperatorType.INCLUDE,
+			});
+		}
+
+		getModel(undefined, filters, undefined, undefined, undefined, 'approval-task-list/page');
 	};
 
 	const getThongKe = () => {
-		getAnalyticsStaffModel(tabActive as any);
-		tabActive === 'STUDENT_DECLARATION_APPROVERS' && getAnalyticsApproversModel();
+		getAnalyticsStaffModel();
 	};
 
 	const onCell = (rec: ActivityOutCome.IRecord) => ({
@@ -100,6 +79,18 @@ const HistoryActivityPage = () => {
 	});
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
+		{
+			title: 'Activity Category',
+			dataIndex: 'activityCategory',
+			width: 160,
+			render: (val, rec) => mapNameActivityCategory[val as EActivityCategory],
+			filterType: 'select',
+			filterData: Object.values(EActivityCategory).map((item) => ({
+				value: item,
+				label: mapNameActivityCategory[item],
+			})),
+			onCell,
+		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.level' }),
 			dataIndex: 'levelsId',
@@ -162,16 +153,6 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.approvers' }),
-			dataIndex: 'studentDeclarationApproverName',
-			align: 'center',
-			width: 180,
-			render: (val, rec) => val ?? <i className='text-warning'>No info</i>,
-			filterType: 'string',
-			onCell,
-			hide: tabActive !== 'STUDENT_DECLARATION_APPROVERS',
-		},
-		{
 			title: 'Competency',
 			width: 220,
 			render: (val, rec) =>
@@ -191,16 +172,6 @@ const HistoryActivityPage = () => {
 					rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.startDate : rec?.startDate,
 				).format('DD/MM/YYYY'),
 			onCell,
-		},
-		{
-			title: intl.formatMessage({ id: 'activityresult.column.created' }),
-			dataIndex: 'createdAt',
-			align: 'center',
-			width: 150,
-			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
-			onCell,
-			sortable: true,
-			hide: tabActive === EActivityCategory.REGISTERED,
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.role' }),
@@ -262,42 +233,13 @@ const HistoryActivityPage = () => {
 				label: mapNameApprovalStatus[item as EApprovalStatus],
 			})),
 			onCell,
-			hide: tabActive === 'IMPACT',
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: tabActive === 'STUDENT_DECLARATION_APPROVERS' || tabActive === 'IMPACT' ? 90 : 120,
+			width: 120,
 			fixed: 'right',
 			render: (val, rec) => {
-				if (tabActive === 'IMPACT') {
-					return (
-						<ButtonExtend
-							tooltip='Verify impact'
-							onClick={() => {
-								setRecord(rec);
-								setVisibleImpact(true);
-							}}
-							type='link'
-							icon={<CheckCircleOutlined />}
-							className='btn-success'
-						/>
-					);
-				}
-				if (tabActive === 'STUDENT_DECLARATION_APPROVERS')
-					return (
-						<ButtonExtend
-							disabled={rec?.workflow !== EApprovalStatus.SUBMITTED}
-							tooltip={intl.formatMessage({ id: 'activityresult.button.decla' })}
-							onClick={() => {
-								setRecord(rec);
-								setVisibleDieuPhoi(true);
-							}}
-							type='link'
-							icon={<UserSwitchOutlined />}
-							danger
-						/>
-					);
 				return (
 					<>
 						<ButtonExtend
@@ -318,69 +260,75 @@ const HistoryActivityPage = () => {
 
 						<Popover
 							content={
-								<Space direction='vertical' size={'small'}>
-									<ButtonExtend
-										disabled={rec?.workflow === EApprovalStatus.REJECTED}
-										tooltip={intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
-										onClick={() => {
-											setRecord(rec);
-											setTrangThai({
-												title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
-												trangThai: EApprovalStatus.REJECTED,
-											});
-											setVisibleXuLy(true);
-										}}
-										type='link'
-										icon={<CloseCircleOutlined />}
-										danger
-										size='small'
-									>
-										{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
-									</ButtonExtend>
-									<ButtonExtend
-										disabled={rec?.workflow === EApprovalStatus.CHANGES_REQUIRED}
-										tooltip={intl.formatMessage({ id: 'activityresult.button.yccs' })}
-										onClick={() => {
-											setRecord(rec);
-											setTrangThai({
-												title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
-												trangThai: EApprovalStatus.CHANGES_REQUIRED,
-											});
-											setVisibleXuLy(true);
-										}}
-										type='link'
-										icon={<RedoOutlined />}
-										size='small'
-									>
-										{intl.formatMessage({ id: 'activityresult.button.yccs' })}
-									</ButtonExtend>
-									{/* <ButtonExtend tooltip='Edit' onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} /> */}
-									<Popconfirm
-										onConfirm={() =>
-											deleteModel(
-												rec?._id,
-												() => {
-													getData();
-													getThongKe();
-												},
-												{
-													messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
-												},
-											)
-										}
-										title={intl.formatMessage({ id: 'activityresult.comfirm.xoa' })}
-										placement='topLeft'
-									>
-										<ButtonExtend
-											tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
-											danger
-											type='link'
-											icon={<DeleteOutlined />}
-											size='small'
-										>
-											{intl.formatMessage({ id: 'global.button.xoa' })}
-										</ButtonExtend>
-									</Popconfirm>
+								<Space direction='vertical' size={4} className='action-popover'>
+									{tabActive === '2' && (
+										<>
+											<ButtonExtend
+												onClick={() => {
+													setRecord(rec);
+													setVisibleStatus(true);
+												}}
+												type='link'
+												icon={<SyncOutlined />}
+												size='small'
+											>
+												Change status
+											</ButtonExtend>
+
+											<ButtonExtend
+												onClick={() => {
+													setRecord(rec);
+													setVisibleImpact(true);
+												}}
+												type='link'
+												icon={<SafetyCertificateOutlined />}
+												size='small'
+												className='btn-success'
+											>
+												Verify impact
+											</ButtonExtend>
+										</>
+									)}
+
+									{tabActive === '1' && (
+										<>
+											<ButtonExtend
+												disabled={rec?.workflow === EApprovalStatus.REJECTED}
+												onClick={() => {
+													setRecord(rec);
+													setTrangThai({
+														title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
+														trangThai: EApprovalStatus.REJECTED,
+													});
+													setVisibleXuLy(true);
+												}}
+												type='link'
+												icon={<CloseCircleOutlined />}
+												danger
+												size='small'
+											>
+												{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
+											</ButtonExtend>
+
+											<ButtonExtend
+												disabled={rec?.workflow === EApprovalStatus.CHANGES_REQUIRED}
+												onClick={() => {
+													setRecord(rec);
+													setTrangThai({
+														title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
+														trangThai: EApprovalStatus.CHANGES_REQUIRED,
+													});
+													setVisibleXuLy(true);
+												}}
+												type='link'
+												icon={<EditOutlined />}
+												size='small'
+												className='btn-warning'
+											>
+												{intl.formatMessage({ id: 'activityresult.button.yccs' })}
+											</ButtonExtend>
+										</>
+									)}
 								</Space>
 							}
 							placement='bottomLeft'
@@ -395,54 +343,45 @@ const HistoryActivityPage = () => {
 
 	return (
 		<>
-			<TableBase
-				getData={getData}
-				formProps={{
-					getData: () => {
-						getData();
-						getThongKe();
-					},
-					tabActive,
-				}}
-				columns={columns}
-				dependencies={[page, limit, tabActive]}
-				modelName='cct.activityoutcome'
+			<Card
 				title={intl.formatMessage({ id: 'activityresult.title' })}
-				Form={
-					record?.activityCategory === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome
-				}
-				widthDrawer={record?.activityCategory === EActivityCategory.REGISTERED ? 800 : 1000}
-				buttons={{ create: false }}
-				onReload={() => {
-					getData();
-					getThongKe();
-				}}
+				className='card-big-title card-borderless'
+				variant='borderless'
 			>
-				<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
-					{TAB_ORDER.map((item) => (
-						<Tabs.TabPane
-							key={item}
-							tab={
-								item === 'STUDENT_DECLARATION_APPROVERS'
-									? 'Student Declaration Approvers'
-									: item === 'IMPACT'
-										? 'Impact'
-										: mapNameActivityCategory[item as EActivityCategory]
-							}
-						/>
-					))}
-				</Tabs>
+				<Card style={{ marginBottom: 12 }}>
+					<StatActivityOutCome getData={getThongKe} />
+				</Card>
 
-				{tabActive !== 'IMPACT' && (
-					<>
-						{tabActive !== 'STUDENT_DECLARATION_APPROVERS' ? (
-							<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
-						) : (
-							<StatActivityApprovers getData={getThongKe} />
-						)}
-					</>
-				)}
-			</TableBase>
+				<Card>
+					<TableBase
+						getData={getData}
+						formProps={{
+							getData: () => {
+								getData();
+								getThongKe();
+							},
+							tabActive,
+						}}
+						columns={columns}
+						dependencies={[page, limit, tabActive]}
+						modelName='cct.activityoutcome'
+						title={intl.formatMessage({ id: 'activityresult.title' })}
+						Form={FormActivityStudent}
+						widthDrawer={1000}
+						buttons={{ create: false }}
+						onReload={() => {
+							getData();
+							getThongKe();
+						}}
+						hideCard
+					>
+						<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab)}>
+							<Tabs.TabPane key='1' tab='Pending' />
+							<Tabs.TabPane key='2' tab='Processed' />
+						</Tabs>
+					</TableBase>
+				</Card>
+			</Card>
 
 			<ModalXuLyActivityStudent
 				visible={visibleXuLy}
@@ -455,8 +394,8 @@ const HistoryActivityPage = () => {
 				}}
 			/>
 
-			<ModalDieuPhoiActivityStudent visible={visibleDieuPhoi} setVisible={setVisibleDieuPhoi} getData={getData} />
 			<ModalChinhSuaImpact visible={visibleImpact} setVisible={setVisibleImpact} getData={getData} />
+			<ModalChinhSuaTrangThai visible={visibleStatus} setVisible={setVisibleStatus} getData={getData} />
 		</>
 	);
 };

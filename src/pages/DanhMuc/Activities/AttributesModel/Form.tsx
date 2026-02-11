@@ -1,6 +1,6 @@
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Row } from 'antd';
+import { Button, Card, Col, Form, message, Row } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectAttributesManagement from '../../Attributes/components/Select';
@@ -10,14 +10,18 @@ const FormCompetencyCCAModel = (props: any) => {
 	const [form] = Form.useForm();
 	const { getData } = props;
 	const { record: recCCA } = useModel('danhmuc.activities');
-	const { setVisibleForm, visibleForm, edit, postModel, formSubmiting } = useModel('danhmuc.ccaattributes');
+	const { setVisibleForm, visibleForm, edit, postModel, formSubmiting, danhSach } = useModel('danhmuc.ccaattributes');
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
 	}, [visibleForm]);
 
 	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes) => {
-		postModel(
+		if ((danhSach?.length ?? 0) + (values.attributesId?.length ?? 0) > 2) {
+			return message.error('An activity type can have a maximum of 2 attributes.');
+		}
+
+		return postModel(
 			{
 				...values,
 				activitiesTypeId: recCCA?._id,
@@ -35,7 +39,7 @@ const FormCompetencyCCAModel = (props: any) => {
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='attributesId' label='Attributes' rules={[...rules.required]}>
+						<Form.Item name='attributesId' label='Graduating Attribute' rules={[...rules.required]}>
 							<SelectAttributesManagement />
 						</Form.Item>
 					</Col>

@@ -2,6 +2,7 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
+import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
 import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -58,6 +59,27 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
+			title: 'Registrations',
+			dataIndex: 'numberOfRegisteredActivityOutcomes',
+			width: 120,
+			// sortable: true,
+			onCell,
+		},
+		{
+			title: 'Submissions',
+			dataIndex: 'numberOfAddEvidenceActivityOutcomes',
+			width: 120,
+			// sortable: true,
+			onCell,
+		},
+		{
+			title: 'Approved',
+			dataIndex: 'numberOfApprovedActivityOutcomes',
+			width: 100,
+			// sortable: true,
+			onCell,
+		},
+		{
 			title: intl.formatMessage({ id: 'activity.column.date' }),
 			dataIndex: 'startDate',
 			width: 220,
@@ -66,6 +88,15 @@ const ActivityPage = () => {
 					.filter(Boolean)
 					.join(' - '),
 			sortable: true,
+			onCell,
+		},
+		{
+			title: 'Organizer',
+			dataIndex: 'codeOrganizer',
+			width: 150,
+			render: (val, rec) => rec?.organizer,
+			filterType: 'customselect',
+			filterCustomSelect: <SelectDonVi selectMa multiple />,
 			onCell,
 		},
 		{
@@ -126,7 +157,7 @@ const ActivityPage = () => {
 					dependencies={[page, limit]}
 					modelName='cct.activity'
 					title={intl.formatMessage({ id: 'activity.title' })}
-					// Form={ModalActivity}
+					// Form={FormActivity}
 					Form={isView ? ModalActivity : FormActivity}
 					showModalTitle
 					modalTitle={

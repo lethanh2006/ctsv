@@ -23,6 +23,7 @@ declare module ActivitiesManagement {
 		ssoId: string;
 		name: string;
 		email: string;
+		mainApprover: boolean;
 		activitiesTypeId: string;
 		activitiesType: IRecord;
 		activitiesId: string;

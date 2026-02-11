@@ -39,6 +39,7 @@ declare module ToChucNhanSu {
 		// tenGoiKhac: string;
 		// biDanh: string;
 		email: string;
+		emailCanBo: string;
 		gioiTinh: string;
 		ngaySinh: string;
 		// noiSinhSoNha: string;
