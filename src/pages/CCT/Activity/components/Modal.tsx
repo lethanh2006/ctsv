@@ -1,13 +1,14 @@
-import { Tabs } from 'antd';
+import { Activity } from '@/services/CCT/Activity/typing';
+import { Button, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
+import ChiTietActivity from '../ChiTiet';
 import PersonalActivity from '../ListStudent/Personal';
 import RegisteredActivity from '../ListStudent/Registered';
-import FormActivity from './Form';
 
-const ModalActivity = (props: any) => {
-	const { getData } = props;
-	const { visibleForm } = useModel('cct.activity');
+const ModalActivity = () => {
+	const intl = useIntl();
+	const { visibleForm, record, setVisibleForm } = useModel('cct.activity');
 	const [activeKey, setActiveKey] = useState<string>('0');
 
 	useEffect(() => {
@@ -24,7 +25,17 @@ const ModalActivity = (props: any) => {
 				{
 					key: '0',
 					label: 'General Information',
-					children: <FormActivity getData={getData} />,
+					children: (
+						<>
+							<ChiTietActivity record={record ?? ({} as Activity.IRecord)} />
+
+							<div className='form-footer'>
+								<Button onClick={() => setVisibleForm(false)}>
+									{intl.formatMessage({ id: 'global.button.dong' })}
+								</Button>
+							</div>
+						</>
+					),
 				},
 				{
 					key: '1',

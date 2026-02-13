@@ -50,8 +50,12 @@ declare module Activity {
 
 		activityOutcomes: ActivityOutCome.IRecord;
 
+		workflow: EApprovalStatus;
+		competencyList: ICompetencyActivity[];
+
 		//fake
 		cct?: boolean;
+		supervisorName?: string;
 	}
 
 	export interface IParticipantsList {

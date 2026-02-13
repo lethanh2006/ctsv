@@ -56,6 +56,7 @@ const FormStudentApprover = (props: any) => {
 										email: nhanSu?.emailCanBo ?? nhanSu?.email,
 									});
 								}}
+								disabled={isView}
 							/>
 						</Form.Item>
 						<Form.Item name='name' hidden />

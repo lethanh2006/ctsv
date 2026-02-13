@@ -1,4 +1,3 @@
-import ModalExpandable from '@/components/Table/ModalExpandable';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
@@ -12,12 +11,11 @@ import {
 import dayjs from '@/utils/dayjs';
 import { Button, Tag } from 'antd';
 import { useIntl, useModel } from 'umi';
-import FormActivityStudent from '../../ActivityStudent/components/Form';
 
 const PersonalActivity = () => {
 	const intl = useIntl();
 	const { record: recActivity, setVisibleForm: setVisibleActi } = useModel('cct.activity');
-	const { handleView, visibleForm, setVisibleForm } = useModel('cct.activityoutcome');
+	const { handleView } = useModel('cct.activityoutcome');
 
 	const onCell = (rec: ActivityOutCome.IRecord) => ({
 		onClick: () => handleView(rec),
@@ -138,18 +136,6 @@ const PersonalActivity = () => {
 			<div className='form-footer'>
 				<Button onClick={() => setVisibleActi(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
-
-			<ModalExpandable
-				width={1000}
-				onCancel={() => setVisibleForm(false)}
-				footer={null}
-				open={visibleForm}
-				styles={{
-					body: { padding: 0 },
-				}}
-			>
-				<FormActivityStudent isActivity />
-			</ModalExpandable>
 		</>
 	);
 };
