@@ -1,29 +1,29 @@
 export default {
 	'attributesmanagement.title': 'Graduating Attribute',
 
-	'attributesmanagement.column.order': 'Display order',
+	'attributesmanagement.column.order': 'Display Order',
 	'attributesmanagement.column.id': 'Code',
 	'attributesmanagement.column.name': 'Name',
 	'attributesmanagement.column.des': 'Description',
 	'attributesmanagement.column.active': 'Active',
 
-	'attributesmanagement.confirm.delete': 'Do you want to remove this attribute?',
+	'attributesmanagement.confirm.delete': 'Do You Want To Remove This Attribute?',
 
-	'attributesmanagement.form.themmoi': 'Add new attribute',
-	'attributesmanagement.form.chinhsua': 'Edit attribute',
-	'attributesmanagement.form.chitiet': 'Detail attribute',
+	'attributesmanagement.form.themmoi': 'Add New Attribute',
+	'attributesmanagement.form.chinhsua': 'Edit Attribute',
+	'attributesmanagement.form.chitiet': 'Detail Attribute',
 
 	'attributesmanagement.form.icon': 'Icon',
 	'attributesmanagement.form.color': 'Color',
 	'attributesmanagement.form.id': 'Code',
-	'attributesmanagement.form.id.place': 'Enter code',
+	'attributesmanagement.form.id.place': 'Enter Code',
 	'attributesmanagement.form.name': 'Name',
-	'attributesmanagement.form.name.place': 'Enter name',
-	'attributesmanagement.form.order': 'Display order',
-	'attributesmanagement.form.order.place': 'Enter display order',
+	'attributesmanagement.form.name.place': 'Enter Name',
+	'attributesmanagement.form.order': 'Display Order',
+	'attributesmanagement.form.order.place': 'Enter Display Order',
 	'attributesmanagement.form.active': 'Active',
 	'attributesmanagement.form.des': 'Description',
-	'attributesmanagement.form.des.place': 'Enter description',
+	'attributesmanagement.form.des.place': 'Enter Description',
 
 	'attributesmanagement.select.place': 'Select Graduating Attribute',
 };

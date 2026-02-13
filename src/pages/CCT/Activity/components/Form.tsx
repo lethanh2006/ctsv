@@ -152,7 +152,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 				values,
 				getData,
 				undefined,
-				false,
+				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
 			)
 				.then()
@@ -161,7 +161,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 			postModel(
 				{ ...values, coCurricularActivityEquivalency: result },
 				getData,
-				false,
+				undefined,
 				intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
 			)
 				.then()
@@ -189,12 +189,13 @@ const FormActivity = (props: { getData?: () => void }) => {
 				<Col span={24}>
 					<Row gutter={[12, 0]}>
 						<Col span={24} md={8}>
-							<Form.Item
-								name='banner'
-								label={intl.formatMessage({ id: 'activity.info.form.banner' })}
-								extra='Only .png, .jpeg, and .jpg files are allowed'
-							>
-								<UploadFile isLandscapeAvatar accept='.png,.jpg,.jpeg' buttonDescription='Add Banner' />
+							<Form.Item name='banner' label={intl.formatMessage({ id: 'activity.info.form.banner' })}>
+								<UploadFile
+									isLandscapeAvatar
+									accept='.png,.jpg,.jpeg'
+									buttonDescription='Add Banner'
+									extra='Only .png, .jpeg, and .jpg files are allowed'
+								/>
 							</Form.Item>
 						</Col>
 

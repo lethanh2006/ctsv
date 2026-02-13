@@ -798,12 +798,6 @@
 				// access: 'cctFilter',
 			},
 			{
-				name: 'StudentApprover',
-				component: 'DanhMuc/StudentApprover',
-				path: 'student-approver',
-				// access: 'cctFilter',
-			},
-			{
 				name: 'Competency',
 				component: 'DanhMuc/Competency',
 				path: 'competency',
@@ -819,6 +813,12 @@
 				name: 'Roles',
 				component: 'DanhMuc/Roles',
 				path: 'role',
+				// access: 'cctFilter',
+			},
+			{
+				name: 'StudentApprover',
+				component: 'DanhMuc/StudentApprover',
+				path: 'student-approver',
 				// access: 'cctFilter',
 			},
 
