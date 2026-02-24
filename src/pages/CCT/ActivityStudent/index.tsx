@@ -23,18 +23,19 @@ import {
 	SafetyCertificateOutlined,
 	SyncOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Popover, Space, Tabs, Tag } from 'antd';
-import { useState } from 'react';
+import { Button, Card, Popover, Segmented, Space, Tabs, Tag } from 'antd';
+import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
-import ModalChinhSuaImpact from './components/ModalImpact';
-import ModalChinhSuaTrangThai from './components/ModalTrangThai';
-import ModalXuLyActivityStudent from './components/ModalXuLy';
 import StatActivityOutCome from './components/Stat';
+import ModalChinhSuaImpact from './Modal/ModalImpact';
+import ModalChinhSuaTrangThai from './Modal/ModalTrangThai';
+import ModalXuLyActivityStudent from './Modal/ModalXuLy';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
 	const { getModel, page, limit, handleView, setRecord, getAnalyticsStaffModel } = useModel('cct.activityoutcome');
+	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
 
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
 	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
@@ -44,6 +45,11 @@ const HistoryActivityPage = () => {
 		title: string;
 		trangThai: EApprovalStatus;
 	}>();
+	const [segmentSelected, setSegmentSelected] = useState<EActivityCategory>(EActivityCategory.REGISTERED);
+
+	useEffect(() => {
+		getAllAtributes(undefined, { order: 1 }, { isActive: true });
+	}, []);
 
 	const getData = () => {
 		const filters: any[] = [];
@@ -66,7 +72,22 @@ const HistoryActivityPage = () => {
 			});
 		}
 
-		getModel(undefined, filters, undefined, undefined, undefined, 'approval-task-list/page');
+		getModel(
+			undefined,
+			[
+				...filters,
+				{
+					active: true,
+					field: 'activityCategory',
+					values: [segmentSelected],
+					operator: EOperatorType.INCLUDE,
+				},
+			],
+			undefined,
+			undefined,
+			undefined,
+			'approval-task-list/page',
+		);
 	};
 
 	const getThongKe = () => {
@@ -79,18 +100,6 @@ const HistoryActivityPage = () => {
 	});
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
-		{
-			title: 'Activity Category',
-			dataIndex: 'activityCategory',
-			width: 160,
-			render: (val, rec) => mapNameActivityCategory[val as EActivityCategory],
-			filterType: 'select',
-			filterData: Object.values(EActivityCategory).map((item) => ({
-				value: item,
-				label: mapNameActivityCategory[item],
-			})),
-			onCell,
-		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.level' }),
 			dataIndex: 'levelsId',
@@ -363,10 +372,9 @@ const HistoryActivityPage = () => {
 							tabActive,
 						}}
 						columns={columns}
-						dependencies={[page, limit, tabActive]}
+						dependencies={[page, limit, tabActive, segmentSelected]}
 						modelName='cct.activityoutcome'
 						title={intl.formatMessage({ id: 'activityresult.title' })}
-						Form={FormActivityStudent}
 						widthDrawer={1000}
 						buttons={{ create: false }}
 						onReload={() => {
@@ -374,6 +382,16 @@ const HistoryActivityPage = () => {
 							getThongKe();
 						}}
 						hideCard
+						otherButtons={[
+							<Segmented
+								options={Object.values(EActivityCategory).map((item) => ({
+									value: item,
+									label: mapNameActivityCategory[item],
+								}))}
+								value={segmentSelected}
+								onChange={(val) => setSegmentSelected(val)}
+							/>,
+						]}
 					>
 						<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab)}>
 							<Tabs.TabPane key='1' tab='Pending' />
@@ -382,6 +400,8 @@ const HistoryActivityPage = () => {
 					</TableBase>
 				</Card>
 			</Card>
+
+			<FormActivityStudent />
 
 			<ModalXuLyActivityStudent
 				visible={visibleXuLy}

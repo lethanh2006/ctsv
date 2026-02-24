@@ -8,6 +8,7 @@ import dayjs from '@/utils/dayjs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Card, Popconfirm, Space, Tag } from 'antd';
 import { uniqBy } from 'lodash';
+import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivity from './components/Form';
 import ModalActivity from './components/Modal';
@@ -17,6 +18,11 @@ const ActivityPage = () => {
 	const intl = useIntl();
 	const { getModel, page, limit, deleteModel, handleEdit, handleView, edit, isView } = useModel('cct.activity');
 	const { getAnalyticsActivityModel } = useModel('cct.activity');
+	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
+
+	useEffect(() => {
+		getAllAtributes(undefined, { order: 1 }, { isActive: true });
+	}, []);
 
 	const onCell = (rec: Activity.IRecord) => ({
 		onClick: () => handleView(rec),
@@ -173,7 +179,7 @@ const ActivityPage = () => {
 							getAnalyticsActivityModel();
 						},
 					}}
-					widthDrawer={1200}
+					widthDrawer={1000}
 					onReload={() => {
 						getModel();
 						getAnalyticsActivityModel();

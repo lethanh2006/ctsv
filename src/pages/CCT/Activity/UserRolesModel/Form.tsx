@@ -95,13 +95,10 @@ const FormUserRolesModel = (props: any) => {
 			</Row>
 
 			<div className='form-footer'>
-				<Button loading={formSubmiting} htmlType='submit' type='primary'>
-					{!edit
-						? intl.formatMessage({ id: 'global.button.themmoi' })
-						: intl.formatMessage({ id: 'global.button.chinhsua' })}
-				</Button>
-
 				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+				<Button loading={formSubmiting} htmlType='submit' type='primary'>
+					{intl.formatMessage({ id: 'global.button.luulai' })}
+				</Button>
 			</div>
 		</Form>
 	);

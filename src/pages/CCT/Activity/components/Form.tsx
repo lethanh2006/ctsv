@@ -5,7 +5,6 @@ import { IColumn } from '@/components/Table/typing';
 import UploadFile from '@/components/Upload/UploadFile';
 import SelectPhongCSVC from '@/pages/CoSoVatChat/Phong/Select';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
-import StudenDomainModelPage from '@/pages/DanhMuc/Activities/StudenModel';
 import FormItemStudentDomain from '@/pages/DanhMuc/Activities/Student/FormItem';
 import SelectActivitiesTypeDomain from '@/pages/DanhMuc/CCD/components/Select';
 import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
@@ -21,7 +20,6 @@ import { resetFieldsForm } from '@/utils/utils';
 import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, message, Radio, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
-import EquivalencyForm from '../Equivalency/Form';
 import EquivalencyFormItem from '../Equivalency/FormItem';
 import FormItemUserRoles from '../UserRoles/FormItem';
 import UserRolesModelPage from '../UserRolesModel';
@@ -557,22 +555,18 @@ const FormActivity = (props: { getData?: () => void }) => {
 								</Col>
 
 								<Col span={24}>
-									{record?._id ? (
-										<EquivalencyForm disabled={isView} />
-									) : (
-										<EquivalencyFormItem
-											coCurricularAttributesEquivalency={
-												dsActivityType
-													?.find((item) => item?._id === activitiesTypeId)
-													?.attributes?.map((attr: any) => ({
-														attributesId: attr._id,
-														attributes: attr,
-													})) ?? []
-											}
-											form={form}
-											disabled={isView}
-										/>
-									)}
+									<EquivalencyFormItem
+										coCurricularAttributesEquivalency={
+											dsActivityType
+												?.find((item) => item?._id === activitiesTypeId)
+												?.attributes?.map((attr: any) => ({
+													attributesId: attr._id,
+													attributes: attr,
+												})) ?? []
+										}
+										form={form}
+										disabled={isView}
+									/>
 								</Col>
 
 								<Col span={24}>
@@ -624,13 +618,9 @@ const FormActivity = (props: { getData?: () => void }) => {
 								</Col>
 
 								<Col span={24}>
-									{record?._id ? (
-										<StudenDomainModelPage disabled={isView} mode='activity' />
-									) : (
-										<Form.Item name='studentDeclarationApproverList'>
-											<FormItemStudentDomain disabled={isView} />
-										</Form.Item>
-									)}
+									<Form.Item name='studentDeclarationApproverList'>
+										<FormItemStudentDomain disabled={isView} />
+									</Form.Item>
 								</Col>
 							</>
 						)}
@@ -639,14 +629,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 			</Row>
 
 			<div className='form-footer'>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				{!isView && (
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit
-							? intl.formatMessage({ id: 'global.button.themmoi' })
-							: intl.formatMessage({ id: 'global.button.chinhsua' })}
+						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 				)}
-				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 			</div>
 		</Form>
 	);

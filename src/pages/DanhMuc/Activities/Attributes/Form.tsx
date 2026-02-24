@@ -48,13 +48,10 @@ const FormAttributesCCA = (props: {
 			</Row>
 
 			<div className='form-footer'>
-				<Button htmlType='submit' type='primary'>
-					{!edit
-						? intl.formatMessage({ id: 'global.button.themmoi' })
-						: intl.formatMessage({ id: 'global.button.chinhsua' })}
-				</Button>
-
 				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+				<Button htmlType='submit' type='primary'>
+					{intl.formatMessage({ id: 'global.button.luulai' })}
+				</Button>
 			</div>
 		</Form>
 	);

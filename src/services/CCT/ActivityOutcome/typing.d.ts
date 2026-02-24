@@ -6,6 +6,7 @@ declare module ActivityOutCome {
 		_id: string;
 		name: string;
 		email: string;
+		banner: string;
 		activitiesOutcomeName: string;
 		activitiesId: string;
 		activities: Activity.IRecord;
@@ -15,6 +16,8 @@ declare module ActivityOutCome {
 		roles?: RolesManagement.IRecord;
 		levelsId: string;
 		levels?: LevelsManagement.IRecord;
+		trackId?: string;
+		tracks?: TrackManagement.IRecord;
 		organizer: string;
 		description: string;
 		location: string;
@@ -30,14 +33,15 @@ declare module ActivityOutCome {
 		revisionNote: string;
 		validation: Evalidation;
 		reflection: string;
+		startDate: Date;
+		endDate: Date;
+
+		activityRejectionNote?: string;
+		listAchievedCompetencies: Activity.ICompetencyMapping[];
 		evidenceFile: {
 			name: string;
 			file: string[];
 		}[];
-		startDate: Date;
-		endDate: Date;
-
-		listAchievedCompetencies: Activity.ICompetencyMapping[];
 		competencyList: ICompetencyActivity[];
 
 		supervisorSsoId: string;

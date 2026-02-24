@@ -11,9 +11,9 @@ export default {
 
 	'activitiesmanagement.confirm.delete': 'Do You Want To Remove This Activity?',
 
-	'activitiesmanagement.form.themmoi': 'Add New Activity Bank',
-	'activitiesmanagement.form.chinhsua': 'Edit Activity Bank',
-	'activitiesmanagement.form.chitiet': 'Detail Activity Bank',
+	'activitiesmanagement.form.themmoi': 'Add New Activity Type',
+	'activitiesmanagement.form.chinhsua': 'Edit Activity Type',
+	'activitiesmanagement.form.chitiet': 'Detail Activity Type',
 
 	'activitiesmanagement.form.id': 'Code',
 	'activitiesmanagement.form.id.place': 'Enter Code',

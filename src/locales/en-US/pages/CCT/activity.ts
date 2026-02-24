@@ -47,7 +47,7 @@ export default {
 	'activity.info.form.cct': 'CCT Transcript',
 	'activity.info.form.allowPostEventResultsUpdate': 'Allow Post-event Results Update',
 	'activity.info.form.activitiesTypeId': 'Activity',
-	'activity.info.form.activitiesTypeId.select': 'Select Activity Bank',
+	'activity.info.form.activitiesTypeId.select': 'Select Activity Type',
 	'activity.info.form.activitiesTypeId.mapping': 'Attributes Competency Mapping',
 	'activity.info.form.student': 'Student Declaration Approver',
 	'activity.info.form.duedate': 'Due Date',

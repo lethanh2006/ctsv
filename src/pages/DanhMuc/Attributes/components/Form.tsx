@@ -143,13 +143,6 @@ const FormAttributes = () => {
 				</Row>
 
 				<div className='form-footer'>
-					{!isView && (
-						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit
-								? intl.formatMessage({ id: 'global.button.themmoi' })
-								: intl.formatMessage({ id: 'global.button.chinhsua' })}
-						</Button>
-					)}
 					<Button
 						onClick={() => {
 							setVisibleForm(false);
@@ -158,6 +151,11 @@ const FormAttributes = () => {
 					>
 						{intl.formatMessage({ id: 'global.button.dong' })}
 					</Button>
+					{!isView && (
+						<Button loading={formSubmiting} htmlType='submit' type='primary'>
+							{intl.formatMessage({ id: 'global.button.luulai' })}
+						</Button>
+					)}
 				</div>
 			</Form>
 		</Card>
