@@ -22,10 +22,31 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import EquivalencyFormItem from '../Equivalency/FormItem';
 import FormItemUserRoles from '../UserRoles/FormItem';
-import UserRolesModelPage from '../UserRolesModel';
 import GroupTagVaiTro from './GroupTagVaiTro';
 
 const MAX_SELECT = 3;
+const normalizeEquivalencyData = (data: any[]) => {
+	const map: Record<string, any> = {};
+
+	data.forEach((item) => {
+		const roleId = item.rolesId;
+		if (!roleId) return;
+
+		if (!map[roleId]) {
+			map[roleId] = {
+				rolesId: roleId,
+				role: item.roles ?? null,
+				attributes: {},
+			};
+		}
+
+		if (item.attributesId) {
+			map[roleId].attributes[item.attributesId] = true;
+		}
+	});
+
+	return Object.values(map);
+};
 
 const FormActivity = (props: { getData?: () => void }) => {
 	const intl = useIntl();
@@ -64,6 +85,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 				cct: record?.activitiesTypeId ?? false,
 				activitiesTypeDomainId: record?.activitiesType?.activitiesTypeDomainId,
 				competencyList: record?.competencyList?.map((item) => item?.competencyId),
+				coCurricularActivityEquivalency: normalizeEquivalencyData(record?.coCurricularActivityEquivalency),
 			});
 
 		if (!record?._id) {
@@ -144,10 +166,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 			});
 		});
 
+		const data = { ...values, coCurricularActivityEquivalency: result };
+
 		if (edit) {
 			putModel(
 				record?._id ?? '',
-				values,
+				data,
 				getData,
 				undefined,
 				undefined,
@@ -156,12 +180,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(
-				{ ...values, coCurricularActivityEquivalency: result },
-				getData,
-				undefined,
-				intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
-			)
+			postModel(data, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 	};
@@ -370,19 +389,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 
 				<Col span={24}>
 					{participantScope === EParticipantScope.USER_LIST ? (
-						<>
-							<Divider className='divider-big-title' orientation='left'>
-								{intl.formatMessage({ id: 'activity.info.form.participantsList' })}{' '}
-							</Divider>
-
-							{record?._id ? (
-								<UserRolesModelPage disabled={isView} participantRole={participantRole} />
-							) : (
-								<Form.Item name='participantsList'>
-									<FormItemUserRoles disabled={isView} participantRole={participantRole} />
-								</Form.Item>
-							)}
-						</>
+						<Form.Item
+							name='participantsList'
+							label={intl.formatMessage({ id: 'activity.info.form.participantsList' })}
+						>
+							<FormItemUserRoles disabled={isView} participantRole={participantRole} />
+						</Form.Item>
 					) : participantScope === EParticipantScope.STUDENT ? (
 						<Form.Item
 							name='studentCohortCode'
@@ -420,22 +432,13 @@ const FormActivity = (props: { getData?: () => void }) => {
 
 				<Col span={24} md={12}>
 					<Form.Item name='allowCapacity' valuePropName='checked' label=''>
-						<Checkbox disabled={isView}>Allow Capacity</Checkbox>
+						<Checkbox disabled={isView}>Capacity Limit</Checkbox>
 					</Form.Item>
 				</Col>
 
 				<Col span={24} md={12}>
 					<Form.Item name='allowDueDateRegistration' valuePropName='checked' label=''>
-						<Checkbox
-							disabled={isView}
-							onChange={(e) => {
-								if (!e.target.checked) return;
-								const baseDate = endDate ? dayjs(endDate) : dayjs();
-								form.setFieldValue('dueDateRegistration', baseDate);
-							}}
-						>
-							Allow Registration
-						</Checkbox>
+						<Checkbox disabled={isView}>Limit Registration End Time</Checkbox>
 					</Form.Item>
 				</Col>
 
@@ -454,9 +457,14 @@ const FormActivity = (props: { getData?: () => void }) => {
 								showTime={{ showHour: true, showMinute: true }}
 								format='HH:mm DD/MM/YYYY'
 								disabled={isView}
-								disabledDate={(current) =>
-									!!(dayjs(current).isBefore(dayjs().startOf('day')) || (endDate && dayjs(current).isBefore(endDate)))
-								}
+								disabledDate={(current) => {
+									if (!current || !startDate || !endDate) return false;
+
+									return (
+										dayjs(current).isBefore(dayjs(startDate).startOf('day')) ||
+										dayjs(current).isAfter(dayjs(endDate).endOf('day'))
+									);
+								}}
 								placeholder={intl.formatMessage({ id: 'activity.info.form.duedate.place' })}
 								allowClear
 							/>
@@ -532,6 +540,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 										<SelectActivitiesManagement
 											disabled={isView}
 											condition={{ activitiesTypeDomainId: activitiesTypeDomainId }}
+											onChange={() => form.resetFields(['coCurricularActivityEquivalency'])}
 										/>
 									</Form.Item>
 								</Col>
@@ -547,6 +556,14 @@ const FormActivity = (props: { getData?: () => void }) => {
 										/>
 									</Form.Item>
 								</Col>
+
+								{activitiesTypeId && (
+									<Col span={24}>
+										Required Evidence:{' '}
+										{dsActivityType?.find((item) => item?._id === activitiesTypeId)?.requiredEvidenceList?.join(', ') ??
+											'--'}
+									</Col>
+								)}
 
 								<Col span={24}>
 									<Divider className='divider-big-title' orientation='left'>
@@ -571,7 +588,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 
 								<Col span={24}>
 									<Divider className='divider-big-title' orientation='left'>
-										List competency
+										List Competency
 									</Divider>
 								</Col>
 

@@ -13,6 +13,10 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 	const intl = useIntl();
 	const { record, isRegistered } = props;
 
+	const registered = record?.numberOfRegisteredActivityOutcomes ?? 0;
+	const capacity = record?.capacity;
+	const isFull = capacity && registered >= capacity;
+
 	return (
 		<Row gutter={[12, 12]}>
 			<Col span={24} md={9}>
@@ -23,7 +27,7 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 			</Col>
 			<Col span={24} md={15}>
 				<Card variant='borderless' size='small'>
-					<Divider className='divider-big-title' orientation='left'>
+					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 						Administrative Information
 					</Divider>
 
@@ -43,7 +47,11 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 							</div>
 							<div className='info-item'>
 								<div className='info-label'>Activity Group</div>
-								<div className='info-value'>{record?.activitiesType?.activitiesTypeDomain?.name ?? '--'}</div>
+								<div className='info-value'>
+									{record?.activitiesType?.activitiesTypeDomainText ??
+										record?.activitiesType?.activitiesTypeDomain?.name ??
+										'--'}
+								</div>
 							</div>
 							<div className='info-item'>
 								<div className='info-label'>Activity Type</div>
@@ -51,11 +59,27 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 							</div>
 							<div className='info-item'>
 								<div className='info-label'>Track</div>
-								<div className='info-value'>{record?.activitiesType?.track?.name ?? '--'}</div>
+								<div className='info-value'>
+									{record?.activitiesType?.trackText ?? record?.activitiesType?.track?.name ?? '--'}
+								</div>
 							</div>
 							<div className='info-item'>
 								<div className='info-label'>Capacity</div>
-								<div className='info-value'>15 slots</div>
+								<div
+									className='info-value'
+									style={{
+										color: isFull ? '#C72127' : undefined,
+									}}
+								>
+									{capacity ? (
+										<>
+											{`${registered} / ${capacity}`}
+											{isFull && ' (Full Slot)'}
+										</>
+									) : (
+										'--'
+									)}
+								</div>
 							</div>
 							<div className='info-item'>
 								<div className='info-label'>Allow post-event results update</div>
@@ -98,7 +122,7 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 			{record?.workflow === EApprovalStatus.CHANGES_REQUIRED && !!record?.revisionNote && (
 				<Col span={24}>
 					<Card variant='borderless' size='small'>
-						<Divider className='divider-big-title' orientation='left'>
+						<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 							Revision Note
 						</Divider>
 						<span>{record?.revisionNote}</span>
@@ -109,7 +133,7 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 			{record?.workflow === EApprovalStatus.REJECTED && !!record?.reflection && (
 				<Col span={24}>
 					<Card variant='borderless' size='small'>
-						<Divider className='divider-big-title' orientation='left'>
+						<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 							Rejection Note
 						</Divider>
 						<span>{record?.reflection}</span>
@@ -119,10 +143,10 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
-					<Divider className='divider-big-title' orientation='left'>
+					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 						{isRegistered ? 'Evidence Information' : 'Role'}
 					</Divider>
-					<FormRoleEvidence select={isRegistered} rolesId={record?.rolesId} />
+					<FormRoleEvidence record={record} select={isRegistered} rolesId={record?.rolesId} />
 
 					{isRegistered && (
 						<div className='custom-info-grid grid-2' style={{ marginTop: 16 }}>
@@ -181,7 +205,7 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
-					<Divider className='divider-big-title' orientation='left'>
+					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 						Competency
 					</Divider>
 					<div className='competency-list'>
@@ -197,7 +221,7 @@ const ChiTietActivity = (props: { record: Activity.IRecord; isRegistered?: boole
 
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
-					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0, marginBottom: 6 }}>
+					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 						Activity Description
 					</Divider>
 					<span>{record?.description}</span>

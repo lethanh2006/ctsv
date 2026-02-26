@@ -1,5 +1,10 @@
 import { Activity } from '@/services/CCT/Activity/typing';
-import { EApprovalStatus, mapColorApprovalStatus, mapNameApprovalStatus } from '@/services/CCT/constant';
+import {
+	EApprovalStatus,
+	mapColorApprovalStatus,
+	mapColorTextApprovalStatus,
+	mapNameApprovalStatus,
+} from '@/services/CCT/constant';
 import { ClockCircleOutlined, EnvironmentOutlined, HourglassOutlined, UserOutlined } from '@ant-design/icons';
 import { Card, Flex, Image, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
@@ -17,6 +22,12 @@ const CardSuKienCCT = (props: {
 }) => {
 	const { danhSach: dsAttribute } = useModel('danhmuc.attributes');
 	const { record, equivalencyAttributeIds, onClick, button, isPersonal } = props;
+
+	const endDate = record?.dueDateRegistration
+		? dayjs(record.dueDateRegistration)
+		: record?.endDate
+			? dayjs(record.endDate)
+			: null;
 
 	return (
 		<Card
@@ -48,7 +59,10 @@ const CardSuKienCCT = (props: {
 							})}
 						</div>
 
-						<Tag color={mapColorApprovalStatus[record?.workflow as EApprovalStatus]}>
+						<Tag
+							color={mapColorApprovalStatus[record?.workflow as EApprovalStatus]}
+							style={{ color: mapColorTextApprovalStatus[record?.workflow as EApprovalStatus], fontWeight: 600 }}
+						>
 							{mapNameApprovalStatus[record?.workflow as EApprovalStatus]}
 						</Tag>
 					</Flex>
@@ -82,12 +96,7 @@ const CardSuKienCCT = (props: {
 
 							<Space size='small'>
 								<HourglassOutlined className='icon-light' />
-								<span className='text-danger'>
-									Evidence update before{' '}
-									{record?.allowPostEventResultsUpdate
-										? record?.dueDate && dayjs(record.dueDate).format('HH:mm DD/MM/YYYY')
-										: record?.endDate && dayjs(record.endDate).format('HH:mm DD/MM/YYYY')}
-								</span>
+								<span className='one-line'>Register before {endDate && endDate.format('HH:mm DD/MM/YYYY')}</span>
 							</Space>
 						</>
 					)}

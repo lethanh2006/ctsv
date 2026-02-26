@@ -1,7 +1,7 @@
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Divider, Form, Input, InputNumber, Row, Switch } from 'antd';
+import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import SelectActivitiesTypeDomain from '../../CCD/components/Select';
@@ -71,7 +71,7 @@ const FormActivities = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.id' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.id.place' })} />
 						</Form.Item>
@@ -80,7 +80,7 @@ const FormActivities = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.name' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(80)]}
 						>
 							<Input
 								disabled={isView}
@@ -88,12 +88,11 @@ const FormActivities = (props: any) => {
 							/>
 						</Form.Item>
 					</Col>
+
 					<Col span={24}>
-						<Divider className='divider-big-title' orientation='left'>
-							Attributes
-						</Divider>
-					</Col>
-					<Col span={24}>
+						<div className='fw500' style={{ marginBottom: 6 }}>
+							Graduating Attributes
+						</div>
 						{record?._id ? (
 							<AttributesCCAModel disabled={isView} />
 						) : (
@@ -138,23 +137,21 @@ const FormActivities = (props: any) => {
 						<Form.Item
 							name='description'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.des' })}
-							rules={[...rules.text]}
+							rules={[...rules.text, ...rules.length(255)]}
 						>
 							<Input.TextArea
 								disabled={isView}
 								rows={3}
 								placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.des.place' })}
+								showCount
 							/>
 						</Form.Item>
 					</Col>
 
 					<Col span={24}>
-						<Divider className='divider-big-title' orientation='left'>
+						<div className='fw500' style={{ marginBottom: 6 }}>
 							Required Evidence
-						</Divider>
-					</Col>
-
-					<Col span={24}>
+						</div>
 						<Form.List name='requiredEvidenceList'>
 							{(fields, { add, remove }) => (
 								<>
@@ -208,12 +205,12 @@ const FormActivities = (props: any) => {
 				</Row>
 
 				<div className='form-footer'>
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 					{!isView && (
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
 							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Form>
 		</Card>

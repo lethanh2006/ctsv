@@ -69,7 +69,9 @@ const SelectNhanSuDebounce = (props: {
 			options={danhSach.map((item) => ({
 				key: item._id,
 				value: item.ssoId,
-				label: `${item.hoDem ?? ''} ${item.ten ?? ''} - ${item.maCanBo ?? ''}`,
+				label: [`${item.hoDem ?? ''} ${item.ten ?? ''}`.trim(), item.maCanBo, item.emailCanBo ?? item.email]
+					.filter(Boolean)
+					.join(' - '),
 				rawData: item,
 			}))}
 			showSearch

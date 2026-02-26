@@ -60,7 +60,7 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.id' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.id.place' })} />
 						</Form.Item>
@@ -69,17 +69,13 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.name' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(80)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.name.place' })} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item
-							name='order'
-							label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}
-							// rules={[...rules.required]}
-						>
+						<Form.Item name='order' label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}>
 							<InputNumber
 								disabled={isView}
 								style={{ width: '100%' }}
@@ -109,24 +105,25 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='description'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.des' })}
-							rules={[...rules.text]}
+							rules={[...rules.text, ...rules.length(255)]}
 						>
 							<Input.TextArea
 								disabled={isView}
 								rows={3}
 								placeholder={intl.formatMessage({ id: 'rolesmanagement.form.des.place' })}
+								showCount
 							/>
 						</Form.Item>
 					</Col>
 				</Row>
 
 				<div className='form-footer'>
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 					{!isView && (
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
 							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Form>
 		</Card>

@@ -65,6 +65,13 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
+			title: 'Track',
+			width: 130,
+			render: (val, rec) => rec?.activitiesType?.trackText,
+			filterType: 'customselect',
+			onCell,
+		},
+		{
 			title: 'Registrations',
 			dataIndex: 'numberOfRegisteredActivityOutcomes',
 			width: 120,

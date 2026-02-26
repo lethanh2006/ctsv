@@ -27,10 +27,6 @@ const EquivalencyFormItem = (props: {
 		getAllModel(undefined, { order: 1 });
 	}, []);
 
-	useEffect(() => {
-		form.resetFields(['coCurricularActivityEquivalency']);
-	}, [JSON.stringify(coCurricularAttributesEquivalency)]);
-
 	const baseAttributeIds = useMemo(
 		() => coCurricularAttributesEquivalency?.map((i) => i.attributesId) || [],
 		[coCurricularAttributesEquivalency],
@@ -53,7 +49,7 @@ const EquivalencyFormItem = (props: {
 		if (!dsAtribute?.length) return [];
 
 		return dsAtribute.map((attr) => {
-			const isAllow = allowAttributeIds.includes(attr._id);
+			// const isAllow = allowAttributeIds.includes(attr._id);
 			const isBase = baseAttributeIds.includes(attr._id);
 			const highlightColor = highlightMap[attr._id];
 

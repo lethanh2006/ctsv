@@ -8,6 +8,7 @@ import {
 	EApprovalStatus,
 	Evalidation,
 	mapColorApprovalStatus,
+	mapColorTextApprovalStatus,
 	mapEvalidation,
 	mapNameApprovalStatus,
 } from '@/services/CCT/constant';
@@ -115,6 +116,8 @@ const RegisteredActivity = () => {
 						whiteSpace: 'normal',
 						wordBreak: 'break-word',
 						textAlign: 'center',
+						color: mapColorTextApprovalStatus[rec?.workflow as EApprovalStatus],
+						fontWeight: 600,
 					}}
 				>
 					{mapNameApprovalStatus[val as EApprovalStatus]}
@@ -139,10 +142,9 @@ const RegisteredActivity = () => {
 				modelName='cct.activityoutcome'
 				buttons={{ create: false }}
 				hideCard
-				Form={FormActivityStudent}
-				widthDrawer={1000}
-				formProps={{ isActivity: true }}
 			/>
+
+			<FormActivityStudent isActivity />
 
 			<div className='form-footer'>
 				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>

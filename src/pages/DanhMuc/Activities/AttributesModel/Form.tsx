@@ -35,7 +35,7 @@ const FormCompetencyCCAModel = (props: any) => {
 	};
 
 	return (
-		<Card title={edit ? 'Edit CCA attribute' : 'Add new CCA attribute'}>
+		<Card title={edit ? 'Edit Graduating Attribute' : 'Add New Graduating Attribute'}>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
@@ -46,10 +46,10 @@ const FormCompetencyCCAModel = (props: any) => {
 				</Row>
 
 				<div className='form-footer'>
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Form>
 		</Card>

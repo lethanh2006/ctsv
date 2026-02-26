@@ -6,7 +6,7 @@ export default {
 	'modules.quan-ly-dao-tao': 'Training Management',
 	'modules.to-chuc-nhan-su': 'Human Resources',
 	'modules.tai-chinh': 'Finance',
-	'modules.cong-tac-sinh-vien': 'CO-CURRICULAR ACTIVITIES',
+	'modules.cong-tac-sinh-vien': 'Student Affairs Management',
 	'modules.quan-ly-khoa-hoc': 'Research Management',
 	'modules.van-phong-so': 'Digital Office',
 	'modules.khao-thi': 'Examination',

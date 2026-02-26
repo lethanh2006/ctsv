@@ -3,7 +3,7 @@ import { Button, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import ChiTietActivity from '../ChiTiet';
-import PersonalActivity from '../ListStudent/Personal';
+import ListEvidenceActivity from '../ListStudent/ListEvidence';
 import RegisteredActivity from '../ListStudent/Registered';
 
 const ModalActivity = () => {
@@ -24,7 +24,7 @@ const ModalActivity = () => {
 			items={[
 				{
 					key: '0',
-					label: 'General Information',
+					label: 'Activity Information',
 					children: (
 						<>
 							<ChiTietActivity record={record ?? ({} as Activity.IRecord)} />
@@ -45,7 +45,7 @@ const ModalActivity = () => {
 				{
 					key: '2',
 					label: 'Evidence Declaration List',
-					children: <PersonalActivity />,
+					children: <ListEvidenceActivity />,
 				},
 			]}
 		/>

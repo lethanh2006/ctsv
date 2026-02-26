@@ -64,9 +64,7 @@ const FormStudentDomainModel = (props: any) => {
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit
-							? intl.formatMessage({ id: 'global.button.themmoi' })
-							: intl.formatMessage({ id: 'global.button.chinhsua' })}
+						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 
 					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>

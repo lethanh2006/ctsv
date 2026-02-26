@@ -10,6 +10,7 @@ import {
 	EApprovalStatus,
 	Evalidation,
 	mapColorApprovalStatus,
+	mapColorTextApprovalStatus,
 	mapEvalidation,
 	mapNameActivityCategory,
 	mapNameApprovalStatus,
@@ -221,7 +222,7 @@ const HistoryActivityPage = () => {
 			title: intl.formatMessage({ id: 'activityresult.column.status' }),
 			dataIndex: 'workflow',
 			align: 'center',
-			width: 100,
+			width: 120,
 			render: (val, rec) => (
 				<Tag
 					color={mapColorApprovalStatus[val as EApprovalStatus]}
@@ -230,6 +231,8 @@ const HistoryActivityPage = () => {
 						whiteSpace: 'normal',
 						wordBreak: 'break-word',
 						textAlign: 'center',
+						color: mapColorTextApprovalStatus[rec?.workflow as EApprovalStatus],
+						fontWeight: 600,
 					}}
 				>
 					{mapNameApprovalStatus[val as EApprovalStatus]}
@@ -358,7 +361,7 @@ const HistoryActivityPage = () => {
 				variant='borderless'
 			>
 				<Card style={{ marginBottom: 12 }}>
-					<StatActivityOutCome getData={getThongKe} />
+					<StatActivityOutCome getData={getThongKe} setTabActive={setTabActive} />
 				</Card>
 
 				<Card>

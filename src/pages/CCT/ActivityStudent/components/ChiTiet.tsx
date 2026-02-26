@@ -24,7 +24,7 @@ const ChiTietActivityOutCome = (props: { recOutcome: ActivityOutCome.IRecord }) 
 			</Col>
 			<Col span={24} md={15}>
 				<Card variant='borderless' size='small'>
-					<Divider className='divider-big-title' orientation='left'>
+					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 						Administrative Information
 					</Divider>
 
@@ -78,7 +78,7 @@ const ChiTietActivityOutCome = (props: { recOutcome: ActivityOutCome.IRecord }) 
 
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
-					<Divider className='divider-big-title' orientation='left'>
+					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 6 }}>
 						Evidence Information
 					</Divider>
 
@@ -120,7 +120,7 @@ const ChiTietActivityOutCome = (props: { recOutcome: ActivityOutCome.IRecord }) 
 
 						<div className='info-row'>
 							<div className='info-item full-width'>
-								<div style={{ marginBottom: 8, fontWeight: 600 }}>List Evidence</div>
+								<div style={{ marginBottom: 8, fontWeight: 600 }}>List Competency</div>
 								<FormCompetencyEvidence
 									competencyList={recOutcome?.competencyList?.map((item) => item?.competencyId)}
 								/>

@@ -43,11 +43,13 @@ const FormActivityStudent = (props: any) => {
 						...record?.activities,
 						workflow: record?.workflow,
 						validation: record?.validation,
+
 						rolesId: record?.rolesId,
 						tracks: record?.tracks,
 						levels: record?.levels,
+
 						evidenceFile: record?.evidenceFile,
-						competencyList: record?.competencyList,
+
 						reflection: record?.reflection,
 						revisionNote: record?.revisionNote,
 					}}

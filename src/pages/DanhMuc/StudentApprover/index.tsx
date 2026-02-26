@@ -42,6 +42,13 @@ const StudentApproverPage = () => {
 			onCell,
 		},
 		{
+			title: 'Employee Code',
+			dataIndex: 'code',
+			width: 120,
+			filterType: 'string',
+			onCell,
+		},
+		{
 			title: 'Email',
 			dataIndex: 'email',
 			width: 100,

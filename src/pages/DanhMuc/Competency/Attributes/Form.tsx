@@ -42,9 +42,7 @@ const FormAttributesCompetency = (props: { onOk: (val: Competency.ICompetencyAtt
 
 			<div className='form-footer'>
 				<Button htmlType='submit' type='primary'>
-					{!edit
-						? intl.formatMessage({ id: 'global.button.themmoi' })
-						: intl.formatMessage({ id: 'global.button.chinhsua' })}
+					{intl.formatMessage({ id: 'global.button.luulai' })}
 				</Button>
 
 				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>

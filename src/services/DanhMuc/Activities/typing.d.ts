@@ -7,6 +7,7 @@ declare module ActivitiesManagement {
 		attributes: AttributesManagement.IRecord[];
 		activitiesTypeDomainId: string;
 		activitiesTypeDomain: ActivitiesTypeDomain.IRecord;
+		activitiesTypeDomainText: string;
 		order: number;
 		description: string;
 		isActive: boolean;
@@ -15,11 +16,13 @@ declare module ActivitiesManagement {
 		requiredEvidenceList: string[];
 		trackId: string;
 		track: Track.IRecord;
+		trackText: string;
 	}
 
 	export interface IStudentDeclaration {
 		_id: string;
 		index: number;
+		code: string;
 		ssoId: string;
 		name: string;
 		email: string;

@@ -52,7 +52,7 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
-						title='Do you want to remove this CCA attribute?'
+						title='Do you want to remove this Graduating Attribute?'
 						placement='topLeft'
 					>
 						<ButtonExtend
@@ -74,7 +74,7 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 			columns={columns}
 			dependencies={[page, limit, recCCA?._id]}
 			modelName='danhmuc.ccaattributes'
-			title='CCA attribute'
+			title='Graduating Attribute'
 			Form={FormCompetencyCCAModel}
 			formProps={{ getData }}
 			buttons={{ create: !disabled }}

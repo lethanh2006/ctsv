@@ -2,11 +2,15 @@ import StatisticsCard from '@/components/StatisticsCard';
 import { StatisticsItem } from '@/components/StatisticsCard/typing';
 import { inputFormat } from '@/utils/utils';
 import { useEffect } from 'react';
-import { useIntl, useModel } from 'umi';
+import { useModel } from 'umi';
 
-const StatActivityOutCome = (props: { getData: () => void; dependency?: any }) => {
-	const { getData, dependency } = props;
-	const intl = useIntl();
+const StatActivityOutCome = (props: {
+	getData: () => void;
+	dependency?: any;
+	setTabActive?: (tab: string) => void;
+}) => {
+	const { getData, dependency, setTabActive } = props;
+	// const intl = useIntl();
 	const { loadingThongKe, dataThongKe } = useModel('cct.activityoutcome');
 
 	useEffect(() => {
@@ -23,26 +27,26 @@ const StatActivityOutCome = (props: { getData: () => void; dependency?: any }) =
 			title: 'Pending',
 			value: inputFormat(dataThongKe?.pending ?? 0),
 			valueColor: '#faad14',
+			onClick: () => setTabActive && setTabActive('1'),
 		},
 		{
 			title: 'Processed',
 			value: inputFormat(dataThongKe?.processed ?? 0),
 			valueColor: '#52c41a',
+			onClick: () => setTabActive && setTabActive('2'),
 		},
 	];
 
 	return (
-		<>
-			<StatisticsCard
-				data={statisticsData}
-				loading={loadingThongKe}
-				hideCard={true}
-				colSpan={{ xs: 24, md: 8 }}
-				rowGutter={8}
-				containerStyle={{ marginBottom: 12 }}
-				title=''
-			/>
-		</>
+		<StatisticsCard
+			data={statisticsData}
+			loading={loadingThongKe}
+			hideCard={true}
+			colSpan={{ xs: 24, md: 8 }}
+			rowGutter={8}
+			containerStyle={{ marginBottom: 12 }}
+			title=''
+		/>
 	);
 };
 

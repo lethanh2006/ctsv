@@ -62,7 +62,7 @@ const FormItemAttributesCCA = (props: {
 				<>
 					<Popconfirm
 						onConfirm={() => onDelete(rec.index - 1)}
-						title='Do you want to remove this cca attribute?'
+						title='Do you want to remove this Graduating Attribute?'
 						placement='topLeft'
 						disabled={disabled}
 					>
@@ -99,7 +99,7 @@ const FormItemAttributesCCA = (props: {
 			</TableStaticData>
 
 			<Modal
-				title={edit ? 'Edit cca attribute' : 'Add new cca attribute'}
+				title={edit ? 'Edit Graduating Attribute' : 'Add new Graduating Attribute'}
 				open={visibleForm}
 				width={600}
 				footer={null}

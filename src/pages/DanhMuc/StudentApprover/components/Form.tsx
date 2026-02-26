@@ -41,9 +41,7 @@ const FormStudentApprover = (props: any) => {
 	};
 
 	return (
-		<Card
-			title={edit ? 'Edit new student approver' : isView ? 'Detail new student approver' : 'Add new student approver'}
-		>
+		<Card title={edit ? 'Edit Student Approver' : isView ? 'Detail Student Approver' : 'Add New Student Approver'}>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
@@ -54,6 +52,7 @@ const FormStudentApprover = (props: any) => {
 									form.setFieldsValue({
 										name: nhanSu?.hoTen ? nhanSu?.hoTen : [nhanSu?.hoDem, nhanSu?.ten].filter(Boolean).join(' '),
 										email: nhanSu?.emailCanBo ?? nhanSu?.email,
+										code: nhanSu?.maCanBo ?? nhanSu?.ma,
 									});
 								}}
 								disabled={isView}
@@ -61,6 +60,7 @@ const FormStudentApprover = (props: any) => {
 						</Form.Item>
 						<Form.Item name='name' hidden />
 						<Form.Item name='email' hidden />
+						<Form.Item name='code' hidden />
 					</Col>
 					<Col span={24}>
 						<Form.Item name='mainApprover' label='' valuePropName='checked'>
@@ -70,10 +70,10 @@ const FormStudentApprover = (props: any) => {
 				</Row>
 
 				<div className='form-footer'>
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
+					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Form>
 		</Card>
