@@ -48,7 +48,7 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 				<>
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, undefined, {
+							deleteModel(rec._id, getData, {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
@@ -80,6 +80,7 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 			buttons={{ create: !disabled }}
 			hideCard
 			otherProps={{
+				pagination: false,
 				size: 'small',
 			}}
 		/>

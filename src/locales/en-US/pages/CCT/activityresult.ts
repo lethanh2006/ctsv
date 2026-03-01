@@ -41,7 +41,7 @@ export default {
 	'activityresult.stat.ongoing': 'Ongoing',
 	'activityresult.stat.completed': 'Completed',
 
-	'activityresult.perstion.title': 'Detail Activity',
+	'activityresult.perstion.title': 'Activity Detail',
 	'activityresult.perstion.activitiesOutcomeName': 'Co Curicular Name',
 	'activityresult.perstion.activitiesOutcomeName.place': 'Enter Co Curicular Name',
 	'activityresult.perstion.activitiesTypeId': 'Activity',

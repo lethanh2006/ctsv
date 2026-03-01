@@ -13,7 +13,7 @@ export default {
 
 	'activitiesmanagement.form.themmoi': 'Add New Activity Type',
 	'activitiesmanagement.form.chinhsua': 'Edit Activity Type',
-	'activitiesmanagement.form.chitiet': 'Detail Activity Type',
+	'activitiesmanagement.form.chitiet': 'Activity Type Detail',
 
 	'activitiesmanagement.form.id': 'Code',
 	'activitiesmanagement.form.id.place': 'Enter Code',

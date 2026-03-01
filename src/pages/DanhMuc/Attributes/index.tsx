@@ -53,7 +53,6 @@ const AttributesPage = () => {
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'attributesmanagement.column.active' }),

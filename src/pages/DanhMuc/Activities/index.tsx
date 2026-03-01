@@ -48,14 +48,6 @@ const ActivitiesPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.column.des' }),
-			dataIndex: 'description',
-			width: 180,
-			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
-			onCell,
-		},
-		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.attribute' }),
 			dataIndex: 'attributes',
 			width: 180,
@@ -67,6 +59,7 @@ const ActivitiesPage = () => {
 						))}
 					</Space>
 				),
+			onCell,
 		},
 		{
 			title: 'Track',
@@ -75,6 +68,7 @@ const ActivitiesPage = () => {
 			render: (val, rec) => rec?.track?.name,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectTrack multiple />,
+			onCell,
 		},
 		{
 			title: 'Required evidence',
@@ -90,6 +84,14 @@ const ActivitiesPage = () => {
 			render: (val, rec) => rec?.activitiesTypeDomain?.name ?? val,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectActivitiesTypeDomain multiple />,
+			onCell,
+		},
+		{
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.des' }),
+			dataIndex: 'description',
+			width: 180,
+			render: (val, rec) => <ExpandText>{val}</ExpandText>,
+			filterType: 'string',
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.active' }),
@@ -99,6 +101,7 @@ const ActivitiesPage = () => {
 			render: (val, rec) => (
 				<Switch checked={val} onChange={(checked) => onChecked(rec, checked)} size='small' loading={formSubmiting} />
 			),
+			fixed: 'right',
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),

@@ -202,7 +202,7 @@ const EquivalencyFormItem = (props: {
 									onConfirm={() => remove(field.name)}
 									disabled={disabled}
 								>
-									<ButtonExtend type='link' icon={<DeleteOutlined />} disabled={disabled} />
+									<ButtonExtend danger type='link' icon={<DeleteOutlined />} disabled={disabled} />
 								</Popconfirm>
 							),
 						},

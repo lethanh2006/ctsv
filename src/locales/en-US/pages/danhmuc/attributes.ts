@@ -9,9 +9,9 @@ export default {
 
 	'attributesmanagement.confirm.delete': 'Do You Want To Remove This Attribute?',
 
-	'attributesmanagement.form.themmoi': 'Add New Attribute',
-	'attributesmanagement.form.chinhsua': 'Edit Attribute',
-	'attributesmanagement.form.chitiet': 'Detail Attribute',
+	'attributesmanagement.form.themmoi': 'Add New Graduating Attribute',
+	'attributesmanagement.form.chinhsua': 'Edit Graduating Attribute',
+	'attributesmanagement.form.chitiet': 'Graduating Attribute Detail',
 
 	'attributesmanagement.form.icon': 'Icon',
 	'attributesmanagement.form.color': 'Color',

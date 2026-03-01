@@ -12,7 +12,7 @@ export default {
 
 	'rolesmanagement.form.themmoi': 'Add new role',
 	'rolesmanagement.form.chinhsua': 'Edit role',
-	'rolesmanagement.form.chitiet': 'Detail role',
+	'rolesmanagement.form.chitiet': 'Role Detail',
 
 	'rolesmanagement.form.id': 'Code',
 	'rolesmanagement.form.id.place': 'Enter code',

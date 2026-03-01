@@ -12,7 +12,7 @@ export default {
 
 	'competency.form.themmoi': 'Add New Competency',
 	'competency.form.chinhsua': 'Edit Competency',
-	'competency.form.chitiet': 'Detail Competency',
+	'competency.form.chitiet': 'Competency Detail',
 
 	'competency.form.id': 'Code',
 	'competency.form.id.place': 'Enter Code',

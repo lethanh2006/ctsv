@@ -13,7 +13,7 @@ export default {
 
 	'questionsmanagement.form.themmoi': 'Add New Question',
 	'questionsmanagement.form.chinhsua': 'Edit Question',
-	'questionsmanagement.form.chitiet': 'Detail Question',
+	'questionsmanagement.form.chitiet': 'Question Detail',
 
 	'questionsmanagement.step.thongtinchung': 'General Information',
 	'questionsmanagement.step.cauhinh': 'Form Configuration',

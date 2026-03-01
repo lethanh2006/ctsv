@@ -7,13 +7,13 @@ import { useMemo } from 'react';
 import { useIntl, useModel } from 'umi';
 
 const FormRoleEvidence = (props: {
-	record: Activity.IRecord;
+	equivalency?: Activity.IEquivalency[];
 	select?: boolean;
 	rolesId?: string;
 	form?: FormInstance;
 }) => {
 	const intl = useIntl();
-	const { record, select, rolesId, form } = props;
+	const { equivalency, select, rolesId, form } = props;
 	const { isView } = useModel('cct.activityoutcome');
 
 	const groupedEquivalency = useMemo(() => {
@@ -28,7 +28,7 @@ const FormRoleEvidence = (props: {
 			}
 		>();
 
-		record?.coCurricularActivityEquivalency?.forEach((item) => {
+		equivalency?.forEach((item) => {
 			const roleId = item.roles?._id;
 			if (!roleId) return;
 
@@ -51,7 +51,7 @@ const FormRoleEvidence = (props: {
 		});
 
 		return Array.from(map.values());
-	}, [record]);
+	}, [equivalency]);
 
 	const columnsRoles: IColumn<any>[] = [
 		{
@@ -66,7 +66,7 @@ const FormRoleEvidence = (props: {
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Graduating Attribute',
+			title: 'Attributes',
 			width: 200,
 			render: (_, rec) => (
 				<Space size={[4, 4]} wrap>

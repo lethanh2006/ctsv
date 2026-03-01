@@ -2,7 +2,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm } from 'antd';
+import { Button, message, Modal, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormStudentDomain from './Form';
 
@@ -24,14 +24,20 @@ const FormItemStudentDomain = (props: {
 	};
 
 	const onAdd = (rec: ActivitiesManagement.IStudentDeclaration) => {
-		if (!record?.index) {
-			onChange?.([...dataSource, rec]);
-			setVisibleForm(false);
+		const isDuplicate = dataSource.find((item, idx) => item.ssoId === rec.ssoId)?.ssoId;
+
+		if (!!isDuplicate) {
+			message.error('This person already exists in the list');
 		} else {
-			const data = [...dataSource];
-			data.splice(record.index - 1, 1, rec);
-			onChange?.(data);
-			setVisibleForm(false);
+			if (!record?.index) {
+				onChange?.([...dataSource, rec]);
+				setVisibleForm(false);
+			} else {
+				const data = [...dataSource];
+				data.splice(record.index - 1, 1, rec);
+				onChange?.(data);
+				setVisibleForm(false);
+			}
 		}
 	};
 

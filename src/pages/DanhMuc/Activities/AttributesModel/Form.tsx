@@ -17,7 +17,7 @@ const FormCompetencyCCAModel = (props: any) => {
 	}, [visibleForm]);
 
 	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes) => {
-		if ((danhSach?.length ?? 0) + (values.attributesId?.length ?? 0) > 2) {
+		if ((danhSach?.length ?? 0) >= 2) {
 			return message.error('An activity type can have a maximum of 2 attributes.');
 		}
 

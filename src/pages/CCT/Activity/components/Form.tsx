@@ -1,7 +1,4 @@
-import ExpandText from '@/components/ExpandText';
 import MyDatePicker from '@/components/MyDatePicker';
-import TableStaticData from '@/components/Table/TableStaticData';
-import { IColumn } from '@/components/Table/typing';
 import UploadFile from '@/components/Upload/UploadFile';
 import SelectPhongCSVC from '@/pages/CoSoVatChat/Phong/Select';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
@@ -20,11 +17,11 @@ import { resetFieldsForm } from '@/utils/utils';
 import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, message, Radio, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
+import FormCompetencyEvidence from '../../ActivityStudent/components/FormCompetencyEvidence';
 import EquivalencyFormItem from '../Equivalency/FormItem';
 import FormItemUserRoles from '../UserRoles/FormItem';
 import GroupTagVaiTro from './GroupTagVaiTro';
 
-const MAX_SELECT = 3;
 const normalizeEquivalencyData = (data: any[]) => {
 	const map: Record<string, any> = {};
 
@@ -55,7 +52,6 @@ const FormActivity = (props: { getData?: () => void }) => {
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm, setFormSubmiting } =
 		useModel('cct.activity');
 	const { danhSach: dsActivityType } = useModel('danhmuc.activities');
-	const { danhSach: dscompetency, loading, getAllModel: getAllAttriCompetency } = useModel('danhmuc.competency');
 	const { getAllModel: getAllLevel } = useModel('danhmuc.levels');
 	const { record: recNhanSu } = useModel('tochucnhansu.nhansu');
 
@@ -86,6 +82,8 @@ const FormActivity = (props: { getData?: () => void }) => {
 				activitiesTypeDomainId: record?.activitiesType?.activitiesTypeDomainId,
 				competencyList: record?.competencyList?.map((item) => item?.competencyId),
 				coCurricularActivityEquivalency: normalizeEquivalencyData(record?.coCurricularActivityEquivalency),
+				allowCapacity: record.capacity ? true : false,
+				allowDueDateRegistration: record.dueDateRegistration ? true : false,
 			});
 
 		if (!record?._id) {
@@ -111,7 +109,6 @@ const FormActivity = (props: { getData?: () => void }) => {
 			});
 		}
 
-		getAllAttriCompetency();
 		getAllLevel(undefined, { order: 1 }, { autoApproval: true, isActive: true });
 	}, [record?._id, visibleForm]);
 
@@ -185,21 +182,6 @@ const FormActivity = (props: { getData?: () => void }) => {
 				.catch((er) => console.log(er));
 	};
 
-	const columns: IColumn<Competency.IRecord>[] = [
-		{
-			title: intl.formatMessage({ id: 'competency.column.name' }),
-			dataIndex: 'name',
-			width: 170,
-			filterType: 'string',
-		},
-		{
-			title: 'Description',
-			dataIndex: 'description',
-			width: 250,
-			render: (val, rec) => val && <ExpandText>{val}</ExpandText>,
-		},
-	];
-
 	return (
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]}>
@@ -208,7 +190,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 						<Col span={24} md={8}>
 							<Form.Item name='banner' label={intl.formatMessage({ id: 'activity.info.form.banner' })}>
 								<UploadFile
-									isLandscapeAvatar
+									isWidescreen
 									accept='.png,.jpg,.jpeg'
 									buttonDescription='Add Banner'
 									extra='Only .png, .jpeg, and .jpg files are allowed'
@@ -270,6 +252,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 											}
 											placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}
 											allowClear
+											onChange={(val) => form.setFieldValue('dueDate', dayjs(val).add(10, 'day'))}
 										/>
 									</Form.Item>
 								</Col>
@@ -442,35 +425,36 @@ const FormActivity = (props: { getData?: () => void }) => {
 					</Form.Item>
 				</Col>
 
-				{allowCapacity && (
-					<Col span={24} md={12}>
+				<Col span={24} md={12}>
+					{allowCapacity ? (
 						<Form.Item name='capacity' label='Capacity' rules={[...rules.required]}>
 							<InputNumber style={{ width: '100%' }} placeholder='Enter Capacity' />
 						</Form.Item>
-					</Col>
-				)}
+					) : (
+						<></>
+					)}
+				</Col>
 
-				{allowDueDateRegistration && (
-					<Col span={24} md={12}>
+				<Col span={24} md={12}>
+					{allowDueDateRegistration ? (
 						<Form.Item name='dueDateRegistration' label='Due Date Registration' rules={[...rules.required]}>
 							<MyDatePicker
 								showTime={{ showHour: true, showMinute: true }}
 								format='HH:mm DD/MM/YYYY'
 								disabled={isView}
 								disabledDate={(current) => {
-									if (!current || !startDate || !endDate) return false;
+									if (!current || !endDate) return false;
 
-									return (
-										dayjs(current).isBefore(dayjs(startDate).startOf('day')) ||
-										dayjs(current).isAfter(dayjs(endDate).endOf('day'))
-									);
+									return dayjs(current).isAfter(dayjs(endDate).endOf('day'));
 								}}
 								placeholder={intl.formatMessage({ id: 'activity.info.form.duedate.place' })}
 								allowClear
 							/>
 						</Form.Item>
-					</Col>
-				)}
+					) : (
+						<></>
+					)}
+				</Col>
 
 				<Col span={24}>
 					<Row gutter={[12, 0]}>
@@ -536,7 +520,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 								</Col>
 
 								<Col span={24} md={8}>
-									<Form.Item name='activitiesTypeId' label='Activity type' rules={[...rules.required]}>
+									<Form.Item name='activitiesTypeId' label='Activity Type' rules={[...rules.required]}>
 										<SelectActivitiesManagement
 											disabled={isView}
 											condition={{ activitiesTypeDomainId: activitiesTypeDomainId }}
@@ -551,7 +535,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 											disabled
 											value={
 												dsActivityType?.find((item) => item?._id === activitiesTypeId)?.track?.name ??
-												'Select activity type'
+												'Select Activity Type'
 											}
 										/>
 									</Form.Item>
@@ -560,8 +544,11 @@ const FormActivity = (props: { getData?: () => void }) => {
 								{activitiesTypeId && (
 									<Col span={24}>
 										Required Evidence:{' '}
-										{dsActivityType?.find((item) => item?._id === activitiesTypeId)?.requiredEvidenceList?.join(', ') ??
-											'--'}
+										<b>
+											{dsActivityType
+												?.find((item) => item?._id === activitiesTypeId)
+												?.requiredEvidenceList?.join(', ') ?? '--'}
+										</b>
 									</Col>
 								)}
 
@@ -594,37 +581,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 
 								<Col span={24}>
 									<Form.Item name='competencyList'>
-										<TableStaticData
-											columns={columns}
-											data={dscompetency}
-											loading={loading}
-											size='small'
-											hasTotal
-											onReload={getAllAttriCompetency}
-											otherProps={{
-												pagination: false,
-												scroll: { y: 350 },
-												rowKey: '_id',
-												rowSelection: {
-													type: 'checkbox',
-													columnWidth: 40,
-													selectedRowKeys: competencyList ?? [],
-													onChange: (selectedRowKeys: React.Key[]) => {
-														if (isView) return;
-														form.setFieldsValue({
-															competencyList: selectedRowKeys,
-														});
-													},
-													getCheckboxProps: (record: any) => ({
-														disabled:
-															isView ||
-															((competencyList?.length ?? 0) >= MAX_SELECT && !competencyList?.includes(record._id)),
-													}),
-													hideSelectAll: true,
-												},
-											}}
-											otherButtons={[<i className='text-info'>An activity allows a maximum of 3 competencies</i>]}
-										/>
+										<FormCompetencyEvidence listAchievedCompetencies={competencyList} form={form} />
 									</Form.Item>
 								</Col>
 
@@ -646,12 +603,14 @@ const FormActivity = (props: { getData?: () => void }) => {
 			</Row>
 
 			<div className='form-footer'>
-				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				{!isView && (
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 				)}
+				<Button onClick={() => setVisibleForm(false)}>
+					{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+				</Button>
 			</div>
 		</Form>
 	);

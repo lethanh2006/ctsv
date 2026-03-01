@@ -1,18 +1,18 @@
 import ModalExpandable from '@/components/Table/ModalExpandable';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { EActivityCategory, EApprovalStatus } from '@/services/CCT/constant';
-import { CheckCircleOutlined, CloseCircleOutlined, RedoOutlined } from '@ant-design/icons';
+import dayjs from '@/utils/dayjs';
 import { Button } from 'antd';
 import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
-import ChiTietActivity from '../../Activity/ChiTiet';
+import CardChiTietSuKien from '../../Activity/ChiTiet';
 import ModalChinhSuaImpact from '../Modal/ModalImpact';
 import ModalChinhSuaTrangThai from '../Modal/ModalTrangThai';
 import ModalXuLyActivityStudent from '../Modal/ModalXuLy';
 import ChiTietActivityOutCome from './ChiTiet';
 
 const FormActivityStudent = (props: any) => {
-	const { getData, tabActive, isActivity } = props;
+	const { getData, isActivity } = props;
 	const intl = useIntl();
 	const { record, setVisibleForm, visibleForm } = useModel('cct.activityoutcome');
 
@@ -24,6 +24,27 @@ const FormActivityStudent = (props: any) => {
 		title: string;
 		trangThai: EApprovalStatus;
 	}>();
+
+	const now = dayjs();
+	const endDateUpdateEvidence =
+		record?.workflow === EApprovalStatus.CHANGES_REQUIRED
+			? record?.dueDate
+				? dayjs(record?.dueDate)
+				: null
+			: record?.activities?.allowPostEventResultsUpdate
+				? record?.activities?.dueDate
+					? dayjs(record?.activities?.dueDate)
+					: null
+				: record?.activities?.endDate
+					? dayjs(record?.activities?.endDate)
+					: null;
+
+	const editableWorkflow =
+		record?.workflow === EApprovalStatus.DRAFT ||
+		record?.workflow === EApprovalStatus.CHANGES_REQUIRED ||
+		record?.workflow === EApprovalStatus.EVIDENCE_REQUIRED;
+
+	const isExpired = editableWorkflow && now.isAfter(endDateUpdateEvidence);
 
 	return (
 		<ModalExpandable
@@ -38,22 +59,26 @@ const FormActivityStudent = (props: any) => {
 			}}
 		>
 			{record?.activityCategory === EActivityCategory.REGISTERED ? (
-				<ChiTietActivity
+				<CardChiTietSuKien
 					record={{
 						...record?.activities,
-						workflow: record?.workflow,
-						validation: record?.validation,
-
-						rolesId: record?.rolesId,
-						tracks: record?.tracks,
-						levels: record?.levels,
-
-						evidenceFile: record?.evidenceFile,
-
-						reflection: record?.reflection,
-						revisionNote: record?.revisionNote,
+						activityOutcome: record,
 					}}
-					isRegistered
+					evidenceDeadline={
+						record?.workflow === EApprovalStatus.CHANGES_REQUIRED
+							? record?.dueDate
+								? dayjs(record?.dueDate).format('HH:mm DD/MM/YYYY')
+								: '--'
+							: record?.activities?.allowPostEventResultsUpdate
+								? record?.activities?.dueDate
+									? dayjs(record?.dueDate).format('HH:mm DD/MM/YYYY')
+									: '--'
+								: record?.endDate
+									? dayjs(record?.endDate).format('HH:mm DD/MM/YYYY')
+									: '--'
+					}
+					infoEvidence
+					isExpired={isExpired}
 				/>
 			) : (
 				<ChiTietActivityOutCome recOutcome={record ?? ({} as ActivityOutCome.IRecord)} />
@@ -72,51 +97,23 @@ const FormActivityStudent = (props: any) => {
 				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
 				{!isActivity && (
 					<>
-						<Button
-							type='primary'
-							disabled={record?.workflow === EApprovalStatus.APPROVED}
-							className='btn-success'
-							onClick={() => {
-								setTrangThai({
-									title: intl.formatMessage({ id: 'activityresult.xuly.duyet' }),
-									trangThai: EApprovalStatus.APPROVED,
-								});
-								setVisibleXuLy(true);
-							}}
-							icon={<CheckCircleOutlined />}
-						>
-							{intl.formatMessage({ id: 'activityresult.button.duyet' })}
-						</Button>
-
-						{tabActive === '2' && (
+						{record?.workflow === EApprovalStatus.SUBMITTED ? (
 							<>
-								<Button
-									type='primary'
-									onClick={() => {
-										setVisibleStatus(true);
-									}}
-									icon={<CheckCircleOutlined />}
-								>
-									Change status
-								</Button>
 								<Button
 									type='primary'
 									className='btn-success'
 									onClick={() => {
-										setVisibleImpact(true);
+										setTrangThai({
+											title: intl.formatMessage({ id: 'activityresult.xuly.duyet' }),
+											trangThai: EApprovalStatus.APPROVED,
+										});
+										setVisibleXuLy(true);
 									}}
-									icon={<CheckCircleOutlined />}
 								>
-									Verify impact
+									{intl.formatMessage({ id: 'activityresult.button.duyet' })}
 								</Button>
-							</>
-						)}
-
-						{tabActive === '1' && (
-							<>
 								<Button
 									type='primary'
-									disabled={record?.workflow === EApprovalStatus.REJECTED}
 									onClick={() => {
 										setTrangThai({
 											title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
@@ -125,13 +122,11 @@ const FormActivityStudent = (props: any) => {
 										setVisibleXuLy(true);
 									}}
 									className='btn-error'
-									icon={<CloseCircleOutlined />}
 								>
 									{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
 								</Button>
 								<Button
 									type='primary'
-									disabled={record?.workflow === EApprovalStatus.CHANGES_REQUIRED}
 									onClick={() => {
 										setTrangThai({
 											title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
@@ -140,9 +135,22 @@ const FormActivityStudent = (props: any) => {
 										setVisibleXuLy(true);
 									}}
 									className='btn-warning'
-									icon={<RedoOutlined />}
 								>
 									{intl.formatMessage({ id: 'activityresult.button.yccs' })}
+								</Button>
+							</>
+						) : (
+							<>
+								<Button type='primary' onClick={() => setVisibleStatus(true)}>
+									Change status
+								</Button>
+								<Button
+									type='primary'
+									className='btn-success'
+									onClick={() => setVisibleImpact(true)}
+									disabled={record?.workflow !== EApprovalStatus.APPROVED}
+								>
+									Verify impact
 								</Button>
 							</>
 						)}

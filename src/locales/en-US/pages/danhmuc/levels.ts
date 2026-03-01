@@ -13,7 +13,7 @@ export default {
 
 	'levelsmanagement.form.themmoi': 'Add New Level',
 	'levelsmanagement.form.chinhsua': 'Edit Level',
-	'levelsmanagement.form.chitiet': 'Detail Level',
+	'levelsmanagement.form.chitiet': 'Level Detail',
 
 	'levelsmanagement.form.id': 'Code',
 	'levelsmanagement.form.id.place': 'Enter Code',

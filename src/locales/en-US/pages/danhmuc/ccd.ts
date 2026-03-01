@@ -12,7 +12,7 @@ export default {
 
 	'activitiestypedomain.form.themmoi': 'Add New Activity Group',
 	'activitiestypedomain.form.chinhsua': 'Edit Activity Group',
-	'activitiestypedomain.form.chitiet': 'Detail Activity Group',
+	'activitiestypedomain.form.chitiet': 'Activity Group Detail',
 
 	'activitiestypedomain.form.id': 'Code',
 	'activitiestypedomain.form.id.place': 'Enter Code',

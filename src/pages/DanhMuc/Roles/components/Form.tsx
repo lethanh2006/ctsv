@@ -80,6 +80,9 @@ const FormRoles = (props: any) => {
 								disabled={isView}
 								style={{ width: '100%' }}
 								placeholder={intl.formatMessage({ id: 'rolesmanagement.form.order.place' })}
+								min={1}
+								precision={0}
+								step={1}
 							/>
 						</Form.Item>
 					</Col>

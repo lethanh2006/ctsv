@@ -1,3 +1,4 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { type IColumn } from '@/components/Table/typing';
@@ -28,6 +29,34 @@ const ActivityPage = () => {
 		onClick: () => handleView(rec),
 		style: { cursor: 'pointer' },
 	});
+
+	const getActivityMeta = (rec: Activity.IRecord) => {
+		const now = dayjs();
+		const start = dayjs(rec?.startDate);
+		const end = dayjs(rec?.endDate);
+
+		if (now.isBefore(start)) {
+			return {
+				status: 'Upcoming',
+				color: '#faad14',
+				isEditable: true,
+			};
+		}
+
+		if (now.isAfter(end)) {
+			return {
+				status: 'Completed',
+				color: '#8c8c8c',
+				isEditable: false,
+			};
+		}
+
+		return {
+			status: 'Ongoing',
+			color: '#52c41a',
+			isEditable: false,
+		};
+	};
 
 	const columns: IColumn<Activity.IRecord>[] = [
 		{
@@ -113,44 +142,75 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
+			title: 'Approver',
+			width: 150,
+			render: (val, rec) => (
+				<ExpandText>
+					{rec?.studentDeclarationApproverList
+						?.map((item) => item?.name)
+						.filter(Boolean)
+						.join(', ')}
+				</ExpandText>
+			),
+			onCell,
+		},
+		{
+			title: 'Activity Status',
+			align: 'center',
+			width: 130,
+			render: (_, rec) => {
+				const { status, color } = getActivityMeta(rec);
+				return <Tag color={color}>{status}</Tag>;
+			},
+			fixed: 'right',
+			onCell,
+		},
+		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
 			width: 120,
 			fixed: 'right',
-			render: (val, rec) => (
-				<>
-					<ButtonExtend
-						tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
-						onClick={() => handleEdit(rec)}
-						type='link'
-						icon={<EditOutlined />}
-					/>
+			render: (_, rec) => {
+				const { isEditable } = getActivityMeta(rec);
 
-					<Popconfirm
-						onConfirm={() =>
-							deleteModel(
-								rec._id,
-								() => {
-									getModel();
-									getAnalyticsActivityModel();
-								},
-								{
-									messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
-								},
-							)
-						}
-						title={intl.formatMessage({ id: 'activity.confirm.xoa' })}
-						placement='topLeft'
-					>
+				return (
+					<>
 						<ButtonExtend
-							tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
-							danger
+							tooltip={intl.formatMessage({ id: 'global.button.chinhsua' })}
+							onClick={() => handleEdit(rec)}
 							type='link'
-							icon={<DeleteOutlined />}
+							icon={<EditOutlined />}
+							disabled={!isEditable}
 						/>
-					</Popconfirm>
-				</>
-			),
+
+						<Popconfirm
+							onConfirm={() =>
+								deleteModel(
+									rec._id,
+									() => {
+										getModel();
+										getAnalyticsActivityModel();
+									},
+									{
+										messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
+									},
+								)
+							}
+							title={intl.formatMessage({ id: 'activity.confirm.xoa' })}
+							placement='topLeft'
+							disabled={!isEditable}
+						>
+							<ButtonExtend
+								tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
+								danger
+								type='link'
+								icon={<DeleteOutlined />}
+								disabled={!isEditable}
+							/>
+						</Popconfirm>
+					</>
+				);
+			},
 		},
 	];
 

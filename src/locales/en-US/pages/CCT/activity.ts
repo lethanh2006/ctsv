@@ -13,7 +13,7 @@ export default {
 
 	'activity.form.themmoi': 'Add New Activity',
 	'activity.form.chinhsua': 'Edit Activity',
-	'activity.form.chitet': 'Detail Activity',
+	'activity.form.chitet': 'Activity Detail',
 
 	'activity.info.form.banner': 'Banner',
 	'activity.info.form.backgroundImage': 'Background',

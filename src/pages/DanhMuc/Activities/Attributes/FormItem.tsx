@@ -81,7 +81,7 @@ const FormItemAttributesCCA = (props: {
 
 	return (
 		<>
-			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
+			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt otherProps={{ pagination: false }}>
 				{!disabled && (
 					<Button
 						onClick={() => {

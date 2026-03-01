@@ -78,6 +78,9 @@ const FormActivitiesTypeDomain = (props: any) => {
 								disabled={isView}
 								style={{ width: '100%' }}
 								placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.order.place' })}
+								min={1}
+								precision={0}
+								step={1}
 							/>
 						</Form.Item>
 					</Col>
@@ -112,7 +115,9 @@ const FormActivitiesTypeDomain = (props: any) => {
 							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+					</Button>
 				</div>
 			</Form>
 		</Card>

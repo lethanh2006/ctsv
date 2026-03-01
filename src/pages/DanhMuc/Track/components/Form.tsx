@@ -55,7 +55,14 @@ const FormTrack = () => {
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item name='order' label='Display order'>
-							<InputNumber disabled={isView} style={{ width: '100%' }} placeholder='Enter Display order' />
+							<InputNumber
+								disabled={isView}
+								style={{ width: '100%' }}
+								placeholder='Enter Display order'
+								min={1}
+								precision={0}
+								step={1}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
@@ -76,7 +83,9 @@ const FormTrack = () => {
 							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+					</Button>
 				</div>
 			</Form>
 		</Card>

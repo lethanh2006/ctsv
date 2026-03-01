@@ -1,4 +1,5 @@
 import SelectNhanSuDebounce from '@/pages/ToChucNhanSu/NhanSu/SelectNhanSuDebounce';
+import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Checkbox, Col, Form, Row } from 'antd';
 import { useEffect } from 'react';
@@ -45,7 +46,7 @@ const FormStudentApprover = (props: any) => {
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='ssoId' label='Student Approver'>
+						<Form.Item name='ssoId' label='Student Approver' rules={[...rules.required]}>
 							<SelectNhanSuDebounce
 								onChange={(val, option) => {
 									const nhanSu = option?.rawData;

@@ -1,8 +1,11 @@
 import { Activity } from '@/services/CCT/Activity/typing';
+import { EApprovalStatus } from '@/services/CCT/constant';
+import dayjs from '@/utils/dayjs';
 import { Button, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
-import ChiTietActivity from '../ChiTiet';
+import FormActivityStudent from '../../ActivityStudent/components/Form';
+import CardChiTietSuKien from '../ChiTiet';
 import ListEvidenceActivity from '../ListStudent/ListEvidence';
 import RegisteredActivity from '../ListStudent/Registered';
 
@@ -17,38 +20,67 @@ const ModalActivity = () => {
 		}
 	}, [visibleForm]);
 
-	return (
-		<Tabs
-			activeKey={activeKey}
-			onChange={setActiveKey}
-			items={[
-				{
-					key: '0',
-					label: 'Activity Information',
-					children: (
-						<>
-							<ChiTietActivity record={record ?? ({} as Activity.IRecord)} />
+	// const isExpired = activeKey === '3' && editableWorkflow && now.isAfter(endDateUpdateEvidence);
 
-							<div className='form-footer'>
-								<Button onClick={() => setVisibleForm(false)}>
-									{intl.formatMessage({ id: 'global.button.dong' })}
-								</Button>
-							</div>
-						</>
-					),
-				},
-				{
-					key: '1',
-					label: 'Registration List',
-					children: <RegisteredActivity />,
-				},
-				{
-					key: '2',
-					label: 'Evidence Declaration List',
-					children: <ListEvidenceActivity />,
-				},
-			]}
-		/>
+	return (
+		<>
+			<Tabs
+				activeKey={activeKey}
+				onChange={setActiveKey}
+				items={[
+					{
+						key: '0',
+						label: 'Activity Information',
+						children: (
+							<>
+								<CardChiTietSuKien
+									record={
+										{
+											...record,
+											activityOutcome: record?.activityOutcome,
+										} as Activity.IRecord
+									}
+									evidenceDeadline={
+										record?.activityOutcome?.workflow === EApprovalStatus.CHANGES_REQUIRED
+											? record?.activityOutcome?.dueDate
+												? dayjs(record?.activityOutcome?.dueDate).format('HH:mm DD/MM/YYYY')
+												: '--'
+											: record?.allowPostEventResultsUpdate
+												? record?.dueDate
+													? dayjs(record?.dueDate).format('HH:mm DD/MM/YYYY')
+													: '--'
+												: record?.endDate
+													? dayjs(record?.endDate).format('HH:mm DD/MM/YYYY')
+													: '--'
+									}
+									infoEvidence={!!record?.activityOutcome?.workflow || !!record?.activityOutcome?._id}
+									activeKey={activeKey}
+									// isExpired={isExpired}
+								/>
+
+								<div className='form-footer'>
+									<Button onClick={() => setVisibleForm(false)}>
+										{intl.formatMessage({ id: 'global.button.dong' })}
+									</Button>
+								</div>
+							</>
+						),
+					},
+					{
+						key: '1',
+						label: 'Registration List',
+						children: <RegisteredActivity />,
+					},
+					{
+						key: '2',
+						label: 'Evidence Declaration List',
+						children: <ListEvidenceActivity />,
+					},
+				]}
+			/>
+
+			<FormActivityStudent isActivity />
+		</>
 	);
 };
 
