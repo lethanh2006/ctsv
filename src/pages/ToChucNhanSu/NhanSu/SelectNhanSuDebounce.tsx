@@ -56,13 +56,13 @@ const SelectNhanSuDebounce = (props: {
 				loading ? (
 					<Spin
 						spinning={true}
-						tip={intl.formatMessage({ id: 'kyluatkhenthuong.selectnhansu.loading' })}
+						tip={intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten.loading' })}
 						style={{ width: '100%', margin: 10 }}
 					/>
 				) : (
 					<Empty
 						image={Empty.PRESENTED_IMAGE_SIMPLE}
-						description={intl.formatMessage({ id: 'kyluatkhenthuong.selectnhansu.description' })}
+						description={intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten.description' })}
 					/>
 				)
 			}

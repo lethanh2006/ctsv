@@ -113,7 +113,7 @@ const FormCompetency = (props: any) => {
 
 					<Col span={24}>
 						<div className='fw500' style={{ marginBottom: 6 }}>
-							Typical Activity
+							{intl.formatMessage({ id: 'competency.form.typical' })}
 						</div>
 						<Form.List name='typicalActivityList'>
 							{(fields, { add, remove }) => (
@@ -121,7 +121,11 @@ const FormCompetency = (props: any) => {
 									{fields.map((field) => (
 										<Form.Item key={field.key} required={false}>
 											<Form.Item {...field} rules={[...rules.required]} noStyle>
-												<Input placeholder='Enter value' style={{ width: '95%' }} disabled={isView} />
+												<Input
+													placeholder={intl.formatMessage({ id: 'competency.form.typical.value' })}
+													style={{ width: '95%' }}
+													disabled={isView}
+												/>
 											</Form.Item>
 
 											<Button
@@ -142,7 +146,7 @@ const FormCompetency = (props: any) => {
 											style={{ width: '100%' }}
 											icon={<PlusOutlined />}
 										>
-											Add new
+											{intl.formatMessage({ id: 'competency.form.typical.add' })}
 										</Button>
 									</Form.Item>
 								</>

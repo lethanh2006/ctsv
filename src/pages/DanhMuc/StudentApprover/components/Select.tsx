@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -15,6 +15,7 @@ const SelectStudentApprover = (props: {
 	condition?: Partial<ActivitiesManagement.IStudentDeclaration>;
 	disabled?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, style, isSetRecord, condition, disabled } = props;
 	const { danhSach, getAllModel } = useModel('danhmuc.studentdomain');
 
@@ -36,7 +37,7 @@ const SelectStudentApprover = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Select Student Approver'
+			placeholder={intl.formatMessage({ id: 'studentapprover.select.title' })}
 			style={{ width: '100%', ...style }}
 		/>
 	);

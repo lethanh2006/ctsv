@@ -9,7 +9,7 @@ export default {
 	'levelsmanagement.column.auto': 'Auto approval',
 	'levelsmanagement.column.active': 'Active',
 
-	'levelsmanagement.confirm.delete': 'Do You Want To Remove This Level?',
+	'levelsmanagement.confirm.delete': 'Do you want to remove this level?',
 
 	'levelsmanagement.form.themmoi': 'Add New Level',
 	'levelsmanagement.form.chinhsua': 'Edit Level',
@@ -24,6 +24,7 @@ export default {
 	'levelsmanagement.form.order.place': 'Enter Display Order',
 	'levelsmanagement.form.active': 'Active',
 	'levelsmanagement.form.auto': 'Auto Approval',
+	'levelsmanagement.form.auto.place': 'Evidence is auto-approved if Role & Level are set to Auto Approve',
 	'levelsmanagement.form.des': 'Description',
 	'levelsmanagement.form.des.place': 'Enter Description',
 

@@ -28,11 +28,7 @@ export default {
 
 	'activitiestypedomain.select.place': 'Select Activity Group',
 
-	'activitiestypedomain.student.column.hoten': 'Full Name',
-	'activitiestypedomain.student.column.hoten.select': 'Select Staff/Lecturers (Search By Name)',
+	'activitiestypedomain.student.column.hoten': 'Name',
 	'activitiestypedomain.student.column.email': 'Email',
-	'activitiestypedomain.student.comfirm.xoa': 'Do You Want To Remove This Student Declaration Approver?',
-
-	'activitiestypedomain.student.form.themmoi': 'Add New Student Declaration Approver',
-	'activitiestypedomain.student.form.chinhsua': 'Edit Student Declaration Approver',
+	'activitiestypedomain.student.form.themmoi': 'Add New Approvers',
 };

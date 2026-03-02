@@ -6,7 +6,8 @@ import { inputFormat } from '@/utils/utils';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const StatActivity = () => {
+const StatActivity = (props: { currentWorkflow: 'total' | 'upcoming' | 'ongoing' | 'completed' }) => {
+	const { currentWorkflow } = props;
 	const intl = useIntl();
 	const { loadingThongKe, dataThongKe, getAnalyticsActivityModel, filters, setFilters } = useModel('cct.activity');
 
@@ -56,28 +57,6 @@ const StatActivity = () => {
 
 		setFilters(temp);
 	};
-
-	const detectWorkflow = (): 'total' | 'upcoming' | 'ongoing' | 'completed' => {
-		if (!filters || filters.length === 0) return 'total';
-
-		const hasStartGt = filters.some((f) => f.field === 'startDate' && f.operator === EOperatorType.GREAT_THAN);
-
-		const hasStartLte = filters.some((f) => f.field === 'startDate' && f.operator === EOperatorType.LESS_EQUAL);
-
-		const hasEndGte = filters.some((f) => f.field === 'endDate' && f.operator === EOperatorType.GREAT_EQUAL);
-
-		const hasEndLt = filters.some((f) => f.field === 'endDate' && f.operator === EOperatorType.LESS_THAN);
-
-		if (hasStartGt) return 'upcoming';
-
-		if (hasStartLte && hasEndGte) return 'ongoing';
-
-		if (hasEndLt) return 'completed';
-
-		return 'total';
-	};
-
-	const currentWorkflow = detectWorkflow();
 
 	const statisticsData: StatisticsItem[] = [
 		{

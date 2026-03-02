@@ -6,6 +6,7 @@ import { TFilter, type IColumn } from '@/components/Table/typing';
 import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
 import { officialColors } from '@/services/base/constant';
+import { thongKeSoLuongActivityOutCome } from '@/services/CCT/ActivityOutcome';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import {
 	EActivityCategory,
@@ -50,6 +51,9 @@ const HistoryActivityPage = () => {
 	}>();
 	const [segmentSelected, setSegmentSelected] = useState<EActivityCategory | string>(EActivityCategory.REGISTERED);
 	const valueFiltered = filters?.find((item) => item.field?.includes('workflow'))?.values ?? [];
+	const [loadingThongke, setLoadingThongKe] = useState<boolean>(false);
+	const [totalRegis, setTotalRegis] = useState<number>(0);
+	const [totalPersional, setTotalPersional] = useState<number>(0);
 
 	const PROCESSED = [EApprovalStatus.APPROVED, EApprovalStatus.REJECTED, EApprovalStatus.CHANGES_REQUIRED];
 
@@ -59,6 +63,51 @@ const HistoryActivityPage = () => {
 	useEffect(() => {
 		getAllAtributes(undefined, { order: 1 }, { isActive: true });
 	}, []);
+
+	const thongKeSoLuongActivityOutComeAll = async () => {
+		try {
+			setLoadingThongKe(true);
+
+			const commonFilters = [
+				{
+					active: true,
+					field: 'workflow',
+					values: [EApprovalStatus.EVIDENCE_REQUIRED, EApprovalStatus.DRAFT],
+					operator: EOperatorType.NOT_INCLUDE,
+				},
+			];
+
+			const [resRegis, resPersional] = await Promise.all([
+				thongKeSoLuongActivityOutCome([
+					...(filters || []),
+					...commonFilters,
+					{
+						active: true,
+						field: 'activityCategory',
+						values: [EActivityCategory.REGISTERED],
+						operator: EOperatorType.INCLUDE,
+					},
+				]),
+				thongKeSoLuongActivityOutCome([
+					...(filters || []),
+					...commonFilters,
+					{
+						active: true,
+						field: 'activityCategory',
+						values: [EActivityCategory.PERSONAL_CO_CURRICULAR],
+						operator: EOperatorType.INCLUDE,
+					},
+				]),
+			]);
+
+			setTotalRegis(resRegis?.data?.data?.total);
+			setTotalPersional(resPersional?.data?.data?.total);
+		} catch (error) {
+			console.error('Lỗi thống kê:', error);
+		} finally {
+			setLoadingThongKe(false);
+		}
+	};
 
 	const getData = () => {
 		const filters: any[] = [];
@@ -96,8 +145,17 @@ const HistoryActivityPage = () => {
 		);
 	};
 
-	const getThongKe = () => {
+	useEffect(() => {
+		thongKeSoLuongActivityOutComeAll();
+	}, [filters]);
+
+	const getStat = () => {
 		getAnalyticsStaffModel();
+	};
+
+	const getThongKe = () => {
+		getStat();
+		thongKeSoLuongActivityOutComeAll();
 	};
 
 	const onCell = (rec: ActivityOutCome.IRecord) => ({
@@ -472,7 +530,7 @@ const HistoryActivityPage = () => {
 				variant='borderless'
 			>
 				<Card style={{ marginBottom: 12 }}>
-					<StatActivityOutCome getData={getThongKe} pending={pending} processed={processed} />
+					<StatActivityOutCome getData={getStat} pending={pending} processed={processed} />
 				</Card>
 
 				<Card>
@@ -492,16 +550,21 @@ const HistoryActivityPage = () => {
 						otherButtons={[
 							<Segmented
 								options={[
-									// {
-									// 	value: 'ALL',
-									// 	label: 'All',
-									// },
-									...Object.values(EActivityCategory).map((item) => ({
-										value: item,
-										label: mapNameActivityCategory[item],
-									})),
+									{
+										value: EActivityCategory.REGISTERED,
+										label: `${mapNameActivityCategory[EActivityCategory.REGISTERED]} (${
+											loadingThongke ? '...' : totalRegis
+										})`,
+									},
+									{
+										value: EActivityCategory.PERSONAL_CO_CURRICULAR,
+										label: `${mapNameActivityCategory[EActivityCategory.PERSONAL_CO_CURRICULAR]} (${
+											loadingThongke ? '...' : totalPersional
+										})`,
+									},
 								]}
 								value={segmentSelected}
+								disabled={loadingThongke}
 								onChange={(val) => {
 									setSegmentSelected(val);
 									setFilters((prev) => prev.filter((f) => !isActivitiesNameFilter(f)));

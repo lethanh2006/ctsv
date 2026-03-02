@@ -1,6 +1,7 @@
 import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
+import { EOperatorType } from '@/components/Table/constant';
 import { type IColumn } from '@/components/Table/typing';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
@@ -17,18 +18,14 @@ import StatActivity from './components/Stat';
 
 const ActivityPage = () => {
 	const intl = useIntl();
-	const { getModel, page, limit, deleteModel, handleEdit, handleView, edit, isView } = useModel('cct.activity');
+	const { getModel, page, limit, deleteModel, handleEdit, handleView, edit, isView, filters } =
+		useModel('cct.activity');
 	const { getAnalyticsActivityModel } = useModel('cct.activity');
 	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
 
 	useEffect(() => {
 		getAllAtributes(undefined, { order: 1 }, { isActive: true });
 	}, []);
-
-	const onCell = (rec: Activity.IRecord) => ({
-		onClick: () => handleView(rec),
-		style: { cursor: 'pointer' },
-	});
 
 	const getActivityMeta = (rec: Activity.IRecord) => {
 		const now = dayjs();
@@ -58,6 +55,52 @@ const ActivityPage = () => {
 		};
 	};
 
+	const detectWorkflow = (): 'total' | 'upcoming' | 'ongoing' | 'completed' => {
+		if (!filters || filters.length === 0) return 'total';
+
+		const hasStartGt = filters.some((f) => f.field === 'startDate' && f.operator === EOperatorType.GREAT_THAN);
+
+		const hasStartLte = filters.some((f) => f.field === 'startDate' && f.operator === EOperatorType.LESS_EQUAL);
+
+		const hasEndGte = filters.some((f) => f.field === 'endDate' && f.operator === EOperatorType.GREAT_EQUAL);
+
+		const hasEndLt = filters.some((f) => f.field === 'endDate' && f.operator === EOperatorType.LESS_THAN);
+
+		if (hasStartGt) return 'upcoming';
+
+		if (hasStartLte && hasEndGte) return 'ongoing';
+
+		if (hasEndLt) return 'completed';
+
+		return 'total';
+	};
+	const currentWorkflow = detectWorkflow();
+
+	const getData = () => {
+		getModel(
+			undefined,
+			undefined,
+			currentWorkflow === 'total' || currentWorkflow === 'ongoing'
+				? {
+						startDate: -1,
+					}
+				: currentWorkflow === 'upcoming'
+					? {
+							startDate: 1,
+						}
+					: currentWorkflow === 'completed'
+						? {
+								endDate: -1,
+							}
+						: undefined,
+		);
+	};
+
+	const onCell = (rec: Activity.IRecord) => ({
+		onClick: () => handleView(rec),
+		style: { cursor: 'pointer' },
+	});
+
 	const columns: IColumn<Activity.IRecord>[] = [
 		{
 			title: intl.formatMessage({ id: 'activity.column.name' }),
@@ -85,7 +128,7 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Activity Type',
+			title: intl.formatMessage({ id: 'activity.column.type' }),
 			dataIndex: 'activitiesTypeId',
 			width: 170,
 			render: (val, rec) => rec?.activitiesType?.name,
@@ -94,31 +137,28 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Track',
+			title: intl.formatMessage({ id: 'activity.column.track' }),
 			width: 130,
 			render: (val, rec) => rec?.activitiesType?.trackText,
 			filterType: 'customselect',
 			onCell,
 		},
 		{
-			title: 'Registrations',
+			title: intl.formatMessage({ id: 'activity.column.regis' }),
 			dataIndex: 'numberOfRegisteredActivityOutcomes',
 			width: 120,
-			// sortable: true,
 			onCell,
 		},
 		{
-			title: 'Submissions',
+			title: intl.formatMessage({ id: 'activity.column.submit' }),
 			dataIndex: 'numberOfAddEvidenceActivityOutcomes',
 			width: 120,
-			// sortable: true,
 			onCell,
 		},
 		{
-			title: 'Approved',
+			title: intl.formatMessage({ id: 'activity.column.appro' }),
 			dataIndex: 'numberOfApprovedActivityOutcomes',
 			width: 100,
-			// sortable: true,
 			onCell,
 		},
 		{
@@ -133,7 +173,7 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Organizer',
+			title: intl.formatMessage({ id: 'activity.column.organ' }),
 			dataIndex: 'codeOrganizer',
 			width: 150,
 			render: (val, rec) => rec?.organizer,
@@ -142,7 +182,7 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Approver',
+			title: intl.formatMessage({ id: 'activity.column.approver' }),
 			width: 150,
 			render: (val, rec) => (
 				<ExpandText>
@@ -155,7 +195,7 @@ const ActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Activity Status',
+			title: intl.formatMessage({ id: 'activity.column.status' }),
 			align: 'center',
 			width: 130,
 			render: (_, rec) => {
@@ -188,7 +228,7 @@ const ActivityPage = () => {
 								deleteModel(
 									rec._id,
 									() => {
-										getModel();
+										getData();
 										getAnalyticsActivityModel();
 									},
 									{
@@ -221,16 +261,16 @@ const ActivityPage = () => {
 			variant='borderless'
 		>
 			<Card style={{ marginBottom: 12 }}>
-				<StatActivity />
+				<StatActivity currentWorkflow={currentWorkflow} />
 			</Card>
 
 			<Card>
 				<TableBase
+					getData={getData}
 					columns={columns}
 					dependencies={[page, limit]}
 					modelName='cct.activity'
 					title={intl.formatMessage({ id: 'activity.title' })}
-					// Form={FormActivity}
 					Form={isView ? ModalActivity : FormActivity}
 					showModalTitle
 					modalTitle={
@@ -242,13 +282,13 @@ const ActivityPage = () => {
 					}
 					formProps={{
 						getData: () => {
-							getModel();
+							getData();
 							getAnalyticsActivityModel();
 						},
 					}}
 					widthDrawer={1000}
 					onReload={() => {
-						getModel();
+						getData();
 						getAnalyticsActivityModel();
 					}}
 					hideCard

@@ -14,37 +14,50 @@ const FormAttributes = () => {
 		useModel('danhmuc.attributes');
 
 	useEffect(() => {
-		if (!visibleForm) resetFieldsForm(form);
-		else if (record?._id) form.setFieldsValue(record);
+		if (!visibleForm) {
+			resetFieldsForm(form);
+			return;
+		}
 
-		if (!record?._id) {
+		if (record?._id) {
+			form.setFieldsValue({
+				...record,
+				color: record?.color || '#fafafa',
+			});
+		} else {
 			form.setFieldsValue({
 				isActive: false,
+				color: '#fafafa',
 			});
 		}
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: AttributesManagement.IRecord) => {
-		setFormSubmiting(true);
-		const icon = await buildUpLoadFile(values, 'icon');
-		values.icon = icon;
-		setFormSubmiting(false);
+		try {
+			setFormSubmiting(true);
 
-		if (edit) {
-			putModel(
-				record?._id ?? '',
-				values,
-				undefined,
-				undefined,
-				undefined,
-				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
-			)
-				.then()
-				.catch((er) => console.log(er));
-		} else
-			postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
-				.then(() => form.resetFields())
-				.catch((er) => console.log(er));
+			const icon = await buildUpLoadFile(values, 'icon');
+			values.icon = icon;
+
+			values.color = values.color || '#fafafa';
+
+			if (edit) {
+				await putModel(
+					record?._id ?? '',
+					values,
+					undefined,
+					undefined,
+					undefined,
+					intl.formatMessage({ id: 'global.message.luuthanhcong' }),
+				);
+			} else {
+				await postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setFormSubmiting(false);
+		}
 	};
 
 	return (
@@ -57,7 +70,15 @@ const FormAttributes = () => {
 						: intl.formatMessage({ id: 'attributesmanagement.form.themmoi' })
 			}
 		>
-			<Form onFinish={onFinish} form={form} layout='vertical'>
+			<Form
+				onFinish={onFinish}
+				form={form}
+				layout='vertical'
+				initialValues={{
+					isActive: false,
+					color: '#fafafa',
+				}}
+			>
 				<Row gutter={[12, 0]}>
 					<Col span={24} md={12}>
 						<Form.Item
@@ -68,8 +89,12 @@ const FormAttributes = () => {
 							<UploadFile
 								disabled={isView}
 								accept='.png, .jpeg, .jpg'
-								buttonDescription='Add Icon'
-								extra='Only .png, .jpeg, and .jpg files are allowed'
+								buttonDescription={intl.formatMessage({
+									id: 'attributesmanagement.form.icon.place',
+								})}
+								extra={intl.formatMessage({
+									id: 'attributesmanagement.form.icon.extra',
+								})}
 							/>
 						</Form.Item>
 					</Col>
@@ -79,8 +104,11 @@ const FormAttributes = () => {
 							name='color'
 							label={intl.formatMessage({ id: 'attributesmanagement.form.color' })}
 							rules={[...rules.required]}
+							getValueProps={(value) => ({
+								value: value || '#fafafa',
+							})}
 						>
-							<Colorpicker disabled={isView} popup onColorResult={(color) => color.hex} />
+							<Colorpicker disabled={isView} popup onColorResult={(color) => color?.hex || '#fafafa'} />
 						</Form.Item>
 					</Col>
 
@@ -90,9 +118,15 @@ const FormAttributes = () => {
 							label={intl.formatMessage({ id: 'attributesmanagement.form.id' })}
 							rules={[...rules.required, ...rules.length(10)]}
 						>
-							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'attributesmanagement.form.id.place' })} />
+							<Input
+								disabled={isView}
+								placeholder={intl.formatMessage({
+									id: 'attributesmanagement.form.id.place',
+								})}
+							/>
 						</Form.Item>
 					</Col>
+
 					<Col span={24} md={12}>
 						<Form.Item
 							name='name'
@@ -101,10 +135,13 @@ const FormAttributes = () => {
 						>
 							<Input
 								disabled={isView}
-								placeholder={intl.formatMessage({ id: 'attributesmanagement.form.name.place' })}
+								placeholder={intl.formatMessage({
+									id: 'attributesmanagement.form.name.place',
+								})}
 							/>
 						</Form.Item>
 					</Col>
+
 					<Col span={24} md={12}>
 						<Form.Item
 							name='order'
@@ -114,32 +151,42 @@ const FormAttributes = () => {
 							<InputNumber
 								disabled={isView}
 								style={{ width: '100%' }}
-								placeholder={intl.formatMessage({ id: 'attributesmanagement.form.order.place' })}
+								placeholder={intl.formatMessage({
+									id: 'attributesmanagement.form.order.place',
+								})}
 								min={1}
 								precision={0}
 								step={1}
 							/>
 						</Form.Item>
 					</Col>
+
 					<Col span={24} md={12}>
 						<Form.Item
 							name='isActive'
-							label={intl.formatMessage({ id: 'attributesmanagement.form.active' })}
+							label={intl.formatMessage({
+								id: 'attributesmanagement.form.active',
+							})}
 							valuePropName='checked'
 						>
 							<Switch disabled={isView} />
 						</Form.Item>
 					</Col>
+
 					<Col span={24}>
 						<Form.Item
 							name='description'
-							label={intl.formatMessage({ id: 'attributesmanagement.form.des' })}
+							label={intl.formatMessage({
+								id: 'attributesmanagement.form.des',
+							})}
 							rules={[...rules.text, ...rules.length(255)]}
 						>
 							<Input.TextArea
 								disabled={isView}
 								rows={3}
-								placeholder={intl.formatMessage({ id: 'attributesmanagement.form.des.place' })}
+								placeholder={intl.formatMessage({
+									id: 'attributesmanagement.form.des.place',
+								})}
 								showCount
 							/>
 						</Form.Item>
@@ -153,7 +200,9 @@ const FormAttributes = () => {
 						</Button>
 					)}
 					<Button onClick={() => setVisibleForm(false)}>
-						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+						{intl.formatMessage({
+							id: isView ? 'global.button.dong' : 'global.button.huy',
+						})}
 					</Button>
 				</div>
 			</Form>

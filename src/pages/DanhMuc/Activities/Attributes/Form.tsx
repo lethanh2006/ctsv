@@ -12,7 +12,7 @@ const FormAttributesCCA = (props: {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { onOk, value } = props;
-	const { setVisibleForm, visibleForm, edit } = useModel('danhmuc.ccaattributes');
+	const { setVisibleForm, visibleForm } = useModel('danhmuc.ccaattributes');
 	const { danhSach } = useModel('danhmuc.attributes');
 
 	useEffect(() => {
@@ -21,7 +21,7 @@ const FormAttributesCCA = (props: {
 
 	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes) => {
 		if ((value?.length ?? 0) + (values.attributesId?.length ?? 0) > 2) {
-			return message.error('An activity type can have a maximum of 2 attributes.');
+			return message.error(intl.formatMessage({ id: 'activitiesmanagement.attribute.form.error' }));
 		}
 
 		const attrIds = values.attributesId;
@@ -41,7 +41,11 @@ const FormAttributesCCA = (props: {
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 				<Col span={24}>
-					<Form.Item name='attributesId' label='Graduating Attributes' rules={[...rules.required]}>
+					<Form.Item
+						name='attributesId'
+						label={intl.formatMessage({ id: 'activitiesmanagement.attribute.form.attribute' })}
+						rules={[...rules.required]}
+					>
 						<SelectAttributesManagement multiple />
 					</Form.Item>
 				</Col>

@@ -21,14 +21,6 @@ const CompetencyPage = () => {
 	});
 
 	const columns: IColumn<Competency.IRecord>[] = [
-		// {
-		// 	title: intl.formatMessage({ id: 'competency.column.order' }),
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'competency.column.id' }),
 			dataIndex: 'code',
@@ -53,27 +45,8 @@ const CompetencyPage = () => {
 			filterType: 'string',
 			onCell,
 		},
-		// {
-		// 	title: intl.formatMessage({ id: 'competency.column.attribute' }),
-		// 	dataIndex: 'attributes',
-		// 	width: 220,
-		// 	render: (val, rec) =>
-		// 		val && (
-		// 			<Space wrap>
-		// 				{val?.map((item: any) => (
-		// 					<Tag color={item?.color}>{item?.name}</Tag>
-		// 				))}
-		// 			</Space>
-		// 		),
-		// },
-		// {
-		// 	title: 'Evidence Example',
-		// 	dataIndex: 'evidenceLExampleList',
-		// 	width: 180,
-		// 	render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
-		// },
 		{
-			title: 'Typical Activity',
+			title: intl.formatMessage({ id: 'competency.column.typical' }),
 			dataIndex: 'typicalActivityList',
 			width: 180,
 			render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,

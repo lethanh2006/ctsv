@@ -1,6 +1,7 @@
 export default {
 	'attributesmanagement.title': 'Graduating Attribute',
 
+	'attributesmanagement.column.icon': 'Icon',
 	'attributesmanagement.column.order': 'Display Order',
 	'attributesmanagement.column.id': 'Code',
 	'attributesmanagement.column.name': 'Name',
@@ -14,6 +15,8 @@ export default {
 	'attributesmanagement.form.chitiet': 'Graduating Attribute Detail',
 
 	'attributesmanagement.form.icon': 'Icon',
+	'attributesmanagement.form.icon.place': 'Add Icon',
+	'attributesmanagement.form.icon.extra': 'Only .png, .jpeg, and .jpg files are allowed',
 	'attributesmanagement.form.color': 'Color',
 	'attributesmanagement.form.id': 'Code',
 	'attributesmanagement.form.id.place': 'Enter Code',

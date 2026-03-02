@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Secect Căn cứ pháp lý để cho vào FormItem
@@ -15,6 +15,7 @@ const SelectTrack = (props: {
 	condition?: Partial<Track.IRecord>;
 	disabled?: boolean;
 }) => {
+	const intl = useIntl();
 	const { value, onChange, multiple, allowClear, style, isSetRecord, condition, disabled } = props;
 	const { danhSach, getAllModel } = useModel('danhmuc.track');
 
@@ -36,7 +37,7 @@ const SelectTrack = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Select Career Track'
+			placeholder={intl.formatMessage({ id: 'track.select.title' })}
 			style={{ width: '100%', ...style }}
 		/>
 	);

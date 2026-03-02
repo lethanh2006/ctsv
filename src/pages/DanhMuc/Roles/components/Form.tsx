@@ -74,7 +74,7 @@ const FormRoles = (props: any) => {
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.name.place' })} />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
+					<Col span={24} md={12}>
 						<Form.Item name='order' label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}>
 							<InputNumber
 								disabled={isView}
@@ -95,11 +95,12 @@ const FormRoles = (props: any) => {
 							<Switch disabled={isView} />
 						</Form.Item>
 					</Col>
-					<Col span={24} md={12}>
+					<Col span={24}>
 						<Form.Item
 							name='autoApproval'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.auto' })}
 							valuePropName='checked'
+							extra={intl.formatMessage({ id: 'rolesmanagement.form.auto.place' })}
 						>
 							<Checkbox disabled={isView} />
 						</Form.Item>
@@ -126,7 +127,9 @@ const FormRoles = (props: any) => {
 							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+					</Button>
 				</div>
 			</Form>
 		</Card>

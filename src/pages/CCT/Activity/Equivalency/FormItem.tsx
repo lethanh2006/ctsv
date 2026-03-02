@@ -78,14 +78,38 @@ const EquivalencyFormItem = (props: {
 						{({ getFieldValue }) => {
 							const attributes = getFieldValue(['coCurricularActivityEquivalency', field.name, 'attributes']) || {};
 
-							const userCheckedCount = Object.entries(attributes).filter(
-								([id, v]) => v && !baseAttributeIds.includes(id),
-							).length;
+							// Tính các chỉ số cần thiết
+							const totalChecked = Object.values(attributes).filter(Boolean).length;
+							const totalBaseChecked = baseAttributeIds.filter((id) => attributes[id]).length;
+							const nonBaseCheckedCount = totalChecked - totalBaseChecked;
 
 							const isChecked = attributes[attr._id];
 
-							const disableCheckbox =
-								disabled || (!isBase && !isChecked && userCheckedCount >= availableSlot) || (isBase && disabled);
+							// Logic disable checkbox
+							let disabledCheckbox = disabled; // nếu form bị disable thì disable hết
+
+							if (!disabled) {
+								if (isBase) {
+									if (isChecked) {
+										// Không cho phép uncheck nếu đây là base cuối cùng còn được tick
+										disabledCheckbox = totalBaseChecked <= 1;
+									} else {
+										// Chỉ cho phép check nếu chưa đạt tối đa 2
+										disabledCheckbox = totalChecked >= MAX_CHECK;
+									}
+								} else {
+									// Không phải base
+									if (isChecked) {
+										// Luôn cho phép uncheck (không disable)
+										disabledCheckbox = false;
+									} else {
+										// Chỉ cho phép check nếu:
+										// - Chưa đạt tối đa 2
+										// - Và còn slot cho non-base (dựa vào baseCount ban đầu)
+										disabledCheckbox = totalChecked >= MAX_CHECK || nonBaseCheckedCount >= availableSlot;
+									}
+								}
+							}
 
 							return (
 								<Form.Item
@@ -93,7 +117,7 @@ const EquivalencyFormItem = (props: {
 									name={[field.name, 'attributes', attr._id]}
 									valuePropName='checked'
 								>
-									<Checkbox disabled={disableCheckbox} />
+									<Checkbox disabled={disabledCheckbox} />
 								</Form.Item>
 							);
 						}}
@@ -101,7 +125,7 @@ const EquivalencyFormItem = (props: {
 				),
 			};
 		});
-	}, [dsAtribute, allowAttributeIds, baseAttributeIds, highlightMap, availableSlot, disabled]);
+	}, [dsAtribute, baseAttributeIds, highlightMap, availableSlot, disabled]);
 
 	const columns: IColumn<any>[] = [
 		{

@@ -12,3 +12,9 @@ export async function getAnalyticsStaff() {
 export async function getAnalyticsApprovers() {
 	return axios.get(`${ipCCT}/activity-outcome/analytics/overview`);
 }
+
+export async function thongKeSoLuongActivityOutCome(filters?: any[]) {
+	return axios.get(`${ipCCT}/activity-outcome/approval-task-list/page`, {
+		params: { page: 1, limit: 10, filters: filters },
+	});
+}

@@ -124,15 +124,6 @@ const ListEvidenceActivity = () => {
 			onCell,
 		},
 		{
-			title: 'Activity Type',
-			width: 200,
-			render: (val, rec) =>
-				rec?.activityCategory === EActivityCategory.REGISTERED
-					? rec?.activities?.activitiesType?.name
-					: rec?.activitiesType?.name,
-			onCell,
-		},
-		{
 			title: 'Submission Time',
 			dataIndex: 'submittedAt',
 			align: 'center',

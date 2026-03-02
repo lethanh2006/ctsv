@@ -8,7 +8,7 @@ const FormStudentDomain = (props: { onOk: (val: ActivitiesManagement.IStudentDec
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { onOk } = props;
-	const { setVisibleForm, visibleForm, edit } = useModel('danhmuc.studentdomain');
+	const { setVisibleForm, visibleForm } = useModel('danhmuc.studentdomain');
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);

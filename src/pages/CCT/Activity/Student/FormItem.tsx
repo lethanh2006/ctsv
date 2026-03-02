@@ -27,7 +27,7 @@ const FormItemStudentDomain = (props: {
 		const isDuplicate = dataSource.find((item, idx) => item.ssoId === rec.ssoId)?.ssoId;
 
 		if (!!isDuplicate) {
-			message.error('This person already exists in the list');
+			message.error(intl.formatMessage({ id: 'activitiesmanagement.student.error' }));
 		} else {
 			if (!record?.index) {
 				onChange?.([...dataSource, rec]);

@@ -91,7 +91,7 @@ const FormActivities = (props: any) => {
 
 					<Col span={24}>
 						<div className='fw500' style={{ marginBottom: 6 }}>
-							Graduating Attributes
+							{intl.formatMessage({ id: 'activitiesmanagement.form.attributes' })}
 						</div>
 						{record?._id ? (
 							<AttributesCCAModel disabled={isView} />
@@ -102,21 +102,25 @@ const FormActivities = (props: any) => {
 						)}
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='trackId' label='Track' rules={[...rules.required]}>
+						<Form.Item
+							name='trackId'
+							label={intl.formatMessage({ id: 'activitiesmanagement.form.track' })}
+							rules={[...rules.required]}
+						>
 							<SelectTrack disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='activitiesTypeDomainId' label='Activity Group' rules={[...rules.required]}>
+						<Form.Item
+							name='activitiesTypeDomainId'
+							label={intl.formatMessage({ id: 'activitiesmanagement.form.group' })}
+							rules={[...rules.required]}
+						>
 							<SelectActivitiesTypeDomain disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item
-							name='order'
-							label={intl.formatMessage({ id: 'activitiesmanagement.form.order' })}
-							// rules={[...rules.required]}
-						>
+						<Form.Item name='order' label={intl.formatMessage({ id: 'activitiesmanagement.form.order' })}>
 							<InputNumber
 								disabled={isView}
 								style={{ width: '100%' }}
@@ -153,7 +157,7 @@ const FormActivities = (props: any) => {
 
 					<Col span={24}>
 						<div className='fw500' style={{ marginBottom: 6 }}>
-							Required Evidence
+							{intl.formatMessage({ id: 'activitiesmanagement.form.evidence' })}
 						</div>
 						<Form.List name='requiredEvidenceList'>
 							{(fields, { add, remove }) => (
@@ -161,7 +165,11 @@ const FormActivities = (props: any) => {
 									{fields.map((field) => (
 										<Form.Item key={field.key} required={false}>
 											<Form.Item {...field} rules={[...rules.required]} noStyle>
-												<Input placeholder='Enter value' style={{ width: '95%' }} disabled={isView} />
+												<Input
+													placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.evidence.value' })}
+													style={{ width: '95%' }}
+													disabled={isView}
+												/>
 											</Form.Item>
 
 											<Button
@@ -182,29 +190,13 @@ const FormActivities = (props: any) => {
 											icon={<PlusOutlined />}
 											disabled={isView}
 										>
-											Add new
+											{intl.formatMessage({ id: 'activitiesmanagement.form.evidence.add' })}
 										</Button>
 									</Form.Item>
 								</>
 							)}
 						</Form.List>
 					</Col>
-
-					{/* <Col span={24}>
-						<Divider className='divider-big-title' orientation='left'>
-							Approvers
-						</Divider>
-					</Col>
-
-					<Col span={24}>
-						{record?._id ? (
-							<StudenDomainModelPage disabled={isView} mode='activitiesType' />
-						) : (
-							<Form.Item name='studentDeclarationApproverList'>
-								<FormItemStudentDomain disabled={isView} />
-							</Form.Item>
-						)}
-					</Col> */}
 				</Row>
 
 				<div className='form-footer'>

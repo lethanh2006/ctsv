@@ -21,14 +21,6 @@ const RolesPage = () => {
 	});
 
 	const columns: IColumn<RolesManagement.IRecord>[] = [
-		// {
-		// 	title: intl.formatMessage({ id: 'rolesmanagement.column.order' }),
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'rolesmanagement.column.id' }),
 			dataIndex: 'code',

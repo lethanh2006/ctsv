@@ -42,11 +42,23 @@ const FormStudentApprover = (props: any) => {
 	};
 
 	return (
-		<Card title={edit ? 'Edit Student Approver' : isView ? 'Detail Student Approver' : 'Add New Student Approver'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'studentapprover.form.chinhsua' })
+					: isView
+						? intl.formatMessage({ id: 'studentapprover.form.chitiet' })
+						: intl.formatMessage({ id: 'studentapprover.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='ssoId' label='Student Approver' rules={[...rules.required]}>
+						<Form.Item
+							name='ssoId'
+							label={intl.formatMessage({ id: 'studentapprover.form.student' })}
+							rules={[...rules.required]}
+						>
 							<SelectNhanSuDebounce
 								onChange={(val, option) => {
 									const nhanSu = option?.rawData;
@@ -65,7 +77,7 @@ const FormStudentApprover = (props: any) => {
 					</Col>
 					<Col span={24}>
 						<Form.Item name='mainApprover' label='' valuePropName='checked'>
-							<Checkbox disabled={isView}>Main Approver</Checkbox>
+							<Checkbox disabled={isView}>{intl.formatMessage({ id: 'studentapprover.form.main' })}</Checkbox>
 						</Form.Item>
 					</Col>
 				</Row>
@@ -74,7 +86,9 @@ const FormStudentApprover = (props: any) => {
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+					</Button>
 				</div>
 			</Form>
 		</Card>

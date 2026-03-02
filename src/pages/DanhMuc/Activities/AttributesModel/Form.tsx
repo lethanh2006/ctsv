@@ -16,31 +16,60 @@ const FormCompetencyCCAModel = (props: any) => {
 		if (!visibleForm) resetFieldsForm(form);
 	}, [visibleForm]);
 
-	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes) => {
-		if ((danhSach?.length ?? 0) >= 2) {
-			return message.error('An activity type can have a maximum of 2 attributes.');
+	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes): Promise<void> => {
+		const selectedIds: string[] = Array.isArray(values?.attributesId) ? values.attributesId : [];
+		const currentList = danhSach || [];
+
+		if (currentList.length + selectedIds.length > 2) {
+			message.error(intl.formatMessage({ id: 'activitiesmanagement.attribute.form.error' }));
+			return;
 		}
 
-		return postModel(
-			{
-				...values,
-				activitiesTypeId: recCCA?._id,
-			},
-			getData,
-			undefined,
-			intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
-		)
-			.then()
-			.catch((err) => console.log(err));
+		const existedIds = currentList.map((item) => item.attributesId);
+
+		const duplicated = selectedIds.filter((id) => existedIds.includes(id));
+
+		if (duplicated.length > 0) {
+			message.error(intl.formatMessage({ id: 'activitiesmanagement.attribute.form.error.duplicate' }));
+			return;
+		}
+
+		await Promise.all(
+			selectedIds.map((id) =>
+				postModel(
+					{
+						attributesId: id,
+						activitiesTypeId: recCCA?._id,
+					},
+					undefined,
+					undefined,
+					undefined,
+				),
+			),
+		);
+
+		message.success(intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
+		getData();
+		setVisibleForm(false);
 	};
 
 	return (
-		<Card title={edit ? 'Edit Graduating Attribute' : 'Add New Graduating Attribute'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'activitiesmanagement.attribute.form.chinhsua' })
+					: intl.formatMessage({ id: 'activitiesmanagement.attribute.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					<Col span={24}>
-						<Form.Item name='attributesId' label='Graduating Attribute' rules={[...rules.required]}>
-							<SelectAttributesManagement />
+						<Form.Item
+							name='attributesId'
+							label={intl.formatMessage({ id: 'activitiesmanagement.attribute.form.attribute' })}
+							rules={[...rules.required]}
+						>
+							<SelectAttributesManagement multiple />
 						</Form.Item>
 					</Col>
 				</Row>

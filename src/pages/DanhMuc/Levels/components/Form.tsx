@@ -82,27 +82,24 @@ const FormLevels = () => {
 							/>
 						</Form.Item>
 					</Col>
+					<Col span={24} md={12}>
+						<Form.Item
+							name='isActive'
+							label={intl.formatMessage({ id: 'levelsmanagement.form.active' })}
+							valuePropName='checked'
+						>
+							<Switch disabled={isView} />
+						</Form.Item>
+					</Col>
 					<Col span={24}>
-						<Row gutter={[12, 0]}>
-							<Col span={24} md={12}>
-								<Form.Item
-									name='isActive'
-									label={intl.formatMessage({ id: 'levelsmanagement.form.active' })}
-									valuePropName='checked'
-								>
-									<Switch disabled={isView} />
-								</Form.Item>
-							</Col>
-							<Col span={24} md={12}>
-								<Form.Item
-									name='autoApproval'
-									label={intl.formatMessage({ id: 'levelsmanagement.form.auto' })}
-									valuePropName='checked'
-								>
-									<Checkbox disabled={isView} />
-								</Form.Item>
-							</Col>
-						</Row>
+						<Form.Item
+							name='autoApproval'
+							label={intl.formatMessage({ id: 'levelsmanagement.form.auto' })}
+							valuePropName='checked'
+							extra={intl.formatMessage({ id: 'levelsmanagement.form.auto.place' })}
+						>
+							<Checkbox disabled={isView} />
+						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<Form.Item

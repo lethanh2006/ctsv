@@ -22,7 +22,7 @@ const AttributesPage = () => {
 
 	const columns: IColumn<AttributesManagement.IRecord>[] = [
 		{
-			title: 'Icon',
+			title: intl.formatMessage({ id: 'attributesmanagement.column.icon' }),
 			dataIndex: 'icon',
 			align: 'center',
 			width: 90,

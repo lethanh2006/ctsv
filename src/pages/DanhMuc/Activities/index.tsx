@@ -23,14 +23,6 @@ const ActivitiesPage = () => {
 	});
 
 	const columns: IColumn<ActivitiesManagement.IRecord>[] = [
-		// {
-		// 	title: intl.formatMessage({ id: 'activitiesmanagement.column.order' }),
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.id' }),
 			dataIndex: 'code',
@@ -62,7 +54,7 @@ const ActivitiesPage = () => {
 			onCell,
 		},
 		{
-			title: 'Track',
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.track' }),
 			dataIndex: 'track',
 			width: 120,
 			render: (val, rec) => rec?.track?.name,
@@ -71,13 +63,13 @@ const ActivitiesPage = () => {
 			onCell,
 		},
 		{
-			title: 'Required evidence',
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.required' }),
 			dataIndex: 'requiredEvidenceList',
 			width: 180,
 			render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
 		},
 		{
-			title: 'Activity Group',
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.domain' }),
 			dataIndex: 'activitiesTypeDomainId',
 			align: 'center',
 			width: 200,

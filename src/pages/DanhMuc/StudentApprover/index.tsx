@@ -35,28 +35,28 @@ const StudentApproverPage = () => {
 
 	const columns: IColumn<ActivitiesManagement.IStudentDeclaration>[] = [
 		{
-			title: 'Name',
+			title: intl.formatMessage({ id: 'studentapprover.column.name' }),
 			dataIndex: 'name',
 			width: 220,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Employee Code',
+			title: intl.formatMessage({ id: 'studentapprover.column.code' }),
 			dataIndex: 'code',
 			width: 120,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'studentapprover.column.email' }),
 			dataIndex: 'email',
 			width: 100,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Main Approver',
+			title: intl.formatMessage({ id: 'studentapprover.column.main' }),
 			dataIndex: 'mainApprover',
 			align: 'center',
 			width: 90,
@@ -82,7 +82,7 @@ const StudentApproverPage = () => {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
-						title='Do you want to remove this approver?'
+						title={intl.formatMessage({ id: 'studentapprover.confirm.xoa' })}
 						placement='topLeft'
 					>
 						<ButtonExtend
@@ -103,7 +103,7 @@ const StudentApproverPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.studentdomain'
-			title='Student Approvers'
+			title={intl.formatMessage({ id: 'studentapprover.title' })}
 			Form={FormStudentApprover}
 			formProps={{ getData }}
 			buttons={{ import: true, export: true }}
