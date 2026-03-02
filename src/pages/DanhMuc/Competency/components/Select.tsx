@@ -70,7 +70,7 @@ const SelectCompetency = (props: {
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={handleSelectAll}
 						>
-							<Text strong>Chọn tất cả</Text>
+							<Text strong>{intl.formatMessage({ id: 'competency.select.all' })}</Text>
 						</Space>
 						<Divider style={{ margin: '4px 0' }} />
 						{menu}

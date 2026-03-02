@@ -56,20 +56,22 @@ const SelectNhanSuDebounce = (props: {
 				loading ? (
 					<Spin
 						spinning={true}
-						tip={intl.formatMessage({ id: 'kyluatkhenthuong.selectnhansu.loading' })}
+						tip={intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten.loading' })}
 						style={{ width: '100%', margin: 10 }}
 					/>
 				) : (
 					<Empty
 						image={Empty.PRESENTED_IMAGE_SIMPLE}
-						description={intl.formatMessage({ id: 'kyluatkhenthuong.selectnhansu.description' })}
+						description={intl.formatMessage({ id: 'activitiesmanagement.student.column.hoten.description' })}
 					/>
 				)
 			}
 			options={danhSach.map((item) => ({
 				key: item._id,
 				value: item.ssoId,
-				label: `${item.hoDem ?? ''} ${item.ten ?? ''} - ${item.maCanBo ?? ''}`,
+				label: [`${item.hoDem ?? ''} ${item.ten ?? ''}`.trim(), item.maCanBo, item.emailCanBo ?? item.email]
+					.filter(Boolean)
+					.join(' - '),
 				rawData: item,
 			}))}
 			showSearch

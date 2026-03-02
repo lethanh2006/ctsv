@@ -23,14 +23,6 @@ const ActivitiesPage = () => {
 	});
 
 	const columns: IColumn<ActivitiesManagement.IRecord>[] = [
-		// {
-		// 	title: intl.formatMessage({ id: 'activitiesmanagement.column.order' }),
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.id' }),
 			dataIndex: 'code',
@@ -48,14 +40,6 @@ const ActivitiesPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activitiesmanagement.column.des' }),
-			dataIndex: 'description',
-			width: 180,
-			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
-			onCell,
-		},
-		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.attribute' }),
 			dataIndex: 'attributes',
 			width: 180,
@@ -67,29 +51,39 @@ const ActivitiesPage = () => {
 						))}
 					</Space>
 				),
+			onCell,
 		},
 		{
-			title: 'Track',
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.track' }),
 			dataIndex: 'track',
 			width: 120,
 			render: (val, rec) => rec?.track?.name,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectTrack multiple />,
+			onCell,
 		},
 		{
-			title: 'Required evidence',
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.required' }),
 			dataIndex: 'requiredEvidenceList',
 			width: 180,
 			render: (val, rec) => val && <ExpandText>{val.filter(Boolean).join(', ')}</ExpandText>,
 		},
 		{
-			title: 'Activity Group',
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.domain' }),
 			dataIndex: 'activitiesTypeDomainId',
 			align: 'center',
 			width: 200,
 			render: (val, rec) => rec?.activitiesTypeDomain?.name ?? val,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectActivitiesTypeDomain multiple />,
+			onCell,
+		},
+		{
+			title: intl.formatMessage({ id: 'activitiesmanagement.column.des' }),
+			dataIndex: 'description',
+			width: 180,
+			render: (val, rec) => <ExpandText>{val}</ExpandText>,
+			filterType: 'string',
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.column.active' }),
@@ -99,6 +93,7 @@ const ActivitiesPage = () => {
 			render: (val, rec) => (
 				<Switch checked={val} onChange={(checked) => onChecked(rec, checked)} size='small' loading={formSubmiting} />
 			),
+			fixed: 'right',
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),

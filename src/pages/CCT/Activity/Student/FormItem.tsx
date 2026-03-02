@@ -2,7 +2,7 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import TableStaticData from '@/components/Table/TableStaticData';
 import { type IColumn } from '@/components/Table/typing';
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Modal, Popconfirm } from 'antd';
+import { Button, message, Modal, Popconfirm } from 'antd';
 import { useIntl, useModel } from 'umi';
 import FormStudentDomain from './Form';
 
@@ -15,23 +15,29 @@ const FormItemStudentDomain = (props: {
 	const { setVisibleForm, visibleForm, setEdit, edit, record, setRecord, setIsView } =
 		useModel('danhmuc.studentdomain');
 	const { value = [], onChange, disabled } = props;
+	const dataSource = Array.isArray(value) ? value : [];
 
 	const onDelete = (index: number) => {
-		const data = [...value];
+		const data = [...dataSource];
 		data.splice(index, 1);
-		if (onChange) onChange(data);
+		onChange?.(data);
 	};
 
 	const onAdd = (rec: ActivitiesManagement.IStudentDeclaration) => {
-		if (!record?.index) {
-			const data = [...value, rec];
-			if (onChange) onChange(data);
-			setVisibleForm(false);
+		const isDuplicate = dataSource.find((item, idx) => item.ssoId === rec.ssoId)?.ssoId;
+
+		if (!!isDuplicate) {
+			message.error(intl.formatMessage({ id: 'activitiesmanagement.student.error' }));
 		} else {
-			const data = [...value];
-			data.splice(record?.index - 1, 1, rec);
-			if (onChange) onChange(data);
-			setVisibleForm(false);
+			if (!record?.index) {
+				onChange?.([...dataSource, rec]);
+				setVisibleForm(false);
+			} else {
+				const data = [...dataSource];
+				data.splice(record.index - 1, 1, rec);
+				onChange?.(data);
+				setVisibleForm(false);
+			}
 		}
 	};
 
@@ -74,7 +80,7 @@ const FormItemStudentDomain = (props: {
 
 	return (
 		<>
-			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
+			<TableStaticData data={dataSource} columns={columns} size='small' hasTotal addStt>
 				{!disabled && (
 					<Button
 						onClick={() => {

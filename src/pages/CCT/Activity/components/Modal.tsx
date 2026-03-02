@@ -1,39 +1,85 @@
-import { Steps } from 'antd';
+import { Activity } from '@/services/CCT/Activity/typing';
+import { EApprovalStatus } from '@/services/CCT/constant';
+import dayjs from '@/utils/dayjs';
+import { Button, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
-import { useModel } from 'umi';
-import ListStudentActivity from '../ListStudent';
-import FormActivity from './Form';
+import { useIntl, useModel } from 'umi';
+import FormActivityStudent from '../../ActivityStudent/components/Form';
+import CardChiTietSuKien from '../ChiTiet';
+import ListEvidenceActivity from '../ListStudent/ListEvidence';
+import RegisteredActivity from '../ListStudent/Registered';
 
-const ModalActivity = (props: any) => {
-	const { getData } = props;
-	const { visibleForm } = useModel('cct.activity');
-	const [currentStep, setCurrentStep] = useState<number>(0);
+const ModalActivity = () => {
+	const intl = useIntl();
+	const { visibleForm, record, setVisibleForm } = useModel('cct.activity');
+	const [activeKey, setActiveKey] = useState<string>('0');
 
 	useEffect(() => {
 		if (!visibleForm) {
-			setCurrentStep(0);
+			setActiveKey('0');
 		}
 	}, [visibleForm]);
 
-	const onChangeStep = (step: number) => {
-		setCurrentStep(step);
-	};
+	// const isExpired = activeKey === '3' && editableWorkflow && now.isAfter(endDateUpdateEvidence);
 
 	return (
 		<>
-			<Steps current={currentStep} style={{ marginBottom: 18, paddingTop: 0 }} onChange={onChangeStep}>
-				<Steps.Step title='Thông tin chung' />
-				<Steps.Step title='Danh sách đăng ký' />
-				<Steps.Step title='Danh sách minh chứng' />
-			</Steps>
+			<Tabs
+				activeKey={activeKey}
+				onChange={setActiveKey}
+				items={[
+					{
+						key: '0',
+						label: 'Activity Information',
+						children: (
+							<>
+								<CardChiTietSuKien
+									record={
+										{
+											...record,
+											activityOutcome: record?.activityOutcome,
+										} as Activity.IRecord
+									}
+									evidenceDeadline={
+										record?.activityOutcome?.workflow === EApprovalStatus.CHANGES_REQUIRED
+											? record?.activityOutcome?.dueDate
+												? dayjs(record?.activityOutcome?.dueDate).format('HH:mm DD/MM/YYYY')
+												: '--'
+											: record?.allowPostEventResultsUpdate
+												? record?.dueDate
+													? dayjs(record?.dueDate).format('HH:mm DD/MM/YYYY')
+													: '--'
+												: record?.endDate
+													? dayjs(record?.endDate).format('HH:mm DD/MM/YYYY')
+													: '--'
+									}
+									infoEvidence={!!record?.activityOutcome?.workflow || !!record?.activityOutcome?._id}
+									activeKey={activeKey}
+									// isExpired={isExpired}
+								/>
 
-			{currentStep === 0 ? (
-				<FormActivity afterAddNew={() => setCurrentStep(1)} getData={getData} />
-			) : currentStep === 1 ? (
-				<ListStudentActivity />
-			) : (
-				<></>
-			)}
+								<div className='form-footer'>
+									<Button onClick={() => setVisibleForm(false)}>
+										{intl.formatMessage({ id: 'global.button.dong' })}
+									</Button>
+								</div>
+							</>
+						),
+					},
+					{
+						key: '1',
+						label: 'Registration List',
+						children: <RegisteredActivity />,
+					},
+					{
+						key: '2',
+						label: 'Evidence Declaration List',
+						children: <ListEvidenceActivity />,
+					},
+				]}
+			/>
+
+			<FormActivityStudent isActivity />
 		</>
 	);
 };

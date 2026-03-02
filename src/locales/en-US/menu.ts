@@ -9,12 +9,13 @@ export default {
 	'menu.Activity': 'Activity Management',
 	'menu.ActivityResuls': 'Activity Results Approval',
 
-	'menu.DanhMuc.Attributes': 'Attribute',
+	'menu.DanhMuc.Attributes': 'Graduating Attribute',
 	'menu.DanhMuc.Levels': 'Level',
 	'menu.DanhMuc.Roles': 'Role',
 	'menu.DanhMuc.Track': 'Career Track',
 	'menu.DanhMuc.CCD': 'Activity Group',
 	'menu.DanhMuc.Activities': 'Activity Type',
+	'menu.DanhMuc.StudentApprover': 'Student Approver',
 	'menu.DanhMuc.Competency': 'Competency',
 	'menu.DanhMuc.Questions': 'Self-Assessment Questions',
 

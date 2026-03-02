@@ -5,8 +5,6 @@ import { IColumn } from '@/components/Table/typing';
 import UploadFile from '@/components/Upload/UploadFile';
 import SelectPhongCSVC from '@/pages/CoSoVatChat/Phong/Select';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
-import StudenDomainModelPage from '@/pages/DanhMuc/Activities/StudenModel';
-import FormItemStudentDomain from '@/pages/DanhMuc/Activities/Student/FormItem';
 import SelectActivitiesTypeDomain from '@/pages/DanhMuc/CCD/components/Select';
 import SelectNganhCoSo from '@/pages/DaoTaoV2/DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
 import SelectLopHocPhanDebounce from '@/pages/DaoTaoV2/HocKy/LopHocPhan/components/SelectLopHocPhanDebounce';
@@ -18,36 +16,48 @@ import { buildUpLoadFile } from '@/services/uploadFile';
 import dayjs from '@/utils/dayjs';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Checkbox, Col, Divider, Form, Input, message, Radio, Row, Select } from 'antd';
-import { useEffect } from 'react';
+import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, message, Radio, Row, Select } from 'antd';
+import { useEffect, useMemo } from 'react';
 import { useIntl, useModel } from 'umi';
-import EquivalencyForm from '../Equivalency/Form';
 import EquivalencyFormItem from '../Equivalency/FormItem';
+import FormItemStudentDomain from '../Student/FormItem';
 import FormItemUserRoles from '../UserRoles/FormItem';
-import UserRolesModelPage from '../UserRolesModel';
 import GroupTagVaiTro from './GroupTagVaiTro';
 
 const MAX_SELECT = 3;
+const normalizeEquivalencyData = (data: any[]) => {
+	const map: Record<string, any> = {};
 
-const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; getData?: () => void }) => {
+	data.forEach((item) => {
+		const roleId = item.rolesId;
+		if (!roleId) return;
+
+		if (!map[roleId]) {
+			map[roleId] = {
+				rolesId: roleId,
+				role: item.roles ?? null,
+				attributes: {},
+			};
+		}
+
+		if (item.attributesId) {
+			map[roleId].attributes[item.attributesId] = true;
+		}
+	});
+
+	return Object.values(map);
+};
+
+const FormActivity = (props: { getData?: () => void }) => {
 	const intl = useIntl();
-	const { afterAddNew, getData } = props;
+	const { getData } = props;
 	const [form] = Form.useForm();
-	const {
-		record,
-		setVisibleForm,
-		edit,
-		isView,
-		postModel,
-		putModel,
-		formSubmiting,
-		visibleForm,
-		setFormSubmiting,
-		setRecord,
-		setEdit,
-	} = useModel('cct.activity');
-	const { danhSach: dsActivityType } = useModel('danhmuc.activities');
+	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm, setFormSubmiting } =
+		useModel('cct.activity');
 	const { danhSach: dscompetency, loading, getAllModel: getAllAttriCompetency } = useModel('danhmuc.competency');
+	const { danhSach: dsActivityType } = useModel('danhmuc.activities');
+	const { getAllModel: getAllLevel } = useModel('danhmuc.levels');
+	const { record: recNhanSu } = useModel('tochucnhansu.nhansu');
 
 	const startDate: Date = Form.useWatch('startDate', form);
 	const endDate: Date = Form.useWatch('endDate', form);
@@ -57,14 +67,14 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 	const participantRole: EparticipantRole = Form.useWatch('participantRole', form);
 	const activitiesTypeDomainId: string = Form.useWatch('activitiesTypeDomainId', form);
 	const allowPostEventResultsUpdate: boolean = Form.useWatch('allowPostEventResultsUpdate', form);
-	// const coCurricularAttributesEquivalency = Form.useWatch('coCurricularAttributesEquivalency', form);
 	const activitiesTypeId: string = Form.useWatch('activitiesTypeId', form);
 	const competencyList: string[] = Form.useWatch('competencyList', form);
+	const allowCapacity: boolean = Form.useWatch('allowCapacity', form);
+	const allowDueDateRegistration: boolean = Form.useWatch('allowDueDateRegistration', form);
 
 	useEffect(() => {
 		if (!visibleForm)
 			resetFieldsForm(form, {
-				coCurricularAttributesEquivalency: null,
 				studentDeclarationApproverList: null,
 				coCurricularActivityEquivalency: null,
 			});
@@ -75,19 +85,36 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 				cct: record?.activitiesTypeId ?? false,
 				activitiesTypeDomainId: record?.activitiesType?.activitiesTypeDomainId,
 				competencyList: record?.competencyList?.map((item) => item?.competencyId),
+				coCurricularActivityEquivalency: normalizeEquivalencyData(record?.coCurricularActivityEquivalency),
+				allowCapacity: record.capacity ? true : false,
+				allowDueDateRegistration: record.dueDateRegistration ? true : false,
 			});
 
 		if (!record?._id) {
 			form.setFieldsValue({
 				participantScope: EParticipantScope.UNIVERSITY,
-				participantRole: EparticipantRole.ALL,
+				participantRole: EparticipantRole.STUDENT,
 				cct: true,
-				allowPostEventResultsUpdate: false,
+				allowPostEventResultsUpdate: true,
 				onCampus: true,
+				allowRegistration: false,
+				dueDate: dayjs().add(10, 'day'),
+				organizer: recNhanSu?.donViChinh?.ten,
+				studentDeclarationApproverList: [
+					{
+						index: 0,
+						ssoId: recNhanSu?.ssoId,
+						name: recNhanSu?.hoTen,
+						email: recNhanSu?.email ?? recNhanSu?.emailCanBo,
+					},
+				],
+				allowCapacity: false,
+				allowDueDateRegistration: false,
 			});
 		}
 
 		getAllAttriCompetency();
+		getAllLevel(undefined, { order: 1 }, { autoApproval: true, isActive: true });
 	}, [record?._id, visibleForm]);
 
 	const onFinish = async (values: Activity.IRecord) => {
@@ -98,16 +125,9 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 		values.backgroundImage = backgroundImage;
 		setFormSubmiting(false);
 
-		// const coCurricularAttributesEquivalency: any = [];
-		// values.coCurricularAttributesEquivalency?.map((item: any) =>
-		// 	item?.competencieId?.forEach((element: any) => {
-		// 		coCurricularAttributesEquivalency.push({
-		// 			competencieId: element,
-		// 			attributesId: item?.attributesId,
-		// 		});
-		// 	}),
-		// );
-		// values.coCurricularAttributesEquivalency = coCurricularAttributesEquivalency;
+		values.codeOrganizer = recNhanSu?.donViChinh?.maDonVi;
+		values.capacity = allowCapacity ? values.capacity : null;
+		values.dueDateRegistration = allowDueDateRegistration ? values.dueDateRegistration : null;
 
 		values.competencyList = values.competencyList?.map((id) => ({
 			competencyId: id,
@@ -148,42 +168,28 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 			});
 		});
 
+		const data = { ...values, coCurricularActivityEquivalency: result };
+
 		if (edit) {
 			putModel(
 				record?._id ?? '',
-				values,
+				data,
 				getData,
 				undefined,
-				false,
+				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
 			)
-				.then((rec) => {
-					setRecord({ ...rec, ...record });
-					if (afterAddNew && rec?.activitiesTypeId) {
-						afterAddNew(rec);
-					} else setVisibleForm(false);
-				})
+				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(
-				{ ...values, coCurricularActivityEquivalency: result },
-				getData,
-				false,
-				intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
-			)
-				.then((rec) => {
-					setRecord({ ...rec, ...record });
-					setEdit(true);
-					if (afterAddNew && rec?.activitiesTypeId) {
-						afterAddNew(rec);
-					} else setVisibleForm(false);
-				})
+			postModel(data, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+				.then()
 				.catch((er) => console.log(er));
 	};
 
 	const columns: IColumn<Competency.IRecord>[] = [
 		{
-			title: intl.formatMessage({ id: 'competency.column.name' }),
+			title: 'Name',
 			dataIndex: 'name',
 			width: 170,
 			filterType: 'string',
@@ -196,81 +202,108 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 		},
 	];
 
+	const sortedData = useMemo(() => {
+		if (!dscompetency) return [];
+
+		const selectedSet = new Set(competencyList ?? []);
+
+		return [...dscompetency].sort((a, b) => {
+			const aSelected = selectedSet.has(a._id);
+			const bSelected = selectedSet.has(b._id);
+
+			// selected lên trên
+			if (aSelected && !bSelected) return -1;
+			if (!aSelected && bSelected) return 1;
+
+			return 0;
+		});
+	}, [dscompetency, competencyList]);
+
 	return (
 		<Form onFinish={onFinish} form={form} layout='vertical'>
 			<Row gutter={[12, 0]}>
-				<Col span={24} md={12}>
-					<Form.Item
-						name='banner'
-						label={intl.formatMessage({ id: 'activity.info.form.banner' })}
-						extra='Only .png, .jpeg, and .jpg files are allowed'
-					>
-						<UploadFile disabled={isView} accept='.png, .jpeg, .jpg' />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={12}>
-					<Form.Item
-						name='backgroundImage'
-						label={intl.formatMessage({ id: 'activity.info.form.backgroundImage' })}
-						extra='Only .png, .jpeg, and .jpg files are allowed'
-					>
-						<UploadFile disabled={isView} accept='.png, .jpeg, .jpg' />
-					</Form.Item>
-				</Col>
 				<Col span={24}>
-					<Form.Item
-						name='name'
-						label={intl.formatMessage({ id: 'activity.info.form.name' })}
-						rules={[...rules.required]}
-					>
-						<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activity.info.form.name.place' })} />
-					</Form.Item>
-				</Col>
-				<Col span={24} md={12}>
-					<Form.Item
-						name='startDate'
-						label={intl.formatMessage({ id: 'activity.info.form.startDate' })}
-						rules={[...rules.required]}
-					>
-						<MyDatePicker
-							showTime={{ showHour: true, showMinute: true }}
-							format='HH:mm DD/MM/YYYY'
-							disabled={isView}
-							placeholder={intl.formatMessage({ id: 'activity.info.form.startDate.place' })}
-							allowClear
-						/>
-					</Form.Item>
-				</Col>
-				<Col span={24} md={12}>
-					<Form.Item
-						name='endDate'
-						label={intl.formatMessage({ id: 'activity.info.form.endDate' })}
-						rules={[
-							...rules.required,
-							...rules.sauNgay(dayjs(startDate), intl.formatMessage({ id: 'activity.info.form.startDate' })),
-						]}
-					>
-						<MyDatePicker
-							showTime={{ showHour: true, showMinute: true }}
-							format='HH:mm DD/MM/YYYY'
-							disabled={isView}
-							disabledDate={(cur) => (startDate ? dayjs(cur).isBefore(startDate) : false)}
-							placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}
-							allowClear
-						/>
-					</Form.Item>
-				</Col>
-				<Col span={24}>
-					<Form.Item
-						name='organizer'
-						label={intl.formatMessage({ id: 'activity.info.form.organizer' })}
-						rules={[...rules.required]}
-					>
-						<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activity.info.form.organizer.place' })} />
-					</Form.Item>
+					<Row gutter={[12, 0]}>
+						<Col span={24} md={8}>
+							<Form.Item name='banner' label={intl.formatMessage({ id: 'activity.info.form.banner' })}>
+								<UploadFile
+									isWidescreen
+									accept='.png,.jpg,.jpeg'
+									buttonDescription={intl.formatMessage({ id: 'activity.info.form.banner.place' })}
+									extra={intl.formatMessage({ id: 'activity.info.form.banner.extra' })}
+								/>
+							</Form.Item>
+						</Col>
+
+						<Col span={24} md={16}>
+							<Row gutter={[12, 0]}>
+								<Col span={24}>
+									<Form.Item
+										name='name'
+										label={intl.formatMessage({ id: 'activity.info.form.name' })}
+										rules={[...rules.required]}
+									>
+										<Input
+											disabled={isView}
+											placeholder={intl.formatMessage({ id: 'activity.info.form.name.place' })}
+										/>
+									</Form.Item>
+								</Col>
+								<Col span={24} md={12}>
+									<Form.Item
+										name='startDate'
+										label={intl.formatMessage({ id: 'activity.info.form.startDate' })}
+										rules={[...rules.required]}
+									>
+										<MyDatePicker
+											showTime={{ showHour: true, showMinute: true }}
+											format='HH:mm DD/MM/YYYY'
+											disabled={isView}
+											placeholder={intl.formatMessage({ id: 'activity.info.form.startDate.place' })}
+											allowClear
+											disabledDate={(current) => {
+												return !!(current && current < dayjs().startOf('day'));
+											}}
+											onChange={() => form.resetFields(['endDate'])}
+										/>
+									</Form.Item>
+								</Col>
+								<Col span={24} md={12}>
+									<Form.Item
+										name='endDate'
+										label={intl.formatMessage({ id: 'activity.info.form.endDate' })}
+										rules={[
+											...rules.required,
+											...rules.sauNgay(dayjs(startDate), intl.formatMessage({ id: 'activity.info.form.startDate' })),
+										]}
+									>
+										<MyDatePicker
+											showTime={{ showHour: true, showMinute: true }}
+											format='HH:mm DD/MM/YYYY'
+											disabled={isView}
+											disabledDate={(current) =>
+												!!(
+													dayjs(current).isBefore(dayjs().startOf('day')) ||
+													(startDate && dayjs(current).isBefore(startDate))
+												)
+											}
+											placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}
+											allowClear
+											onChange={(val) => form.setFieldValue('dueDate', dayjs(val).add(10, 'day'))}
+										/>
+									</Form.Item>
+								</Col>
+								<Col span={24}>
+									<Form.Item name='organizer' label={intl.formatMessage({ id: 'activity.info.form.organizer' })}>
+										<Input disabled />
+									</Form.Item>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
 				</Col>
 
-				<Col span={24} md={12}>
+				<Col span={24} md={8}>
 					<Form.Item
 						name='onCampus'
 						label={intl.formatMessage({ id: 'activity.info.form.location' })}
@@ -287,7 +320,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 				</Col>
 
 				{onCampus ? (
-					<Col span={24} md={12}>
+					<Col span={24} md={16}>
 						<Form.Item
 							name='facilityCode'
 							label={intl.formatMessage({ id: 'activity.info.form.location.onCampus' })}
@@ -299,6 +332,7 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 									const phong = option?.rawData;
 									form.setFieldsValue({
 										facilityName: phong?.ten,
+										capacity: phong?.sucChua,
 									});
 								}}
 							/>
@@ -306,11 +340,12 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 						<Form.Item name='facilityName' hidden />
 					</Col>
 				) : (
-					<Col span={24} md={12}>
+					<Col span={24} md={16}>
 						<Form.Item
 							name='otherAddress'
 							label={intl.formatMessage({ id: 'activity.info.form.location.otherAddress' })}
 							rules={[...rules.required]}
+							extra={intl.formatMessage({ id: 'activity.info.form.location.otherAddress.extra' })}
 						>
 							<Input
 								disabled={isView}
@@ -374,19 +409,12 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 
 				<Col span={24}>
 					{participantScope === EParticipantScope.USER_LIST ? (
-						<>
-							<Divider className='divider-big-title' orientation='left'>
-								{intl.formatMessage({ id: 'activity.info.form.participantsList' })}{' '}
-							</Divider>
-
-							{record?._id ? (
-								<UserRolesModelPage disabled={isView} participantRole={participantRole} />
-							) : (
-								<Form.Item name='participantsList'>
-									<FormItemUserRoles disabled={isView} participantRole={participantRole} />
-								</Form.Item>
-							)}
-						</>
+						<Form.Item
+							name='participantsList'
+							label={intl.formatMessage({ id: 'activity.info.form.participantsList' })}
+						>
+							<FormItemUserRoles disabled={isView} participantRole={participantRole} />
+						</Form.Item>
 					) : participantScope === EParticipantScope.STUDENT ? (
 						<Form.Item
 							name='studentCohortCode'
@@ -422,19 +450,87 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 					) : null}
 				</Col>
 
+				<Col span={24} md={12}>
+					<Form.Item name='allowCapacity' valuePropName='checked' label=''>
+						<Checkbox disabled={isView}>{intl.formatMessage({ id: 'activity.info.form.allowCapacity' })}</Checkbox>
+					</Form.Item>
+				</Col>
+
+				<Col span={24} md={12}>
+					<Form.Item name='allowDueDateRegistration' valuePropName='checked' label=''>
+						<Checkbox disabled={isView}>
+							{intl.formatMessage({ id: 'activity.info.form.allowDueDateRegistration' })}
+						</Checkbox>
+					</Form.Item>
+				</Col>
+
+				<Col span={24} md={12}>
+					{allowCapacity ? (
+						<Form.Item
+							name='capacity'
+							label={intl.formatMessage({ id: 'activity.info.form.capacity' })}
+							rules={[...rules.required]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								placeholder={intl.formatMessage({ id: 'activity.info.form.capacity.place' })}
+								min={1}
+								precision={0}
+								step={1}
+							/>
+						</Form.Item>
+					) : (
+						<></>
+					)}
+				</Col>
+
+				<Col span={24} md={12}>
+					{allowDueDateRegistration ? (
+						<Form.Item
+							name='dueDateRegistration'
+							label={intl.formatMessage({ id: 'activity.info.form.dueDateRegistration' })}
+							rules={[...rules.required]}
+						>
+							<MyDatePicker
+								showTime={{ showHour: true, showMinute: true }}
+								format='HH:mm DD/MM/YYYY'
+								disabled={isView}
+								disabledDate={(current) => {
+									if (!current || !endDate) return false;
+
+									return dayjs(current).isAfter(dayjs(endDate).endOf('day'));
+								}}
+								placeholder={intl.formatMessage({ id: 'activity.info.form.dueDateRegistration.place' })}
+								allowClear
+							/>
+						</Form.Item>
+					) : (
+						<></>
+					)}
+				</Col>
+
 				<Col span={24}>
 					<Row gutter={[12, 0]}>
 						<Col span={24} md={8}>
-							<Form.Item name='cct' valuePropName='checked' label=' '>
-								<Checkbox disabled={isView}>{intl.formatMessage({ id: 'activity.info.form.cct' })}</Checkbox>
+							<Form.Item name='cct' valuePropName='checked' label=''>
+								<Checkbox disabled={isView} onChange={() => form.setFieldValue('allowPostEventResultsUpdate', true)}>
+									{intl.formatMessage({ id: 'activity.info.form.cct' })}
+								</Checkbox>
 							</Form.Item>
 						</Col>
 
 						{cct && (
 							<>
 								<Col span={24} md={8}>
-									<Form.Item name='allowPostEventResultsUpdate' valuePropName='checked' label=' '>
-										<Checkbox disabled={isView}>
+									<Form.Item name='allowPostEventResultsUpdate' valuePropName='checked' label=''>
+										<Checkbox
+											disabled={isView}
+											onChange={(e) => {
+												if (!e.target.checked) return;
+												const baseDate = endDate ? dayjs(endDate) : dayjs();
+												form.setFieldValue('dueDate', baseDate.add(10, 'day'));
+											}}
+										>
 											{intl.formatMessage({ id: 'activity.info.form.allowPostEventResultsUpdate' })}
 										</Checkbox>
 									</Form.Item>
@@ -454,7 +550,12 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 												showTime={{ showHour: true, showMinute: true }}
 												format='HH:mm DD/MM/YYYY'
 												disabled={isView}
-												disabledDate={(cur) => (endDate ? dayjs(cur).isBefore(endDate) : false)}
+												disabledDate={(current) =>
+													!!(
+														dayjs(current).isBefore(dayjs().startOf('day')) ||
+														(endDate && dayjs(current).isBefore(endDate))
+													)
+												}
 												placeholder={intl.formatMessage({ id: 'activity.info.form.duedate.place' })}
 												allowClear
 											/>
@@ -463,7 +564,11 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 								</Col>
 
 								<Col span={24} md={8}>
-									<Form.Item name='activitiesTypeDomainId' label='Activity Group' rules={[...rules.required]}>
+									<Form.Item
+										name='activitiesTypeDomainId'
+										label={intl.formatMessage({ id: 'activity.info.form.group' })}
+										rules={[...rules.required]}
+									>
 										<SelectActivitiesTypeDomain
 											disabled={isView}
 											onChange={() => form.resetFields(['activitiesTypeId'])}
@@ -472,52 +577,41 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 								</Col>
 
 								<Col span={24} md={8}>
-									<Form.Item name='activitiesTypeId' label='Activity type' rules={[...rules.required]}>
+									<Form.Item
+										name='activitiesTypeId'
+										label={intl.formatMessage({ id: 'activity.info.form.type' })}
+										rules={[...rules.required]}
+									>
 										<SelectActivitiesManagement
 											disabled={isView}
 											condition={{ activitiesTypeDomainId: activitiesTypeDomainId }}
-											onChange={(val, option) => {
-												const rawData = option?.rawData;
-												if (!rawData) return;
-
-												form.setFieldsValue({
-													coCurricularAttributesEquivalency: (rawData.attributes || []).map((attr: any) => ({
-														attributesId: attr._id,
-														attributes: attr,
-													})),
-												});
-											}}
+											onChange={() => form.resetFields(['coCurricularActivityEquivalency'])}
 										/>
 									</Form.Item>
 								</Col>
 
 								<Col span={24} md={8}>
-									<Form.Item label='Track'>
+									<Form.Item label={intl.formatMessage({ id: 'activity.info.form.track' })}>
 										<Input
 											disabled
 											value={
 												dsActivityType?.find((item) => item?._id === activitiesTypeId)?.track?.name ??
-												'Select activity type'
+												intl.formatMessage({ id: 'activity.info.form.track.place' })
 											}
 										/>
 									</Form.Item>
 								</Col>
 
-								{/* <Col span={24}>
-									<Divider className='divider-big-title' orientation='left'>
-										Attributes
-									</Divider>
-								</Col>
-
-								<Col span={24}>
-									{record?._id ? (
-										<CompetencyMappingModelPage disabled={isView} />
-									) : (
-										<Form.Item name='coCurricularAttributesEquivalency'>
-											<FormItemCompetencyMapping disabled={isView} />
-										</Form.Item>
-									)}
-								</Col> */}
+								{activitiesTypeId && (
+									<Col span={24}>
+										{intl.formatMessage({ id: 'activity.info.form.evidence' })}:{' '}
+										<b>
+											{dsActivityType
+												?.find((item) => item?._id === activitiesTypeId)
+												?.requiredEvidenceList?.join(', ') ?? '--'}
+										</b>
+									</Col>
+								)}
 
 								<Col span={24}>
 									<Divider className='divider-big-title' orientation='left'>
@@ -526,38 +620,31 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 								</Col>
 
 								<Col span={24}>
-									{record?._id ? (
-										<EquivalencyForm disabled={isView} />
-									) : (
-										<EquivalencyFormItem
-											// coCurricularAttributesEquivalency={coCurricularAttributesEquivalency}
-											coCurricularAttributesEquivalency={
-												dsActivityType
-													?.find((item) => item?._id === activitiesTypeId)
-													?.attributes?.map((attr: any) => ({
-														attributesId: attr._id,
-														attributes: attr,
-													})) ?? []
-											}
-											form={form}
-											disabled={isView}
-										/>
-									)}
+									<EquivalencyFormItem
+										coCurricularAttributesEquivalency={
+											dsActivityType
+												?.find((item) => item?._id === activitiesTypeId)
+												?.attributes?.map((attr: any) => ({
+													attributesId: attr._id,
+													attributes: attr,
+												})) ?? []
+										}
+										form={form}
+										disabled={isView}
+									/>
 								</Col>
 
 								<Col span={24}>
 									<Divider className='divider-big-title' orientation='left'>
-										List competency
+										{intl.formatMessage({ id: 'activity.info.form.competency' })}
 									</Divider>
 								</Col>
 
 								<Col span={24}>
 									<Form.Item name='competencyList'>
-										<i className='text-info'>An activity allows a maximum of 3 competencies</i>
-
 										<TableStaticData
 											columns={columns}
-											data={dscompetency}
+											data={sortedData}
 											loading={loading}
 											size='small'
 											hasTotal
@@ -584,24 +671,21 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 													hideSelectAll: true,
 												},
 											}}
-										/>
+											otherButtons={[<i className='text-info'>An activity allows a maximum of 3 competencies</i>]}
+										/>{' '}
 									</Form.Item>
 								</Col>
 
 								<Col span={24}>
 									<Divider className='divider-big-title' orientation='left'>
-										Approvers
+										{intl.formatMessage({ id: 'activity.info.form.approver' })}
 									</Divider>
 								</Col>
 
 								<Col span={24}>
-									{record?._id ? (
-										<StudenDomainModelPage disabled={isView} mode='activity' />
-									) : (
-										<Form.Item name='studentDeclarationApproverList'>
-											<FormItemStudentDomain disabled={isView} />
-										</Form.Item>
-									)}
+									<Form.Item name='studentDeclarationApproverList'>
+										<FormItemStudentDomain disabled={isView} />
+									</Form.Item>
 								</Col>
 							</>
 						)}
@@ -612,12 +696,12 @@ const FormActivity = (props: { afterAddNew?: (rec: Activity.IRecord) => void; ge
 			<div className='form-footer'>
 				{!isView && (
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
-						{!edit
-							? intl.formatMessage({ id: 'global.button.themmoi' })
-							: intl.formatMessage({ id: 'global.button.chinhsua' })}
+						{intl.formatMessage({ id: 'global.button.luulai' })}
 					</Button>
 				)}
-				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+				<Button onClick={() => setVisibleForm(false)}>
+					{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+				</Button>
 			</div>
 		</Form>
 	);

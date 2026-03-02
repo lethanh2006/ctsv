@@ -16,7 +16,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 			});
 		}
 	}, [record?._id, visibleForm]);
@@ -55,7 +55,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'activitiestypedomain.form.id' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.id.place' })} />
 						</Form.Item>
@@ -64,7 +64,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'activitiestypedomain.form.name' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(80)]}
 						>
 							<Input
 								disabled={isView}
@@ -73,15 +73,14 @@ const FormActivitiesTypeDomain = (props: any) => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item
-							name='order'
-							label={intl.formatMessage({ id: 'activitiestypedomain.form.order' })}
-							// rules={[...rules.required]}
-						>
+						<Form.Item name='order' label={intl.formatMessage({ id: 'activitiestypedomain.form.order' })}>
 							<InputNumber
 								disabled={isView}
 								style={{ width: '100%' }}
 								placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.order.place' })}
+								min={1}
+								precision={0}
+								step={1}
 							/>
 						</Form.Item>
 					</Col>
@@ -98,12 +97,13 @@ const FormActivitiesTypeDomain = (props: any) => {
 						<Form.Item
 							name='description'
 							label={intl.formatMessage({ id: 'activitiestypedomain.form.des' })}
-							rules={[...rules.text]}
+							rules={[...rules.text, ...rules.length(255)]}
 						>
 							<Input.TextArea
 								disabled={isView}
 								rows={3}
 								placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.des.place' })}
+								showCount
 							/>
 						</Form.Item>
 					</Col>
@@ -112,12 +112,12 @@ const FormActivitiesTypeDomain = (props: any) => {
 				<div className='form-footer'>
 					{!isView && (
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit
-								? intl.formatMessage({ id: 'global.button.themmoi' })
-								: intl.formatMessage({ id: 'global.button.chinhsua' })}
+							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
+					</Button>
 				</div>
 			</Form>
 		</Card>

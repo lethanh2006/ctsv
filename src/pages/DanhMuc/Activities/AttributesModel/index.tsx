@@ -22,19 +22,19 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 
 	const columns: IColumn<Competency.ICompetencyAttributes>[] = [
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.id' }),
+			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.code' }),
 			dataIndex: ['attributes', 'code'],
 			align: 'center',
 			width: 100,
 		},
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.name' }),
+			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.name' }),
 			dataIndex: ['attributes', 'name'],
 			width: 200,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 		},
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.des' }),
+			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.des' }),
 			dataIndex: ['attributes', 'description'],
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
@@ -48,11 +48,11 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 				<>
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, undefined, {
+							deleteModel(rec._id, getData, {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
-						title='Do you want to remove this CCA attribute?'
+						title={intl.formatMessage({ id: 'activitiesmanagement.attribute.confirm.xoa' })}
 						placement='topLeft'
 					>
 						<ButtonExtend
@@ -74,12 +74,12 @@ const AttributesCCAModel = (props: { disabled?: boolean }) => {
 			columns={columns}
 			dependencies={[page, limit, recCCA?._id]}
 			modelName='danhmuc.ccaattributes'
-			title='CCA attribute'
 			Form={FormCompetencyCCAModel}
 			formProps={{ getData }}
 			buttons={{ create: !disabled }}
 			hideCard
 			otherProps={{
+				pagination: false,
 				size: 'small',
 			}}
 		/>

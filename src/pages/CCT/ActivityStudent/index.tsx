@@ -1,14 +1,19 @@
+import ExpandText from '@/components/ExpandText';
 import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
-import { type IColumn } from '@/components/Table/typing';
+import { EOperatorType } from '@/components/Table/constant';
+import { TFilter, type IColumn } from '@/components/Table/typing';
 import SelectLevelsManagement from '@/pages/DanhMuc/Levels/components/Select';
 import SelectRolesManagement from '@/pages/DanhMuc/Roles/components/Select';
+import { officialColors } from '@/services/base/constant';
+import { thongKeSoLuongActivityOutCome } from '@/services/CCT/ActivityOutcome';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import {
 	EActivityCategory,
 	EApprovalStatus,
 	Evalidation,
 	mapColorApprovalStatus,
+	mapColorTextApprovalStatus,
 	mapEvalidation,
 	mapNameActivityCategory,
 	mapNameApprovalStatus,
@@ -17,81 +22,140 @@ import dayjs from '@/utils/dayjs';
 import {
 	CheckCircleOutlined,
 	CloseCircleOutlined,
-	DeleteOutlined,
+	EditOutlined,
 	MenuOutlined,
-	RedoOutlined,
-	UserSwitchOutlined,
+	SafetyCertificateOutlined,
+	SyncOutlined,
 } from '@ant-design/icons';
-import { Button, Popconfirm, Popover, Space, Tabs, Tag } from 'antd';
+import { Button, Card, Popover, Segmented, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import FormActivityStudent from './components/Form';
-import FormPerstionActivityOutCome from './components/FormPerstion';
-import ModalDieuPhoiActivityStudent from './components/ModalDieuPhoi';
-import ModalChinhSuaImpact from './components/ModalImpact';
-import ModalXuLyActivityStudent from './components/ModalXuLy';
 import StatActivityOutCome from './components/Stat';
-import StatActivityApprovers from './components/StatApprovers';
+import ModalChinhSuaImpact from './Modal/ModalImpact';
+import ModalChinhSuaTrangThai from './Modal/ModalTrangThai';
+import ModalXuLyActivityStudent from './Modal/ModalXuLy';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
-	const {
-		getModel,
-		page,
-		limit,
-		handleView,
-		deleteModel,
-		record,
-		setRecord,
-		getAnalyticsStaffModel,
-		getAnalyticsApproversModel,
-	} = useModel('cct.activityoutcome');
-	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { getModel, page, limit, handleView, setRecord, getAnalyticsStaffModel, filters, setFilters } =
+		useModel('cct.activityoutcome');
+	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
 
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
-	const [visibleDieuPhoi, setVisibleDieuPhoi] = useState<boolean>(false);
 	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
-
-	const [tabActive, setTabActive] = useState<EActivityCategory | string>(EActivityCategory.REGISTERED);
-
+	const [visibleStatus, setVisibleStatus] = useState<boolean>(false);
 	const [trangThai, setTrangThai] = useState<{
 		title: string;
 		trangThai: EApprovalStatus;
 	}>();
+	const [segmentSelected, setSegmentSelected] = useState<EActivityCategory | string>(EActivityCategory.REGISTERED);
+	const valueFiltered = filters?.find((item) => item.field?.includes('workflow'))?.values ?? [];
+	const [loadingThongke, setLoadingThongKe] = useState<boolean>(false);
+	const [totalRegis, setTotalRegis] = useState<number>(0);
+	const [totalPersional, setTotalPersional] = useState<number>(0);
 
-	const TAB_ORDER = [
-		EActivityCategory.REGISTERED,
-		'STUDENT_DECLARATION_APPROVERS',
-		EActivityCategory.PERSONAL_CO_CURRICULAR,
-		'IMPACT',
-	];
+	const PROCESSED = [EApprovalStatus.APPROVED, EApprovalStatus.REJECTED, EApprovalStatus.CHANGES_REQUIRED];
+
+	const pending = valueFiltered?.length === 1 && valueFiltered[0] === EApprovalStatus.SUBMITTED;
+	const processed = valueFiltered?.length === PROCESSED.length && PROCESSED.every((s) => valueFiltered.includes(s));
 
 	useEffect(() => {
-		getAllModel(undefined, { order: 1 });
+		getAllAtributes(undefined, { order: 1 }, { isActive: true });
 	}, []);
 
+	const thongKeSoLuongActivityOutComeAll = async () => {
+		try {
+			setLoadingThongKe(true);
+
+			const commonFilters = [
+				{
+					active: true,
+					field: 'workflow',
+					values: [EApprovalStatus.EVIDENCE_REQUIRED, EApprovalStatus.DRAFT],
+					operator: EOperatorType.NOT_INCLUDE,
+				},
+			];
+
+			const [resRegis, resPersional] = await Promise.all([
+				thongKeSoLuongActivityOutCome([
+					...(filters || []),
+					...commonFilters,
+					{
+						active: true,
+						field: 'activityCategory',
+						values: [EActivityCategory.REGISTERED],
+						operator: EOperatorType.INCLUDE,
+					},
+				]),
+				thongKeSoLuongActivityOutCome([
+					...(filters || []),
+					...commonFilters,
+					{
+						active: true,
+						field: 'activityCategory',
+						values: [EActivityCategory.PERSONAL_CO_CURRICULAR],
+						operator: EOperatorType.INCLUDE,
+					},
+				]),
+			]);
+
+			setTotalRegis(resRegis?.data?.data?.total);
+			setTotalPersional(resPersional?.data?.data?.total);
+		} catch (error) {
+			console.error('Lỗi thống kê:', error);
+		} finally {
+			setLoadingThongKe(false);
+		}
+	};
+
 	const getData = () => {
+		const filters: any[] = [];
+
+		if (segmentSelected !== 'ALL') {
+			filters.push({
+				active: true,
+				field: 'activityCategory',
+				values: [segmentSelected],
+				operator: EOperatorType.INCLUDE,
+			});
+		}
+
 		getModel(
-			tabActive === 'STUDENT_DECLARATION_APPROVERS'
+			undefined,
+			[
+				...filters,
+				{
+					active: true,
+					field: 'workflow',
+					values: [EApprovalStatus.EVIDENCE_REQUIRED, EApprovalStatus.DRAFT],
+					operator: EOperatorType.NOT_INCLUDE,
+				},
+			],
+			processed
 				? {
-						activityCategory: EActivityCategory.PERSONAL_CO_CURRICULAR,
+						approvalTime: -1,
 					}
-				: tabActive === 'IMPACT'
-					? { workflow: EApprovalStatus.APPROVED }
-					: {
-							activityCategory: tabActive as any,
-						},
+				: {
+						submittedAt: 1,
+					},
 			undefined,
 			undefined,
-			undefined,
-			undefined,
-			tabActive !== 'STUDENT_DECLARATION_APPROVERS' && tabActive !== 'IMPACT' ? 'approval-task-list/page' : undefined,
+			'approval-task-list/page',
 		);
 	};
 
+	useEffect(() => {
+		thongKeSoLuongActivityOutComeAll();
+	}, [filters]);
+
+	const getStat = () => {
+		getAnalyticsStaffModel();
+	};
+
 	const getThongKe = () => {
-		getAnalyticsStaffModel(tabActive as any);
-		tabActive === 'STUDENT_DECLARATION_APPROVERS' && getAnalyticsApproversModel();
+		getStat();
+		thongKeSoLuongActivityOutComeAll();
 	};
 
 	const onCell = (rec: ActivityOutCome.IRecord) => ({
@@ -99,42 +163,58 @@ const HistoryActivityPage = () => {
 		style: { cursor: 'pointer' },
 	});
 
+	const isActivitiesNameFilter = <T,>(f: TFilter<T>) => {
+		if (Array.isArray(f.field)) {
+			return f.field[0] === 'activities' && f.field[1] === 'name';
+		}
+		return f.field === 'activitiesOutcomeName';
+	};
+
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.level' }),
+			title: 'Student Code',
+			dataIndex: 'code',
+			width: 120,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Student Name',
+			dataIndex: 'name',
+			width: 150,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Activity Name',
+			dataIndex: segmentSelected === EActivityCategory.REGISTERED ? ['activities', 'name'] : 'activitiesOutcomeName',
+			width: 180,
+			render: (val, rec) =>
+				rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.name : rec?.activitiesOutcomeName,
+			filterType: 'string',
+			onCell,
+		},
+		{
+			title: 'Role',
+			dataIndex: 'rolesId',
+			width: 180,
+			render: (val, rec) => rec?.roles?.name ?? <i className='text-warning'>No info</i>,
+			filterType: 'customselect',
+			filterCustomSelect: <SelectRolesManagement multiple />,
+			onCell,
+		},
+		{
+			title: 'Level',
 			dataIndex: 'levelsId',
-			width: 140,
+			width: 120,
 			render: (val, rec) => rec?.levels?.name ?? <i className='text-warning'>No info</i>,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectLevelsManagement multiple />,
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.sv.name' }),
-			dataIndex: 'name',
-			width: 120,
-			filterType: 'string',
-			onCell,
-		},
-		{
-			title: intl.formatMessage({ id: 'activityresult.column.name' }),
-			width: 180,
-			render: (val, rec) =>
-				rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.name : rec?.activitiesOutcomeName,
-			onCell,
-		},
-		{
-			title: intl.formatMessage({ id: 'activityresult.column.cca' }),
-			width: 200,
-			render: (val, rec) =>
-				rec?.activityCategory === EActivityCategory.REGISTERED
-					? rec?.activities?.activitiesType?.name
-					: rec?.activitiesType?.name,
-			onCell,
-		},
-		{
-			title: intl.formatMessage({ id: 'activityresult.column.attribute' }),
-			width: 200,
+			title: 'Attribute',
+			width: 160,
 			render: (val, rec) => {
 				const attriRe = rec?.activities?.coCurricularActivityEquivalency?.filter(
 					(item) => item?.rolesId === rec?.rolesId,
@@ -154,7 +234,7 @@ const HistoryActivityPage = () => {
 					return (
 						<Space wrap>
 							{attriDec?.map((item: any) => (
-								<Tag color={item?.attributes?.color}>{item?.attributes?.name}</Tag>
+								<Tag color={item?.color}>{item?.name}</Tag>
 							))}
 						</Space>
 					);
@@ -162,73 +242,107 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.approvers' }),
-			dataIndex: 'studentDeclarationApproverName',
-			align: 'center',
-			width: 180,
-			render: (val, rec) => val ?? <i className='text-warning'>No info</i>,
-			filterType: 'string',
-			onCell,
-			hide: tabActive !== 'STUDENT_DECLARATION_APPROVERS',
-		},
-		{
 			title: 'Competency',
 			width: 220,
 			render: (val, rec) =>
-				(rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.competencyList : rec?.competencyList)
-					?.map((item) => item?.competency?.name)
-					.filter(Boolean)
-					.join(', '),
+				rec?.activityCategory === EActivityCategory.REGISTERED ? (
+					<ExpandText>
+						{rec?.activities?.competencyList
+
+							?.map((item) => item?.competency?.name)
+							.filter(Boolean)
+							.join(', ')}
+					</ExpandText>
+				) : (
+					<ExpandText>
+						{rec?.listAchievedCompetencies
+
+							?.map((item) => item?.competencie?.name)
+							.filter(Boolean)
+							.join(', ')}
+					</ExpandText>
+				),
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.startdate' }),
-			align: 'center',
+			title: 'Activity Type',
+			width: 200,
+			render: (val, rec) =>
+				rec?.activityCategory === EActivityCategory.REGISTERED
+					? rec?.activities?.activitiesType?.name
+					: rec?.activitiesType?.name,
+			onCell,
+		},
+		{
+			title: 'Track',
 			width: 120,
 			render: (val, rec) =>
-				(rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.startDate : rec?.startDate) &&
-				dayjs(
-					rec?.activityCategory === EActivityCategory.REGISTERED ? rec?.activities?.startDate : rec?.startDate,
-				).format('DD/MM/YYYY'),
+				rec?.activityCategory === EActivityCategory.REGISTERED
+					? (rec?.activities?.activitiesType?.trackText ?? rec?.activities?.activitiesType?.track?.name)
+					: (rec?.activitiesType?.trackText ?? rec?.activitiesType?.track?.name),
 			onCell,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.created' }),
-			dataIndex: 'createdAt',
-			align: 'center',
+			title: 'Mentor/Supervisor',
+			dataIndex: 'supervisorName',
 			width: 150,
-			render: (val, rec) => val && dayjs(val).format('DD/MM/YYYY'),
+			filterType: 'string',
 			onCell,
-			sortable: true,
-			hide: tabActive === EActivityCategory.REGISTERED,
+			hide: segmentSelected === EActivityCategory.REGISTERED,
 		},
 		{
-			title: intl.formatMessage({ id: 'activityresult.column.role' }),
-			dataIndex: 'rolesId',
-			width: 200,
-			render: (val, rec) => rec?.roles?.name ?? <i className='text-warning'>No info</i>,
-			filterType: 'customselect',
-			filterCustomSelect: <SelectRolesManagement multiple />,
+			title: 'Submission Time',
+			dataIndex: 'submittedAt',
+			align: 'center',
+			width: 120,
+			render: (val, rec) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
+			sortable: true,
+			onCell,
+		},
+		{
+			title: 'Approver',
+			dataIndex: 'studentDeclarationApproverName',
+			width: 150,
+			render: (val, rec) => {
+				const approvalWorkflow =
+					rec?.workflow === EApprovalStatus.APPROVED ||
+					rec?.workflow === EApprovalStatus.REJECTED ||
+					rec?.workflow === EApprovalStatus.CHANGES_REQUIRED;
+
+				return (
+					<>
+						{rec?.workflow === EApprovalStatus.APPROVED && !rec?.studentDeclarationApproverName
+							? 'System'
+							: approvalWorkflow
+								? rec?.studentDeclarationApproverName
+								: rec?.activities?.studentDeclarationApproverList
+										?.map((item) => item?.name)
+										.filter(Boolean)
+										.join(', ')}
+					</>
+				);
+			},
+			filterType: 'string',
+			onCell,
+			hide: pending,
+		},
+		{
+			title: 'Evidence Review Time',
+			dataIndex: 'approvalTime',
+			align: 'center',
+			width: 120,
+			render: (val, rec) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
+			sortable: true,
+			hide: pending,
 			onCell,
 		},
 		{
 			title: 'Impact',
 			dataIndex: 'validation',
 			align: 'center',
-			width: 110,
-			render: (val, rec) => (
-				<Tag
-					color={mapEvalidation[val as Evalidation]}
-					style={{
-						maxWidth: 120,
-						whiteSpace: 'normal',
-						wordBreak: 'break-word',
-						textAlign: 'center',
-					}}
-				>
-					{val}
-				</Tag>
-			),
+			width: 100,
+			render: (val, rec) =>
+				rec?.workflow === EApprovalStatus.APPROVED && <Tag color={mapEvalidation[val as Evalidation]}>{val}</Tag>,
 			fixed: 'right',
 			filterType: 'select',
 			filterData: Object.values(Evalidation).map((item) => ({
@@ -236,42 +350,160 @@ const HistoryActivityPage = () => {
 				label: item,
 			})),
 			onCell,
+			hide: pending,
 		},
 		{
 			title: intl.formatMessage({ id: 'activityresult.column.status' }),
 			dataIndex: 'workflow',
 			align: 'center',
-			width: 100,
-			render: (val, rec) => (
-				<Tag
-					color={mapColorApprovalStatus[val as EApprovalStatus]}
-					style={{
-						maxWidth: 120,
-						whiteSpace: 'normal',
-						wordBreak: 'break-word',
-						textAlign: 'center',
-					}}
-				>
-					{mapNameApprovalStatus[val as EApprovalStatus]}
-				</Tag>
-			),
+			width: 120,
+			render: (val, rec) => {
+				const now = dayjs();
+				const endDateUpdateEvidence =
+					rec?.workflow === EApprovalStatus.CHANGES_REQUIRED
+						? rec?.dueDate
+							? dayjs(rec?.dueDate)
+							: null
+						: rec?.activities?.allowPostEventResultsUpdate
+							? rec?.activities?.dueDate
+								? dayjs(rec?.activities?.dueDate)
+								: null
+							: rec?.activities?.endDate
+								? dayjs(rec?.activities?.endDate)
+								: null;
+
+				const editableWorkflow =
+					rec?.workflow === EApprovalStatus.DRAFT ||
+					rec?.workflow === EApprovalStatus.CHANGES_REQUIRED ||
+					rec?.workflow === EApprovalStatus.EVIDENCE_REQUIRED;
+
+				const isExpired =
+					rec?.activityCategory === EActivityCategory.REGISTERED
+						? editableWorkflow && now.isAfter(endDateUpdateEvidence)
+						: rec?.workflow === EApprovalStatus.CHANGES_REQUIRED && now.isAfter(dayjs(rec?.dueDate));
+
+				if (isExpired) {
+					return (
+						<Tag
+							color={officialColors.official500}
+							style={{
+								color: officialColors.official300,
+								fontWeight: 600,
+							}}
+						>
+							Expired
+						</Tag>
+					);
+				}
+				return (
+					<Tag
+						color={mapColorApprovalStatus[val as EApprovalStatus]}
+						style={{
+							maxWidth: 120,
+							whiteSpace: 'normal',
+							wordBreak: 'break-word',
+							textAlign: 'center',
+							color: mapColorTextApprovalStatus[rec?.workflow as EApprovalStatus],
+							fontWeight: 600,
+						}}
+					>
+						{mapNameApprovalStatus[val as EApprovalStatus]}
+					</Tag>
+				);
+			},
 			fixed: 'right',
-			filterType: 'select',
+			filterType: !pending && !processed ? 'select' : undefined,
 			filterData: Object.values(EApprovalStatus).map((item) => ({
 				value: item,
 				label: mapNameApprovalStatus[item as EApprovalStatus],
 			})),
 			onCell,
-			hide: tabActive === 'IMPACT',
 		},
 		{
 			title: intl.formatMessage({ id: 'global.column.action' }),
 			align: 'center',
-			width: tabActive === 'STUDENT_DECLARATION_APPROVERS' || tabActive === 'IMPACT' ? 90 : 120,
+			width: 100,
 			fixed: 'right',
 			render: (val, rec) => {
-				if (tabActive === 'IMPACT') {
+				if (rec?.workflow === EApprovalStatus.SUBMITTED) {
 					return (
+						<>
+							<ButtonExtend
+								// disabled={rec?.workflow === EApprovalStatus.APPROVED}
+								tooltip={intl.formatMessage({ id: 'activityresult.button.duyet' })}
+								onClick={() => {
+									setRecord(rec);
+									setTrangThai({
+										title: intl.formatMessage({ id: 'activityresult.xuly.duyet' }),
+										trangThai: EApprovalStatus.APPROVED,
+									});
+									setVisibleXuLy(true);
+								}}
+								type='link'
+								icon={<CheckCircleOutlined />}
+								className='btn-success'
+							/>
+
+							<Popover
+								content={
+									<Space direction='vertical' size={4} className='action-popover'>
+										<ButtonExtend
+											// disabled={rec?.workflow === EApprovalStatus.REJECTED}
+											onClick={() => {
+												setRecord(rec);
+												setTrangThai({
+													title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
+													trangThai: EApprovalStatus.REJECTED,
+												});
+												setVisibleXuLy(true);
+											}}
+											type='link'
+											icon={<CloseCircleOutlined />}
+											danger
+											size='small'
+										>
+											{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
+										</ButtonExtend>
+
+										<ButtonExtend
+											// disabled={rec?.workflow === EApprovalStatus.CHANGES_REQUIRED}
+											onClick={() => {
+												setRecord(rec);
+												setTrangThai({
+													title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
+													trangThai: EApprovalStatus.CHANGES_REQUIRED,
+												});
+												setVisibleXuLy(true);
+											}}
+											type='link'
+											icon={<EditOutlined />}
+											size='small'
+											className='btn-warning'
+										>
+											{intl.formatMessage({ id: 'activityresult.button.yccs' })}
+										</ButtonExtend>
+									</Space>
+								}
+								placement='bottomLeft'
+							>
+								<Button icon={<MenuOutlined />} type='link' />
+							</Popover>
+						</>
+					);
+				}
+				return (
+					<>
+						<ButtonExtend
+							tooltip='Change status'
+							onClick={() => {
+								setRecord(rec);
+								setVisibleStatus(true);
+							}}
+							type='link'
+							icon={<SyncOutlined />}
+							size='small'
+						/>
+
 						<ButtonExtend
 							tooltip='Verify impact'
 							onClick={() => {
@@ -279,114 +511,11 @@ const HistoryActivityPage = () => {
 								setVisibleImpact(true);
 							}}
 							type='link'
-							icon={<CheckCircleOutlined />}
+							icon={<SafetyCertificateOutlined />}
+							size='small'
 							className='btn-success'
+							disabled={rec?.workflow !== EApprovalStatus.APPROVED}
 						/>
-					);
-				}
-				if (tabActive === 'STUDENT_DECLARATION_APPROVERS')
-					return (
-						<ButtonExtend
-							disabled={rec?.workflow !== EApprovalStatus.SUBMITTED}
-							tooltip={intl.formatMessage({ id: 'activityresult.button.decla' })}
-							onClick={() => {
-								setRecord(rec);
-								setVisibleDieuPhoi(true);
-							}}
-							type='link'
-							icon={<UserSwitchOutlined />}
-							danger
-						/>
-					);
-				return (
-					<>
-						<ButtonExtend
-							disabled={rec?.workflow === EApprovalStatus.APPROVED}
-							tooltip={intl.formatMessage({ id: 'activityresult.button.duyet' })}
-							onClick={() => {
-								setRecord(rec);
-								setTrangThai({
-									title: intl.formatMessage({ id: 'activityresult.xuly.duyet' }),
-									trangThai: EApprovalStatus.APPROVED,
-								});
-								setVisibleXuLy(true);
-							}}
-							type='link'
-							icon={<CheckCircleOutlined />}
-							className='btn-success'
-						/>
-
-						<Popover
-							content={
-								<Space direction='vertical' size={'small'}>
-									<ButtonExtend
-										disabled={rec?.workflow === EApprovalStatus.REJECTED}
-										tooltip={intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
-										onClick={() => {
-											setRecord(rec);
-											setTrangThai({
-												title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
-												trangThai: EApprovalStatus.REJECTED,
-											});
-											setVisibleXuLy(true);
-										}}
-										type='link'
-										icon={<CloseCircleOutlined />}
-										danger
-										size='small'
-									>
-										{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
-									</ButtonExtend>
-									<ButtonExtend
-										disabled={rec?.workflow === EApprovalStatus.CHANGES_REQUIRED}
-										tooltip={intl.formatMessage({ id: 'activityresult.button.yccs' })}
-										onClick={() => {
-											setRecord(rec);
-											setTrangThai({
-												title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
-												trangThai: EApprovalStatus.CHANGES_REQUIRED,
-											});
-											setVisibleXuLy(true);
-										}}
-										type='link'
-										icon={<RedoOutlined />}
-										size='small'
-									>
-										{intl.formatMessage({ id: 'activityresult.button.yccs' })}
-									</ButtonExtend>
-									{/* <ButtonExtend tooltip='Edit' onClick={() => handleEdit(rec)} type='link' icon={<EditOutlined />} /> */}
-									<Popconfirm
-										onConfirm={() =>
-											deleteModel(
-												rec?._id,
-												() => {
-													getData();
-													getThongKe();
-												},
-												{
-													messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
-												},
-											)
-										}
-										title={intl.formatMessage({ id: 'activityresult.comfirm.xoa' })}
-										placement='topLeft'
-									>
-										<ButtonExtend
-											tooltip={intl.formatMessage({ id: 'global.button.xoa' })}
-											danger
-											type='link'
-											icon={<DeleteOutlined />}
-											size='small'
-										>
-											{intl.formatMessage({ id: 'global.button.xoa' })}
-										</ButtonExtend>
-									</Popconfirm>
-								</Space>
-							}
-							placement='bottomLeft'
-						>
-							<Button icon={<MenuOutlined />} type='link' />
-						</Popover>
 					</>
 				);
 			},
@@ -395,54 +524,63 @@ const HistoryActivityPage = () => {
 
 	return (
 		<>
-			<TableBase
-				getData={getData}
-				formProps={{
-					getData: () => {
-						getData();
-						getThongKe();
-					},
-					tabActive,
-				}}
-				columns={columns}
-				dependencies={[page, limit, tabActive]}
-				modelName='cct.activityoutcome'
+			<Card
 				title={intl.formatMessage({ id: 'activityresult.title' })}
-				Form={
-					record?.activityCategory === EActivityCategory.REGISTERED ? FormActivityStudent : FormPerstionActivityOutCome
-				}
-				widthDrawer={record?.activityCategory === EActivityCategory.REGISTERED ? 800 : 1000}
-				buttons={{ create: false }}
-				onReload={() => {
+				className='card-big-title card-borderless'
+				variant='borderless'
+			>
+				<Card style={{ marginBottom: 12 }}>
+					<StatActivityOutCome getData={getStat} pending={pending} processed={processed} />
+				</Card>
+
+				<Card>
+					<TableBase
+						getData={getData}
+						columns={columns}
+						dependencies={[page, limit, segmentSelected]}
+						modelName='cct.activityoutcome'
+						title={intl.formatMessage({ id: 'activityresult.title' })}
+						widthDrawer={1000}
+						buttons={{ create: false }}
+						onReload={() => {
+							getData();
+							getThongKe();
+						}}
+						hideCard
+						otherButtons={[
+							<Segmented
+								options={[
+									{
+										value: EActivityCategory.REGISTERED,
+										label: `${mapNameActivityCategory[EActivityCategory.REGISTERED]} (${
+											loadingThongke ? '...' : totalRegis
+										})`,
+									},
+									{
+										value: EActivityCategory.PERSONAL_CO_CURRICULAR,
+										label: `${mapNameActivityCategory[EActivityCategory.PERSONAL_CO_CURRICULAR]} (${
+											loadingThongke ? '...' : totalPersional
+										})`,
+									},
+								]}
+								value={segmentSelected}
+								disabled={loadingThongke}
+								onChange={(val) => {
+									setSegmentSelected(val);
+									setFilters((prev) => prev.filter((f) => !isActivitiesNameFilter(f)));
+								}}
+							/>,
+						]}
+					/>
+				</Card>
+			</Card>
+
+			<FormActivityStudent
+				getData={() => {
 					getData();
 					getThongKe();
 				}}
-			>
-				<Tabs activeKey={tabActive} onChange={(tab) => setTabActive(tab as EActivityCategory)}>
-					{TAB_ORDER.map((item) => (
-						<Tabs.TabPane
-							key={item}
-							tab={
-								item === 'STUDENT_DECLARATION_APPROVERS'
-									? 'Student Declaration Approvers'
-									: item === 'IMPACT'
-										? 'Impact'
-										: mapNameActivityCategory[item as EActivityCategory]
-							}
-						/>
-					))}
-				</Tabs>
-
-				{tabActive !== 'IMPACT' && (
-					<>
-						{tabActive !== 'STUDENT_DECLARATION_APPROVERS' ? (
-							<StatActivityOutCome getData={getThongKe} dependency={tabActive} />
-						) : (
-							<StatActivityApprovers getData={getThongKe} />
-						)}
-					</>
-				)}
-			</TableBase>
+			/>
 
 			<ModalXuLyActivityStudent
 				visible={visibleXuLy}
@@ -455,8 +593,23 @@ const HistoryActivityPage = () => {
 				}}
 			/>
 
-			<ModalDieuPhoiActivityStudent visible={visibleDieuPhoi} setVisible={setVisibleDieuPhoi} getData={getData} />
-			<ModalChinhSuaImpact visible={visibleImpact} setVisible={setVisibleImpact} getData={getData} />
+			<ModalChinhSuaImpact
+				visible={visibleImpact}
+				setVisible={setVisibleImpact}
+				getData={() => {
+					getData();
+					getThongKe();
+				}}
+			/>
+
+			<ModalChinhSuaTrangThai
+				visible={visibleStatus}
+				setVisible={setVisibleStatus}
+				getData={() => {
+					getData();
+					getThongKe();
+				}}
+			/>
 		</>
 	);
 };

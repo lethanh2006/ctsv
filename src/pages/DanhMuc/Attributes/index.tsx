@@ -22,7 +22,7 @@ const AttributesPage = () => {
 
 	const columns: IColumn<AttributesManagement.IRecord>[] = [
 		{
-			title: 'Icon',
+			title: intl.formatMessage({ id: 'attributesmanagement.column.icon' }),
 			dataIndex: 'icon',
 			align: 'center',
 			width: 90,
@@ -53,7 +53,6 @@ const AttributesPage = () => {
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'attributesmanagement.column.active' }),

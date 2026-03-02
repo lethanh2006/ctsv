@@ -5,7 +5,9 @@ declare module ActivityOutCome {
 	export interface IRecord {
 		_id: string;
 		name: string;
+		code: string;
 		email: string;
+		banner: string;
 		activitiesOutcomeName: string;
 		activitiesId: string;
 		activities: Activity.IRecord;
@@ -15,6 +17,9 @@ declare module ActivityOutCome {
 		roles?: RolesManagement.IRecord;
 		levelsId: string;
 		levels?: LevelsManagement.IRecord;
+		trackId?: string;
+		track?: TrackManagement.IRecord;
+		trackText?: string;
 		organizer: string;
 		description: string;
 		location: string;
@@ -30,15 +35,23 @@ declare module ActivityOutCome {
 		revisionNote: string;
 		validation: Evalidation;
 		reflection: string;
+		startDate: Date;
+		endDate: Date;
+		dueDate: Date;
+
+		activityRejectionNote?: string;
+		listAchievedCompetencies: Activity.ICompetencyMapping[];
 		evidenceFile: {
 			name: string;
 			file: string[];
 		}[];
-		startDate: Date;
-		endDate: Date;
 
-		listAchievedCompetencies: Activity.ICompetencyMapping[];
-		competencyList: ICompetencyActivity[];
+		supervisorSsoId: string;
+		supervisorName: string;
+		supervisorCode: string;
+
+		submittedAt?: Date;
+		approvalTime?: Date;
 
 		createdAt: Date;
 		updatedAt: Date;
@@ -62,7 +75,7 @@ declare module ActivityOutCome {
 		index?: number;
 		activityOutcomeId: string;
 		activityOutcome?: IRecord;
-		competencieId: string;
+		competencyId: string;
 		competencie?: Competency.IRecord;
 		attributesId: string;
 		attributes?: AttributesManagement.IRecord;

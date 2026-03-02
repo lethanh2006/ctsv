@@ -12,7 +12,7 @@ export default {
 
 	'rolesmanagement.form.themmoi': 'Add new role',
 	'rolesmanagement.form.chinhsua': 'Edit role',
-	'rolesmanagement.form.chitiet': 'Detail role',
+	'rolesmanagement.form.chitiet': 'Role Detail',
 
 	'rolesmanagement.form.id': 'Code',
 	'rolesmanagement.form.id.place': 'Enter code',
@@ -23,6 +23,7 @@ export default {
 	'rolesmanagement.form.order.place': 'Enter display order',
 	'rolesmanagement.form.active': 'Active',
 	'rolesmanagement.form.auto': 'Auto Approval',
+	'rolesmanagement.form.auto.place': 'Evidence is auto-approved if Role & Level are set to Auto Approve',
 	'rolesmanagement.form.des': 'Description',
 	'rolesmanagement.form.des.place': 'Enter description',
 

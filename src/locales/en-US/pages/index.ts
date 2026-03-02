@@ -7,7 +7,7 @@ export default {
 	...danhmuc,
 	...CCT,
 
-	'pages.trangchu.title': 'CO-CURRICULAR ACTIVITIES',
+	'pages.trangchu.title': 'STUDENT AFFAIRS MANAGEMENT',
 	'pages.trangchu.subtitle': 'DIGITAL UNIVERSITY SYSTEM',
 	'pages.gioithieu.title': 'ABOUT',
 	'pages.gioithieu.subtitle': 'DIGITAL UNIVERSITY SYSTEM',

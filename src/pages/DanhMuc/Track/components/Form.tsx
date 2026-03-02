@@ -16,7 +16,7 @@ const FormTrack = () => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 			});
 		}
 	}, [record?._id, visibleForm]);
@@ -40,36 +40,64 @@ const FormTrack = () => {
 	};
 
 	return (
-		<Card title={edit ? 'Edit new track' : isView ? 'Detail new track' : 'Add new track'}>
+		<Card
+			title={
+				edit
+					? intl.formatMessage({ id: 'track.form.chinhsua' })
+					: isView
+						? intl.formatMessage({ id: 'track.form.chitiet' })
+						: intl.formatMessage({ id: 'track.form.themmoi' })
+			}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]}>
 					<Col span={24} md={12}>
-						<Form.Item name='code' label='Code' rules={[...rules.required]}>
-							<Input disabled={isView} placeholder='Enter code' />
-						</Form.Item>
-					</Col>
-					<Col span={24} md={12}>
-						<Form.Item name='name' label='Name' rules={[...rules.required]}>
-							<Input disabled={isView} placeholder='Enter name' />
+						<Form.Item
+							name='code'
+							label={intl.formatMessage({ id: 'track.form.code' })}
+							rules={[...rules.required, ...rules.length(10)]}
+						>
+							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'track.form.code.place' })} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item
-							name='order'
-							label='Display order'
-							// rules={[...rules.required]}
+							name='name'
+							label={intl.formatMessage({ id: 'track.form.name' })}
+							rules={[...rules.required, ...rules.length(80)]}
 						>
-							<InputNumber disabled={isView} style={{ width: '100%' }} placeholder='Enter Display order' />
+							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'track.form.name.place' })} />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='isActive' label='Active' valuePropName='checked'>
+						<Form.Item name='order' label={intl.formatMessage({ id: 'track.form.order' })}>
+							<InputNumber
+								disabled={isView}
+								style={{ width: '100%' }}
+								placeholder={intl.formatMessage({ id: 'track.form.order.place' })}
+								min={1}
+								precision={0}
+								step={1}
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='isActive' label={intl.formatMessage({ id: 'track.form.active' })} valuePropName='checked'>
 							<Switch disabled={isView} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name='description' label='Description' rules={[...rules.text]}>
-							<Input.TextArea disabled={isView} rows={3} placeholder='Enter Description' />
+						<Form.Item
+							name='description'
+							label={intl.formatMessage({ id: 'track.form.des' })}
+							rules={[...rules.text, ...rules.length(255)]}
+						>
+							<Input.TextArea
+								disabled={isView}
+								rows={3}
+								placeholder={intl.formatMessage({ id: 'track.form.des.place' })}
+								showCount
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
@@ -77,18 +105,11 @@ const FormTrack = () => {
 				<div className='form-footer'>
 					{!isView && (
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit
-								? intl.formatMessage({ id: 'global.button.themmoi' })
-								: intl.formatMessage({ id: 'global.button.chinhsua' })}
+							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
-					<Button
-						onClick={() => {
-							setVisibleForm(false);
-							form.resetFields();
-						}}
-					>
-						{intl.formatMessage({ id: 'global.button.dong' })}
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
 					</Button>
 				</div>
 			</Form>

@@ -21,14 +21,6 @@ const ActivitiesTypeDomain = () => {
 	});
 
 	const columns: IColumn<ActivitiesTypeDomain.IRecord>[] = [
-		// {
-		// 	title: intl.formatMessage({ id: 'activitiestypedomain.column.order' }),
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'activitiestypedomain.column.id' }),
 			dataIndex: 'code',

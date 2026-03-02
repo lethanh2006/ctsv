@@ -8,7 +8,7 @@ const FormStudentDomain = (props: { onOk: (val: ActivitiesManagement.IStudentDec
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { onOk } = props;
-	const { setVisibleForm, visibleForm, edit } = useModel('danhmuc.studentdomain');
+	const { setVisibleForm, visibleForm } = useModel('danhmuc.studentdomain');
 
 	useEffect(() => {
 		if (!visibleForm) resetFieldsForm(form);
@@ -40,9 +40,7 @@ const FormStudentDomain = (props: { onOk: (val: ActivitiesManagement.IStudentDec
 
 			<div className='form-footer'>
 				<Button htmlType='submit' type='primary'>
-					{!edit
-						? intl.formatMessage({ id: 'global.button.themmoi' })
-						: intl.formatMessage({ id: 'global.button.chinhsua' })}
+					{intl.formatMessage({ id: 'global.button.luulai' })}
 				</Button>
 
 				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>

@@ -21,14 +21,6 @@ const LevelsPage = () => {
 	});
 
 	const columns: IColumn<LevelsManagement.IRecord>[] = [
-		// {
-		// 	title: intl.formatMessage({ id: 'levelsmanagement.column.order' }),
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.id' }),
 			dataIndex: 'code',
@@ -45,20 +37,12 @@ const LevelsPage = () => {
 			filterType: 'string',
 			onCell,
 		},
-		// {
-		// 	title: intl.formatMessage({ id: 'levelsmanagement.column.question' }),
-		// 	dataIndex: 'selfAssessmentQuestionsName',
-		// 	width: 180,
-		// 	filterType: 'string',
-		// 	onCell,
-		// },
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.des' }),
 			dataIndex: 'description',
 			width: 180,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
 			filterType: 'string',
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.auto' }),

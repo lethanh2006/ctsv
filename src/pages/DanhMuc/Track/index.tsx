@@ -21,16 +21,8 @@ const TrackPage = () => {
 	});
 
 	const columns: IColumn<Track.IRecord>[] = [
-		// {
-		// 	title: 'Display order',
-		// 	dataIndex: 'order',
-		// 	align: 'center',
-		// 	width: 150,
-		// 	sortable: true,
-		// 	onCell,
-		// },
 		{
-			title: 'Code',
+			title: intl.formatMessage({ id: 'track.column.code' }),
 			dataIndex: 'code',
 			align: 'center',
 			width: 100,
@@ -39,14 +31,14 @@ const TrackPage = () => {
 			onCell,
 		},
 		{
-			title: 'Name',
+			title: intl.formatMessage({ id: 'track.column.name' }),
 			dataIndex: 'name',
 			width: 200,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Description',
+			title: intl.formatMessage({ id: 'track.column.des' }),
 			dataIndex: 'description',
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
@@ -54,7 +46,7 @@ const TrackPage = () => {
 			onCell,
 		},
 		{
-			title: 'Active',
+			title: intl.formatMessage({ id: 'track.column.active' }),
 			dataIndex: 'isActive',
 			align: 'center',
 			width: 90,
@@ -82,7 +74,7 @@ const TrackPage = () => {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
-						title='Do you want to remove this track?'
+						title={intl.formatMessage({ id: 'track.confirm.xoa' })}
 						placement='topLeft'
 					>
 						<ButtonExtend
@@ -102,7 +94,7 @@ const TrackPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.track'
-			title='Career Track'
+			title={intl.formatMessage({ id: 'track.title' })}
 			Form={FormTrack}
 			buttons={{ import: true, export: true }}
 			widthDrawer={800}

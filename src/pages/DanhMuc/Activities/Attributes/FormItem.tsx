@@ -36,19 +36,19 @@ const FormItemAttributesCCA = (props: {
 
 	const columns: IColumn<ActivitiesManagement.IActivitiesTypeAttributes>[] = [
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.id' }),
+			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.code' }),
 			dataIndex: ['attributes', 'code'],
 			align: 'center',
 			width: 100,
 		},
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.name' }),
+			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.name' }),
 			dataIndex: ['attributes', 'name'],
 			width: 200,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
 		},
 		{
-			title: intl.formatMessage({ id: 'attributesmanagement.column.des' }),
+			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.des' }),
 			dataIndex: ['attributes', 'description'],
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
@@ -62,7 +62,7 @@ const FormItemAttributesCCA = (props: {
 				<>
 					<Popconfirm
 						onConfirm={() => onDelete(rec.index - 1)}
-						title='Do you want to remove this cca attribute?'
+						title={intl.formatMessage({ id: 'activitiesmanagement.attribute.confirm.xoa' })}
 						placement='topLeft'
 						disabled={disabled}
 					>
@@ -81,7 +81,7 @@ const FormItemAttributesCCA = (props: {
 
 	return (
 		<>
-			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt>
+			<TableStaticData data={value} columns={columns} size='small' hasTotal addStt otherProps={{ pagination: false }}>
 				{!disabled && (
 					<Button
 						onClick={() => {
@@ -99,7 +99,11 @@ const FormItemAttributesCCA = (props: {
 			</TableStaticData>
 
 			<Modal
-				title={edit ? 'Edit cca attribute' : 'Add new cca attribute'}
+				title={
+					edit
+						? intl.formatMessage({ id: 'activitiesmanagement.attribute.form.chinhsua' })
+						: intl.formatMessage({ id: 'activitiesmanagement.attribute.form.themmoi' })
+				}
 				open={visibleForm}
 				width={600}
 				footer={null}

@@ -1,267 +1,162 @@
-import ExpandText from '@/components/ExpandText';
-import TableStaticData from '@/components/Table/TableStaticData';
-import { IColumn } from '@/components/Table/typing';
-import { primaryColor } from '@/services/base/constant';
+import ModalExpandable from '@/components/Table/ModalExpandable';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
-import { EActivityCategory, EApprovalStatus, Evalidation, mapEvalidation } from '@/services/CCT/constant';
+import { EActivityCategory, EApprovalStatus } from '@/services/CCT/constant';
 import dayjs from '@/utils/dayjs';
-import { CheckCircleOutlined, CloseCircleOutlined, RedoOutlined } from '@ant-design/icons';
-import { Button, Card, Descriptions, Divider, Space, Spin, Tag } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button } from 'antd';
+import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
-import ModalChinhSuaImpact from './ModalImpact';
-import ModalXuLyActivityStudent from './ModalXuLy';
+import CardChiTietSuKien from '../../Activity/ChiTiet';
+import ModalChinhSuaImpact from '../Modal/ModalImpact';
+import ModalChinhSuaTrangThai from '../Modal/ModalTrangThai';
+import ModalXuLyActivityStudent from '../Modal/ModalXuLy';
+import ChiTietActivityOutCome from './ChiTiet';
 
 const FormActivityStudent = (props: any) => {
-	const { getData, tabActive, isActivity } = props;
+	const { getData, isActivity } = props;
 	const intl = useIntl();
-	const { record, setVisibleForm } = useModel('cct.activityoutcome');
+	const { record, setVisibleForm, visibleForm } = useModel('cct.activityoutcome');
 
-	const { getByIdModel, loading, record: recBieuMau } = useModel('tienich.bieumau');
-	const {
-		getByIdModel: getCauTraLoiMe,
-		loading: loadingCauTraLoi,
-		record: cauTraLoi,
-	} = useModel('tienich.cautraloikhaosat');
 	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
 	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
+	const [visibleStatus, setVisibleStatus] = useState<boolean>(false);
 
 	const [trangThai, setTrangThai] = useState<{
 		title: string;
 		trangThai: EApprovalStatus;
 	}>();
 
-	useEffect(() => {
-		if (record?.answerId) {
-			getCauTraLoiMe(record.answerId, true).catch(console.log);
-		}
+	const now = dayjs();
+	const endDateUpdateEvidence =
+		record?.workflow === EApprovalStatus.CHANGES_REQUIRED
+			? record?.dueDate
+				? dayjs(record?.dueDate)
+				: null
+			: record?.activities?.allowPostEventResultsUpdate
+				? record?.activities?.dueDate
+					? dayjs(record?.activities?.dueDate)
+					: null
+				: record?.activities?.endDate
+					? dayjs(record?.activities?.endDate)
+					: null;
 
-		if (record?.selfAssessmentQuestionsId) {
-			getByIdModel(record?.selfAssessmentQuestionsId).catch(console.log);
-		}
-	}, [record?._id]);
+	const editableWorkflow =
+		record?.workflow === EApprovalStatus.DRAFT ||
+		record?.workflow === EApprovalStatus.CHANGES_REQUIRED ||
+		record?.workflow === EApprovalStatus.EVIDENCE_REQUIRED;
 
-	const columns = [
-		{
-			title: 'Evidence',
-			dataIndex: 'name',
-			render: (_: any, r: any) => <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>{r.name}</div>,
-		},
-		{
-			title: 'File',
-			dataIndex: 'file',
-			render: (_: any, r: any) =>
-				_ ? (
-					<Space wrap>
-						{_?.map((item: any) => (
-							<Tag style={{ cursor: 'pointer' }} onClick={() => window.open(item)} color={primaryColor}>
-								Detail
-							</Tag>
-						))}
-					</Space>
-				) : (
-					<i className='text-warning'>No info</i>
-				),
-		},
-	];
-
-	const columnsCompetency: IColumn<ActivityOutCome.ICompetencyActivity>[] = [
-		{
-			title: intl.formatMessage({ id: 'competency.column.name' }),
-			dataIndex: ['competency', 'name'],
-			width: 170,
-			filterType: 'string',
-		},
-		{
-			title: 'Description',
-			dataIndex: ['competency', 'description'],
-			width: 250,
-			render: (val, rec) => val && <ExpandText>{val}</ExpandText>,
-		},
-	];
-
-	const attriRe = record?.activities?.coCurricularActivityEquivalency?.filter(
-		(item) => item?.rolesId === record?.rolesId,
-	);
+	const isExpired = editableWorkflow && now.isAfter(endDateUpdateEvidence);
 
 	return (
-		<Card title='Detail activity'>
-			<Spin spinning={loadingCauTraLoi || loading}>
-				<Divider className='divider-big-title' orientation='left'>
-					General Information
-				</Divider>
-				<Descriptions column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }} style={{ marginBottom: 12 }}>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.sv.name' })}>
-						{record?.name}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.sv.email' })}>
-						{record?.email}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.role' })} span={24}>
-						{record?.roles?.name} ({record?.roles?.code})
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.level' })}>
-						{record?.levels?.name}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.activity' })} span={24}>
-						{record?.activities?.name}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.cca' })} span={24}>
-						{record?.activities?.activitiesType?.name}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.attribute' })} span={24}>
-						{attriRe && (
-							<Space wrap>
-								{attriRe?.map((item: any) => (
-									<Tag color={item?.attributes?.color}>{item?.attributes?.name}</Tag>
-								))}
-							</Space>
+		<ModalExpandable
+			title='Detail Evidence'
+			width={1000}
+			onCancel={() => setVisibleForm(false)}
+			footer={null}
+			open={visibleForm}
+			styles={{
+				body: { backgroundColor: '#F8F8F8', borderRadius: 2 },
+				header: { backgroundColor: '#F8F8F8' },
+			}}
+		>
+			{record?.activityCategory === EActivityCategory.REGISTERED ? (
+				<CardChiTietSuKien
+					record={{
+						...record?.activities,
+						activityOutcome: record,
+					}}
+					evidenceDeadline={
+						record?.workflow === EApprovalStatus.CHANGES_REQUIRED
+							? record?.dueDate
+								? dayjs(record?.dueDate).format('HH:mm DD/MM/YYYY')
+								: '--'
+							: record?.activities?.allowPostEventResultsUpdate
+								? record?.activities?.dueDate
+									? dayjs(record?.dueDate).format('HH:mm DD/MM/YYYY')
+									: '--'
+								: record?.endDate
+									? dayjs(record?.endDate).format('HH:mm DD/MM/YYYY')
+									: '--'
+					}
+					infoEvidence
+					isExpired={isExpired}
+				/>
+			) : (
+				<ChiTietActivityOutCome recOutcome={record ?? ({} as ActivityOutCome.IRecord)} />
+			)}
+
+			<div
+				style={{
+					backgroundColor: '#fff',
+					display: 'flex',
+					gap: 8,
+					justifyContent: 'flex-end',
+					margin: '15px -15px -15px -15px',
+					padding: 16,
+				}}
+			>
+				<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
+				{!isActivity && (
+					<>
+						{record?.workflow === EApprovalStatus.SUBMITTED ? (
+							<>
+								<Button
+									type='primary'
+									className='btn-success'
+									onClick={() => {
+										setTrangThai({
+											title: intl.formatMessage({ id: 'activityresult.xuly.duyet' }),
+											trangThai: EApprovalStatus.APPROVED,
+										});
+										setVisibleXuLy(true);
+									}}
+								>
+									{intl.formatMessage({ id: 'activityresult.button.duyet' })}
+								</Button>
+								<Button
+									type='primary'
+									onClick={() => {
+										setTrangThai({
+											title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
+											trangThai: EApprovalStatus.REJECTED,
+										});
+										setVisibleXuLy(true);
+									}}
+									className='btn-error'
+								>
+									{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
+								</Button>
+								<Button
+									type='primary'
+									onClick={() => {
+										setTrangThai({
+											title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
+											trangThai: EApprovalStatus.CHANGES_REQUIRED,
+										});
+										setVisibleXuLy(true);
+									}}
+									className='btn-warning'
+								>
+									{intl.formatMessage({ id: 'activityresult.button.yccs' })}
+								</Button>
+							</>
+						) : (
+							<>
+								<Button type='primary' onClick={() => setVisibleStatus(true)}>
+									Change status
+								</Button>
+								<Button
+									type='primary'
+									className='btn-success'
+									onClick={() => setVisibleImpact(true)}
+									disabled={record?.workflow !== EApprovalStatus.APPROVED}
+								>
+									Verify impact
+								</Button>
+							</>
 						)}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.organizer' })}>
-						{record?.activities?.organizer}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.facility' })}>
-						{record?.activities?.facilityName}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.startdate' })}>
-						{record?.activities?.startDate ? dayjs(record.activities.startDate).format('HH:mm DD/MM/YYYY') : '-'}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.enddate' })}>
-						{record?.activities?.endDate ? dayjs(record.activities.endDate).format('HH:mm DD/MM/YYYY') : '-'}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.work' })}>
-						<Tag
-							color={
-								record?.workflow === EApprovalStatus.APPROVED
-									? 'green'
-									: record?.workflow === EApprovalStatus.REJECTED
-										? 'red'
-										: 'orange'
-							}
-						>
-							{record?.workflow}
-						</Tag>
-					</Descriptions.Item>
-
-					<Descriptions.Item label='Impact'>
-						<Tag color={mapEvalidation[record?.validation as Evalidation]}>{record?.validation}</Tag>
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.approvers' })}>
-						{record?.studentDeclarationApproverName}
-					</Descriptions.Item>
-					<Descriptions.Item label='Reflection'>{record?.reflection}</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.reject' })}>
-						{record?.activityRejectionNote}
-					</Descriptions.Item>
-					<Descriptions.Item label={intl.formatMessage({ id: 'activityresult.column.revi' })}>
-						{record?.revisionNote}
-					</Descriptions.Item>
-				</Descriptions>
-
-				{record?.evidenceFile?.length && (
-					<>
-						<Divider className='divider-big-title' orientation='left'>
-							Evidence Required
-						</Divider>
-
-						<TableStaticData
-							columns={columns as any}
-							data={record?.evidenceFile}
-							size='small'
-							hasTotal
-							addStt
-							otherProps={{
-								pagination: false,
-								scroll: {
-									y: 350,
-								},
-							}}
-						/>
 					</>
 				)}
-
-				{record?.competencyList?.length && (
-					<>
-						<Divider className='divider-big-title' orientation='left'>
-							List competency
-						</Divider>
-
-						<TableStaticData columns={columnsCompetency} data={record?.competencyList} size='small' hasTotal />
-					</>
-				)}
-
-				{/* <Divider className='divider-big-title' orientation='left'>
-					Self-Assessment Questions
-				</Divider>
-				<ViewTraLoiKhaoSat khaoSat={recBieuMau} cauTraLoi={cauTraLoi} /> */}
-
-				<div className='form-footer'>
-					{tabActive === 'IMPACT' && (
-						<Button
-							type='primary'
-							className='btn-success'
-							onClick={() => {
-								setVisibleImpact(true);
-							}}
-							icon={<CheckCircleOutlined />}
-						>
-							Verify impact
-						</Button>
-					)}
-					{tabActive === EActivityCategory.REGISTERED && (
-						<>
-							<Button
-								type='primary'
-								disabled={record?.workflow === EApprovalStatus.APPROVED}
-								className='btn-success'
-								onClick={() => {
-									setTrangThai({
-										title: intl.formatMessage({ id: 'activityresult.xuly.duyet' }),
-										trangThai: EApprovalStatus.APPROVED,
-									});
-									setVisibleXuLy(true);
-								}}
-								icon={<CheckCircleOutlined />}
-							>
-								{intl.formatMessage({ id: 'activityresult.button.duyet' })}
-							</Button>
-							<Button
-								type='primary'
-								disabled={record?.workflow === EApprovalStatus.REJECTED}
-								onClick={() => {
-									setTrangThai({
-										title: intl.formatMessage({ id: 'activityresult.xuly.tuchoi' }),
-										trangThai: EApprovalStatus.REJECTED,
-									});
-									setVisibleXuLy(true);
-								}}
-								className='btn-error'
-								icon={<CloseCircleOutlined />}
-							>
-								{intl.formatMessage({ id: 'activityresult.button.tuchoi' })}
-							</Button>
-							<Button
-								type='primary'
-								disabled={record?.workflow === EApprovalStatus.CHANGES_REQUIRED}
-								onClick={() => {
-									setTrangThai({
-										title: intl.formatMessage({ id: 'activityresult.xuly.yccs' }),
-										trangThai: EApprovalStatus.CHANGES_REQUIRED,
-									});
-									setVisibleXuLy(true);
-								}}
-								className='btn-warning'
-								icon={<RedoOutlined />}
-							>
-								{intl.formatMessage({ id: 'activityresult.button.yccs' })}
-							</Button>
-						</>
-					)}
-
-					<Button onClick={() => setVisibleForm(false)}>{intl.formatMessage({ id: 'global.button.huy' })}</Button>
-				</div>
-			</Spin>
+			</div>
 
 			<ModalXuLyActivityStudent
 				visible={visibleXuLy}
@@ -282,7 +177,16 @@ const FormActivityStudent = (props: any) => {
 					setVisibleForm(false);
 				}}
 			/>
-		</Card>
+
+			<ModalChinhSuaTrangThai
+				visible={visibleStatus}
+				setVisible={setVisibleStatus}
+				getData={() => {
+					getData();
+					setVisibleForm(false);
+				}}
+			/>
+		</ModalExpandable>
 	);
 };
 

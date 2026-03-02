@@ -815,6 +815,12 @@
 				path: 'role',
 				// access: 'cctFilter',
 			},
+			{
+				name: 'StudentApprover',
+				component: 'DanhMuc/StudentApprover',
+				path: 'student-approver',
+				// access: 'cctFilter',
+			},
 
 			// {
 			// 	name: 'Questions',

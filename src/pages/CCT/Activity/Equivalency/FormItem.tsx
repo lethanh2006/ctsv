@@ -20,15 +20,12 @@ const EquivalencyFormItem = (props: {
 	const intl = useIntl();
 
 	const { getAllModel, danhSach: dsAtribute } = useModel('danhmuc.attributes');
+	const { danhSach: dsLevel } = useModel('danhmuc.levels');
 	const allowAttributeIds = coCurricularAttributesEquivalency?.map((i: any) => i.attributesId) || [];
 
 	useEffect(() => {
 		getAllModel(undefined, { order: 1 });
 	}, []);
-
-	useEffect(() => {
-		form.resetFields(['coCurricularActivityEquivalency']);
-	}, [JSON.stringify(coCurricularAttributesEquivalency)]);
 
 	const baseAttributeIds = useMemo(
 		() => coCurricularAttributesEquivalency?.map((i) => i.attributesId) || [],
@@ -52,7 +49,7 @@ const EquivalencyFormItem = (props: {
 		if (!dsAtribute?.length) return [];
 
 		return dsAtribute.map((attr) => {
-			const isAllow = allowAttributeIds.includes(attr._id);
+			// const isAllow = allowAttributeIds.includes(attr._id);
 			const isBase = baseAttributeIds.includes(attr._id);
 			const highlightColor = highlightMap[attr._id];
 
@@ -68,29 +65,51 @@ const EquivalencyFormItem = (props: {
 										color: highlightColor,
 										borderRadius: 4,
 										padding: '2px 4px',
-										textAlign: 'center',
 									}
-								: { textAlign: 'center' }
+								: undefined
 						}
 					>
 						{attr.code}
 					</div>
 				),
 				width: 60,
-				align: 'center',
 				render: (_: any, field: any) => (
 					<Form.Item shouldUpdate noStyle>
 						{({ getFieldValue }) => {
 							const attributes = getFieldValue(['coCurricularActivityEquivalency', field.name, 'attributes']) || {};
 
-							const userCheckedCount = Object.entries(attributes).filter(
-								([id, v]) => v && !baseAttributeIds.includes(id),
-							).length;
+							// Tính các chỉ số cần thiết
+							const totalChecked = Object.values(attributes).filter(Boolean).length;
+							const totalBaseChecked = baseAttributeIds.filter((id) => attributes[id]).length;
+							const nonBaseCheckedCount = totalChecked - totalBaseChecked;
 
 							const isChecked = attributes[attr._id];
 
-							const disableCheckbox =
-								disabled || (!isBase && !isChecked && userCheckedCount >= availableSlot) || (isBase && disabled);
+							// Logic disable checkbox
+							let disabledCheckbox = disabled; // nếu form bị disable thì disable hết
+
+							if (!disabled) {
+								if (isBase) {
+									if (isChecked) {
+										// Không cho phép uncheck nếu đây là base cuối cùng còn được tick
+										disabledCheckbox = totalBaseChecked <= 1;
+									} else {
+										// Chỉ cho phép check nếu chưa đạt tối đa 2
+										disabledCheckbox = totalChecked >= MAX_CHECK;
+									}
+								} else {
+									// Không phải base
+									if (isChecked) {
+										// Luôn cho phép uncheck (không disable)
+										disabledCheckbox = false;
+									} else {
+										// Chỉ cho phép check nếu:
+										// - Chưa đạt tối đa 2
+										// - Và còn slot cho non-base (dựa vào baseCount ban đầu)
+										disabledCheckbox = totalChecked >= MAX_CHECK || nonBaseCheckedCount >= availableSlot;
+									}
+								}
+							}
 
 							return (
 								<Form.Item
@@ -98,7 +117,7 @@ const EquivalencyFormItem = (props: {
 									name={[field.name, 'attributes', attr._id]}
 									valuePropName='checked'
 								>
-									<Checkbox disabled={disableCheckbox} />
+									<Checkbox disabled={disabledCheckbox} />
 								</Form.Item>
 							);
 						}}
@@ -106,7 +125,7 @@ const EquivalencyFormItem = (props: {
 				),
 			};
 		});
-	}, [dsAtribute, allowAttributeIds, baseAttributeIds, highlightMap, availableSlot, disabled]);
+	}, [dsAtribute, baseAttributeIds, highlightMap, availableSlot, disabled]);
 
 	const columns: IColumn<any>[] = [
 		{
@@ -114,43 +133,65 @@ const EquivalencyFormItem = (props: {
 			width: 240,
 			fixed: 'left',
 			render: (_, field) => (
-				<Form.Item
-					className='table-form-item'
-					name={[field.name, 'rolesId']}
-					rules={[
-						...rules.required,
-						() => ({
-							validator(_, value) {
-								if (!value) return Promise.resolve();
-								const list = form.getFieldValue('coCurricularActivityEquivalency') || [];
-								const duplicated = list.some((item: any, idx: number) => idx !== field.name && item?.rolesId === value);
-								if (duplicated) {
-									return Promise.reject(
-										new Error(
-											intl.formatMessage({
-												id: 'activity.equivalency.role.vali',
-											}),
-										),
-									);
-								}
-								return Promise.resolve();
-							},
-						}),
-					]}
-				>
-					<SelectRolesManagement
-						disabled={disabled}
-						size='small'
-						allowClear
-						onChange={(val, option) => {
-							const role = option?.rawData;
+				<Form.Item shouldUpdate noStyle>
+					{({ getFieldValue }) => {
+						const role = getFieldValue(['coCurricularActivityEquivalency', field.name, 'role']);
 
-							form.setFieldValue(['coCurricularActivityEquivalency', field.name, 'role'], role);
-						}}
-					/>
+						return (
+							<>
+								<Form.Item
+									className='table-form-item'
+									name={[field.name, 'rolesId']}
+									rules={[
+										...rules.required,
+										() => ({
+											validator(_, value) {
+												if (!value) return Promise.resolve();
+												const list = getFieldValue('coCurricularActivityEquivalency') || [];
+												const duplicated = list.some(
+													(item: any, idx: number) => idx !== field.name && item?.rolesId === value,
+												);
+												if (duplicated) {
+													return Promise.reject(
+														new Error(
+															intl.formatMessage({
+																id: 'activity.equivalency.role.vali',
+															}),
+														),
+													);
+												}
+												return Promise.resolve();
+											},
+										}),
+									]}
+								>
+									<SelectRolesManagement
+										disabled={disabled}
+										size='small'
+										allowClear
+										onChange={(_, option) => {
+											const role = option?.rawData;
+											form.setFieldValue(['coCurricularActivityEquivalency', field.name, 'role'], role);
+										}}
+									/>
+								</Form.Item>
+
+								{role?.autoApproval && (
+									<i className='text-info'>
+										Auto Approve applies to levels:{' '}
+										{dsLevel
+											?.map((item) => item?.name)
+											.filter(Boolean)
+											.join(', ')}
+									</i>
+								)}
+							</>
+						);
+					}}
 				</Form.Item>
 			),
 		},
+
 		{
 			title: intl.formatMessage({ id: 'activity.equivalency.description' }),
 			width: 280,
@@ -185,7 +226,7 @@ const EquivalencyFormItem = (props: {
 									onConfirm={() => remove(field.name)}
 									disabled={disabled}
 								>
-									<ButtonExtend type='link' icon={<DeleteOutlined />} disabled={disabled} />
+									<ButtonExtend danger type='link' icon={<DeleteOutlined />} disabled={disabled} />
 								</Popconfirm>
 							),
 						},

@@ -16,7 +16,7 @@ const FormRoles = (props: any) => {
 
 		if (!record?._id) {
 			form.setFieldsValue({
-				isActive: true,
+				isActive: false,
 				autoApproval: true,
 			});
 		}
@@ -60,7 +60,7 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.id' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.id.place' })} />
 						</Form.Item>
@@ -69,21 +69,20 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.name' })}
-							rules={[...rules.required]}
+							rules={[...rules.required, ...rules.length(80)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.name.place' })} />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
-						<Form.Item
-							name='order'
-							label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}
-							// rules={[...rules.required]}
-						>
+					<Col span={24} md={12}>
+						<Form.Item name='order' label={intl.formatMessage({ id: 'rolesmanagement.form.order' })}>
 							<InputNumber
 								disabled={isView}
 								style={{ width: '100%' }}
 								placeholder={intl.formatMessage({ id: 'rolesmanagement.form.order.place' })}
+								min={1}
+								precision={0}
+								step={1}
 							/>
 						</Form.Item>
 					</Col>
@@ -96,11 +95,12 @@ const FormRoles = (props: any) => {
 							<Switch disabled={isView} />
 						</Form.Item>
 					</Col>
-					<Col span={24} md={12}>
+					<Col span={24}>
 						<Form.Item
 							name='autoApproval'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.auto' })}
 							valuePropName='checked'
+							extra={intl.formatMessage({ id: 'rolesmanagement.form.auto.place' })}
 						>
 							<Checkbox disabled={isView} />
 						</Form.Item>
@@ -109,12 +109,13 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='description'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.des' })}
-							rules={[...rules.text]}
+							rules={[...rules.text, ...rules.length(255)]}
 						>
 							<Input.TextArea
 								disabled={isView}
 								rows={3}
 								placeholder={intl.formatMessage({ id: 'rolesmanagement.form.des.place' })}
+								showCount
 							/>
 						</Form.Item>
 					</Col>
@@ -123,18 +124,11 @@ const FormRoles = (props: any) => {
 				<div className='form-footer'>
 					{!isView && (
 						<Button loading={formSubmiting} htmlType='submit' type='primary'>
-							{!edit
-								? intl.formatMessage({ id: 'global.button.themmoi' })
-								: intl.formatMessage({ id: 'global.button.chinhsua' })}
+							{intl.formatMessage({ id: 'global.button.luulai' })}
 						</Button>
 					)}
-					<Button
-						onClick={() => {
-							setVisibleForm(false);
-							form.resetFields();
-						}}
-					>
-						{intl.formatMessage({ id: 'global.button.dong' })}
+					<Button onClick={() => setVisibleForm(false)}>
+						{intl.formatMessage({ id: isView ? 'global.button.dong' : 'global.button.huy' })}
 					</Button>
 				</div>
 			</Form>

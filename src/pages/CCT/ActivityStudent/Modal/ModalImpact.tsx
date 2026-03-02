@@ -1,8 +1,7 @@
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { Evalidation } from '@/services/CCT/constant';
-import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Col, Form, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Modal, Radio, Row, Space } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
@@ -35,14 +34,44 @@ const ModalChinhSuaImpact = (props: { visible: boolean; setVisible: (val: boolea
 				<Row gutter={[12, 0]}>
 					<Col span={24}>
 						<Col span={24}>
-							<Form.Item name='validation' label='Impact' rules={[...rules.required]}>
-								<Select
-									placeholder='Select Impact'
-									options={Object.values(Evalidation).map((item) => ({
-										value: item,
-										label: item,
-									}))}
-								/>
+							<Form.Item name='validation'>
+								<Radio.Group>
+									<Space direction='vertical'>
+										<Radio value={Evalidation.VERIFIED}>
+											<div>
+												<div>
+													<strong>Verified</strong>
+												</div>
+												<div style={{ color: '#666' }}>
+													This activity has been verified for authenticity and completion.
+												</div>
+											</div>
+										</Radio>
+
+										<Radio value={Evalidation.ENDORSED}>
+											<div>
+												<div>
+													<strong>Endorsed</strong>
+												</div>
+												<div style={{ color: '#666' }}>
+													This activity demonstrates meaningful contribution and competency development, as endorsed by
+													the approver.
+												</div>
+											</div>
+										</Radio>
+
+										<Radio value={Evalidation.FEATURED}>
+											<div>
+												<div>
+													<strong>Featured</strong>
+												</div>
+												<div style={{ color: '#666' }}>
+													This activity is recognized by VinUniversity as an outstanding and exemplary contribution.
+												</div>
+											</div>
+										</Radio>
+									</Space>
+								</Radio.Group>
 							</Form.Item>
 						</Col>
 					</Col>
