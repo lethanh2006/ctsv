@@ -23,6 +23,23 @@ const SelectLevelsManagement = (props: {
 		getAllModel(!!isSetRecord, { order: 1 }, { ...condition });
 	}, [JSON.stringify(condition)]);
 
+	const options = (danhSach || [])
+		.filter((item) => {
+			if (item.isActive) return true;
+
+			if (multiple && Array.isArray(value)) {
+				return value.includes(item._id);
+			}
+
+			return item._id === value;
+		})
+		.map((item) => ({
+			key: item._id,
+			value: item._id,
+			label: item.name,
+			rawData: item,
+		}));
+
 	return (
 		<Select
 			disabled={disabled}
@@ -30,13 +47,7 @@ const SelectLevelsManagement = (props: {
 			allowClear={allowClear}
 			value={value}
 			onChange={onChange}
-			options={danhSach.map((item) => ({
-				key: item._id,
-				value: item._id,
-				label: item.name,
-				rawData: item,
-				disabled: item.isActive === false,
-			}))}
+			options={options}
 			showSearch
 			optionFilterProp='label'
 			placeholder={intl.formatMessage({ id: 'levelsmanagement.select.place' })}

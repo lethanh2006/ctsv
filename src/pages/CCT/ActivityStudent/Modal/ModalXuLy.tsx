@@ -9,22 +9,17 @@ import { Button, Col, Form, Input, Modal, Radio, Row, Space } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const ModalXuLyActivityStudent = (props: {
-	visible: boolean;
-	setVisible: (val: boolean) => void;
-	title: string;
-	trangThai: EApprovalStatus;
-	getData?: () => void;
-}) => {
+const ModalXuLyActivityStudent = (props: { title: string; trangThai: EApprovalStatus; getData?: () => void }) => {
 	const intl = useIntl();
-	const { visible, setVisible, title, trangThai, getData } = props;
+	const { title, trangThai, getData } = props;
 	const [form] = Form.useForm();
-	const { record, formSubmiting, putApproveActivityModel } = useModel('cct.activityoutcome');
+	const { record, formSubmiting, putApproveActivityModel, visibleXuLy, setVisibleXuLy } =
+		useModel('cct.activityoutcome');
 
 	useEffect(() => {
-		if (!visible) {
+		if (!visibleXuLy) {
 			resetFieldsForm(form);
-		} else if (record?._id) {
+		} else {
 			form.setFieldsValue({
 				...record,
 				validation: record?.validation ?? Evalidation?.VERIFIED,
@@ -34,7 +29,7 @@ const ModalXuLyActivityStudent = (props: {
 						: dayjs(record?.dueDate),
 			});
 		}
-	}, [record?._id, visible]);
+	}, [record?._id, visibleXuLy]);
 
 	const onFinish = async (values: ActivityOutCome.IRecord) => {
 		putApproveActivityModel(
@@ -46,12 +41,12 @@ const ModalXuLyActivityStudent = (props: {
 			getData,
 			intl.formatMessage({ id: 'global.message.luuthanhcong' }),
 		).then(() => {
-			setVisible(false);
+			setVisibleXuLy(false);
 		});
 	};
 
 	return (
-		<Modal open={visible} onCancel={() => setVisible(false)} title={title} footer={null} width={600}>
+		<Modal open={visibleXuLy} onCancel={() => setVisibleXuLy(false)} title={title} footer={null} width={600}>
 			<div
 				style={{
 					display: 'flex',
@@ -198,7 +193,7 @@ const ModalXuLyActivityStudent = (props: {
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.xacnhan' })}
 					</Button>
-					<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleXuLy(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Form>
 		</Modal>

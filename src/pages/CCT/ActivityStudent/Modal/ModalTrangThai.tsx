@@ -8,21 +8,18 @@ import { Button, Col, Form, Input, Modal, Radio, Row, Select, Space } from 'antd
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const ModalChinhSuaTrangThai = (props: {
-	visible: boolean;
-	setVisible: (val: boolean) => void;
-	getData?: () => void;
-}) => {
+const ModalChinhSuaTrangThai = (props: { getData?: () => void }) => {
 	const intl = useIntl();
-	const { visible, setVisible, getData } = props;
+	const { getData } = props;
 	const [form] = Form.useForm();
-	const { record, formSubmiting, putApproveActivityModel } = useModel('cct.activityoutcome');
+	const { record, formSubmiting, putApproveActivityModel, visibleChangeStatus, setVisibleChangeStatus } =
+		useModel('cct.activityoutcome');
 	const workflow: EApprovalStatus = Form.useWatch('workflow', form);
 
 	useEffect(() => {
-		if (!visible) {
+		if (!visibleChangeStatus) {
 			resetFieldsForm(form);
-		} else if (record?._id) {
+		} else {
 			form.setFieldsValue({
 				...record,
 				workflow: record?.workflow ?? EApprovalStatus.DRAFT,
@@ -32,18 +29,18 @@ const ModalChinhSuaTrangThai = (props: {
 						: dayjs(record?.dueDate),
 			});
 		}
-	}, [record?._id, visible]);
+	}, [record?._id, visibleChangeStatus]);
 
 	const onFinish = async (values: ActivityOutCome.IRecord) => {
 		putApproveActivityModel(record?._id ?? '', values, getData).then(() => {
-			setVisible(false);
+			setVisibleChangeStatus(false);
 		});
 	};
 
 	return (
 		<Modal
-			open={visible}
-			onCancel={() => setVisible(false)}
+			open={visibleChangeStatus}
+			onCancel={() => setVisibleChangeStatus(false)}
 			title={intl.formatMessage({ id: 'activityresult.xuly.status.title' })}
 			footer={null}
 			width={600}
@@ -182,7 +179,9 @@ const ModalChinhSuaTrangThai = (props: {
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.xacnhan' })}
 					</Button>
-					<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleChangeStatus(false)}>
+						{intl.formatMessage({ id: 'global.button.dong' })}
+					</Button>
 				</div>
 			</Form>
 		</Modal>

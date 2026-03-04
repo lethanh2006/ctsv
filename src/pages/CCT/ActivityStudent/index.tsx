@@ -38,13 +38,21 @@ import ModalXuLyActivityStudent from './Modal/ModalXuLy';
 
 const HistoryActivityPage = () => {
 	const intl = useIntl();
-	const { getModel, page, limit, handleView, setRecord, getAnalyticsStaffModel, filters, setFilters } =
-		useModel('cct.activityoutcome');
+	const {
+		getModel,
+		page,
+		limit,
+		handleView,
+		setRecord,
+		getAnalyticsStaffModel,
+		filters,
+		setFilters,
+		setVisibleChangeStatus,
+		setVisibleXuLy,
+		setVisibleImpact,
+	} = useModel('cct.activityoutcome');
 	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
 
-	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
-	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
-	const [visibleStatus, setVisibleStatus] = useState<boolean>(false);
 	const [trangThai, setTrangThai] = useState<{
 		title: string;
 		trangThai: EApprovalStatus;
@@ -136,9 +144,13 @@ const HistoryActivityPage = () => {
 				? {
 						approvalTime: -1,
 					}
-				: {
-						submittedAt: 1,
-					},
+				: pending
+					? {
+							submittedAt: 1,
+						}
+					: {
+							submittedAt: -1,
+						},
 			undefined,
 			undefined,
 			'approval-task-list/page',
@@ -494,7 +506,7 @@ const HistoryActivityPage = () => {
 							tooltip={intl.formatMessage({ id: 'activityresult.button.changeStatus' })}
 							onClick={() => {
 								setRecord(rec);
-								setVisibleStatus(true);
+								setVisibleChangeStatus(true);
 							}}
 							type='link'
 							icon={<SyncOutlined />}
@@ -580,8 +592,6 @@ const HistoryActivityPage = () => {
 			/>
 
 			<ModalXuLyActivityStudent
-				visible={visibleXuLy}
-				setVisible={setVisibleXuLy}
 				title={trangThai?.title ?? ''}
 				trangThai={trangThai?.trangThai ?? EApprovalStatus.DRAFT}
 				getData={() => {
@@ -591,8 +601,6 @@ const HistoryActivityPage = () => {
 			/>
 
 			<ModalChinhSuaImpact
-				visible={visibleImpact}
-				setVisible={setVisibleImpact}
 				getData={() => {
 					getData();
 					getThongKe();
@@ -600,8 +608,6 @@ const HistoryActivityPage = () => {
 			/>
 
 			<ModalChinhSuaTrangThai
-				visible={visibleStatus}
-				setVisible={setVisibleStatus}
 				getData={() => {
 					getData();
 					getThongKe();

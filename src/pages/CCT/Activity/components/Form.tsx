@@ -83,13 +83,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 			form.setFieldsValue({
 				...record,
 				cct: record?.activitiesTypeId ?? false,
-				activitiesTypeDomainId:
-					record?.activitiesType?.activitiesTypeDomainId ?? record?.activitiesType?.activitiesTypeDomain?.name,
+				activitiesTypeDomainId: record?.activitiesType?.activitiesTypeDomainId,
 				competencyList: record?.competencyList?.map((item) => item?.competencyId),
 				coCurricularActivityEquivalency: normalizeEquivalencyData(record?.coCurricularActivityEquivalency),
 				allowCapacity: record.capacity ? true : false,
 				allowDueDateRegistration: record.dueDateRegistration ? true : false,
-				activitiesTypeId: record?.activitiesTypeId ?? record?.activitiesType?.name,
+				activitiesTypeId: record?.activitiesTypeId,
 			});
 
 		if (!record?._id) {

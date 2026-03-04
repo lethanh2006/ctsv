@@ -14,11 +14,8 @@ import ChiTietActivityOutCome from './ChiTiet';
 const FormActivityStudent = (props: any) => {
 	const { getData, isActivity } = props;
 	const intl = useIntl();
-	const { record, setVisibleForm, visibleForm } = useModel('cct.activityoutcome');
-
-	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
-	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
-	const [visibleStatus, setVisibleStatus] = useState<boolean>(false);
+	const { record, setVisibleForm, visibleForm, setVisibleXuLy, setVisibleChangeStatus, setVisibleImpact } =
+		useModel('cct.activityoutcome');
 
 	const [trangThai, setTrangThai] = useState<{
 		title: string;
@@ -141,7 +138,7 @@ const FormActivityStudent = (props: any) => {
 							</>
 						) : (
 							<>
-								<Button type='primary' onClick={() => setVisibleStatus(true)}>
+								<Button type='primary' onClick={() => setVisibleChangeStatus(true)}>
 									{intl.formatMessage({ id: 'activityresult.button.changeStatus' })}
 								</Button>
 								<Button
@@ -159,8 +156,6 @@ const FormActivityStudent = (props: any) => {
 			</div>
 
 			<ModalXuLyActivityStudent
-				visible={visibleXuLy}
-				setVisible={setVisibleXuLy}
 				title={trangThai?.title ?? ''}
 				trangThai={trangThai?.trangThai ?? EApprovalStatus.DRAFT}
 				getData={() => {
@@ -170,8 +165,6 @@ const FormActivityStudent = (props: any) => {
 			/>
 
 			<ModalChinhSuaImpact
-				visible={visibleImpact}
-				setVisible={setVisibleImpact}
 				getData={() => {
 					getData();
 					setVisibleForm(false);
@@ -179,8 +172,6 @@ const FormActivityStudent = (props: any) => {
 			/>
 
 			<ModalChinhSuaTrangThai
-				visible={visibleStatus}
-				setVisible={setVisibleStatus}
 				getData={() => {
 					getData();
 					setVisibleForm(false);
