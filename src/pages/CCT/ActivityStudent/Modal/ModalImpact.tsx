@@ -5,31 +5,37 @@ import { Button, Col, Form, Modal, Radio, Row, Space } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const ModalChinhSuaImpact = (props: { visible: boolean; setVisible: (val: boolean) => void; getData?: () => void }) => {
+const ModalChinhSuaImpact = (props: { getData?: () => void }) => {
 	const intl = useIntl();
-	const { visible, setVisible, getData } = props;
+	const { getData } = props;
 	const [form] = Form.useForm();
-	const { record, formSubmiting, putModel } = useModel('cct.activityoutcome');
+	const { record, formSubmiting, putModel, visibleImpact, setVisibleImpact } = useModel('cct.activityoutcome');
 
 	useEffect(() => {
-		if (!visible) {
+		if (!visibleImpact) {
 			resetFieldsForm(form);
-		} else if (record?._id) {
+		} else {
 			form.setFieldsValue({
 				...record,
 				validation: record?.validation ?? Evalidation.VERIFIED,
 			});
 		}
-	}, [record?._id, visible]);
+	}, [record?._id, visibleImpact]);
 
 	const onFinish = async (values: ActivityOutCome.IRecord) => {
 		putModel(record?._id ?? '', values, getData).then(() => {
-			setVisible(false);
+			setVisibleImpact(false);
 		});
 	};
 
 	return (
-		<Modal open={visible} onCancel={() => setVisible(false)} title={'Verify Impact'} footer={null} width={600}>
+		<Modal
+			open={visibleImpact}
+			onCancel={() => setVisibleImpact(false)}
+			title={'Verify Impact'}
+			footer={null}
+			width={600}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]}>
 					<Col span={24}>
@@ -80,7 +86,7 @@ const ModalChinhSuaImpact = (props: { visible: boolean; setVisible: (val: boolea
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						{intl.formatMessage({ id: 'global.button.xacnhan' })}
 					</Button>
-					<Button onClick={() => setVisible(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
+					<Button onClick={() => setVisibleImpact(false)}>{intl.formatMessage({ id: 'global.button.dong' })}</Button>
 				</div>
 			</Form>
 		</Modal>

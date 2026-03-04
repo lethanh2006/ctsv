@@ -14,6 +14,10 @@ export default () => {
 	const [dataThongKeApprovers, setDataThongKeAppreovers] = useState<ActivityOutCome.IAnalyticsApprovers>();
 	const [loadingThongKeApprovers, setLoadingThongKeApprovers] = useState<boolean>(false);
 
+	const [visibleChangeStatus, setVisibleChangeStatus] = useState<boolean>(false);
+	const [visibleXuLy, setVisibleXuLy] = useState<boolean>(false);
+	const [visibleImpact, setVisibleImpact] = useState<boolean>(false);
+
 	const putApproveActivityModel = async (
 		idActivity: string,
 		payLoad: {
@@ -75,5 +79,12 @@ export default () => {
 		dataThongKeApprovers,
 		loadingThongKeApprovers,
 		getAnalyticsApproversModel,
+
+		visibleChangeStatus,
+		setVisibleChangeStatus,
+		visibleXuLy,
+		setVisibleXuLy,
+		visibleImpact,
+		setVisibleImpact,
 	};
 };

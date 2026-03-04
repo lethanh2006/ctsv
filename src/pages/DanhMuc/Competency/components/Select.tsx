@@ -27,9 +27,26 @@ const SelectCompetency = (props: {
 		});
 	}, [JSON.stringify(condition)]);
 
+	const options = (danhSach || [])
+		.filter((item) => {
+			if (item.isActive) return true;
+
+			if (multiple && Array.isArray(value)) {
+				return value.includes(item._id);
+			}
+
+			return item._id === value;
+		})
+		.map((item) => ({
+			key: item._id,
+			value: item._id,
+			label: item.name,
+			rawData: item,
+		}));
+
 	const handleSelectAll = () => {
 		if (!multiple) return;
-		const allIds = danhSach.map((i) => i._id);
+		const allIds = danhSach?.filter((item) => item?.isActive === true).map((i) => i._id);
 		onChange?.(allIds);
 	};
 
@@ -40,12 +57,7 @@ const SelectCompetency = (props: {
 			allowClear={allowClear}
 			value={value}
 			onChange={onChange}
-			options={danhSach.map((item) => ({
-				key: item._id,
-				value: item._id,
-				label: item.name,
-				disabled: item.isActive === false,
-			}))}
+			options={options}
 			showSearch
 			optionFilterProp='label'
 			placeholder={intl.formatMessage({ id: 'competency.select.place' })}
