@@ -9,10 +9,27 @@ import FormAttributes from './components/Form';
 
 const AttributesPage = () => {
 	const intl = useIntl();
-	const { page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } = useModel('danhmuc.attributes');
+	const { getModel, page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } =
+		useModel('danhmuc.attributes');
+
+	const getData = () => {
+		getModel(undefined, undefined, {
+			order: 1,
+		});
+	};
 
 	const onChecked = (rec: AttributesManagement.IRecord, isActive: boolean) => {
-		if (rec._id) putModel(rec._id, { isActive }).catch((er) => console.log(er));
+		if (rec._id)
+			putModel(
+				rec._id,
+				{ isActive },
+				getData,
+				undefined,
+				undefined,
+				isActive
+					? intl.formatMessage({ id: 'message.activateSuccess' })
+					: intl.formatMessage({ id: 'message.deactivateSuccess' }),
+			).catch((er) => console.log(er));
 	};
 
 	const onCell = (rec: AttributesManagement.IRecord) => ({
@@ -52,7 +69,6 @@ const AttributesPage = () => {
 			dataIndex: 'description',
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
 		},
 		{
 			title: intl.formatMessage({ id: 'attributesmanagement.column.active' }),
@@ -60,7 +76,17 @@ const AttributesPage = () => {
 			align: 'center',
 			width: 90,
 			render: (val, rec) => (
-				<Switch checked={val} onChange={(checked) => onChecked(rec, checked)} size='small' loading={formSubmiting} />
+				<Popconfirm
+					title={
+						val
+							? intl.formatMessage({ id: 'message.confirm.deactivate' })
+							: intl.formatMessage({ id: 'message.confirm.activate' })
+					}
+					onConfirm={() => onChecked(rec, !val)}
+					placement='top'
+				>
+					<Switch checked={val} size='small' loading={formSubmiting} />
+				</Popconfirm>
 			),
 		},
 		{
@@ -79,7 +105,7 @@ const AttributesPage = () => {
 
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, undefined, {
+							deleteModel(rec._id, getData, {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
@@ -100,11 +126,13 @@ const AttributesPage = () => {
 
 	return (
 		<TableBase
+			getData={getData}
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.attributes'
 			title={intl.formatMessage({ id: 'attributesmanagement.title' })}
 			Form={FormAttributes}
+			formProps={{ getData }}
 			buttons={{ import: true, export: true }}
 			widthDrawer={800}
 		/>

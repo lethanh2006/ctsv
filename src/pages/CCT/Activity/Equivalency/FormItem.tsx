@@ -24,7 +24,7 @@ const EquivalencyFormItem = (props: {
 	const allowAttributeIds = coCurricularAttributesEquivalency?.map((i: any) => i.attributesId) || [];
 
 	useEffect(() => {
-		getAllModel(undefined, { order: 1 });
+		getAllModel(undefined, { order: 1 }, { isActive: true });
 	}, []);
 
 	const baseAttributeIds = useMemo(
@@ -178,7 +178,7 @@ const EquivalencyFormItem = (props: {
 
 								{role?.autoApproval && (
 									<i className='text-info'>
-										Auto Approve applies to levels:{' '}
+										{intl.formatMessage({ id: 'activity.equivalency.autolevel' })}:{' '}
 										{dsLevel
 											?.map((item) => item?.name)
 											.filter(Boolean)

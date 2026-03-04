@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
 const FormActivitiesTypeDomain = (props: any) => {
+	const { getData } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
@@ -26,7 +27,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 			putModel(
 				record?._id ?? '',
 				values,
-				undefined,
+				getData,
 				undefined,
 				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
@@ -34,7 +35,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+			postModel(values, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
@@ -55,7 +56,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'activitiestypedomain.form.id' })}
-							rules={[...rules.required, ...rules.length(10)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activitiestypedomain.form.id.place' })} />
 						</Form.Item>
@@ -64,7 +65,7 @@ const FormActivitiesTypeDomain = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'activitiestypedomain.form.name' })}
-							rules={[...rules.required, ...rules.length(80)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(80)]}
 						>
 							<Input
 								disabled={isView}

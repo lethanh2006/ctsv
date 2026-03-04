@@ -1,9 +1,9 @@
 import MyDatePicker from '@/components/MyDatePicker';
 import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
-import { EApprovalStatus, Evalidation, mapNameApprovalStatus } from '@/services/CCT/constant';
+import { EActivityCategory, EApprovalStatus, Evalidation, mapNameApprovalStatus } from '@/services/CCT/constant';
 import dayjs from '@/utils/dayjs';
 import rules from '@/utils/rules';
-import { resetFieldsForm } from '@/utils/utils';
+import { buildDisabledDateTime, resetFieldsForm } from '@/utils/utils';
 import { Button, Col, Form, Input, Modal, Radio, Row, Select, Space } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
@@ -26,7 +26,10 @@ const ModalChinhSuaTrangThai = (props: {
 			form.setFieldsValue({
 				...record,
 				workflow: record?.workflow ?? EApprovalStatus.DRAFT,
-				dueDate: dayjs(record?.activities?.dueDate),
+				dueDate:
+					record?.activityCategory === EActivityCategory.REGISTERED
+						? dayjs(record?.dueDate ?? record?.activities?.dueDate)
+						: dayjs(record?.dueDate),
 			});
 		}
 	}, [record?._id, visible]);
@@ -38,14 +41,24 @@ const ModalChinhSuaTrangThai = (props: {
 	};
 
 	return (
-		<Modal open={visible} onCancel={() => setVisible(false)} title={'Change Status'} footer={null} width={600}>
+		<Modal
+			open={visible}
+			onCancel={() => setVisible(false)}
+			title={intl.formatMessage({ id: 'activityresult.xuly.status.title' })}
+			footer={null}
+			width={600}
+		>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]}>
 					<Col span={24}>
 						<Col span={24}>
-							<Form.Item name='workflow' label='Status' rules={[...rules.required]}>
+							<Form.Item
+								name='workflow'
+								label={intl.formatMessage({ id: 'activityresult.xuly.status' })}
+								rules={[...rules.required]}
+							>
 								<Select
-									placeholder='Select Status'
+									placeholder={intl.formatMessage({ id: 'activityresult.xuly.status.place' })}
 									options={Object.values([
 										EApprovalStatus.APPROVED,
 										EApprovalStatus.REJECTED,
@@ -80,22 +93,29 @@ const ModalChinhSuaTrangThai = (props: {
 								<Form.Item
 									name='dueDate'
 									label={intl.formatMessage({ id: 'activity.info.form.duedate' })}
-									rules={[
-										...rules.required,
-										...rules.sauNgay(dayjs(record?.endDate), intl.formatMessage({ id: 'activity.info.form.endDate' })),
-									]}
+									rules={
+										record?.activityCategory === EActivityCategory.REGISTERED
+											? [
+													...rules.required,
+													...rules.sauThoiDiem(
+														dayjs(record?.activities?.endDate),
+														intl.formatMessage({ id: 'activity.info.form.endDate' }),
+													),
+												]
+											: [...rules.required]
+									}
 								>
 									<MyDatePicker
 										showTime={{ showHour: true, showMinute: true }}
 										format='HH:mm DD/MM/YYYY'
-										disabledDate={(current) =>
-											!!(
-												dayjs(current).isBefore(dayjs().startOf('day')) ||
-												(record?.endDate && dayjs(current).isBefore(record?.endDate))
-											)
-										}
-										placeholder='Select Due Date'
+										placeholder={intl.formatMessage({ id: 'activity.info.form.duedate.place' })}
 										allowClear
+										{...buildDisabledDateTime({
+											min:
+												record?.activityCategory === EActivityCategory.REGISTERED && record?.activities?.endDate
+													? dayjs(record?.activities?.endDate)
+													: undefined,
+										})}
 									/>
 								</Form.Item>
 							</Col>
@@ -116,16 +136,16 @@ const ModalChinhSuaTrangThai = (props: {
 
 					{workflow === EApprovalStatus.APPROVED && (
 						<Col span={24}>
-							<Form.Item name='validation' label='Impact'>
+							<Form.Item name='validation' label={intl.formatMessage({ id: 'activityresult.xuly.impact' })}>
 								<Radio.Group>
 									<Space direction='vertical'>
 										<Radio value={Evalidation.VERIFIED}>
 											<div>
 												<div>
-													<strong>Verified</strong>
+													<strong>{intl.formatMessage({ id: 'activityresult.xuly.verified' })}</strong>
 												</div>
 												<div style={{ color: '#666' }}>
-													This activity has been verified for authenticity and completion.
+													{intl.formatMessage({ id: 'activityresult.xuly.verified.place' })}
 												</div>
 											</div>
 										</Radio>
@@ -133,11 +153,10 @@ const ModalChinhSuaTrangThai = (props: {
 										<Radio value={Evalidation.ENDORSED}>
 											<div>
 												<div>
-													<strong>Endorsed</strong>
+													<strong>{intl.formatMessage({ id: 'activityresult.xuly.endorsed' })}</strong>
 												</div>
 												<div style={{ color: '#666' }}>
-													This activity demonstrates meaningful contribution and competency development, as endorsed by
-													the approver.
+													{intl.formatMessage({ id: 'activityresult.xuly.endorsed.place' })}
 												</div>
 											</div>
 										</Radio>
@@ -145,10 +164,10 @@ const ModalChinhSuaTrangThai = (props: {
 										<Radio value={Evalidation.FEATURED}>
 											<div>
 												<div>
-													<strong>Featured</strong>
+													<strong>{intl.formatMessage({ id: 'activityresult.xuly.featured' })}</strong>
 												</div>
 												<div style={{ color: '#666' }}>
-													This activity is recognized by VinUniversity as an outstanding and exemplary contribution.
+													{intl.formatMessage({ id: 'activityresult.xuly.featured' })}{' '}
 												</div>
 											</div>
 										</Radio>

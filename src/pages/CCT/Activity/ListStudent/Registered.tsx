@@ -24,28 +24,28 @@ const RegisteredActivity = () => {
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
 		{
-			title: 'Studen Code',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab2.student.code' }),
 			dataIndex: 'code',
 			width: 100,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Student Name',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab2.student.name' }),
 			dataIndex: 'name',
 			width: 150,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Email',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab2.email' }),
 			dataIndex: 'email',
 			width: 180,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Registration Time',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab2.registration.time' }),
 			dataIndex: 'createdAt',
 			align: 'center',
 			width: 120,

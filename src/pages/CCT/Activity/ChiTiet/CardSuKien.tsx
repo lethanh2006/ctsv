@@ -12,7 +12,7 @@ import { ClockCircleOutlined, EnvironmentOutlined, HourglassOutlined, UserOutlin
 import { Card, Flex, Image, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { JSX } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 const { Title } = Typography;
 
@@ -37,6 +37,7 @@ const CardSuKienCCT = (props: {
 
 	isExpired?: boolean;
 }) => {
+	const intl = useIntl();
 	const { danhSach: dsAttribute } = useModel('danhmuc.attributes');
 	const {
 		record,
@@ -84,11 +85,11 @@ const CardSuKienCCT = (props: {
 		const hours = endDateRegi.diff(now.add(days, 'day'), 'hour');
 
 		if (days > 0) {
-			return `${days} day${days > 1 ? 's' : ''} ${hours} hour${hours > 1 ? 's' : ''}`;
+			return `${days} ${intl.formatMessage({ id: 'activity.cardsukien.day' })}${days > 1 ? 's' : ''} ${hours} ${intl.formatMessage({ id: 'activity.cardsukien.hour' })}${hours > 1 ? 's' : ''}`;
 		}
 
 		const remainingHours = endDateRegi.diff(now, 'hour');
-		return `${remainingHours} hour${remainingHours > 1 ? 's' : ''}`;
+		return `${remainingHours} ${intl.formatMessage({ id: 'activity.cardsukien.hour' })}${remainingHours > 1 ? 's' : ''}`;
 	})();
 
 	const editableWorkflow =
@@ -110,24 +111,34 @@ const CardSuKienCCT = (props: {
 
 	const timeContent = (() => {
 		if (outTime && !isDetail && activeKey !== '3') {
-			return <div className={`text-danger ${!isDetail ? 'one-line' : ''}`}>Registration is no longer valid</div>;
+			return (
+				<div className={`text-danger ${!isDetail ? 'one-line' : ''}`}>
+					{intl.formatMessage({ id: 'activity.cardsukien.registration.invalid' })}
+				</div>
+			);
 		}
 
 		if (isExpiringSoon && !record?.activityOutcome?.workflow) {
-			return <span className={`text-warning ${!isDetail ? 'one-line' : ''}`}>Remaining time: {remainingText}</span>;
+			return (
+				<span className={`text-warning ${!isDetail ? 'one-line' : ''}`}>
+					{intl.formatMessage({ id: 'activity.cardsukien.remaining.time' })}: {remainingText}
+				</span>
+			);
 		}
 
 		if (activeKey !== '1' && !!record?.activityOutcome?.workflow && !isDetail) {
 			return (
 				<span className={`${editableWorkflow ? 'text-danger' : ''} ${!isDetail ? 'one-line' : ''}`}>
-					Evidence update before {endDateUpdateEvidence ? endDateUpdateEvidence.format('HH:mm DD/MM/YYYY') : '--'}
+					{intl.formatMessage({ id: 'activity.cardsukien.evidence.update.before' })}{' '}
+					{endDateUpdateEvidence ? endDateUpdateEvidence.format('HH:mm DD/MM/YYYY') : '--'}
 				</span>
 			);
 		}
 
 		return (
 			<span className={`${!isDetail ? 'one-line' : ''}`}>
-				Register before {endDateRegi && endDateRegi.format('HH:mm DD/MM/YYYY')}
+				{intl.formatMessage({ id: 'activity.cardsukien.register.before' })}{' '}
+				{endDateRegi && endDateRegi.format('HH:mm DD/MM/YYYY')}
 			</span>
 		);
 	})();
@@ -144,7 +155,9 @@ const CardSuKienCCT = (props: {
 						<img src={banner ?? '/images/cct/background.png'} alt={name} className='activity-image' />
 					)}
 
-					{activeKey === '1' && isNew && !isRegister && <div className='new'>New</div>}
+					{activeKey === '1' && isNew && !isRegister && (
+						<div className='new'>{intl.formatMessage({ id: 'activity.cardsukien.new' })}</div>
+					)}
 				</div>
 			}
 			onClick={onClick}
@@ -177,7 +190,7 @@ const CardSuKienCCT = (props: {
 										fontWeight: 600,
 									}}
 								>
-									Expired
+									{intl.formatMessage({ id: 'activity.cardsukien.expired' })}
 								</Tag>
 							) : activeKey !== '1' ? (
 								<>
@@ -205,7 +218,8 @@ const CardSuKienCCT = (props: {
 					<Space size='small'>
 						<ClockCircleOutlined className='icon-light' />
 						<span className={`${!isDetail ? 'one-line' : ''}`}>
-							<span className='text-semibold'>{startDate} </span> to <span className='text-semibold'>{endDate} </span>
+							<span className='text-semibold'>{startDate} </span> {intl.formatMessage({ id: 'activity.cardsukien.to' })}{' '}
+							<span className='text-semibold'>{endDate} </span>
 						</span>
 					</Space>
 
@@ -222,7 +236,8 @@ const CardSuKienCCT = (props: {
 							<Space size='small'>
 								<UserOutlined className='icon-light' />
 								<span className={`${!isDetail ? 'one-line' : ''}`}>
-									Approver: {record?.activityOutcome?.studentDeclarationApproverName}
+									{intl.formatMessage({ id: 'activity.cardsukien.approver' })}:{' '}
+									{record?.activityOutcome?.studentDeclarationApproverName}
 								</span>
 							</Space>
 						)
@@ -240,10 +255,10 @@ const CardSuKienCCT = (props: {
 									<>
 										<UserOutlined className='icon-light' />
 										<span className={`${!isDetail ? 'one-line' : ''}`}>
-											Approver:{' '}
+											{intl.formatMessage({ id: 'activity.cardsukien.approver' })}:{' '}
 											{record?.activityOutcome?.workflow === EApprovalStatus.APPROVED &&
 											!record?.activityOutcome?.studentDeclarationApproverName
-												? 'System'
+												? intl.formatMessage({ id: 'activity.cardsukien.system' })
 												: approvalWorkflow
 													? record?.activityOutcome?.studentDeclarationApproverName
 													: record?.studentDeclarationApproverList

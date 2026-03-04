@@ -40,10 +40,10 @@ const ModalChinhSuaImpact = (props: { visible: boolean; setVisible: (val: boolea
 										<Radio value={Evalidation.VERIFIED}>
 											<div>
 												<div>
-													<strong>Verified</strong>
+													<strong>{intl.formatMessage({ id: 'activityresult.xuly.verified' })}</strong>
 												</div>
 												<div style={{ color: '#666' }}>
-													This activity has been verified for authenticity and completion.
+													{intl.formatMessage({ id: 'activityresult.xuly.verified.place' })}
 												</div>
 											</div>
 										</Radio>
@@ -51,11 +51,10 @@ const ModalChinhSuaImpact = (props: { visible: boolean; setVisible: (val: boolea
 										<Radio value={Evalidation.ENDORSED}>
 											<div>
 												<div>
-													<strong>Endorsed</strong>
+													<strong>{intl.formatMessage({ id: 'activityresult.xuly.endorsed' })}</strong>
 												</div>
 												<div style={{ color: '#666' }}>
-													This activity demonstrates meaningful contribution and competency development, as endorsed by
-													the approver.
+													{intl.formatMessage({ id: 'activityresult.xuly.endorsed.place' })}
 												</div>
 											</div>
 										</Radio>
@@ -63,10 +62,10 @@ const ModalChinhSuaImpact = (props: { visible: boolean; setVisible: (val: boolea
 										<Radio value={Evalidation.FEATURED}>
 											<div>
 												<div>
-													<strong>Featured</strong>
+													<strong>{intl.formatMessage({ id: 'activityresult.xuly.featured' })}</strong>
 												</div>
 												<div style={{ color: '#666' }}>
-													This activity is recognized by VinUniversity as an outstanding and exemplary contribution.
+													{intl.formatMessage({ id: 'activityresult.xuly.featured' })}{' '}
 												</div>
 											</div>
 										</Radio>

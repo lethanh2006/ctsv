@@ -45,7 +45,7 @@ const EquivalencyForm = (props: { disabled?: boolean }) => {
 	const allowAttributeIds = dsCompetencymapping?.map((i: any) => i.attributesId) || [];
 
 	useEffect(() => {
-		getAllModel(undefined, { order: 1 });
+		getAllModel(undefined, { order: 1 }, { isActive: true });
 	}, []);
 
 	const getData = () => {

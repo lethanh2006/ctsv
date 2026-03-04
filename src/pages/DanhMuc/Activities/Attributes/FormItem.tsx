@@ -40,12 +40,14 @@ const FormItemAttributesCCA = (props: {
 			dataIndex: ['attributes', 'code'],
 			align: 'center',
 			width: 100,
+			filterType: 'string',
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.name' }),
 			dataIndex: ['attributes', 'name'],
 			width: 200,
 			render: (val, rec) => <Tag color={rec?.attributes?.color}>{rec?.attributes?.name}</Tag>,
+			filterType: 'string',
 		},
 		{
 			title: intl.formatMessage({ id: 'activitiesmanagement.attribute.column.des' }),

@@ -55,18 +55,18 @@ const FormRoleEvidence = (props: {
 
 	const columnsRoles: IColumn<any>[] = [
 		{
-			title: 'Role',
+			title: intl.formatMessage({ id: 'activity.column.role' }),
 			width: 150,
 			dataIndex: 'roleName',
 		},
 		{
-			title: 'Description',
+			title: intl.formatMessage({ id: 'activity.column.des' }),
 			width: 220,
 			dataIndex: 'desRole',
 			render: (val) => <ExpandText>{val}</ExpandText>,
 		},
 		{
-			title: 'Attributes',
+			title: intl.formatMessage({ id: 'activity.column.attributes' }),
 			width: 200,
 			render: (_, rec) => (
 				<Space size={[4, 4]} wrap>

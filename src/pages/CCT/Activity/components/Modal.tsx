@@ -20,8 +20,6 @@ const ModalActivity = () => {
 		}
 	}, [visibleForm]);
 
-	// const isExpired = activeKey === '3' && editableWorkflow && now.isAfter(endDateUpdateEvidence);
-
 	return (
 		<>
 			<Tabs
@@ -30,7 +28,7 @@ const ModalActivity = () => {
 				items={[
 					{
 						key: '0',
-						label: 'Activity Information',
+						label: intl.formatMessage({ id: 'activity.chitiet.tab1' }),
 						children: (
 							<>
 								<CardChiTietSuKien
@@ -55,7 +53,6 @@ const ModalActivity = () => {
 									}
 									infoEvidence={!!record?.activityOutcome?.workflow || !!record?.activityOutcome?._id}
 									activeKey={activeKey}
-									// isExpired={isExpired}
 								/>
 
 								<div className='form-footer'>
@@ -68,12 +65,12 @@ const ModalActivity = () => {
 					},
 					{
 						key: '1',
-						label: 'Registration List',
+						label: intl.formatMessage({ id: 'activity.chitiet.tab2' }),
 						children: <RegisteredActivity />,
 					},
 					{
 						key: '2',
-						label: 'Evidence Declaration List',
+						label: intl.formatMessage({ id: 'activity.chitiet.tab3' }),
 						children: <ListEvidenceActivity />,
 					},
 				]}

@@ -142,7 +142,7 @@ const FormActivityStudent = (props: any) => {
 						) : (
 							<>
 								<Button type='primary' onClick={() => setVisibleStatus(true)}>
-									Change status
+									{intl.formatMessage({ id: 'activityresult.button.changeStatus' })}
 								</Button>
 								<Button
 									type='primary'
@@ -150,7 +150,7 @@ const FormActivityStudent = (props: any) => {
 									onClick={() => setVisibleImpact(true)}
 									disabled={record?.workflow !== EApprovalStatus.APPROVED}
 								>
-									Verify impact
+									{intl.formatMessage({ id: 'activityresult.button.verifyImpact' })}
 								</Button>
 							</>
 						)}

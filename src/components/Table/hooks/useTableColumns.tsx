@@ -106,7 +106,7 @@ export const useTableColumns = ({ columns, sort, addStt, dsPhanVung }: UseTableC
 							}}
 						>
 							<Input.Search
-								placeholder={`Tìm ${columnTitle}`}
+								placeholder={`${intl.formatMessage({ id: 'global.table.customfilter.search' })} ${columnTitle}`}
 								allowClear
 								enterButton
 								value={selectedKeys[0]}

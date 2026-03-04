@@ -4,6 +4,7 @@ import { ip3 } from '@/utils/ip';
 import { message, type FormInstance } from 'antd';
 import { type AxiosResponse } from 'axios';
 import type dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import * as XLSX from 'xlsx';
 import dayjsLib from './dayjs';
 
@@ -714,4 +715,64 @@ export const numberToVietnameseWords = (num: number, capitalizeFirst?: boolean):
 		? finalResult.replace(/^\w/, (c) => c.toUpperCase())
 		: finalResult.charAt(0).toUpperCase() + finalResult.slice(1);
 	return finalResult;
+};
+
+export const buildDisabledDateTime = ({ min, max }: { min?: Dayjs; max?: Dayjs }) => {
+	return {
+		disabledDate: (current: Dayjs) => {
+			if (!current) return false;
+
+			if (min && current.isBefore(min.startOf('day'))) return true;
+			if (max && current.isAfter(max.endOf('day'))) return true;
+
+			return false;
+		},
+
+		disabledTime: (current: Dayjs | null) => {
+			if (!current) return {};
+
+			const result: any = {};
+
+			// ===== MIN LOGIC =====
+			if (min && current.isSame(min, 'day')) {
+				result.disabledHours = () => Array.from({ length: min.hour() }, (_, i) => i);
+
+				result.disabledMinutes = (selectedHour: number) => {
+					if (selectedHour !== min.hour()) return [];
+					return Array.from({ length: min.minute() }, (_, i) => i);
+				};
+			}
+
+			// ===== MAX LOGIC =====
+			if (max && current.isSame(max, 'day')) {
+				const disabledHoursAfter = Array.from({ length: 23 - max.hour() }, (_, i) => max.hour() + 1 + i);
+
+				const oldDisabledHours = result.disabledHours;
+
+				result.disabledHours = () => {
+					const minHours = oldDisabledHours ? oldDisabledHours() : [];
+					return [...minHours, ...disabledHoursAfter];
+				};
+
+				result.disabledMinutes = (selectedHour: number) => {
+					let disabled: number[] = [];
+
+					// minutes from min
+					if (min && current.isSame(min, 'day') && selectedHour === min.hour()) {
+						disabled = Array.from({ length: min.minute() }, (_, i) => i);
+					}
+
+					// minutes from max
+					if (selectedHour === max.hour()) {
+						const afterMinutes = Array.from({ length: 59 - max.minute() }, (_, i) => max.minute() + 1 + i);
+						disabled = [...disabled, ...afterMinutes];
+					}
+
+					return disabled;
+				};
+			}
+
+			return result;
+		},
+	} as any;
 };
