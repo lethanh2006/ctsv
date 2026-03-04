@@ -17,40 +17,31 @@ const FormCompetencyCCAModel = (props: any) => {
 	}, [visibleForm]);
 
 	const onFinish = async (values: ActivitiesManagement.IActivitiesTypeAttributes): Promise<void> => {
-		const selectedIds: string[] = Array.isArray(values?.attributesId) ? values.attributesId : [];
 		const currentList = danhSach || [];
 
-		if (currentList.length + selectedIds.length > 2) {
+		if (currentList.length >= 2) {
 			message.error(intl.formatMessage({ id: 'activitiesmanagement.attribute.form.error' }));
 			return;
 		}
 
-		const existedIds = currentList.map((item) => item.attributesId);
+		const existedIds = currentList.find((item) => item.attributesId === values.attributesId);
 
-		const duplicated = selectedIds.filter((id) => existedIds.includes(id));
-
-		if (duplicated.length > 0) {
+		if (existedIds?._id) {
 			message.error(intl.formatMessage({ id: 'activitiesmanagement.attribute.form.error.duplicate' }));
 			return;
 		}
 
-		await Promise.all(
-			selectedIds.map((id) =>
-				postModel(
-					{
-						attributesId: id,
-						activitiesTypeId: recCCA?._id,
-					},
-					undefined,
-					undefined,
-					undefined,
-				),
-			),
-		);
-
-		message.success(intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
-		getData();
-		setVisibleForm(false);
+		postModel(
+			{
+				...values,
+				activitiesTypeId: recCCA?._id,
+			},
+			getData,
+			undefined,
+			intl.formatMessage({ id: 'global.message.themmoithanhcong' }),
+		)
+			.then()
+			.catch((err) => console.log(err));
 	};
 
 	return (
@@ -69,7 +60,7 @@ const FormCompetencyCCAModel = (props: any) => {
 							label={intl.formatMessage({ id: 'activitiesmanagement.attribute.form.attribute' })}
 							rules={[...rules.required]}
 						>
-							<SelectAttributesManagement multiple />
+							<SelectAttributesManagement />
 						</Form.Item>
 					</Col>
 				</Row>
