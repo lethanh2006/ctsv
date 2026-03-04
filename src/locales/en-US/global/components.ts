@@ -155,6 +155,7 @@ export default {
 	'global.table.customfilter.label.nhomdieukien': 'Filter group:',
 	'global.table.customfilter.placeholder.chondieukien': 'Select condition',
 	'global.table.customfilter.placeholder.chongiatri': 'Select value',
+	'global.table.customfilter.search': 'Search',
 	'global.table.import.match.cot': 'Column {colName}: {title}',
 	'global.table.import.preview.invalidRows':
 		'There are invalid data cells at rows {rows} (marked in the table), please check again!',

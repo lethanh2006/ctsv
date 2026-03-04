@@ -5,9 +5,9 @@ export default {
 	'activitiesmanagement.column.id': 'Activity Type ID',
 	'activitiesmanagement.column.name': 'Name',
 	'activitiesmanagement.column.des': 'Description',
-	'activitiesmanagement.column.attribute': 'Attribute',
+	'activitiesmanagement.column.attribute': 'Graduating Attribute',
 	'activitiesmanagement.column.track': 'Track',
-	'activitiesmanagement.column.required': 'Required evidence',
+	'activitiesmanagement.column.required': 'Required Evidence',
 	'activitiesmanagement.column.domain': 'Activity Group',
 	'activitiesmanagement.column.active': 'Active',
 

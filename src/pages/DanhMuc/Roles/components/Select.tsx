@@ -21,7 +21,7 @@ const SelectRolesManagement = (props: {
 	const { danhSach, getAllModel } = useModel('danhmuc.roles');
 
 	useEffect(() => {
-		getAllModel(!!isSetRecord, { order: 1 }, { ...condition, isActive: true });
+		getAllModel(!!isSetRecord, { order: 1 }, { ...condition });
 	}, [JSON.stringify(condition)]);
 
 	return (
@@ -37,6 +37,7 @@ const SelectRolesManagement = (props: {
 				value: item._id,
 				label: item.name,
 				rawData: item,
+				disabled: item.isActive === false,
 			}))}
 			showSearch
 			optionFilterProp='label'

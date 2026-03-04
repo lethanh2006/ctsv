@@ -20,7 +20,7 @@ const SelectTrack = (props: {
 	const { danhSach, getAllModel } = useModel('danhmuc.track');
 
 	useEffect(() => {
-		getAllModel(!!isSetRecord, { order: 1 }, { ...condition, isActive: true });
+		getAllModel(!!isSetRecord, { order: 1 }, { ...condition });
 	}, [JSON.stringify(condition)]);
 
 	return (
@@ -34,6 +34,7 @@ const SelectTrack = (props: {
 				key: item._id,
 				value: item._id,
 				label: item.name,
+				disabled: item.isActive === false,
 			}))}
 			showSearch
 			optionFilterProp='label'

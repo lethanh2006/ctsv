@@ -22,18 +22,9 @@ const SelectCompetency = (props: {
 	const { danhSach, getAllModel } = useModel('danhmuc.competency');
 
 	useEffect(() => {
-		getAllModel(
-			!!isSetRecord,
-			{ order: 1 },
-			{ ...condition, isActive: true },
-			undefined,
-			undefined,
-			undefined,
-			undefined,
-			{
-				population: [{ path: 'attributes' }],
-			},
-		);
+		getAllModel(!!isSetRecord, { order: 1 }, { ...condition }, undefined, undefined, undefined, undefined, {
+			population: [{ path: 'attributes' }],
+		});
 	}, [JSON.stringify(condition)]);
 
 	const handleSelectAll = () => {
@@ -53,6 +44,7 @@ const SelectCompetency = (props: {
 				key: item._id,
 				value: item._id,
 				label: item.name,
+				disabled: item.isActive === false,
 			}))}
 			showSearch
 			optionFilterProp='label'

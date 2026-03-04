@@ -103,7 +103,7 @@ const HistoryActivityPage = () => {
 			setTotalRegis(resRegis?.data?.data?.total);
 			setTotalPersional(resPersional?.data?.data?.total);
 		} catch (error) {
-			console.error('Lỗi thống kê:', error);
+			console.error(intl.formatMessage({ id: 'activityresult.error.stat' }), error);
 		} finally {
 			setLoadingThongKe(false);
 		}
@@ -172,21 +172,21 @@ const HistoryActivityPage = () => {
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
 		{
-			title: 'Student Code',
+			title: intl.formatMessage({ id: 'activityresult.column.studentCode' }),
 			dataIndex: 'code',
 			width: 120,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Student Name',
+			title: intl.formatMessage({ id: 'activityresult.column.studentName' }),
 			dataIndex: 'name',
 			width: 150,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Activity Name',
+			title: intl.formatMessage({ id: 'activityresult.column.activityName' }),
 			dataIndex: segmentSelected === EActivityCategory.REGISTERED ? ['activities', 'name'] : 'activitiesOutcomeName',
 			width: 180,
 			render: (val, rec) =>
@@ -195,25 +195,27 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Role',
+			title: intl.formatMessage({ id: 'activityresult.column.role' }),
 			dataIndex: 'rolesId',
 			width: 180,
-			render: (val, rec) => rec?.roles?.name ?? <i className='text-warning'>No info</i>,
+			render: (val, rec) =>
+				rec?.roles?.name ?? <i className='text-warning'>{intl.formatMessage({ id: 'global.noInfo' })}</i>,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectRolesManagement multiple />,
 			onCell,
 		},
 		{
-			title: 'Level',
+			title: intl.formatMessage({ id: 'activityresult.column.level' }),
 			dataIndex: 'levelsId',
 			width: 120,
-			render: (val, rec) => rec?.levels?.name ?? <i className='text-warning'>No info</i>,
+			render: (val, rec) =>
+				rec?.levels?.name ?? <i className='text-warning'>{intl.formatMessage({ id: 'global.noInfo' })}</i>,
 			filterType: 'customselect',
 			filterCustomSelect: <SelectLevelsManagement multiple />,
 			onCell,
 		},
 		{
-			title: 'Attribute',
+			title: intl.formatMessage({ id: 'activityresult.column.attribute' }),
 			width: 160,
 			render: (val, rec) => {
 				const attriRe = rec?.activities?.coCurricularActivityEquivalency?.filter(
@@ -242,13 +244,12 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Competency',
+			title: intl.formatMessage({ id: 'activityresult.column.competency' }),
 			width: 220,
 			render: (val, rec) =>
 				rec?.activityCategory === EActivityCategory.REGISTERED ? (
 					<ExpandText>
 						{rec?.activities?.competencyList
-
 							?.map((item) => item?.competency?.name)
 							.filter(Boolean)
 							.join(', ')}
@@ -256,7 +257,6 @@ const HistoryActivityPage = () => {
 				) : (
 					<ExpandText>
 						{rec?.listAchievedCompetencies
-
 							?.map((item) => item?.competencie?.name)
 							.filter(Boolean)
 							.join(', ')}
@@ -265,7 +265,7 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Activity Type',
+			title: intl.formatMessage({ id: 'activityresult.column.activityType' }),
 			width: 200,
 			render: (val, rec) =>
 				rec?.activityCategory === EActivityCategory.REGISTERED
@@ -274,7 +274,7 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Track',
+			title: intl.formatMessage({ id: 'activityresult.column.track' }),
 			width: 120,
 			render: (val, rec) =>
 				rec?.activityCategory === EActivityCategory.REGISTERED
@@ -283,7 +283,7 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Mentor/Supervisor',
+			title: intl.formatMessage({ id: 'activityresult.column.mentorSupervisor' }),
 			dataIndex: 'supervisorName',
 			width: 150,
 			filterType: 'string',
@@ -291,7 +291,7 @@ const HistoryActivityPage = () => {
 			hide: segmentSelected === EActivityCategory.REGISTERED,
 		},
 		{
-			title: 'Submission Time',
+			title: intl.formatMessage({ id: 'activityresult.column.submissionTime' }),
 			dataIndex: 'submittedAt',
 			align: 'center',
 			width: 120,
@@ -300,7 +300,7 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Approver',
+			title: intl.formatMessage({ id: 'activityresult.column.approver' }),
 			dataIndex: 'studentDeclarationApproverName',
 			width: 150,
 			render: (val, rec) => {
@@ -312,7 +312,7 @@ const HistoryActivityPage = () => {
 				return (
 					<>
 						{rec?.workflow === EApprovalStatus.APPROVED && !rec?.studentDeclarationApproverName
-							? 'System'
+							? intl.formatMessage({ id: 'global.system' })
 							: approvalWorkflow
 								? rec?.studentDeclarationApproverName
 								: rec?.activities?.studentDeclarationApproverList
@@ -327,7 +327,7 @@ const HistoryActivityPage = () => {
 			hide: pending,
 		},
 		{
-			title: 'Evidence Review Time',
+			title: intl.formatMessage({ id: 'activityresult.column.evidenceReviewTime' }),
 			dataIndex: 'approvalTime',
 			align: 'center',
 			width: 120,
@@ -337,7 +337,7 @@ const HistoryActivityPage = () => {
 			onCell,
 		},
 		{
-			title: 'Impact',
+			title: intl.formatMessage({ id: 'activityresult.column.impact' }),
 			dataIndex: 'validation',
 			align: 'center',
 			width: 100,
@@ -391,7 +391,7 @@ const HistoryActivityPage = () => {
 								fontWeight: 600,
 							}}
 						>
-							Expired
+							{intl.formatMessage({ id: 'activityresult.status.expired' })}
 						</Tag>
 					);
 				}
@@ -429,7 +429,6 @@ const HistoryActivityPage = () => {
 					return (
 						<>
 							<ButtonExtend
-								// disabled={rec?.workflow === EApprovalStatus.APPROVED}
 								tooltip={intl.formatMessage({ id: 'activityresult.button.duyet' })}
 								onClick={() => {
 									setRecord(rec);
@@ -448,7 +447,6 @@ const HistoryActivityPage = () => {
 								content={
 									<Space direction='vertical' size={4} className='action-popover'>
 										<ButtonExtend
-											// disabled={rec?.workflow === EApprovalStatus.REJECTED}
 											onClick={() => {
 												setRecord(rec);
 												setTrangThai({
@@ -466,7 +464,6 @@ const HistoryActivityPage = () => {
 										</ButtonExtend>
 
 										<ButtonExtend
-											// disabled={rec?.workflow === EApprovalStatus.CHANGES_REQUIRED}
 											onClick={() => {
 												setRecord(rec);
 												setTrangThai({
@@ -494,7 +491,7 @@ const HistoryActivityPage = () => {
 				return (
 					<>
 						<ButtonExtend
-							tooltip='Change status'
+							tooltip={intl.formatMessage({ id: 'activityresult.button.changeStatus' })}
 							onClick={() => {
 								setRecord(rec);
 								setVisibleStatus(true);
@@ -505,7 +502,7 @@ const HistoryActivityPage = () => {
 						/>
 
 						<ButtonExtend
-							tooltip='Verify impact'
+							tooltip={intl.formatMessage({ id: 'activityresult.button.verifyImpact' })}
 							onClick={() => {
 								setRecord(rec);
 								setVisibleImpact(true);

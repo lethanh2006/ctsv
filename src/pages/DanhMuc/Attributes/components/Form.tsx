@@ -7,7 +7,8 @@ import { Colorpicker } from 'antd-colorpicker';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormAttributes = () => {
+const FormAttributes = (props: any) => {
+	const { getData } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, setFormSubmiting, formSubmiting, visibleForm } =
@@ -38,20 +39,19 @@ const FormAttributes = () => {
 
 			const icon = await buildUpLoadFile(values, 'icon');
 			values.icon = icon;
-
 			values.color = values.color || '#fafafa';
 
 			if (edit) {
 				await putModel(
 					record?._id ?? '',
 					values,
-					undefined,
+					getData,
 					undefined,
 					undefined,
 					intl.formatMessage({ id: 'global.message.luuthanhcong' }),
 				);
 			} else {
-				await postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
+				await postModel(values, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }));
 			}
 		} catch (error) {
 			console.log(error);
@@ -84,7 +84,7 @@ const FormAttributes = () => {
 						<Form.Item
 							name='icon'
 							label={intl.formatMessage({ id: 'attributesmanagement.form.icon' })}
-							rules={[...rules.required]}
+							rules={[...rules.fileRequired]}
 						>
 							<UploadFile
 								disabled={isView}
@@ -116,7 +116,7 @@ const FormAttributes = () => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'attributesmanagement.form.id' })}
-							rules={[...rules.required, ...rules.length(10)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input
 								disabled={isView}
@@ -131,7 +131,7 @@ const FormAttributes = () => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'attributesmanagement.form.name' })}
-							rules={[...rules.required, ...rules.length(80)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(80)]}
 						>
 							<Input
 								disabled={isView}

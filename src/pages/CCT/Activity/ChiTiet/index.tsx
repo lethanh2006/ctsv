@@ -3,6 +3,7 @@ import { EApprovalStatus } from '@/services/CCT/constant';
 import { FileOutlined } from '@ant-design/icons';
 import { Card, Col, Divider, Empty, Input, List, Row, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useIntl } from 'umi';
 import FormRoleEvidence from '../../ActivityStudent/components/FormRoleEvidence';
 import CardSuKienCCT from './CardSuKien';
 import './style.less';
@@ -15,6 +16,7 @@ const CardChiTietSuKien = (props: {
 	isExpired?: boolean;
 	isRegister?: boolean;
 }) => {
+	const intl = useIntl();
 	const { record, evidenceDeadline, infoEvidence, activeKey, isExpired, isRegister } = props;
 
 	const registered = record?.numberOfRegisteredActivityOutcomes ?? 0;
@@ -45,17 +47,17 @@ const CardChiTietSuKien = (props: {
 			<Col span={24} md={15}>
 				<Card variant='borderless' size='small'>
 					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0 }}>
-						Administrative Information
+						{intl.formatMessage({ id: 'activity.chitiet.tab1.admininfor' })}
 					</Divider>
 
 					<div className='custom-info-grid grid-2'>
 						<div className='info-row'>
 							<div className='info-item'>
-								<div className='info-label'>Organizer</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.organizer' })}</div>
 								<div className='info-value'>{record?.organizer ?? '--'}</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Approver</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.approver' })}</div>
 								<div className='info-value'>
 									{record?.activityOutcome?.workflow === EApprovalStatus.APPROVED &&
 									!record?.activityOutcome?.studentDeclarationApproverName
@@ -69,7 +71,7 @@ const CardChiTietSuKien = (props: {
 								</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Activity Group</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.group' })}</div>
 								<div className='info-value'>
 									{record?.activitiesType?.activitiesTypeDomainText ??
 										record?.activitiesType?.activitiesTypeDomain?.name ??
@@ -77,17 +79,17 @@ const CardChiTietSuKien = (props: {
 								</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Activity Type</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.type' })}</div>
 								<div className='info-value'>{record?.activitiesType?.name ?? '--'}</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Track</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.track' })}</div>
 								<div className='info-value'>
 									{record?.activitiesType?.trackText ?? record?.activitiesType?.track?.name ?? '--'}
 								</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Capacity</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.capa' })}</div>
 								<div
 									className='info-value'
 									style={{
@@ -97,7 +99,7 @@ const CardChiTietSuKien = (props: {
 									{capacity ? (
 										<>
 											{`${registered} / ${capacity}`}
-											{isFull && ' (Full Slot)'}
+											{isFull && intl.formatMessage({ id: 'activity.chitiet.tab1.full' })}
 										</>
 									) : (
 										'--'
@@ -105,17 +107,21 @@ const CardChiTietSuKien = (props: {
 								</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Allow post-event results update</div>
-								<div className='info-value'>{record?.allowPostEventResultsUpdate ? 'Yes' : 'No'}</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.allow' })}</div>
+								<div className='info-value'>
+									{record?.allowPostEventResultsUpdate
+										? intl.formatMessage({ id: 'activity.chitiet.tab1.yes' })
+										: intl.formatMessage({ id: 'activity.chitiet.tab1.no' })}
+								</div>
 							</div>
 							<div className='info-item'>
-								<div className='info-label'>Evidence Update Deadline</div>
+								<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.evidence' })}</div>
 								<div className='info-value'>{evidenceDeadline}</div>
 							</div>
 							{(!record?.activityOutcome?.workflow ||
 								record?.activityOutcome?.workflow === EApprovalStatus.EVIDENCE_REQUIRED) && (
 								<div className='info-item'>
-									<div className='info-label'>Required Evidence</div>
+									<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.required' })}</div>
 									<div className='info-value'>
 										{record?.activitiesType?.requiredEvidenceList
 											? record?.activitiesType?.requiredEvidenceList
@@ -130,7 +136,7 @@ const CardChiTietSuKien = (props: {
 								record?.activityOutcome?.workflow !== EApprovalStatus.DRAFT &&
 								record?.activityOutcome?.workflow !== EApprovalStatus.EVIDENCE_REQUIRED && (
 									<div className='info-item'>
-										<div className='info-label'>Submission Time</div>
+										<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.subtime' })}</div>
 										<div className='info-value'>
 											{record?.activityOutcome?.submittedAt
 												? dayjs(record?.activityOutcome?.submittedAt).format('HH:mm DD/MM/YYYY')
@@ -142,7 +148,7 @@ const CardChiTietSuKien = (props: {
 								record?.activityOutcome?.workflow === EApprovalStatus.REJECTED ||
 								record?.activityOutcome?.workflow === EApprovalStatus.APPROVED) && (
 								<div className='info-item'>
-									<div className='info-label'>Evidence Review Time</div>
+									<div className='info-label'>{intl.formatMessage({ id: 'activity.chitiet.tab1.reviewtime' })}</div>
 									<div className='info-value'>
 										{record?.activityOutcome?.approvalTime
 											? dayjs(record?.activityOutcome?.approvalTime).format('HH:mm DD/MM/YYYY')
@@ -160,7 +166,7 @@ const CardChiTietSuKien = (props: {
 				<Col span={24}>
 					<Card variant='borderless' size='small'>
 						<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0 }}>
-							Revision Note
+							{intl.formatMessage({ id: 'activity.chitiet.tab1.revisionnote' })}
 						</Divider>
 						<span>{record?.activityOutcome?.revisionNote}</span>
 					</Card>
@@ -172,7 +178,7 @@ const CardChiTietSuKien = (props: {
 				<Col span={24}>
 					<Card variant='borderless' size='small'>
 						<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0 }}>
-							Rejection Note
+							{intl.formatMessage({ id: 'activity.chitiet.tab1.rejectionnote' })}
 						</Divider>
 						<span>{record?.activityOutcome?.activityRejectionNote}</span>
 					</Card>
@@ -182,7 +188,9 @@ const CardChiTietSuKien = (props: {
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
 					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0 }}>
-						{infoEvidence && activeKey !== '1' ? 'Evidence Information' : 'Role'}
+						{infoEvidence && activeKey !== '1'
+							? intl.formatMessage({ id: 'activity.chitiet.tab1.evidenceinfo' })
+							: intl.formatMessage({ id: 'activity.chitiet.tab1.role' })}
 					</Divider>
 					<FormRoleEvidence
 						equivalency={record?.coCurricularActivityEquivalency ?? []}
@@ -194,25 +202,44 @@ const CardChiTietSuKien = (props: {
 						<div className='custom-info-grid grid-2' style={{ marginTop: 16 }}>
 							<div className='info-row'>
 								<div className='info-item'>
-									<div style={{ marginBottom: 8, fontWeight: 600 }}>Track</div>
+									<div style={{ marginBottom: 8, fontWeight: 600 }}>
+										{intl.formatMessage({ id: 'activity.chitiet.tab1.track' })}
+									</div>
 									<Input
 										disabled
 										value={
-											record?.activityOutcome?.trackText ?? record?.activityOutcome?.track?.name ?? 'No information'
+											record?.activityOutcome?.trackText ??
+											record?.activityOutcome?.track?.name ??
+											intl.formatMessage({ id: 'activity.chitiet.tab1.noinfo' })
 										}
 									/>
 								</div>
 								<div className='info-item'>
-									<div style={{ marginBottom: 8, fontWeight: 600 }}>Level</div>
-									<Input disabled value={record?.activityOutcome?.levels?.name ?? 'No information'} />
+									<div style={{ marginBottom: 8, fontWeight: 600 }}>
+										{intl.formatMessage({ id: 'activity.chitiet.tab1.level' })}
+									</div>
+									<Input
+										disabled
+										value={
+											record?.activityOutcome?.levels?.name ??
+											intl.formatMessage({ id: 'activity.chitiet.tab1.noinfo' })
+										}
+									/>
 								</div>
 								<div className='info-item full-width'>
-									<div style={{ marginBottom: 8, fontWeight: 600 }}>List Evidence</div>
+									<div style={{ marginBottom: 8, fontWeight: 600 }}>
+										{intl.formatMessage({ id: 'activity.chitiet.tab1.listevidence' })}
+									</div>
 									<List
 										size='small'
 										dataSource={record?.activityOutcome?.evidenceFile ?? []}
 										locale={{
-											emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='No List Evidence' />,
+											emptyText: (
+												<Empty
+													image={Empty.PRESENTED_IMAGE_SIMPLE}
+													description={intl.formatMessage({ id: 'activity.chitiet.tab1.noevidence' })}
+												/>
+											),
 										}}
 										renderItem={(item: any) => (
 											<List.Item>
@@ -230,8 +257,16 @@ const CardChiTietSuKien = (props: {
 									/>
 								</div>
 								<div className='info-item full-width'>
-									<div style={{ marginBottom: 8, fontWeight: 600 }}>Reflection</div>
-									<Input.TextArea rows={3} disabled value={record?.activityOutcome?.reflection ?? 'No information'} />
+									<div style={{ marginBottom: 8, fontWeight: 600 }}>
+										{intl.formatMessage({ id: 'activity.chitiet.tab1.reflection' })}
+									</div>
+									<Input.TextArea
+										rows={3}
+										disabled
+										value={
+											record?.activityOutcome?.reflection ?? intl.formatMessage({ id: 'activity.chitiet.tab1.noinfo' })
+										}
+									/>
 								</div>
 							</div>
 						</div>
@@ -242,7 +277,7 @@ const CardChiTietSuKien = (props: {
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
 					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0 }}>
-						Competency
+						{intl.formatMessage({ id: 'activity.chitiet.tab1.competency' })}
 					</Divider>
 					<div className='competency-list'>
 						{infoEvidence
@@ -265,7 +300,7 @@ const CardChiTietSuKien = (props: {
 			<Col span={24}>
 				<Card variant='borderless' size='small'>
 					<Divider className='divider-big-title' orientation='left' style={{ marginTop: 0 }}>
-						Activity Description
+						{intl.formatMessage({ id: 'activity.chitiet.tab1.description' })}
 					</Divider>
 					<span>{record?.description}</span>
 				</Card>

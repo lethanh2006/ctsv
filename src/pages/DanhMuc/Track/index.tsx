@@ -9,10 +9,27 @@ import FormTrack from './components/Form';
 
 const TrackPage = () => {
 	const intl = useIntl();
-	const { page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } = useModel('danhmuc.track');
+	const { getModel, page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } =
+		useModel('danhmuc.track');
+
+	const getData = () => {
+		getModel(undefined, undefined, {
+			order: 1,
+		});
+	};
 
 	const onChecked = (rec: Track.IRecord, isActive: boolean) => {
-		if (rec._id) putModel(rec._id, { isActive }).catch((er) => console.log(er));
+		if (rec._id)
+			putModel(
+				rec._id,
+				{ isActive },
+				getData,
+				undefined,
+				undefined,
+				isActive
+					? intl.formatMessage({ id: 'message.activateSuccess' })
+					: intl.formatMessage({ id: 'message.deactivateSuccess' }),
+			).catch((er) => console.log(er));
 	};
 
 	const onCell = (rec: Track.IRecord) => ({
@@ -42,8 +59,6 @@ const TrackPage = () => {
 			dataIndex: 'description',
 			width: 220,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
-			onCell,
 		},
 		{
 			title: intl.formatMessage({ id: 'track.column.active' }),
@@ -51,7 +66,17 @@ const TrackPage = () => {
 			align: 'center',
 			width: 90,
 			render: (val, rec) => (
-				<Switch checked={val} onChange={(checked) => onChecked(rec, checked)} size='small' loading={formSubmiting} />
+				<Popconfirm
+					title={
+						val
+							? intl.formatMessage({ id: 'message.confirm.deactivate' })
+							: intl.formatMessage({ id: 'message.confirm.activate' })
+					}
+					onConfirm={() => onChecked(rec, !val)}
+					placement='top'
+				>
+					<Switch checked={val} size='small' loading={formSubmiting} />
+				</Popconfirm>
 			),
 		},
 		{
@@ -70,7 +95,7 @@ const TrackPage = () => {
 
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, undefined, {
+							deleteModel(rec._id, getData, {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
@@ -91,11 +116,13 @@ const TrackPage = () => {
 
 	return (
 		<TableBase
+			getData={getData}
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.track'
 			title={intl.formatMessage({ id: 'track.title' })}
 			Form={FormTrack}
+			formProps={{ getData }}
 			buttons={{ import: true, export: true }}
 			widthDrawer={800}
 		/>

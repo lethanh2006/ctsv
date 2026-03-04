@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
 const FormRoles = (props: any) => {
+	const { getData } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
@@ -31,7 +32,7 @@ const FormRoles = (props: any) => {
 			putModel(
 				record?._id ?? '',
 				values,
-				undefined,
+				getData,
 				undefined,
 				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
@@ -39,7 +40,7 @@ const FormRoles = (props: any) => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+			postModel(values, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
@@ -60,7 +61,7 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.id' })}
-							rules={[...rules.required, ...rules.length(10)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.id.place' })} />
 						</Form.Item>
@@ -69,7 +70,7 @@ const FormRoles = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'rolesmanagement.form.name' })}
-							rules={[...rules.required, ...rules.length(80)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(80)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'rolesmanagement.form.name.place' })} />
 						</Form.Item>

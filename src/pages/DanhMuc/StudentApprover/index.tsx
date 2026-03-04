@@ -45,7 +45,6 @@ const StudentApproverPage = () => {
 			title: intl.formatMessage({ id: 'studentapprover.column.code' }),
 			dataIndex: 'code',
 			width: 120,
-			filterType: 'string',
 			onCell,
 		},
 		{
@@ -106,7 +105,6 @@ const StudentApproverPage = () => {
 			title={intl.formatMessage({ id: 'studentapprover.title' })}
 			Form={FormStudentApprover}
 			formProps={{ getData }}
-			buttons={{ import: true, export: true }}
 		/>
 	);
 };

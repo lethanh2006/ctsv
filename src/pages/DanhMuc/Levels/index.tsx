@@ -9,10 +9,27 @@ import FormLevels from './components/Form';
 
 const LevelsPage = () => {
 	const intl = useIntl();
-	const { page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } = useModel('danhmuc.levels');
+	const { getModel, page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } =
+		useModel('danhmuc.levels');
+
+	const getData = () => {
+		getModel(undefined, undefined, {
+			order: 1,
+		});
+	};
 
 	const onChecked = (rec: LevelsManagement.IRecord, isActive: boolean) => {
-		if (rec._id) putModel(rec._id, { isActive }).catch((er) => console.log(er));
+		if (rec._id)
+			putModel(
+				rec._id,
+				{ isActive },
+				getData,
+				undefined,
+				undefined,
+				isActive
+					? intl.formatMessage({ id: 'message.activateSuccess' })
+					: intl.formatMessage({ id: 'message.deactivateSuccess' }),
+			).catch((er) => console.log(er));
 	};
 
 	const onCell = (rec: LevelsManagement.IRecord) => ({
@@ -42,7 +59,6 @@ const LevelsPage = () => {
 			dataIndex: 'description',
 			width: 180,
 			render: (val, rec) => <ExpandText>{val}</ExpandText>,
-			filterType: 'string',
 		},
 		{
 			title: intl.formatMessage({ id: 'levelsmanagement.column.auto' }),
@@ -57,7 +73,17 @@ const LevelsPage = () => {
 			align: 'center',
 			width: 90,
 			render: (val, rec) => (
-				<Switch checked={val} onChange={(checked) => onChecked(rec, checked)} size='small' loading={formSubmiting} />
+				<Popconfirm
+					title={
+						val
+							? intl.formatMessage({ id: 'message.confirm.deactivate' })
+							: intl.formatMessage({ id: 'message.confirm.activate' })
+					}
+					onConfirm={() => onChecked(rec, !val)}
+					placement='top'
+				>
+					<Switch checked={val} size='small' loading={formSubmiting} />
+				</Popconfirm>
 			),
 		},
 		{
@@ -76,7 +102,7 @@ const LevelsPage = () => {
 
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, undefined, {
+							deleteModel(rec._id, getData, {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
@@ -97,11 +123,13 @@ const LevelsPage = () => {
 
 	return (
 		<TableBase
+			getData={getData}
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.levels'
 			title={intl.formatMessage({ id: 'levelsmanagement.title' })}
 			Form={FormLevels}
+			formProps={{ getData }}
 			buttons={{ import: true, export: true }}
 			widthDrawer={800}
 		/>

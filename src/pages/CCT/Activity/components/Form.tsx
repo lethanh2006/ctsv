@@ -15,7 +15,7 @@ import { EparticipantRole, EParticipantScope, mapNameParticipantScope } from '@/
 import { buildUpLoadFile } from '@/services/uploadFile';
 import dayjs from '@/utils/dayjs';
 import rules from '@/utils/rules';
-import { resetFieldsForm } from '@/utils/utils';
+import { buildDisabledDateTime, resetFieldsForm } from '@/utils/utils';
 import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, message, Radio, Row, Select } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { useIntl, useModel } from 'umi';
@@ -83,11 +83,13 @@ const FormActivity = (props: { getData?: () => void }) => {
 			form.setFieldsValue({
 				...record,
 				cct: record?.activitiesTypeId ?? false,
-				activitiesTypeDomainId: record?.activitiesType?.activitiesTypeDomainId,
+				activitiesTypeDomainId:
+					record?.activitiesType?.activitiesTypeDomainId ?? record?.activitiesType?.activitiesTypeDomain?.name,
 				competencyList: record?.competencyList?.map((item) => item?.competencyId),
 				coCurricularActivityEquivalency: normalizeEquivalencyData(record?.coCurricularActivityEquivalency),
 				allowCapacity: record.capacity ? true : false,
 				allowDueDateRegistration: record.dueDateRegistration ? true : false,
+				activitiesTypeId: record?.activitiesTypeId ?? record?.activitiesType?.name,
 			});
 
 		if (!record?._id) {
@@ -113,7 +115,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 			});
 		}
 
-		getAllAttriCompetency();
+		getAllAttriCompetency(undefined, { order: 1 }, { isActive: true });
 		getAllLevel(undefined, { order: 1 }, { autoApproval: true, isActive: true });
 	}, [record?._id, visibleForm]);
 
@@ -189,13 +191,13 @@ const FormActivity = (props: { getData?: () => void }) => {
 
 	const columns: IColumn<Competency.IRecord>[] = [
 		{
-			title: 'Name',
+			title: intl.formatMessage({ id: 'activity.info.form.competency.name' }),
 			dataIndex: 'name',
 			width: 170,
 			filterType: 'string',
 		},
 		{
-			title: 'Description',
+			title: intl.formatMessage({ id: 'activity.info.form.competency.des' }),
 			dataIndex: 'description',
 			width: 250,
 			render: (val, rec) => val && <ExpandText>{val}</ExpandText>,
@@ -253,7 +255,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 									<Form.Item
 										name='startDate'
 										label={intl.formatMessage({ id: 'activity.info.form.startDate' })}
-										rules={[...rules.required]}
+										rules={[...rules.required, ...rules.sauThoiDiem(dayjs(), 'Past')]}
 									>
 										<MyDatePicker
 											showTime={{ showHour: true, showMinute: true }}
@@ -261,9 +263,9 @@ const FormActivity = (props: { getData?: () => void }) => {
 											disabled={isView}
 											placeholder={intl.formatMessage({ id: 'activity.info.form.startDate.place' })}
 											allowClear
-											disabledDate={(current) => {
-												return !!(current && current < dayjs().startOf('day'));
-											}}
+											{...buildDisabledDateTime({
+												min: dayjs(),
+											})}
 											onChange={() => form.resetFields(['endDate'])}
 										/>
 									</Form.Item>
@@ -274,21 +276,22 @@ const FormActivity = (props: { getData?: () => void }) => {
 										label={intl.formatMessage({ id: 'activity.info.form.endDate' })}
 										rules={[
 											...rules.required,
-											...rules.sauNgay(dayjs(startDate), intl.formatMessage({ id: 'activity.info.form.startDate' })),
+											...rules.sauThoiDiem(dayjs(), 'Past'),
+											...rules.sauThoiDiem(
+												dayjs(startDate),
+												intl.formatMessage({ id: 'activity.info.form.startDate' }),
+											),
 										]}
 									>
 										<MyDatePicker
 											showTime={{ showHour: true, showMinute: true }}
 											format='HH:mm DD/MM/YYYY'
 											disabled={isView}
-											disabledDate={(current) =>
-												!!(
-													dayjs(current).isBefore(dayjs().startOf('day')) ||
-													(startDate && dayjs(current).isBefore(startDate))
-												)
-											}
 											placeholder={intl.formatMessage({ id: 'activity.info.form.endDate.place' })}
 											allowClear
+											{...buildDisabledDateTime({
+												min: startDate ? dayjs(startDate) : dayjs(),
+											})}
 											onChange={(val) => form.setFieldValue('dueDate', dayjs(val).add(10, 'day'))}
 										/>
 									</Form.Item>
@@ -489,19 +492,21 @@ const FormActivity = (props: { getData?: () => void }) => {
 						<Form.Item
 							name='dueDateRegistration'
 							label={intl.formatMessage({ id: 'activity.info.form.dueDateRegistration' })}
-							rules={[...rules.required]}
+							rules={[
+								...rules.required,
+								...rules.truocThoiDiem(dayjs(endDate), intl.formatMessage({ id: 'activity.info.form.endDate' })),
+							]}
 						>
 							<MyDatePicker
 								showTime={{ showHour: true, showMinute: true }}
 								format='HH:mm DD/MM/YYYY'
 								disabled={isView}
-								disabledDate={(current) => {
-									if (!current || !endDate) return false;
-
-									return dayjs(current).isAfter(dayjs(endDate).endOf('day'));
-								}}
 								placeholder={intl.formatMessage({ id: 'activity.info.form.dueDateRegistration.place' })}
 								allowClear
+								{...buildDisabledDateTime({
+									min: undefined,
+									max: endDate ? dayjs(endDate) : undefined,
+								})}
 							/>
 						</Form.Item>
 					) : (
@@ -543,21 +548,18 @@ const FormActivity = (props: { getData?: () => void }) => {
 											label={intl.formatMessage({ id: 'activity.info.form.duedate' })}
 											rules={[
 												...rules.required,
-												...rules.sauNgay(dayjs(endDate), intl.formatMessage({ id: 'activity.info.form.endDate' })),
+												...rules.sauThoiDiem(dayjs(endDate), intl.formatMessage({ id: 'activity.info.form.endDate' })),
 											]}
 										>
 											<MyDatePicker
 												showTime={{ showHour: true, showMinute: true }}
 												format='HH:mm DD/MM/YYYY'
 												disabled={isView}
-												disabledDate={(current) =>
-													!!(
-														dayjs(current).isBefore(dayjs().startOf('day')) ||
-														(endDate && dayjs(current).isBefore(endDate))
-													)
-												}
 												placeholder={intl.formatMessage({ id: 'activity.info.form.duedate.place' })}
 												allowClear
+												{...buildDisabledDateTime({
+													min: endDate ? dayjs(endDate) : undefined,
+												})}
 											/>
 										</Form.Item>
 									)}
@@ -671,8 +673,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 													hideSelectAll: true,
 												},
 											}}
-											otherButtons={[<i className='text-info'>An activity allows a maximum of 3 competencies</i>]}
-										/>{' '}
+											otherButtons={[
+												<i className='text-info'>
+													{intl.formatMessage({ id: 'activity.info.form.competency.infor' })}
+												</i>,
+											]}
+										/>
 									</Form.Item>
 								</Col>
 

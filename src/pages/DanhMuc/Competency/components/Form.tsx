@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
 const FormCompetency = (props: any) => {
+	const { getData } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
@@ -27,7 +28,7 @@ const FormCompetency = (props: any) => {
 			putModel(
 				record?._id ?? '',
 				values,
-				undefined,
+				getData,
 				undefined,
 				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
@@ -39,7 +40,7 @@ const FormCompetency = (props: any) => {
 				...values,
 			};
 
-			postModel(payload as any, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+			postModel(payload as any, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 		}
@@ -61,7 +62,7 @@ const FormCompetency = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'competency.form.id' })}
-							rules={[...rules.required, ...rules.length(10)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'competency.form.id.place' })} />
 						</Form.Item>
@@ -70,7 +71,7 @@ const FormCompetency = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'competency.form.name' })}
-							rules={[...rules.required, ...rules.length(80)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(80)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'competency.form.name.place' })} />
 						</Form.Item>
@@ -120,7 +121,7 @@ const FormCompetency = (props: any) => {
 								<>
 									{fields.map((field) => (
 										<Form.Item key={field.key} required={false}>
-											<Form.Item {...field} rules={[...rules.required]} noStyle>
+											<Form.Item {...field} rules={[...rules.required, ...rules.text]} noStyle>
 												<Input
 													placeholder={intl.formatMessage({ id: 'competency.form.typical.value' })}
 													style={{ width: '95%' }}

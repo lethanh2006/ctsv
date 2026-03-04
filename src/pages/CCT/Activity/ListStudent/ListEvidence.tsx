@@ -38,39 +38,45 @@ const ListEvidenceActivity = () => {
 
 	const columns: IColumn<ActivityOutCome.IRecord>[] = [
 		{
-			title: 'Student Code',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.student.code' }),
 			dataIndex: 'code',
 			width: 120,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Student Name',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.student.name' }),
 			dataIndex: 'name',
 			width: 150,
 			filterType: 'string',
 			onCell,
 		},
 		{
-			title: 'Role',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.role' }),
 			dataIndex: 'rolesId',
 			width: 180,
-			render: (val, rec) => rec?.roles?.name ?? <i className='text-warning'>No info</i>,
+			render: (val, rec) =>
+				rec?.roles?.name ?? (
+					<i className='text-warning'>{intl.formatMessage({ id: 'activity.chitiet.tab3.no.info' })}</i>
+				),
 			filterType: 'customselect',
 			filterCustomSelect: <SelectRolesManagement multiple />,
 			onCell,
 		},
 		{
-			title: 'Level',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.level' }),
 			dataIndex: 'levelsId',
 			width: 120,
-			render: (val, rec) => rec?.levels?.name ?? <i className='text-warning'>No info</i>,
+			render: (val, rec) =>
+				rec?.levels?.name ?? (
+					<i className='text-warning'>{intl.formatMessage({ id: 'activity.chitiet.tab3.no.info' })}</i>
+				),
 			filterType: 'customselect',
 			filterCustomSelect: <SelectLevelsManagement multiple />,
 			onCell,
 		},
 		{
-			title: 'Track',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.track' }),
 			width: 120,
 			render: (val, rec) =>
 				rec?.activityCategory === EActivityCategory.REGISTERED
@@ -79,7 +85,7 @@ const ListEvidenceActivity = () => {
 			onCell,
 		},
 		{
-			title: 'Attribute',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.attribute' }),
 			width: 160,
 			render: (val, rec) => {
 				const attriRe = rec?.activities?.coCurricularActivityEquivalency?.filter(
@@ -108,7 +114,7 @@ const ListEvidenceActivity = () => {
 			onCell,
 		},
 		{
-			title: 'Competency',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.competency' }),
 			width: 220,
 			render: (val, rec) => (
 				<ExpandText>
@@ -124,7 +130,7 @@ const ListEvidenceActivity = () => {
 			onCell,
 		},
 		{
-			title: 'Submission Time',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.submission.time' }),
 			dataIndex: 'submittedAt',
 			align: 'center',
 			width: 120,
@@ -133,7 +139,7 @@ const ListEvidenceActivity = () => {
 			onCell,
 		},
 		{
-			title: 'Evidence Review Time',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.evidence.review.time' }),
 			dataIndex: 'approvalTime',
 			align: 'center',
 			width: 120,
@@ -142,17 +148,21 @@ const ListEvidenceActivity = () => {
 			onCell,
 		},
 		{
-			title: 'Impact',
+			title: intl.formatMessage({ id: 'activity.chitiet.tab3.impact' }),
 			dataIndex: 'validation',
 			align: 'center',
 			width: 100,
 			render: (val, rec) =>
-				rec?.workflow === EApprovalStatus.APPROVED && <Tag color={mapEvalidation[val as Evalidation]}>{val}</Tag>,
+				rec?.workflow === EApprovalStatus.APPROVED && (
+					<Tag color={mapEvalidation[val as Evalidation]}>
+						{intl.formatMessage({ id: `activity.chitiet.tab3.validation.${val?.toLowerCase()}` })}
+					</Tag>
+				),
 			fixed: 'right',
 			filterType: 'select',
 			filterData: Object.values(Evalidation).map((item) => ({
 				value: item,
-				label: item,
+				label: intl.formatMessage({ id: `activity.chitiet.tab3.validation.${item.toLowerCase()}` }),
 			})),
 			onCell,
 		},
@@ -192,7 +202,7 @@ const ListEvidenceActivity = () => {
 								fontWeight: 600,
 							}}
 						>
-							Expired
+							{intl.formatMessage({ id: 'activity.chitiet.tab3.expired' })}
 						</Tag>
 					);
 				}
@@ -208,7 +218,7 @@ const ListEvidenceActivity = () => {
 							fontWeight: 600,
 						}}
 					>
-						{mapNameApprovalStatus[val as EApprovalStatus]}
+						{intl.formatMessage({ id: mapNameApprovalStatus[val as EApprovalStatus] })}
 					</Tag>
 				);
 			},
@@ -216,7 +226,7 @@ const ListEvidenceActivity = () => {
 			filterType: 'select',
 			filterData: Object.values(EApprovalStatus).map((item) => ({
 				value: item,
-				label: mapNameApprovalStatus[item as EApprovalStatus],
+				label: intl.formatMessage({ id: mapNameApprovalStatus[item as EApprovalStatus] }),
 			})),
 			onCell,
 		},

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
 /**
- * Secect Căn cứ pháp lý để cho vào FormItem
+ * Select Căn cứ pháp lý để cho vào FormItem
  */
 const SelectActivitiesManagement = (props: {
 	value?: string;

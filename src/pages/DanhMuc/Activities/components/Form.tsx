@@ -10,6 +10,7 @@ import FormItemAttributesCCA from '../Attributes/FormItem';
 import AttributesCCAModel from '../AttributesModel';
 
 const FormActivities = (props: any) => {
+	const { getData } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
@@ -36,7 +37,7 @@ const FormActivities = (props: any) => {
 			putModel(
 				record?._id ?? '',
 				values,
-				undefined,
+				getData,
 				undefined,
 				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
@@ -49,7 +50,7 @@ const FormActivities = (props: any) => {
 				activitiesTypeAttributesList: normalizeCompetencyAttributesForCreate(values.activitiesTypeAttributesList),
 			};
 
-			postModel(payload as any, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+			postModel(payload as any, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 		}
@@ -71,7 +72,7 @@ const FormActivities = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.id' })}
-							rules={[...rules.required, ...rules.length(10)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.id.place' })} />
 						</Form.Item>
@@ -80,7 +81,7 @@ const FormActivities = (props: any) => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'activitiesmanagement.form.name' })}
-							rules={[...rules.required, ...rules.length(80)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(80)]}
 						>
 							<Input
 								disabled={isView}
@@ -164,7 +165,7 @@ const FormActivities = (props: any) => {
 								<>
 									{fields.map((field) => (
 										<Form.Item key={field.key} required={false}>
-											<Form.Item {...field} rules={[...rules.required]} noStyle>
+											<Form.Item {...field} rules={[...rules.required, ...rules.text]} noStyle>
 												<Input
 													placeholder={intl.formatMessage({ id: 'activitiesmanagement.form.evidence.value' })}
 													style={{ width: '95%' }}

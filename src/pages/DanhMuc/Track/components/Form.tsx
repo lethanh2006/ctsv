@@ -4,7 +4,8 @@ import { Button, Card, Col, Form, Input, InputNumber, Row, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 
-const FormTrack = () => {
+const FormTrack = (props: any) => {
+	const { getData } = props;
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
@@ -26,7 +27,7 @@ const FormTrack = () => {
 			putModel(
 				record?._id ?? '',
 				values,
-				undefined,
+				getData,
 				undefined,
 				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
@@ -34,7 +35,7 @@ const FormTrack = () => {
 				.then()
 				.catch((er) => console.log(er));
 		} else
-			postModel(values, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+			postModel(values, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then(() => form.resetFields())
 				.catch((er) => console.log(er));
 	};
@@ -55,7 +56,7 @@ const FormTrack = () => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'track.form.code' })}
-							rules={[...rules.required, ...rules.length(10)]}
+							// rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'track.form.code.place' })} />
 						</Form.Item>
@@ -64,7 +65,7 @@ const FormTrack = () => {
 						<Form.Item
 							name='name'
 							label={intl.formatMessage({ id: 'track.form.name' })}
-							rules={[...rules.required, ...rules.length(80)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(80)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'track.form.name.place' })} />
 						</Form.Item>
