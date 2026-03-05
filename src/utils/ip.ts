@@ -9,7 +9,8 @@ const ip3 = ipRoot + 'slink'; // ip dev
 // Ip khác
 const ipNotif = ipRoot + 'notification'; // ip dev
 const ipDaoTao = ipRoot + 'qldt';
-const ipNhanSu = ipRoot + 'tcns';
+// const ipNhanSu = ipRoot + 'tcns';
+const ipNhanSu = 'https://apigw-vinuni.ript.vn/tcns';
 const ipCore = ipRoot + 'core';
 const ipTaiChinh = ipRoot + 'tai-chinh-api-v2';
 const ipSlink = ipRoot + 'slink'; // ip dev
