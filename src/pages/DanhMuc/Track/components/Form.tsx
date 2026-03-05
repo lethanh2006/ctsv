@@ -56,7 +56,7 @@ const FormTrack = (props: any) => {
 						<Form.Item
 							name='code'
 							label={intl.formatMessage({ id: 'track.form.code' })}
-							// rules={[...rules.required, ...rules.text, ...rules.length(10)]}
+							rules={[...rules.required, ...rules.text, ...rules.length(10)]}
 						>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'track.form.code.place' })} />
 						</Form.Item>
