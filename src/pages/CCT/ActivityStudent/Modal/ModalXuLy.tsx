@@ -25,8 +25,10 @@ const ModalXuLyActivityStudent = (props: { title: string; trangThai: EApprovalSt
 				validation: record?.validation ?? Evalidation?.VERIFIED,
 				dueDate:
 					record?.activityCategory === EActivityCategory.REGISTERED
-						? dayjs(record?.dueDate ?? record?.activities?.dueDate)
-						: dayjs(record?.dueDate),
+						? dayjs(record?.dueDate || record?.activities?.dueDate || null)
+						: record?.dueDate
+							? dayjs(record?.dueDate)
+							: null,
 			});
 		}
 	}, [record?._id, visibleXuLy]);
