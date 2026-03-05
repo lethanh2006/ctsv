@@ -3,6 +3,7 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { EOperatorType } from '@/components/Table/constant';
 import { type IColumn } from '@/components/Table/typing';
+import useCheckAccess from '@/hooks/useCheckAccess';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
@@ -22,6 +23,8 @@ const ActivityPage = () => {
 		useModel('cct.activity');
 	const { getAnalyticsActivityModel } = useModel('cct.activity');
 	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
+	const { initialState } = useModel('@@initialState');
+	const phanQuyenSuKien = useCheckAccess('ctsv|chuyen-vien-don-vi');
 
 	useEffect(() => {
 		getAllAtributes(undefined, { order: 1 }, { isActive: true });
@@ -78,7 +81,11 @@ const ActivityPage = () => {
 
 	const getData = () => {
 		getModel(
-			undefined,
+			phanQuyenSuKien
+				? {
+						activityCreatorSsoId: initialState?.currentUser?.ssoId,
+					}
+				: undefined,
 			undefined,
 			currentWorkflow === 'total' || currentWorkflow === 'ongoing'
 				? {

@@ -1,6 +1,7 @@
 import StatisticsCard from '@/components/StatisticsCard';
 import { StatisticsItem } from '@/components/StatisticsCard/typing';
 import { EOperatorType } from '@/components/Table/constant';
+import useCheckAccess from '@/hooks/useCheckAccess';
 import dayjs from '@/utils/dayjs';
 import { inputFormat } from '@/utils/utils';
 import { useEffect } from 'react';
@@ -10,9 +11,17 @@ const StatActivity = (props: { currentWorkflow: 'total' | 'upcoming' | 'ongoing'
 	const { currentWorkflow } = props;
 	const intl = useIntl();
 	const { loadingThongKe, dataThongKe, getAnalyticsActivityModel, filters, setFilters } = useModel('cct.activity');
+	const { initialState } = useModel('@@initialState');
+	const phanQuyenSuKien = useCheckAccess('ctsv|chuyen-vien-don-vi');
 
 	useEffect(() => {
-		getAnalyticsActivityModel();
+		getAnalyticsActivityModel(
+			phanQuyenSuKien
+				? {
+						activityCreatorSsoId: initialState?.currentUser?.ssoId,
+					}
+				: undefined,
+		);
 	}, []);
 
 	const filterTrangThai = (workflow: 'total' | 'upcoming' | 'ongoing' | 'completed') => {

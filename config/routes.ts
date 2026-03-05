@@ -703,6 +703,8 @@
 		name: 'DanhMuc',
 		path: '/danh-muc',
 		icon: 'copy',
+		access: 'hideAccessFilter',
+		maChucNang: 'ctsv|chuyen-vien-don-vi',
 		routes: [
 			// {
 			// 	name: 'KhenThuong',

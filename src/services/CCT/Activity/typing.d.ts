@@ -11,6 +11,7 @@ declare module Activity {
 		backgroundImage: string;
 		organizer?: string;
 		codeOrganizer?: string;
+		activityCreatorSsoId?: string;
 
 		onCampus: boolean;
 		facilityCode: string;

@@ -25,8 +25,10 @@ const ModalChinhSuaTrangThai = (props: { getData?: () => void }) => {
 				workflow: record?.workflow ?? EApprovalStatus.DRAFT,
 				dueDate:
 					record?.activityCategory === EActivityCategory.REGISTERED
-						? dayjs(record?.dueDate ?? record?.activities?.dueDate)
-						: dayjs(record?.dueDate),
+						? dayjs(record?.dueDate || record?.activities?.dueDate || null)
+						: record?.dueDate
+							? dayjs(record?.dueDate)
+							: null,
 			});
 		}
 	}, [record?._id, visibleChangeStatus]);

@@ -32,6 +32,7 @@ export default function access(initialState: IInitialState) {
 		// guest: (token && ((vaiTro && vaiTro === 'Guest') || !vaiTro)) || false,
 		accessFilter: (route: any) => scopes?.includes(route?.maChucNang) || false,
 		manyAccessFilter: (route: any) => route?.listChucNang?.some((role: string) => scopes?.includes(role)) || false,
+		hideAccessFilter: (route: any) => !scopes?.includes(route?.maChucNang),
 
 		/** Lớp tín chỉ đi theo học kỳ */
 		lopTinChiHocKyAccessFilter: () => tenTruongVietTatTiengAnh !== 'VWA',
