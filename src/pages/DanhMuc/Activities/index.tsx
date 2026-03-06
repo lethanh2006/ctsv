@@ -11,21 +11,14 @@ import FormActivities from './components/Form';
 
 const ActivitiesPage = () => {
 	const intl = useIntl();
-	const { getModel, page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } =
-		useModel('danhmuc.activities');
-
-	const getData = () => {
-		getModel(undefined, undefined, {
-			order: 1,
-		});
-	};
+	const { page, limit, deleteModel, handleEdit, putModel, formSubmiting, handleView } = useModel('danhmuc.activities');
 
 	const onChecked = (rec: ActivitiesManagement.IRecord, isActive: boolean) => {
 		if (rec._id)
 			putModel(
 				rec._id,
 				{ isActive },
-				getData,
+				undefined,
 				undefined,
 				undefined,
 				isActive
@@ -137,7 +130,7 @@ const ActivitiesPage = () => {
 
 					<Popconfirm
 						onConfirm={() =>
-							deleteModel(rec._id, getData, {
+							deleteModel(rec._id, undefined, {
 								messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
 							})
 						}
@@ -158,13 +151,11 @@ const ActivitiesPage = () => {
 
 	return (
 		<TableBase
-			getData={getData}
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='danhmuc.activities'
 			title={intl.formatMessage({ id: 'activitiesmanagement.title' })}
 			Form={FormActivities}
-			formProps={{ getData }}
 			buttons={{ import: true, export: true }}
 			widthDrawer={800}
 		/>

@@ -308,7 +308,6 @@ const HistoryActivityPage = () => {
 			align: 'center',
 			width: 120,
 			render: (val, rec) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
-			sortable: true,
 			onCell,
 		},
 		{
@@ -344,7 +343,6 @@ const HistoryActivityPage = () => {
 			align: 'center',
 			width: 120,
 			render: (val, rec) => val && dayjs(val).format('HH:mm DD/MM/YYYY'),
-			sortable: true,
 			hide: pending,
 			onCell,
 		},
@@ -425,10 +423,12 @@ const HistoryActivityPage = () => {
 			},
 			fixed: 'right',
 			filterType: !pending && !processed ? 'select' : undefined,
-			filterData: Object.values(EApprovalStatus).map((item) => ({
-				value: item,
-				label: mapNameApprovalStatus[item as EApprovalStatus],
-			})),
+			filterData: Object.values(EApprovalStatus)
+				.filter((item) => ![EApprovalStatus.EVIDENCE_REQUIRED, EApprovalStatus.DRAFT].includes(item))
+				.map((item) => ({
+					value: item,
+					label: mapNameApprovalStatus[item as EApprovalStatus],
+				})),
 			onCell,
 		},
 		{
@@ -576,7 +576,7 @@ const HistoryActivityPage = () => {
 								disabled={loadingThongke}
 								onChange={(val) => {
 									setSegmentSelected(val);
-									setFilters((prev) => prev.filter((f) => !isActivitiesNameFilter(f)));
+									setFilters((prev) => prev?.filter((f) => !isActivitiesNameFilter(f)));
 								}}
 							/>,
 						]}
@@ -589,6 +589,7 @@ const HistoryActivityPage = () => {
 					getData();
 					getThongKe();
 				}}
+				setTrangThai={setTrangThai}
 			/>
 
 			<ModalXuLyActivityStudent

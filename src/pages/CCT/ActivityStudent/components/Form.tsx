@@ -3,24 +3,15 @@ import { ActivityOutCome } from '@/services/CCT/ActivityOutcome/typing';
 import { EActivityCategory, EApprovalStatus } from '@/services/CCT/constant';
 import dayjs from '@/utils/dayjs';
 import { Button } from 'antd';
-import { useState } from 'react';
 import { useIntl, useModel } from 'umi';
 import CardChiTietSuKien from '../../Activity/ChiTiet';
-import ModalChinhSuaImpact from '../Modal/ModalImpact';
-import ModalChinhSuaTrangThai from '../Modal/ModalTrangThai';
-import ModalXuLyActivityStudent from '../Modal/ModalXuLy';
 import ChiTietActivityOutCome from './ChiTiet';
 
 const FormActivityStudent = (props: any) => {
-	const { getData, isActivity } = props;
+	const { isActivity, setTrangThai } = props;
 	const intl = useIntl();
 	const { record, setVisibleForm, visibleForm, setVisibleXuLy, setVisibleChangeStatus, setVisibleImpact } =
 		useModel('cct.activityoutcome');
-
-	const [trangThai, setTrangThai] = useState<{
-		title: string;
-		trangThai: EApprovalStatus;
-	}>();
 
 	const now = dayjs();
 	const endDateUpdateEvidence =
@@ -154,29 +145,6 @@ const FormActivityStudent = (props: any) => {
 					</>
 				)}
 			</div>
-
-			<ModalXuLyActivityStudent
-				title={trangThai?.title ?? ''}
-				trangThai={trangThai?.trangThai ?? EApprovalStatus.DRAFT}
-				getData={() => {
-					getData();
-					setVisibleForm(false);
-				}}
-			/>
-
-			<ModalChinhSuaImpact
-				getData={() => {
-					getData();
-					setVisibleForm(false);
-				}}
-			/>
-
-			<ModalChinhSuaTrangThai
-				getData={() => {
-					getData();
-					setVisibleForm(false);
-				}}
-			/>
 		</ModalExpandable>
 	);
 };

@@ -176,7 +176,6 @@ const ActivityPage = () => {
 				[dayjs(rec?.startDate).format('HH:mm DD/MM/YYYY'), dayjs(rec?.endDate).format('HH:mm DD/MM/YYYY')]
 					.filter(Boolean)
 					.join(' - '),
-			sortable: true,
 			onCell,
 		},
 		{

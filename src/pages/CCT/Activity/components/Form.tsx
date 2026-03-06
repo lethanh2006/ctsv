@@ -73,13 +73,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 	const allowDueDateRegistration: boolean = Form.useWatch('allowDueDateRegistration', form);
 
 	useEffect(() => {
-		if (!visibleForm)
+		if (!visibleForm) {
 			resetFieldsForm(form, {
 				studentDeclarationApproverList: null,
 				coCurricularActivityEquivalency: null,
 			});
-
-		if (record?._id)
+		} else if (record?._id) {
 			form.setFieldsValue({
 				...record,
 				cct: record?.activitiesTypeId ?? false,
@@ -90,6 +89,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 				allowDueDateRegistration: record.dueDateRegistration ? true : false,
 				activitiesTypeId: record?.activitiesTypeId,
 			});
+		}
 
 		if (!record?._id) {
 			form.setFieldsValue({
@@ -113,10 +113,12 @@ const FormActivity = (props: { getData?: () => void }) => {
 				allowDueDateRegistration: false,
 			});
 		}
+	}, [record?._id, visibleForm]);
 
+	useEffect(() => {
 		getAllAttriCompetency(undefined, { order: 1 }, { isActive: true });
 		getAllLevel(undefined, { order: 1 }, { autoApproval: true, isActive: true });
-	}, [record?._id, visibleForm]);
+	}, []);
 
 	const onFinish = async (values: Activity.IRecord) => {
 		setFormSubmiting(true);
@@ -493,6 +495,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 							label={intl.formatMessage({ id: 'activity.info.form.dueDateRegistration' })}
 							rules={[
 								...rules.required,
+								...rules.sauThoiDiem(dayjs(), 'Past'),
 								...rules.truocThoiDiem(dayjs(endDate), intl.formatMessage({ id: 'activity.info.form.endDate' })),
 							]}
 						>
@@ -503,7 +506,7 @@ const FormActivity = (props: { getData?: () => void }) => {
 								placeholder={intl.formatMessage({ id: 'activity.info.form.dueDateRegistration.place' })}
 								allowClear
 								{...buildDisabledDateTime({
-									min: undefined,
+									min: dayjs(),
 									max: endDate ? dayjs(endDate) : undefined,
 								})}
 							/>

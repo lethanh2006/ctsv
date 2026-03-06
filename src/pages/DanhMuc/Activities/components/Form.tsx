@@ -9,8 +9,7 @@ import SelectTrack from '../../Track/components/Select';
 import FormItemAttributesCCA from '../Attributes/FormItem';
 import AttributesCCAModel from '../AttributesModel';
 
-const FormActivities = (props: any) => {
-	const { getData } = props;
+const FormActivities = () => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { record, setVisibleForm, edit, isView, postModel, putModel, formSubmiting, visibleForm } =
@@ -37,7 +36,7 @@ const FormActivities = (props: any) => {
 			putModel(
 				record?._id ?? '',
 				values,
-				getData,
+				undefined,
 				undefined,
 				undefined,
 				intl.formatMessage({ id: 'global.message.luuthanhcong' }),
@@ -50,7 +49,7 @@ const FormActivities = (props: any) => {
 				activitiesTypeAttributesList: normalizeCompetencyAttributesForCreate(values.activitiesTypeAttributesList),
 			};
 
-			postModel(payload as any, getData, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
+			postModel(payload as any, undefined, undefined, intl.formatMessage({ id: 'global.message.themmoithanhcong' }))
 				.then()
 				.catch((er) => console.log(er));
 		}
