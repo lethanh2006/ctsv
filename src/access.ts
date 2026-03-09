@@ -7,9 +7,10 @@ import type { IInitialState } from './services/base/typing';
  * */
 export default function access(initialState: IInitialState) {
 	// const scopes = initialState.authorizedPermissions?.find((item) => item.rsname === currentRole)?.scopes;
-	const scopes = initialState.authorizedPermissions?.map((item) => item.scopes).flat();
-	const roles = initialState?.currentUser?.realm_access?.roles?.map((item) => item);
+	const scopes = initialState?.authorizedPermissions?.map((item) => item.scopes).flat();
+	const roles = initialState?.currentUser?.realm_access?.roles?.map((item) => item) || [];
 	// const vaiTro = initialState?.currentUser?.systemRole;
+	const isNoRole = !roles || roles.length === 0;
 
 	return {
 		// canBoQLKH: token && vaiTro && vaiTro === 'can_bo_qlkh',
@@ -33,10 +34,22 @@ export default function access(initialState: IInitialState) {
 		// guest: (token && ((vaiTro && vaiTro === 'Guest') || !vaiTro)) || false,
 		accessFilter: (route: any) => scopes?.includes(route?.maChucNang) || false,
 		manyAccessFilter: (route: any) => route?.listChucNang?.some((role: string) => scopes?.includes(role)) || false,
-		hideManyAccessFilterRole: (route: any) =>
-			!route?.listChucNang?.some((role: string) => roles?.includes(role)) || false,
-		hideAccessFilterRole: (route: any) => !roles?.includes(route?.maChucNang),
-		accessFilterRole: (route: any) => roles?.includes(route?.maChucNang),
+		accessFilterRole: (route: any) => {
+			if (isNoRole) return true;
+			return roles.includes(route?.maChucNang);
+		},
+		manyAccessFilterRole: (route: any) => {
+			if (isNoRole) return true;
+			return route?.listChucNang?.some((role: string) => roles.includes(role));
+		},
+		hideManyAccessFilterRole: (route: any) => {
+			if (isNoRole) return false;
+			return !route?.listChucNang?.some((role: string) => roles.includes(role));
+		},
+		hideAccessFilterRole: (route: any) => {
+			if (isNoRole) return false;
+			return !roles.includes(route?.maChucNang);
+		},
 
 		/** Lớp tín chỉ đi theo học kỳ */
 		lopTinChiHocKyAccessFilter: () => tenTruongVietTatTiengAnh !== 'VWA',

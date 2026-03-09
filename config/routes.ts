@@ -178,8 +178,8 @@
 		icon: 'AppstoreOutlined',
 		path: '/activity-management',
 		component: 'CCT/Activity',
-		access: 'hideAccessFilterRole',
-		maChucNang: 'CHUYEN_VIEN_CTSV_XET_DUYET',
+		access: 'manyAccessFilterRole',
+		listChucNang: ['CHUYEN_VIEN_CTSV_DON_VI'],
 	},
 
 	{
@@ -187,8 +187,8 @@
 		icon: 'TrophyOutlined',
 		path: '/activity-results-approval',
 		component: 'CCT/ActivityStudent',
-		access: 'accessFilterRole',
-		maChucNang: 'CHUYEN_VIEN_CTSV_XET_DUYET',
+		access: 'manyAccessFilterRole',
+		listChucNang: ['CHUYEN_VIEN_CTSV_DON_VI', 'CHUYEN_VIEN_CTSV_XET_DUYET'],
 	},
 
 	// {
