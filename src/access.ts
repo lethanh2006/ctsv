@@ -8,6 +8,7 @@ import type { IInitialState } from './services/base/typing';
 export default function access(initialState: IInitialState) {
 	// const scopes = initialState.authorizedPermissions?.find((item) => item.rsname === currentRole)?.scopes;
 	const scopes = initialState.authorizedPermissions?.map((item) => item.scopes).flat();
+	const roles = initialState?.currentUser?.realm_access?.roles?.map((item) => item);
 	// const vaiTro = initialState?.currentUser?.systemRole;
 
 	return {
@@ -32,7 +33,10 @@ export default function access(initialState: IInitialState) {
 		// guest: (token && ((vaiTro && vaiTro === 'Guest') || !vaiTro)) || false,
 		accessFilter: (route: any) => scopes?.includes(route?.maChucNang) || false,
 		manyAccessFilter: (route: any) => route?.listChucNang?.some((role: string) => scopes?.includes(role)) || false,
-		hideAccessFilter: (route: any) => !scopes?.includes(route?.maChucNang),
+		hideManyAccessFilterRole: (route: any) =>
+			!route?.listChucNang?.some((role: string) => roles?.includes(role)) || false,
+		hideAccessFilterRole: (route: any) => !roles?.includes(route?.maChucNang),
+		accessFilterRole: (route: any) => roles?.includes(route?.maChucNang),
 
 		/** Lớp tín chỉ đi theo học kỳ */
 		lopTinChiHocKyAccessFilter: () => tenTruongVietTatTiengAnh !== 'VWA',

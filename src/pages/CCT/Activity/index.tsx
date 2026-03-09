@@ -3,7 +3,6 @@ import TableBase from '@/components/Table';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import { EOperatorType } from '@/components/Table/constant';
 import { type IColumn } from '@/components/Table/typing';
-import useCheckAccess from '@/hooks/useCheckAccess';
 import SelectActivitiesManagement from '@/pages/DanhMuc/Activities/components/Select';
 import SelectDonVi from '@/pages/ToChucNhanSu/DonVi/Select';
 import { Activity } from '@/services/CCT/Activity/typing';
@@ -24,7 +23,9 @@ const ActivityPage = () => {
 	const { getAnalyticsActivityModel } = useModel('cct.activity');
 	const { getAllModel: getAllAtributes } = useModel('danhmuc.attributes');
 	const { initialState } = useModel('@@initialState');
-	const phanQuyenSuKien = useCheckAccess('ctsv|chuyen-vien-don-vi');
+	const phanQuyenSuKien = initialState?.currentUser?.realm_access?.roles?.find(
+		(item) => item === 'CHUYEN_VIEN_CTSV_DON_VI',
+	);
 
 	useEffect(() => {
 		getAllAtributes(undefined, { order: 1 }, { isActive: true });
@@ -100,6 +101,16 @@ const ActivityPage = () => {
 								endDate: -1,
 							}
 						: undefined,
+		);
+	};
+
+	const getThongKe = () => {
+		getAnalyticsActivityModel(
+			phanQuyenSuKien
+				? {
+						activityCreatorSsoId: initialState?.currentUser?.ssoId,
+					}
+				: undefined,
 		);
 	};
 
@@ -235,7 +246,7 @@ const ActivityPage = () => {
 									rec._id,
 									() => {
 										getData();
-										getAnalyticsActivityModel();
+										getThongKe();
 									},
 									{
 										messageText: intl.formatMessage({ id: 'global.message.xoathanhcong' }),
@@ -289,13 +300,13 @@ const ActivityPage = () => {
 					formProps={{
 						getData: () => {
 							getData();
-							getAnalyticsActivityModel();
+							getThongKe();
 						},
 					}}
 					widthDrawer={1000}
 					onReload={() => {
 						getData();
-						getAnalyticsActivityModel();
+						getThongKe();
 					}}
 					hideCard
 				/>

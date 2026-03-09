@@ -10,5 +10,5 @@ export async function postManyEquivalency(
 }
 
 export async function getAnalyticsActivity(condition?: any) {
-	return axios.get(`${ipCCT}/activities/analytics`, { params: condition });
+	return axios.get(`${ipCCT}/activities/analytics`, { params: { condition: condition } });
 }
