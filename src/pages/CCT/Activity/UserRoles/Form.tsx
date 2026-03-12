@@ -14,7 +14,7 @@ const FormUserRoles = (props: {
 	const intl = useIntl();
 	const [form] = Form.useForm();
 	const { onOk, participantRole: participantRoleExtra } = props;
-	const { setVisibleForm, visibleForm, edit } = useModel('cct.userroles');
+	const { setVisibleForm, visibleForm } = useModel('cct.userroles');
 
 	const participantRole: EparticipantRole = Form.useWatch('participantRole', form);
 

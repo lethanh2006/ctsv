@@ -232,7 +232,14 @@ const CardChiTietSuKien = (props: {
 									</div>
 									<List
 										size='small'
-										dataSource={record?.activityOutcome?.evidenceFile ?? []}
+										dataSource={
+											record?.activityOutcome?.evidenceFile?.flatMap((item: any) =>
+												item.file.map((url: string) => ({
+													name: item.name,
+													url,
+												})),
+											) ?? []
+										}
 										locale={{
 											emptyText: (
 												<Empty
@@ -244,7 +251,7 @@ const CardChiTietSuKien = (props: {
 										renderItem={(item: any) => (
 											<List.Item>
 												<Typography.Link
-													href={item.file}
+													href={item.url}
 													target='_blank'
 													rel='noopener noreferrer'
 													style={{ display: 'flex', alignItems: 'center', gap: 8 }}

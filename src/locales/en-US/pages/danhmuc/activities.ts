@@ -39,6 +39,7 @@ export default {
 
 	'activitiesmanagement.student.column.hoten': 'Full Name',
 	'activitiesmanagement.student.column.hoten.select': 'Select Staff/Lecturers (Search By Name)',
+	'activitiesmanagement.student.column.hotensinhvien.select': 'Select student (Search by name or ID)',
 	'activitiesmanagement.student.column.hoten.loading': 'Searching...',
 	'activitiesmanagement.student.column.hoten.description': 'No data found, please try another keyword!',
 	'activitiesmanagement.student.column.email': 'Email',

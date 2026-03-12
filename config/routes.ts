@@ -178,8 +178,7 @@
 		icon: 'AppstoreOutlined',
 		path: '/activity-management',
 		component: 'CCT/Activity',
-		access: 'manyAccessFilterRole',
-		listChucNang: ['CHUYEN_VIEN_CTSV_DON_VI'],
+		access: 'activityAccess',
 	},
 
 	{
@@ -187,8 +186,7 @@
 		icon: 'TrophyOutlined',
 		path: '/activity-results-approval',
 		component: 'CCT/ActivityStudent',
-		access: 'manyAccessFilterRole',
-		listChucNang: ['CHUYEN_VIEN_CTSV_DON_VI', 'CHUYEN_VIEN_CTSV_XET_DUYET'],
+		access: 'activityResultsAccess',
 	},
 
 	// {
@@ -705,8 +703,7 @@
 		name: 'DanhMuc',
 		path: '/danh-muc',
 		icon: 'copy',
-		access: 'hideManyAccessFilterRole',
-		listChucNang: ['CHUYEN_VIEN_CTSV_DON_VI', 'CHUYEN_VIEN_CTSV_XET_DUYET'],
+		access: 'danhMucAccess',
 		routes: [
 			// {
 			// 	name: 'KhenThuong',
