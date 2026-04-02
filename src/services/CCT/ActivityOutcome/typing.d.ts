@@ -55,6 +55,14 @@ declare module ActivityOutCome {
 
 		createdAt: Date;
 		updatedAt: Date;
+
+		//Award
+		isAwardRecognition: boolean;
+		competition: string;
+		dateOfAchievement: Date;
+		scope: EScopeAward;
+		rank: string;
+		link: string;
 	}
 
 	export interface IAnalyticsStaff {

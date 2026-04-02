@@ -154,13 +154,13 @@ const ActivityPage = () => {
 			filterCustomSelect: <SelectActivitiesManagement multiple />,
 			onCell,
 		},
-		{
-			title: intl.formatMessage({ id: 'activity.column.track' }),
-			width: 130,
-			render: (val, rec) => rec?.activitiesType?.trackText,
-			filterType: 'customselect',
-			onCell,
-		},
+		// {
+		// 	title: intl.formatMessage({ id: 'activity.column.track' }),
+		// 	width: 130,
+		// 	render: (val, rec) => rec?.activitiesType?.trackText,
+		// 	filterType: 'customselect',
+		// 	onCell,
+		// },
 		{
 			title: intl.formatMessage({ id: 'activity.column.regis' }),
 			dataIndex: 'numberOfRegisteredActivityOutcomes',
