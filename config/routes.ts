@@ -840,6 +840,35 @@
 				path: 'student-approver',
 				// access: 'cctFilter',
 			},
+			{
+				name: 'Ký túc xá',
+				path: 'ky-tuc-xa',
+				routes: [
+					{
+						name: 'Đợt đăng ký',
+						path: 'dot-dang-ky',
+						component: 'KyTucXa/DotDangKy',
+					},
+					{
+						name: 'Rule đăng ký phòng',
+						path: 'rule-dang-ky',
+						component: 'KyTucXa/RuleDangKy',
+					},
+					{
+						name: 'Cấu hình khoản thu',
+						path: 'cau-hinh-khoan-thu',
+						component: 'KyTucXa/CauHinhKhoanThu',
+					},
+					{
+						name: 'Phòng',
+						path: 'phong',
+						component: 'KyTucXa/Phong',
+					},
+
+					
+					
+				],
+			},
 
 			// {
 			// 	name: 'Questions',

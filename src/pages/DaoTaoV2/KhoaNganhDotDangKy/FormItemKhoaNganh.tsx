@@ -5,16 +5,18 @@ import { Col, Form, Row } from 'antd';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
-import SelectTrinhDo from '../DanhMucHeThong/CoSo/TrinhDo/components/Select';
 import SelectHinhThuc from '../DanhMucHeThong/CoSo/HinhThuc/components/Select';
-import SelectKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/Select';
+import SelectTrinhDo from '../DanhMucHeThong/CoSo/TrinhDo/components/Select';
 import SelectNganhCoSo from '../DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/Select';
 
 /** Form Item chọn khóa ngành theo Trình độ, hình thức, khóa, ngành */
 const FormItemKhoaNganh = (props: {
 	value?: string[] | null;
 	onChange?: (val: string[] | null) => void;
 	khoaNganhCondition?: Partial<KhoaNganh.IRecord>;
+	showTrinhDo?: boolean;
+	showHinhThuc?: boolean;
 }) => {
 	const { record: recTrinhDo, setRecord: setTrinhDo, danhSach: danhSachTrinhDo } = useModel('daotaov2.danhmuc.trinhdo');
 	const {
@@ -27,7 +29,9 @@ const FormItemKhoaNganh = (props: {
 	const { getAllModel, danhSach, loading, setDanhSach } = useModel('daotaov2.namhoc.khoanganh');
 	const [maKhoaList, setMaKhoaList] = useState<string[] | undefined>();
 	const [maNganhList, setMaNganhList] = useState<string[] | undefined>();
-	const { value, onChange, khoaNganhCondition } = props;
+	const { value, onChange, khoaNganhCondition, showTrinhDo = true, showHinhThuc = true } = props;
+	const soCotBoLoc = showTrinhDo && showHinhThuc ? 6 : 12;
+
 
 	useEffect(() => {
 		if (!maKhoaList?.length && !maNganhList?.length) {
@@ -106,28 +110,32 @@ const FormItemKhoaNganh = (props: {
 
 	return (
 		<Row gutter={[12, 0]}>
-			<Col span={24} md={6}>
-				<Form.Item label='Trình độ'>
-					<SelectTrinhDo
-						// allowClear
-						value={recTrinhDo?.ma}
-						onChange={(val) => onChangeTrinhDo(val as string)}
-						selectMa
-						hasDefault
-					/>
-				</Form.Item>
-			</Col>
-			<Col span={24} md={6}>
-				<Form.Item label='Hình thức'>
-					<SelectHinhThuc
-						// allowClear
-						value={recHinhThuc?.ma}
-						onChange={(val) => onChangeHinhThuc(val as string)}
-						selectMa
-						hasDefault
-					/>
-				</Form.Item>
-			</Col>
+			{showTrinhDo ? (
+				<Col span={24} md={soCotBoLoc}>
+					<Form.Item label='Trình độ'>
+						<SelectTrinhDo
+							// allowClear
+							value={recTrinhDo?.ma}
+							onChange={(val) => onChangeTrinhDo(val as string)}
+							selectMa
+							hasDefault
+						/>
+					</Form.Item>
+				</Col>
+			) : null}
+			{showHinhThuc ? (
+				<Col span={24} md={soCotBoLoc}>
+					<Form.Item label='Hình thức'>
+						<SelectHinhThuc
+							// allowClear
+							value={recHinhThuc?.ma}
+							onChange={(val) => onChangeHinhThuc(val as string)}
+							selectMa
+							hasDefault
+						/>
+					</Form.Item>
+				</Col>
+			) : null}
 			<Col span={24} md={6}>
 				<Form.Item label='Khóa sinh viên'>
 					<SelectKhoaSinhVien

@@ -1,0 +1,93 @@
+import TableBase from '@/components/Table';
+import { type IColumn } from '@/components/Table/typing';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
+import { Button, Popconfirm, Tooltip } from 'antd';
+import dayjs from 'dayjs';
+import Form from './components/Form';
+import type { KyTucXa } from '@/services/KyTucXa/typing.d';
+
+const DotDangKyKTXPage = () => {
+	const { handleEdit, deleteModel, getModel } = useModel('kytucxa.dotdangky');
+
+	const columns: IColumn<KyTucXa.IDotDangKy>[] = [
+		{
+			title: 'Tên đợt',
+			dataIndex: 'tenDot',
+			width: 220,
+			filterType: 'string',
+			sortable: true,
+		},
+		{
+			title: 'Học kỳ',
+			dataIndex: 'maHocKy',
+			width: 120,
+			filterType: 'string',
+		},
+		{
+			title: 'Bắt đầu',
+			dataIndex: 'thoiGianBatDau',
+			width: 150,
+			align: 'center',
+			filterType: 'datetime',
+			sortable: true,
+			render: (value) => (value ? dayjs(value).format('HH:mm DD/MM/YYYY') : '--'),
+		},
+		{
+			title: 'Kết thúc',
+			dataIndex: 'thoiGianKetThuc',
+			width: 150,
+			align: 'center',
+			filterType: 'datetime',
+			sortable: true,
+			render: (value) => (value ? dayjs(value).format('HH:mm DD/MM/YYYY') : '--'),
+		},
+		{
+			title: 'Khóa ngành áp dụng',
+			dataIndex: 'maKhoaNganh',
+			width: 220,
+			render: (value) => (Array.isArray(value) && value.length ? value.join(', ') : '--'),
+		},
+		{
+			title: 'Ghi chú',
+			dataIndex: 'ghiChu',
+			width: 220,
+			filterType: 'string',
+			render: (value) => value || '--',
+		},
+		{
+			title: 'Thao tác',
+			width: 100,
+			align: 'center',
+			fixed: 'right',
+			render: (_value, record) => (
+				<>
+					<Tooltip title='Chỉnh sửa'>
+						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+					</Tooltip>
+					<Tooltip title='Xóa'>
+						<Popconfirm
+							onConfirm={() => deleteModel(record._id, getModel)}
+							title='Bạn có chắc chắn muốn xóa đợt đăng ký này?'
+							placement='topLeft'
+						>
+							<Button danger type='link' icon={<DeleteOutlined />} />
+						</Popconfirm>
+					</Tooltip>
+				</>
+			),
+		},
+	];
+
+	return (
+		<TableBase 
+			columns={columns} 
+			modelName='kytucxa.dotdangky' 
+			title='Đợt đăng ký' 
+			Form={Form} 
+			widthDrawer={900} 
+		/>
+	);
+};
+
+export default DotDangKyKTXPage;
