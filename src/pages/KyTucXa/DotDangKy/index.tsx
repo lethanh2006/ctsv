@@ -10,7 +10,7 @@ import type { KyTucXa } from '@/services/KyTucXa/typing.d';
 const DotDangKyKTXPage = () => {
 	const { handleEdit, deleteModel, getModel } = useModel('kytucxa.dotdangky');
 
-	const columns: IColumn<KyTucXa.IDotDangKy>[] = [
+	const columns: IColumn<KyTucXa.IDotDangKyKTX>[] = [
 		{
 			title: 'Tên đợt',
 			dataIndex: 'tenDot',

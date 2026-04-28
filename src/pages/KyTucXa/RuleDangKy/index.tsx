@@ -10,7 +10,7 @@ import Form from './components/Form';
 const RuleDangKyPhongKTXPage = () => {
 	const { getModel, page, limit, deleteModel, handleEdit, putModel } = useModel('kytucxa.dangkythuerule');
 
-	const columns: IColumn<KyTucXa.IDangKyThueRule>[] = [
+	const columns: IColumn<KyTucXa.IRuleDangKyThueKTX>[] = [
 		{
 			title: 'STT',
 			dataIndex: 'stt',

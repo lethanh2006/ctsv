@@ -26,8 +26,8 @@ const FormDotDangKyKTX = () => {
 		}
 	}, [record?._id, visibleForm]);
 
-	const onFinish = async (values: KyTucXa.IDotDangKy) => {
-		const payload: Partial<KyTucXa.IDotDangKy> = {
+	const onFinish = async (values: KyTucXa.IDotDangKyKTX) => {
+		const payload: Partial<KyTucXa.IDotDangKyKTX> = {
 			...values,
 			maKhoaNganh: values?.maKhoaNganh ?? [],
 		};

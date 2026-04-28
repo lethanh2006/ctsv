@@ -36,6 +36,7 @@ const CauHinhKhoanThuKTXPage = () => {
             width: 120,
             align: 'center',
             sortable: true,
+            render: (val: number) => val?.toLocaleString('vi-VN'),
         },
         {
             title: 'Đơn vị tiền',

@@ -3,7 +3,7 @@ import type { KyTucXa } from '@/services/KyTucXa/typing';
 import { ipTaiChinh } from '@/utils/ip';
 
 export default () => {
-    const objInit = useInitModel<KyTucXa.IMucThu>('muc-thu', undefined, undefined, ipTaiChinh);
+    const objInit = useInitModel<KyTucXa.IMucThuKTX>('muc-thu', undefined, undefined, ipTaiChinh);
 
     const getAllModel: typeof objInit.getAllModel = async (
         isSetRecord,

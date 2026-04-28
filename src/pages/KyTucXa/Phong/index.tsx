@@ -15,7 +15,7 @@ const PhongKTXPage = () => {
 		getAllKhoanThu();
 	}, []);
 
-	const columns: IColumn<KyTucXa.IPhongKyTucXa>[] = [
+	const columns: IColumn<KyTucXa.IPhongKTX>[] = [
 		{
 			title: 'Mã phòng',
 			dataIndex: 'ma',

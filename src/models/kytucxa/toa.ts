@@ -3,7 +3,7 @@ import type { KyTucXa } from '@/services/KyTucXa/typing';
 import { ipCsvc } from '@/utils/ip';
 
 export default () => {
-	const objInit = useInitModel<KyTucXa.IToaNhaKyTucXa>('toa-nha/ktx', undefined, undefined, ipCsvc);
+	const objInit = useInitModel<KyTucXa.IToaKTX>('toa-nha/ktx', undefined, undefined, ipCsvc);
 
 	const getModel: typeof objInit.getModel = async (
 		paramCondition,

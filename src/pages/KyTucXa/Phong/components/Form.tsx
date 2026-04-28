@@ -24,7 +24,7 @@ const FormPhongKTX = () => {
 
 	const isView = false;
 
-	const onFinish = async (values: KyTucXa.IPhongKyTucXa) => {
+	const onFinish = async (values: KyTucXa.IPhongKTX) => {
 		try {
 			const danhSachAnh = await buildUpLoadMultiFile(values, 'danhSachAnh');
 			const finalValues = { ...values, danhSachAnh: danhSachAnh ?? [] };

@@ -1,14 +1,14 @@
 import type { ETrangThaiDotDangKyKTX, ETrangThaiPhong, ETrangThaiSinhVienKTX, EGioiTinh, ELoaiKhoanThu, ERuleType } from './constant';
 
 declare module KyTucXa {
-	export interface IToaNhaKyTucXa {
+	export interface IToaKTX {
 		_id: string;
 		ma: string;
 		ten: string;
 		diaChi: string;
 	}
 
-	export interface IPhongKyTucXa {
+	export interface IPhongKTX {
 		_id: string;
 		ma: string;
 		ten?: string;
@@ -51,14 +51,14 @@ declare module KyTucXa {
 		donViTinh: string;
 	}
 
-	export interface IMucThu {
+	export interface IMucThuKTX {
 		_id: string;
 		ma: string;
 		name: string;
 		unitAmount: number;
 	}
 
-	export interface IDangKyThueRule {
+	export interface IRuleDangKyThueKTX {
 		_id: string;
 		ma: string;
 		ten: string;
@@ -68,17 +68,17 @@ declare module KyTucXa {
 		maPhong?: string;
 		isActive: boolean;
 		noiDungLyDo?: string;
-		giaTri: IDangKyThueRuleGiaTri;
+		giaTri: IRuleDangKyThueGiaTri;
 	}
 
-	export type IDangKyThueRuleGiaTri =
+	export type IRuleDangKyThueGiaTri =
 		| { gioiTinh: EGioiTinh }
 		| { maxPerKhoa: number }
 		| { minAge: number }
 		| { maxAge: number }
 		| Record<string, never>;
 
-	export interface IDotDangKy {
+	export interface IDotDangKyKTX {
         _id: string;
         tenDot: string;
         maHocKy: string;
