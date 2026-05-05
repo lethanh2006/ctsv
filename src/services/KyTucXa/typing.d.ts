@@ -23,6 +23,11 @@ declare module KyTucXa {
 		moTa?: string;
 		danhSachAnh?: string[];
 		maToaNha?: string;
+
+		gioiTinh?: EGioiTinh | string;
+		maxPerKhoa?: number;
+		minAge?: number;
+		maxAge?: number;
 	}
 
 	export interface IKhoanThuKTX {
@@ -58,25 +63,25 @@ declare module KyTucXa {
 		unitAmount: number;
 	}
 
-	export interface IRuleDangKyThueKTX {
-		_id: string;
-		ma: string;
-		ten: string;
-		loai: ERuleType;
-		stt?: number;
-		maToaNha?: string;
-		maPhong?: string;
-		isActive: boolean;
-		noiDungLyDo?: string;
-		giaTri: IRuleDangKyThueGiaTri;
-	}
+	// export interface IRuleDangKyThueKTX {
+	// 	_id: string;
+	// 	ma: string;
+	// 	ten: string;
+	// 	loai: ERuleType;
+	// 	stt?: number;
+	// 	maToaNha?: string;
+	// 	maPhong?: string;
+	// 	isActive: boolean;
+	// 	noiDungLyDo?: string;
+	// 	giaTri: IRuleDangKyThueGiaTri;
+	// }
 
-	export type IRuleDangKyThueGiaTri =
-		| { gioiTinh: EGioiTinh }
-		| { maxPerKhoa: number }
-		| { minAge: number }
-		| { maxAge: number }
-		| Record<string, never>;
+	// export type IRuleDangKyThueGiaTri =
+	// 	| { gioiTinh: EGioiTinh }
+	// 	| { maxPerKhoa: number }
+	// 	| { minAge: number }
+	// 	| { maxAge: number }
+	// 	| Record<string, never>;
 
 	export interface IDotDangKyKTX {
         _id: string;

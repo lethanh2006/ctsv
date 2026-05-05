@@ -1,13 +1,14 @@
 import type { KyTucXa } from '@/services/KyTucXa/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Row } from 'antd';
+import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import UploadFile from '@/components/Upload/UploadFile';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import SelectKhoanThu from './SelectKhoanThu';
+import { EGioiTinh } from '@/services/KyTucXa/constant';
 
 const FormPhongKTX = () => {
 	const intl = useIntl();
@@ -51,6 +52,39 @@ const FormPhongKTX = () => {
 							</div>
 						</Col>
 					)}
+					<Col xs={24}>
+						<div className='fw500' style={{ marginBottom: 8, marginTop: 12 }}>
+							Quy định đăng ký
+						</div>
+					</Col>
+					<Col xs={24} md={12}>
+						<Form.Item name='gioiTinh' label='Giới tính cho phép'>
+							<Select
+								disabled={isView}
+								placeholder='Chọn giới tính'
+								options={[
+									{ value: EGioiTinh.NAM, label: 'Nam' },
+									{ value: EGioiTinh.NU, label: 'Nữ' },
+								]}
+								allowClear
+							/>
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={12}>
+						<Form.Item name='maxPerKhoa' label='Số SV tối đa mỗi khoa'>
+							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder='Ví dụ: 2' />
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={12}>
+						<Form.Item name='minAge' label='Tuổi tối thiểu'>
+							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder='Ví dụ: 18' />
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={12}>
+						<Form.Item name='maxAge' label='Tuổi tối đa'>
+							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder='Ví dụ: 30' />
+						</Form.Item>
+					</Col>
 					<Col xs={24} md={12}>
 						<Form.Item name='soLuongToiDa' label='Số lượng tối đa' rules={[...rules.required]}>
 							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder='Nhập số lượng tối đa' />
@@ -72,14 +106,14 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<div className='fw500' style={{ marginBottom: 8 }}>
+						<div className='fw500' style={{ marginBottom: 8, marginTop: 12 }}>
 							Danh sách tiện ích
 						</div>
 						<Form.List name='danhSachTienIch'>
 							{(fields, { add, remove }, { errors }) => (
 								<>
 									{fields.map((field, index) => (
-										<Row gutter={[12, 0]} key={field.key} style={{ marginBottom: 12 }}>
+										<Row gutter={[12, 0]} key={field.key}>
 											<Col xs={24} md={10}>
 												<Form.Item
 													label='Tên tiện ích'

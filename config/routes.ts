@@ -849,11 +849,11 @@
 						path: 'dot-dang-ky',
 						component: 'KyTucXa/DotDangKy',
 					},
-					{
-						name: 'Rule đăng ký phòng',
-						path: 'rule-dang-ky',
-						component: 'KyTucXa/RuleDangKy',
-					},
+					// {
+					// 	name: 'Rule đăng ký phòng',
+					// 	path: 'rule-dang-ky',
+					// 	component: 'KyTucXa/RuleDangKy',
+					// },
 					{
 						name: 'Cấu hình khoản thu',
 						path: 'cau-hinh-khoan-thu',
