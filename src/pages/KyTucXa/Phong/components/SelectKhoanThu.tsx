@@ -30,8 +30,8 @@ const SelectKhoanThu = (props: {
 			value={value}
 			onChange={onChange}
 			options={danhSach.map((item) => ({
-				key: item._id,
-				value: item._id,
+				key: item.maMucThu,
+				value: item.maMucThu,
 				label: `${item.ten} - ${item.unitAmount?.toLocaleString('vi-VN')} ${item.currency}`,
 			}))}
 			showSearch

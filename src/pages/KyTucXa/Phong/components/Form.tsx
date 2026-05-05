@@ -17,11 +17,10 @@ const FormPhongKTX = () => {
 		useModel('kytucxa.phong');
 
 	useEffect(() => {
-		if (visibleForm) {
-			if (record?._id) form.setFieldsValue(record);
-			else resetFieldsForm(form);
-		}
-	}, [record?._id, visibleForm]);
+		if (!visibleForm) return;
+		if (record?._id) form.setFieldsValue(record);
+		else resetFieldsForm(form);
+	}, [record, visibleForm]);
 
 	const isView = false;
 
@@ -39,7 +38,7 @@ const FormPhongKTX = () => {
 			console.log(er);
 		}
 	};
-	
+
 	return (
 		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} cấu hình phòng`}>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
@@ -58,7 +57,7 @@ const FormPhongKTX = () => {
 						</div>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='gioiTinh' label='Giới tính cho phép'>
+						<Form.Item name={['dangKyKyTucXaRule', 'gioiTinh']} label='Giới tính cho phép'>
 							<Select
 								disabled={isView}
 								placeholder='Chọn giới tính'
@@ -71,17 +70,17 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='maxPerKhoa' label='Số SV tối đa mỗi khoa'>
+						<Form.Item name={['dangKyKyTucXaRule', 'maxPerKhoa']} label='Số SV tối đa mỗi khoa'>
 							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder='Ví dụ: 2' />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='minAge' label='Tuổi tối thiểu'>
+						<Form.Item name={['dangKyKyTucXaRule', 'minAge']} label='Tuổi tối thiểu'>
 							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder='Ví dụ: 18' />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='maxAge' label='Tuổi tối đa'>
+						<Form.Item name={['dangKyKyTucXaRule', 'maxAge']} label='Tuổi tối đa'>
 							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder='Ví dụ: 30' />
 						</Form.Item>
 					</Col>

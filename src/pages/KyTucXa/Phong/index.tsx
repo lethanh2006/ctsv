@@ -1,19 +1,18 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import type { KyTucXa } from '@/services/KyTucXa/typing';
-import { DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Tooltip, message, Upload } from 'antd';
+import { EditOutlined, ExportOutlined, ImportOutlined } from '@ant-design/icons';
+import { Button, Tooltip, message, Upload } from 'antd';
 import { useModel } from 'umi';
 import { useEffect, useState } from 'react';
 import Form from './components/Form';
 import ButtonExtend from '@/components/Table/ButtonExtend';
 import axios from '@/utils/axios';
 import { ipCsvc } from '@/utils/ip';
-import fileDownload from 'js-file-download';
 import * as XLSX from 'xlsx';
 
 const PhongKTXPage = () => {
-	const { getModel, page, limit, deleteModel, handleEdit } = useModel('kytucxa.phong');
+	const { getModel, page, limit, handleEdit } = useModel('kytucxa.phong');
 	const { danhSach: danhSachKhoanThu, getAllModel: getAllKhoanThu } = useModel('kytucxa.khoanthu');
 	const [exporting, setExporting] = useState(false);
 
@@ -24,11 +23,44 @@ const PhongKTXPage = () => {
 	const handleExport = async () => {
 		setExporting(true);
 		try {
-			const res = await axios.get(`${ipCsvc}/phong/ktx/export`, {
-				responseType: 'blob',
+			const allData = await getModel(undefined, undefined, undefined, 1, 10000);
+			
+			const exportData = allData.map((row: any) => {
+				const baseRow: any = {
+					'Mã phòng': row.ma,
+					'Tên phòng': row.ten,
+					'Tòa nhà': row.maToaNha,
+					'Sức chứa': row.soLuongToiDa,
+					'Đang ở': row.soLuongHienTai,
+					'Cách bố trí': row.cachBoTri,
+					'Mô tả': row.moTa,
+					'Mã khoản thu phòng': row.maKhoanThuPhong,
+					'Mã khoản thu cọc': row.maKhoanThuCoc,
+					'Cho thuê': row.isChoThue ? 'Có' : 'Không',
+					'Giới tính': row?.dangKyKyTucXaRule?.gioiTinh || '',
+					'Số lượng tối đa mỗi khoa': row?.dangKyKyTucXaRule?.maxPerKhoa || '',
+					'Độ tuổi tối thiểu': row?.dangKyKyTucXaRule?.minAge || '',
+					'Độ tuổi tối đa': row?.dangKyKyTucXaRule?.maxAge || '',
+				};
+
+				if (row.danhSachTienIch && Array.isArray(row.danhSachTienIch)) {
+					row.danhSachTienIch.forEach((tienIch: any, idx: number) => {
+						baseRow[`Tiện ích ${idx + 1}`] = tienIch.ten;
+						baseRow[`Mô tả tiện ích ${idx + 1}`] = tienIch.moTa || '';
+					});
+				}
+
+				return baseRow;
 			});
-			fileDownload(res.data, 'Danh sách phòng.xlsx');
+
+			const ws = XLSX.utils.json_to_sheet(exportData);
+			const wb = XLSX.utils.book_new();
+			XLSX.utils.book_append_sheet(wb, ws, 'DanhSachPhong');
+			XLSX.writeFile(wb, 'Danh sách phòng KTX.xlsx');
+			
+			message.success('Xuất dữ liệu thành công');
 		} catch (error) {
+			console.error(error);
 			message.error('Lỗi khi xuất dữ liệu');
 		} finally {
 			setExporting(false);
@@ -156,15 +188,6 @@ const PhongKTXPage = () => {
 				<>
 					<Tooltip title='Chỉnh sửa'>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
-					</Tooltip>
-					<Tooltip title='Xóa'>
-						<Popconfirm
-							onConfirm={() => deleteModel(record._id, getModel)}
-							title='Bạn có chắc chắn muốn xóa phòng ký túc xá này?'
-							placement='topRight'
-						>
-							<Button danger type='link' icon={<DeleteOutlined />} />
-						</Popconfirm>
 					</Tooltip>
 				</>
 			),
