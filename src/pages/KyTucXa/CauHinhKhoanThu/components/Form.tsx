@@ -121,7 +121,7 @@ const FormKhoanThuKTX = () => {
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='maMucThu' label='Mức thu' rules={[...rules.required]}>
+                        <Form.Item name='maMucThu' label='Mục thu' rules={[...rules.required]}>
                             <SelectMucThu />
                         </Form.Item>
                     </Col>

@@ -1,6 +1,6 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
-import type { KyTucXa } from '@/services/KyTucXa/typing';
+import { KyTucXa } from '@/services/KyTucXa/typing';
 import { EditOutlined, ExportOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Tooltip, message, Upload } from 'antd';
 import { useModel } from 'umi';
@@ -12,14 +12,16 @@ import { ipCsvc } from '@/utils/ip';
 import * as XLSX from 'xlsx';
 
 const PhongKTXPage = () => {
+	const { danhSach: danhSachToaNha, getAllModel: getAllToaNha } = useModel('kytucxa.toa');
 	const { getModel, page, limit, handleEdit } = useModel('kytucxa.phong');
 	const { danhSach: danhSachKhoanThu, getAllModel: getAllKhoanThu } = useModel('kytucxa.khoanthu');
 	const [exporting, setExporting] = useState(false);
 
 	useEffect(() => {
+		getAllToaNha();
 		getAllKhoanThu();
 	}, []);
-
+	
 	const handleExport = async () => {
 		setExporting(true);
 		try {
@@ -29,7 +31,7 @@ const PhongKTXPage = () => {
 				const baseRow: any = {
 					'Mã phòng': row.ma,
 					'Tên phòng': row.ten,
-					'Tòa nhà': row.maToaNha,
+					'Mã tòa nhà': row.maToaNha,
 					'Sức chứa': row.soLuongToiDa,
 					'Đang ở': row.soLuongHienTai,
 					'Cách bố trí': row.cachBoTri,
@@ -148,6 +150,7 @@ const PhongKTXPage = () => {
 			title: 'Tòa nhà',
 			dataIndex: 'maToaNha',
 			width: 120,
+			render: (val) => danhSachToaNha?.find((item: KyTucXa.IToaKTX) => item?.ma === val)?.ten || '-',
 		},
 		{
 			title: 'Sức chứa',
@@ -162,22 +165,16 @@ const PhongKTXPage = () => {
 			width: 100,
 		},
 		{
-			title: 'Giới tính',
-			dataIndex: 'maGioiTinh',
-			align: 'center',
-			width: 100,
-		},
-		{
 			title: 'Tên khoản thu phòng',
 			dataIndex: 'maKhoanThuPhong',
 			width: 130,
-			render: (val) => danhSachKhoanThu?.find((item: any) => item?._id === val)?.ten || val,
+			render: (val) => danhSachKhoanThu?.find((item: KyTucXa.IKhoanThuKTX) => item?.maMucThu === val)?.ten || '-',
 		},
 		{
 			title: 'Tên khoản thu cọc',
 			dataIndex: 'maKhoanThuCoc',
 			width: 130,
-			render: (val) => danhSachKhoanThu?.find((item: any) => item?._id === val)?.ten || val,
+			render: (val) => danhSachKhoanThu?.find((item: KyTucXa.IKhoanThuKTX) => item?.maMucThu === val)?.ten || '-',
 		},
 		{
 			title: 'Thao tác',

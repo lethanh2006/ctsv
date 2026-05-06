@@ -13,21 +13,28 @@ import { EGioiTinh } from '@/services/KyTucXa/constant';
 const FormPhongKTX = () => {
 	const intl = useIntl();
 	const [form] = Form.useForm();
+	const { danhSach: danhSachToaNha, getAllModel: getAllToaNha } = useModel('kytucxa.toa');
 	const { record, setVisibleForm, edit, postModel, putModel, formSubmiting, visibleForm } =
 		useModel('kytucxa.phong');
 
 	useEffect(() => {
+		getAllToaNha();
 		if (!visibleForm) return;
 		if (record?._id) form.setFieldsValue(record);
 		else resetFieldsForm(form);
-	}, [record, visibleForm]);
+	}, [record?._id, visibleForm]);
 
 	const isView = false;
 
 	const onFinish = async (values: KyTucXa.IPhongKTX) => {
 		try {
 			const danhSachAnh = await buildUpLoadMultiFile(values, 'danhSachAnh');
-			const finalValues = { ...values, danhSachAnh: danhSachAnh ?? [] };
+			const { dangKyKyTucXaRule, ...restValues } = values as any;
+			const finalValues = { 
+				...restValues, 
+				...(dangKyKyTucXaRule || {}),
+				danhSachAnh: danhSachAnh ?? [] 
+			};
 
 			if (edit) {
 				await putModel(record?.ma ?? record?._id ?? '', finalValues);
@@ -46,8 +53,8 @@ const FormPhongKTX = () => {
 					{edit && (
 						<Col xs={24}>
 							<div style={{ marginBottom: 12, padding: '8px 12px', background: '#f5f5f5', borderRadius: 6 }}>
-								<span style={{ fontWeight: 500 }}>Phòng: </span>{record?.ma}{record?.ten ? ` — ${record.ten}` : ''}
-								{record?.maToaNha && <span style={{ marginLeft: 16 }}><span style={{ fontWeight: 500 }}>Tòa: </span>{record.maToaNha}</span>}
+								<span style={{ fontWeight: 500 }}>Phòng: </span>{record?.ten}
+								{record?.maToaNha && <span style={{ marginLeft: 16 }}><span style={{ fontWeight: 500 }}>Tòa: </span>{danhSachToaNha?.find((item: KyTucXa.IToaKTX) => item?.ma === record?.maToaNha)?.ten || '-'}</span>}
 							</div>
 						</Col>
 					)}

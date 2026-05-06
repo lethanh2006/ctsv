@@ -23,17 +23,21 @@ declare module KyTucXa {
 		moTa?: string;
 		danhSachAnh?: string[];
 		maToaNha?: string;
-		dangKyKyTucXaRule?: IRuleDangKy;
-	}
-
-	export interface IRuleDangKy {
-		_id?: string;
-		phongId?: string;
+		// dangKyKyTucXaRule?: IRuleDangKy;
 		gioiTinh?: EGioiTinh | string;
 		maxPerKhoa?: number;
 		minAge?: number;
 		maxAge?: number;
 	}
+
+	// export interface IRuleDangKy {
+	// 	_id?: string;
+	// 	phongId?: string;
+	// 	gioiTinh?: EGioiTinh | string;
+	// 	maxPerKhoa?: number;
+	// 	minAge?: number;
+	// 	maxAge?: number;
+	// }
 
 	export interface IKhoanThuKTX {
 		_id: string;
