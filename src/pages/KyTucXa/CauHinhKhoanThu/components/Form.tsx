@@ -135,6 +135,7 @@ const FormKhoanThuKTX = () => {
                                 style={{ width: '100%' }} 
                                 formatter={formatCurrency} 
                                 parser={parseCurrency} 
+                                disabled
                             />
                         </Form.Item>
                     </Col>

@@ -5,7 +5,7 @@ import { useModel } from 'umi';
 /**
  * Select Khoản thu để cho vào FormItem
  */
-const SelectKhoanThu = (props: {
+const SelectKhoanThuKTX = (props: {
 	value?: string;
 	onChange?: (id: string) => void;
 	multiple?: boolean;
@@ -44,4 +44,4 @@ const SelectKhoanThu = (props: {
 	);
 };
 
-export default SelectKhoanThu;
+export default SelectKhoanThuKTX;

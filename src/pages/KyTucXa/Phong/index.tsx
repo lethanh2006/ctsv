@@ -15,11 +15,13 @@ const PhongKTXPage = () => {
 	const { danhSach: danhSachToaNha, getAllModel: getAllToaNha } = useModel('kytucxa.toa');
 	const { getModel, page, limit, handleEdit } = useModel('kytucxa.phong');
 	const { danhSach: danhSachKhoanThu, getAllModel: getAllKhoanThu } = useModel('kytucxa.khoanthu');
+	const { danhSach: danhSachTienIchAll, getAllModel: getAllTienIch } = useModel('kytucxa.tienich');
 	const [exporting, setExporting] = useState(false);
 
 	useEffect(() => {
 		getAllToaNha();
 		getAllKhoanThu();
+		getAllTienIch();
 	}, []);
 	
 	const handleExport = async () => {
@@ -47,8 +49,8 @@ const PhongKTXPage = () => {
 
 				if (row.danhSachTienIch && Array.isArray(row.danhSachTienIch)) {
 					row.danhSachTienIch.forEach((tienIch: any, idx: number) => {
-						baseRow[`Tiện ích ${idx + 1}`] = tienIch.ten;
-						baseRow[`Mô tả tiện ích ${idx + 1}`] = tienIch.moTa || '';
+						const fullTienIch = danhSachTienIchAll?.find((item: any) => item.ma === tienIch.maDanhMucTienIch);
+						baseRow[`Tiện ích ${idx + 1}`] = fullTienIch?.ten || '';
 					});
 				}
 
@@ -196,7 +198,7 @@ const PhongKTXPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='kytucxa.phong'
-			title="Phòng"
+			title="Cấu hình phòng"
 			Form={Form}
 			rowSelection
 			deleteMany

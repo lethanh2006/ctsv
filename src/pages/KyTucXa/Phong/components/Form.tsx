@@ -2,13 +2,14 @@ import type { KyTucXa } from '@/services/KyTucXa/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import UploadFile from '@/components/Upload/UploadFile';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import UploadFile from '@/pages/KyTucXa/Phong/components/UploadFile';
 import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import SelectKhoanThu from './SelectKhoanThu';
 import { EGioiTinh } from '@/services/KyTucXa/constant';
+import SelectTienIch from './SelectTienIch';
 
 const FormPhongKTX = () => {
 	const intl = useIntl();
@@ -20,8 +21,17 @@ const FormPhongKTX = () => {
 	useEffect(() => {
 		getAllToaNha();
 		if (!visibleForm) return;
-		if (record?._id) form.setFieldsValue(record);
-		else resetFieldsForm(form);
+		if (record?._id) {
+			const maDanhMucTienIch = record.danhSachTienIch?.map((item: any) => item.maDanhMucTienIch) || [];
+			form.setFieldsValue({
+				...record,
+				danhSachTienIch: {
+					maDanhMucTienIch,
+				},
+			});
+		} else {
+			resetFieldsForm(form);
+		}
 	}, [record?._id, visibleForm]);
 
 	const isView = false;
@@ -29,10 +39,19 @@ const FormPhongKTX = () => {
 	const onFinish = async (values: KyTucXa.IPhongKTX) => {
 		try {
 			const danhSachAnh = await buildUpLoadMultiFile(values, 'danhSachAnh');
-			const { dangKyKyTucXaRule, ...restValues } = values as any;
+			const { dangKyKyTucXaRule, danhSachTienIch, ...restValues } = values as any;
+			
+			const maDanhMucList = danhSachTienIch?.maDanhMucTienIch || [];
+			const formattedTienIch = Array.isArray(maDanhMucList)
+				? maDanhMucList.map((id: string) => ({
+					maDanhMucTienIch: id,
+				}))
+				: [];
+
 			const finalValues = { 
 				...restValues, 
 				...(dangKyKyTucXaRule || {}),
+				danhSachTienIch: formattedTienIch,
 				danhSachAnh: danhSachAnh ?? [] 
 			};
 
@@ -59,6 +78,20 @@ const FormPhongKTX = () => {
 						</Col>
 					)}
 					<Col xs={24}>
+						<Form.Item 
+							name='danhSachAnh' 
+							label='Ảnh phòng'
+							extra={
+								<div style={{ marginTop: 8, color: '#fa8c16', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+									<InfoCircleOutlined style={{ fontSize: '14px', color: '#fa8c16' }} />
+									<span>Ảnh đầu tiên tải lên sẽ là <b>Ảnh đại diện</b> hiển thị tổng quan phòng.</span>
+								</div>
+							}
+						>
+							<UploadFile maxCount={10} accept='image/*' disabled={isView} otherProps={{ listType: 'picture-card' }} />
+						</Form.Item>
+					</Col>
+					<Col xs={24}>
 						<div className='fw500' style={{ marginBottom: 8, marginTop: 12 }}>
 							Quy định đăng ký
 						</div>
@@ -82,16 +115,6 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name={['dangKyKyTucXaRule', 'minAge']} label='Tuổi tối thiểu'>
-							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder='Ví dụ: 18' />
-						</Form.Item>
-					</Col>
-					<Col xs={24} md={12}>
-						<Form.Item name={['dangKyKyTucXaRule', 'maxAge']} label='Tuổi tối đa'>
-							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder='Ví dụ: 30' />
-						</Form.Item>
-					</Col>
-					<Col xs={24} md={12}>
 						<Form.Item name='soLuongToiDa' label='Số lượng tối đa' rules={[...rules.required]}>
 							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder='Nhập số lượng tối đa' />
 						</Form.Item>
@@ -112,71 +135,13 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<div className='fw500' style={{ marginBottom: 8, marginTop: 12 }}>
-							Danh sách tiện ích
-						</div>
-						<Form.List name='danhSachTienIch'>
-							{(fields, { add, remove }, { errors }) => (
-								<>
-									{fields.map((field, index) => (
-										<Row gutter={[12, 0]} key={field.key}>
-											<Col xs={24} md={10}>
-												<Form.Item
-													label='Tên tiện ích'
-													name={[index, 'ten']}
-													rules={[...rules.required]}
-													style={{ marginBottom: 0 }}
-												>
-													<Input disabled={isView} placeholder='Tên tiện ích (ví dụ: Điều hòa)' />
-												</Form.Item>
-											</Col>
-											<Col xs={24} md={10}>
-												<Form.Item
-													label='Mô tả'
-													name={[index, 'moTa']}
-													style={{ marginBottom: 0 }}
-												>
-													<Input disabled={isView} placeholder='Mô tả (ví dụ: 1 máy)' />
-												</Form.Item>
-											</Col>
-											<Col xs={24} md={4}>
-												<Button
-													disabled={isView}
-													danger
-													type='link'
-													title='Xóa tiện ích'
-													icon={<DeleteOutlined />}
-													onClick={() => remove(field.name)}
-													style={{ marginTop: 30 }}
-												/>
-											</Col>
-										</Row>
-									))}
-									<Form.ErrorList errors={errors} />
-									{!isView && (
-										<Button
-											disabled={isView}
-											onClick={() => add({ ten: '', moTa: '' })}
-											icon={<PlusOutlined />}
-											size='small'
-											type='default'
-											style={{ marginBottom: 8 }}
-										>
-											Thêm tiện ích
-										</Button>
-									)}
-								</>
-							)}
-						</Form.List>
+						<Form.Item name={['danhSachTienIch', 'maDanhMucTienIch']} label='Danh sách tiện ích'>
+							<SelectTienIch multiple={true} />
+						</Form.Item>
 					</Col>
 					<Col xs={24}>
 						<Form.Item name='moTa' label='Mô tả phòng'>
 							<Input.TextArea rows={3} disabled={isView} placeholder='Nhập mô tả phòng' />
-						</Form.Item>
-					</Col>
-					<Col xs={24}>
-						<Form.Item name='danhSachAnh' label='Ảnh phòng'>
-							<UploadFile maxCount={10} accept='image/*' disabled={isView} />
 						</Form.Item>
 					</Col>
 				</Row>
