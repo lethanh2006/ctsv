@@ -37,7 +37,7 @@ const UploadFile: React.FC<TUploadProps> = ({
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState('');
 	const resizeProps: TResizeProps | undefined = typeof resize === 'boolean' ? {} : resize;
-	const showImage = isAvatar || isAvatarSmall || isLandscapeAvatar || isWidescreen;
+	const showImage = isAvatar || isAvatarSmall || isLandscapeAvatar || isWidescreen || otherProps?.listType === 'picture-card';
 
 	useEffect(() => {
 		let files: any[] = [];
