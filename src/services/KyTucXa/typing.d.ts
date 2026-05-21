@@ -26,8 +26,6 @@ declare module KyTucXa {
 		
 		gioiTinh?: EGioiTinh | string;
 		maxPerKhoa?: number;
-		minAge?: number;
-		maxAge?: number;
 	}
 
 	export interface IKhoanThuKTX {

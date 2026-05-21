@@ -121,7 +121,7 @@ const FormPhongKTX = () => {
 					</Col>
 					<Col xs={24} md={12}>
 						<Form.Item name='cachBoTri' label='Cách bố trí phòng'>
-							<Input disabled={isView} placeholder='Nhập cách bố trí (ví dụ: 3 tầng, mỗi tầng 2 phòng)' />
+							<Input disabled={isView} placeholder='Nhập cách bố trí (ví dụ: 1 khách 1 bếp,...)' />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>

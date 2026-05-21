@@ -1,138 +1,30 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import { KyTucXa } from '@/services/KyTucXa/typing';
-import { EditOutlined, ExportOutlined, ImportOutlined } from '@ant-design/icons';
-import { Button, Tooltip, message, Upload } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import { useModel } from 'umi';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Form from './components/Form';
-import ButtonExtend from '@/components/Table/ButtonExtend';
-import axios from '@/utils/axios';
-import { ipCsvc } from '@/utils/ip';
-import * as XLSX from 'xlsx';
+import ImportPhongKTX from './components/Import';
+import ExportPhongKTX from './components/Export';
 
 const PhongKTXPage = () => {
 	const { danhSach: danhSachToaNha, getAllModel: getAllToaNha } = useModel('kytucxa.toa');
 	const { getModel, page, limit, handleEdit } = useModel('kytucxa.phong');
 	const { danhSach: danhSachKhoanThu, getAllModel: getAllKhoanThu } = useModel('kytucxa.khoanthu');
 	const { danhSach: danhSachTienIchAll, getAllModel: getAllTienIch } = useModel('kytucxa.tienich');
-	const [exporting, setExporting] = useState(false);
 
 	useEffect(() => {
 		getAllToaNha();
 		getAllKhoanThu();
 		getAllTienIch();
 	}, []);
-	
-	const handleExport = async () => {
-		setExporting(true);
-		try {
-			const allData = await getModel(undefined, undefined, undefined, 1, 10000);
-			
-			const exportData = allData.map((row: any) => {
-				const baseRow: any = {
-					'Mã phòng': row.ma,
-					'Tên phòng': row.ten,
-					'Mã tòa nhà': row.maToaNha,
-					'Sức chứa': row.soLuongToiDa,
-					'Đang ở': row.soLuongHienTai,
-					'Cách bố trí': row.cachBoTri,
-					'Mô tả': row.moTa,
-					'Mã khoản thu phòng': row.maKhoanThuPhong,
-					'Mã khoản thu cọc': row.maKhoanThuCoc,
-					'Cho thuê': row.isChoThue ? 'Có' : 'Không',
-					'Giới tính': row?.dangKyKyTucXaRule?.gioiTinh || '',
-					'Số lượng tối đa mỗi khoa': row?.dangKyKyTucXaRule?.maxPerKhoa || '',
-					'Độ tuổi tối thiểu': row?.dangKyKyTucXaRule?.minAge || '',
-					'Độ tuổi tối đa': row?.dangKyKyTucXaRule?.maxAge || '',
-				};
-
-				if (row.danhSachTienIch && Array.isArray(row.danhSachTienIch)) {
-					row.danhSachTienIch.forEach((tienIch: any, idx: number) => {
-						const fullTienIch = danhSachTienIchAll?.find((item: any) => item.ma === tienIch.maDanhMucTienIch);
-						baseRow[`Tiện ích ${idx + 1}`] = fullTienIch?.ten || '';
-					});
-				}
-
-				return baseRow;
-			});
-
-			const ws = XLSX.utils.json_to_sheet(exportData);
-			const wb = XLSX.utils.book_new();
-			XLSX.utils.book_append_sheet(wb, ws, 'DanhSachPhong');
-			XLSX.writeFile(wb, 'Danh sách phòng KTX.xlsx');
-			
-			message.success('Xuất dữ liệu thành công');
-		} catch (error) {
-			console.error(error);
-			message.error('Lỗi khi xuất dữ liệu');
-		} finally {
-			setExporting(false);
-		}
-	};
-
-	const uploadProps = {
-		name: 'file',
-		showUploadList: false,
-		customRequest: async (options: any) => {
-			const { file, onSuccess, onError } = options;
-			
-			if (typeof FileReader !== 'undefined') {
-				const reader = new FileReader();
-				reader.onload = async (e) => {
-					try {
-						const data = e.target?.result;
-						const workbook = XLSX.read(data, { type: 'array' });
-						const ws = workbook.Sheets[workbook.SheetNames[0]];
-						const sheetData = XLSX.utils.sheet_to_json(ws);
-						
-						const payload = sheetData.map((row: any) => ({
-							ma: row?.ma?.toString() || row?.['Mã phòng']?.toString() || row?.['Mã']?.toString() || '',
-							soLuongToiDa: Number(row?.soLuongToiDa ?? row?.['Sức chứa'] ?? 0),
-							cachBoTri: row?.cachBoTri?.toString() || row?.['Cách bố trí']?.toString() || '',
-							moTa: row?.moTa?.toString() || row?.['Mô tả']?.toString() || '',
-							maKhoanThuPhong: row?.maKhoanThuPhong?.toString() || row?.['Mã khoản thu phòng']?.toString() || '',
-							maKhoanThuCoc: row?.maKhoanThuCoc?.toString() || row?.['Mã khoản thu cọc']?.toString() || '',
-							isChoThue: row?.isChoThue === true || String(row?.isChoThue).toLowerCase() === 'true' || row?.isChoThue === 1 || row?.['Cho thuê'] === 'Có' || row?.['Cho thuê'] === true,
-							gioiTinh: row?.gioiTinh?.toString() || row?.['Giới tính']?.toString() || 'Nam',
-							maxPerKhoa: Number(row?.maxPerKhoa ?? row?.['Số lượng tối đa mỗi khoa'] ?? 0),
-							minAge: Number(row?.minAge ?? row?.['Độ tuổi tối thiểu'] ?? 0),
-							maxAge: Number(row?.maxAge ?? row?.['Độ tuổi tối đa'] ?? 0),
-						})).filter((item: any) => item.ma);
-
-						await axios.post(`${ipCsvc}/phong/ktx/import`, payload);
-						onSuccess('Ok');
-						message.success('Nhập dữ liệu thành công');
-						getModel();
-					} catch (err) {
-						onError(err);
-						message.error('Lỗi khi nhập dữ liệu');
-					}
-				};
-				reader.readAsArrayBuffer(file);
-			} else {
-				onError(new Error('FileReader not supported'));
-				message.error('Trình duyệt không hỗ trợ đọc file');
-			}
-		}
-	};
 
 	const customButtons = [
-		<Upload key='upload' {...uploadProps}>
-			<ButtonExtend className='btn-import' icon={<ImportOutlined />}>
-				Nhập dữ liệu
-			</ButtonExtend>
-		</Upload>,
-		<ButtonExtend
-			key='export'
-			className='btn-export'
-			icon={<ExportOutlined />}
-			onClick={handleExport}
-			loading={exporting}
-		>
-			Xuất dữ liệu
-		</ButtonExtend>
-	];
+        <ImportPhongKTX key="import" onSuccessReload={getModel} />,
+        <ExportPhongKTX key="export" getModel={getModel} danhSachTienIchAll={danhSachTienIchAll} />
+    ];
 
 	const columns: IColumn<KyTucXa.IPhongKTX>[] = [
 		{
@@ -204,7 +96,7 @@ const PhongKTXPage = () => {
 			deleteMany
 			otherButtons={customButtons}
 			buttons={{ create: false }}
-		/>
+		/>		
 	);
 };
 
