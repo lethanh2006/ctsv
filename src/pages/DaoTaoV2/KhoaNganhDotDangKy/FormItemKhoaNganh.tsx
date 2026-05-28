@@ -6,8 +6,8 @@ import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectHinhThuc from '../DanhMucHeThong/CoSo/HinhThuc/components/Select';
-import SelectTrinhDo from '../DanhMucHeThong/CoSo/TrinhDo/components/Select';
 import SelectNganhCoSo from '../DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
+import SelectTrinhDo from '../DanhMucHeThong/CoSo/TrinhDo/components/Select';
 import SelectKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/Select';
 
 /** Form Item chọn khóa ngành theo Trình độ, hình thức, khóa, ngành */
@@ -32,11 +32,19 @@ const FormItemKhoaNganh = (props: {
 	const { value, onChange, khoaNganhCondition, showTrinhDo = true, showHinhThuc = true } = props;
 	const soCotBoLoc = showTrinhDo && showHinhThuc ? 6 : 12;
 
-
 	useEffect(() => {
 		if (!maKhoaList?.length && !maNganhList?.length) {
 			setDanhSach([]);
-			if (onChange && value?.length) onChange([]);
+			if (!value?.length) {
+				setDanhSach([]);
+				return;
+			}
+
+			const selectedFilter: TFilter<KhoaNganh.IRecord>[] = [
+				{ field: 'ma', values: value, operator: EOperatorType.INCLUDE },
+			];
+
+			getAllModel(undefined, undefined, khoaNganhCondition, selectedFilter);
 			return;
 		}
 		const filter: TFilter<KhoaNganh.IRecord>[] = [];
@@ -207,7 +215,7 @@ const FormItemKhoaNganh = (props: {
 											(Bỏ chọn tất cả)
 										</a>
 									</div>,
-							  ]
+								]
 							: undefined
 					}
 				/>

@@ -80,6 +80,8 @@ declare module KyTucXa {
         thoiGianBatDau: string;
         thoiGianKetThuc: string;
         maKhoaNganh: string[];
+	danhSachToaNha?: string[];
+	danhSachPhong?: string[];
         ghiChu: string;
         soLuongDon: number;
     }

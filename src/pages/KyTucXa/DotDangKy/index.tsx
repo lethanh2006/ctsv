@@ -1,13 +1,13 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
+import type { KyTucXa } from '@/services/KyTucXa/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import Form from './components/Form';
-import type { KyTucXa } from '@/services/KyTucXa/typing.d';
 
-const DotDangKyKTXPage = () => {
+const DotDangKy = () => {
 	const { handleEdit, deleteModel, getModel } = useModel('kytucxa.dotdangky');
 
 	const columns: IColumn<KyTucXa.IDotDangKyKTX>[] = [
@@ -25,7 +25,7 @@ const DotDangKyKTXPage = () => {
 			filterType: 'string',
 		},
 		{
-			title: 'Thời gian bắt đầu',
+			title: 'Bắt đầu',
 			dataIndex: 'thoiGianBatDau',
 			width: 150,
 			align: 'center',
@@ -34,7 +34,7 @@ const DotDangKyKTXPage = () => {
 			render: (value) => (value ? dayjs(value).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
-			title: 'Thời gian kết thúc',
+			title: 'Kết thúc',
 			dataIndex: 'thoiGianKetThuc',
 			width: 150,
 			align: 'center',
@@ -80,14 +80,14 @@ const DotDangKyKTXPage = () => {
 	];
 
 	return (
-		<TableBase 
-			columns={columns} 
-			modelName='kytucxa.dotdangky' 
-			title='Đợt đăng ký' 
-			Form={Form} 
-			widthDrawer={900} 
+		<TableBase
+			columns={columns}
+			modelName='kytucxa.dotdangky'
+			title='Đợt đăng ký ký túc xá'
+			Form={Form}
+			widthDrawer={900}
 		/>
 	);
 };
 
-export default DotDangKyKTXPage;
+export default DotDangKy;
