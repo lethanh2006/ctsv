@@ -39,12 +39,6 @@ const FormItemKhoaNganh = (props: {
 				setDanhSach([]);
 				return;
 			}
-
-			const selectedFilter: TFilter<KhoaNganh.IRecord>[] = [
-				{ field: 'ma', values: value, operator: EOperatorType.INCLUDE },
-			];
-
-			getAllModel(undefined, undefined, khoaNganhCondition, selectedFilter);
 			return;
 		}
 		const filter: TFilter<KhoaNganh.IRecord>[] = [];

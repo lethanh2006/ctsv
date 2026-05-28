@@ -75,7 +75,7 @@ const RoomTable: React.FC<{
 			size='small'
 			hasTotal
 			otherProps={{
-				rowKey: (rec: any) => rec.ma,
+				rowKey: (rec: any) => rec._id,
 				rowSelection,
 				pagination: { pageSize: 10, showSizeChanger: false },
 				scroll: { x: 'max-content' },

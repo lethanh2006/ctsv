@@ -3,23 +3,26 @@ import FormItemKhoaNganh from '@/pages/DaoTaoV2/KhoaNganhDotDangKy/FormItemKhoaN
 import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
 import RoomTable from '@/pages/KyTucXa/DotDangKy/components/RoomTable';
 import SelectToaNha from '@/pages/KyTucXa/DotDangKy/components/SelectToaNha';
-import type { KyTucXa } from '@/services/KyTucXa/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
+import type { KyTucXa } from '@/services/KyTucXa/typing';
 
 const FormDotDangKyKTX = () => {
 	const [form] = Form.useForm();
-	const { record, visibleForm, edit, setVisibleForm, putModel, postModel, formSubmiting } =
-		useModel('kytucxa.dotdangky');
+	const { record, visibleForm, edit, setVisibleForm, putModel, postModel, formSubmiting } = useModel('kytucxa.dotdangky');
 	const [selectedToaNhaIds, setSelectedToaNhaIds] = useState<string[]>([]);
 	const [selectedPhongIds, setSelectedPhongIds] = useState<string[]>([]);
 
 	const { danhSach: allPhong, getAllModel: getAllPhong } = useModel('theodoitaisanvattu.phong');
 
 	const { getAllModel: getAllToaNha } = useModel('theodoitaisanvattu.toanha');
+
+	const selectedPhongRowKeys = allPhong
+		.filter((phong: any) => selectedPhongIds.includes(phong.ma))
+		.map((phong: any) => phong._id);
 
 	useEffect(() => {
 		if (visibleForm) {
@@ -74,7 +77,7 @@ const FormDotDangKyKTX = () => {
 	}, [selectedToaNhaIds, allPhong, visibleForm]);
 
 	const onFinish = async (values: KyTucXa.IDotDangKyKTX) => {
-		const { danhSachToaNha, ...restValues } = values;
+		const { danhSachToaNha, ...restValues } = values as KyTucXa.IDotDangKyKTX;
 		const payload: Partial<KyTucXa.IDotDangKyKTX> = {
 			...restValues,
 			maKhoaNganh: values?.maKhoaNganh ?? [],
@@ -134,9 +137,13 @@ const FormDotDangKyKTX = () => {
 					<div style={{ marginTop: 12 }}>
 						<RoomTable
 							toaNhaIds={selectedToaNhaIds}
-							selectedRowKeys={selectedPhongIds}
+							selectedRowKeys={selectedPhongRowKeys}
 							onChangeSelectedKeys={(keys) => {
-								setSelectedPhongIds(keys);
+								setSelectedPhongIds(
+									keys
+										.map((key) => allPhong.find((phong: any) => phong._id === key)?.ma)
+										.filter((ma): ma is string => !!ma),
+								);
 							}}
 						/>
 					</div>
