@@ -42,7 +42,7 @@ export default {
     'kytucxa.phong.soLuongToiDa': 'Số lượng tối đa',
     'kytucxa.phong.nhapSoLuongToiDa': 'Nhập số lượng tối đa',
     'kytucxa.phong.cachBoTriPhong': 'Cách bố trí phòng',
-    'kytucxa.phong.nhapCachBoTri': 'Nhập cách bố trí (ví dụ: 2 ngủ 1 bếp,...',
+    'kytucxa.phong.nhapCachBoTri': 'Nhập cách bố trí (ví dụ: 2 ngủ 1 khách 1 bếp,...)',
     'kytucxa.phong.bangGiaPhiPhong': 'Bảng giá phí phòng',
     'kytucxa.phong.bangGiaPhiCoc': 'Bảng giá phí cọc',
     'kytucxa.phong.danhSachTienIch': 'Danh sách tiện ích',

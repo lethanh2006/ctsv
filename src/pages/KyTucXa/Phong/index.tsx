@@ -53,6 +53,7 @@ const PhongKTXPage = () => {
 			align: 'center',
 			width: 90,
 			sorter: true,
+			render: (val) => val || '-',
 		},
 		{
 			title: intl.formatMessage({ id: 'kytucxa.phong.dangO' }),

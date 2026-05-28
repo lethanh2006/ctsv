@@ -1,7 +1,7 @@
 import type { KyTucXa } from '@/services/KyTucXa/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Button, Card, Checkbox, Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import UploadFile from '@/pages/KyTucXa/Phong/components/UploadFile';
 import { useEffect } from 'react';
@@ -96,6 +96,18 @@ const FormPhongKTX = () => {
 							{intl.formatMessage({ id: 'kytucxa.phong.quyDinhDangKy' })}
 						</div>
 					</Col>
+					<Col xs={24} md={24}>
+						<Form.Item name='isOtherNationality' valuePropName='checked'>
+							<Checkbox disabled={isView}>
+								Dành cho sinh viên quốc tế
+							</Checkbox>
+						</Form.Item>
+					</Col>
+					{/* <Col xs={24} md={12}>
+						<Form.Item name={['dangKyKyTucXaRule', 'maxPerKhoa']} label={intl.formatMessage({ id: 'kytucxa.phong.soSvToiDaMoiKhoa' })}>
+							<InputNumber disabled={isView} min={0} style={{ width: '100%' }} placeholder={intl.formatMessage({ id: 'kytucxa.phong.viDu2' })} />
+						</Form.Item>
+					</Col> */}
 					<Col xs={24} md={12}>
 						<Form.Item name={['dangKyKyTucXaRule', 'gioiTinh']} label={intl.formatMessage({ id: 'kytucxa.phong.gioiTinhChoPhep' })} rules={[...rules.required]}>
 							<Select
@@ -110,16 +122,16 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name={['dangKyKyTucXaRule', 'maxPerKhoa']} label={intl.formatMessage({ id: 'kytucxa.phong.soSvToiDaMoiKhoa' })} rules={[...rules.required]}>
-							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder={intl.formatMessage({ id: 'kytucxa.phong.viDu2' })} />
-						</Form.Item>
-					</Col>
-					<Col xs={24} md={12}>
 						<Form.Item name='soLuongToiDa' label={intl.formatMessage({ id: 'kytucxa.phong.soLuongToiDa' })} rules={[...rules.required]}>
 							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder={intl.formatMessage({ id: 'kytucxa.phong.nhapSoLuongToiDa' })} />
 						</Form.Item>
 					</Col>
-					<Col xs={24} md={12}>
+					<Col xs={24}>
+						<Form.Item name={['danhSachTienIch', 'maDanhMucTienIch']} label={intl.formatMessage({ id: 'kytucxa.phong.danhSachTienIch' })}>
+							<SelectTienIch multiple={true} />
+						</Form.Item>
+					</Col>
+					<Col xs={24}>
 						<Form.Item name='cachBoTri' label={intl.formatMessage({ id: 'kytucxa.phong.cachBoTriPhong' })}>
 							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'kytucxa.phong.nhapCachBoTri' })} />
 						</Form.Item>
@@ -132,11 +144,6 @@ const FormPhongKTX = () => {
 					<Col xs={24} md={12}>
 						<Form.Item name='maKhoanThuCoc' label={intl.formatMessage({ id: 'kytucxa.phong.bangGiaPhiCoc' })}>
 							<SelectKhoanThu/>
-						</Form.Item>
-					</Col>
-					<Col xs={24}>
-						<Form.Item name={['danhSachTienIch', 'maDanhMucTienIch']} label={intl.formatMessage({ id: 'kytucxa.phong.danhSachTienIch' })}>
-							<SelectTienIch multiple={true} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
