@@ -25,7 +25,7 @@ const DotDangKyKTXPage = () => {
 			filterType: 'string',
 		},
 		{
-			title: 'Bắt đầu',
+			title: 'Thời gian bắt đầu',
 			dataIndex: 'thoiGianBatDau',
 			width: 150,
 			align: 'center',
@@ -34,7 +34,7 @@ const DotDangKyKTXPage = () => {
 			render: (value) => (value ? dayjs(value).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
-			title: 'Kết thúc',
+			title: 'Thời gian kết thúc',
 			dataIndex: 'thoiGianKetThuc',
 			width: 150,
 			align: 'center',

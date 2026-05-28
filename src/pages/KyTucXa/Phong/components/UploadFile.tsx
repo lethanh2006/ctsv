@@ -43,7 +43,7 @@ const UploadImageKTX: React.FC<TUploadProps> = ({
         let files: any[] = [];
         // Single URL
         if (typeof value === 'string') {
-            files = [{ url: value, remote: true, name: props.previewFileProps?.isFileId ? 'Tập tin' : getNameFile(value) }];
+            files = [{ url: value, remote: true, name: props.previewFileProps?.isFileId ? `${intl.formatMessage({ id: 'kytucxa.phong.tapTin' })}` : getNameFile(value) }];
             setFileList(files);
             // Callback về Form để Form Item có fileList => Phục vụ check rules fileRequired
             if (onChange) onChange({ fileList: files });
@@ -53,7 +53,7 @@ const UploadImageKTX: React.FC<TUploadProps> = ({
             files = value.map((url, ind) => ({
                 url,
                 remote: true,
-                name: props.previewFileProps?.isFileId ? `Tập tin ${ind + 1}` : getNameFile(url),
+                name: props.previewFileProps?.isFileId ? `${intl.formatMessage({ id: 'kytucxa.phong.tapTin' })} ${ind + 1}` : getNameFile(url),
             }));
             setFileList(files);
             // Callback về Form để Form Item có fileList => Phục vụ check rules fileRequired
@@ -257,7 +257,7 @@ const UploadImageKTX: React.FC<TUploadProps> = ({
 
             {hasPreviewFile && (
                 <ModalExpandable
-                    title='Xem trước ảnh'
+                    title={intl.formatMessage({ id: 'kytucxa.phong.xemTruocAnh' })}
                     width={1200}
                     open={previewOpen}
                     footer={null}

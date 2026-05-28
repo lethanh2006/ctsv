@@ -3,61 +3,62 @@ import { type IColumn } from '@/components/Table/typing';
 import type { KyTucXa } from '@/services/KyTucXa/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import Form from './components/Form';
 
 
 const CauHinhKhoanThuKTXPage = () => {
+    const intl = useIntl();
     const { getModel, page, limit, deleteModel, handleEdit } = useModel('kytucxa.khoanthu');
 
     const columns: IColumn<KyTucXa.IKhoanThuKTX>[] = [
         {
-            title: 'Tên khoản thu',
+            title: intl.formatMessage({ id: 'kytucxa.khoanthu.tenKhoanThu' }),
             dataIndex: 'ten',
             width: 180,
             filterType: 'string',
         },
         {
-            title: 'Đơn vị tính',
-            width: 200,
+            title: intl.formatMessage({ id: 'kytucxa.khoanthu.donViTinh' }),
+            width: 90,
             align: 'center',
             dataIndex: 'unitLabel',
             filterType: 'string',
         },
         {
-            title: 'Mục thu',
+            title: intl.formatMessage({ id: 'kytucxa.khoanthu.mucThu' }),
             dataIndex: 'tenMucThu',
-            width: 160,
+            width: 180,
             filterType: 'string',
         },
         {
-            title: 'Số tiền',
+            title: intl.formatMessage({ id: 'kytucxa.khoanthu.soTien' }),
             dataIndex: 'unitAmount',
-            width: 120,
+            width: 110,
             align: 'center',
             sortable: true,
             render: (val: number) => val?.toLocaleString('vi-VN'),
         },
         {
-            title: 'Đơn vị tiền',
+            title: intl.formatMessage({ id: 'kytucxa.khoanthu.donViTien' }),
             dataIndex: 'currency',
-            width: 130,
+            width: 90,
             align: 'center',
         },
         {
-            title: 'Thao tác',
+            title: intl.formatMessage({ id: 'kytucxa.khoanthu.thaoTac' }),
             align: 'center',
             width: 90,
             fixed: 'right',
             render: (val, record) => (
                 <>
-                    <Tooltip title='Chỉnh sửa'>
+                    <Tooltip title={intl.formatMessage({ id: 'kytucxa.khoanthu.chinhSua' })}>
                         <Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
                     </Tooltip>
-                    <Tooltip title='Xóa'>
+                    <Tooltip title={intl.formatMessage({ id: 'kytucxa.khoanthu.xoa' })}>
                         <Popconfirm
                             onConfirm={() => deleteModel(record._id, getModel)}
-                            title='Bạn có chắc chắn muốn xóa khoản thu này?'
+                            title={intl.formatMessage({ id: 'kytucxa.khoanthu.confirmDelete' })}
                             placement='topRight'
                         >
                             <Button danger type='link' icon={<DeleteOutlined />} />
@@ -73,7 +74,7 @@ const CauHinhKhoanThuKTXPage = () => {
             columns={columns}
             dependencies={[page, limit]}
             modelName='kytucxa.khoanthu'
-            title='Cấu hình Khoản thu'
+            title={intl.formatMessage({ id: 'kytucxa.khoanthu.title' })}
             Form={Form}
             rowSelection
             deleteMany

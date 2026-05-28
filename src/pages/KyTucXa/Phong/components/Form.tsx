@@ -66,25 +66,25 @@ const FormPhongKTX = () => {
 	};
 
 	return (
-		<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} cấu hình phòng`}>
+		<Card title={`${edit ? intl.formatMessage({ id: 'kytucxa.phong.chinhSua' }) : intl.formatMessage({ id: 'kytucxa.phong.themMoi' })} ${intl.formatMessage({ id: 'kytucxa.phong.cauHinhPhongText' })}`} className='form-card'>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={[12, 0]} style={{ marginBottom: 12 }}>
 					{edit && (
 						<Col xs={24}>
 							<div style={{ marginBottom: 12, padding: '8px 12px', background: '#f5f5f5', borderRadius: 6 }}>
-								<span style={{ fontWeight: 500 }}>Phòng: </span>{record?.ten}
-								{record?.maToaNha && <span style={{ marginLeft: 16 }}><span style={{ fontWeight: 500 }}>Tòa: </span>{danhSachToaNha?.find((item: KyTucXa.IToaKTX) => item?.ma === record?.maToaNha)?.ten || '-'}</span>}
+								<span style={{ fontWeight: 500 }}>{intl.formatMessage({ id: 'kytucxa.phong.tenPhong' })}: </span>{record?.ten}
+								{record?.maToaNha && <span style={{ marginLeft: 16 }}><span style={{ fontWeight: 500 }}>{intl.formatMessage({ id: 'kytucxa.phong.toaNha' })}: </span>{danhSachToaNha?.find((item: KyTucXa.IToaKTX) => item?.ma === record?.maToaNha)?.ten || '-'}</span>}
 							</div>
 						</Col>
 					)}
 					<Col xs={24}>
 						<Form.Item 
 							name='danhSachAnh' 
-							label='Ảnh phòng'
+							label={intl.formatMessage({ id: 'kytucxa.phong.anhPhong' })}
 							extra={
 								<div style={{ marginTop: 8, color: '#fa8c16', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
 									<InfoCircleOutlined style={{ fontSize: '14px', color: '#fa8c16' }} />
-									<span>Ảnh đầu tiên tải lên sẽ là <b>Ảnh đại diện</b> hiển thị tổng quan phòng.</span>
+									<span>{intl.formatMessage({ id: 'kytucxa.phong.anhDauTienThongBao' })} <b>{intl.formatMessage({ id: 'kytucxa.phong.anhDaiDien' })}</b> {intl.formatMessage({ id: 'kytucxa.phong.hienThiTongQuan' })}</span>
 								</div>
 							}
 						>
@@ -93,55 +93,55 @@ const FormPhongKTX = () => {
 					</Col>
 					<Col xs={24}>
 						<div className='fw500' style={{ marginBottom: 8, marginTop: 12 }}>
-							Quy định đăng ký
+							{intl.formatMessage({ id: 'kytucxa.phong.quyDinhDangKy' })}
 						</div>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name={['dangKyKyTucXaRule', 'gioiTinh']} label='Giới tính cho phép'>
+						<Form.Item name={['dangKyKyTucXaRule', 'gioiTinh']} label={intl.formatMessage({ id: 'kytucxa.phong.gioiTinhChoPhep' })} rules={[...rules.required]}>
 							<Select
 								disabled={isView}
-								placeholder='Chọn giới tính'
+								placeholder={intl.formatMessage({ id: 'kytucxa.phong.chonGioiTinh' })}
 								options={[
-									{ value: EGioiTinh.NAM, label: 'Nam' },
-									{ value: EGioiTinh.NU, label: 'Nữ' },
+									{ value: EGioiTinh.NAM, label: intl.formatMessage({ id: 'kytucxa.phong.nam' }) },
+									{ value: EGioiTinh.NU, label: intl.formatMessage({ id: 'kytucxa.phong.nu' }) },
 								]}
 								allowClear
 							/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name={['dangKyKyTucXaRule', 'maxPerKhoa']} label='Số SV tối đa mỗi khoa'>
-							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder='Ví dụ: 2' />
+						<Form.Item name={['dangKyKyTucXaRule', 'maxPerKhoa']} label={intl.formatMessage({ id: 'kytucxa.phong.soSvToiDaMoiKhoa' })} rules={[...rules.required]}>
+							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder={intl.formatMessage({ id: 'kytucxa.phong.viDu2' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='soLuongToiDa' label='Số lượng tối đa' rules={[...rules.required]}>
-							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder='Nhập số lượng tối đa' />
+						<Form.Item name='soLuongToiDa' label={intl.formatMessage({ id: 'kytucxa.phong.soLuongToiDa' })} rules={[...rules.required]}>
+							<InputNumber disabled={isView} min={1} style={{ width: '100%' }} placeholder={intl.formatMessage({ id: 'kytucxa.phong.nhapSoLuongToiDa' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='cachBoTri' label='Cách bố trí phòng'>
-							<Input disabled={isView} placeholder='Nhập cách bố trí (ví dụ: 1 khách 1 bếp,...)' />
+						<Form.Item name='cachBoTri' label={intl.formatMessage({ id: 'kytucxa.phong.cachBoTriPhong' })}>
+							<Input disabled={isView} placeholder={intl.formatMessage({ id: 'kytucxa.phong.nhapCachBoTri' })} />
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='maKhoanThuPhong' label='Bảng giá phí phòng'>
+						<Form.Item name='maKhoanThuPhong' label={intl.formatMessage({ id: 'kytucxa.phong.bangGiaPhiPhong' })}>
 							<SelectKhoanThu/>
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>
-						<Form.Item name='maKhoanThuCoc' label='Bảng giá phí cọc'>
+						<Form.Item name='maKhoanThuCoc' label={intl.formatMessage({ id: 'kytucxa.phong.bangGiaPhiCoc' })}>
 							<SelectKhoanThu/>
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name={['danhSachTienIch', 'maDanhMucTienIch']} label='Danh sách tiện ích'>
+						<Form.Item name={['danhSachTienIch', 'maDanhMucTienIch']} label={intl.formatMessage({ id: 'kytucxa.phong.danhSachTienIch' })}>
 							<SelectTienIch multiple={true} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='moTa' label='Mô tả phòng'>
-							<Input.TextArea rows={3} disabled={isView} placeholder='Nhập mô tả phòng' />
+						<Form.Item name='moTa' label={intl.formatMessage({ id: 'kytucxa.phong.moTaPhong' })}>
+							<Input.TextArea rows={3} disabled={isView} placeholder={intl.formatMessage({ id: 'kytucxa.phong.nhapMoTaPhong' })} />
 						</Form.Item>
 					</Col>
 				</Row>

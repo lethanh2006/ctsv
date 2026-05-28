@@ -78,36 +78,36 @@ const FormKhoanThuKTX = () => {
     }, [loaiDoiTuong, danhSachToaNha, danhSachPhong]);
 
     return (
-        <Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} cấu hình`}>
+        <Card title={`${edit ? intl.formatMessage({ id: 'kytucxa.khoanthu.chinhSua' }) : intl.formatMessage({ id: 'kytucxa.khoanthu.themMoi' })} ${intl.formatMessage({ id: 'kytucxa.khoanthu.cauHinh' })}`}>
             <Form onFinish={onFinish} form={form} layout='vertical' onValuesChange={handleValuesChange}>
                 <Row gutter={[12, 0]}>
                     <Col xs={24} md={12}>
-                        <Form.Item name='maNamHoc' label='Năm học' rules={[...rules.required]}>
+                        <Form.Item name='maNamHoc' label={intl.formatMessage({ id: 'kytucxa.khoanthu.namHoc' })} rules={[...rules.required]}>
                             <SelectNamHoc />
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='ten' label='Tên khoản thu' rules={[...rules.required]}>
-                            <Input placeholder='Nhập tên khoản thu' />
+                        <Form.Item name='ten' label={intl.formatMessage({ id: 'kytucxa.khoanthu.tenKhoanThu' })} rules={[...rules.required]}>
+                            <Input placeholder={intl.formatMessage({ id: 'kytucxa.khoanthu.nhapTenKhoanThu' })} />
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='loai' label='Loại' rules={[...rules.required]}>
+                        <Form.Item name='loai' label={intl.formatMessage({ id: 'kytucxa.khoanthu.loai' })} rules={[...rules.required]}>
                             <Input disabled />
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='loaiDoiTuong' label='Loại đối tượng' rules={[...rules.required]}>
+                        <Form.Item name='loaiDoiTuong' label={intl.formatMessage({ id: 'kytucxa.khoanthu.loaiDoiTuong' })} rules={[...rules.required]}>
                             <Select 
-                                placeholder='Chọn loại đối tượng' 
+                                placeholder={intl.formatMessage({ id: 'kytucxa.khoanthu.chonLoaiDoiTuong' })} 
                                 options={loaiDoiTuongOptions}
                             />
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='maDoiTuong' label='Đối tượng' rules={[...rules.required]}>
+                        <Form.Item name='maDoiTuong' label={intl.formatMessage({ id: 'kytucxa.khoanthu.doiTuong' })} rules={[...rules.required]}>
                             <Select 
-                                placeholder='Chọn đối tượng' 
+                                placeholder={intl.formatMessage({ id: 'kytucxa.khoanthu.chonDoiTuong' })} 
                                 disabled={!loaiDoiTuong} 
                                 showSearch 
                                 optionFilterProp='label'
@@ -116,12 +116,12 @@ const FormKhoanThuKTX = () => {
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='unitLabel' label='Đơn vị tính' rules={[...rules.required]}>
+                        <Form.Item name='unitLabel' label={intl.formatMessage({ id: 'kytucxa.khoanthu.donViTinh' })} rules={[...rules.required]}>
                             <SelectUnitLabel />
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='maMucThu' label='Mục thu' rules={[...rules.required]}>
+                        <Form.Item name='maMucThu' label={intl.formatMessage({ id: 'kytucxa.khoanthu.mucThu' })} rules={[...rules.required]}>
                             <SelectMucThu />
                         </Form.Item>
                     </Col>
@@ -129,9 +129,9 @@ const FormKhoanThuKTX = () => {
                         <Input />
                     </Form.Item>
                     <Col xs={24} md={12}>
-                        <Form.Item name='unitAmount' label='Số tiền' rules={[...rules.required]}>
+                        <Form.Item name='unitAmount' label={intl.formatMessage({ id: 'kytucxa.khoanthu.soTien' })} rules={[...rules.required]}>
                             <InputNumber 
-                                placeholder='Nhập số tiền' 
+                                placeholder={intl.formatMessage({ id: 'kytucxa.khoanthu.nhapSoTien' })} 
                                 style={{ width: '100%' }} 
                                 formatter={formatCurrency} 
                                 parser={parseCurrency} 
@@ -140,9 +140,9 @@ const FormKhoanThuKTX = () => {
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        <Form.Item name='currency' label='Loại tiền tệ' rules={[...rules.required]}>
+                        <Form.Item name='currency' label={intl.formatMessage({ id: 'kytucxa.khoanthu.loaiTienTe' })} rules={[...rules.required]}>
                             <Select 
-                                placeholder='Chọn loại tiền tệ' 
+                                placeholder={intl.formatMessage({ id: 'kytucxa.khoanthu.chonLoaiTienTe' })} 
                                 options={currencyOptions} 
                             />
                         </Form.Item>

@@ -3,13 +3,14 @@ import { type IColumn } from '@/components/Table/typing';
 import { KyTucXa } from '@/services/KyTucXa/typing';
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { useEffect } from 'react';
 import Form from './components/Form';
 import ImportPhongKTX from './components/Import';
 import ExportPhongKTX from './components/Export';
 
 const PhongKTXPage = () => {
+	const intl = useIntl();
 	const { danhSach: danhSachToaNha, getAllModel: getAllToaNha } = useModel('kytucxa.toa');
 	const { getModel, page, limit, handleEdit } = useModel('kytucxa.phong');
 	const { danhSach: danhSachKhoanThu, getAllModel: getAllKhoanThu } = useModel('kytucxa.khoanthu');
@@ -28,56 +29,60 @@ const PhongKTXPage = () => {
 
 	const columns: IColumn<KyTucXa.IPhongKTX>[] = [
 		{
-			title: 'Mã phòng',
+			title: intl.formatMessage({ id: 'kytucxa.phong.maPhong' }),
 			dataIndex: 'ma',
 			width: 100,
-			sortable: true,
 			filterType: 'string',
 		},
 		{
-			title: 'Tên phòng',
+			title: intl.formatMessage({ id: 'kytucxa.phong.tenPhong' }),
 			dataIndex: 'ten',
 			width: 150,
-			sortable: true,
+			filterType: 'string',
 		},
 		{
-			title: 'Tòa nhà',
+			title: intl.formatMessage({ id: 'kytucxa.phong.toaNha' }),
 			dataIndex: 'maToaNha',
 			width: 120,
+			filterType: 'string',
 			render: (val) => danhSachToaNha?.find((item: KyTucXa.IToaKTX) => item?.ma === val)?.ten || '-',
 		},
 		{
-			title: 'Sức chứa',
+			title: intl.formatMessage({ id: 'kytucxa.phong.sucChua' }),
 			dataIndex: 'soLuongToiDa',
 			align: 'center',
-			width: 100,
+			width: 90,
+			sorter: true,
 		},
 		{
-			title: 'Đang ở',
+			title: intl.formatMessage({ id: 'kytucxa.phong.dangO' }),
 			dataIndex: 'soLuongHienTai',
 			align: 'center',
-			width: 100,
+			width: 90,
+			sorter: true,
 		},
 		{
-			title: 'Tên khoản thu phòng',
+			title: intl.formatMessage({ id: 'kytucxa.phong.tenKhoanThuPhong' }),
 			dataIndex: 'maKhoanThuPhong',
-			width: 130,
+			width: 170,
+			filterType: 'string',
 			render: (val) => danhSachKhoanThu?.find((item: KyTucXa.IKhoanThuKTX) => item?.maMucThu === val)?.ten || '-',
 		},
 		{
-			title: 'Tên khoản thu cọc',
+			title: intl.formatMessage({ id: 'kytucxa.phong.tenKhoanThuCoc' }),
 			dataIndex: 'maKhoanThuCoc',
-			width: 130,
+			width: 170,
+			filterType: 'string',
 			render: (val) => danhSachKhoanThu?.find((item: KyTucXa.IKhoanThuKTX) => item?.maMucThu === val)?.ten || '-',
 		},
 		{
-			title: 'Thao tác',
+			title: intl.formatMessage({ id: 'kytucxa.phong.thaoTac' }),
 			align: 'center',
 			width: 90,
 			fixed: 'right',
 			render: (val, record) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
+					<Tooltip title={intl.formatMessage({ id: 'kytucxa.phong.chinhSua' })}>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
 				</>
@@ -90,7 +95,7 @@ const PhongKTXPage = () => {
 			columns={columns}
 			dependencies={[page, limit]}
 			modelName='kytucxa.phong'
-			title="Cấu hình phòng"
+			title={intl.formatMessage({ id: 'kytucxa.phong.title' })}
 			Form={Form}
 			rowSelection
 			deleteMany

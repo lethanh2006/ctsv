@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useIntl, useModel } from 'umi';
 
 /**
  * Select Đơn vị tính để cho vào FormItem
@@ -17,6 +17,7 @@ const SelectUnitLabel = (props: {
 }) => {
 	const { value, onChange, multiple, condition, allowClear, style, isSetRecord } = props;
 	const { danhSach, getAllModel, setRecord, loading } = useModel('kytucxa.unitlabel');
+	const intl = useIntl();
 
 	useEffect(() => {
 		getAllModel(isSetRecord, undefined, condition).then(() => {
@@ -36,7 +37,7 @@ const SelectUnitLabel = (props: {
 			}))}
 			showSearch
 			optionFilterProp='label'
-			placeholder='Chọn đơn vị tính'
+			placeholder= {intl.formatMessage({ id: 'kytucxa.khoanthu.chonDonViTinh' })}
 			allowClear={allowClear ?? false}
 			style={{ width: '100%', ...style }}
 			loading={loading}

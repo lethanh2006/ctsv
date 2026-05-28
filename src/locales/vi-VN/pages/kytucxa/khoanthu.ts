@@ -1,0 +1,30 @@
+export default {
+    'kytucxa.khoanthu.title': 'Cấu hình Khoản thu',
+    'kytucxa.khoanthu.cauHinh': 'cấu hình',
+    
+    'kytucxa.khoanthu.tenKhoanThu': 'Tên khoản thu',
+    'kytucxa.khoanthu.donViTinh': 'Đơn vị tính',
+    'kytucxa.khoanthu.mucThu': 'Mục thu',
+    'kytucxa.khoanthu.soTien': 'Số tiền',
+    'kytucxa.khoanthu.donViTien': 'Đơn vị tiền',
+    'kytucxa.khoanthu.loai': 'Loại',
+    'kytucxa.khoanthu.loaiDoiTuong': 'Loại đối tượng',
+    'kytucxa.khoanthu.doiTuong': 'Đối tượng',
+    'kytucxa.khoanthu.loaiTienTe': 'Loại tiền tệ',
+    'kytucxa.khoanthu.namHoc': 'Năm học',
+    
+    'kytucxa.khoanthu.thaoTac': 'Thao tác',
+    'kytucxa.khoanthu.themMoi': 'Thêm mới',
+    'kytucxa.khoanthu.chinhSua': 'Chỉnh sửa',
+    'kytucxa.khoanthu.xoa': 'Xóa',
+    'kytucxa.khoanthu.confirmDelete': 'Bạn có chắc chắn muốn xóa khoản thu này?',
+    
+    'kytucxa.khoanthu.nhapTenKhoanThu': 'Nhập tên khoản thu',
+    'kytucxa.khoanthu.nhapSoTien': 'Nhập số tiền',
+    'kytucxa.khoanthu.chonLoaiDoiTuong': 'Chọn loại đối tượng',
+    'kytucxa.khoanthu.chonDoiTuong': 'Chọn đối tượng',
+    'kytucxa.khoanthu.chonLoaiTienTe': 'Chọn loại tiền tệ',
+    'kytucxa.khoanthu.chonDonViTinh': 'Chọn đơn vị tính',
+    'kytucxa.khoanthu.chonMucThu': 'Chọn mục thu',
+    'kytucxa.khoanthu.chonNamHoc': 'Chọn năm học',
+};
