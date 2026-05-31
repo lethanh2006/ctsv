@@ -1,0 +1,30 @@
+export default {
+    'kytucxa.khoanthu.title': 'Fee Configuration',
+    'kytucxa.khoanthu.cauHinh': 'configuration',
+    
+    'kytucxa.khoanthu.tenKhoanThu': 'Fee Name',
+    'kytucxa.khoanthu.donViTinh': 'Unit',
+    'kytucxa.khoanthu.mucThu': 'Fee Category',
+    'kytucxa.khoanthu.soTien': 'Amount',
+    'kytucxa.khoanthu.donViTien': 'Currency',
+    'kytucxa.khoanthu.loai': 'Type',
+    'kytucxa.khoanthu.loaiDoiTuong': 'Target Type',
+    'kytucxa.khoanthu.doiTuong': 'Target Group',
+    'kytucxa.khoanthu.loaiTienTe': 'Currency Type',
+    'kytucxa.khoanthu.namHoc': 'Academic Year',
+    
+    'kytucxa.khoanthu.thaoTac': 'Action',
+    'kytucxa.khoanthu.themMoi': 'Add New',
+    'kytucxa.khoanthu.chinhSua': 'Edit',
+    'kytucxa.khoanthu.xoa': 'Delete',
+    'kytucxa.khoanthu.confirmDelete': 'Are you sure you want to delete this fee?',
+    
+    'kytucxa.khoanthu.nhapTenKhoanThu': 'Enter fee name',
+    'kytucxa.khoanthu.nhapSoTien': 'Enter amount',
+    'kytucxa.khoanthu.chonLoaiDoiTuong': 'Select target type',
+    'kytucxa.khoanthu.chonDoiTuong': 'Select target group',
+    'kytucxa.khoanthu.chonLoaiTienTe': 'Select currency type',
+    'kytucxa.khoanthu.chonDonViTinh': 'Select unit',
+    'kytucxa.khoanthu.chonMucThu': 'Select fee category',
+    'kytucxa.khoanthu.chonNamHoc': 'Select academic year',
+};

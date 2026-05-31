@@ -37,7 +37,7 @@ const PhongKTXPage = () => {
 		{
 			title: intl.formatMessage({ id: 'kytucxa.phong.tenPhong' }),
 			dataIndex: 'ten',
-			width: 150,
+			width: 140,
 			filterType: 'string',
 		},
 		{
@@ -51,7 +51,7 @@ const PhongKTXPage = () => {
 			title: intl.formatMessage({ id: 'kytucxa.phong.sucChua' }),
 			dataIndex: 'soLuongToiDa',
 			align: 'center',
-			width: 90,
+			width: 100,
 			sorter: true,
 			render: (val) => val || '-',
 		},
@@ -59,7 +59,7 @@ const PhongKTXPage = () => {
 			title: intl.formatMessage({ id: 'kytucxa.phong.dangO' }),
 			dataIndex: 'soLuongHienTai',
 			align: 'center',
-			width: 90,
+			width: 100,
 			sorter: true,
 		},
 		{
@@ -79,7 +79,7 @@ const PhongKTXPage = () => {
 		{
 			title: intl.formatMessage({ id: 'kytucxa.phong.thaoTac' }),
 			align: 'center',
-			width: 90,
+			width: 80,
 			fixed: 'right',
 			render: (val, record) => (
 				<>
