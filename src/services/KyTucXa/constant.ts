@@ -21,6 +21,11 @@ export enum EGioiTinh {
 	NU = 'Nữ',
 }
 
+export enum ELoaiSinhVienKTX {
+	VIET_NAM = 'Việt Nam',
+	QUOC_TE = 'Quốc tế',
+}
+
 export enum ELoaiKhoanThu {
 	KTX = 'KTX',
 }

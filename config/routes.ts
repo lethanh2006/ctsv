@@ -841,27 +841,24 @@
 				// access: 'cctFilter',
 			},
 			{
-				name: 'Ký túc xá',
+				name: 'KyTucXa',
 				path: 'ky-tuc-xa',
 				routes: [
 					{
-						name: 'Đợt đăng ký',
-						path: 'dot-dang-ky',
-						component: 'KyTucXa/DotDangKy',
-					},
-					{
-						name: 'Khoản thu',
+						name: 'KhoanThu',
 						path: 'khoan-thu',
 						component: 'KyTucXa/CauHinhKhoanThu',
 					},
 					{
-						name: 'Phòng',
+						name: 'Phong',
 						path: 'phong',
 						component: 'KyTucXa/Phong',
 					},
-
-					
-					
+					{
+						name: 'DotDangKy',
+						path: 'dot-dang-ky',
+						component: 'KyTucXa/DotDangKy',
+					},
 				],
 			},
 

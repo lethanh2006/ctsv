@@ -8,8 +8,9 @@ import { useEffect } from 'react';
 import { useIntl, useModel } from 'umi';
 import { buildUpLoadMultiFile } from '@/services/uploadFile';
 import SelectKhoanThu from './SelectKhoanThu';
-import { EGioiTinh } from '@/services/KyTucXa/constant';
+import { EGioiTinh, ELoaiSinhVienKTX } from '@/services/KyTucXa/constant';
 import SelectTienIch from './SelectTienIch';
+import SelectRoomType from './SelectRoomType';
 
 const FormPhongKTX = () => {
 	const intl = useIntl();
@@ -25,6 +26,7 @@ const FormPhongKTX = () => {
 			const maDanhMucTienIch = record.danhSachTienIch?.map((item: any) => item.maDanhMucTienIch) || [];
 			form.setFieldsValue({
 				...record,
+				nationality: record.nationality ? [record.nationality] : [],
 				danhSachTienIch: {
 					maDanhMucTienIch,
 				},
@@ -39,7 +41,7 @@ const FormPhongKTX = () => {
 	const onFinish = async (values: KyTucXa.IPhongKTX) => {
 		try {
 			const danhSachAnh = await buildUpLoadMultiFile(values, 'danhSachAnh');
-			const { dangKyKyTucXaRule, danhSachTienIch, ...restValues } = values as any;
+			const { dangKyKyTucXaRule, danhSachTienIch, nationality: nationalityArray, ...restValues } = values as any;
 			
 			const maDanhMucList = danhSachTienIch?.maDanhMucTienIch || [];
 			const formattedTienIch = Array.isArray(maDanhMucList)
@@ -50,6 +52,7 @@ const FormPhongKTX = () => {
 
 			const finalValues = { 
 				...restValues, 
+				nationality: (nationalityArray && nationalityArray.length > 0) ? nationalityArray[0] : null,
 				...(dangKyKyTucXaRule || {}),
 				danhSachTienIch: formattedTienIch,
 				danhSachAnh: danhSachAnh ?? [] 
@@ -96,11 +99,35 @@ const FormPhongKTX = () => {
 							{intl.formatMessage({ id: 'kytucxa.phong.quyDinhDangKy' })}
 						</div>
 					</Col>
-					<Col xs={24} md={24}>
-						<Form.Item name='isOtherNationality' valuePropName='checked'>
-							<Checkbox disabled={isView}>
-								Dành cho sinh viên quốc tế
-							</Checkbox>
+					<Col xs={24}>
+						<Form.Item name='nationality'>
+							<Checkbox.Group 
+								disabled={isView}
+								onChange={(checkedValues) => {
+									if (checkedValues.length > 1) {
+										form.setFieldValue('nationality', [checkedValues[checkedValues.length - 1]]);
+									}
+								}}
+								style={{ width: '100%' }}
+							>
+								<Row gutter={[12, 12]}>
+									<Col xs={24} md={12}>
+										<Checkbox value={ELoaiSinhVienKTX.QUOC_TE}>
+											{intl.formatMessage({ id: 'kytucxa.phong.international' })}
+										</Checkbox>
+									</Col>
+									<Col xs={24} md={12}>
+										<Checkbox value={ELoaiSinhVienKTX.VIET_NAM}>
+											{intl.formatMessage({ id: 'kytucxa.phong.vietnamese' })}
+										</Checkbox>
+									</Col>
+								</Row>
+							</Checkbox.Group>
+						</Form.Item>
+					</Col>
+					<Col xs={24}>
+						<Form.Item name='loaiPhongKtx' label={intl.formatMessage({ id: 'kytucxa.phong.loaiPhong' })}>
+							<SelectRoomType />
 						</Form.Item>
 					</Col>
 					{/* <Col xs={24} md={12}>

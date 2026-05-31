@@ -13,6 +13,7 @@ declare module KyTucXa {
 		ma: string;
 		ten?: string;
 
+		loaiPhongKtx?: string;
 		maGioiTinh?: EGioiTinh | string;
 		soLuongToiDa?: number;
 		soLuongHienTai?: number;
@@ -26,6 +27,7 @@ declare module KyTucXa {
 		
 		gioiTinh?: EGioiTinh | string;
 		maxPerKhoa?: number;
+		nationality?: string | null;
 	}
 
 	export interface IKhoanThuKTX {
