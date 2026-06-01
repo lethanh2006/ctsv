@@ -16,7 +16,7 @@ const SelectLoaiPhongKTX = (props: {
     selectMa?: boolean;
 }) => {
     const { value, onChange, multiple, condition, allowClear, style, isSetRecord } = props;
-    const { danhSach, getAllModel, setRecord, loading } = useModel('kytucxa.tienich');
+    const { danhSach, getAllModel, setRecord, loading } = useModel('kytucxa.loaiphong');
     const intl = useIntl();
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const SelectLoaiPhongKTX = (props: {
             onChange={onChange}
             options={danhSach.map((item) => ({
                 key: item._id,
-                value: item.ma,
+                value: item.ten,
                 label: `${item.ten}`,
             }))}
             showSearch

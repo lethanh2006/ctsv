@@ -26,7 +26,7 @@ const FormPhongKTX = () => {
 			const maDanhMucTienIch = record.danhSachTienIch?.map((item: any) => item.maDanhMucTienIch) || [];
 			form.setFieldsValue({
 				...record,
-				nationality: record.nationality ? [record.nationality] : [],
+				quocTichPhong: record.quocTichPhong ? [record.quocTichPhong] : [],
 				danhSachTienIch: {
 					maDanhMucTienIch,
 				},
@@ -41,7 +41,7 @@ const FormPhongKTX = () => {
 	const onFinish = async (values: KyTucXa.IPhongKTX) => {
 		try {
 			const danhSachAnh = await buildUpLoadMultiFile(values, 'danhSachAnh');
-			const { dangKyKyTucXaRule, danhSachTienIch, nationality: nationalityArray, ...restValues } = values as any;
+			const { dangKyKyTucXaRule, danhSachTienIch, quocTichPhong: nationalityArray, ...restValues } = values as any;
 			
 			const maDanhMucList = danhSachTienIch?.maDanhMucTienIch || [];
 			const formattedTienIch = Array.isArray(maDanhMucList)
@@ -52,7 +52,7 @@ const FormPhongKTX = () => {
 
 			const finalValues = { 
 				...restValues, 
-				nationality: (nationalityArray && nationalityArray.length > 0) ? nationalityArray[0] : null,
+				quocTichPhong: (nationalityArray && nationalityArray.length > 0) ? nationalityArray[0] : null,
 				...(dangKyKyTucXaRule || {}),
 				danhSachTienIch: formattedTienIch,
 				danhSachAnh: danhSachAnh ?? [] 
@@ -91,7 +91,7 @@ const FormPhongKTX = () => {
 								</div>
 							}
 						>
-							<UploadFile maxCount={10} accept='image/*' disabled={isView} otherProps={{ listType: 'picture-card' }} />
+							<UploadFile maxCount={5} accept='image/*' disabled={isView} otherProps={{ listType: 'picture-card' }} />
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
@@ -100,12 +100,13 @@ const FormPhongKTX = () => {
 						</div>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='nationality'>
+						<Form.Item name='quocTichPhong'>
 							<Checkbox.Group 
 								disabled={isView}
 								onChange={(checkedValues) => {
-									if (checkedValues.length > 1) {
-										form.setFieldValue('nationality', [checkedValues[checkedValues.length - 1]]);
+									console.log(checkedValues.length)
+									if (checkedValues.length >= 1) {
+										form.setFieldValue('quocTichPhong', [checkedValues[checkedValues.length - 1]]);
 									}
 								}}
 								style={{ width: '100%' }}
