@@ -25,9 +25,13 @@ declare module KyTucXa {
 		danhSachTienIch: ITienIch[];
 		maToaNha?: string;
 		
-		gioiTinh?: EGioiTinh | string;
-		maxPerKhoa?: number;
-		quocTichPhong?: string | null;
+		dangKyKyTucXaRule?: {
+			_id?: string;
+			phongId?: string;
+			gioiTinh?: EGioiTinh | string;
+			maxPerKhoa?: number | null;
+			quocTichPhong?: string | null;
+		};
 	}
 
 	export interface IKhoanThuKTX {

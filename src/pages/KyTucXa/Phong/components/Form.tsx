@@ -23,10 +23,13 @@ const FormPhongKTX = () => {
 		getAllToaNha();
 		if (!visibleForm) return;
 		if (record?._id) {
-			const maDanhMucTienIch = record.danhSachTienIch?.map((item: any) => item.maDanhMucTienIch) || [];
+			const maDanhMucTienIch = record.danhSachTienIch?.map((item: KyTucXa.ITienIch) => item.maDanhMucTienIch) || [];
 			form.setFieldsValue({
 				...record,
-				quocTichPhong: record.quocTichPhong ? [record.quocTichPhong] : [],
+				dangKyKyTucXaRule: {
+					...(record?.dangKyKyTucXaRule || {}),
+					quocTichPhong: record?.dangKyKyTucXaRule?.quocTichPhong ? [record.dangKyKyTucXaRule.quocTichPhong] : [],
+				},
 				danhSachTienIch: {
 					maDanhMucTienIch,
 				},
@@ -41,8 +44,12 @@ const FormPhongKTX = () => {
 	const onFinish = async (values: KyTucXa.IPhongKTX) => {
 		try {
 			const danhSachAnh = await buildUpLoadMultiFile(values, 'danhSachAnh');
-			const { dangKyKyTucXaRule, danhSachTienIch, quocTichPhong: nationalityArray, ...restValues } = values as any;
+			const { dangKyKyTucXaRule, danhSachTienIch, ...restValues } = values as any;
+			const nationalityArray = dangKyKyTucXaRule?.quocTichPhong;
 			
+			const rulePayload = { ...(dangKyKyTucXaRule || {}) };
+			delete rulePayload.quocTichPhong;
+
 			const maDanhMucList = danhSachTienIch?.maDanhMucTienIch || [];
 			const formattedTienIch = Array.isArray(maDanhMucList)
 				? maDanhMucList.map((id: string) => ({
@@ -53,7 +60,7 @@ const FormPhongKTX = () => {
 			const finalValues = { 
 				...restValues, 
 				quocTichPhong: (nationalityArray && nationalityArray.length > 0) ? nationalityArray[0] : null,
-				...(dangKyKyTucXaRule || {}),
+				...rulePayload,
 				danhSachTienIch: formattedTienIch,
 				danhSachAnh: danhSachAnh ?? [] 
 			};
@@ -100,13 +107,12 @@ const FormPhongKTX = () => {
 						</div>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='quocTichPhong'>
+						<Form.Item name={['dangKyKyTucXaRule', 'quocTichPhong']}>
 							<Checkbox.Group 
 								disabled={isView}
 								onChange={(checkedValues) => {
-									console.log(checkedValues.length)
 									if (checkedValues.length >= 1) {
-										form.setFieldValue('quocTichPhong', [checkedValues[checkedValues.length - 1]]);
+										form.setFieldValue(['dangKyKyTucXaRule', 'quocTichPhong'], [checkedValues[checkedValues.length - 1]]);
 									}
 								}}
 								style={{ width: '100%' }}
@@ -127,7 +133,7 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='maloaiPhongKtx' label={intl.formatMessage({ id: 'kytucxa.phong.loaiPhong' })}>
+						<Form.Item name='maLoaiPhongKtx' label={intl.formatMessage({ id: 'kytucxa.phong.loaiPhong' })}>
 							<SelectRoomType />
 						</Form.Item>
 					</Col>
