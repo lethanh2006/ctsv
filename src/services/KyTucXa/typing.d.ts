@@ -13,7 +13,7 @@ declare module KyTucXa {
 		ma: string;
 		ten?: string;
 
-		loaiPhongKtx?: string;
+		maloaiPhongKtx?: string;
 		maGioiTinh?: EGioiTinh | string;
 		soLuongToiDa?: number;
 		soLuongHienTai?: number;
@@ -82,8 +82,8 @@ declare module KyTucXa {
         thoiGianBatDau: string;
         thoiGianKetThuc: string;
         maKhoaNganh: string[];
-	danhSachToaNha?: string[];
-	danhSachPhong?: string[];
+		danhSachToaNha?: string[];
+		danhSachPhong?: string[];
         ghiChu: string;
         soLuongDon: number;
     }

@@ -127,7 +127,7 @@ const FormPhongKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col xs={24}>
-						<Form.Item name='loaiPhongKtx' label={intl.formatMessage({ id: 'kytucxa.phong.loaiPhong' })}>
+						<Form.Item name='maloaiPhongKtx' label={intl.formatMessage({ id: 'kytucxa.phong.loaiPhong' })}>
 							<SelectRoomType />
 						</Form.Item>
 					</Col>

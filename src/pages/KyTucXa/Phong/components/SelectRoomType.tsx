@@ -32,7 +32,7 @@ const SelectLoaiPhongKTX = (props: {
             onChange={onChange}
             options={danhSach.map((item) => ({
                 key: item._id,
-                value: item.ten,
+                value: item.ma,
                 label: `${item.ten}`,
             }))}
             showSearch
