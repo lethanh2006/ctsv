@@ -14,6 +14,7 @@ import SelectKhoaSinhVien from '../NamHoc/KhoaSinhVien/components/Select';
 const FormItemKhoaNganh = (props: {
 	value?: string[] | null;
 	onChange?: (val: string[] | null) => void;
+	onChangeRows?: (rows: KhoaNganh.IRecord[]) => void;
 	khoaNganhCondition?: Partial<KhoaNganh.IRecord>;
 	showTrinhDo?: boolean;
 	showHinhThuc?: boolean;
@@ -29,7 +30,7 @@ const FormItemKhoaNganh = (props: {
 	const { getAllModel, danhSach, loading, setDanhSach } = useModel('daotaov2.namhoc.khoanganh');
 	const [maKhoaList, setMaKhoaList] = useState<string[] | undefined>();
 	const [maNganhList, setMaNganhList] = useState<string[] | undefined>();
-	const { value, onChange, khoaNganhCondition, showTrinhDo = true, showHinhThuc = true } = props;
+	const { value, onChange, onChangeRows, khoaNganhCondition, showTrinhDo = true, showHinhThuc = true } = props;
 	const soCotBoLoc = showTrinhDo && showHinhThuc ? 6 : 12;
 
 	useEffect(() => {
@@ -193,7 +194,10 @@ const FormItemKhoaNganh = (props: {
 						rowKey: (rec: KhoaNganh.IRecord) => rec.ma,
 						rowSelection: {
 							selectedRowKeys: value ?? [],
-							onChange: (keys: any) => onChange && onChange(keys as string[]),
+							onChange: (keys: any, rows: KhoaNganh.IRecord[]) => {
+								onChange && onChange(keys as string[]);
+								onChangeRows && onChangeRows(rows);
+							},
 							preserveSelectedRowKeys: true,
 							columnWidth: 40,
 						},

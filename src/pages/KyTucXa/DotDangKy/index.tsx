@@ -25,6 +25,13 @@ const DotDangKy = () => {
 			filterType: 'string',
 		},
 		{
+			title: 'Loại đợt',
+			dataIndex: 'loaiDot',
+			width: 140,
+			filterType: 'string',
+			render: (value) => value || '--',
+		},
+		{
 			title: 'Bắt đầu',
 			dataIndex: 'thoiGianBatDau',
 			width: 150,

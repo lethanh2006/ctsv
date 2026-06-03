@@ -79,16 +79,37 @@ declare module KyTucXa {
 		soLuong: number;
 	}
 
+	export interface ICauHinhKhoaToa {
+		maKhoaSinhVien: string;
+		danhSachToaNha: string[];
+	}
+
+	export interface ISinhVienDangKyKTX {
+		_id: string;
+		maSinhVien?: string;
+		ma?: string;
+		hoTen?: string;
+		tenSinhVien?: string;
+		maKhoaSinhVien?: string;
+		khoaSinhVien?: {
+			ma?: string;
+			ten?: string;
+		};
+	}
+
 	export interface IDotDangKyKTX {
-        _id: string;
-        tenDot: string;
-        maHocKy: string;
-        thoiGianBatDau: string;
-        thoiGianKetThuc: string;
-        maKhoaNganh: string[];
+		_id: string;
+		tenDot: string;
+		maHocKy: string;
+		thoiGianBatDau: string;
+		thoiGianKetThuc: string;
+		loaiDot?: 'Theo khoa' | 'Theo danh sách';
+		cauHinhKhoaToa?: ICauHinhKhoaToa[];
+		hanDuyetMien?: string | null;
+		maKhoaNganh: string[];
 		danhSachToaNha?: string[];
 		danhSachPhong?: string[];
-        ghiChu: string;
-        soLuongDon: number;
-    }
+		ghiChu: string;
+		soLuongDon: number;
+	}
 }
