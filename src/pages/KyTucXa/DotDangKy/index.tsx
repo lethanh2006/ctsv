@@ -5,10 +5,15 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import BatchIdModal from './components/DotMienKTX/BatchIdModal';
 import Form from './components/Form';
 
 const DotDangKy = () => {
 	const { handleEdit, deleteModel, getModel } = useModel('kytucxa.dotdangky');
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
 
 	const columns: IColumn<KyTucXa.IDotDangKyKTX>[] = [
 		{
@@ -64,7 +69,7 @@ const DotDangKy = () => {
 		},
 		{
 			title: 'Thao tác',
-			width: 100,
+			width: 150,
 			align: 'center',
 			fixed: 'right',
 			render: (_value, record) => (
@@ -72,6 +77,18 @@ const DotDangKy = () => {
 					<Tooltip title='Chỉnh sửa'>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
+					<Tooltip title='Xem ID'>
+						<Button
+							onClick={() => {
+								setSelectedId(record._id);
+								setIsModalOpen(true);
+							}}
+							type='link'
+						>
+							ID
+						</Button>
+					</Tooltip>
+
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, getModel)}
@@ -87,13 +104,16 @@ const DotDangKy = () => {
 	];
 
 	return (
-		<TableBase
-			columns={columns}
-			modelName='kytucxa.dotdangky'
-			title='Đợt đăng ký ký túc xá'
-			Form={Form}
-			widthDrawer={900}
-		/>
+		<>
+			<TableBase
+				columns={columns}
+				modelName='kytucxa.dotdangky'
+				title='Đợt đăng ký ký túc xá'
+				Form={Form}
+				widthDrawer={900}
+			/>
+			<BatchIdModal open={isModalOpen} id={selectedId} onClose={() => setIsModalOpen(false)} />
+		</>
 	);
 };
 
