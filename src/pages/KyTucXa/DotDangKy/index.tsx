@@ -6,7 +6,7 @@ import { useModel } from '@umijs/max';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import BatchIdModal from './components/DotMienKTX/BatchIdModal';
+import DotMienKTXModal from './components/DotMienKTX/DotMienKTXModal';
 import Form from './components/Form';
 
 const DotDangKy = () => {
@@ -38,7 +38,7 @@ const DotDangKy = () => {
 		},
 		{
 			title: 'Bắt đầu',
-			dataIndex: 'thoiGianBatDau',
+			dataIndex: 'ngayChuyenVao',
 			width: 150,
 			align: 'center',
 			filterType: 'datetime',
@@ -47,7 +47,7 @@ const DotDangKy = () => {
 		},
 		{
 			title: 'Kết thúc',
-			dataIndex: 'thoiGianKetThuc',
+			dataIndex: 'ngayChuyenRa',
 			width: 150,
 			align: 'center',
 			filterType: 'datetime',
@@ -112,7 +112,7 @@ const DotDangKy = () => {
 				Form={Form}
 				widthDrawer={900}
 			/>
-			<BatchIdModal open={isModalOpen} id={selectedId} onClose={() => setIsModalOpen(false)} />
+			<DotMienKTXModal open={isModalOpen} id={selectedId} onClose={() => setIsModalOpen(false)} />
 		</>
 	);
 };

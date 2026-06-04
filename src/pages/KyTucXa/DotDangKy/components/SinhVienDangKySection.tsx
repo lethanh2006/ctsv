@@ -1,5 +1,4 @@
 import ImportExcel from '@/components/ImportExcel';
-import { deleteDotSinhVienDangKyKTX, getDotSinhVienDangKyKTX, postDotSinhVienDangKyKTX } from '@/services/KyTucXa';
 import { Button, Input, Modal, Space, Table, message } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 

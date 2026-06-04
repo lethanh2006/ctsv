@@ -16,6 +16,18 @@ export const colorTrangThaiSinhVienKTX: Record<ETrangThaiSinhVienKTX, string> = 
 	[ETrangThaiSinhVienKTX.KHONG_DUYET]: 'orange',
 };
 
+export enum ETrangThaiMienDangKyKTX {
+	CHO_DUYET = 'CHO_DUYET',
+	DA_DUYET = 'DA_DUYET',
+	TU_CHOI = 'TU_CHOI',
+}
+
+export const transTrangThaiMienDangKyKTX: Record<ETrangThaiMienDangKyKTX, string> = {
+	[ETrangThaiMienDangKyKTX.CHO_DUYET]: 'Chờ duyệt',
+	[ETrangThaiMienDangKyKTX.DA_DUYET]: 'Đã duyệt',
+	[ETrangThaiMienDangKyKTX.TU_CHOI]: 'Từ chối',
+};
+
 export enum EGioiTinh {
 	NAM = 'Nam',
 	NU = 'Nữ',

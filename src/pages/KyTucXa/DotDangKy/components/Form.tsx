@@ -115,13 +115,13 @@ const FormDotDangKyKTX = () => {
 	}, [selectedToaNhaIds, allPhong, visibleForm]);
 
 	const onFinish = async (values: KyTucXa.IDotDangKyKTX) => {
-		if (dayjs(values.thoiGianKetThuc).isBefore(dayjs(values.thoiGianBatDau))) {
-			message.error('Thời gian kết thúc phải sau thời gian bắt đầu');
+		if (dayjs(values.ngayChuyenRa).isBefore(dayjs(values.ngayChuyenVao))) {
+			message.error('Ngày chuyển ra phải sau ngày chuyển vào');
 			return;
 		}
 
-		if (values.hanDuyetMien && dayjs(values.hanDuyetMien).isAfter(dayjs(values.thoiGianKetThuc))) {
-			message.error('Hạn duyệt miễn phải trước thời gian kết thúc');
+		if (values.hanDuyetMien && dayjs(values.hanDuyetMien).isAfter(dayjs(values.ngayChuyenRa))) {
+			message.error('Hạn duyệt miễn phải trước ngày chuyển ra');
 			return;
 		}
 
@@ -196,12 +196,12 @@ const FormDotDangKyKTX = () => {
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='thoiGianBatDau' label='Thời gian bắt đầu' rules={[...rules.required]}>
+						<Form.Item name='ngayChuyenVao' label='Ngày chuyển vào' rules={[...rules.required]}>
 							<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
-						<Form.Item name='thoiGianKetThuc' label='Thời gian kết thúc' rules={[...rules.required]}>
+						<Form.Item name='ngayChuyenRa' label='Ngày chuyển ra' rules={[...rules.required]}>
 							<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
 						</Form.Item>
 					</Col>

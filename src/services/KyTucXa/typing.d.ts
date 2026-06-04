@@ -1,4 +1,4 @@
-import type { ETrangThaiDotDangKyKTX, ETrangThaiPhong, ETrangThaiSinhVienKTX, EGioiTinh, ELoaiKhoanThu, ERuleType } from './constant';
+import type { ETrangThaiDotDangKyKTX, ETrangThaiPhong, ETrangThaiSinhVienKTX, ETrangThaiMienDangKyKTX, EGioiTinh, ELoaiKhoanThu, ERuleType } from './constant';
 
 declare module KyTucXa {
 	export interface IToaKTX {
@@ -101,8 +101,8 @@ declare module KyTucXa {
 		_id: string;
 		tenDot: string;
 		maHocKy: string;
-		thoiGianBatDau: string;
-		thoiGianKetThuc: string;
+		ngayChuyenVao: string;
+		ngayChuyenRa: string;
 		loaiDot?: 'Theo khoa' | 'Theo danh sách';
 		cauHinhKhoaToa?: ICauHinhKhoaToa[];
 		hanDuyetMien?: string | null;
@@ -112,4 +112,20 @@ declare module KyTucXa {
 		ghiChu: string;
 		soLuongDon: number;
 	}
+
+
+	export interface IDotMienDangKyKTX {
+		_id: string;
+		maSinhVien: string;
+		nguoiDuyet?: string;
+		dotId?: string;
+		urlMinhChung?: string;
+		ngayDuyet?: string;
+		ssoId?: string;
+		ghiChuDuyet?: string;
+		hoTen?: string;
+		trangThaiMinhChung?: ETrangThaiMienDangKyKTX | string;
+	}
+
+
 }
