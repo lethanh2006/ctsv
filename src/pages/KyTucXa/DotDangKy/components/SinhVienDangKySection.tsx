@@ -1,3 +1,4 @@
+import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { resetFieldsForm } from '@/utils/utils';
@@ -66,21 +67,16 @@ const SinhVienDangKySection = (props: { dotId?: string; visible?: boolean }) => 
 	return (
 		<Card title={'Danh sách sinh viên đăng ký KTX'} className='form-card' style={{ marginTop: 12 }}>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Form.Item name='danhSach' hidden>
-					<div />
-				</Form.Item>
-				<Row gutter={16} align='middle' style={{ marginBottom: 16 }}>
-					<Col span={24}>
-						<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-							<Button type='primary' icon={<ImportOutlined />} onClick={() => setVisibleSelect(true)}>
-								Nhập danh sách sinh viên
-							</Button>
-							{selectedUsers.length > 0 && (
-								<span style={{ color: '#52c41a', fontWeight: 'bold' }}>
-									Đã chọn {selectedUsers.length} sinh viên
-								</span>
-							)}
-						</div>
+				<Row gutter={16}>
+					<Col span={18}>
+						<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
+							<SelectSinhVienDebounce multiple selectMa />
+						</Form.Item>
+					</Col>
+					<Col span={6} style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 24 }}>
+						<Button onClick={() => setVisibleSelect(true)} icon={<ImportOutlined />} style={{ width: '100%' }}>
+							Nhập danh sách sinh viên
+						</Button>
 					</Col>
 				</Row>
 
