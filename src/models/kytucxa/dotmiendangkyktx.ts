@@ -18,10 +18,20 @@ export default () => {
         return axios.delete(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky/${id}`, { headers });
     };
 
+    const postDuyet = (dotId: string, id: string, headers?: any) => {
+        return axios.post(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky/${id}/duyet`, {}, { headers });
+    };
+
+    const postTuChoi = (dotId: string, id: string, body?: any, headers?: any) => {
+        return axios.post(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky/${id}/tu-choi`, body, { headers });
+    };
+
     return {
         ...objInit,
         postMienDangKy,
         getMienDangKy,
         deleteMienDangKy,
+        postDuyet,
+        postTuChoi,
     };
 };

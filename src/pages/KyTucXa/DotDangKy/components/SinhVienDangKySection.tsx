@@ -1,148 +1,123 @@
-import ImportExcel from '@/components/ImportExcel';
-import { Button, Input, Modal, Space, Table, message } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
-
-const extractMaSinhVien = (rows: any[]) =>
-	rows.map((row) => String(row?.[0] ?? '').trim()).filter((maSinhVien) => !!maSinhVien);
+import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
+import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
+import { resetFieldsForm } from '@/utils/utils';
+import { ImportOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Form, message, Modal, Row } from 'antd';
+import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 
 const SinhVienDangKySection = (props: { dotId?: string; visible?: boolean }) => {
 	const { dotId, visible } = props;
-	const [danhSachSinhVien, setDanhSachSinhVien] = useState<any[]>([]);
-	const [loading, setLoading] = useState(false);
-	const [importOpen, setImportOpen] = useState(false);
-	const [manualValue, setManualValue] = useState('');
-
-	const loadData = async () => {
-		if (!dotId) return;
-		setLoading(true);
-		try {
-			const response: any = await getDotSinhVienDangKyKTX(dotId);
-			setDanhSachSinhVien(response?.data ?? response ?? []);
-		} catch (error) {
-			message.error('Không tải được danh sách sinh viên đăng ký');
-		} finally {
-			setLoading(false);
-		}
-	};
+	const [form] = Form.useForm();
+	const { postSinhVienDangKy, getByIdModel, formSubmiting, setFormSubmiting } = useModel('kytucxa.dotdangkyktx');
 
 	useEffect(() => {
-		if (visible && dotId) loadData();
-		if (!visible) {
-			setManualValue('');
-			setImportOpen(false);
+		if (visible) {
+			resetFieldsForm(form);
+			setSelectedUsers([]);
 		}
-	}, [visible, dotId]);
+	}, [visible]);
 
-	const currentMaSinhVien = useMemo(
-		() =>
-			danhSachSinhVien
-				.map((item) => String(item?.maSinhVien ?? item?.ma ?? item?.sinhVien?.ma ?? '').trim())
-				.filter((maSinhVien) => !!maSinhVien),
-		[danhSachSinhVien],
-	);
-
-	const submitDanhSach = async (danhSachMaSinhVien: string[]) => {
-		if (!dotId) {
-			message.warning('Vui lòng lưu đợt trước khi quản lý danh sách sinh viên');
-			return;
-		}
-		const uniqueDanhSach = Array.from(new Set(danhSachMaSinhVien.filter((maSinhVien) => !!maSinhVien)));
-		if (!uniqueDanhSach.length) {
-			message.warning('Vui lòng nhập ít nhất 1 MSSV');
-			return;
-		}
-		const danhSachKhongTrung = uniqueDanhSach.filter((maSinhVien) => !currentMaSinhVien.includes(maSinhVien));
-		if (!danhSachKhongTrung.length) {
-			message.info('Danh sách đã có đầy đủ các MSSV này');
-			return;
-		}
+	const onFinish = async (values: any) => {
+		setFormSubmiting?.(true);
 		try {
-			await postDotSinhVienDangKyKTX(dotId, { danhSachMaSinhVien: danhSachKhongTrung });
-			message.success('Đã thêm sinh viên vào đợt');
-			setManualValue('');
-			await loadData();
-		} catch (error) {
-			message.error('Không thêm được sinh viên vào đợt');
+			if (!dotId) {
+				message.error('Thiếu id đợt đăng ký');
+				return;
+			}
+
+			if (!postSinhVienDangKy) {
+				message.error('Chưa có service postSinhVienDangKy');
+				return;
+			}
+
+			const list = Array.isArray(values.danhSach) ? values.danhSach : [];
+
+			if (!list.length) {
+				message.error('Vui lòng chọn ít nhất 1 sinh viên');
+				return;
+			}
+
+			await postSinhVienDangKy(dotId, list);
+			message.success('Thêm sinh viên đăng ký thành công');
+
+			// refresh parent record if possible
+			if (getByIdModel) {
+				try {
+					await getByIdModel(dotId, true);
+				} catch (er) {
+					// ignore
+				}
+			}
+
+			form.resetFields();
+			setSelectedUsers([]);
+		} catch (er) {
+			console.error(er);
+			message.error('Lỗi khi thêm sinh viên đăng ký');
+		} finally {
+			setFormSubmiting?.(false);
 		}
 	};
 
-	const handleImportData = async (rows: any[]) => {
-		await submitDanhSach(extractMaSinhVien(rows));
-		setImportOpen(false);
-	};
-
-	const handleDelete = async (record: any) => {
-		if (!dotId || !record?._id) return;
-		try {
-			await deleteDotSinhVienDangKyKTX(dotId, record._id);
-			message.success('Đã xóa sinh viên khỏi đợt');
-			await loadData();
-		} catch (error) {
-			message.error('Không xóa được sinh viên khỏi đợt');
-		}
-	};
+	const [visibleSelect, setVisibleSelect] = useState(false);
+	const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
 
 	return (
-		<div style={{ marginTop: 16 }}>
-			<div style={{ fontWeight: 600, marginBottom: 8 }}>Danh sách sinh viên được đăng ký</div>
-			<Space direction='vertical' style={{ width: '100%' }} size={12}>
-				<Space wrap>
-					<Button onClick={() => setImportOpen(true)} type='primary'>
-						Import file Excel
-					</Button>
-					<Input.Search
-						allowClear
-						placeholder='Nhập MSSV, ngăn cách bằng dấu phẩy hoặc xuống dòng'
-						style={{ width: 380 }}
-						value={manualValue}
-						onChange={(event) => setManualValue(event.target.value)}
-						onSearch={() => submitDanhSach(manualValue.split(/[\n,;]+/).map((item) => item.trim()))}
-					/>
-				</Space>
-				<div>Tổng số: {danhSachSinhVien.length}</div>
-				<Table
-					rowKey={(record) => record?._id ?? record?.maSinhVien ?? record?.ma}
-					loading={loading}
-					pagination={{ pageSize: 10, showSizeChanger: false }}
-					dataSource={danhSachSinhVien}
-					columns={[
-						{
-							title: '#',
-							width: 60,
-							render: (_value, _record, index) => index + 1,
-						},
-						{
-							title: 'MSSV',
-							dataIndex: 'maSinhVien',
-							render: (_value, record) => record?.maSinhVien ?? record?.ma ?? record?.sinhVien?.ma ?? '--',
-						},
-						{
-							title: 'Họ tên',
-							dataIndex: 'hoTen',
-							render: (_value, record) => record?.hoTen ?? record?.tenSinhVien ?? record?.sinhVien?.ten ?? '--',
-						},
-						{
-							title: 'Khóa',
-							dataIndex: 'maKhoaSinhVien',
-							render: (_value, record) => record?.maKhoaSinhVien ?? record?.khoaSinhVien?.ma ?? '--',
-						},
-						{
-							title: 'Xóa',
-							width: 100,
-							render: (_value, record) => (
-								<Button danger type='link' onClick={() => handleDelete(record)}>
-									Xóa
-								</Button>
-							),
-						},
-					]}
-				/>
-			</Space>
+		<Card title={'Danh sách sinh viên đăng ký KTX'} className='form-card' style={{ marginTop: 12 }}>
+			<Form onFinish={onFinish} form={form} layout='vertical'>
+				<Form.Item name='danhSach' hidden>
+					<div />
+				</Form.Item>
+				<Row gutter={16} align='middle' style={{ marginBottom: 16 }}>
+					<Col span={24}>
+						<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+							<Button type='primary' icon={<ImportOutlined />} onClick={() => setVisibleSelect(true)}>
+								Nhập danh sách sinh viên
+							</Button>
+							{selectedUsers.length > 0 && (
+								<span style={{ color: '#52c41a', fontWeight: 'bold' }}>
+									Đã chọn {selectedUsers.length} sinh viên
+								</span>
+							)}
+						</div>
+					</Col>
+				</Row>
 
-			<Modal open={importOpen} onCancel={() => setImportOpen(false)} footer={null} destroyOnClose width={720}>
-				<ImportExcel onCancel={() => setImportOpen(false)} handleData={handleImportData} title='Import MSSV vào đợt' />
-			</Modal>
-		</div>
+				<Modal
+					open={visibleSelect}
+					onCancel={() => setVisibleSelect(false)}
+					title={'Chọn/nhập danh sách sinh viên'}
+					width={900}
+					footer={null}
+					destroyOnClose
+				>
+					<TableSelectUser
+						type={EVaiTroKhaoSat.SINH_VIEN}
+						selectedUsers={selectedUsers}
+						setSelectedUsers={(val: any) => setSelectedUsers(val)}
+					/>
+					<div style={{ textAlign: 'right', marginTop: 12 }}>
+						<Button
+							onClick={() => {
+								const codes = (selectedUsers ?? []).map((u: any) => u.code).filter(Boolean);
+								form.setFieldsValue({ danhSach: codes });
+								setVisibleSelect(false);
+							}}
+							type='primary'
+						>
+							Chọn xong
+						</Button>
+					</div>
+				</Modal>
+
+				<div className='form-footer'>
+					<Button loading={formSubmiting} htmlType='submit' type='primary'>
+						Thêm
+					</Button>
+				</div>
+			</Form>
+		</Card>
 	);
 };
 

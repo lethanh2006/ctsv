@@ -151,6 +151,8 @@ const FormDotDangKyKTX = () => {
 		const payload: Partial<KyTucXa.IDotDangKyKTX> = {
 			...restValues,
 			loaiDot,
+			ngayChuyenVao: values?.ngayChuyenVao ? dayjs(values.ngayChuyenVao).toISOString() : undefined,
+			ngayChuyenRa: values?.ngayChuyenRa ? dayjs(values.ngayChuyenRa).toISOString() : undefined,
 			maKhoaNganh: values?.maKhoaNganh ?? [],
 			cauHinhKhoaToa:
 				loaiDot === 'Theo khoa'
@@ -159,7 +161,7 @@ const FormDotDangKyKTX = () => {
 							danhSachToaNha: khoaToaConfig[row.maKhoaSinhVien ?? row.ma] ?? [],
 						}))
 					: [],
-			hanDuyetMien: values?.hanDuyetMien ?? null,
+			hanDuyetMien: values?.hanDuyetMien ? dayjs(values.hanDuyetMien).toISOString() : null,
 			danhSachToaNha: selectedToaNhaIds,
 			danhSachPhong: selectedPhongIds,
 		};
