@@ -1,8 +1,10 @@
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
+import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
+import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { resetFieldsForm } from '@/utils/utils';
 import { useModel } from '@umijs/max';
-import { Button, Card, Col, Form, Row, message } from 'antd';
-import { useEffect } from 'react';
+import { Button, Card, Col, Form, message, Modal, Row } from 'antd';
+import { useEffect, useState } from 'react';
 
 const FormMienKTX = (props: { dotId?: string }) => {
 	const { dotId } = props;
@@ -67,16 +69,51 @@ const FormMienKTX = (props: { dotId?: string }) => {
 		}
 	};
 
+	const [visibleSelect, setVisibleSelect] = useState(false);
+	const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+
 	return (
 		<Card title={'Thêm danh sách mã sinh viên miễn đăng ký KTX'} className='form-card'>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
 				<Row gutter={16}>
-					<Col span={24}>
+					<Col span={18}>
 						<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
 							<SelectSinhVienDebounce multiple selectMa />
 						</Form.Item>
 					</Col>
+					<Col span={6} style={{ display: 'flex', alignItems: 'flex-end' }}>
+						<Button onClick={() => setVisibleSelect(true)} style={{ marginLeft: 8 }}>
+							Nhập danh sách
+						</Button>
+					</Col>
 				</Row>
+
+				<Modal
+					open={visibleSelect}
+					onCancel={() => setVisibleSelect(false)}
+					title={'Chọn/nhập danh sách sinh viên'}
+					width={900}
+					footer={null}
+					destroyOnClose
+				>
+					<TableSelectUser
+						type={EVaiTroKhaoSat.SINH_VIEN}
+						selectedUsers={selectedUsers}
+						setSelectedUsers={(val: any) => setSelectedUsers(val)}
+					/>
+					<div style={{ textAlign: 'right', marginTop: 12 }}>
+						<Button
+							onClick={() => {
+								const codes = (selectedUsers ?? []).map((u: any) => u.code).filter(Boolean);
+								form.setFieldsValue({ danhSach: codes });
+								setVisibleSelect(false);
+							}}
+							type='primary'
+						>
+							Chọn xong
+						</Button>
+					</div>
+				</Modal>
 
 				<div className='form-footer'>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
