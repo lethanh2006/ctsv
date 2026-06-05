@@ -17,6 +17,7 @@ const FormDotDangKyKTX = () => {
 	const [form] = Form.useForm();
 	const { record, visibleForm, edit, setVisibleForm, putModel, postModel, formSubmiting } =
 		useModel('kytucxa.dotdangky');
+	const { postSinhVienDangKy } = useModel('kytucxa.dotdangkyktx');
 	const loaiDot = Form.useWatch('loaiDot', form) ?? 'Theo khoa';
 	const [selectedToaNhaIds, setSelectedToaNhaIds] = useState<string[]>([]);
 	const [selectedPhongIds, setSelectedPhongIds] = useState<string[]>([]);
@@ -147,7 +148,7 @@ const FormDotDangKyKTX = () => {
 			}
 		}
 
-		const { danhSachToaNha, ...restValues } = values as KyTucXa.IDotDangKyKTX;
+		const { danhSachToaNha, danhSach, ...restValues } = values as any;
 		const payload: Partial<KyTucXa.IDotDangKyKTX> = {
 			...restValues,
 			loaiDot,
@@ -167,9 +168,17 @@ const FormDotDangKyKTX = () => {
 		};
 
 		if (edit) {
-			await putModel(record?._id ?? '', payload).catch((er) => console.log(er));
+			const dotId = record?._id ?? '';
+			await putModel(dotId, payload).catch((er) => console.log(er));
+			if (danhSach?.length) {
+				await postSinhVienDangKy?.(dotId, danhSach).catch((er) => console.log(er));
+			}
 		} else {
-			await postModel(payload).catch((er) => console.log(er));
+			const res = await postModel(payload).catch((er) => console.log(er));
+			const newDotId = res?._id;
+			if (newDotId && danhSach?.length) {
+				await postSinhVienDangKy?.(newDotId, danhSach).catch((er) => console.log(er));
+			}
 		}
 	};
 
@@ -281,7 +290,7 @@ const FormDotDangKyKTX = () => {
 						/>
 					</div>
 				) : null}
-				{loaiDot === 'Theo danh sách' ? <SinhVienDangKySection dotId={record?._id} visible={visibleForm} /> : null}
+				{loaiDot === 'Theo danh sách' ? <SinhVienDangKySection form={form} dotId={record?._id} visible={visibleForm} /> : null}
 				<Col xs={24}>
 					<Form.Item name='ghiChu' label='Ghi chú' rules={[...rules.text, ...rules.length(2000)]}>
 						<Input.TextArea rows={3} placeholder='Nhập ghi chú' />
