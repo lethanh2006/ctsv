@@ -55,12 +55,6 @@ const DotDangKy = () => {
 			render: (value) => (value ? dayjs(value).format('HH:mm DD/MM/YYYY') : '--'),
 		},
 		{
-			title: 'Khóa ngành áp dụng',
-			dataIndex: 'maKhoaNganh',
-			width: 220,
-			render: (value) => (Array.isArray(value) && value.length ? value.join(', ') : '--'),
-		},
-		{
 			title: 'Ghi chú',
 			dataIndex: 'ghiChu',
 			width: 220,

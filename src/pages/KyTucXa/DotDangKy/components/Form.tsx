@@ -8,7 +8,7 @@ import SinhVienDangKySection from '@/pages/KyTucXa/DotDangKy/components/SinhVien
 import type { KyTucXa } from '@/services/KyTucXa/typing';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, Radio, Row, message } from 'antd';
+import { Button, Card, Col, Form, Input, Radio, Row, Select, message } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -157,9 +157,9 @@ const FormDotDangKyKTX = () => {
 			cauHinhKhoaToa:
 				loaiDot === 'Theo khoa'
 					? selectedKhoaRows.map((row) => ({
-							maKhoaSinhVien: row.maKhoaSinhVien ?? row.ma,
-							danhSachToaNha: khoaToaConfig[row.maKhoaSinhVien ?? row.ma] ?? [],
-						}))
+						maKhoaSinhVien: row.maKhoaSinhVien ?? row.ma,
+						danhSachToaNha: khoaToaConfig[row.maKhoaSinhVien ?? row.ma] ?? [],
+					}))
 					: [],
 			hanDuyetMien: values?.hanDuyetMien ? dayjs(values.hanDuyetMien).toISOString() : null,
 			danhSachToaNha: selectedToaNhaIds,
@@ -189,16 +189,27 @@ const FormDotDangKyKTX = () => {
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item name='loaiDot' label='Loại đợt' rules={[...rules.required]}>
-							<Radio.Group
+							<Select
 								options={[
 									{ label: 'Theo khoa', value: 'Theo khoa' },
 									{ label: 'Theo danh sách', value: 'Theo danh sách' },
 								]}
+								placeholder='Chọn loại đợt'
 							/>
 						</Form.Item>
 					</Col>
 					<Col span={24} md={12}>
 						<Form.Item name='ngayChuyenVao' label='Ngày chuyển vào' rules={[...rules.required]}>
+							<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='thoiGianBatDau' label='Thời gian bắt đầu' rules={[...rules.required]}>
+							<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
+						</Form.Item>
+					</Col>
+					<Col span={24} md={12}>
+						<Form.Item name='thoiGianKetThuc' label='Thời gian kết thúc' rules={[...rules.required]}>
 							<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
 						</Form.Item>
 					</Col>
@@ -226,11 +237,13 @@ const FormDotDangKyKTX = () => {
 									onChangeRows={(rows) => setSelectedKhoaRows(rows)}
 								/>
 							</Form.Item>
-							<KhoaToaConfigTable
-								selectedKhoaNganh={selectedKhoaRows}
-								value={khoaToaConfig}
-								onChange={(nextValue) => setKhoaToaConfig(nextValue)}
-							/>
+							{selectedKhoaRows.length > 0 && (
+								<KhoaToaConfigTable
+									selectedKhoaNganh={selectedKhoaRows}
+									value={khoaToaConfig}
+									onChange={(nextValue) => setKhoaToaConfig(nextValue)}
+								/>
+							)}
 						</Col>
 					) : null}
 					<Col xs={24} md={12}>

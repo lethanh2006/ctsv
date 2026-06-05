@@ -24,7 +24,7 @@ declare module KyTucXa {
 		danhSachAnh?: string[];
 		danhSachTienIch: ITienIch[];
 		maToaNha?: string;
-		
+
 		dangKyKyTucXaRule?: {
 			_id?: string;
 			phongId?: string;
@@ -101,6 +101,8 @@ declare module KyTucXa {
 		_id: string;
 		tenDot: string;
 		maHocKy: string;
+		thoiGianBatDau: string;
+		thoiGianKetThuc: string;
 		ngayChuyenVao: string;
 		ngayChuyenRa: string;
 		loaiDot?: 'Theo khoa' | 'Theo danh sách';
