@@ -66,7 +66,7 @@ const SinhVienDangKySection = (props: { dotId?: string; visible?: boolean }) => 
 
 	return (
 		<Card title={'Danh sách sinh viên đăng ký KTX'} className='form-card' style={{ marginTop: 12 }}>
-			<Form onFinish={onFinish} form={form} layout='vertical'>
+			<Form onFinish={onFinish} form={form} layout='vertical' component="div">
 				<Row gutter={16}>
 					<Col span={18}>
 						<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
@@ -108,7 +108,7 @@ const SinhVienDangKySection = (props: { dotId?: string; visible?: boolean }) => 
 				</Modal>
 
 				<div className='form-footer'>
-					<Button loading={formSubmiting} htmlType='submit' type='primary'>
+					<Button loading={formSubmiting} onClick={() => form.submit()} type='primary'>
 						Thêm
 					</Button>
 				</div>
