@@ -1,7 +1,7 @@
 import TableBase from '@/components/Table';
 import { type IColumn } from '@/components/Table/typing';
 import type { KyTucXa } from '@/services/KyTucXa/typing';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { Button, Modal, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
@@ -84,10 +84,6 @@ const DotMienKTXModal: React.FC<Props> = ({ open, id, onClose }) => {
 			fixed: 'right',
 			render: (_value, record) => (
 				<>
-					<Tooltip title='Chỉnh sửa'>
-						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
-					</Tooltip>
-
 					<Tooltip title='Xóa'>
 						<Popconfirm
 							onConfirm={() => deleteModel(record._id, getModel)}
