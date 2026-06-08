@@ -3,7 +3,7 @@ import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { resetFieldsForm } from '@/utils/utils';
 import { useModel } from '@umijs/max';
-import { Button, Card, Col, Form, message, Modal, Row } from 'antd';
+import { Button, Card, Form, message, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 
 const FormMienKTX = (props: { dotId?: string }) => {
@@ -75,18 +75,13 @@ const FormMienKTX = (props: { dotId?: string }) => {
 	return (
 		<Card title={'Thêm danh sách mã sinh viên miễn đăng ký KTX'} className='form-card'>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Row gutter={16}>
-					<Col span={18}>
-						<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
-							<SelectSinhVienDebounce multiple selectMa />
-						</Form.Item>
-					</Col>
-					<Col span={6} style={{ display: 'flex', alignItems: 'flex-end' }}>
-						<Button onClick={() => setVisibleSelect(true)} style={{ marginLeft: 8 }}>
-							Nhập danh sách
-						</Button>
-					</Col>
-				</Row>
+				<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
+					<SelectSinhVienDebounce multiple selectMa />
+				</Form.Item>
+
+				<div style={{ marginTop: 8 }}>
+					<Button onClick={() => setVisibleSelect(true)}>Nhập danh sách</Button>
+				</div>
 
 				<Modal
 					open={visibleSelect}
