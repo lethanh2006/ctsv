@@ -3,7 +3,7 @@ import { EOperatorType } from '@/components/Table/constant';
 import type { IColumn, TFilter } from '@/components/Table/typing';
 import { Col, Form, Row } from 'antd';
 import _ from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import SelectHinhThuc from '../DanhMucHeThong/CoSo/HinhThuc/components/Select';
 import SelectNganhCoSo from '../DanhMucHeThong/CoSo/Nganh/components/SelectNganh';
@@ -60,7 +60,7 @@ const FormItemKhoaNganh = (props: {
 		});
 	}, [JSON.stringify(maKhoaList), JSON.stringify(maNganhList), danhSachKhoa.length, danhSachNganh.length]);
 
-	const columns: IColumn<KhoaNganh.IRecord>[] = useMemo(() => [
+	const columns: IColumn<KhoaNganh.IRecord>[] = [
 		// {
 		// 	title: 'Mã khóa ngành',
 		// 	dataIndex: 'ma',
@@ -95,7 +95,7 @@ const FormItemKhoaNganh = (props: {
 			filterType: 'string',
 			width: 80,
 		},
-	], []);
+	];
 
 	const onChangeTrinhDo = (maTrinhDo: string) => {
 		const trinhDo = danhSachTrinhDo.find((item) => item.ma === maTrinhDo);
