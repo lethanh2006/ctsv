@@ -121,7 +121,7 @@ declare module KyTucXa {
 		_id: string;
 		maHocKy: string;
 		tenHocKy: string;
-		hanhNopMinhChung: string;
+		hanNopMinhChung: string;
 		ghiChu: string;
 	}
 

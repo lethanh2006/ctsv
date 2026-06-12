@@ -38,7 +38,8 @@ const TableSelectUser = (props: {
 		customStudentColumn,
 		singleTable,
 	} = props;
-	const { page, limit } = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu');
+	const model = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu') as any;
+	const { page, limit, setDanhSach, setTotal, setPage } = model;
 	const { getCanBoChuChotModel, danhSachCanBo, loading } = useModel('thongbao.nhansu');
 	const [checked, setChecked] = useState<boolean>(false);
 	const [visibleImport, setVisibleImport] = useState<boolean>(false);
@@ -50,6 +51,12 @@ const TableSelectUser = (props: {
 	useEffect(() => {
 		getCanBoChuChotModel();
 	}, []);
+
+	useEffect(() => {
+		if (setDanhSach) setDanhSach([]);
+		if (setTotal) setTotal(0);
+		if (setPage) setPage(1);
+	}, [type]);
 
 	const handleCheckBox = (check: boolean) => {
 		setChecked(check);

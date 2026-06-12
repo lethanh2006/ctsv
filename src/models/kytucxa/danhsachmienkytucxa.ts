@@ -6,8 +6,8 @@ import axios from '@/utils/axios';
 export default () => {
     const objInit = useInitModel<KyTucXa.IDanhSachMienKTX>('danh-sach-mien-ky-tuc-xa', undefined, undefined, ipCsvc);
 
-    const postMienDangKySinhVien = (danhSachId: string, danhSachMaSinhVien: string[], headers?: any) => {
-        return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { danhSachMaSinhVien }, { headers });
+    const postMienDangKySinhVien = (danhSachId: string, danhSach: { maSinhVien: string; hoTen: string }[], headers?: any) => {
+        return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { danhSach }, { headers });
     };
 
     const postDuyet = (id: string, headers?: any) => {
@@ -18,10 +18,21 @@ export default () => {
         return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/sinh-vien/${id}/tu-choi`, body, { headers });
     };
 
+    const deleteSinhVien = (id: string, headers?: any) => {
+        return axios.delete(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/sinh-vien/${id}`, { headers });
+    };
+
+    const getSinhVien = (danhSachId: string, headers?: any) => {
+        return axios.get(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { headers });
+    };
+
+
     return {
         ...objInit,
         postMienDangKySinhVien,
         postDuyet,
         postTuChoi,
+        deleteSinhVien,
+        getSinhVien,
     };
 };

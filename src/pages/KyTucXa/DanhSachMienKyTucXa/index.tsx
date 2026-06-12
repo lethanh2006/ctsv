@@ -1,79 +1,85 @@
-
-import TableBase from '@/components/Table';
-import { type IColumn } from '@/components/Table/typing';
-import type { KyTucXa } from '@/services/KyTucXa/typing';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import { Col, Modal, Row } from 'antd';
 import { useModel } from '@umijs/max';
-import { Button, Popconfirm, Tooltip } from 'antd';
-import dayjs from 'dayjs';
-import Form from './FormHocKy';
-
+import { HocKyList } from './components/HocKyList';
+import { DanhSachSinhVienPanel } from './components/DanhSachSinhVienPanel';
+import FormHocKy from './FormHocKy';
 
 const DanhSachMienKyTucXa = () => {
-    const { handleEdit, deleteModel, getModel } = useModel('kytucxa.danhsachmienkytucxa');
+    const {
+        danhSach,
+        getAllModel,
+        loading,
+        deleteModel,
+        visibleForm,
+        setVisibleForm,
+        setRecord,
+        edit,
+        setEdit,
+        handleEdit,
+    } = useModel('kytucxa.danhsachmienkytucxa');
 
-    const columns: IColumn<KyTucXa.IDanhSachMienKTX>[] = [
-        {
-            title: 'Mã học kỳ',
-            dataIndex: 'maHocKy',
-            width: 220,
-            filterType: 'string',
-            sortable: true,
-        },
-        {
-            title: 'Tên học kỳ',
-            dataIndex: 'tenHocKy',
-            width: 120,
-            filterType: 'string',
-        },
-        {
-            title: 'Hạn nộp minh chứng',
-            dataIndex: 'hanhNopMinhChung',
-            width: 140,
-            filterType: 'string',
-            render: (value) => value || '--',
-        },
-        {
-            title: 'Ghi chú',
-            dataIndex: 'ghiChu',
-            width: 150,
-            align: 'center',
-            filterType: 'datetime',
-            sortable: true,
-            render: (value) => (value ? dayjs(value).format('HH:mm DD/MM/YYYY') : '--'),
-        },
-        {
-            title: 'Thao tác',
-            width: 150,
-            align: 'center',
-            fixed: 'right',
-            render: (_value, record) => (
-                <>
-                    <Tooltip title='Chỉnh sửa'>
-                        <Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
-                    </Tooltip>
-                    <Tooltip title='Xóa'>
-                        <Popconfirm
-                            onConfirm={() => deleteModel(record._id, getModel)}
-                            title='Bạn có chắc chắn muốn xóa học kỳ này?'
-                            placement='topLeft'
-                        >
-                            <Button danger type='link' icon={<DeleteOutlined />} />
-                        </Popconfirm>
-                    </Tooltip>
-                </>
-            ),
-        },
-    ];
+    const [selectedSemesterId, setSelectedSemesterId] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        getAllModel();
+    }, []);
+
+    // Auto-select first semester on load, or reset/update selection if danhSach changes
+    useEffect(() => {
+        if (danhSach.length > 0) {
+            if (!selectedSemesterId || !danhSach.some((item) => item._id === selectedSemesterId)) {
+                setSelectedSemesterId(danhSach[0]._id);
+            }
+        } else {
+            setSelectedSemesterId(undefined);
+        }
+    }, [danhSach]);
+
+    const activeSemester = danhSach.find((item) => item._id === selectedSemesterId);
 
     return (
-        <TableBase
-            columns={columns}
-            modelName='kytucxa.danhsachmienkytucxa'
-            title='Danh sách miễn ký túc xá'
-            Form={Form}
-            widthDrawer={900}
-        />
+        <div style={{ padding: '24px' }}>
+            <Row gutter={[24, 24]}>
+                {/* Left Panel - Semesters List */}
+                <Col span={8}>
+                    <HocKyList
+                        dataSource={danhSach}
+                        selectedSemesterId={selectedSemesterId}
+                        onSelectSemester={setSelectedSemesterId}
+                        loading={loading}
+                        onAddClick={() => {
+                            setEdit(false);
+                            setRecord(undefined);
+                            setVisibleForm(true);
+                        }}
+                        onEditClick={(item) => {
+                            handleEdit(item);
+                        }}
+                        onDeleteClick={(id) => {
+                            deleteModel(id, getAllModel);
+                        }}
+                    />
+                </Col>
+
+                {/* Right Panel - Exempt Students Panel */}
+                <Col span={16}>
+                    <DanhSachSinhVienPanel activeSemester={activeSemester} />
+                </Col>
+            </Row>
+
+            {/* Modal for Add/Edit Semester Form */}
+            <Modal
+                open={visibleForm}
+                title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} học kỳ`}
+                width={550}
+                onCancel={() => setVisibleForm(false)}
+                destroyOnClose
+                footer={null}
+            >
+                <FormHocKy />
+            </Modal>
+        </div>
     );
 };
 
