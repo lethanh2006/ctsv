@@ -6,14 +6,11 @@ import { useModel } from '@umijs/max';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import DotMienKTXModal from './components/DotMienKTX/DotMienKTXModal';
 import Form from './components/Form';
 
 const DotDangKy = () => {
 	const { handleEdit, deleteModel, getModel } = useModel('kytucxa.dotdangky');
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
 
 	const columns: IColumn<KyTucXa.IDotDangKyKTX>[] = [
 		{
@@ -106,7 +103,6 @@ const DotDangKy = () => {
 				Form={Form}
 				widthDrawer={900}
 			/>
-			<DotMienKTXModal open={isModalOpen} id={selectedId} onClose={() => setIsModalOpen(false)} />
 		</>
 	);
 };
