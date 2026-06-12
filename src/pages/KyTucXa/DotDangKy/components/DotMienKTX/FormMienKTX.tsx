@@ -1,8 +1,8 @@
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
-import { ImportOutlined } from '@ant-design/icons';
-import { Button, Card, Form, message, Modal } from 'antd';
+import { ImportOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Card, Form, message, Modal, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
@@ -170,6 +170,53 @@ const FormMienKTX = (props: { dotId?: string }) => {
 		},
 	};
 
+	const onDelete = (code: string) => {
+		const nextUsers = selectedUsers.filter((u) => u.code !== code);
+		setSelectedUsers(nextUsers);
+		form.setFieldsValue({ danhSach: nextUsers.map((u) => u.code) });
+	};
+
+	const columns = [
+		{
+			title: 'STT',
+			key: 'index',
+			width: 60,
+			align: 'center' as const,
+			render: (text: any, record: any, index: number) => index + 1,
+		},
+		{
+			title: 'Mã sinh viên',
+			dataIndex: 'code',
+			key: 'code',
+			width: 150,
+		},
+		{
+			title: 'Họ tên',
+			dataIndex: 'fullname',
+			key: 'fullname',
+		},
+		{
+			title: 'Khóa sinh viên',
+			dataIndex: 'khoaSinhVien',
+			key: 'khoaSinhVien',
+			width: 150,
+		},
+		{
+			title: 'Thao tác',
+			key: 'action',
+			width: 80,
+			align: 'center' as const,
+			render: (text: any, record: any) => (
+				<Button
+					type="link"
+					danger
+					icon={<DeleteOutlined />}
+					onClick={() => onDelete(record.code)}
+				/>
+			),
+		},
+	];
+
 	return (
 		<Card title={'Thêm danh sách mã sinh viên miễn đăng ký KTX'} className='form-card'>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
@@ -186,7 +233,6 @@ const FormMienKTX = (props: { dotId?: string }) => {
 						background: '#f5f5f5',
 						border: '1px solid #d9d9d9',
 						borderRadius: '8px',
-						marginBottom: 16,
 					}}
 				>
 					<div>
@@ -207,6 +253,18 @@ const FormMienKTX = (props: { dotId?: string }) => {
 						Nhập danh sách sinh viên
 					</Button>
 				</div>
+
+				{selectedUsers?.length > 0 && (
+					<Table
+						dataSource={selectedUsers}
+						columns={columns}
+						rowKey="code"
+						size="small"
+						pagination={{ pageSize: 10 }}
+						bordered
+						style={{ marginTop: 16, marginBottom: 16 }}
+					/>
+				)}
 
 				<Modal
 					open={visibleSelect}
@@ -241,7 +299,7 @@ const FormMienKTX = (props: { dotId?: string }) => {
 					</div>
 				</Modal>
 
-				<div className='form-footer'>
+				<div className='form-footer' style={{ marginTop: 16 }}>
 					<Button loading={formSubmiting} htmlType='submit' type='primary'>
 						Thêm
 					</Button>

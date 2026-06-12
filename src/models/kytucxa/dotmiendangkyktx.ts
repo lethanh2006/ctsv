@@ -4,7 +4,7 @@ import { ipCsvc } from '@/utils/ip';
 import axios from '@/utils/axios';
 
 export default () => {
-    const objInit = useInitModel<KyTucXa.IDotMienDangKyKTX>('danh-sach-mien-ky-tuc-xa', undefined, undefined, ipCsvc);
+    const objInit = useInitModel<KyTucXa.IDanhSachMienKTX>('danh-sach-mien-ky-tuc-xa', undefined, undefined, ipCsvc);
 
     const postMienDangKySinhVien = (danhSachId: string, danhSachMaSinhVien: string[], headers?: any) => {
         return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { danhSachMaSinhVien }, { headers });

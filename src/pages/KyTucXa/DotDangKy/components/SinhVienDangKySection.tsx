@@ -1,8 +1,8 @@
 import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
-import { ImportOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Modal, type FormInstance } from 'antd';
+import { ImportOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Card, Form, Modal, Table, type FormInstance } from 'antd';
 import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
@@ -118,6 +118,53 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 		},
 	};
 
+	const onDelete = (code: string) => {
+		const nextUsers = selectedUsers.filter((u) => u.code !== code);
+		setSelectedUsers(nextUsers);
+		form.setFieldsValue({ danhSach: nextUsers.map((u) => u.code) });
+	};
+
+	const columns = [
+		{
+			title: 'STT',
+			key: 'index',
+			width: 60,
+			align: 'center' as const,
+			render: (text: any, record: any, index: number) => index + 1,
+		},
+		{
+			title: 'Mã sinh viên',
+			dataIndex: 'code',
+			key: 'code',
+			width: 150,
+		},
+		{
+			title: 'Họ tên',
+			dataIndex: 'fullname',
+			key: 'fullname',
+		},
+		{
+			title: 'Khóa sinh viên',
+			dataIndex: 'khoaSinhVien',
+			key: 'khoaSinhVien',
+			width: 150,
+		},
+		{
+			title: 'Thao tác',
+			key: 'action',
+			width: 80,
+			align: 'center' as const,
+			render: (text: any, record: any) => (
+				<Button
+					type="link"
+					danger
+					icon={<DeleteOutlined />}
+					onClick={() => onDelete(record.code)}
+				/>
+			),
+		},
+	];
+
 	return (
 		<div style={{ marginTop: 12 }}>
 			<Form.Item name='danhSach' noStyle>
@@ -139,13 +186,9 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 					<span style={{ fontWeight: 'bold', fontSize: '14px', color: '#1f1f1f' }}>
 						Danh sách sinh viên đăng ký KTX
 					</span>
-					{selectedUsers?.length > 0 ? (
+					{selectedUsers?.length > 0 && (
 						<span style={{ marginLeft: 12, color: '#555' }}>
 							(Đã chọn: <strong style={{ color: '#1890ff' }}>{selectedUsers.length}</strong> sinh viên)
-						</span>
-					) : (
-						<span style={{ marginLeft: 12, color: '#8c8c8c', fontStyle: 'italic' }}>
-							(Chưa chọn sinh viên nào)
 						</span>
 					)}
 				</div>
@@ -153,6 +196,18 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 					Nhập danh sách sinh viên
 				</Button>
 			</div>
+
+			{selectedUsers?.length > 0 && (
+				<Table
+					dataSource={selectedUsers}
+					columns={columns}
+					rowKey="code"
+					size="small"
+					pagination={{ pageSize: 10 }}
+					bordered
+					style={{ marginTop: 12 }}
+				/>
+			)}
 
 			<Modal
 				open={visibleSelect}

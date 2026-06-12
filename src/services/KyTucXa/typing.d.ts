@@ -116,18 +116,27 @@ declare module KyTucXa {
 	}
 
 
-	export interface IDotMienDangKyKTX {
+
+	export interface IDanhSachMienKTX {
 		_id: string;
-		maSinhVien: string;
-		nguoiDuyet?: string;
-		dotId?: string;
-		urlMinhChung?: string;
-		ngayDuyet?: string;
-		ssoId?: string;
-		ghiChuDuyet?: string;
-		hoTen?: string;
-		trangThaiMinhChung?: ETrangThaiMienDangKyKTX | string;
+		maHocKy: string;
+		tenHocKy: string;
+		hanhNopMinhChung: string;
+		ghiChu: string;
 	}
 
 
+	export interface IDanhSachMienKTXSinhVien {
+		_id: string;
+		danhSachId: string;
+		maSinhVien: string;
+		ssoId: string;
+		hoTen: string;
+		urlMinhChung: string;
+		trangThaiMinhChung?: ETrangThaiMienDangKyKTX | string;
+		ngayDuyet: string;
+		nguoiDuyet: string;
+		ghiChuDuyet: string;
+
+	}
 }
