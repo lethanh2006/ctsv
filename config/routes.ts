@@ -859,6 +859,11 @@
 						path: 'dot-dang-ky',
 						component: 'KyTucXa/DotDangKy',
 					},
+					// {
+					// 	name: 'DanhSachMienKyTucXa',
+					// 	path: 'danh-sach-mien-ky-tuc-xa',
+					// 	component: 'KyTucXa/DanhSachMienKyTucXa',
+					// },
 				],
 			},
 

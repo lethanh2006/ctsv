@@ -4,33 +4,23 @@ import { ipCsvc } from '@/utils/ip';
 import axios from '@/utils/axios';
 
 export default () => {
-    const objInit = useInitModel<KyTucXa.IDotMienDangKyKTX>('dot-dang-ky-ky-tuc-xa', undefined, undefined, ipCsvc);
+    const objInit = useInitModel<KyTucXa.IDotMienDangKyKTX>('danh-sach-mien-ky-tuc-xa', undefined, undefined, ipCsvc);
 
-    const postMienDangKy = (dotId: string, danhSachMaSinhVien: string[], headers?: any) => {
-        return axios.post(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky`, { danhSachMaSinhVien }, { headers });
+    const postMienDangKySinhVien = (danhSachId: string, danhSachMaSinhVien: string[], headers?: any) => {
+        return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { danhSachMaSinhVien }, { headers });
     };
 
-    const getMienDangKy = (dotId: string, params?: any, headers?: any) => {
-        return axios.get(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky`, { params, headers });
+    const postDuyet = (id: string, headers?: any) => {
+        return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/sinh-vien/${id}/duyet`, {}, { headers });
     };
 
-    const deleteMienDangKy = (dotId: string, id: string, headers?: any) => {
-        return axios.delete(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky/${id}`, { headers });
-    };
-
-    const postDuyet = (dotId: string, id: string, headers?: any) => {
-        return axios.post(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky/${id}/duyet`, {}, { headers });
-    };
-
-    const postTuChoi = (dotId: string, id: string, body?: any, headers?: any) => {
-        return axios.post(`${ipCsvc}/dot-dang-ky-ky-tuc-xa/${dotId}/mien-dang-ky/${id}/tu-choi`, body, { headers });
+    const postTuChoi = (id: string, body?: any, headers?: any) => {
+        return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/sinh-vien/${id}/tu-choi`, body, { headers });
     };
 
     return {
         ...objInit,
-        postMienDangKy,
-        getMienDangKy,
-        deleteMienDangKy,
+        postMienDangKySinhVien,
         postDuyet,
         postTuChoi,
     };

@@ -17,25 +17,9 @@ const TableSelectUser = (props: {
 	setSelectedUsers?: (val: ThongBao.IUser[]) => void;
 	danhSachDoiTuong?: Record<string, string[]>;
 	receiverType?: EReceiverType;
-	customImport?: {
-		onDownloadTemplate?: () => void;
-		onImport?: (file: any) => Promise<ThongBao.IUser[]>;
-	};
-	customStudentColumn?: {
-		title: string;
-		dataIndex: string;
-	};
 }) => {
 	const intl = useIntl();
-	const {
-		selectedUsers = [],
-		setSelectedUsers,
-		danhSachDoiTuong,
-		type,
-		receiverType,
-		customImport,
-		customStudentColumn,
-	} = props;
+	const { selectedUsers = [], setSelectedUsers, danhSachDoiTuong, type, receiverType } = props;
 	const { page, limit } = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu');
 	const { getCanBoChuChotModel, danhSachCanBo, loading } = useModel('thongbao.nhansu');
 	const [checked, setChecked] = useState<boolean>(false);
@@ -130,10 +114,8 @@ const TableSelectUser = (props: {
 		},
 		type === EVaiTroKhaoSat.SINH_VIEN
 			? {
-					title:
-						customStudentColumn?.title ??
-						intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
-					dataIndex: (customStudentColumn?.dataIndex ?? 'trangThaiSinhVien') as any,
+					title: intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
+					dataIndex: 'trangThaiSinhVien',
 					align: 'center',
 					width: 120,
 					// filterType: 'select',
@@ -218,7 +200,6 @@ const TableSelectUser = (props: {
 				setSelectedUsers={setSelectedUsers}
 				selectedUsers={selectedUsers}
 				role={type}
-				customImport={customImport}
 			/>
 		</>
 	);
