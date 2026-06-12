@@ -1,19 +1,48 @@
-import SelectSinhVienDebounce from '@/pages/DaoTaoV2/SinhVien/component/Select';
 import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import { ImportOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Modal, Table, type FormInstance } from 'antd';
+import { Button, Form, Modal, Table, message, type FormInstance } from 'antd';
 import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
 import { useModel } from 'umi';
-import { EOperatorType } from '@/components/Table/constant';
 
 const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visible?: boolean }) => {
-	const { form, visible } = props;
+	const { form, visible, dotId } = props;
 	const [visibleSelect, setVisibleSelect] = useState(false);
 	const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
-	const { getModel: getSinhVienModel } = useModel('daotaov2.sinhvien.sinhvien');
+	const [loading, setLoading] = useState(false);
+	const { getSinhVienDangKy, deleteSinhVienDangKy } = useModel('kytucxa.dotdangkyktx');
+
+	const fetchStudents = async () => {
+		if (!dotId) return;
+		setLoading(true);
+		try {
+			const res = await getSinhVienDangKy(dotId);
+			const rawData = res?.data?.data?.result || res?.data?.data || res?.data || [];
+			const data = Array.isArray(rawData) ? rawData : [];
+			const list = data.map((item: any) => ({
+				_id: item._id,
+				code: item.maSinhVien || item.ma || '',
+				username: item.maSinhVien || item.ma || '',
+				fullname: item.hoTen || item.fullname || item.tenSinhVien || '',
+				khoaSinhVien: item.khoaSinhVien || '',
+				vaiTro: EVaiTroKhaoSat.SINH_VIEN,
+			}));
+			setSelectedUsers(list);
+			form.setFieldsValue({
+				danhSach: list.map((u) => ({
+					maSinhVien: u.code,
+					hoTen: u.fullname || '',
+					khoaSinhVien: u.khoaSinhVien || '',
+				}))
+			});
+		} catch (err) {
+			console.error(err);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	useEffect(() => {
 		if (!visible) {
@@ -21,58 +50,13 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 			return;
 		}
 
-		const codes = form.getFieldValue('danhSach') || [];
-		if (codes.length > 0) {
-			getSinhVienModel(
-				undefined,
-				[
-					{
-						active: true,
-						field: 'ma',
-						values: codes,
-						operator: EOperatorType.INCLUDE,
-					},
-				],
-				undefined,
-				1,
-				codes.length,
-			)
-				.then((res: any[]) => {
-					const fetchedUsers = (res ?? []).map((item) => ({
-						code: item.ma,
-						username: item.ma,
-						fullname: item.ten,
-						khoaSinhVien: item.khoaSinhVien?.ten || item.khoaSinhVien?.ma || '',
-						vaiTro: EVaiTroKhaoSat.SINH_VIEN,
-					}));
-					// Merge with any codes that weren't found in DB
-					const fetchedCodes = fetchedUsers.map((u) => u.code);
-					const missingUsers = codes
-						.filter((code: string) => !fetchedCodes.includes(code))
-						.map((code: string) => ({
-							code,
-							username: code,
-							fullname: '',
-							khoaSinhVien: '',
-							vaiTro: EVaiTroKhaoSat.SINH_VIEN,
-						}));
-					
-					setSelectedUsers([...fetchedUsers, ...missingUsers]);
-				})
-				.catch((err) => {
-					console.error(err);
-					setSelectedUsers(codes.map((code: string) => ({
-						code,
-						username: code,
-						fullname: '',
-						khoaSinhVien: '',
-						vaiTro: EVaiTroKhaoSat.SINH_VIEN,
-					})));
-				});
+		if (dotId) {
+			fetchStudents();
 		} else {
 			setSelectedUsers([]);
+			form.setFieldsValue({ danhSach: [] });
 		}
-	}, [form, visible]);
+	}, [dotId, visible]);
 
 	const customImportConfig = {
 		onDownloadTemplate: () => {
@@ -118,10 +102,27 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 		},
 	};
 
-	const onDelete = (code: string) => {
-		const nextUsers = selectedUsers.filter((u) => u.code !== code);
-		setSelectedUsers(nextUsers);
-		form.setFieldsValue({ danhSach: nextUsers.map((u) => u.code) });
+	const onDelete = async (record: any) => {
+		if (dotId && record._id) {
+			try {
+				await deleteSinhVienDangKy(dotId, record._id);
+				message.success('Xóa sinh viên thành công');
+				fetchStudents();
+			} catch (err) {
+				console.error(err);
+				message.error('Không thể xóa sinh viên');
+			}
+		} else {
+			const nextUsers = selectedUsers.filter((u) => u.code !== record.code);
+			setSelectedUsers(nextUsers);
+			form.setFieldsValue({
+				danhSach: nextUsers.map((u) => ({
+					maSinhVien: u.code,
+					hoTen: u.fullname || '',
+					khoaSinhVien: u.khoaSinhVien || '',
+				}))
+			});
+		}
 	};
 
 	const columns = [
@@ -159,7 +160,7 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 					type="link"
 					danger
 					icon={<DeleteOutlined />}
-					onClick={() => onDelete(record.code)}
+					onClick={() => onDelete(record)}
 				/>
 			),
 		},
@@ -197,7 +198,7 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 				</Button>
 			</div>
 
-			{selectedUsers?.length > 0 && (
+			{(selectedUsers?.length > 0 || loading) && (
 				<Table
 					dataSource={selectedUsers}
 					columns={columns}
@@ -205,6 +206,7 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 					size="small"
 					pagination={{ pageSize: 10 }}
 					bordered
+					loading={loading}
 					style={{ marginTop: 12 }}
 				/>
 			)}
@@ -231,8 +233,12 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 				<div style={{ textAlign: 'right', marginTop: 12 }}>
 					<Button
 						onClick={() => {
-							const codes = (selectedUsers ?? []).map((u: any) => u.code).filter(Boolean);
-							form.setFieldsValue({ danhSach: codes });
+							const nextList = (selectedUsers ?? []).map((u: any) => ({
+								maSinhVien: u.code,
+								hoTen: u.fullname || '',
+								khoaSinhVien: u.khoaSinhVien || '',
+							})).filter((item) => item.maSinhVien);
+							form.setFieldsValue({ danhSach: nextList });
 							setVisibleSelect(false);
 						}}
 						type='primary'
