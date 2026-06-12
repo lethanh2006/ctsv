@@ -34,7 +34,7 @@ const FormDotDangKyKTX = () => {
 	>([]);
 	const [khoaToaConfig, setKhoaToaConfig] = useState<Record<string, string[]>>({});
 
-	const { danhSach: allPhong, getAllModel: getAllPhong } = useModel('theodoitaisanvattu.phong');
+	const { danhSach: allPhong } = useModel('theodoitaisanvattu.phong');
 
 	const { getAllModel: getAllToaNha } = useModel('theodoitaisanvattu.toanha');
 	const { danhSach: allKhoaSinhVien, getAllModel: getAllKhoaSinhVien } = useModel('daotaov2.namhoc.khoasinhvien');
@@ -45,7 +45,6 @@ const FormDotDangKyKTX = () => {
 
 	useEffect(() => {
 		if (visibleForm) {
-			getAllPhong();
 			getAllToaNha();
 			getAllKhoaSinhVien(undefined, { namHocBatDau: -1 });
 			setCurrentStep(0);
@@ -131,17 +130,27 @@ const FormDotDangKyKTX = () => {
 		if (!visibleForm) return;
 		if (!allPhong || allPhong.length === 0) return;
 
-		setSelectedPhongIds((prev) => {
-			const filtered = prev.filter((phongMa) => {
-				const phong = allPhong.find((p: any) => p.ma === phongMa);
-				if (!phong) return true;
-				const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
-				return maToaNha && selectedToaNhaIds.includes(maToaNha);
+		if (edit) {
+			setSelectedPhongIds((prev) => {
+				const filtered = prev.filter((phongMa) => {
+					const phong = allPhong.find((p: any) => p.ma === phongMa);
+					if (!phong) return true;
+					const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
+					return maToaNha && selectedToaNhaIds.includes(maToaNha);
+				});
+				if (JSON.stringify(filtered) === JSON.stringify(prev)) return prev;
+				return filtered;
 			});
-			if (JSON.stringify(filtered) === JSON.stringify(prev)) return prev;
-			return filtered;
-		});
-	}, [selectedToaNhaIds, allPhong, visibleForm]);
+		} else {
+			const nextPhongIds = allPhong
+				.filter((phong: any) => {
+					const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
+					return maToaNha && selectedToaNhaIds.includes(maToaNha);
+				})
+				.map((phong: any) => phong.ma);
+			setSelectedPhongIds(nextPhongIds);
+		}
+	}, [selectedToaNhaIds, allPhong, visibleForm, edit]);
 
 	const handleNextStep = async () => {
 		try {
@@ -222,8 +231,8 @@ const FormDotDangKyKTX = () => {
 					}))
 					: [],
 			hanDuyetMien: values?.hanDuyetMien ? dayjs(values.hanDuyetMien).toISOString() : null,
-			danhSachToaNha: selectedToaNhaIds,
-			danhSachPhong: selectedPhongIds,
+			danhSachToaNha: loaiDot === 'Theo danh sách' ? selectedToaNhaIds : [],
+			danhSachPhong: loaiDot === 'Theo danh sách' ? selectedPhongIds : [],
 		};
 
 		if (edit) {
@@ -247,11 +256,15 @@ const FormDotDangKyKTX = () => {
 				<Steps
 					current={currentStep}
 					style={{ marginBottom: 18, paddingTop: 0 }}
-					onChange={record?._id ? (step) => setCurrentStep(step) : undefined}
+					onChange={(step) => {
+						if (record?._id || step < currentStep) {
+							setCurrentStep(step);
+						}
+					}}
 					type='navigation'
 				>
 					<Steps.Step title="Thông tin đợt" />
-					<Steps.Step title="Chọn đối tượng" disabled={!record?._id} />
+					<Steps.Step title="Chọn đối tượng" disabled={!record?._id && currentStep === 0} />
 				</Steps>
 
 				<div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
@@ -358,7 +371,7 @@ const FormDotDangKyKTX = () => {
 						) : null}
 					</Row>
 
-					{selectedToaNhaIds.length ? (
+					{loaiDot === 'Theo danh sách' && selectedToaNhaIds.length ? (
 						<div style={{ marginTop: 12 }}>
 							<RoomTable
 								toaNhaIds={selectedToaNhaIds}

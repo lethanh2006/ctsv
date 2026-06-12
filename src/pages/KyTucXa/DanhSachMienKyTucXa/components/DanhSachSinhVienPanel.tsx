@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Button, Empty, Tag, Popconfirm, Modal, Input, message, Alert, Tooltip } from 'antd';
+import { Card, Table, Button, Empty, Tag, Popconfirm, Modal, Input, message, Alert, Tooltip, Form } from 'antd';
 import {
     PlusOutlined,
     DeleteOutlined,
     CheckOutlined,
-    CloseOutlined
+    CloseOutlined,
+    UploadOutlined
 } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import dayjs from 'dayjs';
@@ -12,6 +13,8 @@ import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
 import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
+import UploadFile from '@/components/Upload/UploadFile';
+import { buildUpLoadFile } from '@/services/uploadFile';
 import { EOperatorType } from '@/components/Table/constant';
 import { ETrangThaiMienDangKyKTX, transTrangThaiMienDangKyKTX } from '@/services/KyTucXa/constant';
 import type { KyTucXa } from '@/services/KyTucXa/typing';
@@ -26,7 +29,8 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
         postDuyet,
         postTuChoi,
         deleteSinhVien,
-        getSinhVien
+        getSinhVien,
+        putDonMienKTX
     } = useModel('kytucxa.danhsachmienkytucxa');
     const { getAllModel: getAllCanBo } = useModel('tochucnhansu.nhansu');
 
@@ -38,9 +42,13 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
 
     const [actionModalVisible, setActionModalVisible] = useState(false);
     const [currentRecord, setCurrentRecord] = useState<any>(null);
-    const [actionType, setActionType] = useState<'duyet' | 'tuchoi'>('duyet');
+    const [actionType, setActionType] = useState<'duyet' | 'tuchoi' | 'upload'>('duyet');
     const [ghiChuDuyet, setGhiChuDuyet] = useState('');
     const [submittingAction, setSubmittingAction] = useState(false);
+
+    const [uploadModalVisible, setUploadModalVisible] = useState(false);
+    const [submittingUpload, setSubmittingUpload] = useState(false);
+    const [uploadForm] = Form.useForm();
 
     const fetchStudents = async (id: string) => {
         setLoadingStudents(true);
@@ -164,7 +172,7 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
                 code,
                 username: code,
                 fullname: u.fullname || u.hoTen || existing?.fullname || '',
-                khoaSinhVien: u.khoaSinhVien || existing?.khoaSinhVien || '',
+                khoaSinhVien: u.khoaSinhVien || u.maKhoaSinhVien || u.tenKhoaSinhVien || existing?.khoaSinhVien || '',
                 _id: existing?._id,
                 trangThaiMinhChung: existing?.trangThaiMinhChung,
                 ghiChuDuyet: existing?.ghiChuDuyet || '',
@@ -174,12 +182,13 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
         setSelectedUsers(list);
     };
 
-    const handleAddStudentsDone = async (newStudents: { maSinhVien: string; hoTen: string }[]) => {
+    const handleAddStudentsDone = async (newStudents: { maSinhVien: string; hoTen: string; khoaSinhVien: string }[]) => {
         if (!activeSemester?._id) return;
         try {
             const existingList = students.map((s) => ({
                 maSinhVien: s.code,
                 hoTen: s.fullname || '',
+                khoaSinhVien: s.khoaSinhVien || '',
             }));
             const existingCodes = new Set(existingList.map((item) => item.maSinhVien));
             const uniqueNewStudents = newStudents.filter((item) => !existingCodes.has(item.maSinhVien));
@@ -206,11 +215,55 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
         }
     };
 
-    const handleActionClick = (record: any, type: 'duyet' | 'tuchoi') => {
+    const handleActionClick = (record: any, type: 'duyet' | 'tuchoi' | 'upload') => {
         setCurrentRecord(record);
         setActionType(type);
-        setGhiChuDuyet(record.ghiChuDuyet || '');
-        setActionModalVisible(true);
+        if (type === 'upload') {
+            uploadForm.setFieldsValue({
+                urlMinhChung: record.urlMinhChung || undefined
+            });
+            setUploadModalVisible(true);
+        } else {
+            setGhiChuDuyet(record.ghiChuDuyet || '');
+            setActionModalVisible(true);
+        }
+    };
+
+    const handleUploadSubmit = async () => {
+        if (!currentRecord?._id || !activeSemester?._id) return;
+        try {
+            const values = await uploadForm.validateFields();
+            setSubmittingUpload(true);
+            const fileUrl = await buildUpLoadFile(values, 'urlMinhChung');
+            if (!fileUrl) {
+                message.error('Tải file lên thất bại');
+                setSubmittingUpload(false);
+                return;
+            }
+
+            const payload = {
+                danhSachId: activeSemester._id,
+                maSinhVien: currentRecord.code,
+                ssoId: currentRecord.ssoId,
+                hoTen: currentRecord.fullname,
+                khoaSinhVien: currentRecord.khoaSinhVien,
+                urlMinhChung: fileUrl,
+                trangThaiMinhChung: 'Chờ duyệt',
+            };
+
+            await putDonMienKTX(currentRecord._id, payload);
+            
+            message.success('Cập nhật minh chứng thành công');
+            setUploadModalVisible(false);
+            setCurrentRecord(null);
+            uploadForm.resetFields();
+            fetchStudents(activeSemester._id);
+        } catch (err: any) {
+            console.error(err);
+            message.error(err?.response?.data?.message || 'Có lỗi xảy ra');
+        } finally {
+            setSubmittingUpload(false);
+        }
     };
 
     const handleActionSubmit = async () => {
@@ -258,6 +311,12 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
             width: 180,
         },
         {
+            title: 'Khoá SV',
+            dataIndex: 'khoaSinhVien',
+            key: 'khoaSinhVien',
+            width: 100,
+        },
+        {
             title: 'Minh chứng',
             dataIndex: 'urlMinhChung',
             key: 'urlMinhChung',
@@ -274,55 +333,55 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
                 return <span style={{ color: '#bfbfbf' }}>Chưa nộp</span>;
             },
         },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'trangThaiMinhChung',
-            key: 'trangThaiMinhChung',
-            width: 140,
-            render: (val: any) => {
-                switch (val) {
-                    case ETrangThaiMienDangKyKTX.CHO_DUYET:
-                        return <Tag color="warning" style={{ borderRadius: 4, padding: '2px 8px' }}>{transTrangThaiMienDangKyKTX[ETrangThaiMienDangKyKTX.CHO_DUYET]}</Tag>;
-                    case ETrangThaiMienDangKyKTX.DA_DUYET:
-                        return <Tag color="success" style={{ borderRadius: 4, padding: '2px 8px' }}>{transTrangThaiMienDangKyKTX[ETrangThaiMienDangKyKTX.DA_DUYET]}</Tag>;
-                    case ETrangThaiMienDangKyKTX.TU_CHOI:
-                        return <Tag color="error" style={{ borderRadius: 4, padding: '2px 8px' }}>{transTrangThaiMienDangKyKTX[ETrangThaiMienDangKyKTX.TU_CHOI]}</Tag>;
-                    default:
-                        return <Tag color="default" style={{ borderRadius: 4, padding: '2px 8px' }}>Chưa nộp</Tag>;
-                }
-            },
-        },
-        {
-            title: 'Người duyệt',
-            key: 'nguoiDuyet',
-            width: 200,
-            render: (text: any, record: any) => {
-                const displayName = approverNames[record.nguoiDuyet] || record.nguoiDuyet || 'Admin';
-                if (record.trangThaiMinhChung === ETrangThaiMienDangKyKTX.DA_DUYET) {
-                    return (
-                        <span style={{ color: '#262626', fontSize: '13px', fontWeight: 500 }}>
-                            {displayName} {record.ssoId ? `(SSO: ${record.ssoId})` : ''}
-                        </span>
-                    );
-                }
-                if (record.trangThaiMinhChung === ETrangThaiMienDangKyKTX.TU_CHOI) {
-                    return (
-                        <span style={{ color: '#262626', fontSize: '13px', fontWeight: 500 }}>
-                            {displayName} {record.ssoId ? `(SSO: ${record.ssoId})` : ''} {record.ghiChuDuyet ? ` - Lý do: ${record.ghiChuDuyet}` : ''}
-                        </span>
-                    );
-                }
-                return null;
-            },
-        },
+        // {
+        //     title: 'Trạng thái',
+        //     dataIndex: 'trangThaiMinhChung',
+        //     key: 'trangThaiMinhChung',
+        //     width: 140,
+        //     render: (val: any) => {
+        //         switch (val) {
+        //             case ETrangThaiMienDangKyKTX.CHO_DUYET:
+        //                 return <Tag color="warning" style={{ borderRadius: 4, padding: '2px 8px' }}>{transTrangThaiMienDangKyKTX[ETrangThaiMienDangKyKTX.CHO_DUYET]}</Tag>;
+        //             case ETrangThaiMienDangKyKTX.DA_DUYET:
+        //                 return <Tag color="success" style={{ borderRadius: 4, padding: '2px 8px' }}>{transTrangThaiMienDangKyKTX[ETrangThaiMienDangKyKTX.DA_DUYET]}</Tag>;
+        //             case ETrangThaiMienDangKyKTX.TU_CHOI:
+        //                 return <Tag color="error" style={{ borderRadius: 4, padding: '2px 8px' }}>{transTrangThaiMienDangKyKTX[ETrangThaiMienDangKyKTX.TU_CHOI]}</Tag>;
+        //             default:
+        //                 return <Tag color="default" style={{ borderRadius: 4, padding: '2px 8px' }}>Chưa nộp</Tag>;
+        //         }
+        //     },
+        // },
+        // {
+        //     title: 'Người duyệt',
+        //     key: 'nguoiDuyet',
+        //     width: 200,
+        //     render: (text: any, record: any) => {
+        //         const displayName = approverNames[record.nguoiDuyet] || record.nguoiDuyet || 'Admin';
+        //         if (record.trangThaiMinhChung === ETrangThaiMienDangKyKTX.DA_DUYET) {
+        //             return (
+        //                 <span style={{ color: '#262626', fontSize: '13px', fontWeight: 500 }}>
+        //                     {displayName} {record.ssoId ? `(SSO: ${record.ssoId})` : ''}
+        //                 </span>
+        //             );
+        //         }
+        //         if (record.trangThaiMinhChung === ETrangThaiMienDangKyKTX.TU_CHOI) {
+        //             return (
+        //                 <span style={{ color: '#262626', fontSize: '13px', fontWeight: 500 }}>
+        //                     {displayName} {record.ssoId ? `(SSO: ${record.ssoId})` : ''} {record.ghiChuDuyet ? ` - Lý do: ${record.ghiChuDuyet}` : ''}
+        //                 </span>
+        //             );
+        //         }
+        //         return null;
+        //     },
+        // },
         {
             title: 'Hành động',
             key: 'action',
-            width: 110,
+            width: 80,
             render: (text: any, record: any) => {
                 return (
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <Tooltip title="Duyệt">
+                        {/* <Tooltip title="Duyệt">
                             <Popconfirm
                                 title="Xác nhận duyệt miễn giảm KTX cho sinh viên này?"
                                 onConfirm={() => handleApprove(record)}
@@ -344,6 +403,14 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
                                 size="small"
                                 onClick={() => handleActionClick(record, 'tuchoi')}
                                 icon={<CloseOutlined />}
+                            />
+                        </Tooltip> */}
+                        <Tooltip title="Upload">
+                            <Button
+                                type="text"
+                                size="small"
+                                onClick={() => handleActionClick(record, 'upload')}
+                                icon={<UploadOutlined />}
                             />
                         </Tooltip>
                         <Popconfirm
@@ -475,6 +542,7 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
                                 const newStudents = (selectedUsers ?? []).map((u: any) => ({
                                     maSinhVien: u.code,
                                     hoTen: u.fullname || '',
+                                    khoaSinhVien: u.khoaSinhVien || u.maKhoaSinhVien || u.tenKhoaSinhVien || '',
                                 })).filter((item) => item.maSinhVien);
                                 handleAddStudentsDone(newStudents);
                             }}
@@ -527,6 +595,50 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
                         placeholder="Nhập lý do từ chối..."
                         style={{ borderRadius: 6 }}
                     />
+                </div>
+            </Modal>
+
+            <Modal
+                open={uploadModalVisible}
+                title={
+                    <span style={{ fontWeight: 700, fontSize: 16 }}>
+                        Cập nhật minh chứng miễn giảm KTX
+                    </span>
+                }
+                okText="Xác nhận"
+                cancelText="Hủy"
+                confirmLoading={submittingUpload}
+                onOk={handleUploadSubmit}
+                onCancel={() => {
+                    setUploadModalVisible(false);
+                    setCurrentRecord(null);
+                    uploadForm.resetFields();
+                }}
+                okButtonProps={{
+                    style: {
+                        backgroundColor: '#125195',
+                        borderColor: '#125195',
+                        borderRadius: 6
+                    }
+                }}
+                cancelButtonProps={{
+                    style: { borderRadius: 6 }
+                }}
+                destroyOnClose
+            >
+                <div style={{ marginTop: 16 }}>
+                    <div style={{ marginBottom: 12, fontSize: 14 }}>
+                        Sinh viên: <strong>{currentRecord?.fullname || ''}</strong> ({currentRecord?.code || ''})
+                    </div>
+                    <Form form={uploadForm} layout="vertical">
+                        <Form.Item
+                            name="urlMinhChung"
+                            label={<strong>File minh chứng</strong>}
+                            rules={[{ required: true, message: 'Vui lòng tải lên file minh chứng!' }]}
+                        >
+                            <UploadFile maxCount={1} accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" />
+                        </Form.Item>
+                    </Form>
                 </div>
             </Modal>
         </Card>

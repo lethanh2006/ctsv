@@ -6,7 +6,7 @@ import axios from '@/utils/axios';
 export default () => {
     const objInit = useInitModel<KyTucXa.IDanhSachMienKTX>('danh-sach-mien-ky-tuc-xa', undefined, undefined, ipCsvc);
 
-    const postMienDangKySinhVien = (danhSachId: string, danhSach: { maSinhVien: string; hoTen: string }[], headers?: any) => {
+    const postMienDangKySinhVien = (danhSachId: string, danhSach: { maSinhVien: string; hoTen: string; khoaSinhVien: string }[], headers?: any) => {
         return axios.post(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { danhSach }, { headers });
     };
 
@@ -26,6 +26,11 @@ export default () => {
         return axios.get(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/${danhSachId}/sinh-vien`, { headers });
     };
 
+    // Đã được thêm ở đây ạ!
+    const putDonMienKTX = (id: string, body: any, headers?: any) => {
+        return axios.put(`${ipCsvc}/danh-sach-mien-ky-tuc-xa/don/${id}`, body, { headers });
+    };
+
 
     return {
         ...objInit,
@@ -34,5 +39,6 @@ export default () => {
         postTuChoi,
         deleteSinhVien,
         getSinhVien,
+        putDonMienKTX,
     };
 };
