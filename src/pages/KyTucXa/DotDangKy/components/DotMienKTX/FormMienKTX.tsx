@@ -7,6 +7,7 @@ import { Button, Card, Form, message, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
+import { ImportOutlined } from '@ant-design/icons';
 
 const FormMienKTX = (props: { dotId?: string }) => {
 	const { dotId } = props;
@@ -27,6 +28,12 @@ const FormMienKTX = (props: { dotId?: string }) => {
 	useEffect(() => {
 		if (visibleForm) {
 			resetFieldsForm(form);
+			const codes = form.getFieldValue('danhSach') || [];
+			if (codes.length > 0) {
+				setSelectedUsers(codes.map((code: string) => ({ code, username: code })));
+			} else {
+				setSelectedUsers([]);
+			}
 		}
 	}, [visibleForm]);
 
@@ -119,12 +126,39 @@ const FormMienKTX = (props: { dotId?: string }) => {
 	return (
 		<Card title={'Thêm danh sách mã sinh viên miễn đăng ký KTX'} className='form-card'>
 			<Form onFinish={onFinish} form={form} layout='vertical'>
-				<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
-					<SelectSinhVienDebounce multiple selectMa />
+				<Form.Item name='danhSach' noStyle>
+					<input type='hidden' />
 				</Form.Item>
 
-				<div style={{ marginTop: 8 }}>
-					<Button onClick={() => setVisibleSelect(true)}>Nhập danh sách</Button>
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						padding: '12px 16px',
+						background: '#f5f5f5',
+						border: '1px solid #d9d9d9',
+						borderRadius: '8px',
+						marginBottom: 16,
+					}}
+				>
+					<div>
+						<span style={{ fontWeight: 'bold', fontSize: '14px', color: '#1f1f1f' }}>
+							Danh sách sinh viên miễn đăng ký KTX
+						</span>
+						{selectedUsers?.length > 0 && (
+							<span style={{ marginLeft: 12, color: '#555' }}>
+								(Đã nhập: <strong style={{ color: '#1890ff' }}>{selectedUsers.length}</strong> sinh viên)
+							</span>
+						)}
+					</div>
+					<Button
+						onClick={() => setVisibleSelect(true)}
+						icon={<ImportOutlined />}
+						type='primary'
+					>
+						Nhập danh sách sinh viên
+					</Button>
 				</div>
 
 				<Modal

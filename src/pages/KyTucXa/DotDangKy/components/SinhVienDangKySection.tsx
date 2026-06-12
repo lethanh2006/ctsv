@@ -13,10 +13,13 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 	const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
 
 	useEffect(() => {
-		if (visible) {
+		const codes = form.getFieldValue('danhSach') || [];
+		if (codes.length > 0) {
+			setSelectedUsers(codes.map((code: string) => ({ code, username: code })));
+		} else {
 			setSelectedUsers([]);
 		}
-	}, [visible]);
+	}, [form, visible]);
 
 	const customImportConfig = {
 		onDownloadTemplate: () => {
@@ -61,13 +64,37 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 	};
 
 	return (
-		<Card title={'Danh sách sinh viên đăng ký KTX'} className='form-card' style={{ marginTop: 12 }}>
-			<Form.Item name='danhSach' label='Chọn sinh viên' help='Chọn nhiều sinh viên (tìm theo họ tên hoặc mã)'>
-				<SelectSinhVienDebounce multiple selectMa />
+		<div style={{ marginTop: 12 }}>
+			<Form.Item name='danhSach' noStyle>
+				<input type='hidden' />
 			</Form.Item>
 
-			<div style={{ marginTop: 8 }}>
-				<Button onClick={() => setVisibleSelect(true)} icon={<ImportOutlined />} style={{ width: '100%' }}>
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					padding: '12px 16px',
+					background: '#f5f5f5',
+					border: '1px solid #d9d9d9',
+					borderRadius: '8px',
+				}}
+			>
+				<div>
+					<span style={{ fontWeight: 'bold', fontSize: '14px', color: '#1f1f1f' }}>
+						Danh sách sinh viên đăng ký KTX
+					</span>
+					{selectedUsers?.length > 0 && (
+						<span style={{ marginLeft: 12, color: '#555' }}>
+							(Đã chọn: <strong style={{ color: '#1890ff' }}>{selectedUsers.length}</strong> sinh viên)
+						</span>
+					)}
+				</div>
+				<Button
+					onClick={() => setVisibleSelect(true)}
+					icon={<ImportOutlined />}
+					type='primary'
+				>
 					Nhập danh sách sinh viên
 				</Button>
 			</div>
@@ -103,7 +130,7 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 					</Button>
 				</div>
 			</Modal>
-		</Card>
+		</div>
 	);
 };
 
