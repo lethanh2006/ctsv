@@ -17,9 +17,27 @@ const TableSelectUser = (props: {
 	setSelectedUsers?: (val: ThongBao.IUser[]) => void;
 	danhSachDoiTuong?: Record<string, string[]>;
 	receiverType?: EReceiverType;
+	customImport?: {
+		onDownloadTemplate?: () => void;
+		onImport?: (file: any) => Promise<ThongBao.IUser[]>;
+	};
+	customStudentColumn?: {
+		title: string;
+		dataIndex: string;
+	};
+	singleTable?: boolean;
 }) => {
 	const intl = useIntl();
-	const { selectedUsers = [], setSelectedUsers, danhSachDoiTuong, type, receiverType } = props;
+	const {
+		selectedUsers = [],
+		setSelectedUsers,
+		danhSachDoiTuong,
+		type,
+		receiverType,
+		customImport,
+		customStudentColumn,
+		singleTable,
+	} = props;
 	const { page, limit } = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu');
 	const { getCanBoChuChotModel, danhSachCanBo, loading } = useModel('thongbao.nhansu');
 	const [checked, setChecked] = useState<boolean>(false);
@@ -114,8 +132,10 @@ const TableSelectUser = (props: {
 		},
 		type === EVaiTroKhaoSat.SINH_VIEN
 			? {
-					title: intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
-					dataIndex: 'trangThaiSinhVien',
+					title:
+						customStudentColumn?.title ??
+						intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
+					dataIndex: (customStudentColumn?.dataIndex ?? 'trangThaiSinhVien') as any,
 					align: 'center',
 					width: 120,
 					// filterType: 'select',
@@ -138,7 +158,7 @@ const TableSelectUser = (props: {
 	return (
 		<>
 			<Row gutter={[12, 12]}>
-				<Col md={12}>
+				<Col md={singleTable ? 24 : 12}>
 					<TableBase
 						columns={columns}
 						dependencies={[page, limit, JSON.stringify(danhSachDoiTuong), type]}
@@ -180,18 +200,20 @@ const TableSelectUser = (props: {
 						]}
 					/>
 				</Col>
-				<Col md={12}>
-					<div style={{ marginBottom: 12 }}>
-						{selectedUsers?.length ? (
-							<GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} type={type} />
-						) : (
-							<Empty
-								style={{ marginTop: 32, marginBottom: 32 }}
-								description={intl.formatMessage({ id: 'thongbao.select.user.description.khongcodulieu' })}
-							/>
-						)}
-					</div>
-				</Col>
+				{!singleTable && (
+					<Col md={12}>
+						<div style={{ marginBottom: 12 }}>
+							{selectedUsers?.length ? (
+								<GroupTagUsers users={selectedUsers} setUsers={setSelectedUsers} type={type} />
+							) : (
+								<Empty
+									style={{ marginTop: 32, marginBottom: 32 }}
+									description={intl.formatMessage({ id: 'thongbao.select.user.description.khongcodulieu' })}
+								/>
+							)}
+						</div>
+					</Col>
+				)}
 			</Row>
 
 			<ModalImport
@@ -200,6 +222,7 @@ const TableSelectUser = (props: {
 				setSelectedUsers={setSelectedUsers}
 				selectedUsers={selectedUsers}
 				role={type}
+				customImport={customImport}
 			/>
 		</>
 	);

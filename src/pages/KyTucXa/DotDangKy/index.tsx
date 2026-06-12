@@ -71,7 +71,7 @@ const DotDangKy = () => {
 					<Tooltip title='Chỉnh sửa'>
 						<Button onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
 					</Tooltip>
-					<Tooltip title='Xem ID'>
+					{/* <Tooltip title='Xem ID'>
 						<Button
 							onClick={() => {
 								setSelectedId(record._id);
@@ -81,7 +81,7 @@ const DotDangKy = () => {
 						>
 							ID
 						</Button>
-					</Tooltip>
+					</Tooltip> */}
 
 					<Tooltip title='Xóa'>
 						<Popconfirm

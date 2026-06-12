@@ -3,10 +3,6 @@
 
 
 const DanhSachMienKyTucXa = () => {
-
-
-
-
     return (
         <div>helo</div>
     );
