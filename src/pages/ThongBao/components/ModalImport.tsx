@@ -6,7 +6,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Modal, Row } from 'antd';
 import fileDownload from 'js-file-download';
 import _ from 'lodash';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl, useModel } from 'umi';
 
 const ModalImport = (props: {
@@ -15,17 +15,27 @@ const ModalImport = (props: {
 	setSelectedUsers: any;
 	selectedUsers: any;
 	role?: any;
+	customImport?: {
+		onDownloadTemplate?: () => void;
+		onImport?: (file: any) => Promise<any[]>;
+	};
 }) => {
 	const intl = useIntl();
-	const { visible, setVisible, setSelectedUsers, role, selectedUsers } = props;
+	const { visible, setVisible, setSelectedUsers, role, selectedUsers, customImport } = props;
 	const [form] = Form.useForm();
-	const { importNguoiNhanThongBaoModel, formSubmiting } = useModel('thongbao.thongbao');
+	const { importNguoiNhanThongBaoModel, formSubmiting: defaultFormSubmiting } = useModel('thongbao.thongbao');
+	const [customSubmiting, setCustomSubmiting] = useState<boolean>(false);
+	const formSubmiting = defaultFormSubmiting || customSubmiting;
 
 	useEffect(() => {
 		if (!visible) resetFieldsForm(form);
 	}, [visible]);
 
 	const onDownloadTemplate = () => {
+		if (customImport?.onDownloadTemplate) {
+			customImport.onDownloadTemplate();
+			return;
+		}
 		try {
 			dowLoadBieuMauNguoiNhan().then((res: any) =>
 				fileDownload(res.data, intl.formatMessage({ id: 'thongbao.import.filename' })),
@@ -36,7 +46,24 @@ const ModalImport = (props: {
 	};
 
 	const onFinish = async (values: any) => {
-		values.file = values?.file?.fileList?.[0].originFileObj;
+		const fileObj = values?.file?.fileList?.[0].originFileObj;
+
+		if (customImport?.onImport) {
+			setCustomSubmiting(true);
+			try {
+				const res = await customImport.onImport(fileObj);
+				const newSelectedUsers = [...selectedUsers, ...res];
+				setSelectedUsers(_.uniqBy(newSelectedUsers, (item) => item.username || item.code));
+				setVisible(false);
+			} catch (err: any) {
+				console.log(err);
+			} finally {
+				setCustomSubmiting(false);
+			}
+			return;
+		}
+
+		values.file = fileObj;
 
 		importNguoiNhanThongBaoModel(values, role)
 			.then((res: any) => {
