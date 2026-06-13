@@ -29,9 +29,12 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 				khoaSinhVien: item.khoaSinhVien || '',
 				vaiTro: EVaiTroKhaoSat.SINH_VIEN,
 			}));
-			setSelectedUsers(list);
+			const uniqueList = list.filter((item, index, self) =>
+				item.code && self.findIndex((t) => t.code === item.code) === index
+			);
+			setSelectedUsers(uniqueList);
 			form.setFieldsValue({
-				danhSach: list.map((u) => ({
+				danhSach: uniqueList.map((u) => ({
 					maSinhVien: u.code,
 					hoTen: u.fullname || '',
 					khoaSinhVien: u.khoaSinhVien || '',
@@ -222,7 +225,20 @@ const SinhVienDangKySection = (props: { form: FormInstance; dotId?: string; visi
 				<TableSelectUser
 					type={EVaiTroKhaoSat.SINH_VIEN}
 					selectedUsers={selectedUsers}
-					setSelectedUsers={(val: any) => setSelectedUsers(val)}
+					setSelectedUsers={(val: any) => {
+						const normalized = (val || []).map((u: any) => {
+							const code = u.code || u.username || u.maSinhVien || '';
+							return {
+								...u,
+								code,
+								username: code,
+							};
+						});
+						const unique = normalized.filter((item: any, index: number, self: any[]) =>
+							item.code && self.findIndex((t) => t.code === item.code) === index
+						);
+						setSelectedUsers(unique);
+					}}
 					customImport={customImportConfig}
 					customStudentColumn={{
 						title: 'Khoá sinh viên',

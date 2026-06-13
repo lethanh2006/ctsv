@@ -118,6 +118,13 @@ const TableSelectUser = (props: {
 
 	const columns: IColumn<ThongBao.IUser>[] = [
 		{
+			title: 'TT',
+			align: 'center',
+			width: 50,
+			render: (val, rec, index) => ((page || 1) - 1) * (limit || 10) + index + 1,
+			onCell,
+		},
+		{
 			title: intl.formatMessage({
 				id:
 					type === EVaiTroKhaoSat.SINH_VIEN
@@ -139,27 +146,27 @@ const TableSelectUser = (props: {
 		},
 		type === EVaiTroKhaoSat.SINH_VIEN
 			? {
-					title:
-						customStudentColumn?.title ??
-						intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
-					dataIndex: (customStudentColumn?.dataIndex ?? 'trangThaiSinhVien') as any,
-					align: 'center',
-					width: 120,
-					// filterType: 'select',
-					// filterData: Object.values(ETrangThaiHocSv),
-					// render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
-					onCell,
-				}
+				title:
+					customStudentColumn?.title ??
+					intl.formatMessage({ id: 'thongbao.select.user.column.trangthaihoc' }),
+				dataIndex: (customStudentColumn?.dataIndex ?? 'trangThaiSinhVien') as any,
+				align: 'center',
+				width: 120,
+				// filterType: 'select',
+				// filterData: Object.values(ETrangThaiHocSv),
+				// render: (val, rec) => <Tag color={colorTrangThaiHocSv[val as ETrangThaiHocSv]}>{val}</Tag>,
+				onCell,
+			}
 			: {
-					title: intl.formatMessage({ id: 'thongbao.select.user.column.trangthai' }),
-					dataIndex: 'trangThai',
-					align: 'center',
-					width: 120,
-					// filterType: 'select',
-					// filterData: Object.values(ETrangThaiNhanSu),
-					// render: (val, rec) => <Tag color={MapColorETrangThaiNhanSu[val as ETrangThaiNhanSu]}>{val}</Tag>,
-					onCell,
-				},
+				title: intl.formatMessage({ id: 'thongbao.select.user.column.trangthai' }),
+				dataIndex: 'trangThai',
+				align: 'center',
+				width: 120,
+				// filterType: 'select',
+				// filterData: Object.values(ETrangThaiNhanSu),
+				// render: (val, rec) => <Tag color={MapColorETrangThaiNhanSu[val as ETrangThaiNhanSu]}>{val}</Tag>,
+				onCell,
+			},
 	];
 
 	return (
@@ -168,6 +175,7 @@ const TableSelectUser = (props: {
 				<Col md={singleTable ? 24 : 12}>
 					<TableBase
 						columns={columns}
+						addStt={false}
 						dependencies={[page, limit, JSON.stringify(danhSachDoiTuong), type]}
 						params={danhSachDoiTuong}
 						modelName={type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu'}
