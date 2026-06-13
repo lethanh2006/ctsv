@@ -128,28 +128,16 @@ const FormDotDangKyKTX = () => {
 
 	useEffect(() => {
 		if (!visibleForm) return;
+		if (edit) return;
 		if (!allPhong || allPhong.length === 0) return;
 
-		if (edit) {
-			setSelectedPhongIds((prev) => {
-				const filtered = prev.filter((phongMa) => {
-					const phong = allPhong.find((p: any) => p.ma === phongMa);
-					if (!phong) return true;
-					const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
-					return maToaNha && selectedToaNhaIds.includes(maToaNha);
-				});
-				if (JSON.stringify(filtered) === JSON.stringify(prev)) return prev;
-				return filtered;
-			});
-		} else {
-			const nextPhongIds = allPhong
-				.filter((phong: any) => {
-					const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
-					return maToaNha && selectedToaNhaIds.includes(maToaNha);
-				})
-				.map((phong: any) => phong.ma);
-			setSelectedPhongIds(nextPhongIds);
-		}
+		const nextPhongIds = allPhong
+			.filter((phong: any) => {
+				const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
+				return maToaNha && selectedToaNhaIds.includes(maToaNha);
+			})
+			.map((phong: any) => phong.ma);
+		setSelectedPhongIds(nextPhongIds);
 	}, [selectedToaNhaIds, allPhong, visibleForm, edit]);
 
 	const handleNextStep = async () => {
@@ -364,6 +352,18 @@ const FormDotDangKyKTX = () => {
 											const nextValue = Array.isArray(ids) ? ids : ids ? [ids] : [];
 											setSelectedToaNhaIds(nextValue);
 											form.setFieldValue('danhSachToaNha', nextValue);
+											if (edit) {
+												setSelectedPhongIds((prev) => {
+													const filtered = prev.filter((phongMa) => {
+														const phong = allPhong.find((p: any) => p.ma === phongMa);
+														if (!phong) return true;
+														const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
+														return maToaNha && nextValue.includes(maToaNha);
+													});
+													if (JSON.stringify(filtered) === JSON.stringify(prev)) return prev;
+													return filtered;
+												});
+											}
 										}}
 									/>
 								</Form.Item>
