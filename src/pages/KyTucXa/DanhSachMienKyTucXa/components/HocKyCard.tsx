@@ -23,11 +23,10 @@ export const HocKyCard: React.FC<HocKyCardProps> = ({
 }) => {
     const isEnded = dayjs(item.hanNopMinhChung).isBefore(dayjs());
 
-    // Color definitions mimicking the TaskCard design
-    const accentColor = '#125195'; // Base Primary Blue
-    const successColor = '#52c41a'; // Active Green
-    const endedColor = '#8c8c8c'; // Grey for ended semesters
-    
+    const accentColor = '#125195';
+    const successColor = '#52c41a';
+    const endedColor = '#8c8c8c';
+
     let borderColor = '#f0f0f0';
     let backgroundColor = '#ffffff';
     let borderLeft = `4px solid ${successColor}`;
@@ -66,7 +65,6 @@ export const HocKyCard: React.FC<HocKyCardProps> = ({
             bodyStyle={{ padding: '14px' }}
         >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {/* Title & Actions */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingRight: 50 }}>
                     <Text
                         strong
@@ -80,7 +78,6 @@ export const HocKyCard: React.FC<HocKyCardProps> = ({
                     </Text>
                 </div>
 
-                {/* Subtitle / Details */}
                 <div style={{ display: 'flex', fontSize: 13, color: '#595959', width: '100%', alignItems: 'center' }}>
                     <span style={{ whiteSpace: 'nowrap', marginRight: 4 }}>Mã HK:</span>
                     <Text style={{ fontWeight: 600, color: selected ? accentColor : '#595959' }}>
@@ -95,7 +92,7 @@ export const HocKyCard: React.FC<HocKyCardProps> = ({
                     </Text>
                 </div>
 
-                {/* Badges */}
+
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 4 }}>
                     {isEnded ? (
                         <Tag color="default" style={{ margin: 0, borderRadius: 4, fontSize: 11 }}>
@@ -108,28 +105,28 @@ export const HocKyCard: React.FC<HocKyCardProps> = ({
                     )}
                 </div>
 
-                {/* Actions Toolbar */}
-                <div 
-                    style={{ 
-                        position: 'absolute', 
-                        top: 12, 
-                        right: 12, 
-                        display: 'flex', 
-                        gap: 2, 
+
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 12,
+                        right: 12,
+                        display: 'flex',
+                        gap: 2,
                         background: selected ? 'rgba(230, 244, 255, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                         borderRadius: 6,
                         padding: '2px',
                         backdropFilter: 'blur(2px)',
                     }}
-                    onClick={(e) => e.stopPropagation()} // Prevent clicking actions from selecting the card
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <Tooltip title="Chỉnh sửa">
                         <Button
                             type="text"
                             size="small"
-                            style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
                                 justifyContent: 'center',
                                 width: 24,
                                 height: 24,
@@ -151,9 +148,9 @@ export const HocKyCard: React.FC<HocKyCardProps> = ({
                                 type="text"
                                 size="small"
                                 danger
-                                style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     justifyContent: 'center',
                                     width: 24,
                                     height: 24,

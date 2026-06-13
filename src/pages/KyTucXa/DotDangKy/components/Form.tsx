@@ -1,14 +1,8 @@
-import MyDatePicker from '@/components/MyDatePicker';
-import SelectKhoaSinhVien from '@/pages/DaoTaoV2/NamHoc/KhoaSinhVien/components/Select';
-import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
-import KhoaToaConfigTable from '@/pages/KyTucXa/DotDangKy/components/KhoaToaConfigTable';
-import RoomTable from '@/pages/KyTucXa/DotDangKy/components/RoomTable';
-import SelectToaNha from '@/pages/KyTucXa/DotDangKy/components/SelectToaNha';
-import SinhVienDangKySection from '@/pages/KyTucXa/DotDangKy/components/SinhVienDangKySection';
+import StepChonDoiTuong from '@/pages/KyTucXa/DotDangKy/components/StepChonDoiTuong';
+import StepThongTin from '@/pages/KyTucXa/DotDangKy/components/StepThongTin';
 import type { KyTucXa } from '@/services/KyTucXa/typing';
-import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
-import { Button, Card, Col, Form, Input, Radio, Row, Select, Steps, message } from 'antd';
+import { Button, Card, Form, Steps, message } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useModel } from 'umi';
@@ -38,10 +32,6 @@ const FormDotDangKyKTX = () => {
 
 	const { getAllModel: getAllToaNha } = useModel('theodoitaisanvattu.toanha');
 	const { danhSach: allKhoaSinhVien, getAllModel: getAllKhoaSinhVien } = useModel('daotaov2.namhoc.khoasinhvien');
-
-	const selectedPhongRowKeys = allPhong
-		.filter((phong: any) => selectedPhongIds.includes(phong.ma))
-		.map((phong: any) => phong._id);
 
 	useEffect(() => {
 		if (visibleForm) {
@@ -214,9 +204,9 @@ const FormDotDangKyKTX = () => {
 			cauHinhKhoaToa:
 				loaiDot === 'Theo khoa'
 					? selectedKhoaRows.map((row) => ({
-						maKhoaSinhVien: row.maKhoaSinhVien ?? row.ma,
-						danhSachToaNha: khoaToaConfig[row.maKhoaSinhVien ?? row.ma] ?? [],
-					}))
+							maKhoaSinhVien: row.maKhoaSinhVien ?? row.ma,
+							danhSachToaNha: khoaToaConfig[row.maKhoaSinhVien ?? row.ma] ?? [],
+						}))
 					: [],
 			hanDuyetMien: values?.hanDuyetMien ? dayjs(values.hanDuyetMien).toISOString() : null,
 			danhSachToaNha: loaiDot === 'Theo danh sách' ? selectedToaNhaIds : [],
@@ -251,142 +241,28 @@ const FormDotDangKyKTX = () => {
 					}}
 					type='navigation'
 				>
-					<Steps.Step title="Thông tin đợt" />
-					<Steps.Step title="Chọn đối tượng" disabled={!record?._id && currentStep === 0} />
+					<Steps.Step title='Thông tin đợt' />
+					<Steps.Step title='Chọn đối tượng' disabled={!record?._id && currentStep === 0} />
 				</Steps>
 
 				<div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
-					<Row gutter={[12, 0]}>
-						<Col span={24} md={12}>
-							<Form.Item name='tenDot' label='Tên đợt' rules={[...rules.required, ...rules.text, ...rules.length(250)]}>
-								<Input placeholder='Nhập tên đợt' />
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='maHocKy' label='Học kỳ' rules={[...rules.required]}>
-								<SelectHocKy selectMa />
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='ngayChuyenVao' label='Ngày chuyển vào' rules={[...rules.required]}>
-								<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='ngayChuyenRa' label='Ngày chuyển ra' rules={[...rules.required]}>
-								<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='thoiGianBatDau' label='Thời gian bắt đầu' rules={[...rules.required]}>
-								<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='thoiGianKetThuc' label='Thời gian kết thúc' rules={[...rules.required]}>
-								<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' />
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='loaiDot' label='Loại đợt' rules={[...rules.required]}>
-								<Select
-									options={[
-										{ label: 'Theo khoa', value: 'Theo khoa' },
-										{ label: 'Theo danh sách', value: 'Theo danh sách' },
-									]}
-									placeholder='Chọn loại đợt'
-								/>
-							</Form.Item>
-						</Col>
-						<Col span={24} md={12}>
-							<Form.Item name='hanDuyetMien' label='Hạn duyệt miễn'>
-								<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' allowClear />
-							</Form.Item>
-						</Col>
-						<Col xs={24}>
-							<Form.Item name='ghiChu' label='Ghi chú' rules={[...rules.text, ...rules.length(2000)]}>
-								<Input.TextArea rows={3} placeholder='Nhập ghi chú' />
-							</Form.Item>
-						</Col>
-					</Row>
+					<StepThongTin />
 				</div>
 
 				<div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
-					<Row gutter={[12, 0]}>
-						{loaiDot === 'Theo khoa' ? (
-							<Col xs={24}>
-								<Form.Item name='maKhoaNganh' label='Khóa sinh viên áp dụng' rules={[...rules.required]}>
-									<SelectKhoaSinhVien
-										multiple
-										selectMa
-										allowClear
-										placeholder='Chọn khóa sinh viên'
-										onChange={(value) => {
-											const nextValue = Array.isArray(value) ? (value as string[]) : [];
-											setSelectedKhoaNganh(nextValue);
-											form.setFieldValue('maKhoaNganh', nextValue);
-										}}
-									/>
-								</Form.Item>
-								{selectedKhoaRows.length > 0 && (
-									<KhoaToaConfigTable
-										selectedKhoaNganh={selectedKhoaRows}
-										value={khoaToaConfig}
-										onChange={(nextValue) => setKhoaToaConfig(nextValue)}
-									/>
-								)}
-							</Col>
-						) : null}
-						{loaiDot === 'Theo danh sách' ? (
-							<Col xs={24} md={12}>
-								<Form.Item
-									name='danhSachToaNha'
-									label='Tòa nhà'
-									rules={[...rules.required]}
-								>
-									<SelectToaNha
-										multiple
-										selectMa
-										allowClear
-										onChange={(ids) => {
-											const nextValue = Array.isArray(ids) ? ids : ids ? [ids] : [];
-											setSelectedToaNhaIds(nextValue);
-											form.setFieldValue('danhSachToaNha', nextValue);
-											if (edit) {
-												setSelectedPhongIds((prev) => {
-													const filtered = prev.filter((phongMa) => {
-														const phong = allPhong.find((p: any) => p.ma === phongMa);
-														if (!phong) return true;
-														const maToaNha = phong.maToaNha ?? phong.toaNha?.ma;
-														return maToaNha && nextValue.includes(maToaNha);
-													});
-													if (JSON.stringify(filtered) === JSON.stringify(prev)) return prev;
-													return filtered;
-												});
-											}
-										}}
-									/>
-								</Form.Item>
-							</Col>
-						) : null}
-					</Row>
-
-					{loaiDot === 'Theo danh sách' && selectedToaNhaIds.length ? (
-						<div style={{ marginTop: 12 }}>
-							<RoomTable
-								toaNhaIds={selectedToaNhaIds}
-								selectedRowKeys={selectedPhongRowKeys}
-								onChangeSelectedKeys={(keys) => {
-									setSelectedPhongIds(
-										keys
-											.map((key) => allPhong.find((phong: any) => phong._id === key)?.ma)
-											.filter((ma): ma is string => !!ma),
-									);
-								}}
-							/>
-						</div>
-					) : null}
-					{loaiDot === 'Theo danh sách' ? <SinhVienDangKySection form={form} dotId={record?._id} visible={visibleForm} /> : null}
+					<StepChonDoiTuong
+						form={form}
+						loaiDot={loaiDot}
+						selectedKhoaNganh={selectedKhoaNganh}
+						setSelectedKhoaNganh={setSelectedKhoaNganh}
+						selectedKhoaRows={selectedKhoaRows}
+						khoaToaConfig={khoaToaConfig}
+						setKhoaToaConfig={setKhoaToaConfig}
+						selectedToaNhaIds={selectedToaNhaIds}
+						setSelectedToaNhaIds={setSelectedToaNhaIds}
+						selectedPhongIds={selectedPhongIds}
+						setSelectedPhongIds={setSelectedPhongIds}
+					/>
 				</div>
 
 				<div className='form-footer'>

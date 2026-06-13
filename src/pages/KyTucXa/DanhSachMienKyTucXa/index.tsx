@@ -25,7 +25,6 @@ const DanhSachMienKyTucXa = () => {
         getAllModel();
     }, []);
 
-    // Auto-select first semester on load, or reset/update selection if danhSach changes
     useEffect(() => {
         if (danhSach.length > 0) {
             if (!selectedSemesterId || !danhSach.some((item) => item._id === selectedSemesterId)) {
@@ -41,7 +40,6 @@ const DanhSachMienKyTucXa = () => {
     return (
         <div style={{ padding: '24px' }}>
             <Row gutter={[24, 24]}>
-                {/* Left Panel - Semesters List */}
                 <Col span={8}>
                     <HocKyList
                         dataSource={danhSach}
@@ -62,13 +60,11 @@ const DanhSachMienKyTucXa = () => {
                     />
                 </Col>
 
-                {/* Right Panel - Exempt Students Panel */}
                 <Col span={16}>
                     <DanhSachSinhVienPanel activeSemester={activeSemester} />
                 </Col>
             </Row>
 
-            {/* Modal for Add/Edit Semester Form */}
             <Modal
                 open={visibleForm}
                 title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} học kỳ`}

@@ -252,7 +252,7 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
             };
 
             await putDonMienKTX(currentRecord._id, payload);
-            
+
             message.success('Cập nhật minh chứng thành công');
             setUploadModalVisible(false);
             setCurrentRecord(null);
@@ -511,7 +511,6 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
                 }}
             />
 
-            {/* Table select student modal */}
             <Modal
                 open={visibleSelect}
                 onCancel={() => setVisibleSelect(false)}
