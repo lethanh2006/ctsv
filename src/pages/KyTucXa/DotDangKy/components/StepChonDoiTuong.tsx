@@ -62,6 +62,13 @@ const StepChonDoiTuong: React.FC<StepChonDoiTuongProps> = ({
 									const nextValue = Array.isArray(value) ? (value as string[]) : [];
 									setSelectedKhoaNganh(nextValue);
 									form.setFieldValue('maKhoaNganh', nextValue);
+									setKhoaToaConfig((currentValue) => {
+										const nextValueConfig = nextValue.reduce<Record<string, string[]>>((accumulator, maKhoaSinhVien) => {
+											accumulator[maKhoaSinhVien] = currentValue[maKhoaSinhVien] ?? [];
+											return accumulator;
+										}, {});
+										return nextValueConfig;
+									});
 								}}
 							/>
 						</Form.Item>

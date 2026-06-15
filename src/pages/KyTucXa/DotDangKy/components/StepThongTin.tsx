@@ -47,11 +47,11 @@ const StepThongTin = () => {
 					/>
 				</Form.Item>
 			</Col>
-			<Col span={24} md={12}>
+			{/* <Col span={24} md={12}>
 				<Form.Item name='hanDuyetMien' label='Hạn duyệt miễn'>
 					<MyDatePicker showTime={{ showHour: true, showMinute: true }} format='HH:mm DD/MM/YYYY' allowClear />
 				</Form.Item>
-			</Col>
+			</Col> */}
 			<Col xs={24}>
 				<Form.Item name='ghiChu' label='Ghi chú' rules={[...rules.text, ...rules.length(2000)]}>
 					<Input.TextArea rows={3} placeholder='Nhập ghi chú' />

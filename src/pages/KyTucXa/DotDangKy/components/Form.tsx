@@ -82,7 +82,7 @@ const FormDotDangKyKTX = () => {
 			form.setFieldsValue({
 				...record,
 				loaiDot: initialLoaiDot,
-				maKhoaNganh: record?.maKhoaNganh ?? [],
+				maKhoaNganh: khoaNganh,
 				danhSachToaNha,
 				hanDuyetMien: record?.hanDuyetMien ?? null,
 			});
@@ -105,16 +105,6 @@ const FormDotDangKyKTX = () => {
 			setKhoaToaConfig({});
 		}
 	}, [record?._id, visibleForm]);
-
-	useEffect(() => {
-		setKhoaToaConfig((currentValue) => {
-			const nextValue = selectedKhoaNganh.reduce<Record<string, string[]>>((accumulator, maKhoaSinhVien) => {
-				accumulator[maKhoaSinhVien] = currentValue[maKhoaSinhVien] ?? [];
-				return accumulator;
-			}, {});
-			return JSON.stringify(nextValue) === JSON.stringify(currentValue) ? currentValue : nextValue;
-		});
-	}, [selectedKhoaNganh]);
 
 	useEffect(() => {
 		if (!visibleForm) return;
@@ -275,11 +265,11 @@ const FormDotDangKyKTX = () => {
 						</>
 					) : (
 						<>
-							<Button onClick={() => setCurrentStep(0)} style={{ marginRight: 8 }}>
-								Quay lại
-							</Button>
 							<Button loading={formSubmiting} htmlType='submit' type='primary'>
 								{!edit ? 'Thêm mới' : 'Lưu lại'}
+							</Button>
+							<Button onClick={() => setCurrentStep(0)}>
+								Quay lại
 							</Button>
 						</>
 					)}
