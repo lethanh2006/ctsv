@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Col, Modal, Row } from 'antd';
 import { useModel } from '@umijs/max';
-import { HocKyList } from './components/HocKyList';
 import { DanhSachSinhVienPanel } from './components/DanhSachSinhVienPanel';
 import FormHocKy from './FormHocKy';
 
@@ -38,32 +37,25 @@ const DanhSachMienKyTucXa = () => {
     const activeSemester = danhSach.find((item) => item._id === selectedSemesterId);
 
     return (
-        <div style={{ padding: '24px' }}>
-            <Row gutter={[24, 24]}>
-                <Col span={8}>
-                    <HocKyList
-                        dataSource={danhSach}
-                        selectedSemesterId={selectedSemesterId}
-                        onSelectSemester={setSelectedSemesterId}
-                        loading={loading}
-                        onAddClick={() => {
-                            setEdit(false);
-                            setRecord(undefined);
-                            setVisibleForm(true);
-                        }}
-                        onEditClick={(item) => {
-                            handleEdit(item);
-                        }}
-                        onDeleteClick={(id) => {
-                            deleteModel(id, getAllModel);
-                        }}
-                    />
-                </Col>
-
-                <Col span={16}>
-                    <DanhSachSinhVienPanel activeSemester={activeSemester} />
-                </Col>
-            </Row>
+        <>
+            <DanhSachSinhVienPanel
+                activeSemester={activeSemester}
+                danhSachHocKy={danhSach}
+                selectedSemesterId={selectedSemesterId}
+                onSelectSemester={setSelectedSemesterId}
+                loadingSemesters={loading}
+                onAddSemester={() => {
+                    setEdit(false);
+                    setRecord(undefined);
+                    setVisibleForm(true);
+                }}
+                onEditSemester={(item) => {
+                    handleEdit(item);
+                }}
+                onDeleteSemester={(id) => {
+                    deleteModel(id, getAllModel);
+                }}
+            />
 
             <Modal
                 open={visibleForm}
@@ -75,7 +67,7 @@ const DanhSachMienKyTucXa = () => {
             >
                 <FormHocKy />
             </Modal>
-        </div>
+        </>
     );
 };
 

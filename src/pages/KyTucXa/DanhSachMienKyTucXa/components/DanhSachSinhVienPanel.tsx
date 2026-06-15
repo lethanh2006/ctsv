@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Button, Empty, Tag, Popconfirm, Modal, Input, message, Alert, Tooltip, Form } from 'antd';
+import { Card, Table, Button, Empty, Tag, Popconfirm, Modal, Input, message, Alert, Tooltip, Form, Select, Space } from 'antd';
 import {
     PlusOutlined,
     DeleteOutlined,
     CheckOutlined,
     CloseOutlined,
-    UploadOutlined
+    UploadOutlined,
+    EditOutlined,
+    ReloadOutlined
 } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
+import TableStaticData from '@/components/Table/TableStaticData';
 import dayjs from 'dayjs';
 import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
@@ -21,9 +24,25 @@ import type { KyTucXa } from '@/services/KyTucXa/typing';
 
 interface DanhSachSinhVienPanelProps {
     activeSemester?: KyTucXa.IDanhSachMienKTX;
+    danhSachHocKy: KyTucXa.IDanhSachMienKTX[];
+    selectedSemesterId?: string;
+    onSelectSemester: (id: string) => void;
+    loadingSemesters?: boolean;
+    onAddSemester: () => void;
+    onEditSemester: (item: KyTucXa.IDanhSachMienKTX) => void;
+    onDeleteSemester: (id: string) => void;
 }
 
-export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ activeSemester }) => {
+export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
+    activeSemester,
+    danhSachHocKy,
+    selectedSemesterId,
+    onSelectSemester,
+    loadingSemesters,
+    onAddSemester,
+    onEditSemester,
+    onDeleteSemester,
+}) => {
     const {
         postMienDangKySinhVien,
         postDuyet,
@@ -427,89 +446,129 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({ ac
         },
     ];
 
-    if (!activeSemester) {
-        return (
-            <Card
-                style={{
-                    height: '100%',
-                    borderRadius: 10,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)'
-                }}
-            >
-                <Empty description="Vui lòng chọn học kỳ ở danh sách bên trái" />
-            </Card>
-        );
-    }
-
-    const isEnded = dayjs(activeSemester.hanNopMinhChung).isBefore(dayjs());
-
     return (
         <Card
-            title={
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-                    <div>
-                        <span style={{ fontWeight: 700, fontSize: '15px', color: '#262626' }}>
-                            Sinh Viên Miễn KTX – HK {activeSemester.maHocKy}
-                        </span>
-                        <div style={{ fontSize: 13, fontWeight: 'normal', color: '#595959', marginTop: 4 }}>
-                            {activeSemester.tenHocKy}
-                        </div>
-                    </div>
+            className="table-base-card"
+            title="Danh sách miễn KTX"
+            style={{
+                height: '100%',
+                boxShadow: 'none'
+            }}
+            bodyStyle={{ padding: '16px' }}
+        >
+            <style>{`
+                .table-base .header {
+                    flex-direction: row !important;
+                }
+                .table-base .header .extra {
+                    order: 1 !important;
+                    flex-direction: row !important;
+                }
+                .table-base .header .semester-selector-wrapper {
+                    order: 2 !important;
+                    margin-left: 16px !important;
+                }
+                .table-base .header .action {
+                    order: 3 !important;
+                    margin-left: auto !important;
+                    flex-direction: row !important;
+                }
+            `}</style>
+
+            <TableStaticData
+                data={students}
+                columns={studentColumns}
+                loading={loadingStudents}
+                addStt={true}
+                hasTotal={true}
+                hasCreate={false}
+                onReload={() => activeSemester?._id && fetchStudents(activeSemester._id)}
+                otherButtons={[
                     <Button
+                        key="them-sinh-vien"
                         type="primary"
                         icon={<PlusOutlined />}
+                        disabled={!activeSemester}
                         onClick={() => {
                             setSelectedUsers([]);
                             setVisibleSelect(true);
                         }}
-                        style={{ backgroundColor: '#125195', borderColor: '#125195', borderRadius: 6 }}
+                        style={{
+                            borderRadius: 6,
+                            backgroundColor: activeSemester ? '#125195' : undefined,
+                            borderColor: activeSemester ? '#125195' : undefined,
+                        }}
                     >
                         Thêm sinh viên
                     </Button>
-                </div>
-            }
-            style={{
-                height: '100%',
-                borderRadius: 10,
-                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)'
-            }}
-            bodyStyle={{ padding: '16px', height: 'calc(100vh - 200px)', overflowY: 'auto' }}
-        >
-            <div style={{ marginBottom: 16 }}>
-                {isEnded ? (
-                    <Alert
-                        message="Học kỳ này đã kết thúc thời gian nộp minh chứng."
-                        type="warning"
-                        showIcon
-                        style={{ borderRadius: 6 }}
-                    />
-                ) : (
-                    <Alert
-                        message={`Hạn chót nộp minh chứng: ${activeSemester.hanNopMinhChung ? dayjs(activeSemester.hanNopMinhChung).format('HH:mm DD/MM/YYYY') : '--'}`}
-                        type="info"
-                        showIcon
-                        style={{ borderRadius: 6 }}
-                    />
-                )}
-            </div>
-
-            <Table
-                dataSource={students}
-                columns={studentColumns}
-                rowKey="code"
-                size="middle"
-                pagination={{ pageSize: 10, showSizeChanger: true }}
-                loading={loadingStudents}
-                bordered
-                locale={{ emptyText: 'Chưa có sinh viên nào trong danh sách' }}
-                style={{
-                    borderRadius: 8,
-                    overflow: 'hidden'
+                ]}
+                otherProps={{
+                    rowKey: "code",
+                    pagination: { pageSize: 10, showSizeChanger: true },
+                    locale: { emptyText: 'Chưa có sinh viên nào trong danh sách' }
                 }}
-            />
+            >
+                <div className="semester-selector-wrapper" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                    <span style={{ fontWeight: 600, fontSize: '14px', color: '#2e2e2e' }}>
+                        Học kỳ:
+                    </span>
+                    <Select
+                        loading={loadingSemesters}
+                        value={selectedSemesterId}
+                        onChange={onSelectSemester}
+                        placeholder="Chọn học kỳ..."
+                        style={{ width: 280 }}
+                        optionFilterProp="label"
+                        showSearch
+                    >
+                        {danhSachHocKy.map((item) => (
+                            <Select.Option key={item._id} value={item._id} label={item.tenHocKy || `Học kỳ ${item.maHocKy}`}>
+                                {item.tenHocKy || `Học kỳ ${item.maHocKy}`} (Mã HK: {item.maHocKy})
+                            </Select.Option>
+                        ))}
+                    </Select>
+
+                    {activeSemester && (
+                        <Space size={4}>
+                            <Tooltip title="Chỉnh sửa thông tin học kỳ">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, backgroundColor: 'var(--color-info-bg)' }}
+                                    icon={<EditOutlined style={{ fontSize: 16, color: 'var(--color-primary)' }} />}
+                                    onClick={() => onEditSemester(activeSemester)}
+                                />
+                            </Tooltip>
+                            <Tooltip title="Xóa học kỳ">
+                                <Popconfirm
+                                    title="Bạn có chắc chắn muốn xóa học kỳ này?"
+                                    onConfirm={() => onDeleteSemester(activeSemester._id)}
+                                    okText="Có"
+                                    cancelText="Không"
+                                    placement="bottomLeft"
+                                >
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        danger
+                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32 }}
+                                        icon={<DeleteOutlined style={{ fontSize: 16 }} />}
+                                    />
+                                </Popconfirm>
+                            </Tooltip>
+                        </Space>
+                    )}
+
+                    <Button
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                        onClick={onAddSemester}
+                        style={{ borderRadius: 6 }}
+                    >
+                        Thêm học kỳ
+                    </Button>
+                </div>
+            </TableStaticData>
 
             <Modal
                 open={visibleSelect}
