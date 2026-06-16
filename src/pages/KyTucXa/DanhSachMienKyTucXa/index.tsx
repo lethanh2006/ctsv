@@ -18,7 +18,7 @@ const DanhSachMienKyTucXa = () => {
         handleEdit,
     } = useModel('kytucxa.danhsachmienkytucxa');
 
-    const [selectedSemesterId, setSelectedSemesterId] = useState<string | undefined>(undefined);
+    const [selectedSemesterMa, setSelectedSemesterMa] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         getAllModel();
@@ -26,23 +26,22 @@ const DanhSachMienKyTucXa = () => {
 
     useEffect(() => {
         if (danhSach.length > 0) {
-            if (!selectedSemesterId || !danhSach.some((item) => item._id === selectedSemesterId)) {
-                setSelectedSemesterId(danhSach[0]._id);
+            if (!selectedSemesterMa || !danhSach.some((item) => item.maHocKy === selectedSemesterMa)) {
+                setSelectedSemesterMa(danhSach[0].maHocKy);
             }
         } else {
-            setSelectedSemesterId(undefined);
+            setSelectedSemesterMa(undefined);
         }
     }, [danhSach]);
 
-    const activeSemester = danhSach.find((item) => item._id === selectedSemesterId);
+    const activeSemester = danhSach.find((item) => item.maHocKy === selectedSemesterMa);
 
     return (
         <>
             <DanhSachSinhVienPanel
                 activeSemester={activeSemester}
-                danhSachHocKy={danhSach}
-                selectedSemesterId={selectedSemesterId}
-                onSelectSemester={setSelectedSemesterId}
+                selectedSemesterMa={selectedSemesterMa}
+                onSelectSemesterMa={setSelectedSemesterMa}
                 loadingSemesters={loading}
                 onAddSemester={() => {
                     setEdit(false);

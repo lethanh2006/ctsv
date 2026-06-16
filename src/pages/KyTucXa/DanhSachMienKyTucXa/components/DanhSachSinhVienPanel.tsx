@@ -15,16 +15,19 @@ import type { IColumn } from '@/components/Table/typing';
 import { StudentSelectModal } from './StudentSelectModal';
 import { UploadMinhChungModal } from './UploadMinhChungModal';
 import { TuChoiModal } from './TuChoiModal';
+import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
 
 interface DanhSachSinhVienPanelProps {
     activeSemester?: KyTucXa.IDanhSachMienKTX;
-    danhSachHocKy: KyTucXa.IDanhSachMienKTX[];
+    danhSachHocKy?: KyTucXa.IDanhSachMienKTX[];
     selectedSemesterId?: string;
-    onSelectSemester: (id: string) => void;
+    onSelectSemester?: (id: string) => void;
+    selectedSemesterMa?: string;
+    onSelectSemesterMa?: (ma: string) => void;
     loadingSemesters?: boolean;
-    onAddSemester: () => void;
-    onEditSemester: (item: KyTucXa.IDanhSachMienKTX) => void;
-    onDeleteSemester: (id: string) => void;
+    onAddSemester?: () => void;
+    onEditSemester?: (item: KyTucXa.IDanhSachMienKTX) => void;
+    onDeleteSemester?: (id: string) => void;
 }
 
 export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
@@ -32,6 +35,8 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
     danhSachHocKy,
     selectedSemesterId,
     onSelectSemester,
+    selectedSemesterMa,
+    onSelectSemesterMa,
     loadingSemesters,
     onAddSemester,
     onEditSemester,
@@ -300,23 +305,15 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
                     <span style={{ fontWeight: 600, fontSize: '14px', color: '#2e2e2e' }}>
                         Học kỳ:
                     </span>
-                    <Select
-                        loading={loadingSemesters}
-                        value={selectedSemesterId}
-                        onChange={onSelectSemester}
-                        placeholder="Chọn học kỳ..."
+                    <SelectHocKy
                         style={{ width: 280 }}
-                        optionFilterProp="label"
-                        showSearch
-                    >
-                        {danhSachHocKy.map((item) => (
-                            <Select.Option key={item._id} value={item._id} label={item.tenHocKy || `Học kỳ ${item.maHocKy}`}>
-                                {item.tenHocKy || `Học kỳ ${item.maHocKy}`} (Mã HK: {item.maHocKy})
-                            </Select.Option>
-                        ))}
-                    </Select>
+                        value={selectedSemesterMa}
+                        onChange={onSelectSemesterMa}
+                        selectMa
+                    />
 
-                    {activeSemester && (
+
+                    {/* {activeSemester && (
                         <Space size={4}>
                             <Tooltip title="Chỉnh sửa thông tin học kỳ">
                                 <Button
@@ -324,13 +321,13 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
                                     size="small"
                                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, backgroundColor: 'var(--color-info-bg)' }}
                                     icon={<EditOutlined style={{ fontSize: 16, color: 'var(--color-primary)' }} />}
-                                    onClick={() => onEditSemester(activeSemester)}
+                                    onClick={() => onEditSemester?.(activeSemester)}
                                 />
                             </Tooltip>
                             <Tooltip title="Xóa học kỳ">
                                 <Popconfirm
                                     title="Bạn có chắc chắn muốn xóa học kỳ này?"
-                                    onConfirm={() => onDeleteSemester(activeSemester._id)}
+                                    onConfirm={() => onDeleteSemester?.(activeSemester._id)}
                                     okText="Có"
                                     cancelText="Không"
                                     placement="bottomLeft"
@@ -354,7 +351,7 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
                         style={{ borderRadius: 6 }}
                     >
                         Thêm học kỳ
-                    </Button>
+                    </Button> */}
                 </div>
             </TableStaticData>
 
