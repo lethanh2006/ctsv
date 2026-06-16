@@ -16,6 +16,7 @@ import { StudentSelectModal } from './StudentSelectModal';
 import { UploadMinhChungModal } from './UploadMinhChungModal';
 import { TuChoiModal } from './TuChoiModal';
 import SelectHocKy from '@/pages/HocKy/components/SelectHocKy';
+import dayjs from 'dayjs';
 
 interface DanhSachSinhVienPanelProps {
     activeSemester?: KyTucXa.IDanhSachMienKTX;
@@ -46,6 +47,9 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
         postMienDangKySinhVien,
         deleteSinhVien,
         getSinhVien,
+        postModel,
+        putModel,
+        getAllModel,
     } = useModel('kytucxa.danhsachmienkytucxa');
     const { getAllModel: getAllCanBo } = useModel('tochucnhansu.nhansu');
 
@@ -130,8 +134,33 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
     }, [activeSemester?._id]);
 
     const handleAddStudentsDone = async (newStudents: { maSinhVien: string; hoTen: string; khoaSinhVien: string }[]) => {
-        if (!activeSemester?._id) return;
+        if (!selectedSemesterMa) return;
         try {
+            let semesterId = activeSemester?._id;
+
+            if (!semesterId) {
+                const newSemester = (await postModel({
+                    maHocKy: selectedSemesterMa,
+                    tenHocKy: `Học kỳ ${selectedSemesterMa}`,
+                    hanNopMinhChung: dayjs().add(1, 'year').toISOString(),
+                    ghiChu: 'Tự động tạo khi import sinh viên',
+                })) as any;
+                semesterId = newSemester?._id;
+                if (!semesterId) {
+                    throw new Error('Không thể tạo cấu hình học kỳ mới');
+                }
+                await getAllModel();
+            } else {
+                const hasPassed = activeSemester?.hanNopMinhChung && dayjs(activeSemester.hanNopMinhChung).isBefore(dayjs());
+                if (hasPassed) {
+                    await putModel(semesterId, {
+                        ...activeSemester,
+                        hanNopMinhChung: dayjs().add(1, 'year').toISOString(),
+                    });
+                    await getAllModel();
+                }
+            }
+
             const existingList = students.map((s) => ({
                 maSinhVien: s.code,
                 hoTen: s.fullname || '',
@@ -140,10 +169,10 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
             const existingCodes = new Set(existingList.map((item) => item.maSinhVien));
             const uniqueNewStudents = newStudents.filter((item) => !existingCodes.has(item.maSinhVien));
             const combinedList = [...existingList, ...uniqueNewStudents];
-            await postMienDangKySinhVien(activeSemester._id, combinedList);
+            await postMienDangKySinhVien(semesterId, combinedList);
             message.success('Thêm sinh viên thành công');
             setVisibleSelect(false);
-            fetchStudents(activeSemester._id);
+            fetchStudents(semesterId);
         } catch (err) {
             console.error(err);
             message.error('Thêm sinh viên thất bại');
@@ -282,14 +311,14 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
                         key="them-sinh-vien"
                         type="primary"
                         icon={<PlusOutlined />}
-                        disabled={!activeSemester}
+                        disabled={!selectedSemesterMa}
                         onClick={() => {
                             setVisibleSelect(true);
                         }}
                         style={{
                             borderRadius: 6,
-                            backgroundColor: activeSemester ? '#125195' : undefined,
-                            borderColor: activeSemester ? '#125195' : undefined,
+                            backgroundColor: selectedSemesterMa ? '#125195' : undefined,
+                            borderColor: selectedSemesterMa ? '#125195' : undefined,
                         }}
                     >
                         Thêm sinh viên
@@ -359,6 +388,7 @@ export const DanhSachSinhVienPanel: React.FC<DanhSachSinhVienPanelProps> = ({
                 open={visibleSelect}
                 onCancel={() => setVisibleSelect(false)}
                 activeSemester={activeSemester}
+                selectedSemesterMa={selectedSemesterMa}
                 existingStudents={students}
                 onOk={handleAddStudentsDone}
             />

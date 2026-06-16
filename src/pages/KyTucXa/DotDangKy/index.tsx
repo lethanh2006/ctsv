@@ -102,6 +102,7 @@ const DotDangKy = () => {
 				title='Đợt đăng ký ký túc xá'
 				Form={Form}
 				widthDrawer={900}
+				buttons={{ filter: false }}
 			/>
 		</>
 	);

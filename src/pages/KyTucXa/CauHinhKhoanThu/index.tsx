@@ -78,6 +78,7 @@ const CauHinhKhoanThuKTXPage = () => {
             Form={Form}
             rowSelection
             deleteMany
+            buttons={{ filter: false }}
         />
     );
 };

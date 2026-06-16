@@ -23,9 +23,9 @@ const PhongKTXPage = () => {
 	}, []);
 
 	const customButtons = [
-        <ImportPhongKTX key="import" onSuccessReload={getModel} />,
-        <ExportPhongKTX key="export" getModel={getModel} danhSachTienIchAll={danhSachTienIchAll} />
-    ];
+		<ImportPhongKTX key="import" onSuccessReload={getModel} />,
+		<ExportPhongKTX key="export" getModel={getModel} danhSachTienIchAll={danhSachTienIchAll} />
+	];
 
 	const columns: IColumn<KyTucXa.IPhongKTX>[] = [
 		{
@@ -101,8 +101,8 @@ const PhongKTXPage = () => {
 			rowSelection
 			deleteMany
 			otherButtons={customButtons}
-			buttons={{ create: false }}
-		/>		
+			buttons={{ create: false, filter: false }}
+		/>
 	);
 };
 

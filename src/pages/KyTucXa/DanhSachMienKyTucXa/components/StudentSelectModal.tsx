@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button } from 'antd';
 import * as XLSX from 'xlsx';
 import fileDownload from 'js-file-download';
 import TableSelectUser from '@/pages/ThongBao/components/TableSelect';
+import ModalImport from '@/pages/ThongBao/components/ModalImport';
 import { EVaiTroKhaoSat } from '@/services/ThongBao/constant';
 import type { KyTucXa } from '@/services/KyTucXa/typing';
 
@@ -10,6 +11,7 @@ interface StudentSelectModalProps {
     open: boolean;
     onCancel: () => void;
     activeSemester?: KyTucXa.IDanhSachMienKTX;
+    selectedSemesterMa?: string;
     existingStudents: any[];
     onOk: (newStudents: { maSinhVien: string; hoTen: string; khoaSinhVien: string }[]) => Promise<void>;
 }
@@ -18,15 +20,25 @@ export const StudentSelectModal: React.FC<StudentSelectModalProps> = ({
     open,
     onCancel,
     activeSemester,
+    selectedSemesterMa,
     existingStudents,
     onOk,
 }) => {
     const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
     const [submitting, setSubmitting] = useState(false);
+    const [showTable, setShowTable] = useState(false);
+    const [importOpen, setImportOpen] = useState(false);
+    const hasImported = useRef(false);
 
     useEffect(() => {
         if (open) {
             setSelectedUsers([]);
+            setShowTable(false);
+            setImportOpen(true);
+            hasImported.current = false;
+        } else {
+            setShowTable(false);
+            setImportOpen(false);
         }
     }, [open]);
 
@@ -93,6 +105,20 @@ export const StudentSelectModal: React.FC<StudentSelectModalProps> = ({
         setSelectedUsers(list);
     };
 
+    const handleImportedUsers = (val: any[]) => {
+        hasImported.current = true;
+        handleSetSelectedUsers(val);
+        setShowTable(true);
+        setImportOpen(false);
+    };
+
+    const handleImportVisibleChange = (visible: boolean) => {
+        setImportOpen(visible);
+        if (!visible && !hasImported.current) {
+            onCancel();
+        }
+    };
+
     const handleConfirm = async () => {
         const newStudents = (selectedUsers ?? [])
             .map((u: any) => ({
@@ -111,41 +137,53 @@ export const StudentSelectModal: React.FC<StudentSelectModalProps> = ({
     };
 
     return (
-        <Modal
-            open={open}
-            onCancel={onCancel}
-            title={
-                <span style={{ fontWeight: 700, fontSize: 16 }}>
-                    Chọn/nhập danh sách sinh viên miễn KTX – HK {activeSemester?.maHocKy || ''}
-                </span>
-            }
-            width={950}
-            footer={null}
-            destroyOnClose
-        >
-            <div style={{ padding: '8px 0' }}>
-                <TableSelectUser
-                    type={EVaiTroKhaoSat.SINH_VIEN}
-                    selectedUsers={selectedUsers}
-                    setSelectedUsers={handleSetSelectedUsers}
-                    customImport={customImportConfig}
-                    customStudentColumn={{
-                        title: 'Khoá sinh viên',
-                        dataIndex: 'khoaSinhVien',
-                    }}
-                    singleTable={true}
-                />
-                <div style={{ textAlign: 'right', marginTop: 20 }}>
-                    <Button
-                        onClick={handleConfirm}
-                        loading={submitting}
-                        type="primary"
-                        style={{ backgroundColor: '#125195', borderColor: '#125195', borderRadius: 6, padding: '0 24px' }}
-                    >
-                        Chọn xong
-                    </Button>
+        <>
+            <ModalImport
+                visible={importOpen}
+                setVisible={handleImportVisibleChange}
+                setSelectedUsers={handleImportedUsers}
+                selectedUsers={[]}
+                role={EVaiTroKhaoSat.SINH_VIEN}
+                customImport={customImportConfig}
+            />
+            <Modal
+                open={open && showTable}
+                onCancel={onCancel}
+                title={
+                    <span style={{ fontWeight: 700, fontSize: 16 }}>
+                        Chọn/nhập danh sách sinh viên miễn KTX – HK {activeSemester?.maHocKy || selectedSemesterMa || ''}
+                    </span>
+                }
+                width={950}
+                footer={null}
+                destroyOnClose
+                forceRender={open}
+            >
+                <div style={{ padding: '8px 0' }}>
+                    <TableSelectUser
+                        type={EVaiTroKhaoSat.SINH_VIEN}
+                        selectedUsers={selectedUsers}
+                        setSelectedUsers={handleSetSelectedUsers}
+                        customImport={customImportConfig}
+                        customStudentColumn={{
+                            title: 'Khoá sinh viên',
+                            dataIndex: 'khoaSinhVien',
+                        }}
+                        singleTable={true}
+                        hideImport={true}
+                    />
+                    <div style={{ textAlign: 'right', marginTop: 20 }}>
+                        <Button
+                            onClick={handleConfirm}
+                            loading={submitting}
+                            type="primary"
+                            style={{ backgroundColor: '#125195', borderColor: '#125195', borderRadius: 6, padding: '0 24px' }}
+                        >
+                            Chọn xong
+                        </Button>
+                    </div>
                 </div>
-            </div>
-        </Modal>
+            </Modal>
+        </>
     );
 };

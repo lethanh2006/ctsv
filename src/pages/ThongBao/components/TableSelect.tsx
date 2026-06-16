@@ -26,6 +26,7 @@ const TableSelectUser = (props: {
 		dataIndex: string;
 	};
 	singleTable?: boolean;
+	hideImport?: boolean;
 }) => {
 	const intl = useIntl();
 	const {
@@ -37,6 +38,7 @@ const TableSelectUser = (props: {
 		customImport,
 		customStudentColumn,
 		singleTable,
+		hideImport,
 	} = props;
 	const model = useModel(type === EVaiTroKhaoSat.SINH_VIEN ? 'thongbao.sinhvien' : 'thongbao.nhansu') as any;
 	const { page, limit, setDanhSach, setTotal, setPage } = model;
@@ -203,16 +205,18 @@ const TableSelectUser = (props: {
 							) : (
 								<></>
 							),
-							<ButtonExtend
-								key='import'
-								icon={<ImportOutlined />}
-								onClick={() => setVisibleImport(true)}
-								type='default'
-								size='small'
-							>
-								{intl.formatMessage({ id: 'thongbao.select.user.button.nhapdulieu' })}
-							</ButtonExtend>,
-						]}
+							!hideImport ? (
+								<ButtonExtend
+									key='import'
+									icon={<ImportOutlined />}
+									onClick={() => setVisibleImport(true)}
+									type='default'
+									size='small'
+								>
+									{intl.formatMessage({ id: 'thongbao.select.user.button.nhapdulieu' })}
+								</ButtonExtend>
+							) : null,
+						].filter(Boolean) as React.ReactNode[]}
 					/>
 				</Col>
 				{!singleTable && (
